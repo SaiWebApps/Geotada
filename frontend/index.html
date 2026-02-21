@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travlr — Neo4j Schema Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0f14;
+    --surface: #141820;
+    --surface-2: #1a1f2b;
+    --border: #252b38;
+    --text: #e4e8f0;
+    --text-muted: #6b7280;
+    --accent: #f59e0b;
+    --accent-dim: rgba(245, 158, 11, 0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59, 130, 246, 0.15);
+    --purple: #a855f7;
+    --purple-dim: rgba(168, 85, 247, 0.15);
+    --teal: #14b8a6;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .header {
+    padding: 2rem 2rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .badge-loading { background: var(--accent-dim); color: var(--accent); }
+  .badge-pass    { background: var(--green-dim); color: var(--green); }
+  .badge-fail    { background: var(--red-dim); color: var(--red); }
+
+  .main { padding: 1.5rem 2rem 3rem; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  /* Stats row */
+  .stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* Count tables */
+  .count-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .count-row:last-child { border-bottom: none; }
+
+  .count-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .count-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Node label colors */
+  .label-User, .label-Profile, .label-Trip { color: var(--blue); }
+  .label-POI, .label-NarrativeBeat, .label-Lens { color: var(--green); }
+  .label-ItineraryItem { color: var(--accent); }
+
+  /* Traversal cards */
+  .traversal {
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+  }
+
+  .traversal:last-child { margin-bottom: 0; }
+  .traversal-pass { background: var(--green-dim); border-color: rgba(34,197,94,0.3); }
+  .traversal-fail { background: var(--red-dim); border-color: rgba(239,68,68,0.3); }
+
+  .traversal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .traversal-name { font-weight: 700; font-size: 0.95rem; }
+  .traversal-meta { font-size: 0.8rem; color: var(--text-muted); }
+
+  .traversal-rows {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* Graph visualization */
+  .graph-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .graph-container .card-title {
+    padding: 1.25rem 1.25rem 0;
+  }
+
+  #graph-canvas {
+    width: 100%;
+    height: 500px;
+    display: block;
+    cursor: grab;
+  }
+
+  #graph-canvas:active { cursor: grabbing; }
+
+  .legend {
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  /* Loading state */
+  .loading {
+    text-align: center;
+    padding: 4rem;
+    color: var(--text-muted);
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-msg {
+    background: var(--red-dim);
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--red);
+  }
+
+  .tooltip {
+    position: absolute;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.75rem;
+    pointer-events: none;
+    z-index: 10;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.5;
+    max-width: 280px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    display: none;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1><span>Travlr</span> Schema Dashboard</h1>
+    <span id="status-badge" class="badge badge-loading">loading…</span>
+  </div>
+
+  <div class="main" id="app">
+    <div class="loading">
+      <div class="spinner"></div>
+      Connecting to Neo4j…
+    </div>
+  </div>
+
+<script>
+const COLORS = {
+  User: '#3b82f6', Profile: '#60a5fa', Trip: '#93c5fd',
+  POI: '#22c55e', NarrativeBeat: '#4ade80', Lens: '#86efac',
+  ItineraryItem: '#f59e0b',
+};
+
+const RADIUS_MAP = {
+  User: 18, Profile: 16, Trip: 16, POI: 20,
+  NarrativeBeat: 14, Lens: 14, ItineraryItem: 12,
+};
+
+async function fetchData() {
+  const resp = await fetch('/api/status');
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return resp.json();
+}
+
+function renderDashboard(data) {
+  const allPassed = data.traversals.every(t => t.passed);
+  const badge = document.getElementById('status-badge');
+  badge.textContent = allPassed ? 'all checks pass' : 'checks failing';
+  badge.className = `badge ${allPassed ? 'badge-pass' : 'badge-fail'}`;
+
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">Totals</div>
+        <div class="stats">
+          <div><div class="stat-value">${data.totals.total_nodes}</div><div class="stat-label">Nodes</div></div>
+          <div><div class="stat-value">${data.totals.total_relationships}</div><div class="stat-label">Relationships</div></div>
+          <div><div class="stat-value">${data.traversals.filter(t=>t.passed).length}/${data.traversals.length}</div><div class="stat-label">Traversals</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Nodes by Label</div>
+        ${Object.entries(data.node_counts).sort().map(([l,c]) =>
+          `<div class="count-row"><span class="count-label label-${l}">${l}</span><span class="count-value">${c}</span></div>`
+        ).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title">Relationships by Type</div>
+        ${Object.entries(data.rel_counts).sort().map(([t,c]) =>
+          `<div class="count-row"><span class="count-label">${t}</span><span class="count-value">${c}</span></div>`
+        ).join('')}
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card" style="grid-column: 1 / -1;">
+        <div class="card-title">Traversal Verification</div>
+        ${data.traversals.map(t => `
+          <div class="traversal ${t.passed ? 'traversal-pass' : 'traversal-fail'}">
+            <div class="traversal-header">
+              <span class="traversal-name">${t.passed ? '✓' : '✗'} ${t.name}</span>
+              <span class="traversal-meta">${t.row_count} rows (need ≥${t.min_expected})</span>
+            </div>
+            <div class="traversal-rows">${t.sample_rows.slice(0,3).map(r =>
+              '→ ' + Object.entries(r).map(([k,v]) => `${k}=${v}`).join(', ')
+            ).join('<br>')}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <div class="graph-container">
+      <div class="card-title">Graph Visualization</div>
+      <canvas id="graph-canvas"></canvas>
+      <div class="tooltip" id="tooltip"></div>
+      <div class="legend">
+        ${Object.entries(COLORS).map(([label, color]) =>
+          `<div class="legend-item"><div class="legend-dot" style="background:${color}"></div>${label}</div>`
+        ).join('')}
+      </div>
+    </div>
+  `;
+
+  drawGraph(data.graph);
+}
+
+function drawGraph(graph) {
+  const canvas = document.getElementById('graph-canvas');
+  const ctx = canvas.getContext('2d');
+  const tooltip = document.getElementById('tooltip');
+  const dpr = window.devicePixelRatio || 1;
+
+  canvas.width = canvas.clientWidth * dpr;
+  canvas.height = canvas.clientHeight * dpr;
+  ctx.scale(dpr, dpr);
+
+  const W = canvas.clientWidth, H = canvas.clientHeight;
+
+  // Build simulation nodes
+  const nodes = graph.nodes.map((n, i) => {
+    const label = n.labels[0];
+    const angle = (i / graph.nodes.length) * Math.PI * 2;
+    const r = Math.min(W, H) * 0.3;
+    return {
+      ...n, x: W/2 + Math.cos(angle) * r + (Math.random()-0.5)*60,
+      y: H/2 + Math.sin(angle) * r + (Math.random()-0.5)*60,
+      vx: 0, vy: 0,
+      radius: RADIUS_MAP[label] || 14,
+      color: COLORS[label] || '#888',
+      label,
+      displayName: n.props.display_name || n.props.name || n.props.display_label || n.props.email || label,
+    };
+  });
+
+  const nodeMap = {};
+  nodes.forEach(n => nodeMap[n.id] = n);
+
+  const edges = graph.relationships
+    .filter(r => nodeMap[r.source] && nodeMap[r.target])
+    .map(r => ({ ...r, source: nodeMap[r.source], target: nodeMap[r.target] }));
+
+  // Simple force simulation
+  function tick() {
+    // Repulsion between nodes
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        let dx = nodes[j].x - nodes[i].x;
+        let dy = nodes[j].y - nodes[i].y;
+        let dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        let force = 1200 / (dist * dist);
+        let fx = (dx / dist) * force;
+        let fy = (dy / dist) * force;
+        nodes[i].vx -= fx; nodes[i].vy -= fy;
+        nodes[j].vx += fx; nodes[j].vy += fy;
+      }
+    }
+
+    // Attraction along edges
+    edges.forEach(e => {
+      let dx = e.target.x - e.source.x;
+      let dy = e.target.y - e.source.y;
+      let dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      let force = (dist - 100) * 0.005;
+      let fx = (dx / dist) * force;
+      let fy = (dy / dist) * force;
+      e.source.vx += fx; e.source.vy += fy;
+      e.target.vx -= fx; e.target.vy -= fy;
+    });
+
+    // Center gravity
+    nodes.forEach(n => {
+      n.vx += (W/2 - n.x) * 0.001;
+      n.vy += (H/2 - n.y) * 0.001;
+      n.vx *= 0.85; n.vy *= 0.85;
+      n.x += n.vx; n.y += n.vy;
+      n.x = Math.max(30, Math.min(W-30, n.x));
+      n.y = Math.max(30, Math.min(H-30, n.y));
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Draw edges
+    edges.forEach(e => {
+      ctx.beginPath();
+      ctx.moveTo(e.source.x, e.source.y);
+      ctx.lineTo(e.target.x, e.target.y);
+      ctx.strokeStyle = 'rgba(100,116,139,0.25)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Arrow
+      const angle = Math.atan2(e.target.y - e.source.y, e.target.x - e.source.x);
+      const arrowDist = e.target.radius + 4;
+      const ax = e.target.x - Math.cos(angle) * arrowDist;
+      const ay = e.target.y - Math.sin(angle) * arrowDist;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(ax - Math.cos(angle-0.4)*8, ay - Math.sin(angle-0.4)*8);
+      ctx.lineTo(ax - Math.cos(angle+0.4)*8, ay - Math.sin(angle+0.4)*8);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(100,116,139,0.4)';
+      ctx.fill();
+    });
+
+    // Draw nodes
+    nodes.forEach(n => {
+      // Glow
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius + 4, 0, Math.PI*2);
+      ctx.fillStyle = n.color + '15';
+      ctx.fill();
+
+      // Circle
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.radius, 0, Math.PI*2);
+      ctx.fillStyle = n.color + '30';
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 2;
+      ctx.fill();
+      ctx.stroke();
+
+      // Label
+      ctx.fillStyle = '#e4e8f0';
+      ctx.font = '500 11px "DM Sans"';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.displayName, n.x, n.y + n.radius + 16);
+    });
+  }
+
+  // Run simulation
+  let frame = 0;
+  function animate() {
+    tick();
+    draw();
+    frame++;
+    if (frame < 300) requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Tooltip on hover
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const hit = nodes.find(n => Math.hypot(n.x - mx, n.y - my) < n.radius + 4);
+    if (hit) {
+      const props = Object.entries(hit.props)
+        .filter(([k]) => !['id'].includes(k))
+        .slice(0, 6)
+        .map(([k, v]) => {
+          const val = typeof v === 'object' ? JSON.stringify(v) : String(v);
+          return `<b>${k}:</b> ${val.length > 30 ? val.slice(0,30)+'…' : val}`;
+        }).join('<br>');
+      tooltip.innerHTML = `<b style="color:${hit.color}">${hit.label}</b><br>${props}`;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
+    } else {
+      tooltip.style.display = 'none';
+    }
+  });
+
+  // Dragging
+  let dragging = null;
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    dragging = nodes.find(n => Math.hypot(n.x - mx, n.y - my) < n.radius + 4);
+  });
+  canvas.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const rect = canvas.getBoundingClientRect();
+    dragging.x = e.clientX - rect.left;
+    dragging.y = e.clientY - rect.top;
+    dragging.vx = 0; dragging.vy = 0;
+    draw();
+  });
+  canvas.addEventListener('mouseup', () => { dragging = null; });
+}
+
+// Boot
+fetchData().then(renderDashboard).catch(err => {
+  document.getElementById('status-badge').textContent = 'connection failed';
+  document.getElementById('status-badge').className = 'badge badge-fail';
+  document.getElementById('app').innerHTML = `
+    <div class="error-msg">
+      Failed to connect to the API server.<br><br>
+      ${err.message}<br><br>
+      Make sure the server is running: <b>make dashboard</b>
+    </div>
+  `;
+});
+</script>
+</body>
+</html>
