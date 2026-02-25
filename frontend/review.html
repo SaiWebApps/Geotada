@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Geotada — Editorial Review Workbench</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #0c0f14;
+    --surface: #141820;
+    --surface-2: #1a1f2b;
+    --border: #252b38;
+    --text: #e4e8f0;
+    --text-muted: #6b7280;
+    --accent: #f59e0b;
+    --accent-dim: rgba(245, 158, 11, 0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59, 130, 246, 0.15);
+    --purple: #a855f7;
+    --orange: #f97316;
+    --orange-dim: rgba(249, 115, 22, 0.15);
+    --yellow: #eab308;
+    --yellow-dim: rgba(234, 179, 8, 0.15);
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
+  .header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .header h1 { font-size: 1.25rem; font-weight: 700; }
+  .header .city-label {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Overlays (city prompt, duplicate resolver) ── */
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000;
+  }
+  .overlay.hidden { display: none; }
+  .overlay-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    max-width: 520px;
+    width: 90%;
+  }
+  .overlay-card h2 { margin-bottom: 1rem; font-size: 1.2rem; }
+  .overlay-card p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem; }
+  .overlay-card input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 1rem;
+    font-family: inherit;
+    margin-bottom: 0.75rem;
+  }
+  .overlay-card input[type="text"]:focus { outline: none; border-color: var(--accent); }
+
+  /* ── Duplicate resolver ── */
+  .dup-overlay { overflow-y: auto; }
+  .dup-card { max-width: 700px; max-height: 85vh; overflow-y: auto; }
+  .dup-set {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .dup-set h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: var(--orange); }
+  .dup-entry {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 0; border-bottom: 1px solid var(--border);
+  }
+  .dup-entry:last-child { border-bottom: none; }
+  .dup-entry input {
+    flex: 1;
+    padding: 0.35rem 0.5rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+  }
+  .dup-entry input:focus { outline: none; border-color: var(--accent); }
+  .dup-entry .dup-idx { color: var(--text-muted); font-size: 0.8rem; width: 2rem; text-align: center; }
+
+  /* ── Buttons ── */
+  .btn {
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #000; }
+  .btn-success { background: var(--green); color: #000; }
+  .btn-danger { background: var(--red); color: #fff; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
+
+  /* ── Completion banner ── */
+  .completion-banner {
+    display: none;
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    color: var(--green);
+    text-align: center;
+    padding: 0.75rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .completion-banner.visible { display: block; }
+
+  /* ── Main layout ── */
+  .main {
+    display: flex;
+    height: calc(100vh - 52px);
+  }
+  .main.has-banner { height: calc(100vh - 52px - 44px); }
+
+  /* ── Left panel ── */
+  .left-panel {
+    width: 340px;
+    min-width: 340px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+  }
+  .left-toolbar {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0.5rem;
+  }
+  .worklist {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.25rem 0;
+  }
+  .worklist-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+  .worklist-row {
+    padding: 0.6rem 0.75rem;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .worklist-row:hover { background: var(--surface-2); }
+  .worklist-row.active { background: var(--accent-dim); border-left: 3px solid var(--accent); }
+  .worklist-row .poi-info { flex: 1; min-width: 0; }
+  .worklist-row .poi-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .worklist-row .poi-meta {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-pending { background: var(--orange-dim); color: var(--orange); }
+  .badge-complete { background: var(--green-dim); color: var(--green); }
+  .badge-flagged { background: var(--yellow-dim); color: var(--yellow); }
+  .left-footer {
+    padding: 0.75rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .progress-bar-wrap {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+    transition: width 0.25s;
+  }
+
+  /* ── Right panel ── */
+  .right-panel {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    background: var(--bg);
+  }
+  .detail-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .detail-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .detail-header .nav-group { display: flex; gap: 0.35rem; }
+  .detail-header h2 { flex: 1; font-size: 1rem; font-weight: 600; }
+  .detail-body { padding: 1rem; }
+
+  /* ── Form fields ── */
+  .field-group { margin-bottom: 1rem; }
+  .field-group label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .field-group input[type="text"],
+  .field-group input[type="number"],
+  .field-group textarea {
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+  }
+  .field-group input:focus,
+  .field-group textarea:focus { outline: none; border-color: var(--accent); }
+  .field-group .field-warning {
+    color: var(--red);
+    font-size: 0.78rem;
+    margin-top: 0.2rem;
+  }
+  .field-group .field-warn-yellow {
+    color: var(--yellow);
+    font-size: 0.78rem;
+    margin-top: 0.2rem;
+  }
+  .field-row { display: flex; gap: 1rem; }
+  .field-row .field-group { flex: 1; }
+
+  /* ── Map ── */
+  .map-container {
+    height: 280px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .map-container .map-warning {
+    position: absolute;
+    bottom: 8px; left: 8px;
+    background: rgba(239,68,68,0.9);
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    z-index: 500;
+    pointer-events: none;
+  }
+  .map-container .map-warn-geofence {
+    background: rgba(234,179,8,0.9);
+    color: #000;
+  }
+  #map { height: 100%; width: 100%; }
+
+  /* ── Audit notes ── */
+  .audit-notes-box {
+    background: var(--red-dim);
+    border: 1px solid var(--red);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .audit-notes-box .audit-heading {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .audit-notes-box .audit-text {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .audit-field { margin-bottom: 0.45rem; }
+  .audit-field:last-child { margin-bottom: 0; }
+  .audit-field-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.1rem;
+  }
+  .audit-field-value {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .audit-confidence {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.1rem 0.45rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .audit-confidence-high { background: var(--red); color: #fff; }
+  .audit-confidence-medium { background: var(--orange); color: #000; }
+  .audit-confidence-low { background: var(--yellow); color: #000; }
+
+  /* ── Beat cards ── */
+  .beats-section h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .beat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .beat-card .beat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .beat-card .beat-warning {
+    color: var(--red);
+    font-size: 0.78rem;
+    font-weight: 400;
+  }
+  .beat-card textarea { min-height: 80px; }
+
+  /* ── Error toast ── */
+  .error-toast {
+    display: none;
+    position: fixed;
+    bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%);
+    background: var(--red);
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    z-index: 2000;
+    max-width: 600px;
+    text-align: center;
+  }
+  .error-toast.visible { display: block; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ── City Prompt Overlay ── -->
+<div id="cityOverlay" class="overlay">
+  <div class="overlay-card">
+    <h2>Editorial Review Session</h2>
+    <p>Which city is this review session for? The city centre will be geocoded and used to create a 50 km geofence for coordinate validation.</p>
+    <input type="text" id="cityInput" placeholder="e.g. Paris, Tokyo, New York" autofocus />
+    <div id="cityError" style="color:var(--red);font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
+    <button class="btn btn-primary" id="citySubmitBtn" style="width:100%;">Set City</button>
+  </div>
+</div>
+
+<!-- ── Duplicate Resolver Overlay ── -->
+<div id="dupOverlay" class="overlay hidden dup-overlay">
+  <div class="overlay-card dup-card">
+    <h2>Duplicate POI Names Detected</h2>
+    <p>The following POI names appear more than once. Rename or delete entries so every name is unique, then continue.</p>
+    <div id="dupSets"></div>
+    <div id="dupError" style="color:var(--red);font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
+    <button class="btn btn-primary" id="dupResolveBtn" style="width:100%;margin-top:0.5rem;">Resolve &amp; Continue</button>
+  </div>
+</div>
+
+<!-- ── Header ── -->
+<div class="header">
+  <h1>Geotada — Editorial Review</h1>
+  <span id="cityLabel" class="city-label"></span>
+</div>
+
+<!-- ── Completion Banner ── -->
+<div id="completionBanner" class="completion-banner">All entries reviewed. Ready for upload.</div>
+
+<!-- ── Main ── -->
+<div class="main" id="mainLayout">
+  <!-- Left panel -->
+  <div class="left-panel">
+    <div class="left-toolbar">
+      <input type="file" id="fileInput" accept=".json" style="display:none" />
+      <button class="btn btn-primary" id="loadJsonBtn" disabled>Load JSON</button>
+    </div>
+    <div class="worklist" id="worklist">
+      <div class="worklist-empty">Load a JSON file to begin review.</div>
+    </div>
+    <div class="left-footer">
+      <div class="progress-bar-wrap" id="progressWrap" style="display:none;">
+        <span id="progressLabel">0 / 0</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+      <button class="btn btn-outline" id="nextBtn" disabled>Next Pending</button>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="right-panel" id="rightPanel">
+    <div class="detail-empty" id="detailEmpty">Select a POI from the worklist.</div>
+    <div id="detailView" style="display:none;">
+      <div class="detail-header">
+        <div class="nav-group">
+          <button class="btn btn-outline btn-sm" id="prevRowBtn" title="Previous">&larr; Prev</button>
+          <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
+        </div>
+        <h2 id="detailTitle"></h2>
+        <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
+      </div>
+      <div class="detail-body" id="detailBody"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Error Toast ── -->
+<div id="errorToast" class="error-toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── State ──
+  let cityName = '';
+  let cityCentre = null;   // { lat, lng }
+  const GEOFENCE_KM = 50;
+  let poiData = [];         // in-session memory
+  let activeIdx = -1;
+  let map = null;
+  let marker = null;
+  let geofenceCircle = null;
+
+  // ── DOM refs ──
+  const cityOverlay = document.getElementById('cityOverlay');
+  const cityInput = document.getElementById('cityInput');
+  const citySubmitBtn = document.getElementById('citySubmitBtn');
+  const cityError = document.getElementById('cityError');
+  const cityLabel = document.getElementById('cityLabel');
+  const dupOverlay = document.getElementById('dupOverlay');
+  const dupSets = document.getElementById('dupSets');
+  const dupError = document.getElementById('dupError');
+  const dupResolveBtn = document.getElementById('dupResolveBtn');
+  const loadJsonBtn = document.getElementById('loadJsonBtn');
+  const fileInput = document.getElementById('fileInput');
+  const worklistEl = document.getElementById('worklist');
+  const nextBtn = document.getElementById('nextBtn');
+  const rightPanel = document.getElementById('rightPanel');
+  const detailEmpty = document.getElementById('detailEmpty');
+  const detailView = document.getElementById('detailView');
+  const detailTitle = document.getElementById('detailTitle');
+  const detailBody = document.getElementById('detailBody');
+  const prevRowBtn = document.getElementById('prevRowBtn');
+  const nextRowBtn = document.getElementById('nextRowBtn');
+  const markCompleteBtn = document.getElementById('markCompleteBtn');
+  const completionBanner = document.getElementById('completionBanner');
+  const mainLayout = document.getElementById('mainLayout');
+  const errorToast = document.getElementById('errorToast');
+  const progressWrap = document.getElementById('progressWrap');
+  const progressLabel = document.getElementById('progressLabel');
+  const progressFill = document.getElementById('progressFill');
+
+  // ── Utilities ──
+
+  function haversineKm(lat1, lng1, lat2, lng2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function isInsideGeofence(lat, lng) {
+    if (!cityCentre) return true;
+    return haversineKm(cityCentre.lat, cityCentre.lng, lat, lng) <= GEOFENCE_KM;
+  }
+
+  function isValidLat(v) { return typeof v === 'number' && !isNaN(v) && v >= -90 && v <= 90; }
+  function isValidLng(v) { return typeof v === 'number' && !isNaN(v) && v >= -180 && v <= 180; }
+
+  function showError(msg) {
+    errorToast.textContent = msg;
+    errorToast.classList.add('visible');
+    clearTimeout(showError._t);
+    showError._t = setTimeout(() => errorToast.classList.remove('visible'), 6000);
+  }
+
+  function computeGravityAvg(poi) {
+    if (!poi.beats || poi.beats.length === 0) return 0;
+    const sum = poi.beats.reduce((s, b) => s + (Number(b.gravity) || 0), 0);
+    return (sum / poi.beats.length).toFixed(1);
+  }
+
+  function isFlagged(poi) {
+    if (!isValidLat(poi.latitude) || !isValidLng(poi.longitude)) return false;
+    return !isInsideGeofence(poi.latitude, poi.longitude);
+  }
+
+  function canMarkComplete(poi) {
+    if (!poi.beats || poi.beats.length === 0) return true;
+    for (const b of poi.beats) {
+      if (!b.script_body || b.script_body.trim() === '') return false;
+      const g = Number(b.gravity);
+      if (isNaN(g) || g < 1 || g > 5) return false;
+    }
+    return true;
+  }
+
+  function updateProgress() {
+    if (poiData.length === 0) { progressWrap.style.display = 'none'; return; }
+    progressWrap.style.display = 'flex';
+    const done = poiData.filter(p => p._status === 'complete').length;
+    const total = poiData.length;
+    progressLabel.textContent = `${done} / ${total}`;
+    progressFill.style.width = `${(done / total) * 100}%`;
+  }
+
+  function checkAllComplete() {
+    if (poiData.length === 0) return;
+    updateProgress();
+    const allDone = poiData.every(p => p._status === 'complete');
+    completionBanner.classList.toggle('visible', allDone);
+    mainLayout.classList.toggle('has-banner', allDone);
+  }
+
+  // ── City geocoding ──
+
+  cityInput.addEventListener('keydown', e => { if (e.key === 'Enter') citySubmitBtn.click(); });
+
+  citySubmitBtn.addEventListener('click', async () => {
+    const name = cityInput.value.trim();
+    if (!name) { cityError.textContent = 'Please enter a city name.'; cityError.style.display = 'block'; return; }
+    cityError.style.display = 'none';
+    citySubmitBtn.disabled = true;
+    citySubmitBtn.textContent = 'Geocoding…';
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(name)}`;
+      const res = await fetch(url, { headers: { 'Referer': 'https://geotada.app' } });
+      const data = await res.json();
+      if (!data || data.length === 0) {
+        cityError.textContent = 'City not found. Try a different name.';
+        cityError.style.display = 'block';
+        citySubmitBtn.disabled = false;
+        citySubmitBtn.textContent = 'Set City';
+        return;
+      }
+      cityCentre = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+      cityName = data[0].display_name.split(',')[0].trim() || name;
+      cityLabel.textContent = `${cityName} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
+      cityOverlay.classList.add('hidden');
+      loadJsonBtn.disabled = false;
+    } catch (err) {
+      cityError.textContent = 'Geocoding failed: ' + err.message;
+      cityError.style.display = 'block';
+      citySubmitBtn.disabled = false;
+      citySubmitBtn.textContent = 'Set City';
+    }
+  });
+
+  // ── JSON loading ──
+
+  loadJsonBtn.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const raw = JSON.parse(e.target.result);
+        processJson(raw);
+      } catch (err) {
+        showError('Malformed JSON: ' + err.message);
+      }
+      fileInput.value = '';
+    };
+    reader.readAsText(file);
+  });
+
+  function processJson(raw) {
+    if (!Array.isArray(raw)) { showError('JSON must be an array.'); return; }
+    // Validate required fields
+    for (let i = 0; i < raw.length; i++) {
+      const entry = raw[i];
+      if (!entry.poi_name || typeof entry.poi_name !== 'string') {
+        showError(`Entry ${i}: missing or invalid "poi_name".`);
+        return;
+      }
+      if (entry.latitude === undefined || entry.latitude === null || typeof entry.latitude !== 'number') {
+        showError(`Entry ${i} ("${entry.poi_name}"): missing or invalid "latitude".`);
+        return;
+      }
+      if (entry.longitude === undefined || entry.longitude === null || typeof entry.longitude !== 'number') {
+        showError(`Entry ${i} ("${entry.poi_name}"): missing or invalid "longitude".`);
+        return;
+      }
+    }
+    // Attach session metadata
+    const data = raw.map(entry => ({
+      ...entry,
+      beats: Array.isArray(entry.beats) ? entry.beats.map(b => ({ ...b, tags: Array.isArray(b.tags) ? [...b.tags] : [] })) : [],
+      _status: 'pending'
+    }));
+
+    // Check duplicates
+    const nameCount = {};
+    data.forEach((p, i) => {
+      const key = p.poi_name;
+      if (!nameCount[key]) nameCount[key] = [];
+      nameCount[key].push(i);
+    });
+    const dupes = Object.entries(nameCount).filter(([, idxs]) => idxs.length > 1);
+    if (dupes.length > 0) {
+      showDuplicateResolver(data, dupes);
+    } else {
+      poiData = data;
+      renderWorklist();
+    }
+  }
+
+  // ── Duplicate resolution ──
+
+  let dupWorkingData = null;
+  let dupSetsInfo = null;
+
+  function showDuplicateResolver(data, dupes) {
+    dupWorkingData = data;
+    dupSetsInfo = dupes;
+    dupSets.innerHTML = '';
+    dupError.style.display = 'none';
+
+    for (const [name, idxs] of dupes) {
+      const setDiv = document.createElement('div');
+      setDiv.className = 'dup-set';
+      setDiv.innerHTML = `<h3>Duplicate: "${name}" (${idxs.length} entries)</h3>`;
+      for (const idx of idxs) {
+        const row = document.createElement('div');
+        row.className = 'dup-entry';
+        row.dataset.origIdx = idx;
+        row.innerHTML = `
+          <span class="dup-idx">#${idx + 1}</span>
+          <input type="text" value="${escHtml(data[idx].poi_name)}" data-dup-idx="${idx}" />
+          <button class="btn btn-danger btn-sm dup-delete-btn" data-dup-idx="${idx}">Delete</button>
+        `;
+        setDiv.appendChild(row);
+      }
+      dupSets.appendChild(setDiv);
+    }
+
+    dupSets.querySelectorAll('.dup-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.dupIdx);
+        dupWorkingData[idx] = null; // mark for removal
+        btn.closest('.dup-entry').remove();
+      });
+    });
+
+    dupOverlay.classList.remove('hidden');
+  }
+
+  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function renderAuditNotes(notes) {
+    if (notes == null) return '';
+    // String format (legacy)
+    if (typeof notes === 'string') {
+      if (notes.trim() === '') return '';
+      return `<div class="audit-notes-box"><span class="audit-heading">Audit Notes</span><div class="audit-text">${escHtml(notes)}</div></div>`;
+    }
+    // Object format
+    if (typeof notes === 'object') {
+      const fields = [
+        { key: 'issue', label: 'Issue' },
+        { key: 'current_text', label: 'Current Text' },
+        { key: 'suggested_fix', label: 'Suggested Fix' },
+        { key: 'source', label: 'Source' },
+        { key: 'confidence', label: 'Confidence' }
+      ];
+      const hasContent = fields.some(f => notes[f.key] != null && String(notes[f.key]).trim() !== '');
+      if (!hasContent) return '';
+      let inner = '';
+      for (const f of fields) {
+        const val = notes[f.key];
+        if (val == null || String(val).trim() === '') continue;
+        if (f.key === 'confidence') {
+          const level = String(val).trim().toUpperCase();
+          const cls = level === 'HIGH' ? 'audit-confidence-high' : level === 'MEDIUM' ? 'audit-confidence-medium' : 'audit-confidence-low';
+          inner += `<div class="audit-field"><div class="audit-field-label">${f.label}</div><span class="audit-confidence ${cls}">${escHtml(level)}</span></div>`;
+        } else if (f.key === 'source') {
+          const s = String(val).trim();
+          const isUrl = s.startsWith('http://') || s.startsWith('https://');
+          inner += `<div class="audit-field"><div class="audit-field-label">${f.label}</div><div class="audit-field-value">${isUrl ? `<a href="${escHtml(s)}" target="_blank" rel="noopener" style="color:var(--blue);text-decoration:underline;">${escHtml(s)}</a>` : escHtml(s)}</div></div>`;
+        } else {
+          inner += `<div class="audit-field"><div class="audit-field-label">${f.label}</div><div class="audit-field-value">${escHtml(String(val))}</div></div>`;
+        }
+      }
+      return `<div class="audit-notes-box"><span class="audit-heading">Audit Notes</span>${inner}</div>`;
+    }
+    return '';
+  }
+
+  dupResolveBtn.addEventListener('click', () => {
+    // Apply renames from inputs
+    dupSets.querySelectorAll('input[data-dup-idx]').forEach(inp => {
+      const idx = parseInt(inp.dataset.dupIdx);
+      if (dupWorkingData[idx]) {
+        dupWorkingData[idx].poi_name = inp.value.trim();
+      }
+    });
+    // Remove deleted entries
+    const cleaned = dupWorkingData.filter(d => d !== null);
+    // Check for empty names
+    for (let i = 0; i < cleaned.length; i++) {
+      if (!cleaned[i].poi_name) {
+        dupError.textContent = 'All entries must have a non-empty name.';
+        dupError.style.display = 'block';
+        return;
+      }
+    }
+    // Check remaining duplicates
+    const names = cleaned.map(c => c.poi_name);
+    const remaining = names.filter((n, i) => names.indexOf(n) !== i);
+    if (remaining.length > 0) {
+      dupError.textContent = `Still duplicated: "${remaining[0]}". Rename or delete to make all names unique.`;
+      dupError.style.display = 'block';
+      return;
+    }
+    dupError.style.display = 'none';
+    poiData = cleaned;
+    dupOverlay.classList.add('hidden');
+    renderWorklist();
+  });
+
+  // ── Worklist rendering ──
+
+  function renderWorklist() {
+    if (poiData.length === 0) {
+      worklistEl.innerHTML = '<div class="worklist-empty">No entries loaded.</div>';
+      nextBtn.disabled = true;
+      return;
+    }
+    worklistEl.innerHTML = '';
+    poiData.forEach((poi, i) => {
+      const row = document.createElement('div');
+      row.className = 'worklist-row' + (i === activeIdx ? ' active' : '');
+      const flagged = isFlagged(poi);
+      const badges = [];
+      if (poi._status === 'complete') {
+        badges.push('<span class="badge badge-complete">Complete</span>');
+      } else {
+        badges.push('<span class="badge badge-pending">Pending</span>');
+      }
+      if (flagged) {
+        badges.push('<span class="badge badge-flagged">\u26A0 Flagged</span>');
+      }
+      row.innerHTML = `
+        <div class="poi-info">
+          <div class="poi-name">${escHtml(poi.poi_name)}</div>
+          <div class="poi-meta">${poi.beats.length} beats · avg gravity ${computeGravityAvg(poi)}</div>
+        </div>
+        ${badges.join('')}
+      `;
+      row.addEventListener('click', () => selectPoi(i));
+      worklistEl.appendChild(row);
+    });
+    nextBtn.disabled = false;
+    updateProgress();
+    checkAllComplete();
+  }
+
+  // ── Auto-save current edits ──
+
+  function autoSaveCurrent() {
+    if (activeIdx < 0 || activeIdx >= poiData.length) return;
+    const poi = poiData[activeIdx];
+    const body = detailBody;
+
+    const poiNameInput = body.querySelector('[data-field="poi_name"]');
+    if (poiNameInput) poi.poi_name = poiNameInput.value;
+
+    const descInput = body.querySelector('[data-field="short_description"]');
+    if (descInput) poi.short_description = descInput.value;
+
+    const orientInput = body.querySelector('[data-field="orientation"]');
+    if (orientInput) poi.orientation = orientInput.value;
+
+    const latInput = body.querySelector('[data-field="latitude"]');
+    if (latInput) { const v = parseFloat(latInput.value); poi.latitude = isNaN(v) ? latInput.value : v; }
+
+    const lngInput = body.querySelector('[data-field="longitude"]');
+    if (lngInput) { const v = parseFloat(lngInput.value); poi.longitude = isNaN(v) ? lngInput.value : v; }
+
+    // Save beats
+    body.querySelectorAll('.beat-card').forEach((card, bi) => {
+      if (!poi.beats[bi]) return;
+      const b = poi.beats[bi];
+      const sb = card.querySelector('[data-beat-field="script_body"]');
+      if (sb) b.script_body = sb.value;
+      const pc = card.querySelector('[data-beat-field="physical_cue"]');
+      if (pc) b.physical_cue = pc.value;
+      const ln = card.querySelector('[data-beat-field="lens"]');
+      if (ln) b.lens = ln.value;
+      const gr = card.querySelector('[data-beat-field="gravity"]');
+      if (gr) b.gravity = parseFloat(gr.value);
+      const tg = card.querySelector('[data-beat-field="tags"]');
+      if (tg) b.tags = tg.value.split(',').map(t => t.trim()).filter(Boolean);
+      const sp = card.querySelector('[data-beat-field="source_passage"]');
+      if (sp) b.source_passage = sp.value;
+    });
+  }
+
+  // ── Select POI ──
+
+  function selectPoi(idx) {
+    autoSaveCurrent();
+    activeIdx = idx;
+    renderWorklist();
+    renderDetail();
+  }
+
+  // ── Next pending ──
+
+  nextBtn.addEventListener('click', () => {
+    const start = activeIdx < 0 ? 0 : activeIdx + 1;
+    for (let i = 0; i < poiData.length; i++) {
+      const idx = (start + i) % poiData.length;
+      if (poiData[idx]._status !== 'complete') { selectPoi(idx); return; }
+    }
+    // All complete — stay or select first
+    if (activeIdx < 0 && poiData.length > 0) selectPoi(0);
+  });
+
+  prevRowBtn.addEventListener('click', () => {
+    if (poiData.length === 0) return;
+    const idx = activeIdx <= 0 ? poiData.length - 1 : activeIdx - 1;
+    selectPoi(idx);
+  });
+
+  nextRowBtn.addEventListener('click', () => {
+    if (poiData.length === 0) return;
+    const idx = activeIdx >= poiData.length - 1 ? 0 : activeIdx + 1;
+    selectPoi(idx);
+  });
+
+  // ── Mark as Complete ──
+
+  markCompleteBtn.addEventListener('click', () => {
+    if (activeIdx < 0) return;
+    autoSaveCurrent();
+    const poi = poiData[activeIdx];
+    if (!canMarkComplete(poi)) {
+      showError('Cannot mark as complete: fix beat validation errors first.');
+      return;
+    }
+    poi._status = 'complete';
+    renderWorklist();
+    renderDetail();
+    checkAllComplete();
+  });
+
+  // ── Render detail panel ──
+
+  function renderDetail() {
+    if (activeIdx < 0 || activeIdx >= poiData.length) {
+      detailView.style.display = 'none';
+      detailEmpty.style.display = 'flex';
+      return;
+    }
+    detailEmpty.style.display = 'none';
+    detailView.style.display = '';
+    const poi = poiData[activeIdx];
+    detailTitle.textContent = poi.poi_name;
+    markCompleteBtn.disabled = !canMarkComplete(poi);
+
+    const lat = typeof poi.latitude === 'number' ? poi.latitude : parseFloat(poi.latitude);
+    const lng = typeof poi.longitude === 'number' ? poi.longitude : parseFloat(poi.longitude);
+    const validCoords = isValidLat(lat) && isValidLng(lng);
+    const outsideGeofence = validCoords && !isInsideGeofence(lat, lng);
+
+    let latWarning = '';
+    if (poi.latitude !== '' && poi.latitude !== undefined) {
+      if (!isValidLat(lat)) latWarning = 'Latitude must be between -90 and 90.';
+    }
+    let lngWarning = '';
+    if (poi.longitude !== '' && poi.longitude !== undefined) {
+      if (!isValidLng(lng)) lngWarning = 'Longitude must be between -180 and 180.';
+    }
+
+    let html = `
+      <div class="field-group">
+        <label>POI Name</label>
+        <input type="text" data-field="poi_name" value="${escHtml(poi.poi_name)}" />
+      </div>
+      <div class="field-group">
+        <label>Short Description</label>
+        <input type="text" data-field="short_description" value="${escHtml(poi.short_description || '')}" />
+      </div>
+      <div class="field-group">
+        <label>Orientation</label>
+        <input type="text" data-field="orientation" value="${escHtml(poi.orientation || '')}" />
+      </div>
+      ${renderAuditNotes(poi.audit_notes)}
+      <div class="field-row">
+        <div class="field-group">
+          <label>Latitude</label>
+          <input type="number" step="any" data-field="latitude" value="${poi.latitude}" />
+          ${latWarning ? `<div class="field-warning">${latWarning}</div>` : ''}
+        </div>
+        <div class="field-group">
+          <label>Longitude</label>
+          <input type="number" step="any" data-field="longitude" value="${poi.longitude}" />
+          ${lngWarning ? `<div class="field-warning">${lngWarning}</div>` : ''}
+        </div>
+      </div>
+      ${outsideGeofence ? `<div class="field-group"><div class="field-warn-yellow">\u26A0 Coordinates are outside the ${cityName} geofence (50 km radius).</div></div>` : ''}
+      <div class="map-container">
+        <div id="map"></div>
+        ${!validCoords && (poi.latitude !== undefined && poi.longitude !== undefined) ? '<div class="map-warning">Invalid coordinates — pin removed</div>' : ''}
+        ${outsideGeofence ? '<div class="map-warning map-warn-geofence">\u26A0 Outside geofence</div>' : ''}
+      </div>
+    `;
+
+    // Beats
+    html += '<div class="beats-section"><h3>Narrative Beats (' + poi.beats.length + ')</h3>';
+    poi.beats.forEach((beat, bi) => {
+      const gVal = Number(beat.gravity);
+      const gravityBad = isNaN(gVal) || gVal < 1 || gVal > 5;
+      const scriptEmpty = !beat.script_body || beat.script_body.trim() === '';
+      let beatWarnings = [];
+      if (scriptEmpty) beatWarnings.push('No content — script_body is empty.');
+      if (gravityBad) beatWarnings.push('Gravity must be between 1 and 5.');
+
+      html += `
+        <div class="beat-card">
+          <div class="beat-header">
+            Beat ${bi + 1}
+            ${beatWarnings.map(w => `<span class="beat-warning">${w}</span>`).join(' ')}
+          </div>
+          ${renderAuditNotes(beat.audit_notes)}
+          <div class="field-group">
+            <label>Script Body</label>
+            <textarea data-beat-field="script_body" placeholder="${scriptEmpty ? 'No content' : ''}">${escHtml(beat.script_body || '')}</textarea>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Physical Cue</label>
+              <input type="text" data-beat-field="physical_cue" value="${escHtml(beat.physical_cue || '')}" />
+            </div>
+            <div class="field-group">
+              <label>Lens</label>
+              <input type="text" data-beat-field="lens" value="${escHtml(beat.lens || '')}" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group">
+              <label>Gravity (1–5)</label>
+              <input type="number" min="1" max="5" step="1" data-beat-field="gravity" value="${beat.gravity !== undefined ? beat.gravity : ''}" />
+              ${gravityBad ? '<div class="field-warning">Gravity must be between 1 and 5.</div>' : ''}
+            </div>
+            <div class="field-group">
+              <label>Tags (comma-separated)</label>
+              <input type="text" data-beat-field="tags" value="${escHtml(Array.isArray(beat.tags) ? beat.tags.join(', ') : '')}" />
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Source Passage</label>
+            <textarea data-beat-field="source_passage" style="min-height:50px;">${escHtml(beat.source_passage || '')}</textarea>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+
+    detailBody.innerHTML = html;
+
+    // ── Init map ──
+    initMap(lat, lng, validCoords, outsideGeofence);
+
+    // ── Lat/Lng live update ──
+    const latInput = detailBody.querySelector('[data-field="latitude"]');
+    const lngInput = detailBody.querySelector('[data-field="longitude"]');
+    latInput.addEventListener('input', () => handleCoordChange());
+    lngInput.addEventListener('input', () => handleCoordChange());
+
+    // ── POI name sync on change ──
+    detailBody.querySelector('[data-field="poi_name"]').addEventListener('input', e => {
+      detailTitle.textContent = e.target.value;
+    });
+
+    // ── Beat field change listeners for revalidation ──
+    detailBody.querySelectorAll('.beat-card').forEach(card => {
+      card.querySelectorAll('input, textarea').forEach(el => {
+        el.addEventListener('input', () => {
+          autoSaveCurrent();
+          markCompleteBtn.disabled = !canMarkComplete(poiData[activeIdx]);
+        });
+      });
+    });
+  }
+
+  function handleCoordChange() {
+    autoSaveCurrent();
+    const poi = poiData[activeIdx];
+    const lat = typeof poi.latitude === 'number' ? poi.latitude : parseFloat(poi.latitude);
+    const lng = typeof poi.longitude === 'number' ? poi.longitude : parseFloat(poi.longitude);
+    const valid = isValidLat(lat) && isValidLng(lng);
+    const outside = valid && !isInsideGeofence(lat, lng);
+
+    // Update warnings inline
+    const latGroup = detailBody.querySelector('[data-field="latitude"]').parentElement;
+    const lngGroup = detailBody.querySelector('[data-field="longitude"]').parentElement;
+    let existingLatWarn = latGroup.querySelector('.field-warning');
+    let existingLngWarn = lngGroup.querySelector('.field-warning');
+    if (existingLatWarn) existingLatWarn.remove();
+    if (existingLngWarn) existingLngWarn.remove();
+
+    if (!isValidLat(lat) && detailBody.querySelector('[data-field="latitude"]').value !== '') {
+      const w = document.createElement('div');
+      w.className = 'field-warning';
+      w.textContent = 'Latitude must be between -90 and 90.';
+      latGroup.appendChild(w);
+    }
+    if (!isValidLng(lng) && detailBody.querySelector('[data-field="longitude"]').value !== '') {
+      const w = document.createElement('div');
+      w.className = 'field-warning';
+      w.textContent = 'Longitude must be between -180 and 180.';
+      lngGroup.appendChild(w);
+    }
+
+    // Update geofence warning
+    const existingGeo = detailBody.querySelector('.field-warn-yellow');
+    if (existingGeo) existingGeo.parentElement.remove();
+    if (outside) {
+      const geoDiv = document.createElement('div');
+      geoDiv.className = 'field-group';
+      geoDiv.innerHTML = `<div class="field-warn-yellow">\u26A0 Coordinates are outside the ${cityName} geofence (50 km radius).</div>`;
+      detailBody.querySelector('.map-container').insertAdjacentElement('beforebegin', geoDiv);
+    }
+
+    // Update map
+    updateMapPin(lat, lng, valid, outside);
+
+    // Update worklist for flagged badge
+    renderWorklist();
+  }
+
+  // ── Map ──
+
+  function initMap(lat, lng, validCoords, outsideGeofence) {
+    if (map) { map.remove(); map = null; marker = null; geofenceCircle = null; }
+
+    const centre = validCoords ? [lat, lng] : [cityCentre.lat, cityCentre.lng];
+    map = L.map('map', { zoomControl: true }).setView(centre, validCoords ? 14 : 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    // Geofence circle
+    if (cityCentre) {
+      geofenceCircle = L.circle([cityCentre.lat, cityCentre.lng], {
+        radius: GEOFENCE_KM * 1000,
+        color: '#eab308',
+        fillColor: '#eab308',
+        fillOpacity: 0.05,
+        weight: 1,
+        dashArray: '6 4'
+      }).addTo(map);
+    }
+
+    if (validCoords) {
+      marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+      marker.on('drag', e => {
+        const pos = e.target.getLatLng();
+        const latInput = detailBody.querySelector('[data-field="latitude"]');
+        const lngInput = detailBody.querySelector('[data-field="longitude"]');
+        latInput.value = pos.lat.toFixed(6);
+        lngInput.value = pos.lng.toFixed(6);
+        poiData[activeIdx].latitude = pos.lat;
+        poiData[activeIdx].longitude = pos.lng;
+      });
+      marker.on('dragend', () => handleCoordChange());
+    }
+
+    // Map warning overlays
+    const container = detailBody.querySelector('.map-container');
+    container.querySelectorAll('.map-warning').forEach(el => el.remove());
+    if (!validCoords) {
+      const w = document.createElement('div');
+      w.className = 'map-warning';
+      w.textContent = 'Invalid coordinates — pin removed';
+      container.appendChild(w);
+    }
+    if (outsideGeofence) {
+      const w = document.createElement('div');
+      w.className = 'map-warning map-warn-geofence';
+      w.textContent = '\u26A0 Outside geofence';
+      container.appendChild(w);
+    }
+
+    setTimeout(() => map.invalidateSize(), 100);
+  }
+
+  function updateMapPin(lat, lng, valid, outside) {
+    if (!map) return;
+    const container = detailBody.querySelector('.map-container');
+    container.querySelectorAll('.map-warning').forEach(el => el.remove());
+
+    if (valid) {
+      if (marker) {
+        marker.setLatLng([lat, lng]);
+      } else {
+        marker = L.marker([lat, lng], { draggable: true }).addTo(map);
+        marker.on('drag', e => {
+          const pos = e.target.getLatLng();
+          detailBody.querySelector('[data-field="latitude"]').value = pos.lat.toFixed(6);
+          detailBody.querySelector('[data-field="longitude"]').value = pos.lng.toFixed(6);
+          poiData[activeIdx].latitude = pos.lat;
+          poiData[activeIdx].longitude = pos.lng;
+        });
+        marker.on('dragend', () => handleCoordChange());
+      }
+      map.setView([lat, lng], map.getZoom());
+      if (outside) {
+        const w = document.createElement('div');
+        w.className = 'map-warning map-warn-geofence';
+        w.textContent = '\u26A0 Outside geofence';
+        container.appendChild(w);
+      }
+    } else {
+      if (marker) { map.removeLayer(marker); marker = null; }
+      const w = document.createElement('div');
+      w.className = 'map-warning';
+      w.textContent = 'Invalid coordinates — pin removed';
+      container.appendChild(w);
+      if (cityCentre) map.setView([cityCentre.lat, cityCentre.lng], 10);
+    }
+  }
+
+})();
+</script>
+</body>
+</html>
