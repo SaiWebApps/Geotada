@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travlr — Graph Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0f14;
+    --surface: #141820;
+    --surface-2: #1a1f2b;
+    --border: #252b38;
+    --text: #e4e8f0;
+    --text-muted: #6b7280;
+    --accent: #f59e0b;
+    --accent-dim: rgba(245, 158, 11, 0.15);
+    --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
+    --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59, 130, 246, 0.15);
+    --purple: #a855f7;
+    --purple-dim: rgba(168, 85, 247, 0.15);
+    --teal: #14b8a6;
+    --radius: 10px;
+    --panel-width: 360px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  .header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    z-index: 20;
+    flex-shrink: 0;
+  }
+
+  .header h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .badge-loading { background: var(--accent-dim); color: var(--accent); }
+  .badge-ok      { background: var(--green-dim); color: var(--green); }
+  .badge-fail    { background: var(--red-dim); color: var(--red); }
+
+  .header-stats {
+    margin-left: auto;
+    display: flex;
+    gap: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .header-stats b { color: var(--accent); }
+
+  /* ── Main area ── */
+  .main {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Canvas ── */
+  #graph-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+  }
+
+  #graph-canvas:active { cursor: grabbing; }
+  #graph-canvas.pick-mode { cursor: crosshair; }
+
+  /* ── Tooltip ── */
+  .tooltip {
+    position: absolute;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.75rem;
+    pointer-events: none;
+    z-index: 30;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.5;
+    max-width: 280px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    display: none;
+  }
+
+  /* ── Legend bar ── */
+  .legend {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(20, 24, 32, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    z-index: 10;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  /* ── Floating toolbar ── */
+  .toolbar {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+  }
+
+  .toolbar-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(20, 24, 32, 0.9);
+    backdrop-filter: blur(8px);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .toolbar-btn:hover {
+    background: var(--surface-2);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── Side Panel ── */
+  .side-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--panel-width);
+    height: 100%;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .side-panel.open { transform: translateX(0); }
+
+  .panel-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .panel-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .panel-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+  }
+
+  .panel-close:hover { color: var(--text); }
+
+  .panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+  }
+
+  .panel-footer {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Form elements ── */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .form-label .required {
+    color: var(--red);
+    margin-left: 2px;
+  }
+
+  .form-input, .form-select {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .form-input:focus, .form-select:focus {
+    border-color: var(--accent);
+  }
+
+  .form-input::placeholder { color: var(--text-muted); }
+
+  .form-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M3 5l3 3 3-3'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+  }
+
+  .form-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+  }
+
+  .pick-indicator {
+    padding: 0.55rem 0.75rem;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .pick-indicator.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .pick-indicator.picked {
+    border-style: solid;
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.55rem 1.25rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex: 1;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-danger {
+    background: var(--red-dim);
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { border-color: var(--text-muted); color: var(--text); }
+
+  /* ── Toast ── */
+  .toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+
+  .toast {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    animation: toastIn 0.25s ease;
+    pointer-events: auto;
+    max-width: 340px;
+  }
+
+  .toast-success { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+  .toast-error { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+  .toast.fade-out { animation: toastOut 0.25s ease forwards; }
+
+  @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(10px); } }
+
+  /* ── Confirm dialog ── */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+  }
+
+  .confirm-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    max-width: 380px;
+    width: 90%;
+  }
+
+  .confirm-msg {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+
+  .confirm-actions .btn { flex: 0; }
+
+  /* ── Loading / Error ── */
+  .loading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    z-index: 5;
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .empty-state-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Section divider in panel ── */
+  .panel-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1rem 0;
+  }
+
+  .panel-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    font-size: 0.8rem;
+  }
+
+  .info-row-label { color: var(--text-muted); }
+  .info-row-value { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1><span>Travlr</span> Graph Editor</h1>
+    <span id="status-badge" class="badge badge-loading">loading...</span>
+    <div class="header-stats" id="header-stats"></div>
+  </div>
+
+  <div class="main" id="main">
+    <div class="loading" id="loading-screen">
+      <div class="spinner"></div>
+      Loading graph...
+    </div>
+
+    <canvas id="graph-canvas"></canvas>
+    <div class="tooltip" id="tooltip"></div>
+
+    <div class="toolbar" id="toolbar" style="display:none;">
+      <button class="toolbar-btn" id="btn-add-node">+ Node</button>
+      <button class="toolbar-btn" id="btn-add-edge">+ Edge</button>
+      <button class="toolbar-btn" id="btn-refresh">Refresh</button>
+    </div>
+
+    <div class="legend" id="legend" style="display:none;"></div>
+
+    <div class="side-panel" id="side-panel">
+      <div class="panel-header">
+        <span class="panel-title" id="panel-title"></span>
+        <button class="panel-close" id="panel-close">&times;</button>
+      </div>
+      <div class="panel-body" id="panel-body"></div>
+      <div class="panel-footer" id="panel-footer"></div>
+    </div>
+
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-state-title">No data in graph</div>
+      <div>Click "+ Node" to create your first node.</div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+<script>
+// ============================================================
+// Constants
+// ============================================================
+const COLORS = {
+  User: '#3b82f6', Profile: '#60a5fa', Trip: '#93c5fd',
+  POI: '#22c55e', NarrativeBeat: '#4ade80', Lens: '#86efac',
+  ItineraryItem: '#f59e0b',
+};
+
+const RADIUS_MAP = {
+  User: 18, Profile: 16, Trip: 16, POI: 20,
+  NarrativeBeat: 14, Lens: 14, ItineraryItem: 12,
+};
+
+const NODE_LABELS = ['User', 'Profile', 'Lens', 'Trip', 'ItineraryItem', 'POI', 'NarrativeBeat'];
+const REL_TYPES = [
+  'HAS_PROFILE', 'IS_CAPTAIN_OF', 'IS_CREW_OF', 'PREFERS_LENS', 'HAS_STOP',
+  'ASSIGNED_TO', 'AT_POI', 'PLAYS_BEAT', 'HAS_BEAT', 'TAGGED_WITH', 'IS_PARENT_OF',
+];
+
+// Auto-managed fields that should not appear in create/edit forms
+const SYSTEM_FIELDS = new Set(['id', 'created_at', 'location']);
+
+// ============================================================
+// State
+// ============================================================
+const state = {
+  nodes: [],
+  edges: [],
+  nodeMap: {},
+  selectedNode: null,
+  selectedEdge: null,
+  schemas: { nodes: {}, rels: {} },
+  panelMode: null, // null | 'create-node' | 'edit-node' | 'create-edge' | 'edit-edge'
+  pickingFor: null, // null | 'source' | 'target'
+  edgeSource: null,
+  edgeTarget: null,
+  dragging: null,
+  animating: true,
+  frame: 0,
+};
+
+// ============================================================
+// DOM refs
+// ============================================================
+const $ = (id) => document.getElementById(id);
+const canvas = $('graph-canvas');
+const ctx = canvas.getContext('2d');
+const tooltip = $('tooltip');
+
+// ============================================================
+// API helpers
+// ============================================================
+const API = '/api/v1';
+
+async function apiGet(path) {
+  const r = await fetch(API + path);
+  if (!r.ok) throw new Error(`GET ${path}: ${r.status}`);
+  return r.json();
+}
+
+async function apiPost(path, body) {
+  const r = await fetch(API + path, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({ detail: r.statusText }));
+    throw new Error(typeof err.detail === 'string' ? err.detail : JSON.stringify(err.detail));
+  }
+  return r.json();
+}
+
+async function apiPut(path, body) {
+  const r = await fetch(API + path, {
+    method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({ detail: r.statusText }));
+    throw new Error(typeof err.detail === 'string' ? err.detail : JSON.stringify(err.detail));
+  }
+  return r.json();
+}
+
+async function apiDelete(path) {
+  const r = await fetch(API + path, { method: 'DELETE' });
+  if (!r.ok) {
+    const err = await r.json().catch(() => ({ detail: r.statusText }));
+    throw new Error(typeof err.detail === 'string' ? err.detail : JSON.stringify(err.detail));
+  }
+  return r.json();
+}
+
+// ============================================================
+// Data loading
+// ============================================================
+async function fetchGraph() {
+  const data = await apiGet('/graph');
+  return data;
+}
+
+async function fetchSchemas() {
+  const [nodeSchemas, relSchemas] = await Promise.all([
+    apiGet('/schema/nodes'),
+    apiGet('/schema/relationships'),
+  ]);
+  const nodes = {};
+  nodeSchemas.items.forEach(s => nodes[s.label] = s);
+  const rels = {};
+  relSchemas.items.forEach(s => rels[s.type] = s);
+  return { nodes, rels };
+}
+
+// ============================================================
+// Canvas — setup & resize
+// ============================================================
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+// ============================================================
+// Canvas — force simulation
+// ============================================================
+function buildSimulation(graphData) {
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
+
+  state.nodes = graphData.nodes.map((n, i) => {
+    const label = n.group || (n.labels && n.labels[0]) || 'Unknown';
+    const angle = (i / graphData.nodes.length) * Math.PI * 2;
+    const r = Math.min(W, H) * 0.3;
+    return {
+      id: n.id,
+      labels: n.labels || [label],
+      properties: n.properties || {},
+      label,
+      x: W / 2 + Math.cos(angle) * r + (Math.random() - 0.5) * 60,
+      y: H / 2 + Math.sin(angle) * r + (Math.random() - 0.5) * 60,
+      vx: 0, vy: 0,
+      radius: RADIUS_MAP[label] || 14,
+      color: COLORS[label] || '#888',
+      displayName: n.properties?.display_name || n.properties?.name || n.properties?.display_label || n.properties?.email || label,
+    };
+  });
+
+  state.nodeMap = {};
+  state.nodes.forEach(n => state.nodeMap[n.id] = n);
+
+  state.edges = graphData.edges
+    .filter(e => state.nodeMap[e.from] && state.nodeMap[e.to])
+    .map(e => ({
+      id: e.id,
+      type: e.label,
+      source: state.nodeMap[e.from],
+      target: state.nodeMap[e.to],
+      sourceId: e.from,
+      targetId: e.to,
+      properties: e.properties || {},
+    }));
+
+  state.frame = 0;
+  state.animating = true;
+}
+
+function tick() {
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
+  const nodes = state.nodes;
+  const edges = state.edges;
+
+  // Repulsion
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      let dx = nodes[j].x - nodes[i].x;
+      let dy = nodes[j].y - nodes[i].y;
+      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      let force = 1200 / (dist * dist);
+      let fx = (dx / dist) * force;
+      let fy = (dy / dist) * force;
+      nodes[i].vx -= fx; nodes[i].vy -= fy;
+      nodes[j].vx += fx; nodes[j].vy += fy;
+    }
+  }
+
+  // Attraction along edges
+  edges.forEach(e => {
+    let dx = e.target.x - e.source.x;
+    let dy = e.target.y - e.source.y;
+    let dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    let force = (dist - 100) * 0.005;
+    let fx = (dx / dist) * force;
+    let fy = (dy / dist) * force;
+    e.source.vx += fx; e.source.vy += fy;
+    e.target.vx -= fx; e.target.vy -= fy;
+  });
+
+  // Center gravity + damping
+  nodes.forEach(n => {
+    n.vx += (W / 2 - n.x) * 0.001;
+    n.vy += (H / 2 - n.y) * 0.001;
+    n.vx *= 0.85; n.vy *= 0.85;
+    n.x += n.vx; n.y += n.vy;
+    n.x = Math.max(30, Math.min(W - 30, n.x));
+    n.y = Math.max(30, Math.min(H - 30, n.y));
+  });
+}
+
+// ============================================================
+// Canvas — drawing
+// ============================================================
+function draw() {
+  const W = canvas.clientWidth;
+  const H = canvas.clientHeight;
+  ctx.clearRect(0, 0, W, H);
+
+  // Draw edges
+  state.edges.forEach(e => {
+    const isSelected = state.selectedEdge && state.selectedEdge.id === e.id;
+    ctx.beginPath();
+    ctx.moveTo(e.source.x, e.source.y);
+    ctx.lineTo(e.target.x, e.target.y);
+    ctx.strokeStyle = isSelected ? 'rgba(245, 158, 11, 0.8)' : 'rgba(100,116,139,0.25)';
+    ctx.lineWidth = isSelected ? 3 : 1;
+    ctx.stroke();
+
+    // Arrow
+    const angle = Math.atan2(e.target.y - e.source.y, e.target.x - e.source.x);
+    const arrowDist = e.target.radius + 4;
+    const ax = e.target.x - Math.cos(angle) * arrowDist;
+    const ay = e.target.y - Math.sin(angle) * arrowDist;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(ax - Math.cos(angle - 0.4) * 8, ay - Math.sin(angle - 0.4) * 8);
+    ctx.lineTo(ax - Math.cos(angle + 0.4) * 8, ay - Math.sin(angle + 0.4) * 8);
+    ctx.closePath();
+    ctx.fillStyle = isSelected ? 'rgba(245, 158, 11, 0.8)' : 'rgba(100,116,139,0.4)';
+    ctx.fill();
+
+    // Edge label at midpoint
+    if (isSelected) {
+      const mx = (e.source.x + e.target.x) / 2;
+      const my = (e.source.y + e.target.y) / 2;
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.9)';
+      ctx.font = '500 10px "JetBrains Mono"';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.type, mx, my - 6);
+    }
+  });
+
+  // Draw nodes
+  state.nodes.forEach(n => {
+    const isSelected = state.selectedNode && state.selectedNode.id === n.id;
+    const isPickSource = state.edgeSource && state.edgeSource.id === n.id;
+    const isPickTarget = state.edgeTarget && state.edgeTarget.id === n.id;
+
+    // Glow
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.radius + (isSelected ? 8 : 4), 0, Math.PI * 2);
+    ctx.fillStyle = isSelected ? n.color + '40' : n.color + '15';
+    ctx.fill();
+
+    // Circle
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+    ctx.fillStyle = n.color + '30';
+    ctx.strokeStyle = isSelected ? '#f59e0b' : (isPickSource ? '#22c55e' : (isPickTarget ? '#3b82f6' : n.color));
+    ctx.lineWidth = isSelected ? 3 : 2;
+    ctx.fill();
+    ctx.stroke();
+
+    // Label
+    ctx.fillStyle = '#e4e8f0';
+    ctx.font = '500 11px "DM Sans"';
+    ctx.textAlign = 'center';
+    const name = n.displayName.length > 16 ? n.displayName.slice(0, 14) + '...' : n.displayName;
+    ctx.fillText(name, n.x, n.y + n.radius + 16);
+  });
+}
+
+function animate() {
+  if (state.animating) {
+    tick();
+    state.frame++;
+    if (state.frame > 300) state.animating = false;
+  }
+  draw();
+  requestAnimationFrame(animate);
+}
+
+// ============================================================
+// Hit testing
+// ============================================================
+function hitTestNode(mx, my) {
+  return state.nodes.find(n => Math.hypot(n.x - mx, n.y - my) < n.radius + 4);
+}
+
+function pointToSegDist(px, py, x1, y1, x2, y2) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const lenSq = dx * dx + dy * dy;
+  if (lenSq === 0) return Math.hypot(px - x1, py - y1);
+  let t = ((px - x1) * dx + (py - y1) * dy) / lenSq;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+}
+
+function hitTestEdge(mx, my) {
+  let best = null, bestDist = 10;
+  state.edges.forEach(e => {
+    const d = pointToSegDist(mx, my, e.source.x, e.source.y, e.target.x, e.target.y);
+    if (d < bestDist) { bestDist = d; best = e; }
+  });
+  return best;
+}
+
+// ============================================================
+// Tooltip
+// ============================================================
+function showTooltip(node, clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  const props = Object.entries(node.properties)
+    .filter(([k]) => k !== 'id')
+    .slice(0, 6)
+    .map(([k, v]) => {
+      const val = typeof v === 'object' ? JSON.stringify(v) : String(v);
+      return `<b>${k}:</b> ${val.length > 30 ? val.slice(0, 30) + '...' : val}`;
+    }).join('<br>');
+  tooltip.innerHTML = `<b style="color:${node.color}">${node.label}</b> <span style="color:var(--text-muted)">${node.id.slice(0, 8)}</span><br>${props}`;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (clientX - rect.left + 12) + 'px';
+  tooltip.style.top = (clientY - rect.top - 10) + 'px';
+}
+
+function hideTooltip() {
+  tooltip.style.display = 'none';
+}
+
+// ============================================================
+// Toast
+// ============================================================
+function showToast(message, type = 'success') {
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = message;
+  $('toast-container').appendChild(el);
+  setTimeout(() => {
+    el.classList.add('fade-out');
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
+}
+
+// ============================================================
+// Confirm dialog
+// ============================================================
+function showConfirm(message) {
+  return new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+      <div class="confirm-box">
+        <div class="confirm-msg">${message}</div>
+        <div class="confirm-actions">
+          <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+          <button class="btn btn-danger" id="confirm-ok">Delete</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#confirm-cancel').onclick = () => { overlay.remove(); resolve(false); };
+    overlay.querySelector('#confirm-ok').onclick = () => { overlay.remove(); resolve(true); };
+    overlay.addEventListener('keydown', (e) => { if (e.key === 'Escape') { overlay.remove(); resolve(false); } });
+    overlay.querySelector('#confirm-ok').focus();
+  });
+}
+
+// ============================================================
+// Side Panel
+// ============================================================
+function openPanel(mode, data) {
+  state.panelMode = mode;
+  const panel = $('side-panel');
+  const title = $('panel-title');
+  const body = $('panel-body');
+  const footer = $('panel-footer');
+
+  // Reset pick state
+  state.pickingFor = null;
+  state.edgeSource = null;
+  state.edgeTarget = null;
+  canvas.classList.remove('pick-mode');
+
+  switch (mode) {
+    case 'create-node':
+      title.textContent = 'Create Node';
+      body.innerHTML = buildLabelPicker();
+      footer.innerHTML = '<button class="btn btn-primary" id="btn-save" disabled>Create</button>';
+      break;
+    case 'edit-node':
+      title.textContent = `Edit ${data.label}`;
+      body.innerHTML = buildNodeEditForm(data);
+      footer.innerHTML = `
+        <button class="btn btn-danger" id="btn-delete">Delete</button>
+        <button class="btn btn-primary" id="btn-save">Save</button>
+      `;
+      break;
+    case 'create-edge':
+      title.textContent = 'Create Edge';
+      body.innerHTML = buildEdgeCreateForm();
+      footer.innerHTML = '<button class="btn btn-primary" id="btn-save" disabled>Create</button>';
+      break;
+    case 'edit-edge':
+      title.textContent = `Edit ${data.type}`;
+      body.innerHTML = buildEdgeEditForm(data);
+      footer.innerHTML = `
+        <button class="btn btn-danger" id="btn-delete">Delete</button>
+        <button class="btn btn-primary" id="btn-save">Save</button>
+      `;
+      break;
+  }
+
+  panel.classList.add('open');
+  bindPanelEvents();
+}
+
+function closePanel() {
+  state.panelMode = null;
+  state.selectedNode = null;
+  state.selectedEdge = null;
+  state.pickingFor = null;
+  state.edgeSource = null;
+  state.edgeTarget = null;
+  canvas.classList.remove('pick-mode');
+  $('side-panel').classList.remove('open');
+  draw();
+}
+
+// ============================================================
+// Form builders — nodes
+// ============================================================
+function buildLabelPicker() {
+  const options = NODE_LABELS.map(l => `<option value="${l}">${l}</option>`).join('');
+  return `
+    <div class="form-group">
+      <label class="form-label">Node Type</label>
+      <select class="form-select" id="label-select">
+        <option value="">Select a type...</option>
+        ${options}
+      </select>
+    </div>
+    <div id="dynamic-fields"></div>
+  `;
+}
+
+function buildFieldsForLabel(label) {
+  const schema = state.schemas.nodes[label];
+  if (!schema) return '<div class="form-hint">Schema not available</div>';
+  return schema.properties
+    .filter(p => !SYSTEM_FIELDS.has(p.name))
+    .map(p => fieldHtml(p))
+    .join('');
+}
+
+function buildNodeEditForm(node) {
+  const schema = state.schemas.nodes[node.label];
+  const props = node.properties || {};
+  let html = `
+    <div class="panel-section-title">Info</div>
+    <div class="info-row"><span class="info-row-label">ID</span><span class="info-row-value">${node.id}</span></div>
+    <div class="info-row"><span class="info-row-label">Label</span><span class="info-row-value">${node.label}</span></div>
+    ${props.created_at ? `<div class="info-row"><span class="info-row-label">Created</span><span class="info-row-value">${props.created_at}</span></div>` : ''}
+    <div class="panel-divider"></div>
+    <div class="panel-section-title">Properties</div>
+  `;
+  if (schema) {
+    html += schema.properties
+      .filter(p => !SYSTEM_FIELDS.has(p.name))
+      .map(p => fieldHtml(p, props[p.name]))
+      .join('');
+  }
+  return html;
+}
+
+// ============================================================
+// Form builders — edges
+// ============================================================
+function buildEdgeCreateForm() {
+  const options = REL_TYPES.map(t => `<option value="${t}">${t}</option>`).join('');
+  return `
+    <div class="form-group">
+      <label class="form-label">Relationship Type</label>
+      <select class="form-select" id="reltype-select">
+        <option value="">Select a type...</option>
+        ${options}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Source Node</label>
+      <div class="pick-indicator" id="pick-source">Click to pick source node on canvas...</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Target Node</label>
+      <div class="pick-indicator" id="pick-target">Click to pick target node on canvas...</div>
+    </div>
+    <div id="dynamic-fields"></div>
+  `;
+}
+
+function buildEdgeEditForm(edge) {
+  const schema = state.schemas.rels[edge.type];
+  const props = edge.properties || {};
+  const srcNode = state.nodeMap[edge.sourceId];
+  const tgtNode = state.nodeMap[edge.targetId];
+  let html = `
+    <div class="panel-section-title">Info</div>
+    <div class="info-row"><span class="info-row-label">ID</span><span class="info-row-value">${edge.id ? edge.id.slice(0, 12) : 'n/a'}</span></div>
+    <div class="info-row"><span class="info-row-label">Type</span><span class="info-row-value">${edge.type}</span></div>
+    <div class="info-row"><span class="info-row-label">Source</span><span class="info-row-value">${srcNode ? srcNode.displayName : edge.sourceId}</span></div>
+    <div class="info-row"><span class="info-row-label">Target</span><span class="info-row-value">${tgtNode ? tgtNode.displayName : edge.targetId}</span></div>
+    ${props.created_at ? `<div class="info-row"><span class="info-row-label">Created</span><span class="info-row-value">${props.created_at}</span></div>` : ''}
+  `;
+
+  // Only show properties section if schema has editable properties
+  const editableProps = schema ? schema.properties.filter(p => !SYSTEM_FIELDS.has(p.name)) : [];
+  if (editableProps.length > 0) {
+    html += `
+      <div class="panel-divider"></div>
+      <div class="panel-section-title">Properties</div>
+    `;
+    html += editableProps.map(p => fieldHtml(p, props[p.name])).join('');
+  }
+
+  return html;
+}
+
+// ============================================================
+// Field HTML generator
+// ============================================================
+function fieldHtml(prop, value) {
+  const id = `field-${prop.name}`;
+  const req = prop.required ? '<span class="required">*</span>' : '';
+  const placeholder = prop.default != null && !prop.required ? String(prop.default) : '';
+  const val = value != null ? String(value) : '';
+  const inputType = prop.type === 'int' || prop.type === 'float' ? 'number' : 'text';
+  const step = prop.type === 'float' ? 'step="any"' : '';
+
+  return `
+    <div class="form-group">
+      <label class="form-label" for="${id}">${prop.name}${req}</label>
+      <input class="form-input" type="${inputType}" ${step} id="${id}" name="${prop.name}"
+        value="${escHtml(val)}" placeholder="${escHtml(placeholder)}"
+        data-type="${prop.type}" data-required="${prop.required}" data-default="${prop.default ?? ''}">
+    </div>
+  `;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ============================================================
+// Collect form data
+// ============================================================
+function collectFormData() {
+  const inputs = $('panel-body').querySelectorAll('.form-input');
+  const data = {};
+  inputs.forEach(inp => {
+    let val = inp.value.trim();
+    if (val === '' && inp.dataset.required === 'false' && inp.dataset.default) {
+      // Use default
+      return;
+    }
+    if (val === '' && inp.dataset.required === 'true') {
+      return; // Will be caught by validation
+    }
+    if (val === '') return;
+
+    if (inp.dataset.type === 'int') val = parseInt(val, 10);
+    else if (inp.dataset.type === 'float') val = parseFloat(val);
+    else if (inp.dataset.type === 'bool') val = val.toLowerCase() === 'true';
+
+    data[inp.name] = val;
+  });
+  return data;
+}
+
+function validateForm() {
+  const inputs = $('panel-body').querySelectorAll('.form-input');
+  let valid = true;
+  inputs.forEach(inp => {
+    if (inp.dataset.required === 'true' && inp.value.trim() === '') {
+      inp.style.borderColor = 'var(--red)';
+      valid = false;
+    } else {
+      inp.style.borderColor = '';
+    }
+  });
+  return valid;
+}
+
+// ============================================================
+// Panel event binding
+// ============================================================
+function bindPanelEvents() {
+  // Close button
+  $('panel-close').onclick = closePanel;
+
+  // Label picker for create-node
+  const labelSelect = $('label-select');
+  if (labelSelect) {
+    labelSelect.onchange = () => {
+      const label = labelSelect.value;
+      const df = $('dynamic-fields');
+      if (label) {
+        df.innerHTML = buildFieldsForLabel(label);
+        $('btn-save').disabled = false;
+      } else {
+        df.innerHTML = '';
+        $('btn-save').disabled = true;
+      }
+    };
+  }
+
+  // RelType picker for create-edge
+  const relSelect = $('reltype-select');
+  if (relSelect) {
+    relSelect.onchange = () => {
+      const rt = relSelect.value;
+      const df = $('dynamic-fields');
+      if (rt) {
+        const schema = state.schemas.rels[rt];
+        const editableProps = schema ? schema.properties.filter(p => !SYSTEM_FIELDS.has(p.name)) : [];
+        df.innerHTML = editableProps.map(p => fieldHtml(p)).join('');
+        updateEdgeCreateButton();
+      } else {
+        df.innerHTML = '';
+        updateEdgeCreateButton();
+      }
+    };
+  }
+
+  // Source/target pickers
+  const pickSource = $('pick-source');
+  if (pickSource) {
+    pickSource.onclick = () => {
+      state.pickingFor = 'source';
+      pickSource.classList.add('active');
+      pickSource.textContent = 'Click a node on canvas...';
+      canvas.classList.add('pick-mode');
+      const pickTarget = $('pick-target');
+      if (pickTarget) { pickTarget.classList.remove('active'); }
+    };
+  }
+  const pickTarget = $('pick-target');
+  if (pickTarget) {
+    pickTarget.onclick = () => {
+      state.pickingFor = 'target';
+      pickTarget.classList.add('active');
+      pickTarget.textContent = 'Click a node on canvas...';
+      canvas.classList.add('pick-mode');
+      const pickSource = $('pick-source');
+      if (pickSource) { pickSource.classList.remove('active'); }
+    };
+  }
+
+  // Save button
+  const saveBtn = $('btn-save');
+  if (saveBtn) {
+    saveBtn.onclick = handleSave;
+  }
+
+  // Delete button
+  const delBtn = $('btn-delete');
+  if (delBtn) {
+    delBtn.onclick = handleDelete;
+  }
+}
+
+function updateEdgeCreateButton() {
+  const btn = $('btn-save');
+  if (!btn || state.panelMode !== 'create-edge') return;
+  const relSelect = $('reltype-select');
+  btn.disabled = !(relSelect && relSelect.value && state.edgeSource && state.edgeTarget);
+}
+
+// ============================================================
+// CRUD handlers
+// ============================================================
+async function handleSave() {
+  const btn = $('btn-save');
+  btn.disabled = true;
+
+  try {
+    switch (state.panelMode) {
+      case 'create-node': {
+        const label = $('label-select').value;
+        if (!label || !validateForm()) { btn.disabled = false; return; }
+        const data = collectFormData();
+        await apiPost(`/nodes/${label}`, data);
+        showToast(`${label} created successfully`);
+        closePanel();
+        await refreshGraph();
+        break;
+      }
+      case 'edit-node': {
+        if (!state.selectedNode || !validateForm()) { btn.disabled = false; return; }
+        const data = collectFormData();
+        const n = state.selectedNode;
+        await apiPut(`/nodes/${n.label}/${n.id}`, { properties: data });
+        showToast(`${n.label} updated`);
+        closePanel();
+        await refreshGraph();
+        break;
+      }
+      case 'create-edge': {
+        const relType = $('reltype-select').value;
+        if (!relType || !state.edgeSource || !state.edgeTarget) { btn.disabled = false; return; }
+        if (!validateForm()) { btn.disabled = false; return; }
+        const props = collectFormData();
+        const src = state.edgeSource;
+        const tgt = state.edgeTarget;
+        await apiPost(`/edges/${relType}`, {
+          source: { label: src.label, id: src.id },
+          target: { label: tgt.label, id: tgt.id },
+          properties: props,
+        });
+        showToast(`${relType} edge created`);
+        closePanel();
+        await refreshGraph();
+        break;
+      }
+      case 'edit-edge': {
+        if (!state.selectedEdge) { btn.disabled = false; return; }
+        if (!validateForm()) { btn.disabled = false; return; }
+        const data = collectFormData();
+        const e = state.selectedEdge;
+        await apiPut(`/edges/${e.type}/${e.id}`, { properties: data });
+        showToast(`${e.type} updated`);
+        closePanel();
+        await refreshGraph();
+        break;
+      }
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+    btn.disabled = false;
+  }
+}
+
+async function handleDelete() {
+  try {
+    if (state.panelMode === 'edit-node' && state.selectedNode) {
+      const n = state.selectedNode;
+      const name = n.displayName || n.id.slice(0, 8);
+      const ok = await showConfirm(`Delete <b>${n.label}</b> "${escHtml(name)}"?<br><br>This will also remove all connected edges.`);
+      if (!ok) return;
+      await apiDelete(`/nodes/${n.label}/${n.id}`);
+      showToast(`${n.label} deleted`);
+      closePanel();
+      await refreshGraph();
+    } else if (state.panelMode === 'edit-edge' && state.selectedEdge) {
+      const e = state.selectedEdge;
+      const ok = await showConfirm(`Delete <b>${e.type}</b> edge?`);
+      if (!ok) return;
+      await apiDelete(`/edges/${e.type}/${e.id}`);
+      showToast(`${e.type} edge deleted`);
+      closePanel();
+      await refreshGraph();
+    }
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ============================================================
+// Refresh graph data
+// ============================================================
+async function refreshGraph() {
+  try {
+    const graphData = await fetchGraph();
+    buildSimulation(graphData);
+    updateStats();
+    $('empty-state').style.display = state.nodes.length === 0 ? 'flex' : 'none';
+  } catch (err) {
+    showToast('Failed to refresh graph: ' + err.message, 'error');
+  }
+}
+
+function updateStats() {
+  $('header-stats').innerHTML = `
+    <span><b>${state.nodes.length}</b> nodes</span>
+    <span><b>${state.edges.length}</b> edges</span>
+  `;
+}
+
+// ============================================================
+// Canvas event handlers
+// ============================================================
+function setupCanvasEvents() {
+  let lastMouseX = 0, lastMouseY = 0;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    lastMouseX = mx;
+    lastMouseY = my;
+
+    // Dragging
+    if (state.dragging) {
+      state.dragging.x = mx;
+      state.dragging.y = my;
+      state.dragging.vx = 0;
+      state.dragging.vy = 0;
+      draw();
+      return;
+    }
+
+    // Tooltip
+    const hit = hitTestNode(mx, my);
+    if (hit) {
+      showTooltip(hit, e.clientX, e.clientY);
+      canvas.style.cursor = 'pointer';
+    } else {
+      hideTooltip();
+      const edgeHit = hitTestEdge(mx, my);
+      canvas.style.cursor = state.pickingFor ? 'crosshair' : (edgeHit ? 'pointer' : 'grab');
+    }
+  });
+
+  canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    // If picking for edge create, don't start dragging
+    if (state.pickingFor) return;
+
+    const hit = hitTestNode(mx, my);
+    if (hit) {
+      state.dragging = hit;
+      hideTooltip();
+    }
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    state.dragging = null;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    state.dragging = null;
+    hideTooltip();
+  });
+
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    // Node picking for edge creation
+    if (state.pickingFor) {
+      const hit = hitTestNode(mx, my);
+      if (hit) {
+        if (state.pickingFor === 'source') {
+          state.edgeSource = hit;
+          const el = $('pick-source');
+          el.textContent = `${hit.label}: ${hit.displayName}`;
+          el.classList.remove('active');
+          el.classList.add('picked');
+          // Auto-advance to target picking
+          state.pickingFor = 'target';
+          const tgt = $('pick-target');
+          if (tgt && !tgt.classList.contains('picked')) {
+            tgt.classList.add('active');
+            tgt.textContent = 'Click a node on canvas...';
+          } else {
+            state.pickingFor = null;
+            canvas.classList.remove('pick-mode');
+          }
+        } else if (state.pickingFor === 'target') {
+          state.edgeTarget = hit;
+          const el = $('pick-target');
+          el.textContent = `${hit.label}: ${hit.displayName}`;
+          el.classList.remove('active');
+          el.classList.add('picked');
+          state.pickingFor = null;
+          canvas.classList.remove('pick-mode');
+        }
+        updateEdgeCreateButton();
+        draw();
+        return;
+      }
+    }
+
+    // Don't handle click if we were dragging
+    if (state.dragging) return;
+
+    // Node selection
+    const nodeHit = hitTestNode(mx, my);
+    if (nodeHit) {
+      state.selectedNode = nodeHit;
+      state.selectedEdge = null;
+      openPanel('edit-node', nodeHit);
+      draw();
+      return;
+    }
+
+    // Edge selection
+    const edgeHit = hitTestEdge(mx, my);
+    if (edgeHit) {
+      state.selectedEdge = edgeHit;
+      state.selectedNode = null;
+      openPanel('edit-edge', edgeHit);
+      draw();
+      return;
+    }
+
+    // Click on empty space — deselect
+    if (state.panelMode === 'edit-node' || state.panelMode === 'edit-edge') {
+      closePanel();
+    }
+  });
+}
+
+// ============================================================
+// Toolbar events
+// ============================================================
+function setupToolbar() {
+  $('btn-add-node').onclick = () => {
+    state.selectedNode = null;
+    state.selectedEdge = null;
+    openPanel('create-node');
+    draw();
+  };
+
+  $('btn-add-edge').onclick = () => {
+    state.selectedNode = null;
+    state.selectedEdge = null;
+    openPanel('create-edge');
+    // Auto-start source picking
+    setTimeout(() => {
+      const pickSource = $('pick-source');
+      if (pickSource) pickSource.click();
+    }, 100);
+    draw();
+  };
+
+  $('btn-refresh').onclick = async () => {
+    closePanel();
+    await refreshGraph();
+    showToast('Graph refreshed');
+  };
+}
+
+// ============================================================
+// Keyboard shortcuts
+// ============================================================
+function setupKeyboard() {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (state.panelMode) {
+        closePanel();
+      }
+    }
+    if ((e.key === 'Delete' || e.key === 'Backspace') && !isInputFocused()) {
+      if (state.panelMode === 'edit-node' || state.panelMode === 'edit-edge') {
+        handleDelete();
+      }
+    }
+  });
+}
+
+function isInputFocused() {
+  const tag = document.activeElement?.tagName;
+  return tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA';
+}
+
+// ============================================================
+// Legend
+// ============================================================
+function buildLegend() {
+  const legend = $('legend');
+  legend.innerHTML = Object.entries(COLORS).map(([label, color]) =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${color}"></div>${label}</div>`
+  ).join('');
+  legend.style.display = 'flex';
+}
+
+// ============================================================
+// Boot
+// ============================================================
+async function boot() {
+  try {
+    resizeCanvas();
+    window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+    // Load schemas and graph in parallel
+    const [schemas, graphData] = await Promise.all([fetchSchemas(), fetchGraph()]);
+    state.schemas = schemas;
+
+    // Update status
+    $('status-badge').textContent = 'connected';
+    $('status-badge').className = 'badge badge-ok';
+    $('loading-screen').style.display = 'none';
+
+    // Build simulation
+    buildSimulation(graphData);
+    updateStats();
+    buildLegend();
+
+    // Show/hide empty state
+    $('empty-state').style.display = state.nodes.length === 0 ? 'flex' : 'none';
+    $('toolbar').style.display = 'flex';
+
+    // Start render loop
+    animate();
+
+    // Setup interactions
+    setupCanvasEvents();
+    setupToolbar();
+    setupKeyboard();
+
+  } catch (err) {
+    $('status-badge').textContent = 'connection failed';
+    $('status-badge').className = 'badge badge-fail';
+    $('loading-screen').innerHTML = `
+      <div style="color: var(--red); text-align: center; max-width: 400px;">
+        <div style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Connection Failed</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">${escHtml(err.message)}</div>
+        <div style="font-size: 0.8rem; color: var(--text-muted);">Make sure the API server is running: <b>make api</b></div>
+      </div>
+    `;
+  }
+}
+
+boot();
+</script>
+</body>
+</html>
