@@ -23,8 +23,7 @@ env: ## Create .env from template (won't overwrite)
 	@test -f .env || (cp .env.example .env && echo "✓ .env created from template.") || echo "• .env already exists."
 
 venv: ## Create Python virtual environment
-	@test -d .venv || (python3 -m venv .venv && echo "✓ Virtual environment created.")
-	@test -d .venv && echo "• .venv already exists." || true
+	@if [ ! -d .venv ]; then python3 -m venv .venv && echo "✓ Virtual environment created."; fi
 
 # ──────────────────────────────────────────────────────────
 # CODE QUALITY
