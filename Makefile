@@ -1,4 +1,4 @@
-.PHONY: help install lint format test test-unit test-integration setup verify clean db-up db-down db-status dashboard
+.PHONY: help install lint format test test-unit test-integration test-api setup verify clean db-up db-down db-status dashboard api
 
 PYTHON := python3
 PIP := pip3
@@ -83,10 +83,13 @@ clean-db: ## Wipe all nodes and relationships
 dashboard: ## Start the web dashboard (port 8080)
 	$(PYTHON) -m src.server
 
+api: ## Start the FastAPI graph API (port 8000)
+	$(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS
 # ──────────────────────────────────────────────────────────
 
 all: install db-up setup test ## Full bootstrap: install → db → setup → test
 	@echo ""
-	@echo "✓ All done. Run 'make dashboard' to see the graph."
+	@echo "✓ All done. Run 'make dashboard' for read-only view, 'make api' for CRUD editor."

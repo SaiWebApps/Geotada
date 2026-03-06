@@ -74,6 +74,42 @@ RELATIONSHIP_TYPES: list[str] = [
     "IS_PARENT_OF",
 ]
 
+
+# ---------------------------------------------------------------------------
+# Relationship property schemas — Schema_v3 §4.1
+# ---------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class RelPropertyDef:
+    """Declares a property that a relationship type supports."""
+
+    name: str
+    type: str  # "str", "int", "float", "bool"
+    required: bool = False
+    default: str | int | float | bool | None = None
+
+
+RELATIONSHIP_SCHEMAS: dict[str, list[RelPropertyDef]] = {
+    "HAS_PROFILE": [],
+    "IS_CAPTAIN_OF": [],
+    "IS_CREW_OF": [],
+    "PREFERS_LENS": [
+        RelPropertyDef("weight", "float", required=False, default=1.0),
+    ],
+    "HAS_STOP": [],
+    "ASSIGNED_TO": [],
+    "AT_POI": [],
+    "PLAYS_BEAT": [],
+    "HAS_BEAT": [
+        RelPropertyDef("sort_order", "int", required=False, default=0),
+    ],
+    "TAGGED_WITH": [
+        RelPropertyDef("confidence", "float", required=False, default=1.0),
+    ],
+    "IS_PARENT_OF": [],
+}
+
 # ---------------------------------------------------------------------------
 # MVP Lenses — Living Doc §08
 # ---------------------------------------------------------------------------
