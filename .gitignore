@@ -247,5 +247,8 @@ temp/
 # Project Specific
 # ====================
 
+# Claude Code working state
+.claude/
+
 # Keep .env.example but ignore .env
 !.env.example

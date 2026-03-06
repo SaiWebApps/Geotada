@@ -1,7 +1,7 @@
-.PHONY: help install lint format test test-unit test-integration test-api setup verify clean db-up db-down db-status dashboard api
+.PHONY: help venv env install lint format test test-unit test-integration test-api setup verify clean db-up db-down db-status dashboard api
 
-PYTHON := python3
-PIP := pip3
+PYTHON := .venv/bin/python
+PIP    := .venv/bin/pip
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -15,12 +15,16 @@ help: ## Show this help
 # SETUP
 # ──────────────────────────────────────────────────────────
 
-install: ## Install Python dependencies
-	$(PIP) install -r requirements.txt --break-system-packages
+install: venv env ## Install Python dependencies
+	$(PIP) install -r requirements.txt
 	@echo "✓ Dependencies installed."
 
 env: ## Create .env from template (won't overwrite)
 	@test -f .env || (cp .env.example .env && echo "✓ .env created from template.") || echo "• .env already exists."
+
+venv: ## Create Python virtual environment
+	@test -d .venv || (python3 -m venv .venv && echo "✓ Virtual environment created.")
+	@test -d .venv && echo "• .venv already exists." || true
 
 # ──────────────────────────────────────────────────────────
 # CODE QUALITY
