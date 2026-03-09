@@ -446,6 +446,199 @@
   }
   .error-toast.visible { display: block; }
 
+  /* ── Upload overlays ── */
+  .upload-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+  }
+  .upload-overlay.hidden { display: none; }
+  .upload-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    max-width: 700px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .upload-card h2 { margin-bottom: 1rem; font-size: 1.1rem; }
+  .upload-progress-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .upload-progress-bar {
+    height: 6px;
+    background: var(--surface-2);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .upload-progress-fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 3px;
+    transition: width 0.2s;
+    width: 0%;
+  }
+  .conflict-card { max-width: 900px; }
+  .conflict-item {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .conflict-header {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .conflict-similarity {
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: var(--orange-dim);
+    color: var(--orange);
+  }
+  .conflict-sides {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .conflict-side {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem;
+  }
+  .conflict-side h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .conflict-side .script-preview {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    max-height: 120px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+  }
+  .conflict-side .field-row-small {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+  }
+  .conflict-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .conflict-actions .btn { font-size: 0.78rem; }
+  .conflict-resolved {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .conflict-resolution-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--green);
+    margin-top: 0.5rem;
+  }
+  .merge-overlay { z-index: 3500; }
+  .merge-card { max-width: 600px; }
+  .merge-field { margin-bottom: 0.75rem; }
+  .merge-field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .merge-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .merge-option {
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: border-color 0.15s;
+  }
+  .merge-option:hover { border-color: var(--accent); }
+  .merge-option.selected { border-color: var(--green); background: var(--green-dim); }
+  .summary-stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .summary-stat:last-child { border-bottom: none; }
+  .summary-stat .stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+  }
+  .summary-errors {
+    margin-top: 0.75rem;
+    background: var(--red-dim);
+    border: 1px solid var(--red);
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.82rem;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  .upload-db-btn {
+    margin-left: 1rem;
+    padding: 0.4rem 1rem;
+    background: var(--green);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .upload-db-btn:hover { opacity: 0.9; }
+  .upload-db-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .coord-warning {
+    background: var(--yellow-dim);
+    border: 1px solid var(--yellow);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+  }
+  .lens-select {
+    padding: 0.35rem 0.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.82rem;
+  }
+
   /* ── Scrollbar ── */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -483,7 +676,7 @@
 </div>
 
 <!-- ── Completion Banner ── -->
-<div id="completionBanner" class="completion-banner">All entries reviewed. Ready for upload.</div>
+<div id="completionBanner" class="completion-banner">All entries reviewed. Ready for upload. <button class="upload-db-btn" id="uploadDbBtn" disabled title="No completed POIs to upload">Upload to Database</button></div>
 
 <!-- ── Main ── -->
 <div class="main" id="mainLayout">
@@ -1245,6 +1438,871 @@
       if (cityCentre) map.setView([cityCentre.lat, cityCentre.lng], 10);
     }
   }
+
+  // ── API base URL ──
+  const API_BASE = 'http://localhost:8000/api/v1';
+
+  // ── Task 4: Jaccard similarity ──
+
+  const STOP_WORDS = new Set([
+    'a','an','the','is','was','in','on','at','to','of','and','or','for','with',
+    'that','this','it','as','by','from','be','are','were','been','has','had',
+    'have','do','does','did','but','not','so','if','no','he','she','they','we',
+    'you','i','my','your','his','her','its','our','their'
+  ]);
+
+  function jaccardSimilarity(textA, textB) {
+    const toWords = t => new Set(t.toLowerCase().split(/\s+/).filter(w => w && !STOP_WORDS.has(w)));
+    const setA = toWords(textA || '');
+    const setB = toWords(textB || '');
+    if (setA.size === 0 && setB.size === 0) return 1;
+    if (setA.size === 0 || setB.size === 0) return 0;
+    let intersection = 0;
+    for (const w of setA) { if (setB.has(w)) intersection++; }
+    const union = new Set([...setA, ...setB]).size;
+    return union === 0 ? 0 : intersection / union;
+  }
+
+  // ── Task 5: Field mapping & lens lookup ──
+
+  const MVP_LENSES = {
+    'Hidden History': 'hidden_history',
+    'Architecture & Design': 'arch_design',
+    'Local Legends & Folklore': 'local_legends',
+    'Food & Culinary Culture': 'food_culinary',
+    'Art & Street Culture': 'art_street',
+    'Dark History': 'dark_history',
+    'Literary & Film Locations': 'literary_film',
+    'Religious & Spiritual Sites': 'religious_spiritual',
+    'Music & Nightlife History': 'music_nightlife',
+    'Revolutionary Moments': 'revolutionary',
+    'Nature & Green Spaces': 'nature_green',
+    'Shopping & Markets': 'shopping_markets',
+  };
+
+  // Also allow slug-to-slug (pass-through)
+  const SLUG_SET = new Set(Object.values(MVP_LENSES));
+
+  function resolveLensSlug(lens) {
+    if (!lens) return null;
+    if (MVP_LENSES[lens]) return MVP_LENSES[lens];
+    if (SLUG_SET.has(lens)) return lens;
+    // Try case-insensitive match on display labels
+    const lower = lens.toLowerCase();
+    for (const [label, slug] of Object.entries(MVP_LENSES)) {
+      if (label.toLowerCase() === lower) return slug;
+    }
+    return null;
+  }
+
+  function mapPoiForApi(poi) {
+    return {
+      name: poi.poi_name,
+      short_description: poi.short_description || '',
+      latitude: poi.latitude,
+      longitude: poi.longitude,
+      importance_tier: 1,
+      trigger_radius: 10,
+      typical_duration_min: 30,
+      kid_friendly: 'yes',
+    };
+  }
+
+  function mapBeatForApi(beat) {
+    const slug = resolveLensSlug(beat.lens);
+    const gravity = Number(beat.gravity) || 3;
+    return {
+      script_body: beat.script_body,
+      lens_slug: slug,
+      version: 1,
+      active_status: 'active',
+      duration_sec: gravity * 60,
+      kid_friendly: 'yes',
+    };
+  }
+
+  // ── Task 6: Conflict detection ──
+
+  async function detectConflicts(completePois) {
+    const result = { newPois: [], matchedPois: [], conflicts: [], reviewItems: [], errors: [] };
+
+    for (let pi = 0; pi < completePois.length; pi++) {
+      const poi = completePois[pi];
+      updateProgressOverlay(`Checking for conflicts... (${pi + 1}/${completePois.length} POIs scanned)`);
+
+      let existingBeats = [];
+      let existingPoiCoords = null;
+      try {
+        const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.poi_name)}/beats`);
+        const data = await resp.json();
+        existingBeats = data.beats || [];
+        // Try to get the POI's coordinates from the database for coordinate mismatch check
+        if (existingBeats.length > 0) {
+          try {
+            const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=200`);
+            const poiList = await poiResp.json();
+            const match = (poiList.items || []).find(p => p.properties.name === poi.poi_name);
+            if (match && match.properties.location) {
+              existingPoiCoords = match.properties.location;
+            }
+          } catch (e) { /* ignore coord lookup failures */ }
+        }
+      } catch (e) {
+        result.errors.push(`Failed to check POI "${poi.poi_name}": ${e.message}`);
+        continue;
+      }
+
+      const isNewPoi = existingBeats.length === 0 && !existingPoiCoords;
+
+      if (isNewPoi) {
+        result.newPois.push({ poi, beats: poi.beats.map(b => ({ beat: b, action: 'create' })) });
+      } else {
+        const poiEntry = { poi, existingBeats, coordWarning: false, beats: [] };
+
+        // Edge case #1: coordinate mismatch > 500m
+        if (existingPoiCoords) {
+          const dist = haversineKm(poi.latitude, poi.longitude, existingPoiCoords.lat, existingPoiCoords.lng);
+          if (dist > 0.5) {
+            poiEntry.coordWarning = true;
+            poiEntry.coordDistance = (dist * 1000).toFixed(0);
+          }
+        }
+
+        // Edge case #2: 12-beat cap
+        const totalAfter = existingBeats.length + poi.beats.length;
+        const existingLenses = new Set(existingBeats.map(b => b.lens_slug));
+        if (existingLenses.size >= 12) {
+          const newLenses = poi.beats.filter(b => !existingLenses.has(resolveLensSlug(b.lens)));
+          if (newLenses.length > 0) {
+            result.errors.push(`POI "${poi.poi_name}" already has ${existingLenses.size} lenses (max 12). Cannot add more beats.`);
+            continue;
+          }
+        }
+
+        for (const beat of poi.beats) {
+          const incomingSlug = resolveLensSlug(beat.lens);
+          if (!incomingSlug) {
+            result.errors.push(`POI "${poi.poi_name}", beat lens "${beat.lens}": unrecognized lens.`);
+            continue;
+          }
+
+          // Hard match: same lens
+          const hardMatch = existingBeats.find(eb => eb.lens_slug === incomingSlug);
+          if (hardMatch) {
+            result.conflicts.push({
+              poi, beat, existing: hardMatch, matchType: 'hard',
+              similarity: 1.0, resolved: false, resolution: null,
+            });
+            continue;
+          }
+
+          // Soft/review match: different lens but similar script_body
+          let bestSim = 0;
+          let bestMatch = null;
+          for (const eb of existingBeats) {
+            const sim = jaccardSimilarity(eb.script_body, beat.script_body);
+            if (sim > bestSim) { bestSim = sim; bestMatch = eb; }
+          }
+
+          if (bestSim >= 0.70) {
+            result.conflicts.push({
+              poi, beat, existing: bestMatch, matchType: 'soft',
+              similarity: bestSim, resolved: false, resolution: null,
+            });
+          } else if (bestSim >= 0.30) {
+            result.reviewItems.push({
+              poi, beat, existing: bestMatch, similarity: bestSim,
+              resolved: false, resolution: null,
+            });
+          } else {
+            poiEntry.beats.push({ beat, action: 'create' });
+          }
+        }
+        result.matchedPois.push(poiEntry);
+      }
+    }
+    return result;
+  }
+
+  // ── Task 7: Conflict resolution overlay ──
+
+  function showConflictOverlay(uploadPlan) {
+    return new Promise((resolve) => {
+      const allItems = [...uploadPlan.conflicts, ...uploadPlan.reviewItems];
+      if (allItems.length === 0) { resolve(uploadPlan); return; }
+
+      const overlay = document.createElement('div');
+      overlay.className = 'upload-overlay conflict-overlay';
+      const card = document.createElement('div');
+      card.className = 'upload-card conflict-card';
+
+      let html = `<h2>Conflict Resolution (${allItems.length} items)</h2>`;
+
+      allItems.forEach((item, idx) => {
+        const isReview = item.matchType === undefined;
+        const typeLabel = isReview ? 'Review' : (item.matchType === 'hard' ? 'Hard Match (same lens)' : 'Soft Match');
+        html += `
+          <div class="conflict-item" id="conflict-${idx}">
+            <div class="conflict-header">
+              <span>${escHtml(item.poi.poi_name)}</span>
+              <span class="conflict-similarity">${typeLabel} ${(item.similarity * 100).toFixed(0)}%</span>
+            </div>
+            <div class="conflict-sides">
+              <div class="conflict-side">
+                <h4>Existing Beat</h4>
+                <div class="script-preview">${escHtml(item.existing.script_body || '')}</div>
+                <div class="field-row-small">Lens: ${escHtml(item.existing.lens_slug)} | Version: ${item.existing.version}</div>
+              </div>
+              <div class="conflict-side">
+                <h4>Incoming Beat</h4>
+                <div class="script-preview">${escHtml(item.beat.script_body || '')}</div>
+                <div class="field-row-small">Lens: ${escHtml(item.beat.lens || '')} | Gravity: ${item.beat.gravity || '?'}</div>
+              </div>
+            </div>
+            ${isReview ? `
+              <div class="review-band-actions">
+                <button class="btn btn-outline btn-sm" data-cidx="${idx}" data-action="approve">Approve (pass-through)</button>
+                <button class="btn btn-outline btn-sm" data-cidx="${idx}" data-action="treat-conflict">Treat as conflict</button>
+              </div>
+            ` : ''}
+            <div class="conflict-actions" id="conflict-actions-${idx}" ${isReview ? 'style="display:none"' : ''}>
+              <button class="btn btn-primary btn-sm" data-cidx="${idx}" data-action="replace">Replace</button>
+              <button class="btn btn-outline btn-sm" data-cidx="${idx}" data-action="skip">Skip</button>
+              <button class="btn btn-outline btn-sm" data-cidx="${idx}" data-action="merge">Merge</button>
+              <button class="btn btn-outline btn-sm" data-cidx="${idx}" data-action="change-lens">Change Lens</button>
+            </div>
+            <div class="conflict-resolution-label" id="conflict-label-${idx}" style="display:none"></div>
+          </div>
+        `;
+      });
+
+      html += `<button class="btn btn-primary" id="confirmUploadBtn" disabled style="width:100%;margin-top:1rem;">Confirm & Upload</button>`;
+      card.innerHTML = html;
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+
+      let resolvedCount = 0;
+
+      function checkAllResolved() {
+        const confirmBtn = document.getElementById('confirmUploadBtn');
+        confirmBtn.disabled = resolvedCount < allItems.length;
+      }
+
+      function markResolved(idx, label) {
+        const el = document.getElementById(`conflict-${idx}`);
+        el.classList.add('conflict-resolved');
+        const lbl = document.getElementById(`conflict-label-${idx}`);
+        lbl.textContent = label;
+        lbl.style.display = 'block';
+        resolvedCount++;
+        checkAllResolved();
+      }
+
+      overlay.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        const idx = parseInt(btn.dataset.cidx);
+        const action = btn.dataset.action;
+        const item = allItems[idx];
+
+        if (action === 'approve') {
+          item.resolved = true;
+          item.resolution = 'pass-through';
+          markResolved(idx, 'Approved (pass-through)');
+        } else if (action === 'treat-conflict') {
+          document.getElementById(`conflict-actions-${idx}`).style.display = 'flex';
+          btn.closest('.review-band-actions').style.display = 'none';
+        } else if (action === 'replace') {
+          item.resolved = true;
+          item.resolution = 'replace';
+          markResolved(idx, 'Replace (existing will be deprecated)');
+        } else if (action === 'skip') {
+          item.resolved = true;
+          item.resolution = 'skip';
+          markResolved(idx, 'Skipped (incoming discarded)');
+        } else if (action === 'merge') {
+          const merged = await showMergeOverlay(item);
+          if (merged) {
+            item.resolved = true;
+            item.resolution = 'merge';
+            item.mergedBeat = merged;
+            markResolved(idx, 'Merged');
+          }
+        } else if (action === 'change-lens') {
+          showChangeLensDropdown(btn, item, idx, markResolved);
+        }
+      });
+
+      document.getElementById('confirmUploadBtn').addEventListener('click', () => {
+        overlay.remove();
+        resolve(uploadPlan);
+      });
+    });
+  }
+
+  function showMergeOverlay(item) {
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.className = 'upload-overlay merge-overlay';
+      const card = document.createElement('div');
+      card.className = 'upload-card merge-card';
+
+      const fields = ['script_body', 'gravity', 'lens'];
+      const merged = {};
+
+      let html = '<h2>Field-by-Field Merge</h2><p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;">Click left (existing) or right (incoming) to choose the value for each field.</p>';
+
+      for (const field of fields) {
+        const existVal = field === 'lens' ? item.existing.lens_slug : (item.existing[field] || '');
+        const incomVal = item.beat[field] || '';
+        html += `
+          <div class="merge-field">
+            <label>${field}</label>
+            <div class="merge-options">
+              <div class="merge-option" data-merge-field="${field}" data-merge-side="existing">${escHtml(String(existVal).substring(0, 200))}</div>
+              <div class="merge-option" data-merge-field="${field}" data-merge-side="incoming">${escHtml(String(incomVal).substring(0, 200))}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      html += '<div style="display:flex;gap:0.5rem;margin-top:1rem;"><button class="btn btn-primary" id="mergeSaveBtn">Save Merge</button><button class="btn btn-outline" id="mergeCancelBtn">Cancel</button></div>';
+      card.innerHTML = html;
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+
+      const selections = {};
+
+      overlay.addEventListener('click', (e) => {
+        const opt = e.target.closest('.merge-option');
+        if (opt) {
+          const field = opt.dataset.mergeField;
+          const side = opt.dataset.mergeSide;
+          // Deselect siblings
+          opt.parentElement.querySelectorAll('.merge-option').forEach(o => o.classList.remove('selected'));
+          opt.classList.add('selected');
+          const existVal = field === 'lens' ? item.existing.lens_slug : (item.existing[field] || '');
+          const incomVal = item.beat[field] || '';
+          selections[field] = side === 'existing' ? existVal : incomVal;
+        }
+      });
+
+      document.getElementById('mergeSaveBtn').addEventListener('click', () => {
+        if (Object.keys(selections).length < fields.length) {
+          showError('Please select a value for every field.');
+          return;
+        }
+        overlay.remove();
+        resolve({
+          script_body: selections.script_body,
+          gravity: selections.gravity,
+          lens: selections.lens,
+          tags: item.beat.tags || [],
+        });
+      });
+
+      document.getElementById('mergeCancelBtn').addEventListener('click', () => {
+        overlay.remove();
+        resolve(null);
+      });
+    });
+  }
+
+  function showChangeLensDropdown(btn, item, idx, markResolved) {
+    // Check if dropdown already shown
+    if (btn.nextElementSibling && btn.nextElementSibling.tagName === 'SELECT') return;
+    const select = document.createElement('select');
+    select.className = 'lens-select';
+    select.innerHTML = '<option value="">Select new lens...</option>' +
+      Object.entries(MVP_LENSES).map(([label, slug]) =>
+        `<option value="${slug}">${escHtml(label)}</option>`
+      ).join('');
+    btn.insertAdjacentElement('afterend', select);
+    select.addEventListener('change', () => {
+      const newSlug = select.value;
+      if (!newSlug) return;
+      item.resolved = true;
+      item.resolution = 'change-lens';
+      item.newLensSlug = newSlug;
+      select.remove();
+      markResolved(idx, `Lens changed to ${newSlug}`);
+    });
+  }
+
+  // ── Task 8: Upload execution with progress ──
+
+  let progressOverlayEl = null;
+
+  function showProgressOverlay(text) {
+    if (!progressOverlayEl) {
+      progressOverlayEl = document.createElement('div');
+      progressOverlayEl.className = 'upload-overlay';
+      progressOverlayEl.innerHTML = `
+        <div class="upload-card">
+          <h2>Upload to Database</h2>
+          <div class="upload-progress-text" id="uploadProgressText"></div>
+          <div class="upload-progress-bar"><div class="upload-progress-fill" id="uploadProgressFill"></div></div>
+        </div>
+      `;
+      document.body.appendChild(progressOverlayEl);
+    }
+    progressOverlayEl.classList.remove('hidden');
+    document.getElementById('uploadProgressText').textContent = text || '';
+  }
+
+  function updateProgressOverlay(text, pct) {
+    if (!progressOverlayEl) showProgressOverlay(text);
+    document.getElementById('uploadProgressText').textContent = text || '';
+    if (pct !== undefined) {
+      document.getElementById('uploadProgressFill').style.width = pct + '%';
+    }
+  }
+
+  function hideProgressOverlay() {
+    if (progressOverlayEl) {
+      progressOverlayEl.remove();
+      progressOverlayEl = null;
+    }
+  }
+
+  async function executeUpload(uploadPlan) {
+    const stats = {
+      poisCreated: 0, poisMatched: 0,
+      beatsCreated: 0, beatsReplaced: 0, beatsSkipped: 0, beatsMerged: 0,
+      relsLinked: 0, errors: [...uploadPlan.errors],
+    };
+    const succeededIds = new Set();
+
+    // Fetch lens node IDs (Task 11)
+    let lensMap = {};
+    try {
+      const lensResp = await fetch(`${API_BASE}/nodes/Lens?limit=20`);
+      const lensData = await lensResp.json();
+      for (const l of (lensData.items || [])) {
+        lensMap[l.properties.name] = l.id;
+      }
+    } catch (e) {
+      stats.errors.push(`Failed to fetch Lens nodes: ${e.message}`);
+      return stats;
+    }
+
+    // Collect all work items
+    const workItems = [];
+
+    // New POIs
+    for (const entry of uploadPlan.newPois) {
+      workItems.push({ type: 'new-poi', entry });
+    }
+
+    // Matched POIs
+    for (const entry of uploadPlan.matchedPois) {
+      workItems.push({ type: 'matched-poi', entry });
+    }
+
+    // Conflict resolutions
+    for (const conflict of [...uploadPlan.conflicts, ...uploadPlan.reviewItems]) {
+      if (!conflict.resolved) continue;
+      workItems.push({ type: 'conflict', conflict });
+    }
+
+    let step = 0;
+    const totalSteps = workItems.length;
+
+    for (const work of workItems) {
+      step++;
+      try {
+        if (work.type === 'new-poi') {
+          const { entry } = work;
+          const poiPayload = mapPoiForApi(entry.poi);
+          updateProgressOverlay(`Creating POI "${entry.poi.poi_name}"... (${step}/${totalSteps})`, (step / totalSteps) * 100);
+
+          const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(poiPayload),
+          });
+          if (!poiResp.ok) throw new Error(`POI create failed: ${poiResp.status}`);
+          const poiNode = await poiResp.json();
+          stats.poisCreated++;
+
+          // Create beats
+          for (const beatEntry of entry.beats) {
+            const mapped = mapBeatForApi(beatEntry.beat);
+            if (!mapped.lens_slug) {
+              stats.errors.push(`Beat lens "${beatEntry.beat.lens}" not recognized.`);
+              continue;
+            }
+            const lensId = lensMap[mapped.lens_slug];
+            if (!lensId) {
+              stats.errors.push(`Lens node "${mapped.lens_slug}" not found in database.`);
+              continue;
+            }
+
+            const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapped),
+            });
+            if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+            const beatNode = await beatResp.json();
+            stats.beatsCreated++;
+
+            // HAS_BEAT edge
+            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+            });
+            stats.relsLinked++;
+
+            // TAGGED_WITH edge
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+            });
+            stats.relsLinked++;
+          }
+
+        } else if (work.type === 'matched-poi') {
+          const { entry } = work;
+          updateProgressOverlay(`Processing matched POI "${entry.poi.poi_name}"... (${step}/${totalSteps})`, (step / totalSteps) * 100);
+
+          // Get POI node ID
+          const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(mapPoiForApi(entry.poi)),
+          });
+          const poiNode = await poiResp.json();
+          stats.poisMatched++;
+
+          for (const beatEntry of entry.beats) {
+            if (beatEntry.action !== 'create') continue;
+            const mapped = mapBeatForApi(beatEntry.beat);
+            if (!mapped.lens_slug) {
+              stats.errors.push(`Beat lens "${beatEntry.beat.lens}" not recognized.`);
+              continue;
+            }
+            const lensId = lensMap[mapped.lens_slug];
+            if (!lensId) {
+              stats.errors.push(`Lens node "${mapped.lens_slug}" not found in database.`);
+              continue;
+            }
+
+            const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapped),
+            });
+            if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+            const beatNode = await beatResp.json();
+            stats.beatsCreated++;
+
+            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+            });
+            stats.relsLinked++;
+
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+            });
+            stats.relsLinked++;
+          }
+
+        } else if (work.type === 'conflict') {
+          const { conflict } = work;
+          updateProgressOverlay(`Resolving conflict for "${conflict.poi.poi_name}"... (${step}/${totalSteps})`, (step / totalSteps) * 100);
+
+          if (conflict.resolution === 'skip') {
+            stats.beatsSkipped++;
+            continue;
+          }
+
+          if (conflict.resolution === 'pass-through') {
+            // Create the beat as new
+            const mapped = mapBeatForApi(conflict.beat);
+            if (!mapped.lens_slug) { stats.errors.push(`Beat lens unrecognized.`); continue; }
+            const lensId = lensMap[mapped.lens_slug];
+            if (!lensId) { stats.errors.push(`Lens "${mapped.lens_slug}" not found.`); continue; }
+
+            // Get POI ID via MERGE
+            const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapPoiForApi(conflict.poi)),
+            });
+            const poiNode = await poiResp.json();
+
+            const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapped),
+            });
+            if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+            const beatNode = await beatResp.json();
+            stats.beatsCreated++;
+
+            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+            });
+            stats.relsLinked++;
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+            });
+            stats.relsLinked++;
+            continue;
+          }
+
+          if (conflict.resolution === 'replace') {
+            // Deprecate existing beat
+            await fetch(`${API_BASE}/nodes/NarrativeBeat/${conflict.existing.id}`, {
+              method: 'PUT', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
+            });
+
+            const mapped = mapBeatForApi(conflict.beat);
+            mapped.version = (conflict.existing.version || 1) + 1;
+            if (!mapped.lens_slug) { stats.errors.push(`Beat lens unrecognized.`); continue; }
+            const lensId = lensMap[mapped.lens_slug];
+            if (!lensId) { stats.errors.push(`Lens "${mapped.lens_slug}" not found.`); continue; }
+
+            const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapPoiForApi(conflict.poi)),
+            });
+            const poiNode = await poiResp.json();
+
+            const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapped),
+            });
+            if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+            const beatNode = await beatResp.json();
+            stats.beatsReplaced++;
+
+            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+            });
+            stats.relsLinked++;
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+            });
+            stats.relsLinked++;
+            continue;
+          }
+
+          if (conflict.resolution === 'merge') {
+            // Deprecate existing beat
+            await fetch(`${API_BASE}/nodes/NarrativeBeat/${conflict.existing.id}`, {
+              method: 'PUT', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
+            });
+
+            const mergedSlug = resolveLensSlug(conflict.mergedBeat.lens) || resolveLensSlug(conflict.beat.lens);
+            if (!mergedSlug) { stats.errors.push(`Merged beat lens unrecognized.`); continue; }
+            const lensId = lensMap[mergedSlug];
+            if (!lensId) { stats.errors.push(`Lens "${mergedSlug}" not found.`); continue; }
+
+            const payload = {
+              script_body: conflict.mergedBeat.script_body,
+              version: (conflict.existing.version || 1) + 1,
+              active_status: 'active',
+              duration_sec: (Number(conflict.mergedBeat.gravity) || 3) * 60,
+              kid_friendly: 'yes',
+            };
+
+            const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapPoiForApi(conflict.poi)),
+            });
+            const poiNode = await poiResp.json();
+
+            const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(payload),
+            });
+            if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+            const beatNode = await beatResp.json();
+            stats.beatsMerged++;
+
+            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+            });
+            stats.relsLinked++;
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+            });
+            stats.relsLinked++;
+            continue;
+          }
+
+          if (conflict.resolution === 'change-lens') {
+            const newSlug = conflict.newLensSlug;
+            const lensId = lensMap[newSlug];
+            if (!lensId) { stats.errors.push(`Lens "${newSlug}" not found.`); continue; }
+
+            const mapped = mapBeatForApi(conflict.beat);
+            mapped.lens_slug = newSlug;
+
+            const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapPoiForApi(conflict.poi)),
+            });
+            const poiNode = await poiResp.json();
+
+            const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(mapped),
+            });
+            if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+            const beatNode = await beatResp.json();
+            stats.beatsCreated++;
+
+            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+            });
+            stats.relsLinked++;
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+            });
+            stats.relsLinked++;
+            continue;
+          }
+        }
+      } catch (e) {
+        stats.errors.push(`Error at step ${step}: ${e.message}`);
+        // Stop on network error
+        hideProgressOverlay();
+        return stats;
+      }
+    }
+
+    hideProgressOverlay();
+    return stats;
+  }
+
+  // ── Task 9: Summary screen + upload button ──
+
+  const uploadDbBtn = document.getElementById('uploadDbBtn');
+
+  function updateUploadBtnState() {
+    const hasComplete = poiData.some(p => p._status === 'complete');
+    uploadDbBtn.disabled = !hasComplete;
+    uploadDbBtn.title = hasComplete ? 'Upload reviewed POIs to Neo4j' : 'No completed POIs to upload';
+  }
+
+  // Patch checkAllComplete to also update upload button
+  const _origCheckAllComplete = checkAllComplete;
+  const patchedCheckAllComplete = function() {
+    _origCheckAllComplete.call(this);
+    updateUploadBtnState();
+  };
+  // Replace references
+  checkAllComplete = patchedCheckAllComplete;
+
+  uploadDbBtn.addEventListener('click', async () => {
+    autoSaveCurrent();
+    const completePois = poiData.filter(p => p._status === 'complete');
+    if (completePois.length === 0) { showError('No completed POIs to upload.'); return; }
+
+    showProgressOverlay('Checking for conflicts...');
+
+    // Conflict detection
+    const uploadPlan = await detectConflicts(completePois);
+
+    hideProgressOverlay();
+
+    // Show coordinate warnings if any
+    for (const mp of uploadPlan.matchedPois) {
+      if (mp.coordWarning) {
+        const proceed = confirm(`POI "${mp.poi.poi_name}" coordinates differ by ${mp.coordDistance}m from the existing POI in the database. Proceed anyway?`);
+        if (!proceed) {
+          return;
+        }
+      }
+    }
+
+    // Show errors so far
+    if (uploadPlan.errors.length > 0 && uploadPlan.newPois.length === 0 && uploadPlan.matchedPois.length === 0 && uploadPlan.conflicts.length === 0) {
+      showError(uploadPlan.errors.join('\n'));
+      return;
+    }
+
+    // Show conflict overlay if needed
+    if (uploadPlan.conflicts.length > 0 || uploadPlan.reviewItems.length > 0) {
+      await showConflictOverlay(uploadPlan);
+    }
+
+    // Execute upload
+    showProgressOverlay('Uploading...');
+    const stats = await executeUpload(uploadPlan);
+    hideProgressOverlay();
+
+    // Show summary
+    showSummaryOverlay(stats);
+  });
+
+  function showSummaryOverlay(stats) {
+    const overlay = document.createElement('div');
+    overlay.className = 'upload-overlay';
+    const card = document.createElement('div');
+    card.className = 'upload-card';
+
+    let html = '<h2>Upload Complete</h2>';
+    html += `
+      <div class="summary-stat"><span>POIs created</span><span class="stat-value">${stats.poisCreated}</span></div>
+      <div class="summary-stat"><span>POIs matched (existing)</span><span class="stat-value">${stats.poisMatched}</span></div>
+      <div class="summary-stat"><span>Beats created</span><span class="stat-value">${stats.beatsCreated}</span></div>
+      <div class="summary-stat"><span>Beats replaced</span><span class="stat-value">${stats.beatsReplaced}</span></div>
+      <div class="summary-stat"><span>Beats skipped</span><span class="stat-value">${stats.beatsSkipped}</span></div>
+      <div class="summary-stat"><span>Beats merged</span><span class="stat-value">${stats.beatsMerged}</span></div>
+      <div class="summary-stat"><span>Relationships linked</span><span class="stat-value">${stats.relsLinked}</span></div>
+    `;
+
+    if (stats.errors.length > 0) {
+      html += `<div class="summary-errors"><strong>Errors (${stats.errors.length}):</strong><br>${stats.errors.map(e => escHtml(e)).join('<br>')}</div>`;
+      html += `<button class="btn btn-outline" id="retryFailedBtn" style="margin-top:0.75rem;">Retry Failed</button>`;
+    }
+
+    html += `<button class="btn btn-primary" id="summaryDoneBtn" style="width:100%;margin-top:1rem;">Done</button>`;
+    card.innerHTML = html;
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    document.getElementById('summaryDoneBtn').addEventListener('click', () => {
+      overlay.remove();
+      // Reset workbench
+      poiData = [];
+      activeIdx = -1;
+      renderWorklist();
+      detailView.style.display = 'none';
+      detailEmpty.style.display = 'flex';
+      completionBanner.classList.remove('visible');
+      mainLayout.classList.remove('has-banner');
+      updateUploadBtnState();
+    });
+
+    const retryBtn = document.getElementById('retryFailedBtn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', async () => {
+        overlay.remove();
+        // Re-run the upload flow
+        uploadDbBtn.click();
+      });
+    }
+  }
+
+  // ── Task 10: beforeunload warning ──
+
+  window.addEventListener('beforeunload', (e) => {
+    const hasUnuploaded = poiData.some(p => p._status === 'complete');
+    if (hasUnuploaded) {
+      e.preventDefault();
+    }
+  });
 
 })();
 </script>

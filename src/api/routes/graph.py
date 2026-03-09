@@ -65,3 +65,29 @@ def get_full_graph(session: Session = Depends(get_session)):
     ]
 
     return {"nodes": nodes, "edges": edges}
+
+
+@router.get("/graph/poi/{poi_name}/beats")
+def get_poi_beats(poi_name: str, session: Session = Depends(get_session)):
+    """Fetch active beats and their lens tags for a POI by name."""
+    result = session.run(
+        "MATCH (p:POI {name: $name})-[:HAS_BEAT]->(b:NarrativeBeat)"
+        "-[:TAGGED_WITH]->(l:Lens) "
+        'WHERE b.active_status = "active" '
+        "RETURN b.id AS id, b.script_body AS script_body, "
+        "b.version AS version, b.active_status AS active_status, "
+        "b.duration_sec AS duration_sec, l.name AS lens_slug",
+        name=poi_name,
+    )
+    beats = [
+        {
+            "id": r["id"],
+            "script_body": r["script_body"],
+            "version": r["version"],
+            "active_status": r["active_status"],
+            "duration_sec": r["duration_sec"],
+            "lens_slug": r["lens_slug"],
+        }
+        for r in result
+    ]
+    return {"poi_name": poi_name, "beats": beats}

@@ -82,23 +82,35 @@ def create_edge(
 
     Returns the created edge, or None if source/target not found.
     """
-    set_parts = [
-        "r.id = randomUUID()",
-        "r.created_at = datetime()",
-    ]
     params: dict[str, Any] = {
         "source_id": source_id,
         "target_id": target_id,
     }
 
     for key, val in properties.items():
-        set_parts.append(f"r.{key} = ${key}")
         params[key] = val
 
+    use_merge = rel_type in ("HAS_BEAT", "TAGGED_WITH")
+
+    if use_merge:
+        set_parts = [
+            "r.id = coalesce(r.id, randomUUID())",
+            "r.created_at = coalesce(r.created_at, datetime())",
+        ]
+    else:
+        set_parts = [
+            "r.id = randomUUID()",
+            "r.created_at = datetime()",
+        ]
+
+    for key in properties:
+        set_parts.append(f"r.{key} = ${key}")
+
+    verb = "MERGE" if use_merge else "CREATE"
     query = (
         f"MATCH (a:{source_label} {{id: $source_id}}) "
         f"MATCH (b:{target_label} {{id: $target_id}}) "
-        f"CREATE (a)-[r:{rel_type}]->(b) "
+        f"{verb} (a)-[r:{rel_type}]->(b) "
         f"SET {', '.join(set_parts)} "
         f"RETURN r.id AS id, type(r) AS type, "
         f"a.id AS source_id, b.id AS target_id, properties(r) AS props"

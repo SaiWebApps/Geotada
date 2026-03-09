@@ -68,35 +68,62 @@ def get_node(session: Session, label: str, node_id: str) -> dict | None:
 def create_node(
     session: Session, label: str, properties: dict[str, Any]
 ) -> dict:
-    """Create a node with a generated UUID id. Returns the created node."""
+    """Create a node with a generated UUID id. Returns the created node.
+
+    For POI and NarrativeBeat, uses MERGE for idempotent upserts.
+    """
     params = dict(properties)
 
-    # POI: convert latitude/longitude to Neo4j spatial point
     if label == "POI" and "latitude" in params and "longitude" in params:
         lat = params.pop("latitude")
         lng = params.pop("longitude")
-        set_parts = [
-            "n.id = randomUUID()",
-            "n.created_at = datetime()",
-            "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})",
-        ]
         params["lat"] = lat
         params["lng"] = lng
+
+        # MERGE on name for idempotent POI creation
+        set_parts = [
+            "n.id = coalesce(n.id, randomUUID())",
+            "n.created_at = coalesce(n.created_at, datetime())",
+            "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})",
+        ]
+        for key in params:
+            if key not in ("lat", "lng", "name"):
+                set_parts.append(f"n.{key} = ${key}")
+
+        query = (
+            f"MERGE (n:POI {{name: $name}}) "
+            f"SET {', '.join(set_parts)} "
+            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+        )
+    elif label == "NarrativeBeat":
+        # MERGE on script_body for idempotent beat creation
+        set_parts = [
+            "n.id = coalesce(n.id, randomUUID())",
+            "n.created_at = coalesce(n.created_at, datetime())",
+        ]
+        for key in params:
+            if key != "script_body":
+                set_parts.append(f"n.{key} = ${key}")
+
+        query = (
+            f"MERGE (n:NarrativeBeat {{script_body: $script_body}}) "
+            f"SET {', '.join(set_parts)} "
+            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+        )
     else:
         set_parts = [
             "n.id = randomUUID()",
             "n.created_at = datetime()",
         ]
-
-    for key in params:
-        if key not in ("lat", "lng"):
+        for key in params:
             set_parts.append(f"n.{key} = ${key}")
 
-    query = (
-        f"CREATE (n:{label}) "
-        f"SET {', '.join(set_parts)} "
-        f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
-    )
+        query = (
+            f"CREATE (n:{label}) "
+            f"SET {', '.join(set_parts)} "
+            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+        )
+
     result = session.run(query, **params).single()
     return _record_to_node(result)
 
