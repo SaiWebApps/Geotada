@@ -222,6 +222,8 @@
   .badge-pending { background: var(--orange-dim); color: var(--orange); }
   .badge-complete { background: var(--green-dim); color: var(--green); }
   .badge-flagged { background: var(--yellow-dim); color: var(--yellow); }
+  .badge-deferred { background: var(--yellow-dim); color: var(--yellow); }
+  .badge-uploaded { background: var(--green-dim); color: var(--green); }
   .left-footer {
     padding: 0.75rem;
     border-top: 1px solid var(--border);
@@ -399,6 +401,56 @@
   .audit-confidence-medium { background: var(--orange); color: #000; }
   .audit-confidence-low { background: var(--yellow); color: #000; }
 
+  /* ── POI-level audit notes ── */
+  .poi-audit-notes-box {
+    background: var(--orange-dim);
+    border: 1px solid var(--orange);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+  .poi-audit-notes-box .poi-audit-heading {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  /* ── Inline conflict panel ── */
+  .beat-conflict-panel {
+    background: var(--surface-2);
+    border: 1px solid var(--orange);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .beat-conflict-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .beat-conflict-badge-hard { background: var(--red); color: #fff; }
+  .beat-conflict-badge-review { background: var(--yellow); color: #000; }
+  .beat-conflict-resolved-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--green);
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+  .conflict-loading {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
   /* ── Beat cards ── */
   .beats-section h3 {
     font-size: 0.9rem;
@@ -427,7 +479,8 @@
     font-size: 0.78rem;
     font-weight: 400;
   }
-  .beat-card textarea { min-height: 80px; }
+  .beat-card textarea[data-beat-field="script_body"] { min-height: 160px; }
+  .beat-card textarea[data-beat-field="source_passage"] { min-height: 60px; }
 
   /* ── Error toast ── */
   .error-toast {
@@ -445,6 +498,23 @@
     text-align: center;
   }
   .error-toast.visible { display: block; }
+
+  /* ── Success toast ── */
+  .success-toast {
+    display: none;
+    position: fixed;
+    bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%);
+    background: #2e7d32;
+    color: #fff;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    z-index: 2000;
+    max-width: 600px;
+    text-align: center;
+  }
+  .success-toast.visible { display: block; }
 
   /* ── Upload overlays ── */
   .upload-overlay {
@@ -708,6 +778,7 @@
           <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
         </div>
         <h2 id="detailTitle"></h2>
+        <button class="btn btn-outline btn-sm" id="deferBtn" style="color:var(--yellow);border-color:var(--yellow);">Defer</button>
         <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
       </div>
       <div class="detail-body" id="detailBody"></div>
@@ -717,6 +788,7 @@
 
 <!-- ── Error Toast ── -->
 <div id="errorToast" class="error-toast"></div>
+<div id="successToast" class="success-toast"></div>
 
 <script>
 (function() {
@@ -753,10 +825,12 @@
   const detailBody = document.getElementById('detailBody');
   const prevRowBtn = document.getElementById('prevRowBtn');
   const nextRowBtn = document.getElementById('nextRowBtn');
+  const deferBtn = document.getElementById('deferBtn');
   const markCompleteBtn = document.getElementById('markCompleteBtn');
   const completionBanner = document.getElementById('completionBanner');
   const mainLayout = document.getElementById('mainLayout');
   const errorToast = document.getElementById('errorToast');
+  const successToast = document.getElementById('successToast');
   const progressWrap = document.getElementById('progressWrap');
   const progressLabel = document.getElementById('progressLabel');
   const progressFill = document.getElementById('progressFill');
@@ -786,6 +860,13 @@
     showError._t = setTimeout(() => errorToast.classList.remove('visible'), 6000);
   }
 
+  function showSuccess(msg) {
+    successToast.textContent = msg;
+    successToast.classList.add('visible');
+    clearTimeout(showSuccess._t);
+    showSuccess._t = setTimeout(() => successToast.classList.remove('visible'), 4000);
+  }
+
   function computeGravityAvg(poi) {
     if (!poi.beats || poi.beats.length === 0) return 0;
     const sum = poi.beats.reduce((s, b) => s + (Number(b.gravity) || 0), 0);
@@ -798,6 +879,7 @@
   }
 
   function canMarkComplete(poi) {
+    if (poi._status === 'uploaded') return false;
     if (!poi.beats || poi.beats.length === 0) return true;
     for (const b of poi.beats) {
       if (!b.script_body || b.script_body.trim() === '') return false;
@@ -807,19 +889,27 @@
     return true;
   }
 
+  function getDisplayPriority(poi) {
+    if (isFlagged(poi) && poi._status === 'pending') return 1; // flagged
+    if (poi._status === 'pending') return 2;
+    if (poi._status === 'deferred') return 3;
+    if (poi._status === 'uploaded') return 4;
+    return 2; // complete treated as pending priority for sorting
+  }
+
   function updateProgress() {
     if (poiData.length === 0) { progressWrap.style.display = 'none'; return; }
     progressWrap.style.display = 'flex';
-    const done = poiData.filter(p => p._status === 'complete').length;
+    const uploaded = poiData.filter(p => p._status === 'uploaded').length;
     const total = poiData.length;
-    progressLabel.textContent = `${done} / ${total}`;
-    progressFill.style.width = `${(done / total) * 100}%`;
+    progressLabel.textContent = `${uploaded} / ${total} uploaded`;
+    progressFill.style.width = `${(uploaded / total) * 100}%`;
   }
 
   function checkAllComplete() {
     if (poiData.length === 0) return;
     updateProgress();
-    const allDone = poiData.every(p => p._status === 'complete');
+    const allDone = poiData.every(p => p._status === 'uploaded');
     completionBanner.classList.toggle('visible', allDone);
     mainLayout.classList.toggle('has-banner', allDone);
   }
@@ -849,7 +939,18 @@
       cityName = data[0].display_name.split(',')[0].trim() || name;
       cityLabel.textContent = `${cityName} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
       cityOverlay.classList.add('hidden');
-      loadJsonBtn.disabled = false;
+
+      // Fetch lenses and POI list from database
+      try {
+        citySubmitBtn.textContent = 'Connecting to database…';
+        await fetchLensesAndPoiList();
+        loadJsonBtn.disabled = false;
+      } catch (lensErr) {
+        loadJsonBtn.disabled = true;
+        showError('Cannot connect to database — workbench requires a live connection.');
+        cityLabel.textContent += ' | ⚠ DB connection failed';
+        return;
+      }
     } catch (err) {
       cityError.textContent = 'Geocoding failed: ' + err.message;
       cityError.style.display = 'block';
@@ -869,6 +970,11 @@
     reader.onload = e => {
       try {
         const raw = JSON.parse(e.target.result);
+        const schemaErrors = validateV2Schema(raw);
+        if (schemaErrors.length > 0) {
+          showError('JSON validation failed:\n' + schemaErrors.slice(0, 5).join('\n') + (schemaErrors.length > 5 ? `\n...and ${schemaErrors.length - 5} more errors.` : ''));
+          return;
+        }
         processJson(raw);
       } catch (err) {
         showError('Malformed JSON: ' + err.message);
@@ -877,6 +983,41 @@
     };
     reader.readAsText(file);
   });
+
+  function validateV2Schema(data) {
+    const errors = [];
+    if (!Array.isArray(data)) { return ['JSON must be an array.']; }
+    const allowedPoiKeys = new Set([
+      'poi_name', 'latitude', 'longitude', 'beats', 'short_description',
+      'orientation', 'poi_audit_notes', 'audit_notes'
+    ]);
+    for (let i = 0; i < data.length; i++) {
+      const entry = data[i];
+      const label = `Entry ${i}` + (entry.poi_name ? ` ("${entry.poi_name}")` : '');
+      if (!entry.poi_name || typeof entry.poi_name !== 'string') errors.push(`${label}: missing or invalid "poi_name".`);
+      if (typeof entry.latitude !== 'number') errors.push(`${label}: missing or invalid "latitude" (must be number).`);
+      if (typeof entry.longitude !== 'number') errors.push(`${label}: missing or invalid "longitude" (must be number).`);
+      if (!Array.isArray(entry.beats) || entry.beats.length === 0) errors.push(`${label}: "beats" must be a non-empty array.`);
+
+      // Reject V1 format (tags present)
+      if (Array.isArray(entry.beats)) {
+        for (let bi = 0; bi < entry.beats.length; bi++) {
+          const b = entry.beats[bi];
+          const bLabel = `${label}, Beat ${bi + 1}`;
+          if (b.tags !== undefined) errors.push(`${bLabel}: "tags" field found — V1 format not supported. Remove tags and use V2 format.`);
+          if (!b.script_body || typeof b.script_body !== 'string') errors.push(`${bLabel}: missing or invalid "script_body".`);
+          if (!b.lens || typeof b.lens !== 'string') errors.push(`${bLabel}: missing or invalid "lens".`);
+          if (typeof b.gravity !== 'number' || b.gravity < 1 || b.gravity > 5) errors.push(`${bLabel}: "gravity" must be a number 1–5.`);
+        }
+      }
+
+      // Check for unknown top-level properties
+      for (const key of Object.keys(entry)) {
+        if (!allowedPoiKeys.has(key)) errors.push(`${label}: unknown property "${key}".`);
+      }
+    }
+    return errors;
+  }
 
   function processJson(raw) {
     if (!Array.isArray(raw)) { showError('JSON must be an array.'); return; }
@@ -899,7 +1040,7 @@
     // Attach session metadata
     const data = raw.map(entry => ({
       ...entry,
-      beats: Array.isArray(entry.beats) ? entry.beats.map(b => ({ ...b, tags: Array.isArray(b.tags) ? [...b.tags] : [] })) : [],
+      beats: Array.isArray(entry.beats) ? entry.beats.map(b => ({ ...b })) : [],
       _status: 'pending'
     }));
 
@@ -933,7 +1074,7 @@
     for (const [name, idxs] of dupes) {
       const setDiv = document.createElement('div');
       setDiv.className = 'dup-set';
-      setDiv.innerHTML = `<h3>Duplicate: "${name}" (${idxs.length} entries)</h3>`;
+      setDiv.innerHTML = `<h3>Duplicate: "${escHtml(name)}" (${idxs.length} entries)</h3>`;
       for (const idx of idxs) {
         const row = document.createElement('div');
         row.className = 'dup-entry';
@@ -1041,18 +1182,30 @@
       return;
     }
     worklistEl.innerHTML = '';
-    poiData.forEach((poi, i) => {
+
+    // Build sorted index array by priority
+    const indices = poiData.map((_, i) => i);
+    indices.sort((a, b) => getDisplayPriority(poiData[a]) - getDisplayPriority(poiData[b]));
+
+    // Separate active vs uploaded
+    const activeIndices = indices.filter(i => poiData[i]._status !== 'uploaded');
+    const uploadedIndices = indices.filter(i => poiData[i]._status === 'uploaded');
+
+    // Render active worklist items
+    for (const i of activeIndices) {
+      const poi = poiData[i];
       const row = document.createElement('div');
       row.className = 'worklist-row' + (i === activeIdx ? ' active' : '');
       const flagged = isFlagged(poi);
       const badges = [];
-      if (poi._status === 'complete') {
+      if (flagged && poi._status === 'pending') {
+        badges.push('<span class="badge badge-flagged">\u26A0 Flagged</span>');
+      } else if (poi._status === 'deferred') {
+        badges.push('<span class="badge badge-deferred">Deferred</span>');
+      } else if (poi._status === 'complete') {
         badges.push('<span class="badge badge-complete">Complete</span>');
       } else {
         badges.push('<span class="badge badge-pending">Pending</span>');
-      }
-      if (flagged) {
-        badges.push('<span class="badge badge-flagged">\u26A0 Flagged</span>');
       }
       row.innerHTML = `
         <div class="poi-info">
@@ -1063,7 +1216,43 @@
       `;
       row.addEventListener('click', () => selectPoi(i));
       worklistEl.appendChild(row);
-    });
+    }
+
+    // Render uploaded POIs collapsed summary
+    if (uploadedIndices.length > 0) {
+      const summary = document.createElement('div');
+      summary.className = 'uploaded-summary';
+      summary.style.cssText = 'border-top:2px solid var(--border);padding:0.5rem 0.75rem;margin-top:0.25rem;';
+      const headerRow = document.createElement('div');
+      headerRow.style.cssText = 'display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:0.85rem;color:var(--text-muted);';
+      headerRow.innerHTML = `<span><span class="badge badge-uploaded">\u2713</span> ${uploadedIndices.length} of ${poiData.length} uploaded</span><span class="uploaded-toggle" style="font-size:0.75rem;">\u25B6</span>`;
+      const listContainer = document.createElement('div');
+      listContainer.style.display = 'none';
+      for (const i of uploadedIndices) {
+        const poi = poiData[i];
+        const row = document.createElement('div');
+        row.className = 'worklist-row' + (i === activeIdx ? ' active' : '');
+        row.style.opacity = '0.6';
+        row.innerHTML = `
+          <div class="poi-info">
+            <div class="poi-name">${escHtml(poi.poi_name)}</div>
+            <div class="poi-meta">${poi.beats.length} beats · uploaded</div>
+          </div>
+          <span class="badge badge-uploaded">\u2713 Uploaded</span>
+        `;
+        row.addEventListener('click', () => selectPoi(i));
+        listContainer.appendChild(row);
+      }
+      headerRow.addEventListener('click', () => {
+        const visible = listContainer.style.display !== 'none';
+        listContainer.style.display = visible ? 'none' : 'block';
+        headerRow.querySelector('.uploaded-toggle').textContent = visible ? '\u25B6' : '\u25BC';
+      });
+      summary.appendChild(headerRow);
+      summary.appendChild(listContainer);
+      worklistEl.appendChild(summary);
+    }
+
     nextBtn.disabled = false;
     updateProgress();
     checkAllComplete();
@@ -1103,8 +1292,6 @@
       if (ln) b.lens = ln.value;
       const gr = card.querySelector('[data-beat-field="gravity"]');
       if (gr) b.gravity = parseFloat(gr.value);
-      const tg = card.querySelector('[data-beat-field="tags"]');
-      if (tg) b.tags = tg.value.split(',').map(t => t.trim()).filter(Boolean);
       const sp = card.querySelector('[data-beat-field="source_passage"]');
       if (sp) b.source_passage = sp.value;
     });
@@ -1112,11 +1299,37 @@
 
   // ── Select POI ──
 
-  function selectPoi(idx) {
+  async function selectPoi(idx) {
     autoSaveCurrent();
     activeIdx = idx;
     renderWorklist();
+
+    const poi = poiData[idx];
+
+    // Run per-POI conflict detection if not uploaded and not already cached
+    if (poi._status !== 'uploaded' && !poi._conflicts) {
+      // Show loading state
+      detailEmpty.style.display = 'none';
+      detailView.style.display = '';
+      detailTitle.textContent = poi.poi_name;
+      detailBody.innerHTML = '<div class="conflict-loading">Checking for conflicts...</div>';
+      markCompleteBtn.style.display = 'none';
+      deferBtn.style.display = 'none';
+
+      try {
+        poi._conflicts = await detectConflictsForPoi(poi);
+      } catch (e) {
+        poi._conflicts = { isNew: true, existingBeats: [], beatConflicts: [], beatReviewItems: [], coordWarning: false, errors: [e.message] };
+      }
+    }
+
     renderDetail();
+  }
+
+  function invalidateConflictCache(poiIdx) {
+    if (poiIdx >= 0 && poiIdx < poiData.length) {
+      delete poiData[poiIdx]._conflicts;
+    }
   }
 
   // ── Next pending ──
@@ -1125,9 +1338,9 @@
     const start = activeIdx < 0 ? 0 : activeIdx + 1;
     for (let i = 0; i < poiData.length; i++) {
       const idx = (start + i) % poiData.length;
-      if (poiData[idx]._status !== 'complete') { selectPoi(idx); return; }
+      if (poiData[idx]._status === 'pending' || poiData[idx]._status === 'deferred') { selectPoi(idx); return; }
     }
-    // All complete — stay or select first
+    // All done — stay or select first
     if (activeIdx < 0 && poiData.length > 0) selectPoi(0);
   });
 
@@ -1143,9 +1356,21 @@
     selectPoi(idx);
   });
 
+  // ── Defer ──
+
+  deferBtn.addEventListener('click', () => {
+    if (activeIdx < 0) return;
+    autoSaveCurrent();
+    const poi = poiData[activeIdx];
+    if (poi._status === 'uploaded') return;
+    poi._status = 'deferred';
+    renderWorklist();
+    renderDetail();
+  });
+
   // ── Mark as Complete ──
 
-  markCompleteBtn.addEventListener('click', () => {
+  markCompleteBtn.addEventListener('click', async () => {
     if (activeIdx < 0) return;
     autoSaveCurrent();
     const poi = poiData[activeIdx];
@@ -1153,7 +1378,45 @@
       showError('Cannot mark as complete: fix beat validation errors first.');
       return;
     }
+
+    // Check that all conflicts are resolved
+    if (poi._conflicts && !poi._conflicts.isNew) {
+      const allConflicts = [...(poi._conflicts.beatConflicts || []), ...(poi._conflicts.beatReviewItems || [])];
+      for (const c of allConflicts) {
+        const beat = poi.beats[c.beatIndex];
+        if (!beat._conflictResolution) {
+          showError('Resolve all beat conflicts before marking complete.');
+          return;
+        }
+      }
+    }
+
     poi._status = 'complete';
+    markCompleteBtn.disabled = true;
+    markCompleteBtn.textContent = 'Uploading...';
+
+    try {
+      await uploadSinglePoi(activeIdx);
+      poi._status = 'uploaded';
+      showSuccess(`"${poi.poi_name}" uploaded successfully.`);
+
+      // Auto-advance to the next unreviewed POI
+      const nextIdx = poiData.findIndex((p, i) => i !== activeIdx && p._status !== 'uploaded');
+      markCompleteBtn.textContent = 'Mark as Complete';
+      renderWorklist();
+      checkAllComplete();
+      if (nextIdx >= 0) {
+        await selectPoi(nextIdx);
+      } else {
+        renderDetail();
+      }
+      return;
+    } catch (err) {
+      poi._status = 'pending';
+      showError('Upload failed: ' + err.message + '. POI reverted to reviewable state.');
+    }
+
+    markCompleteBtn.textContent = 'Mark as Complete';
     renderWorklist();
     renderDetail();
     checkAllComplete();
@@ -1170,8 +1433,12 @@
     detailEmpty.style.display = 'none';
     detailView.style.display = '';
     const poi = poiData[activeIdx];
-    detailTitle.textContent = poi.poi_name;
-    markCompleteBtn.disabled = !canMarkComplete(poi);
+    const isUploaded = poi._status === 'uploaded';
+    detailTitle.textContent = poi.poi_name + (isUploaded ? ' (uploaded)' : '');
+    markCompleteBtn.disabled = isUploaded || !canMarkComplete(poi);
+    markCompleteBtn.style.display = isUploaded ? 'none' : '';
+    deferBtn.disabled = isUploaded;
+    deferBtn.style.display = isUploaded ? 'none' : '';
 
     const lat = typeof poi.latitude === 'number' ? poi.latitude : parseFloat(poi.latitude);
     const lng = typeof poi.longitude === 'number' ? poi.longitude : parseFloat(poi.longitude);
@@ -1213,13 +1480,38 @@
           ${lngWarning ? `<div class="field-warning">${lngWarning}</div>` : ''}
         </div>
       </div>
-      ${outsideGeofence ? `<div class="field-group"><div class="field-warn-yellow">\u26A0 Coordinates are outside the ${cityName} geofence (50 km radius).</div></div>` : ''}
+      ${outsideGeofence ? `<div class="field-group"><div class="field-warn-yellow">\u26A0 Coordinates are outside the ${escHtml(cityName)} geofence (50 km radius).</div></div>` : ''}
       <div class="map-container">
         <div id="map"></div>
         ${!validCoords && (poi.latitude !== undefined && poi.longitude !== undefined) ? '<div class="map-warning">Invalid coordinates — pin removed</div>' : ''}
         ${outsideGeofence ? '<div class="map-warning map-warn-geofence">\u26A0 Outside geofence</div>' : ''}
       </div>
     `;
+
+    // POI-level audit notes
+    if (Array.isArray(poi.poi_audit_notes) && poi.poi_audit_notes.length > 0) {
+      html += '<div class="poi-audit-notes-box"><span class="poi-audit-heading">POI Audit Notes</span>';
+      for (const note of poi.poi_audit_notes) {
+        html += renderAuditNotes(note);
+      }
+      html += '</div>';
+    }
+
+    // Build conflict lookup by beat index
+    const conflicts = poi._conflicts || {};
+    const conflictByBeat = {};
+    const reviewByBeat = {};
+    if (conflicts.beatConflicts) {
+      for (const c of conflicts.beatConflicts) conflictByBeat[c.beatIndex] = c;
+    }
+    if (conflicts.beatReviewItems) {
+      for (const r of conflicts.beatReviewItems) reviewByBeat[r.beatIndex] = r;
+    }
+
+    // Coordinate warning from conflict detection
+    if (conflicts.coordWarning) {
+      html += `<div class="coord-warning">\u26A0 Coordinates differ by ${conflicts.coordDistance}m from the existing POI in the database.</div>`;
+    }
 
     // Beats
     html += '<div class="beats-section"><h3>Narrative Beats (' + poi.beats.length + ')</h3>';
@@ -1231,36 +1523,95 @@
       if (scriptEmpty) beatWarnings.push('No content — script_body is empty.');
       if (gravityBad) beatWarnings.push('Gravity must be between 1 and 5.');
 
+      const conflict = conflictByBeat[bi];
+      const review = reviewByBeat[bi];
+      let conflictBadge = '';
+      if (conflict) {
+        conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-hard">Conflict (${conflict.matchType === 'hard' ? 'same lens' : (conflict.similarity * 100).toFixed(0) + '% similar'})</span>`;
+      } else if (review) {
+        conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-review">Review (${(review.similarity * 100).toFixed(0)}% similar)</span>`;
+      }
+
+      let conflictPanel = '';
+      if (conflict) {
+        const resolution = beat._conflictResolution;
+        conflictPanel = `
+          <div class="beat-conflict-panel" data-conflict-beat="${bi}">
+            <div class="conflict-sides">
+              <div class="conflict-side">
+                <h4>Existing Beat (DB)</h4>
+                <div class="script-preview">${escHtml(conflict.existing.script_body || '')}</div>
+                <div class="field-row-small">Lens: ${escHtml(conflict.existing.lens_slug || '')} | Version: ${conflict.existing.version || 1}</div>
+              </div>
+              <div class="conflict-side">
+                <h4>Incoming Beat (JSON)</h4>
+                <div class="script-preview">${escHtml(beat.script_body || '')}</div>
+                <div class="field-row-small">Lens: ${escHtml(beat.lens || '')} | Gravity: ${beat.gravity || '?'}</div>
+              </div>
+            </div>
+            ${resolution ? `<div class="beat-conflict-resolved-label" data-beat-idx="${bi}" data-change-resolution="true">${escHtml(resolution.label || 'Resolved: ' + resolution.action)} (click to change)</div>` : `
+            <div class="conflict-actions" data-beat-idx="${bi}">
+              <button class="btn btn-primary btn-sm" data-beat-action="replace" data-beat-idx="${bi}">Replace</button>
+              <button class="btn btn-outline btn-sm" data-beat-action="skip" data-beat-idx="${bi}">Skip</button>
+              <button class="btn btn-outline btn-sm" data-beat-action="merge" data-beat-idx="${bi}">Merge</button>
+              <button class="btn btn-outline btn-sm" data-beat-action="change-lens" data-beat-idx="${bi}">Change Lens</button>
+            </div>`}
+          </div>`;
+      } else if (review) {
+        const resolution = beat._conflictResolution;
+        conflictPanel = `
+          <div class="beat-conflict-panel" data-review-beat="${bi}">
+            <div class="conflict-sides">
+              <div class="conflict-side">
+                <h4>Existing Beat (DB)</h4>
+                <div class="script-preview">${escHtml(review.existing.script_body || '')}</div>
+                <div class="field-row-small">Lens: ${escHtml(review.existing.lens_slug || '')}</div>
+              </div>
+              <div class="conflict-side">
+                <h4>Incoming Beat (JSON)</h4>
+                <div class="script-preview">${escHtml(beat.script_body || '')}</div>
+                <div class="field-row-small">Lens: ${escHtml(beat.lens || '')}</div>
+              </div>
+            </div>
+            ${resolution ? `<div class="beat-conflict-resolved-label" data-beat-idx="${bi}" data-change-resolution="true">${escHtml(resolution.label || 'Resolved: ' + resolution.action)} (click to change)</div>` : `
+            <div class="conflict-actions" data-beat-idx="${bi}">
+              <button class="btn btn-outline btn-sm" data-beat-action="approve" data-beat-idx="${bi}">Approve (pass-through)</button>
+              <button class="btn btn-outline btn-sm" data-beat-action="treat-conflict" data-beat-idx="${bi}">Treat as conflict</button>
+            </div>`}
+          </div>`;
+      }
+
       html += `
-        <div class="beat-card">
+        <div class="beat-card" data-beat-index="${bi}">
           <div class="beat-header">
             Beat ${bi + 1}
+            ${conflictBadge}
             ${beatWarnings.map(w => `<span class="beat-warning">${w}</span>`).join(' ')}
           </div>
           ${renderAuditNotes(beat.audit_notes)}
+          ${conflictPanel}
           <div class="field-group">
             <label>Script Body</label>
             <textarea data-beat-field="script_body" placeholder="${scriptEmpty ? 'No content' : ''}">${escHtml(beat.script_body || '')}</textarea>
           </div>
-          <div class="field-row">
-            <div class="field-group">
-              <label>Physical Cue</label>
-              <input type="text" data-beat-field="physical_cue" value="${escHtml(beat.physical_cue || '')}" />
-            </div>
-            <div class="field-group">
-              <label>Lens</label>
-              <input type="text" data-beat-field="lens" value="${escHtml(beat.lens || '')}" />
-            </div>
+          <div class="field-group">
+            <label>Physical Cue</label>
+            <input type="text" data-beat-field="physical_cue" value="${escHtml(beat.physical_cue || '')}" />
           </div>
           <div class="field-row">
-            <div class="field-group">
-              <label>Gravity (1–5)</label>
-              <input type="number" min="1" max="5" step="1" data-beat-field="gravity" value="${beat.gravity !== undefined ? beat.gravity : ''}" />
-              ${gravityBad ? '<div class="field-warning">Gravity must be between 1 and 5.</div>' : ''}
+            <div class="field-group" style="flex:2;">
+              <label>Lens</label>
+              <select data-beat-field="lens" class="lens-select" style="width:100%;padding:0.5rem 0.7rem;">
+                <option value="">Select lens...</option>
+                ${Object.entries(lensDisplayToSlug).map(([label, slug]) =>
+                  `<option value="${escHtml(label)}" ${(beat.lens === label || beat.lens === slug) ? 'selected' : ''}>${escHtml(label)}</option>`
+                ).join('')}
+              </select>
             </div>
-            <div class="field-group">
-              <label>Tags (comma-separated)</label>
-              <input type="text" data-beat-field="tags" value="${escHtml(Array.isArray(beat.tags) ? beat.tags.join(', ') : '')}" />
+            <div class="field-group" style="flex:0 0 80px;">
+              <label>Gravity</label>
+              <input type="number" min="1" max="5" step="1" data-beat-field="gravity" value="${beat.gravity !== undefined ? beat.gravity : ''}" style="text-align:center;" />
+              ${gravityBad ? '<div class="field-warning">1–5</div>' : ''}
             </div>
           </div>
           <div class="field-group">
@@ -1274,29 +1625,102 @@
 
     detailBody.innerHTML = html;
 
+    // ── Read-only mode for uploaded POIs ──
+    if (isUploaded) {
+      detailBody.querySelectorAll('input, textarea, select').forEach(el => {
+        el.disabled = true;
+      });
+    }
+
     // ── Init map ──
     initMap(lat, lng, validCoords, outsideGeofence);
 
-    // ── Lat/Lng live update ──
-    const latInput = detailBody.querySelector('[data-field="latitude"]');
-    const lngInput = detailBody.querySelector('[data-field="longitude"]');
-    latInput.addEventListener('input', () => handleCoordChange());
-    lngInput.addEventListener('input', () => handleCoordChange());
+    if (!isUploaded) {
+      // ── Lat/Lng live update ──
+      const latInput = detailBody.querySelector('[data-field="latitude"]');
+      const lngInput = detailBody.querySelector('[data-field="longitude"]');
+      latInput.addEventListener('input', () => handleCoordChange());
+      lngInput.addEventListener('input', () => handleCoordChange());
 
-    // ── POI name sync on change ──
-    detailBody.querySelector('[data-field="poi_name"]').addEventListener('input', e => {
-      detailTitle.textContent = e.target.value;
-    });
+      // ── POI name sync on change ──
+      detailBody.querySelector('[data-field="poi_name"]').addEventListener('input', e => {
+        detailTitle.textContent = e.target.value;
+      });
 
-    // ── Beat field change listeners for revalidation ──
-    detailBody.querySelectorAll('.beat-card').forEach(card => {
-      card.querySelectorAll('input, textarea').forEach(el => {
-        el.addEventListener('input', () => {
-          autoSaveCurrent();
-          markCompleteBtn.disabled = !canMarkComplete(poiData[activeIdx]);
+      // ── Beat field change listeners for revalidation ──
+      detailBody.querySelectorAll('.beat-card').forEach(card => {
+        card.querySelectorAll('input, textarea, select').forEach(el => {
+          el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
+            autoSaveCurrent();
+            invalidateConflictCache(activeIdx);
+            markCompleteBtn.disabled = !canMarkComplete(poiData[activeIdx]);
+          });
         });
       });
-    });
+
+      // ── Inline conflict resolution handlers ──
+      detailBody.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-beat-action]');
+        if (!btn) {
+          // Check for "change resolution" click
+          const changeLabel = e.target.closest('[data-change-resolution]');
+          if (changeLabel) {
+            const bi = parseInt(changeLabel.dataset.beatIdx);
+            delete poiData[activeIdx].beats[bi]._conflictResolution;
+            renderDetail();
+          }
+          return;
+        }
+        const bi = parseInt(btn.dataset.beatIdx);
+        const action = btn.dataset.beatAction;
+        const beat = poiData[activeIdx].beats[bi];
+        const conflict = conflictByBeat[bi] || reviewByBeat[bi];
+        if (!conflict) return;
+
+        if (action === 'replace') {
+          beat._conflictResolution = { action: 'replace', existingBeat: conflict.existing, label: 'Will replace existing' };
+          renderDetail();
+        } else if (action === 'skip') {
+          beat._conflictResolution = { action: 'skip', existingBeat: conflict.existing, label: 'Will skip (discard incoming)' };
+          renderDetail();
+        } else if (action === 'merge') {
+          const merged = await showMergeOverlay({ existing: conflict.existing, beat, poi: poiData[activeIdx] });
+          if (merged) {
+            beat._conflictResolution = { action: 'merge', existingBeat: conflict.existing, mergedBeat: merged, label: 'Will merge' };
+            renderDetail();
+          }
+        } else if (action === 'change-lens') {
+          // Show inline lens dropdown
+          const actionsDiv = btn.closest('.conflict-actions');
+          if (actionsDiv.querySelector('.lens-select')) return;
+          const select = document.createElement('select');
+          select.className = 'lens-select';
+          select.innerHTML = '<option value="">Select new lens...</option>' +
+            Object.entries(lensDisplayToSlug).map(([label, slug]) =>
+              `<option value="${slug}">${escHtml(label)}</option>`
+            ).join('');
+          actionsDiv.appendChild(select);
+          select.addEventListener('change', () => {
+            const newSlug = select.value;
+            if (!newSlug) return;
+            beat._conflictResolution = { action: 'change-lens', existingBeat: conflict.existing, newLensSlug: newSlug, label: `Lens changed to ${newSlug}` };
+            renderDetail();
+          });
+        } else if (action === 'approve') {
+          beat._conflictResolution = { action: 'pass-through', label: 'Approved (pass-through)' };
+          renderDetail();
+        } else if (action === 'treat-conflict') {
+          // Convert review item to conflict with full resolution options
+          const panel = btn.closest('.beat-conflict-panel');
+          panel.querySelector('.conflict-actions').innerHTML = `
+            <button class="btn btn-primary btn-sm" data-beat-action="replace" data-beat-idx="${bi}">Replace</button>
+            <button class="btn btn-outline btn-sm" data-beat-action="skip" data-beat-idx="${bi}">Skip</button>
+            <button class="btn btn-outline btn-sm" data-beat-action="merge" data-beat-idx="${bi}">Merge</button>
+            <button class="btn btn-outline btn-sm" data-beat-action="change-lens" data-beat-idx="${bi}">Change Lens</button>
+          `;
+        }
+      });
+    }
   }
 
   function handleCoordChange() {
@@ -1334,7 +1758,7 @@
     if (outside) {
       const geoDiv = document.createElement('div');
       geoDiv.className = 'field-group';
-      geoDiv.innerHTML = `<div class="field-warn-yellow">\u26A0 Coordinates are outside the ${cityName} geofence (50 km radius).</div>`;
+      geoDiv.innerHTML = `<div class="field-warn-yellow">\u26A0 Coordinates are outside the ${escHtml(cityName)} geofence (50 km radius).</div>`;
       detailBody.querySelector('.map-container').insertAdjacentElement('beforebegin', geoDiv);
     }
 
@@ -1463,33 +1887,46 @@
     return union === 0 ? 0 : intersection / union;
   }
 
-  // ── Task 5: Field mapping & lens lookup ──
+  // ── Field mapping & lens lookup (dynamic from DB) ──
 
-  const MVP_LENSES = {
-    'Hidden History': 'hidden_history',
-    'Architecture & Design': 'arch_design',
-    'Local Legends & Folklore': 'local_legends',
-    'Food & Culinary Culture': 'food_culinary',
-    'Art & Street Culture': 'art_street',
-    'Dark History': 'dark_history',
-    'Literary & Film Locations': 'literary_film',
-    'Religious & Spiritual Sites': 'religious_spiritual',
-    'Music & Nightlife History': 'music_nightlife',
-    'Revolutionary Moments': 'revolutionary',
-    'Nature & Green Spaces': 'nature_green',
-    'Shopping & Markets': 'shopping_markets',
-  };
+  let lensDisplayToSlug = {};   // { 'Hidden History': 'hidden_history', ... }
+  let lensSlugSet = new Set();  // { 'hidden_history', ... }
+  let lensSlugToId = {};        // { 'hidden_history': 'neo4j-id', ... }
+  let cachedPoiList = [];       // cached POI nodes from DB for conflict detection
 
-  // Also allow slug-to-slug (pass-through)
-  const SLUG_SET = new Set(Object.values(MVP_LENSES));
+  async function fetchLensesAndPoiList() {
+    // Fetch lenses
+    const lensResp = await fetch(`${API_BASE}/nodes/Lens?limit=50`);
+    if (!lensResp.ok) throw new Error(`Lens fetch failed: ${lensResp.status}`);
+    const lensData = await lensResp.json();
+    lensDisplayToSlug = {};
+    lensSlugSet = new Set();
+    lensSlugToId = {};
+    for (const l of (lensData.items || [])) {
+      const slug = l.properties.name;            // name IS the slug (e.g., 'hidden_history')
+      const displayLabel = l.properties.display_label || slug;  // e.g., 'Hidden History'
+      lensDisplayToSlug[displayLabel] = slug;
+      lensSlugSet.add(slug);
+      lensSlugToId[slug] = l.id;
+    }
+
+    // Fetch POI list for conflict detection caching
+    try {
+      const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=500`);
+      if (poiResp.ok) {
+        const poiListData = await poiResp.json();
+        cachedPoiList = poiListData.items || [];
+      }
+    } catch (e) { /* non-fatal — conflict detection will work without cache */ }
+  }
 
   function resolveLensSlug(lens) {
     if (!lens) return null;
-    if (MVP_LENSES[lens]) return MVP_LENSES[lens];
-    if (SLUG_SET.has(lens)) return lens;
+    if (lensDisplayToSlug[lens]) return lensDisplayToSlug[lens];
+    if (lensSlugSet.has(lens)) return lens;
     // Try case-insensitive match on display labels
     const lower = lens.toLowerCase();
-    for (const [label, slug] of Object.entries(MVP_LENSES)) {
+    for (const [label, slug] of Object.entries(lensDisplayToSlug)) {
       if (label.toLowerCase() === lower) return slug;
     }
     return null;
@@ -1621,6 +2058,86 @@
         result.matchedPois.push(poiEntry);
       }
     }
+    return result;
+  }
+
+  // ── Per-POI conflict detection ──
+
+  async function detectConflictsForPoi(poi) {
+    const result = { isNew: true, existingBeats: [], beatConflicts: [], beatReviewItems: [], coordWarning: false, coordDistance: 0, errors: [] };
+
+    let existingBeats = [];
+    let existingPoiCoords = null;
+    try {
+      const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.poi_name)}/beats`);
+      const data = await resp.json();
+      existingBeats = data.beats || [];
+
+      // Use cached POI list for coordinate comparison
+      if (existingBeats.length > 0 || cachedPoiList.length > 0) {
+        const match = cachedPoiList.find(p => p.properties.name === poi.poi_name);
+        if (match && match.properties.location) {
+          existingPoiCoords = match.properties.location;
+        }
+      }
+    } catch (e) {
+      result.errors.push(`Failed to check POI "${poi.poi_name}": ${e.message}`);
+      return result;
+    }
+
+    result.existingBeats = existingBeats;
+    result.isNew = existingBeats.length === 0 && !existingPoiCoords;
+
+    if (result.isNew) return result;
+
+    // Coordinate mismatch check
+    if (existingPoiCoords) {
+      const dist = haversineKm(poi.latitude, poi.longitude, existingPoiCoords.lat, existingPoiCoords.lng);
+      if (dist > 0.5) {
+        result.coordWarning = true;
+        result.coordDistance = (dist * 1000).toFixed(0);
+      }
+    }
+
+    // Beat-level conflict detection
+    for (let bi = 0; bi < poi.beats.length; bi++) {
+      const beat = poi.beats[bi];
+      const incomingSlug = resolveLensSlug(beat.lens);
+      if (!incomingSlug) {
+        result.errors.push(`Beat ${bi + 1} lens "${beat.lens}": unrecognized lens.`);
+        continue;
+      }
+
+      // Hard match: same lens
+      const hardMatch = existingBeats.find(eb => eb.lens_slug === incomingSlug);
+      if (hardMatch) {
+        result.beatConflicts.push({
+          beatIndex: bi, beat, existing: hardMatch, matchType: 'hard',
+          similarity: 1.0,
+        });
+        continue;
+      }
+
+      // Soft/review match
+      let bestSim = 0;
+      let bestMatch = null;
+      for (const eb of existingBeats) {
+        const sim = jaccardSimilarity(eb.script_body, beat.script_body);
+        if (sim > bestSim) { bestSim = sim; bestMatch = eb; }
+      }
+
+      if (bestSim >= 0.70) {
+        result.beatConflicts.push({
+          beatIndex: bi, beat, existing: bestMatch, matchType: 'soft',
+          similarity: bestSim,
+        });
+      } else if (bestSim >= 0.30) {
+        result.beatReviewItems.push({
+          beatIndex: bi, beat, existing: bestMatch, similarity: bestSim,
+        });
+      }
+    }
+
     return result;
   }
 
@@ -1797,7 +2314,6 @@
           script_body: selections.script_body,
           gravity: selections.gravity,
           lens: selections.lens,
-          tags: item.beat.tags || [],
         });
       });
 
@@ -1814,7 +2330,7 @@
     const select = document.createElement('select');
     select.className = 'lens-select';
     select.innerHTML = '<option value="">Select new lens...</option>' +
-      Object.entries(MVP_LENSES).map(([label, slug]) =>
+      Object.entries(lensDisplayToSlug).map(([label, slug]) =>
         `<option value="${slug}">${escHtml(label)}</option>`
       ).join('');
     btn.insertAdjacentElement('afterend', select);
@@ -1827,6 +2343,91 @@
       select.remove();
       markResolved(idx, `Lens changed to ${newSlug}`);
     });
+  }
+
+  // ── Progressive single-POI upload ──
+
+  async function uploadSinglePoi(poiIdx) {
+    const poi = poiData[poiIdx];
+    const lensMap = lensSlugToId;
+
+    // Build POI payload
+    const poiPayload = mapPoiForApi(poi);
+
+    // Create or merge POI node
+    const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(poiPayload),
+    });
+    if (!poiResp.ok) throw new Error(`POI create failed: ${poiResp.status}`);
+    const poiNode = await poiResp.json();
+
+    // Process each beat
+    for (let bi = 0; bi < poi.beats.length; bi++) {
+      const beat = poi.beats[bi];
+      const resolution = beat._conflictResolution;
+
+      // If beat was skipped, don't upload
+      if (resolution && resolution.action === 'skip') continue;
+
+      let mapped;
+      let beatSlug;
+
+      if (resolution && resolution.action === 'merge' && resolution.mergedBeat) {
+        // Use merged beat
+        beatSlug = resolveLensSlug(resolution.mergedBeat.lens) || resolveLensSlug(beat.lens);
+        mapped = {
+          script_body: resolution.mergedBeat.script_body,
+          lens_slug: beatSlug,
+          version: (resolution.existingBeat.version || 1) + 1,
+          active_status: 'active',
+          duration_sec: (Number(resolution.mergedBeat.gravity) || 3) * 60,
+          kid_friendly: 'yes',
+        };
+      } else if (resolution && resolution.action === 'change-lens') {
+        mapped = mapBeatForApi(beat);
+        mapped.lens_slug = resolution.newLensSlug;
+        beatSlug = resolution.newLensSlug;
+      } else {
+        mapped = mapBeatForApi(beat);
+        beatSlug = mapped.lens_slug;
+      }
+
+      if (!beatSlug) throw new Error(`Beat ${bi + 1} lens unrecognized.`);
+      const lensId = lensMap[beatSlug];
+      if (!lensId) throw new Error(`Lens "${beatSlug}" not found in database.`);
+
+      // Deprecate existing beat if replacing or merging
+      if (resolution && (resolution.action === 'replace' || resolution.action === 'merge') && resolution.existingBeat) {
+        await fetch(`${API_BASE}/nodes/NarrativeBeat/${resolution.existingBeat.id}`, {
+          method: 'PUT', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
+        });
+        if (resolution.action === 'replace') {
+          mapped.version = (resolution.existingBeat.version || 1) + 1;
+        }
+      }
+
+      // Create beat node
+      const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(mapped),
+      });
+      if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+      const beatNode = await beatResp.json();
+
+      // HAS_BEAT edge
+      await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+      });
+
+      // TAGGED_WITH edge
+      await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+      });
+    }
   }
 
   // ── Task 8: Upload execution with progress ──
@@ -1873,18 +2474,8 @@
     };
     const succeededIds = new Set();
 
-    // Fetch lens node IDs (Task 11)
-    let lensMap = {};
-    try {
-      const lensResp = await fetch(`${API_BASE}/nodes/Lens?limit=20`);
-      const lensData = await lensResp.json();
-      for (const l of (lensData.items || [])) {
-        lensMap[l.properties.name] = l.id;
-      }
-    } catch (e) {
-      stats.errors.push(`Failed to fetch Lens nodes: ${e.message}`);
-      return stats;
-    }
+    // Use cached lens ID map (populated at load time)
+    const lensMap = lensSlugToId;
 
     // Collect all work items
     const workItems = [];
@@ -2298,8 +2889,8 @@
   // ── Task 10: beforeunload warning ──
 
   window.addEventListener('beforeunload', (e) => {
-    const hasUnuploaded = poiData.some(p => p._status === 'complete');
-    if (hasUnuploaded) {
+    const hasUnreviewed = poiData.some(p => p._status === 'pending' || p._status === 'deferred');
+    if (hasUnreviewed) {
       e.preventDefault();
     }
   });
