@@ -436,6 +436,7 @@
     text-transform: uppercase;
   }
   .beat-conflict-badge-hard { background: var(--red); color: #fff; }
+  .beat-conflict-badge-soft { background: var(--orange); color: #fff; }
   .beat-conflict-badge-review { background: var(--yellow); color: #000; }
   .beat-conflict-resolved-label {
     font-size: 0.78rem;
@@ -1037,10 +1038,12 @@
         return;
       }
     }
-    // Attach session metadata
+    // Attach session metadata and strip empty beats
     const data = raw.map(entry => ({
       ...entry,
-      beats: Array.isArray(entry.beats) ? entry.beats.map(b => ({ ...b })) : [],
+      beats: Array.isArray(entry.beats)
+        ? entry.beats.filter(b => b.script_body && b.script_body.trim() !== '').map(b => ({ ...b }))
+        : [],
       _status: 'pending'
     }));
 
@@ -1526,8 +1529,10 @@
       const conflict = conflictByBeat[bi];
       const review = reviewByBeat[bi];
       let conflictBadge = '';
-      if (conflict) {
-        conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-hard">Conflict (${conflict.matchType === 'hard' ? 'same lens' : (conflict.similarity * 100).toFixed(0) + '% similar'})</span>`;
+      if (conflict && conflict.matchType === 'hard') {
+        conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-hard">Conflict (same lens)</span>`;
+      } else if (conflict && conflict.matchType === 'soft') {
+        conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-soft">Conflict (${(conflict.similarity * 100).toFixed(0)}% similar)</span>`;
       } else if (review) {
         conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-review">Review (${(review.similarity * 100).toFixed(0)}% similar)</span>`;
       }
@@ -1912,7 +1917,7 @@
 
     // Fetch POI list for conflict detection caching
     try {
-      const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=500`);
+      const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=200`);
       if (poiResp.ok) {
         const poiListData = await poiResp.json();
         cachedPoiList = poiListData.items || [];

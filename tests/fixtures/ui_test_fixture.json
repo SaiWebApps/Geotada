@@ -1,0 +1,290 @@
+[
+  {
+    "poi_name": "UI Test — Boston Harbor Lighthouse",
+    "latitude": 42.3616,
+    "longitude": -71.0517,
+    "short_description": "Historic lighthouse guiding ships into Boston Harbor since the colonial era.",
+    "orientation": "Face the waterfront and look east toward the harbor islands.",
+    "beats": [
+      {
+        "script_body": "Boston Harbor Lighthouse has guided mariners since 1716, making it the first lighthouse established in what would become the United States. The original tower was destroyed during the Revolutionary War and rebuilt in 1783. Standing at the edge of the harbor, you can still see its beam sweeping across the water on foggy nights.",
+        "physical_cue": "Look east toward the harbor — the lighthouse stands on Little Brewster Island.",
+        "lens": "Hidden History",
+        "gravity": 3,
+        "source_passage": "Boston Harbor historical records, National Park Service archives."
+      },
+      {
+        "script_body": "Local fishermen swear they see the ghost of keeper Worthylake walking the rocks at low tide. He drowned in 1718 along with his wife and daughter when their boat capsized returning to the lighthouse. A young Benjamin Franklin wrote a ballad about the tragedy — his first published work.",
+        "physical_cue": "The rocky shoreline where Worthylake's boat capsized is just south of the lighthouse pier.",
+        "lens": "Local Legends & Folklore",
+        "gravity": 4,
+        "source_passage": "Benjamin Franklin autobiography; Boston maritime folklore collection."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Faneuil Hall Anchor",
+    "latitude": 42.3601,
+    "longitude": -71.0568,
+    "short_description": "The Cradle of Liberty where revolutionary speeches shaped a nation.",
+    "orientation": "Stand in the main hall facing the stage where Samuel Adams once spoke.",
+    "beats": [
+      {
+        "script_body": "Samuel Adams stood on this very floor and rallied Bostonians against British taxation without representation. The debates held in this hall planted the seeds of the American Revolution and earned it the nickname the Cradle of Liberty. Every word echoed off these walls carried the weight of a colony straining against the crown. Adams was no ordinary agitator — he was a master propagandist who understood that public opinion could be shaped by spectacle as much as argument. He packed the hall with sympathizers, planted questions in the crowd, and made sure every debate ended with a thunderous call to action. The British knew what was brewing here but couldn't stop it — suppressing the debates would only prove the colonists' point about tyranny.",
+        "physical_cue": "The stage at the front of the hall where speakers addressed crowds of hundreds.",
+        "lens": "Hidden History",
+        "gravity": 5,
+        "source_passage": "Historical Society of Boston archives; Adams family correspondence."
+      },
+      {
+        "script_body": "Faneuil Hall's architecture tells a story of reinvention. Built in 1742 as a market and meeting hall, it was designed by painter John Smibert in the Georgian style. The original building was just two stories with an open ground floor market. After a devastating fire in 1761, it was rebuilt and later expanded by Charles Bulfinch in 1805, who added a third floor and doubled its width. Bulfinch's signature Federal style cupola still crowns the building today. The grasshopper weathervane atop the cupola was crafted by Shem Drowne in 1742 and has become one of Boston's most iconic symbols. During the Revolution, it was used as a test of loyalty — anyone who couldn't identify the grasshopper was suspected of being a British spy.",
+        "physical_cue": "Look up at the cupola — the copper grasshopper weathervane has been there since 1742.",
+        "lens": "Architecture & Design",
+        "gravity": 5,
+        "source_passage": "Bulfinch architectural records; Boston Landmarks Commission."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Quiet Garden Corner",
+    "latitude": 42.3555,
+    "longitude": -71.062,
+    "short_description": "A hidden garden tucked behind Beacon Hill brownstones.",
+    "orientation": "Look for the wrought-iron gate between the two brick buildings.",
+    "beats": [
+      {
+        "script_body": "A tiny garden hides behind the brownstones. Locals call it the secret green.",
+        "physical_cue": "The wrought-iron gate on the left.",
+        "lens": "Nature & Green Spaces",
+        "gravity": 1,
+        "source_passage": "Local resident interviews."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Times Square Billboard",
+    "latitude": 40.758,
+    "longitude": -73.9855,
+    "short_description": "The crossroads of the world — far outside Boston's geofence.",
+    "orientation": "Face north on Broadway between 42nd and 47th streets.",
+    "beats": [
+      {
+        "script_body": "Times Square was originally called Longacre Square until the New York Times moved its headquarters there in 1904. The newspaper's publisher convinced the city to rename the intersection and build a subway station — one of the most successful branding exercises in urban history.",
+        "physical_cue": "The original Times building still stands at the triangle where Broadway crosses Seventh Avenue.",
+        "lens": "Hidden History",
+        "gravity": 3,
+        "source_passage": "New York Times company archives; NYC historical records."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Invalid Location Marker",
+    "latitude": 999,
+    "longitude": -999,
+    "short_description": "This POI has impossible coordinates to test validation.",
+    "orientation": "No valid orientation — coordinates are outside Earth's range.",
+    "beats": [
+      {
+        "script_body": "This beat exists to test how the workbench handles a POI with coordinates that exceed the valid range of latitude (-90 to 90) and longitude (-180 to 180).",
+        "physical_cue": "No physical cue available for invalid coordinates.",
+        "lens": "Hidden History",
+        "gravity": 3,
+        "source_passage": "Test fixture — no real source."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Duplicate Harbor Walk",
+    "latitude": 42.357,
+    "longitude": -71.0495,
+    "short_description": "First of two entries sharing a name — tests duplicate resolver.",
+    "orientation": "Start at the waterfront near the aquarium.",
+    "beats": [
+      {
+        "script_body": "The Harbor Walk stretches 47 miles along Boston's waterfront connecting neighborhoods that were once isolated by highway overpasses. The Big Dig buried the elevated expressway and opened this continuous path from East Boston to Dorchester.",
+        "physical_cue": "Blue markers embedded in the pavement guide you along the walk.",
+        "lens": "Architecture & Design",
+        "gravity": 3,
+        "source_passage": "Boston Redevelopment Authority; Harbor Walk planning documents."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Duplicate Harbor Walk",
+    "latitude": 42.3545,
+    "longitude": -71.047,
+    "short_description": "Second of two entries sharing a name — tests duplicate resolver.",
+    "orientation": "Continue south along the waterfront past the Moakley Courthouse.",
+    "beats": [
+      {
+        "script_body": "The southern stretch of Harbor Walk passes the Moakley Federal Courthouse where you can see planes landing at Logan Airport across the water. At sunset the entire harbor turns gold and the courthouse glass reflects the skyline like a mirror.",
+        "physical_cue": "The curved glass facade of the Moakley Courthouse reflects the harbor at sunset.",
+        "lens": "Nature & Green Spaces",
+        "gravity": 2,
+        "source_passage": "Boston Harbor Association walking guide."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Quincy Market Multi-Lens",
+    "latitude": 42.3601,
+    "longitude": -71.0545,
+    "short_description": "Historic marketplace testing multi-lens beat rendering and editing.",
+    "orientation": "Enter through the main colonnade facing Faneuil Hall.",
+    "beats": [
+      {
+        "script_body": "Quincy Market was built in 1826 to ease overcrowding at Faneuil Hall. Architect Alexander Parris designed the granite building in the Greek Revival style with a massive central dome. The market stretches 535 feet along a single axis — one of the longest uninterrupted commercial spaces in America.",
+        "physical_cue": "The granite colonnade entrance with Doric columns framing the central dome.",
+        "lens": "Architecture & Design",
+        "gravity": 5,
+        "source_passage": "Boston Landmarks Commission; Alexander Parris architectural records."
+      },
+      {
+        "script_body": "Underground tunnels connect Quincy Market to the old customs house. Smugglers used these passages to move goods past tax collectors in the early 1800s.",
+        "physical_cue": "A sealed iron grate near the south entrance marks one tunnel opening.",
+        "lens": "Hidden History",
+        "gravity": 4,
+        "source_passage": "Boston underground survey; customs house records."
+      },
+      {
+        "script_body": "The food stalls inside Quincy Market have served everything from clam chowder to lobster rolls since the 1970s restoration. Before that the building sat nearly abandoned for decades.",
+        "physical_cue": "The central rotunda food court under the copper dome.",
+        "lens": "Food & Culinary Culture",
+        "gravity": 2,
+        "source_passage": "Rouse Company restoration documents; Boston food history."
+      },
+      {
+        "script_body": "Street performers outside Quincy Market carry on a tradition stretching back to colonial peddlers who hawked wares with songs and tricks.",
+        "physical_cue": "The cobblestone plaza between Quincy Market and Faneuil Hall where performers gather.",
+        "lens": "Music & Nightlife History",
+        "gravity": 1,
+        "source_passage": "Boston busking history; colonial marketplace records."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Empty Script Beat",
+    "latitude": 42.358,
+    "longitude": -71.061,
+    "short_description": "Tests the empty script_body warning and Mark as Complete blocking.",
+    "orientation": "Near the intersection of Tremont and Boylston.",
+    "beats": [
+      {
+        "script_body": "   ",
+        "physical_cue": "A faded sign on the corner building.",
+        "lens": "Hidden History",
+        "gravity": 3,
+        "source_passage": "No source — empty beat for testing."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — The Extraordinarily Long-Named Historical Marker at the Corner of Tremont and Winter Streets",
+    "latitude": 42.3557,
+    "longitude": -71.0615,
+    "short_description": "This is a deliberately long description designed to test how the workbench handles text overflow in the worklist row and detail view. It describes a historical marker at the intersection of Tremont and Winter Streets in downtown Boston where a revolutionary-era printing press once operated, producing pamphlets that circulated throughout the colonies and helped shape public opinion in the years leading up to American independence from British colonial rule. The marker was installed in 1976 during the bicentennial celebrations.",
+    "orientation": "Stand at the southwest corner of the intersection facing the brick building with the commemorative bronze plaque mounted approximately six feet above street level on the facade between the first and second floor windows. You may need to look carefully as the plaque has weathered significantly since its installation during the 1976 bicentennial celebrations.",
+    "beats": [
+      {
+        "script_body": "A revolutionary-era printing press once operated in the basement of this building, producing pamphlets that circulated throughout the thirteen colonies. The printer worked in secret at night by candlelight to avoid British patrols who were actively hunting seditious publishers.",
+        "physical_cue": "The bronze plaque on the brick facade between the first and second floor windows.",
+        "lens": "Hidden History",
+        "gravity": 3,
+        "source_passage": "Colonial printing records; Massachusetts Historical Society."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test Seed — Old North Church",
+    "latitude": 42.3663,
+    "longitude": -71.0544,
+    "short_description": "Conflict test POI — matches seeded Old North Church for conflict detection testing.",
+    "orientation": "Face the steeple from Salem Street.",
+    "beats": [
+      {
+        "script_body": "The secret lantern signal from Old North Church steeple warned patriots across Boston harbor that British troops were advancing by sea toward Lexington. Robert Newman risked his life climbing those stairs while sentries patrolled below. Two lanterns blazed briefly then vanished into the April darkness changing American history forever.",
+        "physical_cue": "The steeple visible above the roofline of Salem Street.",
+        "lens": "Hidden History",
+        "gravity": 4,
+        "source_passage": "Paul Revere's account; Old North Church archives."
+      },
+      {
+        "script_body": "Jazz clubs once lined these cobblestone lanes drawing musicians from Harlem and Chicago. The smoky basement venues hosted late night jam sessions where unknown artists played alongside legends. Neon signs flickered above doorways beckoning sailors and students into underground speakeasies.",
+        "physical_cue": "The basement entrance with the faded neon sign on Hull Street.",
+        "lens": "Music & Nightlife History",
+        "gravity": 2,
+        "source_passage": "Boston jazz scene oral history project."
+      },
+      {
+        "script_body": "Paul Revere galloped through the Massachusetts countryside warning colonial militia that British regulars were marching toward Lexington and Concord. His midnight ride covered roughly twelve miles of dark roads and sleeping villages. At every farmhouse he pounded on doors shouting the regulars are coming. Samuel Prescott and William Dawes joined the ride but only Prescott reached Concord alerting the minutemen.",
+        "physical_cue": "The North End streets Revere rode through on his way out of Boston.",
+        "lens": "Food & Culinary Culture",
+        "gravity": 3,
+        "source_passage": "Longfellow poem; Revere historical society."
+      },
+      {
+        "script_body": "British soldiers occupied Boston years before Revolution turning churches stables homes barracks. Redcoats patrolled cobblestone streets enforcing harsh laws colonial citizens. Tensions boiled over. Street artists captured scenes depicting crowd gathered near massacre site painting vivid murals watercolors.",
+        "physical_cue": "The alley wall where faded murals depict colonial-era scenes.",
+        "lens": "Art & Street Culture",
+        "gravity": 3,
+        "source_passage": "Colonial art history; Boston Massacre site records."
+      },
+      {
+        "script_body": "Ancient oak trees along the harbor walk shelter migratory songbirds every spring. The salt marsh ecosystem supports dozens of native plant species rarely found elsewhere in urban New England. Volunteers restored these wetlands after decades of industrial pollution nearly destroyed the natural habitat.",
+        "physical_cue": "The grove of old oak trees near the waterfront path.",
+        "lens": "Nature & Green Spaces",
+        "gravity": 2,
+        "source_passage": "Boston harbor ecology survey; urban wildlife reports."
+      }
+    ]
+  },
+  {
+    "poi_name": "UI Test — Audited Beacon Hill",
+    "latitude": 42.3588,
+    "longitude": -71.0707,
+    "short_description": "Tests audit notes rendering in both object and array formats.",
+    "orientation": "Walk up the cobblestone slope of Acorn Street.",
+    "poi_audit_notes": [
+      {
+        "issue": "POI coordinates may be slightly off — verify against satellite imagery.",
+        "confidence": "MEDIUM",
+        "source": "Manual review during data audit."
+      },
+      {
+        "issue": "Short description could be more specific about which part of Beacon Hill.",
+        "confidence": "LOW",
+        "source": "Editorial style guide review."
+      }
+    ],
+    "beats": [
+      {
+        "script_body": "Beacon Hill's gas-lit streets and brick sidewalks make it one of the most photographed neighborhoods in America. The purple windowpanes on several Beacon Street mansions are the result of a chemical reaction in 19th-century glass — they were never intentionally tinted.",
+        "physical_cue": "Look for the purple-tinted windowpanes on the Beacon Street side.",
+        "lens": "Architecture & Design",
+        "gravity": 4,
+        "source_passage": "Beacon Hill architectural survey; glass chemistry records.",
+        "audit_notes": {
+          "issue": "Purple windowpane claim needs primary source verification.",
+          "current_text": "they were never intentionally tinted",
+          "suggested_fix": "Add citation to the manganese oxide chemical analysis from 1960s restoration reports.",
+          "confidence": "HIGH",
+          "source": "https://www.beaconhillhistory.org/glass-analysis"
+        }
+      },
+      {
+        "script_body": "The African Meeting House on Joy Street is the oldest surviving Black church building in the United States, built in 1806. William Lloyd Garrison founded the New England Anti-Slavery Society here in 1832.",
+        "physical_cue": "The brick facade of the African Meeting House at 46 Joy Street.",
+        "lens": "Hidden History",
+        "gravity": 5,
+        "source_passage": "Museum of African American History; National Park Service documentation.",
+        "audit_notes": {
+          "issue": "Date verification needed — some sources say 1805 for construction start.",
+          "current_text": "built in 1806",
+          "suggested_fix": "Clarify: 'construction began in 1805, completed and dedicated in 1806.'",
+          "confidence": "MEDIUM",
+          "source": "Museum of African American History records."
+        }
+      }
+    ]
+  }
+]
