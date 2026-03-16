@@ -16,5 +16,23 @@ services:
       timeout: 5s
       retries: 30
 
+  neo4j-test:
+    image: neo4j:5
+    container_name: travlr-neo4j-test
+    ports:
+      - "7475:7474"  # HTTP browser (test)
+      - "7688:7687"  # Bolt protocol (test)
+    environment:
+      NEO4J_AUTH: neo4j/travlr_test_2026
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - neo4j_test_data:/data
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "travlr_test_2026", "RETURN 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
 volumes:
   neo4j_data:
+  neo4j_test_data:

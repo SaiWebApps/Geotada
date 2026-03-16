@@ -251,5 +251,7 @@ temp/
 .claude/*
 !.claude/commands/
 
-# Keep .env.example but ignore .env
+# Keep .env.example and .env.test.example but ignore .env and .env.test
 !.env.example
+.env.test
+!.env.test.example

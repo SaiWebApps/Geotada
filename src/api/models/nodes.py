@@ -77,6 +77,7 @@ class POICreate(BaseModel):
     trigger_radius: int = 10
     typical_duration_min: int = 30
     kid_friendly: str = "yes"
+    name_variations: list[str] = []
 
 
 class NarrativeBeatCreate(BaseModel):

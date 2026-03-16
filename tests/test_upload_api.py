@@ -177,6 +177,62 @@ class TestBeatTraversal:
         assert resp.status_code == 200
         assert resp.json()["beats"] == []
 
+
+# ── Test 15: name_variations on POI creation ──
+
+
+@needs_neo4j
+class TestNameVariations:
+    """POST /nodes/POI with name_variations field."""
+
+    def test_poi_with_name_variations(self, client):
+        payload = {
+            "name": "Name Var Test POI",
+            "latitude": 42.361,
+            "longitude": -71.059,
+            "name_variations": ["Alt Name 1", "Alt Name 2"],
+        }
+        resp = client.post("/api/v1/nodes/POI", json=payload)
+        assert resp.status_code == 201
+        props = resp.json()["properties"]
+        assert props["name_variations"] == ["Alt Name 1", "Alt Name 2"]
+
+        # Confirm persistence via GET
+        poi_list = client.get("/api/v1/nodes/POI?limit=200").json()
+        match = next(
+            p for p in poi_list["items"]
+            if p["properties"]["name"] == "Name Var Test POI"
+        )
+        assert match["properties"]["name_variations"] == ["Alt Name 1", "Alt Name 2"]
+
+    def test_poi_without_name_variations(self, client):
+        payload = {
+            "name": "No Var Test POI",
+            "latitude": 42.362,
+            "longitude": -71.058,
+        }
+        resp = client.post("/api/v1/nodes/POI", json=payload)
+        assert resp.status_code == 201
+        # Should not error — name_variations defaults to []
+
+    def test_poi_with_invalid_name_variations(self, client):
+        payload = {
+            "name": "Invalid Var Test POI",
+            "latitude": 42.363,
+            "longitude": -71.057,
+            "name_variations": [123, "valid"],
+        }
+        resp = client.post("/api/v1/nodes/POI", json=payload)
+        assert resp.status_code == 422, "Non-string items in name_variations should be rejected"
+
+
+# ── Existing tests continued ──
+
+
+@needs_neo4j
+class TestBeatTraversalDeprecated:
+    """Test deprecated beat exclusion."""
+
     def test_excludes_deprecated_beats(self, client):
         # Create a POI with a deprecated beat
         client.post("/api/v1/nodes/POI", json={

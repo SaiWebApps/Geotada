@@ -1,4 +1,4 @@
-.PHONY: help venv env install lint format test test-unit test-integration test-api setup verify clean db-up db-down db-status dashboard api
+.PHONY: help venv env install lint format test test-unit test-integration test-api setup verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
 
 PYTHON := .venv/bin/python
 PIP    := .venv/bin/pip
@@ -53,22 +53,40 @@ test-integration: ## Run integration tests (needs Neo4j)
 # DATABASE
 # ──────────────────────────────────────────────────────────
 
-db-up: ## Start Neo4j in Docker
-	docker compose up -d
+db-up: ## Start dev Neo4j in Docker (production data)
+	docker compose up -d neo4j
 	@echo "Waiting for Neo4j to be healthy..."
 	@docker compose exec neo4j bash -c 'until cypher-shell -u neo4j -p travlr_dev_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
 	@echo "✓ Neo4j is ready at bolt://localhost:7687"
 	@echo "  Browser: http://localhost:7474"
 
-db-down: ## Stop Neo4j
-	docker compose down
+db-down: ## Stop dev Neo4j (data preserved)
+	docker compose stop neo4j
 
 db-status: ## Check Neo4j container status
 	@docker compose ps
 
-db-reset: ## Stop Neo4j and wipe all data
-	docker compose down -v
-	@echo "✓ Neo4j stopped and data wiped."
+db-reset: ## Stop dev Neo4j and wipe all data (DESTRUCTIVE)
+	docker compose stop neo4j
+	docker compose rm -f neo4j
+	docker volume rm -f geotada_neo4j_data
+	@echo "✓ Dev Neo4j stopped and data wiped."
+
+db-test-up: ## Start test Neo4j in Docker (disposable data)
+	docker compose up -d neo4j-test
+	@echo "Waiting for test Neo4j to be healthy..."
+	@docker compose exec neo4j-test bash -c 'until cypher-shell -u neo4j -p travlr_test_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
+	@echo "✓ Test Neo4j is ready at bolt://localhost:7688"
+	@echo "  Browser: http://localhost:7475"
+
+db-test-down: ## Stop test Neo4j (data preserved)
+	docker compose stop neo4j-test
+
+db-test-reset: ## Stop test Neo4j and wipe test data
+	docker compose stop neo4j-test
+	docker compose rm -f neo4j-test
+	docker volume rm -f geotada_neo4j_test_data
+	@echo "✓ Test Neo4j stopped and data wiped."
 
 # ──────────────────────────────────────────────────────────
 # APPLICATION
@@ -89,10 +107,13 @@ dashboard: ## Start the web dashboard (port 8080)
 api: ## Start the FastAPI graph API (port 8000)
 	$(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
 
+api-test: ## Start API against test database (port 8000)
+	set -a && . .env.test && set +a && $(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS
 # ──────────────────────────────────────────────────────────
 
-all: install db-up setup test ## Full bootstrap: install → db → setup → test
+all: install db-up db-test-up setup test ## Full bootstrap: install → db → setup → test
 	@echo ""
 	@echo "✓ All done. Run 'make dashboard' for read-only view, 'make api' for CRUD editor."
