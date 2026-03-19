@@ -14,7 +14,7 @@ Travlr makes every city feel like you have a local storyteller in your pocket �
 
 | Phase | Window | Gate (must pass to advance) |
 |-------|--------|-----------------------------|
-| **1 — Build the Machine** | Months 1–3 | 12 lenses covered, 100+ Boston POIs live, Boredom Test passing internally |
+| **1 — Build the Machine** | Months 1–3 | 16 taggable lenses covered, 100+ Boston POIs live, Boredom Test passing internally |
 | **2 — First Real Walk** | Months 3–4 | 5–10 testers complete a full tour, 8/10 triggers fire, 3/10 recommend unprompted |
 | **3 — Public Launch** | Months 4–7 | App Store live, credits active, 200 completed tours, one organic breakthrough |
 | **4 — Prove It Scales** | Months 7–12 | City two live in <6 weeks pipeline work, first B2B conversation started |
@@ -32,9 +32,9 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 
 - **Database:** Neo4j graph database (Schema v3). Three domains: Traveler's Vault, Global Atlas, Execution Bridge.
 - **Graph spine:** User → Profile → Trip → ItineraryItem → POI → NarrativeBeat → Lens. Post-MVP nodes attach as branches, never insertions.
-- **Content primitive:** NarrativeBeat — versioned, lensed, gravity-scored (1–5). Max 1 beat per lens per POI (max 12 beats per POI).
+- **Content primitive:** NarrativeBeat — versioned, lensed, gravity-scored (1–5). Max 1 beat per taggable lens per POI.
 - **Gravity scoring:** Beat-level, not POI-level. Two-signal matrix: POI Reach × Beat Distinctiveness.
-- **Lens system:** 12 lenses, hardcoded config file. No embedding similarity for MVP.
+- **Lens system:** Hybrid parent/child + leaf architecture. 11 top-level lenses (3 parents, 8 leaves), 8 child lenses = 16 taggable lenses. `is_parent` property on Lens nodes controls taggability. Hardcoded config file. No embedding similarity for MVP. See `specs/2026-03-15-lens-overhaul/`.
 - **Audio engine:** ElevenLabs Conversational AI (~$15–20 per 60-min tour). MP3, 256kbps, Stereo, 44.1kHz. Stored on AWS S3.
 - **Beat duration formula:** Gravity × 60 seconds per beat.
 - **Geocoding:** OpenStreetMap (free) for MVP → Google Maps Geocoding API at launch. 6 decimal places (~10cm). Auto-flag <70% confidence.

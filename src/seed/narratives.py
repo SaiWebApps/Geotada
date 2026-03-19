@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.schema.definitions import TAGGABLE_LENSES
+
 if TYPE_CHECKING:
     from neo4j import Driver
 
@@ -35,7 +37,7 @@ BEATS: list[dict] = [
             "could touch the sky. Parisians called it an eyesore. Now it's the most "
             "visited paid monument on Earth."
         ),
-        "lens_names": ["arch_design", "hidden_history"],
+        "lens_names": ["historic_arch", "hidden_history"],
         "importance_tier": 5,
     },
     {
@@ -71,6 +73,11 @@ BEATS: list[dict] = [
         "importance_tier": 2,
     },
 ]
+
+# Validate all lens references are taggable at import time
+for _beat in BEATS:
+    for _ln in _beat["lens_names"]:
+        assert _ln in TAGGABLE_LENSES, f"Beat lens '{_ln}' is not a taggable lens"
 
 
 def _build_beat_params(beat: dict) -> dict:

@@ -53,11 +53,11 @@ class TestGraphEndpoint:
 
     def test_contains_seeded_nodes(self, client):
         data = client.get("/api/v1/graph").json()
-        assert len(data["nodes"]) == 27
+        assert len(data["nodes"]) == 33
 
     def test_contains_seeded_edges(self, client):
         data = client.get("/api/v1/graph").json()
-        assert len(data["edges"]) == 33
+        assert len(data["edges"]) == 40
 
     def test_nodes_have_required_fields(self, client):
         node = client.get("/api/v1/graph").json()["nodes"][0]
@@ -88,18 +88,18 @@ class TestListNodes:
         data = client.get("/api/v1/nodes/POI").json()
         assert data["total"] == 3
 
-    def test_list_lenses_returns_thirteen(self, client):
+    def test_list_lenses_returns_nineteen(self, client):
         data = client.get("/api/v1/nodes/Lens").json()
-        assert data["total"] == 13
+        assert data["total"] == 19
 
     def test_pagination_limit(self, client):
         data = client.get("/api/v1/nodes/Lens?limit=2").json()
-        assert data["total"] == 13
+        assert data["total"] == 19
         assert len(data["items"]) == 2
 
     def test_pagination_skip(self, client):
         data = client.get("/api/v1/nodes/Lens?skip=10&limit=50").json()
-        assert len(data["items"]) == 3  # 13 total, skip 10 = 3 left
+        assert len(data["items"]) == 9  # 19 total, skip 10 = 9 left
 
     def test_response_shape(self, client):
         data = client.get("/api/v1/nodes/User").json()

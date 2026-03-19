@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 
 class NodeLabel(str, Enum):
@@ -78,6 +78,21 @@ class POICreate(BaseModel):
     typical_duration_min: int = 30
     kid_friendly: str = "yes"
     name_variations: list[str] = []
+    force_create: bool = False
+
+    @field_validator("latitude")
+    @classmethod
+    def latitude_in_range(cls, v: float) -> float:
+        if not -90 <= v <= 90:
+            raise ValueError("latitude must be between -90 and 90")
+        return v
+
+    @field_validator("longitude")
+    @classmethod
+    def longitude_in_range(cls, v: float) -> float:
+        if not -180 <= v <= 180:
+            raise ValueError("longitude must be between -180 and 180")
+        return v
 
 
 class NarrativeBeatCreate(BaseModel):

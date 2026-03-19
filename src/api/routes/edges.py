@@ -60,6 +60,19 @@ def create_edge(
     except ValueError:
         raise HTTPException(422, f"Invalid target label: '{body.target.label}'")
 
+    # Prevent tagging beats with parent-only lenses
+    if rel_type.value == "TAGGED_WITH" and body.target.label == "Lens":
+        rec = session.run(
+            "MATCH (l:Lens {id: $id}) RETURN l.is_parent AS is_parent, l.name AS name",
+            id=body.target.id,
+        ).single()
+        if rec and rec["is_parent"]:
+            raise HTTPException(
+                422,
+                f"Cannot tag a beat with parent-only lens '{rec['name']}'. "
+                "Use a child or leaf lens.",
+            )
+
     result = crud.create_edge(
         session,
         rel_type.value,

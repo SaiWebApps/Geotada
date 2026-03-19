@@ -55,7 +55,7 @@ def create_node(
     try:
         validated = model_cls(**body)
     except ValidationError as e:
-        raise HTTPException(422, detail=e.errors())
+        raise HTTPException(422, detail=str(e))
     try:
         return crud.create_node(session, label.value, validated.model_dump())
     except Exception as e:

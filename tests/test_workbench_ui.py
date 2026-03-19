@@ -130,36 +130,17 @@ SEED_BEATS = [
     },
 ]
 
-# 12 canonical lenses
-LENS_SLUGS = [
-    "hidden_history",
-    "architecture_design",
-    "local_legends_folklore",
-    "food_culinary",
-    "art_street",
-    "dark_history",
-    "literary_film",
-    "religious_spiritual",
-    "music_nightlife",
-    "revolutionary_moments",
-    "nature_green",
-    "shopping_markets",
-]
+# Taggable lenses — derived from definitions.py (single source of truth)
+from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES, TAGGABLE_LENSES
 
-LENS_DISPLAY_LABELS = {
-    "hidden_history": "Hidden History",
-    "architecture_design": "Architecture & Design",
-    "local_legends_folklore": "Local Legends & Folklore",
-    "food_culinary": "Food & Culinary Culture",
-    "art_street": "Art & Street Culture",
-    "dark_history": "Dark History",
-    "literary_film": "Literary & Film Locations",
-    "religious_spiritual": "Religious & Spiritual Sites",
-    "music_nightlife": "Music & Nightlife History",
-    "revolutionary_moments": "Revolutionary Moments",
-    "nature_green": "Nature & Green Spaces",
-    "shopping_markets": "Shopping & Markets",
-}
+LENS_SLUGS = list(TAGGABLE_LENSES)
+
+LENS_DISPLAY_LABELS = {}
+for _l in MVP_LENSES:
+    if not _l.get("is_parent"):
+        LENS_DISPLAY_LABELS[_l["name"]] = _l["display_label"]
+for _c in DAG_CHILD_LENSES:
+    LENS_DISPLAY_LABELS[_c["name"]] = _c["display_label"]
 
 
 # ---------------------------------------------------------------------------
@@ -1154,17 +1135,17 @@ class TestDetailViewAndEditing:
                             page, f"ac9-missing-field-{field}-beat{bi}",
                         )
 
-                # Check lens dropdown has 12 options
+                # Check lens dropdown has 16 taggable options
                 lens_selects = page.locator(DATA_BEAT_FIELD.format("lens"))
                 if lens_selects.count() > 0:
                     options = lens_selects.first.locator("option")
                     option_count = options.count()
-                    # Expect 12 lens options + 1 "Select lens..." placeholder = 13
+                    # Expect 16 taggable lens options + 1 "Select lens..." placeholder = 17
                     _safe_assert(
-                        reporter, option_count >= 12,
-                        "Major", f"Lens dropdown has {option_count} options instead of 12+",
+                        reporter, option_count >= 16,
+                        "Major", f"Lens dropdown has {option_count} options instead of 16+",
                         "Beat Rendering", ["Check lens select option count"],
-                        "12+ options in lens dropdown",
+                        "16+ options in lens dropdown",
                         f"{option_count} options found",
                         page, "ac9-lens-count",
                     )
@@ -1980,6 +1961,144 @@ class TestConflictDetection:
                 "Not found",
                 page, f"{screenshot_name}-not-found",
             )
+
+
+# ---------------------------------------------------------------------------
+# Test: Proximity Matching Logic (POI Matching Fix)
+# ---------------------------------------------------------------------------
+
+PROXIMITY_SAME_BTN = ".proximity-same-btn"
+PROXIMITY_DIFF_BTN = ".proximity-diff-btn"
+PROXIMITY_PANEL = ".proximity-match-panel"
+
+
+class TestProximityMatching:
+    """Frontend tests for location-first POI deduplication (ACs #1-8)."""
+
+    def test_find_proximity_matches_empty_for_distant_poi(self, browser_page):
+        """AC 1: POI >50m from all existing → empty array (auto-new)."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            // POI far from any existing (200m+ away)
+            const testPoi = { latitude: 42.40, longitude: -71.20 };
+            return findProximityMatches(testPoi, cachedPoiList);
+        }""")
+        assert isinstance(result, list)
+        assert len(result) == 0, "Distant POI should have no proximity matches"
+
+    def test_find_proximity_matches_returns_nearby(self, browser_page):
+        """AC 2: POI within 50m of one existing → single match returned."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            // Find first cached POI with location and create a nearby point
+            const existing = cachedPoiList.find(p => p.properties.location && p.properties.location.lat);
+            if (!existing) return { error: 'no cached POI with location' };
+            // Place incoming POI ~20m away (approx 0.0002 degrees)
+            const testPoi = {
+                latitude: existing.properties.location.lat + 0.0001,
+                longitude: existing.properties.location.lng + 0.0001,
+            };
+            const matches = findProximityMatches(testPoi, cachedPoiList);
+            return { count: matches.length, firstDist: matches.length > 0 ? matches[0].distanceM : null };
+        }""")
+        if "error" in result:
+            pytest.skip(result["error"])
+        assert result["count"] >= 1, "Nearby POI should have at least one proximity match"
+        assert result["firstDist"] <= 50, "Match should be within 50m"
+
+    def test_find_proximity_matches_sorted_by_distance(self, browser_page):
+        """AC 3: Multiple matches sorted ascending by distance."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            // Create two fake cached POIs close together, test a point near both
+            const fakeCached = [
+                { properties: { name: 'A', location: { lat: 42.3601, lng: -71.0589 } } },
+                { properties: { name: 'B', location: { lat: 42.3603, lng: -71.0589 } } },
+            ];
+            const testPoi = { latitude: 42.3602, longitude: -71.0589 };
+            const matches = findProximityMatches(testPoi, fakeCached);
+            return matches.map(m => ({ name: m.existingPoi.properties.name, dist: m.distanceM }));
+        }""")
+        assert len(result) == 2, "Should match both nearby POIs"
+        assert result[0]["dist"] <= result[1]["dist"], "Matches should be sorted by distance"
+
+    def test_same_name_distant_poi_is_new(self, browser_page):
+        """AC 8: Identical names 200m apart → both auto-new (no proximity match)."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            const fakeCached = [
+                { properties: { name: 'Old City Hall', location: { lat: 42.3580, lng: -71.0589 } } },
+            ];
+            // Same name, 200m away
+            const testPoi = { latitude: 42.3600, longitude: -71.0589 };
+            return findProximityMatches(testPoi, fakeCached);
+        }""")
+        assert len(result) == 0, "Same-name POI 200m away should have no proximity match"
+
+    def test_detect_conflicts_missing_coords(self, browser_page):
+        """AC 7: POI without coordinates → missingCoords: true."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            const testPoi = { poi_name: 'No Coords POI', beats: [] };
+            return detectConflictsForPoi(testPoi);
+        }""")
+        assert result["missingCoords"] is True
+        assert len(result["errors"]) > 0
+
+    def test_detect_conflicts_auto_new_no_match(self, browser_page):
+        """AC 1: POI with no nearby existing → isNew: true."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            const testPoi = { poi_name: 'Distant POI', latitude: 42.40, longitude: -71.20, beats: [] };
+            return detectConflictsForPoi(testPoi);
+        }""")
+        assert result["isNew"] is True
+        assert len(result["proximityMatches"]) == 0
+
+    def test_map_poi_for_api_with_existing_name(self, browser_page):
+        """AC 6: useExistingName sends the existing name in payload."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            const poi = { poi_name: 'Incoming Name', latitude: 42.36, longitude: -71.06 };
+            return mapPoiForApi(poi, { useExistingName: 'Existing Name' });
+        }""")
+        assert result["name"] == "Existing Name"
+
+    def test_map_poi_for_api_with_force_create(self, browser_page):
+        """AC 5: forceCreate sends force_create: true."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            const poi = { poi_name: 'Test POI', latitude: 42.36, longitude: -71.06 };
+            return mapPoiForApi(poi, { forceCreate: true });
+        }""")
+        assert result["force_create"] is True
+
+    def test_name_similarity_function(self, browser_page):
+        """Name similarity is computed correctly for display."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            return {
+                identical: nameSimilarity('Old City Hall', 'Old City Hall'),
+                similar: nameSimilarity('Old City Hall', 'The Old City Hall'),
+                different: nameSimilarity('Old City Hall', 'Boston Common'),
+            };
+        }""")
+        assert result["identical"] == 1.0
+        assert result["similar"] > 0.5
+        assert result["different"] < 0.5
+
+    def test_boundary_50m_excluded(self, browser_page):
+        """Edge: POI at exactly >50m is excluded from proximity matches."""
+        page, seed_data, reporter = browser_page
+        result = page.evaluate("""() => {
+            // Place existing POI and incoming ~51m apart (about 0.00046 degrees lat)
+            const fakeCached = [
+                { properties: { name: 'Boundary POI', location: { lat: 42.3600, lng: -71.0589 } } },
+            ];
+            const testPoi = { latitude: 42.36046, longitude: -71.0589 };
+            return findProximityMatches(testPoi, fakeCached);
+        }""")
+        assert len(result) == 0, "POI at ~51m should NOT match"
 
 
 # ---------------------------------------------------------------------------

@@ -22,7 +22,7 @@ class TestSeeding:
             s.run("MATCH (n) DETACH DELETE n")
         apply_all(driver)
         result = seed_all(driver)
-        assert result["lenses"] == 13  # 12 MVP + 1 child
+        assert result["lenses"] == 19  # 11 top-level + 8 children
         assert result["users"] == 1
         assert result["profiles"] == 2
         assert result["pois"] == 3
@@ -30,10 +30,10 @@ class TestSeeding:
         assert result["trips"] == 1
         assert result["stops"] == 3
 
-    def test_twelve_plus_one_lenses_exist(self, driver):
+    def test_nineteen_lenses_exist(self, driver):
         with driver.session() as session:
             count = session.run("MATCH (l:Lens) RETURN count(l) AS c").single()["c"]
-        assert count == 13
+        assert count == 19
 
     def test_user_has_two_profiles(self, driver):
         with driver.session() as session:

@@ -114,26 +114,41 @@ RELATIONSHIP_SCHEMAS: dict[str, list[RelPropertyDef]] = {
 # MVP Lenses — Living Doc §08
 # ---------------------------------------------------------------------------
 
-MVP_LENSES: list[dict[str, str]] = [
-    {"name": "hidden_history", "display_label": "Hidden History"},
-    {"name": "arch_design", "display_label": "Architecture & Design"},
+MVP_LENSES: list[dict] = [
+    {"name": "history", "display_label": "History", "is_parent": True},
+    {"name": "arch_design", "display_label": "Architecture & Design", "is_parent": True},
+    {"name": "music_nightlife", "display_label": "Music & Nightlife", "is_parent": True},
     {"name": "local_legends", "display_label": "Local Legends & Folklore"},
     {"name": "food_culinary", "display_label": "Food & Culinary Culture"},
     {"name": "art_street", "display_label": "Art & Street Culture"},
-    {"name": "dark_history", "display_label": "Dark History"},
     {"name": "literary_film", "display_label": "Literary & Film Locations"},
     {"name": "religious_spiritual", "display_label": "Religious & Spiritual Sites"},
-    {"name": "music_nightlife", "display_label": "Music & Nightlife History"},
-    {"name": "revolutionary", "display_label": "Revolutionary Moments"},
     {"name": "nature_green", "display_label": "Nature & Green Spaces"},
     {"name": "shopping_markets", "display_label": "Shopping & Markets"},
+    {"name": "science_innovation", "display_label": "Science & Innovation"},
 ]
 
-# Child lens to prove DAG (IS_PARENT_OF)
+# Child lenses — each references a parent via parent_name
 DAG_CHILD_LENSES: list[dict] = [
-    {
-        "name": "arch_gothic_01",
-        "display_label": "Gothic Architecture",
-        "parent_name": "arch_design",
-    },
+    {"name": "hidden_history", "display_label": "Hidden History", "parent_name": "history"},
+    {"name": "war_revolution", "display_label": "War & Revolution", "parent_name": "history"},
+    {"name": "dark_history", "display_label": "Dark History", "parent_name": "history"},
+    {"name": "social_change", "display_label": "Social Change", "parent_name": "history"},
+    {"name": "historic_arch", "display_label": "Historic Architecture", "parent_name": "arch_design"},
+    {"name": "modern_design", "display_label": "Modern & Contemporary Design", "parent_name": "arch_design"},
+    {"name": "music_heritage", "display_label": "Music Heritage", "parent_name": "music_nightlife"},
+    {"name": "venues_scenes", "display_label": "Venues & Scenes", "parent_name": "music_nightlife"},
+]
+
+# The 16 taggable lenses: 8 children + 8 leaves. Parents are NOT taggable.
+TAGGABLE_LENSES: list[str] = [
+    # Children of history
+    "hidden_history", "war_revolution", "dark_history", "social_change",
+    # Children of arch_design
+    "historic_arch", "modern_design",
+    # Children of music_nightlife
+    "music_heritage", "venues_scenes",
+    # Leaves (directly taggable)
+    "local_legends", "food_culinary", "art_street", "literary_film",
+    "religious_spiritual", "nature_green", "shopping_markets", "science_innovation",
 ]

@@ -12,7 +12,8 @@ if TYPE_CHECKING:
 _MERGE_LENS = """
 MERGE (l:Lens {name: $name})
 SET l.id = coalesce(l.id, randomUUID()),
-    l.display_label = $display_label
+    l.display_label = $display_label,
+    l.is_parent = $is_parent
 """
 
 _MERGE_CHILD_WITH_PARENT = """
@@ -25,8 +26,13 @@ MERGE (parent)-[:IS_PARENT_OF]->(child)
 """
 
 
-def _create_lens(tx, lens: dict[str, str]) -> None:
-    tx.run(_MERGE_LENS, name=lens["name"], display_label=lens["display_label"])
+def _create_lens(tx, lens: dict) -> None:
+    tx.run(
+        _MERGE_LENS,
+        name=lens["name"],
+        display_label=lens["display_label"],
+        is_parent=lens.get("is_parent", False),
+    )
 
 
 def _create_child_lens(tx, child: dict) -> None:

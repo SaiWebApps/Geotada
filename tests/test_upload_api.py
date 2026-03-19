@@ -178,6 +178,93 @@ class TestBeatTraversal:
         assert resp.json()["beats"] == []
 
 
+# ── POI location-first matching: force_create and coordinate validation ──
+
+
+@needs_neo4j
+class TestForceCreate:
+    """AC 5, AC 8: force_create=true creates a new POI even when name matches."""
+
+    def test_force_create_makes_new_node(self, client):
+        """Two POIs with same name but force_create=true → two distinct nodes."""
+        base_payload = {
+            "name": "Force Create Test POI",
+            "latitude": 42.3601,
+            "longitude": -71.0589,
+            "short_description": "Original",
+            "importance_tier": 1,
+            "trigger_radius": 10,
+            "typical_duration_min": 30,
+            "kid_friendly": "yes",
+        }
+        resp1 = client.post("/api/v1/nodes/POI", json=base_payload)
+        assert resp1.status_code == 201
+        id1 = resp1.json()["id"]
+
+        force_payload = {**base_payload, "latitude": 42.3605, "longitude": -71.0592, "force_create": True}
+        resp2 = client.post("/api/v1/nodes/POI", json=force_payload)
+        assert resp2.status_code == 201
+        id2 = resp2.json()["id"]
+
+        assert id1 != id2, "force_create=True should create a new node, not MERGE"
+
+    def test_default_merge_still_works(self, client):
+        """force_create=false (default) still MERGEs on name."""
+        payload = {
+            "name": "Default Merge POI",
+            "latitude": 42.36,
+            "longitude": -71.06,
+        }
+        resp1 = client.post("/api/v1/nodes/POI", json=payload)
+        id1 = resp1.json()["id"]
+        resp2 = client.post("/api/v1/nodes/POI", json=payload)
+        id2 = resp2.json()["id"]
+        assert id1 == id2, "Default (no force_create) should MERGE on name"
+
+    def test_force_create_results_in_two_nodes(self, client):
+        """After force_create, querying POIs shows both nodes."""
+        items = client.get("/api/v1/nodes/POI?limit=200").json()["items"]
+        matching = [i for i in items if i["properties"]["name"] == "Force Create Test POI"]
+        assert len(matching) == 2, "Should have two POIs with same name after force_create"
+
+
+@needs_neo4j
+class TestCoordinateValidation:
+    """AC 7: Backend rejects invalid coordinates."""
+
+    def test_rejects_latitude_out_of_range(self, client):
+        resp = client.post("/api/v1/nodes/POI", json={
+            "name": "Bad Lat POI",
+            "latitude": 999,
+            "longitude": -71.06,
+        })
+        assert resp.status_code == 422
+
+    def test_rejects_longitude_out_of_range(self, client):
+        resp = client.post("/api/v1/nodes/POI", json={
+            "name": "Bad Lng POI",
+            "latitude": 42.36,
+            "longitude": -999,
+        })
+        assert resp.status_code == 422
+
+    def test_accepts_valid_coordinates(self, client):
+        resp = client.post("/api/v1/nodes/POI", json={
+            "name": "Valid Coords POI",
+            "latitude": 42.3601,
+            "longitude": -71.0589,
+        })
+        assert resp.status_code == 201
+
+    def test_rejects_latitude_missing_via_model(self, client):
+        """POI without latitude should fail validation."""
+        resp = client.post("/api/v1/nodes/POI", json={
+            "name": "No Lat POI",
+            "longitude": -71.06,
+        })
+        assert resp.status_code == 422
+
+
 # ── Test 15: name_variations on POI creation ──
 
 

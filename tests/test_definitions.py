@@ -5,6 +5,7 @@ from src.schema.definitions import (
     INDEXES,
     MVP_LENSES,
     RELATIONSHIP_TYPES,
+    TAGGABLE_LENSES,
     UNIQUE_CONSTRAINTS,
 )
 
@@ -63,9 +64,15 @@ class TestRelationships:
 
 
 class TestLenses:
-    def test_twelve_mvp_lenses(self):
-        """Living Doc §08 defines exactly 12 MVP lenses."""
-        assert len(MVP_LENSES) == 12
+    def test_eleven_mvp_lenses(self):
+        """11 top-level lenses in the hybrid hierarchy."""
+        assert len(MVP_LENSES) == 11
+
+    def test_eight_dag_child_lenses(self):
+        assert len(DAG_CHILD_LENSES) == 8
+
+    def test_sixteen_taggable_lenses(self):
+        assert len(TAGGABLE_LENSES) == 16
 
     def test_lens_names_are_unique(self):
         names = [lens["name"] for lens in MVP_LENSES]
@@ -77,3 +84,23 @@ class TestLenses:
             assert child["parent_name"] in parent_names, (
                 f"Child lens '{child['name']}' references unknown parent '{child['parent_name']}'"
             )
+
+    def test_dag_child_parent_has_is_parent_true(self):
+        parent_lookup = {l["name"]: l for l in MVP_LENSES}
+        for child in DAG_CHILD_LENSES:
+            parent = parent_lookup[child["parent_name"]]
+            assert parent.get("is_parent") is True, (
+                f"Parent '{child['parent_name']}' must have is_parent=True"
+            )
+
+    def test_no_parent_slug_in_taggable(self):
+        parent_slugs = {l["name"] for l in MVP_LENSES if l.get("is_parent")}
+        for slug in TAGGABLE_LENSES:
+            assert slug not in parent_slugs, (
+                f"Parent-only slug '{slug}' must not appear in TAGGABLE_LENSES"
+            )
+
+    def test_taggable_equals_children_plus_leaves(self):
+        child_slugs = {c["name"] for c in DAG_CHILD_LENSES}
+        leaf_slugs = {l["name"] for l in MVP_LENSES if not l.get("is_parent")}
+        assert set(TAGGABLE_LENSES) == child_slugs | leaf_slugs

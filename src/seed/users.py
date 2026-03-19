@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.schema.definitions import TAGGABLE_LENSES
+
 if TYPE_CHECKING:
     from neo4j import Driver
 
@@ -38,6 +40,11 @@ PROFILES: list[dict] = [
         "lenses": ["art_street", "nature_green", "local_legends"],
     },
 ]
+
+# Validate all profile lens preferences are taggable at import time
+for _profile in PROFILES:
+    for _ln in _profile["lenses"]:
+        assert _ln in TAGGABLE_LENSES, f"Profile lens '{_ln}' is not a taggable lens"
 
 
 def _create_user(tx, email: str) -> None:

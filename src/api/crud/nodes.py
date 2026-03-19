@@ -79,8 +79,8 @@ def create_node(
         lng = params.pop("longitude")
         params["lat"] = lat
         params["lng"] = lng
+        force_create = params.pop("force_create", False)
 
-        # MERGE on name for idempotent POI creation
         set_parts = [
             "n.id = coalesce(n.id, randomUUID())",
             "n.created_at = coalesce(n.created_at, datetime())",
@@ -90,11 +90,21 @@ def create_node(
             if key not in ("lat", "lng", "name"):
                 set_parts.append(f"n.{key} = ${key}")
 
-        query = (
-            f"MERGE (n:POI {{name: $name}}) "
-            f"SET {', '.join(set_parts)} "
-            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
-        )
+        if force_create:
+            # CREATE forces a new node even if name matches — used when editor
+            # confirms "different place" for a proximity match with same name.
+            query = (
+                f"CREATE (n:POI {{name: $name}}) "
+                f"SET {', '.join(set_parts)} "
+                f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+            )
+        else:
+            # MERGE on name for idempotent POI creation (default path)
+            query = (
+                f"MERGE (n:POI {{name: $name}}) "
+                f"SET {', '.join(set_parts)} "
+                f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+            )
     elif label == "NarrativeBeat":
         # MERGE on script_body for idempotent beat creation
         set_parts = [

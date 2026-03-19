@@ -12,7 +12,7 @@
       },
       {
         "script_body": "On the evening of April 18, 1775, Robert Newman ascended the steeple and displayed two lanterns, signaling the British approach by sea. Paul Revere spotted the lanterns from across the harbor and launched his famous midnight ride to alert the colonial militia.",
-        "lens": "Revolutionary Moments",
+        "lens": "War & Revolution",
         "gravity": 4
       }
     ]
@@ -25,7 +25,7 @@
     "beats": [
       {
         "script_body": "Samuel Adams stood on this floor and rallied Bostonians against British taxation without representation. The debates held in this hall planted the seeds of the American Revolution and earned it the nickname Cradle of Liberty.",
-        "lens": "Revolutionary Moments",
+        "lens": "War & Revolution",
         "gravity": 5
       },
       {
@@ -61,7 +61,7 @@
     "beats": [
       {
         "script_body": "Revere was more than a rider — he was a silversmith, engraver, and industrialist. His copper sheeting covered the hull of the USS Constitution and the dome of the Massachusetts State House.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 3
       }
     ]
@@ -113,7 +113,7 @@
     "beats": [
       {
         "script_body": "Rhode Island's State House dome is the fourth-largest self-supporting marble dome in the world. The Independent Man statue atop it was modeled after Roger Williams.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 3
       }
     ]
@@ -150,7 +150,7 @@
     "short_description": "Where the Boston Tea Party debate began.",
     "beats": [
       {
-        "lens": "Revolutionary Moments",
+        "lens": "War & Revolution",
         "gravity": 5
       }
     ]
@@ -211,7 +211,7 @@
     "beats": [
       {
         "script_body": "The golden dome was originally wooden shingles, then covered in copper by Paul Revere's company in 1802. It was gilded in 23-karat gold leaf in 1874.",
-        "lens": "Architecture & Design"
+        "lens": "Historic Architecture"
       }
     ]
   },
@@ -365,7 +365,7 @@
     "beats": [
       {
         "script_body": "The Eiffel Tower was nearly demolished in 1909. It was saved because the military used it as a radio transmission tower — intercepting enemy messages during World War I.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 5
       },
       {
@@ -388,7 +388,7 @@
       },
       {
         "script_body": "Architecture beat for Freedom Trail. The trail passes 16 historically significant sites, each with distinct architectural styles spanning three centuries of American building.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 2
       },
       {
@@ -423,12 +423,12 @@
       },
       {
         "script_body": "Music beat for Freedom Trail. Park Street Church is where 'My Country, 'Tis of Thee' was first performed publicly on July 4, 1831.",
-        "lens": "Music & Nightlife History",
+        "lens": "Music Heritage",
         "gravity": 1
       },
       {
         "script_body": "Revolutionary beat for Freedom Trail. Every stop on this trail played a role in the birth of American independence — from the first protests to the first battles.",
-        "lens": "Revolutionary Moments",
+        "lens": "War & Revolution",
         "gravity": 4
       },
       {
@@ -442,7 +442,7 @@
         "gravity": 1
       },
       {
-        "script_body": "This 13th beat exceeds the maximum of 12 lenses per POI and should be rejected. It duplicates Hidden History.",
+        "script_body": "This beat duplicates the Hidden History lens on the same POI and should trigger a conflict.",
         "lens": "Hidden History",
         "gravity": 5
       }
@@ -456,7 +456,7 @@
     "beats": [
       {
         "script_body": "Short.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 1
       },
       {
@@ -466,7 +466,7 @@
       },
       {
         "script_body": "The Longfellow Bridge, spanning the Charles River between Boston and Cambridge, is affectionately known as the Salt-and-Pepper Bridge because its central towers resemble salt and pepper shakers. Designed by Edmund March Wheelwright and built between 1900 and 1906, it replaced an earlier bridge that had stood since 1793. The bridge underwent a massive $300 million renovation from 2013 to 2018, during which engineers discovered that the original builders had used recycled cobblestones from Boston's streets as fill material inside the towers. The renovation preserved the bridge's distinctive Beaux-Arts style while upgrading it for modern traffic, adding dedicated bicycle lanes, and improving the MBTA Red Line tracks that run across it. During construction, workers found a time capsule from 1906 containing newspapers, coins, and photographs of the original construction crew. The bridge offers some of the best views of the Boston skyline and the MIT campus, making it a favorite spot for photographers and tourists alike. Henry Wadsworth Longfellow, the poet for whom the bridge is named, lived nearby and wrote about the Charles River in several of his most famous poems, including 'The Bridge' which describes watching the river from this very spot. On summer evenings, you can see sailboats from the MIT Sailing Pavilion and Community Boating gliding beneath the arches, while the Hatch Shell on the Esplanade hosts concerts that can be heard drifting across the water.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 5
       }
     ]
@@ -572,7 +572,7 @@
     "beats": [
       {
         "script_body": "The Boston Public Library was the first large free municipal library in the United States, established in 1848. The McKim Building's Bates Hall reading room stretches 218 feet — one of the most magnificent rooms in America.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 4
       },
       {
@@ -590,7 +590,7 @@
     "beats": [
       {
         "script_body": "The Boston Public Library was the first large free municipal library in the United States, established in 1848. The McKim Building's Bates Hall reading room stretches 218 feet — one of the most magnificent rooms in America.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 4
       },
       {
@@ -608,7 +608,7 @@
     "beats": [
       {
         "script_body": "Trinity Church was designed by Henry Hobson Richardson and completed in 1877. The Romanesque Revival style was so influential it became known as Richardsonian Romanesque. The church sits on 4,500 wooden pilings driven into Back Bay's filled land.",
-        "lens": "Architecture & Design",
+        "lens": "Historic Architecture",
         "gravity": 5
       },
       {

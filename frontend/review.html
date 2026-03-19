@@ -422,14 +422,8 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
-  .alt-name-match-note {
-    font-size: 0.85rem;
-    padding: 0.5rem 0.75rem;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-    border-radius: var(--radius);
-    color: var(--text);
-    margin-bottom: 0.75rem;
+  .proximity-match-panel h4 {
+    font-size: 0.95rem;
   }
 
   /* ── POI-level audit notes ── */
@@ -895,12 +889,44 @@
 
   // ── Utilities ──
 
+  const PROXIMITY_THRESHOLD_M = 50;
+
   function haversineKm(lat1, lng1, lat2, lng2) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLng = (lng2 - lng1) * Math.PI / 180;
     const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  }
+
+  function findProximityMatches(poi, cachedList) {
+    const lat = parseFloat(poi.latitude);
+    const lng = parseFloat(poi.longitude);
+    if (isNaN(lat) || isNaN(lng)) return [];
+    const matches = [];
+    for (const existing of cachedList) {
+      const loc = existing.properties && existing.properties.location;
+      if (!loc || loc.lat == null || loc.lng == null) continue;
+      const distKm = haversineKm(lat, lng, loc.lat, loc.lng);
+      const distM = distKm * 1000;
+      if (distM <= PROXIMITY_THRESHOLD_M) {
+        matches.push({ existingPoi: existing, distanceM: Math.round(distM) });
+      }
+    }
+    matches.sort((a, b) => a.distanceM - b.distanceM);
+    return matches;
+  }
+
+  function nameSimilarity(a, b) {
+    if (!a || !b) return 0;
+    const sa = a.toLowerCase().trim();
+    const sb = b.toLowerCase().trim();
+    if (sa === sb) return 1;
+    const setA = new Set(sa.split(/\s+/));
+    const setB = new Set(sb.split(/\s+/));
+    const intersection = [...setA].filter(w => setB.has(w)).length;
+    const union = new Set([...setA, ...setB]).size;
+    return union === 0 ? 0 : intersection / union;
   }
 
   function isInsideGeofence(lat, lng) {
@@ -1438,7 +1464,7 @@
       try {
         poi._conflicts = await detectConflictsForPoi(poi);
       } catch (e) {
-        poi._conflicts = { isNew: true, existingBeats: [], beatConflicts: [], beatReviewItems: [], coordWarning: false, errors: [e.message] };
+        poi._conflicts = { isNew: true, existingBeats: [], beatConflicts: [], beatReviewItems: [], errors: [e.message], proximityMatches: [], proximityResolution: null, matchedExistingPoi: null, missingCoords: false };
       }
     }
 
@@ -1503,8 +1529,20 @@
       return;
     }
 
-    // Check that all conflicts are resolved
-    if (poi._conflicts && !poi._conflicts.isNew) {
+    // Block if POI has no valid coordinates
+    if (poi._conflicts && poi._conflicts.missingCoords) {
+      showError('POI has no valid coordinates — cannot upload.');
+      return;
+    }
+
+    // Block if proximity matches are unresolved
+    if (poi._conflicts && poi._conflicts.proximityMatches && poi._conflicts.proximityMatches.length > 0 && !poi._conflicts.proximityResolution) {
+      showError('Resolve all proximity matches before marking complete.');
+      return;
+    }
+
+    // Check that all beat conflicts are resolved
+    if (poi._conflicts && !poi._conflicts.isNew && poi._conflicts.proximityResolution !== 'different') {
       const allConflicts = [...(poi._conflicts.beatConflicts || []), ...(poi._conflicts.beatReviewItems || [])];
       for (const c of allConflicts) {
         const beat = poi.beats[c.beatIndex];
@@ -1578,13 +1616,11 @@
       if (!isValidLng(lng)) lngWarning = 'Longitude must be between -180 and 180.';
     }
 
-    const altMatch = poi._conflicts && poi._conflicts.altNameMatch;
     let html = `
       <div class="field-group">
         <label>POI Name</label>
         <input type="text" data-field="poi_name" value="${escHtml(poi.poi_name)}" />
       </div>
-      ${altMatch ? `<div class="alt-name-match-note" aria-label="This POI was matched to an existing POI via an alternative name: ${escHtml(altMatch.altName)} maps to existing POI ${escHtml(altMatch.canonicalName)}">Matched via alt name &ldquo;${escHtml(altMatch.altName)}&rdquo; &rarr; existing POI &ldquo;${escHtml(altMatch.canonicalName)}&rdquo;</div>` : ''}
       <div class="field-group">
         <label>Short Description</label>
         <input type="text" data-field="short_description" value="${escHtml(poi.short_description || '')}" />
@@ -1639,9 +1675,41 @@
       for (const r of conflicts.beatReviewItems) reviewByBeat[r.beatIndex] = r;
     }
 
-    // Coordinate warning from conflict detection
-    if (conflicts.coordWarning) {
-      html += `<div class="coord-warning">\u26A0 Coordinates differ by ${conflicts.coordDistance}m from the existing POI in the database.</div>`;
+    // Missing coordinates error
+    if (conflicts.missingCoords) {
+      html += '<div class="coord-warning">POI has no valid coordinates — cannot upload.</div>';
+    }
+
+    // Proximity match panel
+    if (conflicts.proximityMatches && conflicts.proximityMatches.length > 0) {
+      html += '<div class="proximity-match-panel" style="border:2px solid #e67e22;border-radius:8px;padding:12px;margin:12px 0;background:#fef9f3;">';
+      html += `<h4 style="margin:0 0 8px 0;color:#e67e22;">Proximity Match${conflicts.proximityMatches.length > 1 ? 'es' : ''} Found</h4>`;
+      if (!conflicts.proximityResolution) {
+        html += '<p style="margin:0 0 8px 0;font-size:13px;color:#666;">An existing POI is nearby. Is this the same place or a different place?</p>';
+      }
+      conflicts.proximityMatches.forEach((match, mi) => {
+        const resolved = conflicts.proximityResolution;
+        const isThisMatch = resolved && conflicts.matchedExistingPoi &&
+          conflicts.matchedExistingPoi.properties.name === match.existingName;
+        html += `<div class="proximity-candidate" style="border:1px solid #ddd;border-radius:6px;padding:10px;margin-bottom:8px;background:#fff;">`;
+        html += `<div style="display:flex;justify-content:space-between;align-items:center;">`;
+        html += `<div><strong>Existing:</strong> ${escHtml(match.existingName)}<br/><strong>Incoming:</strong> ${escHtml(match.incomingName)}</div>`;
+        html += `<div style="text-align:right;"><span style="font-size:13px;color:#888;">Distance: <strong>${match.distanceM}m</strong></span><br/>`;
+        html += `<span style="font-size:12px;color:#999;">Names: ${match.nameSimilarityScore}% similar</span></div>`;
+        html += `</div>`;
+        if (resolved === 'same' && isThisMatch) {
+          html += '<div style="margin-top:8px;padding:6px;background:#e8f5e9;border-radius:4px;color:#2e7d32;font-weight:bold;">Resolved: Same Place</div>';
+        } else if (resolved === 'different') {
+          html += '<div style="margin-top:8px;padding:6px;background:#e3f2fd;border-radius:4px;color:#1565c0;font-weight:bold;">Resolved: Different Place</div>';
+        } else if (!resolved) {
+          html += `<div style="margin-top:8px;display:flex;gap:8px;">`;
+          html += `<button class="proximity-same-btn" data-match-idx="${mi}" style="flex:1;padding:8px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Same Place</button>`;
+          html += `<button class="proximity-diff-btn" data-match-idx="${mi}" style="flex:1;padding:8px;background:#2196f3;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;">Different Place</button>`;
+          html += `</div>`;
+        }
+        html += '</div>';
+      });
+      html += '</div>';
     }
 
     // Beats
@@ -1793,6 +1861,39 @@
 
       // ── Inline conflict resolution handlers ──
       detailBody.addEventListener('click', async (e) => {
+        // Proximity match resolution buttons
+        const proxSame = e.target.closest('.proximity-same-btn');
+        const proxDiff = e.target.closest('.proximity-diff-btn');
+        if (proxSame || proxDiff) {
+          const poi = poiData[activeIdx];
+          const mi = parseInt((proxSame || proxDiff).dataset.matchIdx);
+          const match = poi._conflicts.proximityMatches[mi];
+          if (proxSame) {
+            poi._conflicts.proximityResolution = 'same';
+            poi._conflicts.matchedExistingPoi = match.existingPoi;
+            // Auto-add incoming name to name_variations if different
+            if (match.incomingName.toLowerCase() !== match.existingName.toLowerCase()) {
+              if (!poi.name_variations) poi.name_variations = [];
+              if (!poi.name_variations.some(v => v.toLowerCase() === match.incomingName.toLowerCase())) {
+                poi.name_variations.push(match.incomingName);
+              }
+            }
+            // Run beat-level conflict detection against the matched existing POI
+            const beatResult = await runBeatConflictDetection(poi, match.existingName);
+            poi._conflicts.existingBeats = beatResult.existingBeats;
+            poi._conflicts.beatConflicts = beatResult.beatConflicts;
+            poi._conflicts.beatReviewItems = beatResult.beatReviewItems;
+            if (beatResult.errors.length > 0) {
+              poi._conflicts.errors = [...(poi._conflicts.errors || []), ...beatResult.errors];
+            }
+          } else {
+            poi._conflicts.proximityResolution = 'different';
+            poi._conflicts.isNew = true;
+          }
+          renderDetail();
+          return;
+        }
+
         const btn = e.target.closest('[data-beat-action]');
         if (!btn) {
           // Check for "change resolution" click
@@ -2093,6 +2194,8 @@
     lensSlugSet = new Set();
     lensSlugToId = {};
     for (const l of (lensData.items || [])) {
+      // Skip parent-only lenses — they are not taggable
+      if (l.properties.is_parent === true) continue;
       const slug = l.properties.name;            // name IS the slug (e.g., 'hidden_history')
       const displayLabel = l.properties.display_label || slug;  // e.g., 'Hidden History'
       lensDisplayToSlug[displayLabel] = slug;
@@ -2100,12 +2203,19 @@
       lensSlugToId[slug] = l.id;
     }
 
-    // Fetch POI list for conflict detection caching
+    // Fetch all POIs for conflict detection caching (paginate to avoid cap)
     try {
-      const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=200`);
-      if (poiResp.ok) {
+      cachedPoiList = [];
+      let poiSkip = 0;
+      const poiPageSize = 200;
+      while (true) {
+        const poiResp = await fetch(`${API_BASE}/nodes/POI?limit=${poiPageSize}&skip=${poiSkip}`);
+        if (!poiResp.ok) break;
         const poiListData = await poiResp.json();
-        cachedPoiList = poiListData.items || [];
+        const items = poiListData.items || [];
+        cachedPoiList.push(...items);
+        if (items.length < poiPageSize) break;
+        poiSkip += poiPageSize;
       }
     } catch (e) { /* non-fatal — conflict detection will work without cache */ }
   }
@@ -2122,9 +2232,9 @@
     return null;
   }
 
-  function mapPoiForApi(poi) {
+  function mapPoiForApi(poi, options = {}) {
     const payload = {
-      name: poi.poi_name,
+      name: options.useExistingName || poi.poi_name,
       short_description: poi.short_description || '',
       latitude: poi.latitude,
       longitude: poi.longitude,
@@ -2133,6 +2243,9 @@
       typical_duration_min: 30,
       kid_friendly: 'yes',
     };
+    if (options.forceCreate) {
+      payload.force_create = true;
+    }
     if (Array.isArray(poi.name_variations) && poi.name_variations.length > 0) {
       payload.name_variations = poi.name_variations;
     }
@@ -2141,6 +2254,10 @@
 
   function mapBeatForApi(beat) {
     const slug = resolveLensSlug(beat.lens);
+    if (slug && !lensSlugSet.has(slug)) {
+      console.error(`mapBeatForApi: resolved slug '${slug}' is not a taggable lens`);
+      return null;
+    }
     const gravity = Number(beat.gravity) || 3;
     return {
       script_body: beat.script_body,
@@ -2161,66 +2278,42 @@
       const poi = completePois[pi];
       updateProgressOverlay(`Checking for conflicts... (${pi + 1}/${completePois.length} POIs scanned)`);
 
-      // Alt-name matching against cachedPoiList before API call
-      let canonicalName = poi.poi_name;
-      let altNameMatch = null;
-      const incomingLower = poi.poi_name.toLowerCase();
-      const incomingVars = (poi.name_variations || []).map(v => v.toLowerCase());
-      const altMatches = cachedPoiList.filter(p => {
-        const cachedVars = (p.properties.name_variations || []).map(v => v.toLowerCase());
-        return cachedVars.includes(incomingLower) || incomingVars.includes(p.properties.name.toLowerCase());
-      });
-
-      if (altMatches.length > 1) {
-        result.errors.push(`POI "${poi.poi_name}" matches name_variations on multiple existing POIs: ${altMatches.map(p => '"' + p.properties.name + '"').join(', ')}. Skipping — resolve manually.`);
-        continue;
-      }
-      if (altMatches.length === 1) {
-        canonicalName = altMatches[0].properties.name;
-        altNameMatch = { altName: poi.poi_name, canonicalName };
-      }
-
-      let existingBeats = [];
-      let existingPoiCoords = null;
-      try {
-        const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(canonicalName)}/beats`);
-        const data = await resp.json();
-        existingBeats = data.beats || [];
-        // Use cachedPoiList for coordinate lookup (eliminates redundant API call)
-        const cachedMatch = cachedPoiList.find(p => p.properties.name === canonicalName);
-        if (cachedMatch && cachedMatch.properties.location) {
-          existingPoiCoords = cachedMatch.properties.location;
-        }
-      } catch (e) {
-        result.errors.push(`Failed to check POI "${poi.poi_name}": ${e.message}`);
+      // AC 7: Missing coordinates check
+      const lat = parseFloat(poi.latitude);
+      const lng = parseFloat(poi.longitude);
+      if (isNaN(lat) || isNaN(lng) || !isValidLat(lat) || !isValidLng(lng)) {
+        result.errors.push(`POI "${poi.poi_name}" has no valid coordinates. Skipping.`);
         continue;
       }
 
-      const isNewPoi = existingBeats.length === 0 && !existingPoiCoords && !altNameMatch;
+      // Location-first proximity matching
+      const proxMatches = findProximityMatches(poi, cachedPoiList);
 
-      if (isNewPoi) {
+      if (proxMatches.length === 0) {
+        // AC 1, AC 8: Auto-new — no proximity match regardless of name
         result.newPois.push({ poi, beats: poi.beats.map(b => ({ beat: b, action: 'create' })) });
       } else {
-        const poiEntry = { poi, existingBeats, coordWarning: false, beats: [], altNameMatch };
+        // Proximity match found — editor must resolve in triage view
+        const bestMatch = proxMatches[0];
+        const poiEntry = {
+          poi, existingBeats: [], beats: [],
+          proximityMatch: true,
+          proximityMatches: proxMatches.map(m => ({
+            existingPoi: m.existingPoi,
+            distanceM: m.distanceM,
+            existingName: m.existingPoi.properties.name,
+            incomingName: poi.poi_name,
+            nameSimilarityScore: Math.round(nameSimilarity(poi.poi_name, m.existingPoi.properties.name) * 100),
+          })),
+        };
 
-        // Edge case #1: coordinate mismatch > 500m
-        if (existingPoiCoords) {
-          const dist = haversineKm(poi.latitude, poi.longitude, existingPoiCoords.lat, existingPoiCoords.lng);
-          if (dist > 0.5) {
-            poiEntry.coordWarning = true;
-            poiEntry.coordDistance = (dist * 1000).toFixed(0);
-          }
-        }
-
-        // Edge case #2: 12-beat cap
-        const totalAfter = existingBeats.length + poi.beats.length;
-        const existingLenses = new Set(existingBeats.map(b => b.lens_slug));
-        if (existingLenses.size >= 12) {
-          const newLenses = poi.beats.filter(b => !existingLenses.has(resolveLensSlug(b.lens)));
-          if (newLenses.length > 0) {
-            result.errors.push(`POI "${poi.poi_name}" already has ${existingLenses.size} lenses (max 12). Cannot add more beats.`);
-            continue;
-          }
+        // Fetch beats from the closest match for beat-level conflict preview
+        try {
+          const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(bestMatch.existingPoi.properties.name)}/beats`);
+          const data = await resp.json();
+          poiEntry.existingBeats = data.beats || [];
+        } catch (e) {
+          result.errors.push(`Failed to fetch beats for "${bestMatch.existingPoi.properties.name}": ${e.message}`);
         }
 
         for (const beat of poi.beats) {
@@ -2231,7 +2324,7 @@
           }
 
           // Hard match: same lens
-          const hardMatch = existingBeats.find(eb => eb.lens_slug === incomingSlug);
+          const hardMatch = poiEntry.existingBeats.find(eb => eb.lens_slug === incomingSlug);
           if (hardMatch) {
             result.conflicts.push({
               poi, beat, existing: hardMatch, matchType: 'hard',
@@ -2242,20 +2335,20 @@
 
           // Soft/review match: different lens but similar script_body
           let bestSim = 0;
-          let bestMatch = null;
-          for (const eb of existingBeats) {
+          let bestMatchBeat = null;
+          for (const eb of poiEntry.existingBeats) {
             const sim = jaccardSimilarity(eb.script_body, beat.script_body);
-            if (sim > bestSim) { bestSim = sim; bestMatch = eb; }
+            if (sim > bestSim) { bestSim = sim; bestMatchBeat = eb; }
           }
 
           if (bestSim >= 0.70) {
             result.conflicts.push({
-              poi, beat, existing: bestMatch, matchType: 'soft',
+              poi, beat, existing: bestMatchBeat, matchType: 'soft',
               similarity: bestSim, resolved: false, resolution: null,
             });
           } else if (bestSim >= 0.30) {
             result.reviewItems.push({
-              poi, beat, existing: bestMatch, similarity: bestSim,
+              poi, beat, existing: bestMatchBeat, similarity: bestSim,
               resolved: false, resolution: null,
             });
           } else {
@@ -2268,61 +2361,58 @@
     return result;
   }
 
-  // ── Per-POI conflict detection ──
+  // ── Per-POI conflict detection (location-first) ──
 
   async function detectConflictsForPoi(poi) {
-    const result = { isNew: true, existingBeats: [], beatConflicts: [], beatReviewItems: [], coordWarning: false, coordDistance: 0, errors: [], altNameMatch: null };
+    const result = {
+      isNew: true, existingBeats: [], beatConflicts: [], beatReviewItems: [],
+      errors: [], proximityMatches: [], proximityResolution: null,
+      matchedExistingPoi: null, nameSimilarity: null, missingCoords: false,
+    };
 
-    // Alt-name matching against cachedPoiList before API call
-    let canonicalName = poi.poi_name;
-    const incomingLower = poi.poi_name.toLowerCase();
-    const incomingVars = (poi.name_variations || []).map(v => v.toLowerCase());
-    const altMatches = cachedPoiList.filter(p => {
-      const cachedVars = (p.properties.name_variations || []).map(v => v.toLowerCase());
-      return cachedVars.includes(incomingLower) || incomingVars.includes(p.properties.name.toLowerCase());
-    });
-
-    if (altMatches.length > 1) {
-      result.errors.push(`POI "${poi.poi_name}" matches name_variations on multiple existing POIs: ${altMatches.map(p => '"' + p.properties.name + '"').join(', ')}. Skipping — resolve manually.`);
+    // AC 7: Missing coordinates check
+    const lat = parseFloat(poi.latitude);
+    const lng = parseFloat(poi.longitude);
+    if (isNaN(lat) || isNaN(lng) || !isValidLat(lat) || !isValidLng(lng)) {
+      result.errors.push('POI has no valid coordinates');
+      result.missingCoords = true;
       return result;
     }
-    if (altMatches.length === 1) {
-      canonicalName = altMatches[0].properties.name;
-      result.altNameMatch = { altName: poi.poi_name, canonicalName };
+
+    // Proximity check against cached POI list
+    const proxMatches = findProximityMatches(poi, cachedPoiList);
+
+    // AC 1, AC 8: No matches within threshold → auto-new
+    if (proxMatches.length === 0) {
+      result.isNew = true;
+      return result;
     }
 
-    let existingBeats = [];
-    let existingPoiCoords = null;
+    // AC 2, AC 3: One or more proximity matches → editor must decide
+    result.isNew = false;
+    result.proximityMatches = proxMatches.map(m => ({
+      existingPoi: m.existingPoi,
+      distanceM: m.distanceM,
+      existingName: m.existingPoi.properties.name,
+      incomingName: poi.poi_name,
+      nameSimilarityScore: Math.round(nameSimilarity(poi.poi_name, m.existingPoi.properties.name) * 100),
+    }));
+
+    return result;
+  }
+
+  // Run beat-level conflict detection against a specific existing POI
+  async function runBeatConflictDetection(poi, existingPoiName) {
+    const result = { existingBeats: [], beatConflicts: [], beatReviewItems: [], errors: [] };
     try {
-      const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(canonicalName)}/beats`);
+      const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(existingPoiName)}/beats`);
       const data = await resp.json();
-      existingBeats = data.beats || [];
-
-      // Use cached POI list for coordinate comparison
-      const exactMatch = cachedPoiList.find(p => p.properties.name === canonicalName);
-      if (exactMatch && exactMatch.properties.location) {
-        existingPoiCoords = exactMatch.properties.location;
-      }
+      result.existingBeats = data.beats || [];
     } catch (e) {
-      result.errors.push(`Failed to check POI "${poi.poi_name}": ${e.message}`);
+      result.errors.push(`Failed to fetch beats for "${existingPoiName}": ${e.message}`);
       return result;
     }
 
-    result.existingBeats = existingBeats;
-    result.isNew = existingBeats.length === 0 && !existingPoiCoords;
-
-    if (result.isNew) return result;
-
-    // Coordinate mismatch check
-    if (existingPoiCoords) {
-      const dist = haversineKm(poi.latitude, poi.longitude, existingPoiCoords.lat, existingPoiCoords.lng);
-      if (dist > 0.5) {
-        result.coordWarning = true;
-        result.coordDistance = (dist * 1000).toFixed(0);
-      }
-    }
-
-    // Beat-level conflict detection
     for (let bi = 0; bi < poi.beats.length; bi++) {
       const beat = poi.beats[bi];
       const incomingSlug = resolveLensSlug(beat.lens);
@@ -2332,7 +2422,7 @@
       }
 
       // Hard match: same lens
-      const hardMatch = existingBeats.find(eb => eb.lens_slug === incomingSlug);
+      const hardMatch = result.existingBeats.find(eb => eb.lens_slug === incomingSlug);
       if (hardMatch) {
         result.beatConflicts.push({
           beatIndex: bi, beat, existing: hardMatch, matchType: 'hard',
@@ -2344,7 +2434,7 @@
       // Soft/review match
       let bestSim = 0;
       let bestMatch = null;
-      for (const eb of existingBeats) {
+      for (const eb of result.existingBeats) {
         const sim = jaccardSimilarity(eb.script_body, beat.script_body);
         if (sim > bestSim) { bestSim = sim; bestMatch = eb; }
       }
@@ -2360,7 +2450,6 @@
         });
       }
     }
-
     return result;
   }
 
@@ -2573,9 +2662,28 @@
   async function uploadSinglePoi(poiIdx) {
     const poi = poiData[poiIdx];
     const lensMap = lensSlugToId;
+    const conflicts = poi._conflicts || {};
 
-    // Build POI payload
-    const poiPayload = mapPoiForApi(poi);
+    // Build POI payload based on proximity resolution
+    let poiPayload;
+    if (conflicts.proximityResolution === 'same' && conflicts.matchedExistingPoi) {
+      // "Same place" → use existing POI name so MERGE hits the correct node
+      const existingName = conflicts.matchedExistingPoi.properties.name;
+      poiPayload = mapPoiForApi(poi, { useExistingName: existingName });
+      // Include incoming name in name_variations
+      if (poi.poi_name.toLowerCase() !== existingName.toLowerCase()) {
+        if (!poiPayload.name_variations) poiPayload.name_variations = [];
+        if (!poiPayload.name_variations.some(v => v.toLowerCase() === poi.poi_name.toLowerCase())) {
+          poiPayload.name_variations.push(poi.poi_name);
+        }
+      }
+    } else if (conflicts.proximityResolution === 'different') {
+      // "Different place" → force_create to bypass MERGE on same name
+      poiPayload = mapPoiForApi(poi, { forceCreate: true });
+    } else {
+      // Auto-new or no proximity matches — default MERGE path
+      poiPayload = mapPoiForApi(poi);
+    }
 
     // Create or merge POI node
     const poiResp = await fetch(`${API_BASE}/nodes/POI`, {
@@ -2584,6 +2692,12 @@
     });
     if (!poiResp.ok) throw new Error(`POI create failed: ${poiResp.status}`);
     const poiNode = await poiResp.json();
+
+    // Refresh cachedPoiList with the newly created/merged POI
+    const existsInCache = cachedPoiList.some(p => p.id === poiNode.id);
+    if (!existsInCache) {
+      cachedPoiList.push(poiNode);
+    }
 
     // Process each beat
     for (let bi = 0; bi < poi.beats.length; bi++) {
@@ -3028,16 +3142,6 @@
     const uploadPlan = await detectConflicts(completePois);
 
     hideProgressOverlay();
-
-    // Show coordinate warnings if any
-    for (const mp of uploadPlan.matchedPois) {
-      if (mp.coordWarning) {
-        const proceed = confirm(`POI "${mp.poi.poi_name}" coordinates differ by ${mp.coordDistance}m from the existing POI in the database. Proceed anyway?`);
-        if (!proceed) {
-          return;
-        }
-      }
-    }
 
     // Show errors so far
     if (uploadPlan.errors.length > 0 && uploadPlan.newPois.length === 0 && uploadPlan.matchedPois.length === 0 && uploadPlan.conflicts.length === 0) {
