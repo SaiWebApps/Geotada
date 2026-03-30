@@ -12,10 +12,13 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from src.audio.pipeline import (
+    AudioStatus,
     GenerationResult,
     PipelineError,
     _build_storage_key,
     _get_duration,
+    _script_hash,
+    check_audio_status,
     generate_batch,
     generate_beat_audio,
 )
@@ -179,3 +182,82 @@ class TestGetDuration:
         props = update_call[0][3]  # 4th positional arg is the properties dict
         assert "duration_sec" in props
         assert props["duration_sec"] > 0
+
+
+class TestScriptChangeDetection:
+    def test_hash_persisted_on_generate(self):
+        """generate_beat_audio should store audio_script_hash in Neo4j."""
+        session = _mock_session_with_poi("Test POI")
+        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
+             patch("src.audio.pipeline.update_node") as mock_update:
+            generate_beat_audio(session, "beat-001", provider_name="mock")
+
+        props = mock_update.call_args[0][3]
+        assert "audio_script_hash" in props
+        assert props["audio_script_hash"] == _script_hash("Test script.")
+
+    def test_stale_audio_auto_regenerates(self):
+        """If script_body changed (hash mismatch), regenerate without force."""
+        beat = _mock_beat(audio_url="/api/v1/audio/files/existing.mp3")
+        # Set a hash that doesn't match the current script_body
+        beat["properties"]["audio_script_hash"] = _script_hash("old text that changed")
+        session = _mock_session_with_poi()
+
+        with patch("src.audio.pipeline.get_node", return_value=beat), \
+             patch("src.audio.pipeline.update_node"):
+            result = generate_beat_audio(session, "beat-001", provider_name="mock")
+
+        assert result.size_bytes > 0
+
+    def test_matching_hash_skips_regeneration(self):
+        """If hash matches, existing audio should be preserved (raises error)."""
+        beat = _mock_beat(audio_url="/api/v1/audio/files/existing.mp3")
+        beat["properties"]["audio_script_hash"] = _script_hash("Test script.")
+
+        with patch("src.audio.pipeline.get_node", return_value=beat):
+            with pytest.raises(PipelineError, match="already has audio"):
+                generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
+
+    def test_check_status_not_stale(self):
+        """Status should show is_stale=False when hash matches."""
+        beat = _mock_beat(audio_url="/api/v1/audio/files/test.mp3")
+        beat["properties"]["audio_script_hash"] = _script_hash("Test script.")
+        beat["properties"]["duration_sec"] = 2.0
+
+        with patch("src.audio.pipeline.get_node", return_value=beat):
+            status = check_audio_status(MagicMock(), "beat-001")
+
+        assert status.has_audio is True
+        assert status.is_stale is False
+        assert status.duration_sec == 2.0
+
+    def test_check_status_stale(self):
+        """Status should show is_stale=True when script_body changed."""
+        beat = _mock_beat(audio_url="/api/v1/audio/files/test.mp3")
+        beat["properties"]["audio_script_hash"] = _script_hash("old text")
+
+        with patch("src.audio.pipeline.get_node", return_value=beat):
+            status = check_audio_status(MagicMock(), "beat-001")
+
+        assert status.has_audio is True
+        assert status.is_stale is True
+
+    def test_check_status_no_hash_is_stale(self):
+        """Audio without a hash (pre-feature) should be flagged as stale."""
+        beat = _mock_beat(audio_url="/api/v1/audio/files/test.mp3")
+        # No audio_script_hash key
+
+        with patch("src.audio.pipeline.get_node", return_value=beat):
+            status = check_audio_status(MagicMock(), "beat-001")
+
+        assert status.is_stale is True
+
+    def test_check_status_no_audio(self):
+        """Beats without audio should show has_audio=False, is_stale=False."""
+        beat = _mock_beat(audio_url="")
+
+        with patch("src.audio.pipeline.get_node", return_value=beat):
+            status = check_audio_status(MagicMock(), "beat-001")
+
+        assert status.has_audio is False
+        assert status.is_stale is False

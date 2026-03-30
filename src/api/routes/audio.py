@@ -14,6 +14,7 @@ from neo4j import Session
 from src.api.dependencies import get_session
 from src.api.models.audio import (
     AudioPreviewRequest,
+    AudioStatusResponse,
     BatchGenerateRequest,
     BatchGenerateResponse,
     BatchResultItem,
@@ -29,7 +30,7 @@ from src.api.models.audio import (
 )
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
-from src.audio.pipeline import PipelineError, generate_batch, generate_beat_audio
+from src.audio.pipeline import PipelineError, check_audio_status, generate_batch, generate_beat_audio
 from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
 
@@ -218,6 +219,27 @@ def serve_audio_file(key: str):
 
 
 # ── Pipeline endpoints (require Neo4j) ──
+
+
+@router.get("/audio/status/{beat_id}", response_model=AudioStatusResponse)
+def get_audio_status(beat_id: str, session: Session = Depends(get_session)):
+    """Check audio status for a beat, including staleness detection.
+
+    Returns whether audio exists, its URL, duration, and whether the
+    script_body has changed since the audio was last generated (is_stale).
+    """
+    try:
+        status = check_audio_status(session, beat_id)
+    except PipelineError as e:
+        raise HTTPException(404, str(e))
+
+    return AudioStatusResponse(
+        beat_id=status.beat_id,
+        has_audio=status.has_audio,
+        audio_url=status.audio_url,
+        duration_sec=status.duration_sec,
+        is_stale=status.is_stale,
+    )
 
 
 @router.post("/audio/generate/{beat_id}", response_model=GenerateResponse)

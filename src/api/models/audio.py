@@ -19,7 +19,8 @@ class AudioStatusResponse(BaseModel):
     beat_id: str
     has_audio: bool
     audio_url: str | None = None
-    duration_sec: int | None = None
+    duration_sec: float | None = None
+    is_stale: bool = False
 
 
 class ProviderInfo(BaseModel):

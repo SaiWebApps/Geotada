@@ -9,6 +9,7 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import struct
 import wave
 from dataclasses import dataclass
@@ -111,6 +112,57 @@ def _build_storage_key(beat_id: str, poi_name: str | None = None) -> str:
     return f"beats/{slug}/{beat_id}.mp3"
 
 
+def _script_hash(text: str) -> str:
+    """SHA-256 hash of script_body, used to detect stale audio."""
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
+@dataclass
+class AudioStatus:
+    """Status of a beat's audio, including staleness detection."""
+
+    beat_id: str
+    has_audio: bool
+    audio_url: str | None
+    duration_sec: float | None
+    is_stale: bool
+
+
+def check_audio_status(session: Session, beat_id: str) -> AudioStatus:
+    """Check audio status for a beat, including whether the audio is stale.
+
+    Audio is stale when the script_body has changed since audio was generated
+    (i.e. the stored hash no longer matches the current script_body).
+    """
+    beat = get_node(session, "NarrativeBeat", beat_id)
+    if beat is None:
+        raise PipelineError(f"NarrativeBeat '{beat_id}' not found")
+
+    props = beat["properties"]
+    audio_url = props.get("audio_url", "")
+    has_audio = bool(audio_url) and "placeholder" not in audio_url
+    duration_sec = props.get("duration_sec")
+
+    # Check staleness
+    is_stale = False
+    if has_audio:
+        stored_hash = props.get("audio_script_hash", "")
+        current_body = props.get("script_body", "")
+        if stored_hash and current_body:
+            is_stale = stored_hash != _script_hash(current_body)
+        elif not stored_hash and current_body:
+            # Audio exists but no hash stored (generated before this feature)
+            is_stale = True
+
+    return AudioStatus(
+        beat_id=beat_id,
+        has_audio=has_audio,
+        audio_url=audio_url if has_audio else None,
+        duration_sec=duration_sec,
+        is_stale=is_stale,
+    )
+
+
 def generate_beat_audio(
     session: Session,
     beat_id: str,
@@ -138,9 +190,13 @@ def generate_beat_audio(
     if not script_body:
         raise PipelineError(f"Beat '{beat_id}' has no script_body")
 
-    # Step 2: Check if audio already exists
+    # Step 2: Check if audio already exists (skip stale audio — regenerate it)
     existing_url = props.get("audio_url", "")
-    if existing_url and "placeholder" not in existing_url and not force:
+    stored_hash = props.get("audio_script_hash", "")
+    current_hash = _script_hash(script_body)
+    is_stale = stored_hash and stored_hash != current_hash
+
+    if existing_url and "placeholder" not in existing_url and not force and not is_stale:
         raise PipelineError(
             f"Beat '{beat_id}' already has audio at '{existing_url}'. "
             "Use force=True to regenerate."
@@ -174,6 +230,7 @@ def generate_beat_audio(
     update_node(session, "NarrativeBeat", beat_id, {
         "audio_url": audio_url,
         "duration_sec": duration,
+        "audio_script_hash": current_hash,
     })
 
     return GenerationResult(
