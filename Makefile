@@ -1,4 +1,4 @@
-.PHONY: help venv env install lint format test test-unit test-integration test-api setup verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
+.PHONY: help venv env install lint format test test-unit test-integration test-api setup setup-audio verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
 
 PYTHON := .venv/bin/python
 PIP    := .venv/bin/pip
@@ -109,6 +109,9 @@ api: ## Start the FastAPI graph API (port 8000)
 
 api-test: ## Start API against test database (port 8000)
 	set -a && . .env.test && set +a && $(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+
+setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
+	$(PYTHON) scripts/check_audio_setup.py
 
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS
