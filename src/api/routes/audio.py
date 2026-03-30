@@ -31,6 +31,7 @@ from src.api.models.audio import (
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
 from src.audio.pipeline import PipelineError, check_audio_status, generate_batch, generate_beat_audio
+from src.audio.pipeline import GenerationResult as PipelineResult
 from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
 
@@ -280,9 +281,10 @@ def generate_audio_batch(
 ):
     """Generate audio for all NarrativeBeats that need it.
 
-    Processes all beats without audio or with placeholder URLs.
+    Processes all beats without audio, with placeholder URLs, or with stale audio.
+    Returns summary stats including timing and total bytes generated.
     """
-    raw_results = generate_batch(
+    summary = generate_batch(
         session,
         provider_name=body.provider,
         voice_id=body.voice_id,
@@ -290,17 +292,12 @@ def generate_audio_batch(
     )
 
     items: list[BatchResultItem] = []
-    succeeded = 0
-    failed = 0
-
-    for r in raw_results:
+    for r in summary.results:
         if isinstance(r, PipelineError):
-            failed += 1
             items.append(BatchResultItem(
                 beat_id="unknown", success=False, error=str(r),
             ))
         else:
-            succeeded += 1
             items.append(BatchResultItem(
                 beat_id=r.beat_id,
                 success=True,
@@ -309,8 +306,12 @@ def generate_audio_batch(
             ))
 
     return BatchGenerateResponse(
-        total_processed=len(raw_results),
-        succeeded=succeeded,
-        failed=failed,
+        total_found=summary.total_found,
+        total_processed=summary.succeeded + summary.failed,
+        succeeded=summary.succeeded,
+        failed=summary.failed,
+        skipped=summary.skipped,
+        total_bytes=summary.total_bytes,
+        elapsed_sec=summary.elapsed_sec,
         results=items,
     )

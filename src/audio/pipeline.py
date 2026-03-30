@@ -11,10 +11,11 @@ from __future__ import annotations
 
 import hashlib
 import struct
+import time
 import wave
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from io import BytesIO
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from src.api.crud.nodes import get_node, update_node
 from src.audio.provider import TTSError, get_provider
@@ -244,6 +245,19 @@ def generate_beat_audio(
     )
 
 
+@dataclass
+class BatchSummary:
+    """Summary statistics for a batch generation run."""
+
+    results: list[GenerationResult | PipelineError]
+    total_found: int
+    skipped: int = 0
+    succeeded: int = 0
+    failed: int = 0
+    total_bytes: int = 0
+    elapsed_sec: float = 0.0
+
+
 def generate_batch(
     session: Session,
     *,
@@ -251,26 +265,46 @@ def generate_batch(
     storage_name: str | None = None,
     voice_id: str | None = None,
     force: bool = False,
-) -> list[GenerationResult | PipelineError]:
+    progress_callback: Callable[[int, int, str], None] | None = None,
+) -> BatchSummary:
     """Generate audio for all NarrativeBeats that need it.
 
-    Returns a list of results (GenerationResult for success, PipelineError for failure).
+    Args:
+        progress_callback: Optional callback(current, total, beat_id) called
+            after each beat is processed.
+
+    Returns a BatchSummary with results and stats.
     """
+    start = time.monotonic()
+
     # Find all beats
     result = session.run(
         "MATCH (b:NarrativeBeat) "
-        "RETURN b.id AS id, b.audio_url AS audio_url"
+        "RETURN b.id AS id, b.audio_url AS audio_url, b.audio_script_hash AS hash, "
+        "       b.script_body AS script_body"
     )
 
+    all_beats = list(result)
+    total_found = len(all_beats)
+
     beat_ids = []
-    for record in result:
+    for record in all_beats:
         url = record["audio_url"] or ""
-        # Include beats with no audio, placeholder URLs, or if force=True
         if force or not url or "placeholder" in url:
             beat_ids.append(record["id"])
+        elif record["script_body"] and record["hash"]:
+            # Also include stale beats
+            if record["hash"] != _script_hash(record["script_body"]):
+                beat_ids.append(record["id"])
+
+    skipped = total_found - len(beat_ids)
 
     results: list[GenerationResult | PipelineError] = []
-    for beat_id in beat_ids:
+    succeeded = 0
+    failed = 0
+    total_bytes = 0
+
+    for i, beat_id in enumerate(beat_ids):
         try:
             r = generate_beat_audio(
                 session,
@@ -281,7 +315,23 @@ def generate_batch(
                 force=force,
             )
             results.append(r)
+            succeeded += 1
+            total_bytes += r.size_bytes
         except PipelineError as e:
             results.append(e)
+            failed += 1
 
-    return results
+        if progress_callback:
+            progress_callback(i + 1, len(beat_ids), beat_id)
+
+    elapsed = round(time.monotonic() - start, 2)
+
+    return BatchSummary(
+        results=results,
+        total_found=total_found,
+        skipped=skipped,
+        succeeded=succeeded,
+        failed=failed,
+        total_bytes=total_bytes,
+        elapsed_sec=elapsed,
+    )

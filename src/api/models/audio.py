@@ -133,7 +133,11 @@ class BatchResultItem(BaseModel):
 class BatchGenerateResponse(BaseModel):
     """Results of batch audio generation."""
 
+    total_found: int = Field(description="Total NarrativeBeats in the graph")
     total_processed: int
     succeeded: int
     failed: int
+    skipped: int = Field(0, description="Beats that already had up-to-date audio")
+    total_bytes: int = Field(0, description="Total bytes of audio generated")
+    elapsed_sec: float = Field(0.0, description="Wall clock time in seconds")
     results: list[BatchResultItem]

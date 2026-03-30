@@ -13,6 +13,7 @@ import pytest
 
 from src.audio.pipeline import (
     AudioStatus,
+    BatchSummary,
     GenerationResult,
     PipelineError,
     _build_storage_key,
@@ -113,8 +114,11 @@ class TestGenerateBeatAudio:
 class TestGenerateBatch:
     def test_processes_placeholder_beats(self):
         class FakeRecord:
-            def __init__(self, bid, url):
-                self._data = {"id": bid, "audio_url": url}
+            def __init__(self, bid, url, hash_val=None, script=None):
+                self._data = {
+                    "id": bid, "audio_url": url,
+                    "hash": hash_val, "script_body": script,
+                }
             def __getitem__(self, key):
                 return self._data[key]
 
@@ -135,11 +139,60 @@ class TestGenerateBatch:
 
         with patch("src.audio.pipeline.get_node", return_value=_mock_beat(beat_id="b1")), \
              patch("src.audio.pipeline.update_node"):
-            results = generate_batch(session, provider_name="mock")
+            summary = generate_batch(session, provider_name="mock")
 
-        successes = [r for r in results if isinstance(r, GenerationResult)]
+        assert isinstance(summary, BatchSummary)
+        successes = [r for r in summary.results if isinstance(r, GenerationResult)]
         assert len(successes) == 1
         assert successes[0].beat_id == "b1"
+        assert summary.succeeded == 1
+        assert summary.total_bytes > 0
+        assert summary.elapsed_sec >= 0
+
+    def test_progress_callback(self):
+        class FakeRecord:
+            def __init__(self, bid, url, hash_val=None, script=None):
+                self._data = {
+                    "id": bid, "audio_url": url,
+                    "hash": hash_val, "script_body": script,
+                }
+            def __getitem__(self, key):
+                return self._data[key]
+
+        session = MagicMock()
+        call_count = [0]
+
+        def smart_run(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return [
+                    FakeRecord("b1", ""),
+                    FakeRecord("b2", ""),
+                ]
+            result = MagicMock()
+            poi = MagicMock()
+            poi.__getitem__ = lambda self, k: "Test POI"
+            result.single.return_value = poi
+            return result
+
+        session.run = smart_run
+        progress_log = []
+
+        def on_progress(current, total, beat_id):
+            progress_log.append((current, total, beat_id))
+
+        with patch("src.audio.pipeline.get_node", side_effect=[
+            _mock_beat(beat_id="b1", audio_url=""),
+            _mock_beat(beat_id="b2", audio_url=""),
+        ]), patch("src.audio.pipeline.update_node"):
+            summary = generate_batch(
+                session, provider_name="mock", progress_callback=on_progress,
+            )
+
+        assert len(progress_log) == 2
+        assert progress_log[0] == (1, 2, "b1")
+        assert progress_log[1] == (2, 2, "b2")
+        assert summary.succeeded == 2
 
 
 class TestGetDuration:
