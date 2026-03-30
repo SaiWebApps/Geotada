@@ -9,7 +9,10 @@ Usage:
 
 from __future__ import annotations
 
+import struct
+import wave
 from dataclasses import dataclass
+from io import BytesIO
 from typing import TYPE_CHECKING
 
 from src.api.crud.nodes import get_node, update_node
@@ -33,7 +36,68 @@ class GenerationResult:
     storage: str
     audio_url: str
     size_bytes: int
+    duration_sec: float
     script_body: str
+
+
+def _get_duration(audio_bytes: bytes) -> float:
+    """Extract duration in seconds from audio bytes (WAV or MP3).
+
+    WAV: parsed exactly via stdlib wave module.
+    MP3: decoded from the first valid frame header (bitrate + total size).
+    Returns 0.0 if the format cannot be determined.
+    """
+    # Try WAV first (starts with RIFF header)
+    if audio_bytes[:4] == b"RIFF":
+        try:
+            with wave.open(BytesIO(audio_bytes), "rb") as wf:
+                return wf.getnframes() / wf.getframerate()
+        except Exception:
+            return 0.0
+
+    # Try MP3 — find first valid frame sync (0xFF 0xE0+ bits)
+    return _mp3_duration(audio_bytes)
+
+
+# ── MP3 bitrate tables (MPEG1 Layer III) ──
+_BITRATES_V1_L3 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0]
+_SAMPLE_RATES_V1 = [44100, 48000, 32000, 0]
+
+
+def _mp3_duration(data: bytes) -> float:
+    """Estimate MP3 duration from the first valid frame header and file size.
+
+    Scans for the frame sync word (11 set bits), extracts bitrate from the
+    header, then computes duration = (file_size * 8) / bitrate_bps.
+    Only handles MPEG1 Layer III (the common case for TTS output).
+    """
+    for i in range(min(len(data) - 4, 8192)):
+        if data[i] != 0xFF:
+            continue
+        hdr = struct.unpack(">I", data[i : i + 4])[0]
+
+        # Check sync: 11 bits set
+        if (hdr >> 21) != 0x7FF:
+            continue
+
+        version = (hdr >> 19) & 0x3  # 0x3 = MPEG1
+        layer = (hdr >> 17) & 0x3  # 0x1 = Layer III
+        bitrate_idx = (hdr >> 12) & 0xF
+        sr_idx = (hdr >> 10) & 0x3
+
+        if version != 3 or layer != 1:  # Only MPEG1 Layer III
+            continue
+        if bitrate_idx == 0 or bitrate_idx == 15 or sr_idx == 3:
+            continue
+
+        bitrate_kbps = _BITRATES_V1_L3[bitrate_idx]
+        if bitrate_kbps == 0:
+            continue
+
+        # Duration = total bits / bitrate
+        return (len(data) * 8) / (bitrate_kbps * 1000)
+
+    return 0.0
 
 
 def _build_storage_key(beat_id: str, poi_name: str | None = None) -> str:
@@ -106,7 +170,11 @@ def generate_beat_audio(
         raise PipelineError(f"Storage failed for beat '{beat_id}': {e}")
 
     # Step 5: Update Neo4j
-    update_node(session, "NarrativeBeat", beat_id, {"audio_url": audio_url})
+    duration = round(_get_duration(audio_bytes), 2)
+    update_node(session, "NarrativeBeat", beat_id, {
+        "audio_url": audio_url,
+        "duration_sec": duration,
+    })
 
     return GenerationResult(
         beat_id=beat_id,
@@ -114,6 +182,7 @@ def generate_beat_audio(
         storage=storage.name,
         audio_url=audio_url,
         size_bytes=len(audio_bytes),
+        duration_sec=duration,
         script_body=script_body,
     )
 

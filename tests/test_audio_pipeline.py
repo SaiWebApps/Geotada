@@ -15,6 +15,7 @@ from src.audio.pipeline import (
     GenerationResult,
     PipelineError,
     _build_storage_key,
+    _get_duration,
     generate_batch,
     generate_beat_audio,
 )
@@ -136,3 +137,45 @@ class TestGenerateBatch:
         successes = [r for r in results if isinstance(r, GenerationResult)]
         assert len(successes) == 1
         assert successes[0].beat_id == "b1"
+
+
+class TestGetDuration:
+    def test_wav_duration(self):
+        """Mock provider generates WAV — duration should match expected."""
+        from src.audio.provider import MockTTSProvider
+
+        provider = MockTTSProvider()
+        # "one two three four five" = 5 words → 5/2.5 = 2.0 seconds
+        audio = provider.generate("one two three four five")
+        duration = _get_duration(audio)
+        assert abs(duration - 2.0) < 0.1
+
+    def test_wav_minimum_duration(self):
+        """Short text should still produce at least 1 second."""
+        from src.audio.provider import MockTTSProvider
+
+        provider = MockTTSProvider()
+        audio = provider.generate("hi")
+        duration = _get_duration(audio)
+        assert abs(duration - 1.0) < 0.1
+
+    def test_unknown_format_returns_zero(self):
+        """Garbage bytes should return 0.0, not crash."""
+        assert _get_duration(b"not audio data at all") == 0.0
+
+    def test_empty_bytes_returns_zero(self):
+        assert _get_duration(b"") == 0.0
+
+    def test_result_includes_duration(self):
+        """generate_beat_audio should populate duration_sec in the result."""
+        session = _mock_session_with_poi("Test POI")
+        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
+             patch("src.audio.pipeline.update_node") as mock_update:
+            result = generate_beat_audio(session, "beat-001", provider_name="mock")
+
+        assert result.duration_sec > 0
+        # Verify duration_sec was persisted to Neo4j
+        update_call = mock_update.call_args
+        props = update_call[0][3]  # 4th positional arg is the properties dict
+        assert "duration_sec" in props
+        assert props["duration_sec"] > 0
