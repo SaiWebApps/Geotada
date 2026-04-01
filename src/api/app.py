@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from src.api.dependencies import close_driver, init_driver
-from src.api.routes import edges, graph, nodes, schema
+from src.api.routes import audio, edges, graph, nodes, schema
 
 
 @asynccontextmanager
@@ -40,6 +40,7 @@ def create_app() -> FastAPI:
     app.include_router(nodes.router, prefix="/api/v1")
     app.include_router(edges.router, prefix="/api/v1")
     app.include_router(schema.router, prefix="/api/v1")
+    app.include_router(audio.router, prefix="/api/v1")
 
     # Serve the graph editor frontend
     editor_dir = os.path.join(

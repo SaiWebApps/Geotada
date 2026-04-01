@@ -255,3 +255,5 @@ temp/
 !.env.example
 .env.test
 !.env.test.example
+# Generated audio files (local TTS output)
+audio_store/
