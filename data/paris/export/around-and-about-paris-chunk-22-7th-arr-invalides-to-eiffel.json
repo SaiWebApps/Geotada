@@ -1,0 +1,535 @@
+[
+  {
+    "name": "Fontaine de Mars",
+    "short_description": "Napoleonic-era neoclassical fountain at 129 rue Saint-Dominique depicting Mars and Hygeia, built 1806-1809.",
+    "latitude": 48.8584,
+    "longitude": 2.3026,
+    "importance_tier": 4,
+    "trigger_radius": 40,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Fontaine du Gros-Caillou",
+      "La Fontaine de Mars"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At the arcaded corner of rue Saint-Dominique and rue de l'Exposition stands La Fontaine de Mars, one of several fountains bequeathed to Paris by Napoleon. Mars, god of war, is depicted being offered water by Hygeia, goddess of health. The adjacent restaurant of the same name is one of those unpretentious places with genuine atmosphere — warm, welcoming, and serving honest traditional French cooking, a rarity in modern Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Arcaded hemicycle at the corner; Mars's helmeted head and Hygeia with serpent"
+        ],
+        "source_passage": "La Fontaine de Mars, one of several bequeathed to Paris by Napoleon. Mars, the god of war, is depicted being offered water by the goddess of health, Hygeia.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Église Saint-Pierre du Gros Caillou",
+    "short_description": "Parish church at 92 rue Saint-Dominique, the 1822 successor to the original village church of the Gros Caillou neighbourhood.",
+    "latitude": 48.859,
+    "longitude": 2.305,
+    "importance_tier": 5,
+    "trigger_radius": 40,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Saint-Pierre du Gros Caillou",
+      "Church of Saint-Pierre du Gros Caillou"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "West of the Invalides was once a village called Le Gros Caillou — 'the big stone' — named after the boundary marker between the domains of the abbeys of Saint-Germain and Sainte-Geneviève. The village grew up to serve the 30-year construction of the Invalides: its first shop was a butcher's on rue Saint-Dominique, and the parallel rue de Grenelle accommodated laundresses who did the Invalides' washing in the Seine. Its parish church at n° 92 rue Saint-Dominique was won only after years of petitions to the King — before it, villagers had to drag all the way to Saint-Sulpice for their sacraments. The current church dates from 1822.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Plain 19th-century facade at 92 rue Saint-Dominique"
+        ],
+        "source_passage": "The church of Saint-Pierre du Gros Caillou at n° 92 was the original parish church of the long-forgotten village.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue Cler",
+    "short_description": "Pedestrianised market street in the 7th arrondissement, celebrated for its village atmosphere and daily produce market.",
+    "latitude": 48.8565,
+    "longitude": 2.3028,
+    "importance_tier": 3,
+    "trigger_radius": 60,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Rue Cler market"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "More than any other street, pedestrian rue Cler perpetuates the village atmosphere of the old Gros Caillou neighbourhood. Its permanent market — held both mornings and afternoons — is described as the most picturesque street in the 7th arrondissement: an explosion of genuine local colour, all the more vivid for being such a contrast with the formal residential avenues surrounding it.",
+        "lens": "markets_street_food",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Cobblestones and market stalls between rue de Grenelle and avenue de la Motte-Picquet"
+        ],
+        "source_passage": "the pedestrian rue Cler... perpetuates the village atmosphere par excellence with its permanent market.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ecole Militaire",
+    "short_description": "18th-century military academy on Avenue de la Motte-Picquet, commissioned by Louis XV with Madame de Pompadour's backing and designed by Gabriel.",
+    "latitude": 48.8537,
+    "longitude": 2.3063,
+    "importance_tier": 2,
+    "trigger_radius": 100,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "École Militaire",
+      "Military Academy Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Just as Madame de Maintenon founded the school of Saint-Cyr for the children of the impoverished nobility, Madame de Pompadour founded the École Militaire to enable impoverished young men to become officers. She instructed Gabriel — who had already impressed the court with his Petit Trianon at Versailles — to design this new academy. Among the cadets who later paraded on the adjacent Champ de Mars was a poor Corsican who would one day inspect and distribute honours to the troops there.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Grand classical façade facing Place de Fontenoy",
+          "Central pavilion with Corinthian columns"
+        ],
+        "source_passage": "Madame de Pompadour founded the Ecole Militaire to enable impoverished young men to become officers... instructed Gabriel.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "UNESCO Headquarters Paris",
+    "short_description": "UNESCO's Paris headquarters at Place de Fontenoy, a Y-shaped Modernist building (1958) by Breuer, Nervi, and Zehrfuss, with a Japanese garden by Isamu Noguchi.",
+    "latitude": 48.8512,
+    "longitude": 2.3076,
+    "importance_tier": 3,
+    "trigger_radius": 60,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "UNESCO Building Paris",
+      "Maison de l'UNESCO",
+      "UNESCO House Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "On Place de Fontenoy, facing the west wing of the École Militaire, stands the UNESCO building, designed jointly by Marcel Breuer (US), Pier Luigi Nervi (Italy) and Bernard Zehrfuss (France), and inaugurated in 1958. Its Y-shaped form was quite revolutionary when it was designed, and, like all good architecture, remains effective today. Outside stand works by Calder, Miró, and Moore; inside, by Picasso, Arp, Braque, Miró, and others. The Japanese garden was designed by the sculptor Isamu Noguchi, who returned to Paris to restore it in 1988, shortly before his death.",
+        "lens": "modern_design",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Y-shaped concrete structure visible from Place de Fontenoy"
+        ],
+        "source_passage": "the UNESCO building, designed jointly by Marcel Breuer (US), Pietro Nervi (Italy) and Bernard Zehrfuss (France).",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Champ de Mars",
+    "short_description": "Large public greenspace flanking the Eiffel Tower, formerly the parade ground of the Ecole Militaire and site of successive Expositions Universelles.",
+    "latitude": 48.8556,
+    "longitude": 2.2986,
+    "importance_tier": 2,
+    "trigger_radius": 150,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Champs de Mars",
+      "Field of Mars"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Champ de Mars was the stage for the earliest experiments in flight. On 27 August 1783, the physicist J. A. C. Charles and the Robert brothers released the world's first unmanned hydrogen balloon from here — a 35-cubic-metre sphere of rubberised silk that flew 15 miles in three-quarters of an hour. The people of Gonesse, east of Paris, were panic-stricken when it descended on them from the heavens. Then on 2 March 1784, Jean-Pierre Blanchard brought his sophisticated balloon equipped with four oars and a rudder — it was meant to float northeast to La Villette but headed stubbornly west to Billancourt, to the delight of the chansonniers. Undaunted, Blanchard went on to make the first aerial crossing of the English Channel from Dover to Calais in January 1785, together with American John Jeffries.",
+        "lens": "hidden_history",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Flat open field — original launchpad for ballooning"
+        ],
+        "source_passage": "on 27 August, the Roberts released this first unmanned hydrogen balloon from the Champ-de-Mars.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "In 1863 the photographer Nadar took off from the Champ de Mars in a huge balloon called Le Géant, accompanied by prominent figures, in a nacelle styled as a two-storey wicker house. On his second flight the balloon crashed in Hanover, Germany, injuring Nadar.",
+        "lens": "hidden_history",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Site of Le Géant's first launch on 4 October 1863"
+        ],
+        "source_passage": "In 1863 the photographer Nadar took off from the Champ-de-Mars... in a huge balloon with a double-decker nacelle, called Le Géant.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The authorities of the Revolution chose the Champ de Mars as the site for the first Bastille Day celebrations — La Fête de la Fédération — on 14 July 1790, presided over by Talleyrand. 300,000 fervent patriots, including the Royal Family, gathered here; La Fayette, standing in the pouring rain, took the Nation's oath, the first citizen to do so. By 1793 the Terror had arrived: the guillotine was briefly erected here to execute the hated Bailly — former President of the Constituent Assembly and Mayor of Paris — who waited stoically while the blood-thirsty crowd covered him in spittle and mud.",
+        "lens": "war_conflict",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Vast open axis from Ecole Militaire to Eiffel Tower"
+        ],
+        "source_passage": "300,000 fervent patriots - including the Royal Family - were convened here on that 14 July 1790.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "From 1855 the Champ de Mars became the playground of the emerging capitalist age — the site of successive Expositions Universelles where French technological achievements dazzled the world. The 1889 fair featured the Galerie des Machines (420 × 115 metres, 16,000 machines) and the just-completed Eiffel Tower rising 300 metres — never before had mortal eye embraced such horizons except from a balloon. In 1900, an electrically operated moving wooden platform transported visitors from the Champ de Mars to the Champs-Élysées and back, electricity still being a luxury. The age of Universal Exhibitions has gone, an ephemeral spark fizzled out by ennui before being swept away by universal cataclysms.",
+        "lens": "social_change",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Vast plain that hosted temporary exhibition halls"
+        ],
+        "source_passage": "in 1855 the Champ-de-Mars was singled out to become the gigantic playground of the emerging capitalist society.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "An event of great novelty occurred on the Champ de Mars one fine morning in 1780: two gentlemen ran a horse-race for a bet, the first of a series of sports imported from England that became fashionable in Paris throughout the 19th century. Marie-Antoinette gave enthusiastic support; even the Revolution adopted horse-racing, though the jockeys of those 'patriotic horse-races of public utility' wore tricoloured sashes. The Champ de Mars remained Paris's racecourse until 1855, when Longchamp in the Bois de Boulogne took over.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Long flat expanse — nearly 800m from Ecole Militaire to Eiffel Tower"
+        ],
+        "source_passage": "An event of great novelty occurred here one fine morning in 1780, when two gentlemen ran in a horse-race for a bet.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Les Invalides",
+    "short_description": "17th-century military complex containing Napoleon's tomb beneath a gilded dome and the Army Museum with 500,000 artefacts",
+    "latitude": 48.856892,
+    "longitude": 2.3125,
+    "importance_tier": 4,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hotel National des Invalides",
+      "Hotel des Invalides"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The church of the Dome — also known as the Royal Chapel — is one of the most outstanding monuments in Paris, a masterpiece of 17th-century architecture built by Jules-Hardouin Mansart. Its proportions were once seen at their best from Avenue de Breteuil on a fine morning, when the deep purple dome looked almost palpably mellow and pulpy. That patina was lost when Paris was groomed for the bicentenary of the Revolution: the dome was daubed with shiny gold paint. The regilding was executed to the highest standards, but it destroyed what only time can bestow. By night, however, the dome shimmering against the dark sky above the floodlit walls remains enchanting.",
+        "lens": "historic_arch",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the golden dome",
+          "Best appreciated from Place Vauban or Pont Alexandre III"
+        ],
+        "source_passage": "the church of the Dome (also known as the Royal Chapel)... a masterpiece of 17th-century architecture, built by Jules-Hardouin Mansart.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "It was Louis XIV, assisted by his minister Louvois, who in 1670 founded the Hôtel des Invalides. Distressed by the sight of war cripples reduced to begging on the Pont-Neuf after loyal service on the battlefield, the Sun King felt he owed them respectable shelter. The initiative had earlier roots: Henri IV in 1604 had provided shelter for veterans on the present rue Broca, and Louis XIII and Richelieu built the hospital of Bicêtre. But Louis XIV tackled the issue on a grand scale, commissioning Libéral Bruant to build a monument colossal in size — its façade measures 195 metres across and the main courtyard, the Cour d'Honneur, 102 metres by 63 — yet subdued in character. Montesquieu wrote of it: 'I believe this to be the most respectable place on earth.'",
+        "lens": "hidden_history",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Façade stretches 195m across",
+          "Cour d'Honneur 102m by 63m"
+        ],
+        "source_passage": "it was Louis XIV, assisted by his minister Louvois, who in 1670 founded the Hotel des Invalides.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The veterans Louis XIV sheltered here were not easily persuaded to trade their scrappy independence on the Pont-Neuf for military discipline. And they had good reason to be alarmed: infractions were punished by anything from deprivation of wine to imprisonment, or by public humiliation astride a wooden horse. If caught with a woman of pleasure, both were exposed together for the amusement of passers-by. A complaint about poor soup once sparked a full-blown riot. Minister Louvois crushed the rebellion and had the most unruly rebel shot by a firing squad.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Cour d'Honneur where punishments were displayed"
+        ],
+        "source_passage": "a harsh military discipline was imposed... a complaint about the poor quality of the soup sparked off an outburst of violence, which soon developed into a full-blown riot.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Louvois was not a modest man and had his eye on the Invalides as his own sepulchre. Louis XIV would not tolerate such impertinence and had his remains removed elsewhere. But Louvois did find a subtle way to perpetuate his name: as you enter the Cour d'Honneur, look at the fifth garret to the right of the left-hand pavilion. Its bull's-eye window is framed by a wolf ('loup') that gazes ('voit') intensely down on the courtyard — a far-fetched pun, but one that passed unnoticed by the Sun King.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Fifth garret right of left-hand pavilion in Cour d'Honneur — bull's-eye window framed by carved wolf"
+        ],
+        "source_passage": "look at the fifth garret to the right of the left-hand side pavilion; its bull's-eye window is framed by a wolf ('loup') which looks ('voit') intensely down on to the courtyard.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Napoleon wished to be buried 'on the banks of the Seine, by the French people whom I have loved so much.' After seven years of negotiations with the English, his ashes arrived from Saint Helena on 15 December 1840, travelling via Le Havre, up the Seine to Pont de Neuilly, then down the Champs-Élysées to the Invalides through a snowstorm. Victor Hugo, who was present, described the moment the sun broke through as the hearse appeared: 'The effect was prodigious indeed.' Some 850,000 Parisians came to pay homage in the following days. Napoleon's ashes were finally moved to their permanent tomb — designed by Visconti — on 2 April 1861. He lies within six nested coffins; a silver vase holds his heart; a silver box, his stomach.",
+        "lens": "famous_residents",
+        "duration_sec": 70,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Circular crypt with massive red quartzite sarcophagus",
+          "Twelve allegorical figures around the tomb"
+        ],
+        "source_passage": "the Emperor's ashes were brought from the island of Saint Helena to the Invalides on the 15 December 1840.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The church of Saint-Louis-des-Invalides — the original church of the institution, designed by Libéral Bruant — boasts a magnificent 17th-century organ. It was here, on 5 December 1837, that Hector Berlioz's Requiem received its world premiere, performed with 188 instrumentalists and 210 choristers, at a ceremony commemorating General Damrémont, killed at the Siege of Constantine.",
+        "lens": "music_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "17th-century organ inside Saint-Louis-des-Invalides"
+        ],
+        "source_passage": "The church also boasts a magnificent 17th-century organ which was used in 1837, for the first performance of Berlioz's Requiem.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Buried in the crypt of Saint-Louis-des-Invalides is Rouget de Lisle, the captain from Strasbourg who in 1792 composed 'Le Chant de guerre pour l'armée du Rhin' — the song that became La Marseillaise, France's ferociously sanguinary national anthem. His ashes were brought here on 14 July 1915, awaiting a planned transfer to the Panthéon that has never yet happened.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Governors' Crypt of Saint-Louis-des-Invalides"
+        ],
+        "source_passage": "Rouget de Lisle, the captain from Strasbourg who in 1792 composed Le Chant de guerre pour l'armée du Rhin... His ashes were brought here on 14 July 1915.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Napoleon was determined to stamp his own identity on the Invalides and eclipse his predecessor. In 1797 he transferred the lion of the defeated Serenissima Republic to this stronghold of French military glory, placing it atop a fountain in the centre of the Esplanade. He also hoped to bring the golden cross of the Kremlin back as a trophy and display it on the Dome — but history decided otherwise. The Venetian lion's Parisian career was brief: by 1815 it had returned to its column in Piazza San Marco.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Central fountain on the Esplanade des Invalides"
+        ],
+        "source_passage": "in 1797, had already transferred the lion of the defeated Serenissima Republic to this stronghold of France's military glory.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "29 Avenue Rapp",
+    "short_description": "Award-winning 1901 Art Nouveau apartment building by Jules Lavirotte with fantastically ornate carvings of flora, fauna, and Adam and Eve",
+    "latitude": 48.859127,
+    "longitude": 2.300876,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Lavirotte Building",
+      "Immeuble Lavirotte"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At n° 29 Avenue Rapp stands an astonishing building by Jules Lavirotte, built in 1901 and frequently compared to the work of Antoni Gaudí. It is one of the finest surviving examples of Art Nouveau in Paris, its façade lavished with ceramic sculpture — flowers, animals, bison heads supporting balconies, fox-headed fur collars — and awarded the prize for the most original new façade in the 7th arrondissement that year.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Ceramic facade",
+          "Extraordinary sculpted entrance door frame"
+        ],
+        "source_passage": "At n° 29 is an astonishing building, built by Lavirotte and extremely reminiscent of the work of the Spanish architect, Gaudf.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Eiffel Tower",
+    "short_description": "Iron lattice tower built by Gustave Eiffel for the 1889 World Fair, standing 330 metres tall on the Champ de Mars",
+    "latitude": 48.858093,
+    "longitude": 2.294694,
+    "importance_tier": 5,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Tour Eiffel",
+      "La Dame de Fer",
+      "The Iron Lady"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "How ironic to recall that 300 prominent members of the intelligentsia signed a petition against the Eiffel Tower's erection, calling it a crime against history and against Paris. Yet it survived its planned demolition and became the unassailable emblem of the city. Even visitors familiar with skyscrapers feel overwhelmed as they approach it: 18,038 metal pieces held together by 2.5 million rivets weighing 7,300 tonnes — an extraordinary technological feat.",
+        "lens": "social_change",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Lattice of iron visible in daylight"
+        ],
+        "source_passage": "300 prominent members of the intelligentsia of the time signed a petition against its erection.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The Tower has attracted both the heroic and the desperate. Eccentrics attempted to fly from it with homemade wings — an Austrian called Reichelt in 1912 hit the ground head first. In 1977 a French stunt man flew a hang-glider from the first floor; an English couple parachuted from the third; an American pilot flew between its legs and lost his licence. Of the 380 people who have hurled themselves from the Tower, only one escaped death — a young woman in 1964 who landed on the roof of a parked car. That year suicides averaged one per month, after which parapets were installed.",
+        "lens": "dark_history",
+        "duration_sec": 55,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Safety parapets and mesh added after 1964"
+        ],
+        "source_passage": "Of the 380 people who have hurled themselves from the Tower, only one escaped death - a young woman who in 1964 jumped from the first floor but landed on the roof of a parked car.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During World War I, the Eiffel Tower played a crucial military role: Mata Hari, the infamous dancer-spy, was identified through radio transmissions intercepted at the Tower's wireless station. Coded messages sent by a German contact referred to agent 'H21' — swiftly identified as Mata Hari. She was captured and shot on 15 October 1917. Nearly 50,000 words were received and transmitted from the Tower during that war — alone a compelling reason not to demolish it.",
+        "lens": "war_conflict",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Antenna at the summit — descendant of WWI radio mast"
+        ],
+        "source_passage": "Identified through its radio transmissions as H21, she was captured and shot on 15 October 1917.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

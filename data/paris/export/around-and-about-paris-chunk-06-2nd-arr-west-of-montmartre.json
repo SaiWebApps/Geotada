@@ -1,0 +1,545 @@
+[
+  {
+    "name": "Passage des Panoramas",
+    "short_description": "Oldest covered passage in Paris (1799), first public space in the city to have gas lighting in 1817, lined with stamp dealers and restaurants",
+    "latitude": 48.8713,
+    "longitude": 2.3417,
+    "importance_tier": 3,
+    "trigger_radius": 15,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Passage des Panoramas"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Passage des Panoramas was the first place in Paris to be gaslit, in 1817 \u2014 a dazzling novelty that drew the fashionable set to promenade here. The passage took its name from two circular Panoramas installed at the site: vast painted canvases that transported spectators to bloody battlefields or peaceful foreign lands. The concept had been invented and patented by the Irish-born painter Robert Barker in 1787, and the Paris installations became the dernier cri. The passage also housed the elegant Caf\u00e9 V\u00e9ron and the pastry shop F\u00e9lix, making it one of the highlights of early 19th-century Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 49,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "Passage des Panoramas was one of the highlights of Paris in the last century, the first place in the city to be gaslit, in 1817",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "corrected"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Theatre des Varietes",
+    "short_description": "Historic theatre on Boulevard Montmartre where Offenbach's operettas premiered, opened 1807",
+    "latitude": 48.8714,
+    "longitude": 2.3421,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Th\u00e9\u00e2tre des Vari\u00e9t\u00e9s",
+      "Theatre des Varietes"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At no. 7 Boulevard Montmartre, the Th\u00e9\u00e2tre des Vari\u00e9t\u00e9s still stands \u2014 the stage where Hortense Schneider created a sensation with Offenbach's La Grande Duchesse de G\u00e9rolstein in 1867. The premiere coincided with the Universal Exposition, and the audience included Napoleon III, the Prince of Wales, the Emperor of Russia, and Bismarck. Schneider's box became known as 'the passage of princes.' Next door at no. 9, the Caf\u00e9 des Vari\u00e9t\u00e9s had been a stronghold of Parisian literati until 1870.",
+        "lens": "music_heritage",
+        "duration_sec": 39,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Th\u00e9\u00e2tre des Vari\u00e9t\u00e9s still stands at no. 7 Boulevard Montmartre"
+        ],
+        "source_passage": "Le Th\u00e9atre des Vari\u00e9t\u00e9s, where Hortense Schneider created a sensation with Offenbach's La Grande Duchesse in 1867, still stands",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Place de la Bourse",
+    "short_description": "Square dominated by the Palais Brongniart (former Paris Stock Exchange), built by Napoleon on the site of a razed convent",
+    "latitude": 48.8696,
+    "longitude": 2.3416,
+    "importance_tier": 3,
+    "trigger_radius": 15,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Palais Brongniart",
+      "Paris Bourse",
+      "Bourse de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Paris Stock Exchange stands on the site of the convent of Les Filles de Saint-Thomas, which was closed during the Revolution. In the nascent age of capitalism, Napoleon had the convent razed and replaced it with this shrine to commerce, designed to emulate a Greek temple. For nearly two centuries it served as the nerve centre of French finance \u2014 though women were barred from entering until 1967, when Article XI prohibiting their admittance was finally repealed.",
+        "lens": "hidden_history",
+        "duration_sec": 39,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Stock Exchange building in Greek temple style dominates the square"
+        ],
+        "source_passage": "The Paris Stock Exchange stands in its centre, on the site of the convent of Les Filles de Saint-Thomas, which was closed down during the Revolution",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Notre-Dame-des-Victoires",
+    "short_description": "17th-century basilica on Place des Petits-P\u00e8res, a pilgrimage shrine co-designed by the architect of Les Invalides, where Lully is buried",
+    "latitude": 48.8665,
+    "longitude": 2.341,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Basilique Notre-Dame-des-Victoires",
+      "Notre Dame des Victoires"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The painting above the high altar of Notre-Dame-des-Victoires tells a story of royal gratitude. It shows the Holy Virgin seated on a cloud, with Louis XIII at her feet presenting a plan of the church \u2014 his thanks for divine help defeating his enemies. To the King's right, a man surrenders the keys of the defeated town of La Rochelle, visible in the background. To his left stands Richelieu, whose initiative it was to eliminate the Huguenots and who obtained their surrender at La Rochelle in 1628. The illustrious architect of the Invalides, Lib\u00e9ral Bruant, collaborated in the construction of this pilgrimage church.",
+        "lens": "hidden_history",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "painting above the high altar showing Louis XIII presenting church plan"
+        ],
+        "source_passage": "The painting above the high altar shows the Holy Virgin seated on a cloud: at her feet is Louis XIII presenting her with a plan of the church",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Among the famous Parisians buried at Notre-Dame-des-Victoires was Louis XIV's court composer Lully, whose funeral monument can still be seen between two side chapels. But the church itself had a turbulent afterlife: it was looted and wrecked during the Revolution, then found an unlikely second use as the Paris stock exchange between 1796 and 1809, before the Bourse moved to its purpose-built temple on Place de la Bourse.",
+        "lens": "hidden_history",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Lully's funeral monument between two side chapels"
+        ],
+        "source_passage": "Among famous Parisians who were buried here was Louis XIV's musician Lully. The church was looted and wrecked during the Revolution, then found use as the Paris stock exchange between 1796 and 1809",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Bibliotheque Nationale de France - Richelieu",
+    "short_description": "Historic home of the French national library since 1721, housing 12 million books in Labrouste's celebrated reading room",
+    "latitude": 48.8673,
+    "longitude": 2.3382,
+    "importance_tier": 4,
+    "trigger_radius": 15,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "BnF Richelieu",
+      "Biblioth\u00e8que Nationale",
+      "Biblioth\u00e8que Nationale de France"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Biblioth\u00e8que Nationale traces its origins to Charles V in the 14th century, when the king concentrated his ancestors' manuscripts in a tower of the Louvre. The collection was scattered during the Hundred Years' War but gathered again in the 16th century by Louis XII and especially by the humanistic Fran\u00e7ois I. Over the centuries it grew relentlessly \u2014 swollen first by the Revolution, when a prodigious flow of books confiscated from the aristocracy and religious institutions poured in, and then by the 19th-century explosion of printing. By the late 20th century the institution held over 12 million books, 6 million engravings, 800,000 coins and medals, and 400,000 records.",
+        "lens": "hidden_history",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "This monumental institution was initiated by Charles V in the 14th century, when he concentrated his ancestors' manuscripts in the tower of the Louvre",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 1643, Cardinal Mazarin rented a property at 8 rue des Petits-Champs \u2014 the H\u00f4tel Tubeuf \u2014 to keep close to Richelieu's Palais-Royal. Within two years he had acquired all the land extending north to the present rue Colbert, including a second mansion. He commissioned Fran\u00e7ois Mansart to build a gallery between the two mansions to house his art collection, and then a separate wing for his library of 40,000 volumes \u2014 the most impressive in Europe. Mazarin had sent emissaries to every court and kingdom with orders to buy every book unavailable in Paris, acquiring between 30,000 and 35,000 volumes in less than ten years.",
+        "lens": "hidden_history",
+        "duration_sec": 53,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "In 1643 Mazarin rented a property at 8 rue des Petits-Champs, the H\u00e9tel Tubeuf",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Galerie Vivienne",
+    "short_description": "Elegant 1823 covered arcade with mosaic floors and neoclassical decor, one of the most beautiful passages in Paris",
+    "latitude": 48.8667,
+    "longitude": 2.3398,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Galerie Vivienne",
+      "Galerie Colbert"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Two hidden arcades lie side by side here \u2014 the highlight of the 2nd arrondissement. The Galerie Vivienne, with its tasteful, arty boutiques and good bookshops, has a charming, antiquated feel. Next door, the Galerie Colbert has been renovated into a more formal, classical compound in true French style, enhanced by its pale pink stone. Both offer an ideal refuge on a wet day \u2014 a glimpse of the covered-passage culture that once defined Parisian shopping.",
+        "lens": "historic_markets",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Galerie Vivienne with arty boutiques and bookshops",
+          "Galerie Colbert with pale pink stone"
+        ],
+        "source_passage": "On your left are two delightful hidden arcades - the highlight of the 2nd arrondissement - Galeries Vivienne and Colbert",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Square Louvois",
+    "short_description": "Small garden on the site of a former opera house, with Visconti's fountain depicting four rivers of France",
+    "latitude": 48.868,
+    "longitude": 2.3376,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Square Louvois"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Square Louvois stands on the site of Paris's ninth opera house. On 13 February 1820, the Duc de Berry \u2014 younger son of the future Charles X \u2014 was stabbed at the royal doorway of the theatre by a Bonapartist saddler named Louvel, as part of a scheme to rid France of the House of Bourbon. The Duke died the following day. Louvel was caught and guillotined before he could do more harm, and the King ordered the opera house razed to obliterate the scene of the crime. Today a graceful fountain by Visconti stands in its place, its allegorical figures representing the four biggest rivers of France that bear feminine names \u2014 which explains why the Rh\u00f4ne is not among them.",
+        "lens": "dark_history",
+        "duration_sec": 61,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Visconti fountain with allegorical river figures"
+        ],
+        "source_passage": "On 13 February 1820, the Duc de Berry, eldest son of the future Charles X, was assassinated at the royal doorway of the theatre",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Lully actually lived nearby, in the corner house at nos. 45 rue des Petits-Champs and 47 rue Sainte-Anne. Its listed fa\u00e7ade is decorated with musical instruments and masks of Bacchantes and satyrs \u2014 a fitting home for the composer who dominated French music under Louis XIV. The street names around Square Louvois \u2014 Cherubini, Rameau and Lully \u2014 are the only reminders of the neighbourhood's lyrical past.",
+        "lens": "music_heritage",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "listed fa\u00e7ade with musical instruments and masks at 45 rue des Petits-Champs / 47 rue Sainte-Anne"
+        ],
+        "source_passage": "Lully actually lived near by, in the corner house at n\u00b0s 45 rue des Petits-Champs and 47 rue Sainte-Anne",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At no. 6 rue Rameau, at the beginning of the 19th century, lived the idolized tenor Adolphe Nourrit, who premiered all the masterpieces of his time \u2014 the works of Rossini and Meyerbeer among them. During a performance of Hal\u00e9vy's La Juive in Marseille, he suffered a vocal crisis that ended his career. Devastated, he threw himself from a window in Naples in 1839. He was only 37.",
+        "lens": "famous_residents",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "the idolized tenor Adolphe Nourrit, who premiered all the masterpieces of the time, lived at n\u00b0 6 rue Rameau",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Nearby rue Chabanais, opened in 1776, was famous above all for the internationally renowned brothel at no. 12, which from 1878 to 1946 catered to the exclusive clientele of the Jockey Club on Boulevard des Italiens. Most of the crowned heads of Europe frequented this impeccably tasteful establishment, as did ministers and government leaders of the Third Republic. Their visits were discreetly described on official timetables as 'visit to the President of the S\u00e9nat.' The splendid furniture was dispersed at auction at Drouot on 8 May 1951.",
+        "lens": "hidden_history",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "18th-century mansions with wrought-iron decorations on rue Chabanais"
+        ],
+        "source_passage": "rue Chabanais was famous first and foremost for its internationally renowned brothel at n\u00b0 12, which from 1878 to 1946 catered to the exclusive clientele",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Passage Choiseul",
+    "short_description": "Covered arcade built in 1825, once home to Parnasse poets, Anatole France, and Offenbach's winter Bouffes Parisiens theatre",
+    "latitude": 48.868,
+    "longitude": 2.3355,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Passage de Choiseul",
+      "Passage Choiseul"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Passage de Choiseul, built in 1825, was once imbued with a rich cultural life. At no. 23 stood a publishing house that brought the Parnasse poets to the world \u2014 Sully Prudhomme, Leconte de Lisle, Heredia and Fran\u00e7ois Copp\u00e9e \u2014 followed from 1864 by Paul Verlaine. A few years later Anatole France worked here as editor for roughly a decade. At no. 73, the stage door to the winter Bouffes Parisiens still stands, where Jacques Offenbach, then director of the theatre, could be seen walking through during the winter seasons of 1855 to 1863.",
+        "lens": "literary_heritage",
+        "duration_sec": 47,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "stage door to winter Bouffes Parisiens at no. 73"
+        ],
+        "source_passage": "Until 1965 n\u00b0 23 was the site of a publishing house which published the works of the Parnasse poets",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Restaurant Drouant",
+    "short_description": "Historic restaurant on Place Gaillon where the Goncourt literary prize has been awarded since 1914",
+    "latitude": 48.8688,
+    "longitude": 2.3345,
+    "importance_tier": 2,
+    "trigger_radius": 8,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Drouant",
+      "Drouant Restaurant"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In the celebrated Drouant restaurant on the corner of 18 rue Gaillon, the Goncourt Prize \u2014 the most prestigious of French literary prizes \u2014 is awarded every third Monday of November. Charles Drouant came up to Paris from Alsace in 1880, one of many compatriots torn by the loss of their region to the Germans. His restaurant soon attracted artists and writers with its fresh oysters from Brittany, and Alphonse and L\u00e9on Daudet, Rodin, Renoir, and Edmond de Goncourt became regulars. On 10 December 1919, L\u00e9on Daudet brought Proust the letter announcing he had won the prize for \u00c0 l'ombre des Jeunes Filles en fleurs \u2014 though by a narrow margin of six votes to four over Dorgel\u00e8s's war novel Les Croix de Bois.",
+        "lens": "literary_heritage",
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Drouant restaurant on corner of rue Gaillon"
+        ],
+        "source_passage": "In the celebrated Drouant restaurant on the comer of 18 rue Gaillon, the Goncourt Prize, the most prestigious of French literary prizes, is awarded every third Monday of November",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Harry's New York Bar",
+    "short_description": "Legendary American bar opened in 1911, birthplace of the Bloody Mary cocktail, frequented by Hemingway and Fitzgerald",
+    "latitude": 48.8692,
+    "longitude": 2.3321,
+    "importance_tier": 3,
+    "trigger_radius": 8,
+    "typical_duration_min": 10,
+    "kid_friendly": "no",
+    "name_variations": [
+      "Harry's Bar",
+      "Harry's New York Bar"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At no. 5 rue Daunou, the red neon sign of Harry's Bar still beckons from a quiet, deserted street. This was a favourite haunt of Hemingway, whose photograph hangs on the wall, and of his friend Fitzgerald, who would drop in from the Ritz just round the corner. Opened in 1911, Harry's New York Bar was the heart of American expatriate Paris in the 1920s \u2014 and the birthplace of the Bloody Mary cocktail, mixed here by bartender Fernand Petiot in 1921.",
+        "lens": "literary_heritage",
+        "duration_sec": 41,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "red neon sign of Harry's Bar",
+          "Hemingway photograph on the wall"
+        ],
+        "source_passage": "At n\u00b0 5 the red neon sign of Harry's Bar still stands out in the night in the otherwise dark, deserted street",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  },
+  {
+    "name": "Rue de la Paix",
+    "short_description": "Paris's most glamorous shopping street since the 19th century, birthplace of haute couture with Worth, Cartier and Paquin",
+    "latitude": 48.8693,
+    "longitude": 2.3312,
+    "importance_tier": 4,
+    "trigger_radius": 15,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Rue de la Paix"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Rue de la Paix was once the site of the beautiful convent of the Capucines, closed during the Revolution and converted into a theatre. A popular funfair was held in its gardens and the famous Franconi moved his circus there. In 1806, Napoleon razed everything to make room for a glorious thoroughfare to honour his name, entrusting the project to his architects Percier and Fontaine. After his defeat in 1814, however, the street was renamed rue de la Paix to commemorate the Peace of Amiens.",
+        "lens": "hidden_history",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "once the site of the church of the beautiful convent of the Capucines. The convent was closed down during the Revolution",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At no. 7 was the house of Charles Frederick Worth, rightly claimed to be the first haute couture designer, who raised dressmaking from craft to art. When Worth arrived from England in 1845, aged 20, he had just 117 francs in his pocket and knew not a word of French. He had served seven years apprenticed to the drapers Swan and Edgar, and after 12 years of hard work in Paris opened his own house on rue de la Paix in 1858. His timing was perfect: this was the heyday of the glamorous Second Empire, where multitudes of social upstarts, ready to squander unlimited sums, accepted Worth's tyranny because they could not claim to be his social betters. The reign of the haute couture designer thus began.",
+        "lens": "famous_residents",
+        "duration_sec": 63,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "At n\u00b0 7 was the house of Charles Worth, rightly claimed to be the first haute couture designer",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The head office of Cartier is still at no. 13 rue de la Paix. The house was founded in 1847 by Louis-Fran\u00e7ois Cartier, who until then had been working for another famous jeweller, Adolphe Picard. He first set up shop near the Palais-Royal, then moved to the fashionable Boulevard des Italiens, where his customers included the Empress Eug\u00e9nie and Napoleon III's cousin, la Princesse Mathilde. In 1899 his grandson Louis moved to rue de la Paix, by then the centre of luxury of the capital. Cartier's international clientele included Edward VII of England, Alfonso XIII of Spain, and the Duchess of Windsor.",
+        "lens": "famous_residents",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Cartier head office at no. 13 rue de la Paix"
+        ],
+        "source_passage": "The head office of the jeweller Cartier is still at n\u00b0 13 rue de la Paix. The house was founded in 1847 by Louis Ferdinand Cartier",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "In 1892, the prosperous banker Paquin set up his wife at no. 5 rue de la Paix. Madame Jeanne Paquin was the first major woman couturier and also the first woman in fashion to be awarded the L\u00e9gion d'honneur, in 1913. A prominent public figure, she chaired the fashion section of the 1900 Universal Exhibition. At its peak, 2,700 employees worked for her establishment, which was located above Robert's chemist shop \u2014 opened in 1820 by Dr Roberts, chemist and surgeon to the British Embassy, and now the sole reminder of the street's former glories among the travel agencies.",
+        "lens": "famous_residents",
+        "duration_sec": 49,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Robert's chemist shop still standing on rue de la Paix"
+        ],
+        "source_passage": "Madame Paquin was the first woman designer and also the first woman to be awarded the L\u00e9gion d'honneur in 1913",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 2nd Arrondissement \u2014 West of Montmartre",
+          "page": "West of Montmartre"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-05T23:00:00Z",
+      "source_chunk": "chunk-06-2nd-arr-west-of-montmartre"
+    }
+  }
+]

@@ -1,0 +1,336 @@
+[
+  {
+    "name": "Synagogue Notre-Dame-de-Nazareth",
+    "short_description": "The oldest of the 'great' synagogues of Paris, built in 1822 on rue Notre-Dame-de-Nazareth for the Ashkenazi community, later rebuilt in 1852 with funding from James de Rothschild.",
+    "latitude": 48.867,
+    "longitude": 2.36,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Synagogue de Nazareth",
+      "Synagogue rue Notre-Dame-de-Nazareth"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Rue Notre-Dame-de-Nazareth sits at the heart of one of Paris's lesser-known Jewish enclaves. When the Revolution broke out, only about 500 Jews lived in the entire capital — Charles VI had banished them in 1394, a ruling Louis XIII reiterated in 1615. After their hard-won emancipation, Jews were granted equal rights and returned. Over 2,000 arrived during the First Empire, swelling to 8,000 by 1840 and 20,000 by 1853. The existing synagogues on rue du Temple and rue des Archives couldn't cope. When the rue du Temple synagogue closed in 1818 after the landlord sold the building, architect Sandrié de Jouy was commissioned to build this synagogue, inaugurated in 1822. But its construction proved faulty, and thirty years later James de Rothschild funded the replacement you see today.",
+        "lens": "hidden_history",
+        "duration_sec": 75,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the synagogue entrance at number 15",
+          "Notice the Middle Eastern atmosphere of the wholesale clothing and fabric shops along the street"
+        ],
+        "source_passage": "Its population now is made up predominantly of North African Jews, but when its synagogue was built in the early 19th century, at n° 15, it was to accommodate the Ashkenazi, not the Sephardi community.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified",
+        "fact_check_notes": "James de Rothschild funded rebuilding confirmed. Population statistics from source text verified."
+      }
+    ]
+  },
+  {
+    "name": "Priory of Saint-Martin-des-Champs",
+    "short_description": "Medieval Benedictine priory dating to the 12th century with rare surviving crenellated walls, a watch-tower saved by Victor Hugo, and one of the earliest Gothic rib-vaulted churches in Paris.",
+    "latitude": 48.8667,
+    "longitude": 2.3553,
+    "importance_tier": 2,
+    "trigger_radius": 40,
+    "typical_duration_min": 25,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Prieuré Saint-Martin-des-Champs",
+      "Saint-Martin-des-Champs"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The crenellated wall you see across the street is a surviving section of the 13th-century fortifications of the Priory of Saint-Martin-des-Champs, one of medieval Paris's most powerful monasteries. Notice the watch-tower with its distinctive pepper-box slate roof. It owes its survival to Victor Hugo, who fired off a letter of protest declaring: 'Demolish the tower — no; the architect — yes!' The tower was restored that very year, along with the pretty 18th-century fountain beside it. The priory church itself boasts the first example of Gothic rib vaults in the capital, though the chapel windows with their semi-circular vaults remain Romanesque — a rare blend of the two styles in one building.",
+        "lens": "historic_arch",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look across the street at the 13th-century crenellated wall",
+          "Notice the watch-tower with its pepper-box slate roof",
+          "Look for the 18th-century fountain next to the tower"
+        ],
+        "source_passage": "the medieval priory of Saint-Martin-des-Champs and its watch-tower, now surmounted by a 'pepper-box' slate roof.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "partially-verified",
+        "fact_check_notes": "Hugo quote widely attributed but exact 1882 date not independently verified."
+      },
+      {
+        "script_body": "The priory had a darker side. Its gaol was the scene of a savage massacre during the Hundred Years' War, when the Bourguignons slaughtered their Armagnac rivals within these walls. Under Louis XIV, prostitutes captured on the neighbouring streets were kept here awaiting deportation to New Orleans. In September 1719, 180 male prisoners were brought from the prison of Bicetre, to be married to 180 women. The couples were then chained together and marched all the way to La Rochelle on the Atlantic coast, where they embarked for Louisiana — a forced marriage and forced migration in one brutal stroke.",
+        "lens": "dark_history",
+        "duration_sec": 55,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Imagine the four corner watch-towers and 18 turrets that once secured the rampart"
+        ],
+        "source_passage": "It also had a gaol, the scene of a savage massacre of the Armagnacs by the Bourguignons during the Hundred Years' War.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "partially-verified",
+        "fact_check_notes": "Mass deportations to Louisiana in 1719 confirmed by historical sources, specific location at Saint-Martin-des-Champs not independently verified."
+      },
+      {
+        "script_body": "The priory of Saint-Martin-des-Champs traces its origins to the 6th century, when a primitive oratory stood on the Ile de la Cite. In the 8th century a chapel replaced it north of the island, but the Normans tore it down a century later. The priory as a fortified complex wasn't built until the 12th century, situated outside the city walls. The monks played a major role in developing this part of Paris, and gave the kingdom renowned churchmen — notably Cardinal de Richelieu. It all came to an end with the Revolution, and in 1798 the newly founded Conservatoire des Arts et Metiers was granted the premises.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Enter from number 292 rue Saint-Martin to see the priory campus"
+        ],
+        "source_passage": "Like other early Christian shrines of Paris, the priory of Saint-Martin-des-Champs originated in the 6th century, with a primitive oratory on the Ile de la Cité",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Wikipedia sources indicate oldest documented structure dates to early 8th century, not 6th century. 6th-century claim may be tradition rather than documented history."
+      },
+      {
+        "script_body": "The monks of Saint-Martin played a major role in developing this part of Paris, shaping its streets and economy over centuries. They were also associated with some of France's most powerful churchmen — including Cardinal de Richelieu, the mastermind behind the centralization of French royal power under Louis XIII.",
+        "lens": "famous_residents",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the priory campus and imagine it as a hub of medieval power and influence"
+        ],
+        "source_passage": "The monks of Saint-Martin played a major role in the development of this part of the arrondissement and also gave the kingdom some renowned churchmen, notably the Cardinal de Richelieu",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "partially-verified",
+        "fact_check_notes": "Richelieu as Prior of Saint-Martin-des-Champs is plausible given his many ecclesiastical holdings but not independently verified."
+      }
+    ]
+  },
+  {
+    "name": "Musee des Arts et Metiers",
+    "short_description": "Museum of inventions and technology housed in the medieval priory of Saint-Martin-des-Champs since 1798.",
+    "latitude": 48.8667,
+    "longitude": 2.3553,
+    "importance_tier": 1,
+    "trigger_radius": 50,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Conservatoire des Arts et Métiers",
+      "Musée National des Techniques"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Inside the old church of Saint-Martin, the Musee National des Techniques offers one of Paris's most underrated displays. Follow humanity's technological adventure through the centuries — from the sundial to satellites, from the first standard units for measures and weights to early recordings and early cinema, from steam engines to Bleriot's aircraft, with which he became the first person to cross the English Channel in 1909. The Gothic dining hall, now the library of the Conservatoire, is a masterpiece of ethereal lightness.",
+        "lens": "science_tech",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Enter at number 270 rue Saint-Martin",
+          "Look for the Gothic dining hall with its soaring vaults — now a library reading room"
+        ],
+        "source_passage": "On the premises (n° 270) is also the Musée National des Techniques, part of which is located in the old church of Saint-Martin.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Porte Saint-Martin",
+    "short_description": "Triumphal arch built in 1674 for Louis XIV celebrating victories over the Germans, Spanish and Dutch.",
+    "latitude": 48.869,
+    "longitude": 2.354,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Porte Saint-Martin"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Porte Saint-Martin stands on the ancient Roman road from Lutetia to the north. This triumphal arch was built by Louis XIV to celebrate his victories over the Franche-Comte, the Germans, the Spanish and the Dutch. Walk up close and you'll see the sculpted figure of the Sun King in the nude as an invincible, muscular Hercules — but bewigged as always. Louis XV passed under it returning from Flanders, Napoleon after Austerlitz, and the Allied armies after Waterloo. When the city's focal point shifted westward, the Arc de Triomphe on the Champs-Elysees replaced it as Paris's symbolic ceremonial arch.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Walk up close to see Louis XIV sculpted as a nude bewigged Hercules"
+        ],
+        "source_passage": "To the north is the Porte Saint-Martin, the triumphal arch built by Louis XIV to celebrate his victories over the Franche-Comté, the Germans, the Spanish and the Dutch",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Rue Saint-Martin lies on the ancient Roman road from Lutetia to the north, a continuation of the Roman cardo — the main urban street — which runs as rue Saint-Jacques south of the Seine. For centuries the Porte Saint-Martin was the ceremonial entry point to Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Stand on rue Saint-Martin and imagine the Roman road running north beneath your feet"
+        ],
+        "source_passage": "Rue Saint-Martin lies on the ancient Roman road from Lutetia to the north and is a continuation of the Roman cardo",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Nicolas-des-Champs",
+    "short_description": "Parish church showing the evolution from Gothic to Renaissance style, with a 15th-century tower and notable burials.",
+    "latitude": 48.8655,
+    "longitude": 2.3543,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Église Saint-Nicolas-des-Champs"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 254, the parish church of Saint-Nicolas-des-Champs beautifully illustrates the evolution from Gothic to Renaissance. Its picturesque tower dates largely to the early 15th century, and the Renaissance portal on the south side survives as a fine example of the transition between styles.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the tower — most of it dates to the early 15th century",
+          "Find the Renaissance portal on the south side of the church"
+        ],
+        "source_passage": "Saint-Nicolas-des-Champs, provides a fine example of the evolution from the Gothic to the Renaissance style.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The church holds notable burials: Mademoiselle de Scudery, the celebrated novelist who died in 1701 aged 93; Guillaume de Bude, founder of the College de France, who died in 1540; and members of the La Bruyere and Ormesson families. The renowned 18th-century actor Talma was baptized here.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Stand inside the church and imagine the 17th- and 18th-century parishioners"
+        ],
+        "source_passage": "Among the parishioners buried here should be mentioned Mlle de Scudéry, who died in 1701 aged 94, Guillaume de Budé",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Scudery age at death corrected from 94 to 93. Born 15 Nov 1607, died 2 June 1701 = mathematically 93."
+      }
+    ]
+  },
+  {
+    "name": "3 Rue Volta",
+    "short_description": "A half-timbered house long claimed to be the oldest house in Paris, though research later dated it to 1644.",
+    "latitude": 48.8646,
+    "longitude": 2.3568,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Maison 3 rue Volta"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 3 rue Volta, an astonishing sight: a medieval half-timbered house shared by a Chinese restaurant and a Chinese hairstylist. For decades this was proclaimed the oldest house in Paris, supposedly dating to the late 13th century. This tiny Chinatown around rues Volta, Le Maire and Gravilliers is the oldest Chinese community in Paris, descended from immigrants who arrived during World War I.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the half-timbered facade at number 3",
+          "Notice the Chinese shops and restaurants along the narrow street"
+        ],
+        "source_passage": "An astonishing anachronistic sight awaits you at n° 3 : a Chinese restaurant and a Chinese hairstylist share a medieval half-timbered house, some say the oldest house in Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "The 'oldest house' claim was debunked in 1979 — house dates to 1644. Oldest house is 51 rue de Montmorency (Nicolas Flamel, 1407)."
+      }
+    ]
+  },
+  {
+    "name": "Convent of the Madelonnettes",
+    "short_description": "Former 1618 convent for 'fallen women' where Ninon de Lenclos was imprisoned; demolished 1865-66, with only a wall fragment surviving.",
+    "latitude": 48.8655,
+    "longitude": 2.3593,
+    "importance_tier": 4,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Couvent des Madelonnettes",
+      "Madelonnettes Prison"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Between rue Vertbois, rue Volta and rue des Fontaines-du-Temple stood the vast Convent of the Madelonnettes, built in 1618 to save the souls of 'fallen women.' The most notorious inmate was Ninon de Lenclos, imprisoned by Anne of Austria to quell the commotion she caused among the court's great men. She protested she was 'neither a whore nor repented.' When her suitors threatened to burn the place down, patrols circled every night until she was removed to a convent in Lagny. When the building was demolished in 1865, skeletons were found under a trap-door behind a church pillar — rebellious detainees apparently left to die.",
+        "lens": "dark_history",
+        "duration_sec": 70,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Look for the surviving section of the convent walls at number 6 rue des Fontaines-du-Temple"
+        ],
+        "source_passage": "The convent was built in 1618 for the purpose of saving the souls of fallen women",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 3rd Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Demolition date corrected from 1868 to 1865-1866 per Wikipedia (Haussmann's construction of rue de Turbigo)."
+      }
+    ]
+  }
+]

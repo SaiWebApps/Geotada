@@ -1,0 +1,556 @@
+[
+  {
+    "name": "Saint-Germain-des-Pres",
+    "short_description": "Oldest church in Paris with origins in the 6th century, anchor of the Left Bank literary and existentialist neighbourhood",
+    "latitude": 48.853968,
+    "longitude": 2.334518,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 8,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Eglise Saint-Germain-des-Pres",
+      "Abbey of Saint-Germain-des-Pres"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "You are standing before the oldest church in Paris, built between 990 and 1014 AD in the Romanesque style. Look carefully at the second chancel — those small columns are survivors from the original 6th-century basilica that honoured Saint Vincent, before Saint Germain took over as patron. In 1163, a larger choir was built to accommodate growing numbers of monks, along with a bell-tower and majestic portal. Pope Alexander III himself presided over the ceremony — and just weeks later, he would lay the cornerstone of Notre-Dame cathedral across the river.",
+        "lens": "historic_arch",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "small columns in second chancel from 6th-century basilica",
+          "Romanesque architecture",
+          "bell-tower"
+        ],
+        "source_passage": "the oldest church in Paris. It even retains some small columns from the first 6th-century basilica",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On 2 September 1792, the abbey prison that once stood across Boulevard Saint-Germain became the site of one of the Revolution's bloodiest episodes. Rumours of a plot against 'the good people' of Paris were deliberately spread, bells were rung, pamphlets distributed. After a mock trial, 100 prisoners including many priests were executed on the first day. By the third day, hundreds of people had been killed at or near the junction of rue Bonaparte and rue de l'Abbaye, their bodies piled in the abbey gardens. The killers worked by torchlight through the night, then tried to erase all evidence, ordering prison concierges to wash away blood with water and vinegar.",
+        "lens": "dark_history",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "junction of rue Bonaparte and rue de l'Abbaye",
+          "Boulevard Saint-Germain where prison stood"
+        ],
+        "source_passage": "the bloody massacres of 2, 3 and 4 September 1792 were triggered",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The abbey of Saint-Germain was once a city within a city, home to about 10,000 people, its domains reaching into today's 15th arrondissement. It answered directly to the Pope, ensuring political independence. Its 13th-century chapel, designed by Pierre de Montreuil — the same architect behind Sainte-Chapelle — was destroyed during the Revolution. When 15,000 tons of gunpowder stored in the dining hall ignited alongside a huge stock of coal, the explosion and fire devoured nearly everything, including a library of 50,000 volumes. Yet miraculously, most of its 7,000 manuscripts survived, including Pascal's original Pensées.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "little garden before the church on site of cloister",
+          "vestiges of medieval chapel arcades in garden"
+        ],
+        "source_passage": "about 10,000 people were living around the abbey, a city within a city",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On the eastern wall of the church, look for the spectacular enamelled sandstone portico affixed to the garden of Square Felix Desruelles. It was manufactured by the celebrated Sevres workshops for the 1900 Universal Exposition. During the Revolution, the church was used as a refinery for saltpetre, leaving it in sorry state. Victor Baltard undertook its restoration, while Hippolyte Flandrin contributed the murals you can see inside.",
+        "lens": "historic_worship",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "enamelled sandstone portico on eastern wall",
+          "Square Felix Desruelles garden",
+          "Flandrin murals inside"
+        ],
+        "source_passage": "A spectacular enamelled sandstone portico is affixed to its eastern wall, manufactured by the celebrated Sevres workshops for the 1900 Universal Exposition",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Place de Furstemberg",
+    "short_description": "One of the most charming small squares in Paris on the site of the former abbey palace courtyard, and home to the Musée Delacroix in the painter's last studio at no. 6.",
+    "latitude": 48.8543,
+    "longitude": 2.3352,
+    "importance_tier": 3,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Atelier Delacroix",
+      "Musee Delacroix",
+      "Musée Delacroix",
+      "Place de Furstenberg"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In January 1857, Delacroix was living in the artists' quarter of La Nouvelle-Athenes when he was finally elected to the Academie des Beaux-Arts — after seven rejections. Seriously ill with laryngitis, he needed to be closer to his murals at Saint-Sulpice. He found this apartment through his dealer Haro, though converting it into a studio was, as he wrote in his journal, 'the devil's own job.' His fierce Breton housekeeper Jenny Le Guillou moved with him and increasingly barred visitors, especially women. He died here in 1863 at the age of 65. On his first morning, he wrote: 'I awoke to find the sun shining in the most welcoming way on the houses opposite my window.'",
+        "lens": "famous_residents",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "courtyard with arched entrance and uneven cobblestones",
+          "garden with old trees",
+          "painter's studio"
+        ],
+        "source_passage": "the Musee (or atelier) Delacroix, located in the last home of the painter, where he died in 1863",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Over fifty years after Delacroix's death, in 1929, prominent artists including Bonnard and Signac founded La Societe des amis de Delacroix to preserve his memory. They rented these dilapidated premises, had them restored, and began organizing temporary exhibitions. By 1963, the Society persuaded the State to purchase the premises and establish a permanent museum. Today the collection charts Delacroix's artistic development through drawings, sketches, studies, and personal documents.",
+        "lens": "visual_art",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "museum interior with drawings and sketches",
+          "Delacroix's painting materials"
+        ],
+        "source_passage": "in 1929, some prominent artists, Bonnard and Signac among them, founded a society to promote the memory of Delacroix",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "This bewitching square is named after Abbot Egon de Furstemberg, who in 1691 reconstructed the abbey's brick-and-stone Renaissance palace. You are standing on the site of the palace's main courtyard, turned into a square in the 18th century. The bright pink house at numbers 6 and 8 was painted to look like brick — because real brick was very expensive — and served as stables and carriage sheds for the palace. Henry Miller described it differently: 'A deserted spot, bleak, spectral at night, containing in the centre four black trees; these four bare trees have the poetry of T.S. Eliot.'",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "four trees around central street-lamp",
+          "bright pink house at n 6/8",
+          "vestiges in courtyard of n 6"
+        ],
+        "source_passage": "named after Egon de Furstemberg, the abbot who in 1691 reconstructed the abbey's brick-and-stone Renaissance palace",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "L'Hotel Paris",
+    "short_description": "Luxury hotel at 13 rue des Beaux-Arts where Oscar Wilde died on 30 November 1900, when it was the run-down Hotel d'Alsace.",
+    "latitude": 48.8562,
+    "longitude": 2.3365,
+    "importance_tier": 3,
+    "trigger_radius": 12,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "L'Hôtel",
+      "Hotel Alsace",
+      "Hôtel d'Alsace",
+      "Oscar Wilde's last residence"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 13 rue des Beaux-Arts stands L'Hotel, now a luxury establishment but in 1900 a run-down place with appalling plumbing called Hotel Alsace. It was here that Oscar Wilde, poverty-stricken and exiled from Britain, lived 'beyond his means' as he famously put it, and died on 30 November 1900. His room has been recreated and constitutes a second Parisian shrine for the brilliant exile. His grave lies in Pere-Lachaise cemetery across the city.",
+        "lens": "literary_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "hotel facade at 13 rue des Beaux-Arts",
+          "recreated Oscar Wilde room inside"
+        ],
+        "source_passage": "In 1900, when poverty-stricken Oscar Wilde stayed here, it was a run-down, cheap place with appalling plumbing, called Hotel Alsace",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue Visconti",
+    "short_description": "Narrow historic alley in the 6th arrondissement, once called 'Little Geneva' as a Huguenot refuge, home to Racine, Balzac, Delacroix, and Adrienne Lecouvreur.",
+    "latitude": 48.856,
+    "longitude": 2.3362,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 12,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Rue des Marais Saint-Germain",
+      "Little Geneva"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "This narrow alley opened in the 16th century and, being in a remote and therefore safer area, became home to Paris's Huguenot community, earning the nickname 'Little Geneva.' In 1559, the first synod of the French Reformed Church was held here, attended by delegates of 72 churches. When the Huguenots convened again months later, police surprised them, but all except four managed to escape. Among these Protestant residents was architect Jean-Baptiste Androuet du Cerceau, builder of the Pont-Neuf and friend of Henri IV, who preferred 'to part with the friendship of the King, than to go to mass.'",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "very narrow alley",
+          "early period houses at n 5, 7 and 9"
+        ],
+        "source_passage": "situated in what was then a remote and therefore safer area, became the home of the Huguenots, and dubbed 'Little Geneva'",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At number 16 lived Adrienne Lecouvreur, one of the most idolized actresses of the Comedie-Francaise in the early 18th century. Among her famous lovers was Marechal Maurice de Saxe, hero of the battle of Fontenoy and great-grandfather of George Sand. Voltaire was among her close friends and was by her side on 20 March 1730 when she died. No one knew the exact cause — some said it was for love of the Marechal, others that she was poisoned by a rival.",
+        "lens": "famous_residents",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "building at n 16 rue Visconti"
+        ],
+        "source_passage": "Adrienne Lecouvreur, a much idolized actresses of the Comedie-Francaise, who lived at n 16 in the early 18th century",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "At numbers 17-19, Balzac lived in 1826-1828 during the early days of his career, trying his hand at business ventures. He opened a printing house here which brought in no money, and handed it over to the son of his much older friend and mentor Madame de Berny, in whose hands the business fared much better. It was probably here that Stendhal's masterpiece Le Rouge et le Noir was first printed. Later, Delacroix painted some of his greatest works in this same building, including L'Entree des Croises a Constantinople.",
+        "lens": "literary_heritage",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "building at n 17/19 rue Visconti",
+          "commemorative plaque"
+        ],
+        "source_passage": "at n 17/19 across the street, Balzac lived in the early days of his career",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At number 24, the great playwright Racine spent the last seven years of his life. He settled here at the age of 53 in poor health and out of favour with Louis XIV, partly because the King had lost interest in theatre and partly because Racine was a Jansenist at a time when they were outlawed. Unlike his rival Corneille who died in destitution, Racine had a spacious apartment, 14 servants, a carriage, two horses and a small post-chaise. Both he and his wife were devoted Christians; of their seven children, four intended to become nuns.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "building at n 24 rue Visconti"
+        ],
+        "source_passage": "Racine spent the last seven years of his life at n 24",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "A plaque at 26 rue de Seine says the writer Saint-Amant died here on 29 December 1661. But the plaque barely hints at the true story. Saint-Amant died not in his bed but in the cabaret Le Petit-Maure on this site, and it was not a natural death. He was a highly-regarded writer and one of the first Academicians, but when he rashly targeted the great Conde in a satirical verse, the prince had him dragged to the Pont-Neuf and thrashed vigorously, then dragged back to the cabaret, where he was dumped and left to die two days later, aged 67.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "plaque at n 26 rue de Seine on corner of rue Visconti"
+        ],
+        "source_passage": "a plaque at n 26 rue de Seine, on the corner house of rue Visconti, says that the writer Saint-Amant died here on 29 December 1621",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "At number 31 rue de Seine, Aurore Dupin first settled on her own, aged 27, after separating from her husband. To assert herself, she sported men's clothes and adopted the pen-name George Sand, with a deliberately British spelling. A century later, in 1920, Raymond Duncan — brother of dancer Isadora Duncan — set up his academy at this same address, dedicated to reviving Ancient Greek culture. He taught Greek arts and crafts including weaving and sandal-making, and went around in a Greek-style robe and sandals with a wreath of leaves on his head.",
+        "lens": "social_change",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "understated elegant facade at n 31 with lovely courtyard"
+        ],
+        "source_passage": "at n 31, an understated, elegant facade conceals a lovely courtyard. This was where Aurore Dupin first settled on her own",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ecole des Beaux-Arts",
+    "short_description": "France's preeminent fine arts school at 14 rue Bonaparte, occupying the former convent of the Petits-Augustins built on Queen Margot's estate in 1608.",
+    "latitude": 48.8567,
+    "longitude": 2.337,
+    "importance_tier": 2,
+    "trigger_radius": 25,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Beaux-Arts de Paris",
+      "ENSBA",
+      "École nationale supérieure des Beaux-Arts"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Beaux-Arts school at 14 rue Bonaparte occupies part of a convent built by Marguerite de Valois in 1608 on her estate. Devoutly religious, she had vowed to erect a temple to the Patriarch Jacob. She added La Chapelle des Louanges where 14 fathers of the Augustins-dechausses sang Jacob's praises in relays of two, day and night, to music she herself composed. But annoyed that they sang out of tune, she evicted them after five years and replaced them with the apparently more musical Order of the Petits-Augustins. The archaeologist Alexandre Lenoir later converted the space into the Musee des Monuments Francais, which saved the chapel from Revolutionary destruction.",
+        "lens": "historic_arch",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "surviving parts of convent",
+          "cloister",
+          "chapel"
+        ],
+        "source_passage": "The Beaux-Arts school ahead, at 14 rue Bonaparte, occupies part of the convent built by Marguerite de Valois in 1608",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Across the street from the Institut de France once stood Queen Margot's early 17th-century palace, its entrance at the present number 6 rue de Seine. Married against her will at 19 to her coarse provincial cousin Henri of Navarre, Margot led a scandalous love life that began when she was 11. Her brother Henri III publicly recited the list of her lovers at a ball in the Louvre. Banished for 18 years by Henri IV, she agreed to annul their marriage so long as she could keep the title of Queen. When she returned to Paris in 1605, aged 52, she built her palace along the Seine on land bought from the University, opposite her beloved Louvre.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "n 6 rue de Seine where palace entrance was",
+          "17th-century hotel in courtyard of n 6"
+        ],
+        "source_passage": "Across the street from the Institut de France was situated Queen Margot's early 17th-century palace",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Les Deux Magots",
+    "short_description": "Iconic literary cafe on Place Saint-Germain-des-Pres, symbol of post-war Parisian intellectual life.",
+    "latitude": 48.8543,
+    "longitude": 2.3332,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Deux Magots",
+      "Café Les Deux Magots"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The terrace of the Deux Magots on Place Saint-Germain-des-Pres, overflowing with people in fine weather, is the gateway to the post-war era that put Saint-Germain on the map. Nearby on Boulevard Saint-Germain, the celebrated Flore was the haunt of Jean-Paul Sartre and Simone de Beauvoir during the dark years of the Occupation. Across the street, the Drugstore Publicis replaced the Royal Saint-Germain. And on the same pavement, the Brasserie Lipp's setting has remained unchanged — a constellation of legendary establishments that defined Left Bank intellectual life.",
+        "lens": "literary_heritage",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "terrace of Deux Magots on Place Saint-Germain-des-Pres",
+          "Cafe de Flore on Boulevard Saint-Germain",
+          "Brasserie Lipp opposite"
+        ],
+        "source_passage": "the terrace of the Deux Magots, overflowing with people in fine weather",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel d'York",
+    "short_description": "Former hotel at 56 rue Jacob where the peace treaty between England and the United States was signed on 3 September 1783.",
+    "latitude": 48.8555,
+    "longitude": 2.3318,
+    "importance_tier": 3,
+    "trigger_radius": 12,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel d'York",
+      "56 rue Jacob",
+      "Treaty of Paris 1783 site"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 56 rue Jacob stood the Hotel d'York, where on 3 September 1783 at 9 am, the peace treaty between England and the United States of America was signed by the English representative David Hartley and his American counterparts Benjamin Franklin, John Jay and John Adams. Adams returned with his family the following September while looking for a permanent home, eventually settling in Auteuil. Nearby at number 52, Benjamin Franklin had already stayed at the Hotel de Hambourg in 1777, while waiting for permanent lodging before moving to Passy.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "plaque at n 56 rue Jacob"
+        ],
+        "source_passage": "N 56 at the time was the Hotel d'York, where the peace treaty between England and the United States of America was signed at 9 am, on 3 September 1783",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Natalie Barney Salon",
+    "short_description": "Former home of Natalie Barney at 20 rue Jacob, where she hosted her legendary literary salon for 60 years, featuring the Temple de l'Amitie.",
+    "latitude": 48.8558,
+    "longitude": 2.3345,
+    "importance_tier": 4,
+    "trigger_radius": 12,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "20 rue Jacob",
+      "Temple de l'Amitié"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Behind the fence at number 20 rue Jacob was the 'sanctuary' of Natalie Barney, the glamorous Amazon who rode in the Bois de Boulogne wearing a bowler hat and black bow tie. For 60 years, French and American literati gathered in this shady courtyard with its creeping ivy. A mock Greek temple, Le Temple de l'Amitie, provided hedonistic atmosphere and shelter from the cold. When Barney arrived in 1909, tea and cake were the rule, but when the expatriates turned up in the 1920s, she reluctantly switched to champagne and whisky. Paul Valery read his works here but dropped her once elected an Academicien. Georges Antheil rehearsed his scandalous Ballet mecanique in the temple.",
+        "lens": "literary_heritage",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "courtyard visible through fence at n 20",
+          "garden with creeping ivy"
+        ],
+        "source_passage": "the 'sanctuary' of Natalie Barney, the glamorous Amazon",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel d'Angleterre Paris",
+    "short_description": "Historic hotel at 44 rue Jacob where Washington Irving stayed in 1805, and where Hemingway and Hadley first lodged in Paris in December 1921.",
+    "latitude": 48.8557,
+    "longitude": 2.333,
+    "importance_tier": 4,
+    "trigger_radius": 12,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel d'Angleterre",
+      "44 rue Jacob"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 44 rue Jacob, the Hotel d'Angleterre welcomed many literary visitors over the centuries. Sherwood Anderson recommended it to the newly-wed Hemingways when they arrived in Paris in December 1921. Anderson himself had reportedly paid 75 cents per night for a double room. The lovely 18th-century building now has a patio for breakfast on fine days.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "18th-century hotel facade at n 44",
+          "patio visible through entrance"
+        ],
+        "source_passage": "Sherwood Anderson paid 75 cents per night for a double room, and therefore recommended it to the newly-wed Hemingways",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue de Buci Market",
+    "short_description": "The most exciting and colourful market in the 6th arrondissement, a bustling spot since the time of Henri IV.",
+    "latitude": 48.8535,
+    "longitude": 2.336,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Marché rue de Buci",
+      "Rue de Buci"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "On 2 September 1792, this bustling junction served as a recruiting ground for volunteers for 'the defence of the motherland' — in reality, for the three-day slaughter of the September Massacres. The first four victims, new detainees on their way to the abbey prison, were slain at this very street junction by the delirious mob. In 1848, a barricade was erected here on the first day of that year's Revolution, to the fervent cries of 'Vive la Republique!' Today this is a place of peace and fun, especially when the jazz musicians are about.",
+        "lens": "dark_history",
+        "duration_sec": 45,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "junction of rue de Buci and rue de Seine"
+        ],
+        "source_passage": "On 2 September 1792 it was a fine recruiting-ground for volunteers for the defence of the motherland",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

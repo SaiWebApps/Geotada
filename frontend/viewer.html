@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travlr — Content Viewer</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0f0f0f; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
+
+  /* Header */
+  header { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: #1a1a1a; border-bottom: 1px solid #333; flex-shrink: 0; }
+  header h1 { font-size: 16px; font-weight: 600; color: #fff; white-space: nowrap; }
+  header select { background: #2a2a2a; color: #e0e0e0; border: 1px solid #444; padding: 6px 12px; border-radius: 6px; font-size: 14px; }
+  .stats { font-size: 13px; color: #888; margin-left: auto; }
+
+  /* Edit mode toggle */
+  .edit-toggle { background: #2a2a2a; color: #e0e0e0; border: 1px solid #444; padding: 6px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .edit-toggle:hover { background: #333; }
+  .edit-toggle.active { background: #e67e22; border-color: #e67e22; color: #fff; }
+  body.edit-mode #map { cursor: crosshair; }
+
+  /* Marker dot */
+  .poi-dot { border-radius: 50%; border: 1px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.4); box-sizing: border-box; }
+  body.edit-mode .poi-dot { cursor: grab; box-shadow: 0 0 0 2px rgba(230,126,34,0.5); }
+  body.edit-mode .poi-dot:active { cursor: grabbing; }
+
+  /* Save toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #e0e0e0; border: 1px solid #333; border-radius: 6px; padding: 10px 18px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .toast.success { border-color: #2d6a4f; color: #8dca8d; }
+  .toast.error { border-color: #6a2d2d; color: #e88b8b; }
+
+  /* Main layout */
+  .main { display: flex; flex: 1; overflow: hidden; }
+
+  /* Map */
+  #map { flex: 1; min-width: 0; }
+
+  /* Side panel */
+  .panel { width: 0; overflow-y: auto; background: #1a1a1a; border-left: 1px solid #333; transition: width 0.2s ease; flex-shrink: 0; }
+  .panel.open { width: 420px; }
+  .panel-inner { padding: 20px; width: 420px; }
+
+  .panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .panel-header h2 { font-size: 18px; font-weight: 600; color: #fff; line-height: 1.3; }
+  .close-btn { background: none; border: none; color: #888; font-size: 22px; cursor: pointer; padding: 0 4px; line-height: 1; }
+  .close-btn:hover { color: #fff; }
+
+  .poi-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-tier { background: #1e3a5f; color: #5b9bd5; }
+  .badge-beats { background: #2d1f3d; color: #b48eda; }
+  .badge-kid { background: #1f3d2d; color: #6dca8d; }
+
+  .poi-desc { font-size: 13px; color: #999; line-height: 1.5; margin-bottom: 12px; }
+
+  .gmaps-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: #5b9bd5; text-decoration: none; padding: 6px 12px; border: 1px solid #334; border-radius: 6px; margin-bottom: 20px; }
+  .gmaps-link:hover { background: #1e3a5f; }
+
+  .beats-section h3 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+
+  .beat-card { background: #222; border: 1px solid #333; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .beat-lens { font-size: 11px; font-weight: 600; color: #e67e22; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .beat-body { font-size: 14px; line-height: 1.6; color: #ccc; }
+  .beat-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 12px; color: #666; }
+
+  /* Loading */
+  .loading { display: flex; align-items: center; justify-content: center; height: 100%; color: #666; font-size: 14px; }
+  .spinner { width: 20px; height: 20px; border: 2px solid #333; border-top-color: #888; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 10px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Empty state */
+  .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #555; text-align: center; gap: 8px; }
+  .empty-state .icon { font-size: 48px; opacity: 0.3; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Travlr Content Viewer</h1>
+  <select id="citySelect">
+    <option value="">Select a city…</option>
+  </select>
+  <button class="edit-toggle" id="editToggle" title="Toggle edit mode — drag pins to correct POI positions">✏️ Edit positions</button>
+  <div class="stats" id="stats"></div>
+</header>
+<div class="toast" id="toast"></div>
+
+<div class="main">
+  <div id="map">
+    <div class="empty-state" id="emptyState">
+      <div class="icon">🗺️</div>
+      <div>Select a city to view its content</div>
+    </div>
+  </div>
+  <div class="panel" id="panel">
+    <div class="panel-inner" id="panelInner"></div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8000/api/v1';
+
+// State
+let map = null;
+let markers = [];
+let allPois = [];
+let beatCache = {};  // poi name -> beats array
+let selectedPoi = null;
+let editMode = false;
+
+// ── Toast ──
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast show ${type}`;
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => { t.className = 'toast'; }, 2800);
+}
+
+// ── Helpers ──
+
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
+
+function lensLabel(slug) {
+  return (slug || 'unknown').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+// ── City loading ──
+
+async function loadCities() {
+  // Discover cities by fetching all POIs and extracting unique cities from coordinates
+  // For now, hardcode known cities — this can be made dynamic later
+  const cities = [
+    { name: 'Paris', lat: 48.8566, lng: 2.3522, zoom: 13 },
+    { name: 'Boston', lat: 42.3601, lng: -71.0589, zoom: 13 },
+  ];
+  const sel = document.getElementById('citySelect');
+  cities.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = JSON.stringify(c);
+    opt.textContent = c.name;
+    sel.appendChild(opt);
+  });
+  sel.addEventListener('change', () => {
+    if (sel.value) loadCity(JSON.parse(sel.value));
+  });
+}
+
+async function loadCity(city) {
+  // Init map if needed
+  const mapEl = document.getElementById('map');
+  document.getElementById('emptyState')?.remove();
+
+  if (!map) {
+    map = L.map('map', { zoomControl: true }).setView([city.lat, city.lng], city.zoom);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap © CARTO',
+      maxZoom: 19
+    }).addTo(map);
+  } else {
+    map.setView([city.lat, city.lng], city.zoom);
+  }
+
+  // Clear existing
+  markers.forEach(m => map.removeLayer(m));
+  markers = [];
+  allPois = [];
+  beatCache = {};
+  selectedPoi = null;
+  closePanel();
+
+  document.getElementById('stats').textContent = 'Loading…';
+
+  // Fetch all POIs (paginate)
+  let skip = 0;
+  let total = 0;
+  do {
+    const resp = await fetch(`${API}/nodes/POI?limit=200&skip=${skip}`);
+    const data = await resp.json();
+    allPois.push(...data.items);
+    total = data.total;
+    skip += 200;
+  } while (skip < total);
+
+  // Filter to city bounds (rough: within ~0.15 degrees ≈ 15km)
+  const cityPois = allPois.filter(p => {
+    const loc = p.properties?.location;
+    const lat = loc?.lat ?? p.properties?.latitude;
+    const lng = loc?.lng ?? p.properties?.longitude;
+    return lat && lng && Math.abs(lat - city.lat) < 0.15 && Math.abs(lng - city.lng) < 0.15;
+  });
+  allPois = cityPois;
+
+  // Fetch total beat count
+  let totalBeats = 0;
+  try {
+    const beatResp = await fetch(`${API}/nodes/NarrativeBeat?limit=1&skip=0`);
+    const beatData = await beatResp.json();
+    totalBeats = beatData.total || 0;
+  } catch (e) {}
+
+  document.getElementById('stats').textContent = `${allPois.length} POIs · ${totalBeats} beats`;
+
+  // Add markers
+  allPois.forEach((poi, idx) => {
+    const props = poi.properties;
+    const loc = props.location;
+    const lat = loc?.lat ?? props.latitude;
+    const lng = loc?.lng ?? props.longitude;
+    if (!lat || !lng) return;
+
+    const tier = props.importance_tier || 3;
+    const diameter = tier >= 4 ? 16 : tier >= 3 ? 12 : 8;
+    const color = tier >= 5 ? '#e74c3c' : tier >= 4 ? '#e67e22' : tier >= 3 ? '#f1c40f' : tier >= 2 ? '#5b9bd5' : '#888';
+
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="poi-dot" style="width:${diameter}px;height:${diameter}px;background:${color};opacity:0.85;"></div>`,
+      iconSize: [diameter, diameter],
+      iconAnchor: [diameter / 2, diameter / 2]
+    });
+
+    const marker = L.marker([lat, lng], {
+      icon: icon,
+      draggable: editMode,
+      autoPan: true
+    }).addTo(map);
+
+    marker.bindTooltip(esc(props.name), {
+      direction: 'top',
+      offset: [0, -diameter / 2 - 2],
+      className: 'poi-tooltip'
+    });
+
+    marker.on('click', () => {
+      if (!editMode) selectPoi(idx);
+    });
+
+    marker.on('dragend', async (e) => {
+      const { lat: newLat, lng: newLng } = e.target.getLatLng();
+      const oldLat = loc?.lat ?? props.latitude;
+      const oldLng = loc?.lng ?? props.longitude;
+      try {
+        const resp = await fetch(`${API}/nodes/POI/${poi.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ properties: { latitude: newLat, longitude: newLng } })
+        });
+        if (!resp.ok) throw new Error(`${resp.status} ${await resp.text()}`);
+        // Update local state so further drags use fresh base
+        if (poi.properties.location) {
+          poi.properties.location = { lat: newLat, lng: newLng };
+        }
+        poi.properties.latitude = newLat;
+        poi.properties.longitude = newLng;
+        showToast(`Saved: ${props.name} → ${newLat.toFixed(5)}, ${newLng.toFixed(5)}`, 'success');
+      } catch (err) {
+        console.error('Save failed', err);
+        // Revert marker to original position
+        marker.setLatLng([oldLat, oldLng]);
+        showToast(`Save failed: ${props.name}`, 'error');
+      }
+    });
+
+    markers.push(marker);
+  });
+
+  // Fit bounds
+  if (markers.length > 0) {
+    const group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.1));
+  }
+}
+
+// ── POI selection ──
+
+async function selectPoi(idx) {
+  const poi = allPois[idx];
+  if (!poi) return;
+  selectedPoi = poi;
+
+  // Highlight marker (add a wrapper class on the icon div)
+  markers.forEach((m, i) => {
+    const el = m.getElement();
+    if (!el) return;
+    const dot = el.querySelector('.poi-dot');
+    if (!dot) return;
+    if (i === idx) {
+      dot.style.boxShadow = '0 0 0 3px rgba(255,255,255,0.9), 0 0 12px rgba(255,255,255,0.6)';
+      dot.style.transform = 'scale(1.3)';
+    } else {
+      dot.style.boxShadow = '';
+      dot.style.transform = '';
+    }
+  });
+
+  const props = poi.properties;
+  const name = props.name;
+
+  // Show loading in panel
+  openPanel();
+  document.getElementById('panelInner').innerHTML = `
+    <div class="panel-header">
+      <h2>${esc(name)}</h2>
+      <button class="close-btn" onclick="closePanel()">×</button>
+    </div>
+    <div class="loading"><div class="spinner"></div>Loading beats…</div>
+  `;
+
+  // Fetch beats (with cache)
+  let beats = beatCache[name];
+  if (!beats) {
+    try {
+      const resp = await fetch(`${API}/graph/poi/${encodeURIComponent(name)}/beats`);
+      const data = await resp.json();
+      beats = data.beats || [];
+      beatCache[name] = beats;
+    } catch (e) {
+      beats = [];
+      document.getElementById('panelInner').innerHTML = `
+        <div class="panel-header">
+          <h2>${esc(name)}</h2>
+          <button class="close-btn" onclick="closePanel()">×</button>
+        </div>
+        <div style="color:#e74c3c;padding:20px;">Failed to load beats. Is the backend running?</div>
+      `;
+      return;
+    }
+  }
+
+  // Check if this POI is still selected (user may have clicked another)
+  if (selectedPoi !== poi) return;
+
+  renderPoiDetail(poi, beats);
+}
+
+function renderPoiDetail(poi, beats) {
+  const props = poi.properties;
+  const loc = props.location;
+  const lat = loc?.lat ?? props.latitude;
+  const lng = loc?.lng ?? props.longitude;
+  const gmapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+  const tier = props.importance_tier || '?';
+  const kidFriendly = props.kid_friendly === 'yes';
+
+  let beatsHtml = '';
+  if (beats.length === 0) {
+    beatsHtml = '<div style="color:#666;font-style:italic;padding:12px 0;">No beats yet</div>';
+  } else {
+    beats.forEach(b => {
+      const lens = b.lens_slug || b.lens || '';
+      const body = b.script_body || '';
+      const dur = b.duration_sec || 0;
+      const words = body.split(/\s+/).length;
+      beatsHtml += `
+        <div class="beat-card">
+          <div class="beat-lens">${esc(lensLabel(lens))}</div>
+          <div class="beat-body">${esc(body)}</div>
+          <div class="beat-meta">
+            <span>${dur}s</span>
+            <span>${words} words</span>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  document.getElementById('panelInner').innerHTML = `
+    <div class="panel-header">
+      <h2>${esc(props.name)}</h2>
+      <button class="close-btn" onclick="closePanel()">×</button>
+    </div>
+    <div class="poi-meta">
+      <span class="badge badge-tier">Gravity ${esc(String(tier))}</span>
+      <span class="badge badge-beats">${beats.length} beat${beats.length !== 1 ? 's' : ''}</span>
+      ${kidFriendly ? '<span class="badge badge-kid">Kid friendly</span>' : ''}
+    </div>
+    ${props.short_description ? `<div class="poi-desc">${esc(props.short_description)}</div>` : ''}
+    <a class="gmaps-link" href="${esc(gmapsUrl)}" target="_blank" rel="noopener">
+      📍 Open in Google Maps
+    </a>
+    <div class="beats-section">
+      <h3>Beats</h3>
+      ${beatsHtml}
+    </div>
+  `;
+}
+
+function openPanel() {
+  document.getElementById('panel').classList.add('open');
+  setTimeout(() => map?.invalidateSize(), 250);
+}
+
+function closePanel() {
+  document.getElementById('panel').classList.remove('open');
+  selectedPoi = null;
+  markers.forEach(m => {
+    const el = m.getElement();
+    const dot = el?.querySelector('.poi-dot');
+    if (dot) {
+      dot.style.boxShadow = '';
+      dot.style.transform = '';
+    }
+  });
+  setTimeout(() => map?.invalidateSize(), 250);
+}
+
+// ── Edit mode ──
+function toggleEditMode() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  document.getElementById('editToggle').classList.toggle('active', editMode);
+  markers.forEach(m => {
+    if (editMode) m.dragging?.enable();
+    else m.dragging?.disable();
+  });
+  if (editMode) {
+    showToast('Edit mode ON — drag pins to fix POI positions. Drops auto-save.', 'success');
+  }
+}
+document.getElementById('editToggle').addEventListener('click', toggleEditMode);
+
+// ── Tooltip styling (injected) ──
+const style = document.createElement('style');
+style.textContent = `
+  .poi-tooltip { background: #1a1a1a !important; color: #e0e0e0 !important; border: 1px solid #444 !important; border-radius: 4px !important; padding: 4px 8px !important; font-size: 13px !important; font-weight: 500 !important; box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important; }
+  .poi-tooltip::before { border-top-color: #444 !important; }
+`;
+document.head.appendChild(style);
+
+// ── Init ──
+loadCities();
+</script>
+</body>
+</html>

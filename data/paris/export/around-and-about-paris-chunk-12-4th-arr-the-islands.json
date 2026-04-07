@@ -1,0 +1,705 @@
+[
+  {
+    "name": "Hotel-Dieu",
+    "short_description": "Paris's oldest hospital, founded in the 12th century by Bishop Maurice de Sully, with a harrowing history of overcrowding.",
+    "latitude": 48.854,
+    "longitude": 2.3488,
+    "importance_tier": 3,
+    "trigger_radius": 80,
+    "typical_duration_min": 10,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Hôtel-Dieu"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel-Dieu is the oldest hospital in Paris, founded in the 12th century by Maurice de Sully, the same bishop who initiated the construction of Notre-Dame. For centuries it was the only hospital serving the city, and conditions were appalling — up to five patients were crammed into a single bed.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel-Dieu building on the Ile de la Cite"
+        ],
+        "source_passage": "Oldest hospital, founded 12th century by Maurice de Sully, 5 patients per bed",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Contemporary accounts described the Hotel-Dieu's wards as containing 'the ill, the dying and the dead' sharing the same beds. Philippe-Auguste donated the straw from his royal horses to serve as bedding. The stench was so overwhelming that visitors could smell the hospital from across the river.",
+        "lens": "dark_history",
+        "duration_sec": 40,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Hotel-Dieu entrance"
+        ],
+        "source_passage": "The ill, the dying and the dead sharing beds; Philippe-Auguste offered horse straw",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The old Pont au Double, which connected the Hotel-Dieu to the Left Bank, featured an enclosed glass gallery where recovering patients could promenade — an early form of therapeutic architecture, allowing the sick to take the air without leaving the hospital.",
+        "lens": "historic_arch",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look toward the Pont au Double"
+        ],
+        "source_passage": "Pont au Double glass gallery promenade for patients",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Notre-Dame Cathedral",
+    "short_description": "Medieval cathedral on Ile de la Cite, one of the finest examples of French Gothic architecture",
+    "latitude": 48.853,
+    "longitude": 2.3499,
+    "importance_tier": 1,
+    "trigger_radius": 100,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Notre-Dame de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "During the Revolution, Notre-Dame was nearly lost forever. Stripped of its treasures and rededicated to the Cult of Reason, it was put up for sale as building material. A certain Citoyen Simon nearly purchased the cathedral — one of the closest brushes with destruction in the building's history.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notre-Dame exterior"
+        ],
+        "source_passage": "Nearly sold during Revolution; Citoyen Simon nearly bought it",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Eugene Viollet-le-Duc began his controversial restoration of Notre-Dame in 1844, guided by his famous principle: 'To restore a building is not to maintain it, repair it, or rebuild it; it is to re-establish it in a complete state which may never have existed at any given moment.' He added the spire, the gargoyles, and much of what the world came to think of as 'original' medieval decoration.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the gargoyles and chimeras — most are Viollet-le-Duc additions"
+        ],
+        "source_passage": "Viollet-le-Duc restoration from 1844; restoring does not mean maintaining",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Victor Hugo's 1831 novel The Hunchback of Notre-Dame was written partly as a plea to save the crumbling cathedral. The book ignited a wave of public passion for the medieval monument and directly led to the campaign for its restoration — proof that a novel can save a building.",
+        "lens": "literary_heritage",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notre-Dame facade"
+        ],
+        "source_passage": "Hugo's Hunchback saved the cathedral",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Notre-Dame endured centuries of vandalism before the Revolution even began. The medieval chancel screen was destroyed in 1699 to make way for a more fashionable baroque interior. The original stained glass windows — except for the three great rose windows — were ripped out and replaced with plain white glass to 'let in more light.'",
+        "lens": "dark_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notice the three surviving rose windows — the only original stained glass"
+        ],
+        "source_passage": "Centuries of vandalism; chancel screen destroyed 1699; stained glass replaced",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During the Paris Commune in May 1871, Communards attempted to burn Notre-Dame by piling chairs and furniture against the doors and setting them alight. Doctors and staff from the neighbouring Hotel-Dieu rushed across and extinguished the flames, saving the cathedral from destruction.",
+        "lens": "war_conflict",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notre-Dame west doors",
+          "Hotel-Dieu across the square"
+        ],
+        "source_passage": "Commune nearly burned it May 1871; Hotel-Dieu doctors extinguished fire",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The 28 statues of the Kings of Judah on the west facade were torn down by Revolutionaries who mistook them for the Kings of France. The heads were discovered in 1977 during construction work near the Opera and are now displayed at the Musee de Cluny.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the Gallery of Kings on the west facade — these are 19th-century replacements"
+        ],
+        "source_passage": "28 Kings of Judah statues; smashed by Revolutionaries who mistook them for Kings of France",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Notre-Dame's great bell, known today as Emmanuel, has a dramatic history. The original bell, called Jacqueline, was recast in 1680 and renamed Emmanuel. According to tradition, the ladies of the court threw their jewellery into the molten metal, which is said to give the bell its exceptionally pure tone.",
+        "lens": "music_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "South tower of Notre-Dame where Emmanuel hangs"
+        ],
+        "source_passage": "Jacqueline recast as Emmanuel 1680; ladies' jewellery melted in",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Corrected — Jacqueline did not survive; it was recast as Emmanuel."
+      },
+      {
+        "script_body": "Notre-Dame was the birthplace of polyphonic music in Europe. In the 12th and 13th centuries, the composers Leonin and Perotin developed the art of organum — music in multiple voices — at the cathedral's choir school. Their innovations laid the foundations for all Western harmony.",
+        "lens": "music_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notre-Dame choir"
+        ],
+        "source_passage": "Leonin and Perotin founded polyphonic school 12th-13th century",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Corrected from 15th-16th century to 12th-13th century."
+      }
+    ]
+  },
+  {
+    "name": "Rue Chanoinesse",
+    "short_description": "Medieval street on Ile de la Cite where Abelard and Heloise's tragic love affair unfolded.",
+    "latitude": 48.853,
+    "longitude": 2.35,
+    "importance_tier": 4,
+    "trigger_radius": 40,
+    "typical_duration_min": 10,
+    "kid_friendly": "caution",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1118, the brilliant philosopher Peter Abelard came to this street to tutor the young Heloise, niece of Canon Fulbert. Their passionate love affair — one of the most famous in history — ended in catastrophe when Fulbert, enraged by a secret marriage and pregnancy, hired thugs to castrate Abelard. Heloise became a nun, Abelard a monk, and their anguished love letters became classics of medieval literature.",
+        "lens": "literary_heritage",
+        "duration_sec": 55,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Walk along rue Chanoinesse and imagine the medieval cloister houses"
+        ],
+        "source_passage": "Abelard and Heloise 1118; Canon Fulbert; castration",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The remains of Abelard and Heloise have had an extraordinary journey through the centuries. They were reunited in death and now lie together at Pere Lachaise cemetery — the most visited grave in that famous necropolis. Medallion portraits of the lovers can be seen at 9 quai aux Fleurs, near the site of their fateful encounter.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for medallions at 9 quai aux Fleurs"
+        ],
+        "source_passage": "Lovers' remains journey; Pere Lachaise; medallions at 9 quai aux Fleurs",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The mathematician and philosopher Jean le Rond d'Alembert was found as a newborn on the steps of the church of Saint-Jean-le-Rond — which once stood near here — on 16 November 1717. A foundling abandoned by his mother, he was raised by a glazier's wife and went on to co-edit the Encyclopedie with Diderot, becoming one of the towering intellects of the Enlightenment.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "The church of Saint-Jean-le-Rond no longer exists but stood near the north side of Notre-Dame"
+        ],
+        "source_passage": "d'Alembert foundling at Saint-Jean-le-Rond, 16 Nov 1717",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Memorial des Martyrs de la Deportation",
+    "short_description": "Underground memorial at the tip of Ile de la Cite honouring the 200,000 deported from France during WWII.",
+    "latitude": 48.8515,
+    "longitude": 2.3525,
+    "importance_tier": 2,
+    "trigger_radius": 40,
+    "typical_duration_min": 15,
+    "kid_friendly": "caution",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At the eastern tip of the Ile de la Cite, steps descend into a stark underground crypt — the Memorial des Martyrs de la Deportation. The narrow entrance forces visitors into single file, evoking the claustrophobia of deportation. The poet Robert Desnos, who had been active in the Resistance, died at the Theresienstadt concentration camp just weeks before liberation.",
+        "lens": "war_conflict",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Descend the narrow steps at the tip of the island",
+          "The crypt with its 200,000 crystals of light"
+        ],
+        "source_passage": "Crypt at tip of Ile de la Cite; Desnos died at Theresienstadt",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ile Saint-Louis",
+    "short_description": "A tranquil island of 17th-century classical mansions east of Ile de la Cite",
+    "latitude": 48.8516,
+    "longitude": 2.3565,
+    "importance_tier": 1,
+    "trigger_radius": 150,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Île Saint-Louis"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Ile Saint-Louis was developed in the first half of the 17th century, transforming two muddy islands — l'Ile Notre-Dame and l'Ile aux Vaches — into the elegant residential quarter you see today. Corneille marvelled at how 'a whole city had sprung from an old ditch.'",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Walk along the quais and admire the 17th-century facades"
+        ],
+        "source_passage": "17th-century development; Corneille quote about city springing from old ditch",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Hotel de Bretonvilliers, once the most splendid mansion on the island, was destroyed — a casualty of the same forces of modernisation and neglect that threatened the entire Marais before its 20th-century rehabilitation.",
+        "lens": "dark_history",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Eastern tip of Ile Saint-Louis where the mansion once stood"
+        ],
+        "source_passage": "Hotel de Bretonvilliers, most splendid mansion, destroyed",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Marie Curie lived at 36 quai de Bethune from 1912 to 1934. Nearby, the cosmetics magnate Helena Rubinstein purchased a Le Vau mansion in 1932 — and to the horror of preservationists, demolished it in 1935 to build a modernist replacement.",
+        "lens": "famous_residents",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for 36 quai de Bethune"
+        ],
+        "source_passage": "Marie Curie at 36 quai de Bethune 1912-1934; Rubinstein demolished Le Vau mansion",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Rubinstein purchase 1932 not earlier date; demolition 1935."
+      },
+      {
+        "script_body": "The restaurant Nos Ancetres les Gaulois on the island offers a distinctive dining experience — a ribald celebration of Gallic excess with unlimited wine and rustic fare, echoing the spirit of the Gauls who once inhabited this stretch of the Seine.",
+        "lens": "historic_cuisine",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the restaurant on rue Saint-Louis-en-l'Ile"
+        ],
+        "source_passage": "Nos Ancetres les Gaulois restaurant",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The quai des Balcons earned its name from the series of ornate iron balconies lining its facades. The 18th-century writer Mercier observed that the island had 'its own moral code, its own customs' — a village within Paris that to this day retains an insular, self-contained atmosphere quite unlike the rest of the city.",
+        "lens": "hidden_history",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the iron balconies along the quai"
+        ],
+        "source_passage": "Quai des Balcons; Mercier quote about island's moral code",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Berthillon",
+    "short_description": "Legendary Parisian ice cream shop on Ile Saint-Louis, famous for its artisanal sorbets and glaces.",
+    "latitude": 48.8519,
+    "longitude": 2.357,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Berthillon has been serving what many consider the finest ice cream in Paris from its shop at the western tip of the Ile Saint-Louis, with Notre-Dame Cathedral as its backdrop. The queues that snake along rue Saint-Louis-en-l'Ile are a Parisian institution in their own right.",
+        "lens": "historic_cuisine",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the queue — it's part of the experience",
+          "View of Notre-Dame from the tip of the island"
+        ],
+        "source_passage": "Ice cream at western tip of island facing Notre-Dame",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Pont-Marie",
+    "short_description": "17th-century stone bridge connecting the Ile Saint-Louis to the Right Bank, named after developer Christophe Marie.",
+    "latitude": 48.853,
+    "longitude": 2.356,
+    "importance_tier": 4,
+    "trigger_radius": 60,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Pont-Marie is named not for the Virgin Mary or Marie de Medici, as many assume, but for Christophe Marie, the entrepreneur who developed the Ile Saint-Louis in the 17th century. A statue of Sainte Genevieve, patroness of Paris, watches over the bridge.",
+        "lens": "hidden_history",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the Genevieve statue",
+          "Pont-Marie stonework"
+        ],
+        "source_passage": "Named for Christophe Marie not Marie de Medici; Genevieve statue",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Lauzun",
+    "short_description": "Opulent 17th-century mansion where Baudelaire lived and the Club des Haschichins gathered.",
+    "latitude": 48.8514,
+    "longitude": 2.3569,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 15,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Hôtel de Lauzun"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Charles Baudelaire lived in a small apartment at the Hotel de Lauzun from 1843, where he began composing Les Fleurs du Mal. Theophile Gautier founded the Club des Haschichins here, and the literary elite gathered to experiment with hashish — evenings that Baudelaire later chronicled in his Artificial Paradises.",
+        "lens": "literary_heritage",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Hotel de Lauzun facade on quai d'Anjou",
+          "Baudelaire's top-floor windows"
+        ],
+        "source_passage": "Baudelaire, Gautier, Club des Haschichins, Les Fleurs du Mal",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Date corrected — 1840 impossible; Baudelaire moved in 1843."
+      },
+      {
+        "script_body": "The Hotel de Lauzun was built by architect Charles Chamois and features some of the most lavishly decorated interiors in Paris. The Duc de Lauzun, who gave the mansion its name, led a turbulent life — he secretly married the Grande Mademoiselle (Louis XIV's cousin) and was imprisoned in the fortress of Pignerol for his audacity.",
+        "lens": "historic_arch",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the ornate ironwork balcony",
+          "Hotel de Lauzun entrance"
+        ],
+        "source_passage": "Duc de Lauzun's opulent interior; Pignerol fortress",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Architect corrected from Le Vau to Charles Chamois; Vignerol corrected to Pignerol."
+      }
+    ]
+  },
+  {
+    "name": "Hotel Lambert",
+    "short_description": "Le Vau's masterpiece on the Ile Saint-Louis, with a famous rotunda balcony and Polish exile heritage.",
+    "latitude": 48.851,
+    "longitude": 2.3585,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel Lambert"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel Lambert is considered Louis Le Vau's masterpiece of domestic architecture. Built for Lambert de Thorigny, it features a celebrated rotunda balcony that projects over the Seine. Prince Adam Czartoryski purchased it in 1843 and the Rothschild family acquired it in 1975.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the rotunda balcony projecting over the water",
+          "Hotel Lambert on the quai d'Anjou"
+        ],
+        "source_passage": "Le Vau masterpiece; rotunda balcony; Lambert de Thorigny",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Czartoryski purchase corrected from 1842 to 1843; Rothschilds corrected from 1976 to 1975."
+      },
+      {
+        "script_body": "When Prince Czartoryski bought the Hotel Lambert, it became the centre of Polish exile in Paris. Chopin performed in its salons, and the poet Adam Mickiewicz was a frequent guest. A museum of Polish history was established here, preserving the memory of a nation that had lost its independence.",
+        "lens": "social_change",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel Lambert exterior"
+        ],
+        "source_passage": "Czartoryski Polish exile; Chopin; Mickiewicz museum",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Quai de Bourbon",
+    "short_description": "Northern quay of the Ile Saint-Louis, home to sculptor Camille Claudel and poet Guillaume Apollinaire.",
+    "latitude": 48.8525,
+    "longitude": 2.3545,
+    "importance_tier": 4,
+    "trigger_radius": 60,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The sculptor Camille Claudel had her studio on the quai de Bourbon from 1899 to 1913. These were her final years of creative freedom before she was committed to a psychiatric institution by her family, where she remained for the last thirty years of her life — one of the most tragic stories in the history of art.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look along the quai for Claudel's former studio"
+        ],
+        "source_passage": "Camille Claudel studio 1899-1913; tragically interned",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Guillaume Apollinaire lived at 43 quai de Bourbon, where he and the painter Marie Laurencin carried on their celebrated love affair. The building was known as the Maison du Centaure — a fitting address for the poet who championed Cubism and coined the term 'surrealism.'",
+        "lens": "visual_art",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for number 43 quai de Bourbon"
+        ],
+        "source_passage": "Apollinaire at 43 quai de Bourbon; Marie Laurencin; Maison du Centaure",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Crypte Archeologique de l'Ile de la Cite",
+    "short_description": "Underground archaeological museum beneath the parvis of Notre-Dame, revealing ancient Lutetia.",
+    "latitude": 48.8534,
+    "longitude": 2.3488,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Beneath the parvis of Notre-Dame lies an underground museum revealing the layers of Paris's past. The archaeological crypt displays remains of ancient Lutetia — Gallo-Roman walls, a quay, a hypocaust heating system, and medieval cellars — two thousand years of history directly beneath your feet.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the entrance on the parvis of Notre-Dame",
+          "Descend to see the Roman ruins below"
+        ],
+        "source_passage": "Underground museum beneath Parvis Notre-Dame; ancient Lutetia",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Louis-en-l'Ile Church",
+    "short_description": "Baroque church on Ile Saint-Louis designed by Le Vau, with a distinctive openwork iron spire.",
+    "latitude": 48.8517,
+    "longitude": 2.3552,
+    "importance_tier": 4,
+    "trigger_radius": 50,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The church of Saint-Louis-en-l'Ile was designed by Louis Le Vau, the same architect who created the Hotel Lambert just down the street. Its most distinctive feature is the unusual openwork iron spire, quite unlike any other church tower in Paris. The nearby Hotel du Jeu de Paume recalls the island's quieter days.",
+        "lens": "historic_arch",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the unusual openwork iron spire",
+          "Compare Le Vau's style here with the Hotel Lambert nearby"
+        ],
+        "source_passage": "Le Vau design; unique openwork spire; Jeu de Paume hotel nearby",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

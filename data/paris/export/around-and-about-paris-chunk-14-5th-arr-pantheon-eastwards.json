@@ -1,0 +1,605 @@
+[
+  {
+    "name": "Pantheon",
+    "short_description": "Neoclassical mausoleum in the Latin Quarter housing the remains of Voltaire, Victor Hugo, Marie Curie, and other luminaries",
+    "latitude": 48.846217,
+    "longitude": 2.34604,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Le Pantheon"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1744, Louis XV fell gravely ill and vowed to build a new church for Saint Genevieve if he recovered, recalling how in the 5th century she had healed her countrymen. The clergy, seeing divine punishment for his debauchery, urged him to also end his affair with the Duchesse de Chateauroux, the last of four sisters he had seduced. The king recovered, promptly resumed his liaison, and would have forgotten the church entirely, but the monks of the Abbey of Sainte-Genevieve held him to his word. Architect Soufflot was commissioned to build the colossal edifice — 110 metres long, 84 metres wide, and 83 metres tall — crowning the levelled hilltop. But the venture ended in tragedy: ancient potters had riddled the subsoil with clay pits, making foundations treacherous. Soufflot was showered with accusations and died a broken man before his monument was completed.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "massive neoclassical dome and columned facade",
+          "rue Soufflot running westward toward Luxembourg Gardens"
+        ],
+        "source_passage": "In 1744 Louis XV came down with the pox and vowed to erect a new church for Saint Genevieve should he recover",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The Pantheon's tenants were shuffled with grim political theater. When revolutionary orator Mirabeau fell into disgrace in 1794 — his secret dealings with the king exposed — his body was exhumed and thrown into a common grave. His vacant spot was given to Marat, who met the same fate in 1795. Voltaire and Rousseau were likewise ejected by the Royalists in 1815, only to regain their places when the Bourbon dynasty fell. They have since been joined by dozens of luminaries: Emile Zola, Bergson, Saint-Exupery, and Jean Jaures, all occupying the sizable crypt originally built for the monks of the abbey.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "crypt with tombs of Voltaire, Rousseau, Hugo, Zola"
+        ],
+        "source_passage": "When the great orator of the Revolution Mirabeau fell into disgrace in 1794",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Throughout the 19th century, the Pantheon's identity swung wildly between church and secular temple with each change of regime. Napoleon restored it to God; Louis XVIII dedicated it to Saint Genevieve in 1822. But 'citizen' King Louis-Philippe returned it to the Nation and added the patriotic pediment still visible today. Napoleon III re-dedicated it to the holy Genevieve, before the Third Republic reclaimed it for patriotism. The Republic needed an emblematic hero and found one when Victor Hugo died in 1885. His funeral — starting at the Arc de Triomphe, with two to three million mourners — was grander even than Voltaire's procession. The inscription 'AUX GRANDS HOMMES LA PATRIE RECONNAISSANTE', alternately put up and taken down for a century, was finally restored for good.",
+        "lens": "social_change",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "gold inscription on front pediment",
+          "allegorical figures: La Patrie crowning Virtue and Liberty"
+        ],
+        "source_passage": "the destiny of the Pantheon vacillated to accommodate her respective regimes",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Francois Mitterrand used the Pantheon for a masterstroke of political symbolism after his 1981 election. With Beethoven's Ode to Joy performed by the Paris Orchestra under Daniel Barenboim, and the socialist rose as his emblem, he walked alone into the crypt to lay roses at the tombs of Jean Jaures, Jean Moulin, and Victor Schoelcher. Parisians thronged to the event. By 1988, when Jean Monnet's ashes were brought here, the patriotic surge had died to indifference. In March 1994, on Women's Day, Mitterrand suggested Marie Curie's remains be interred — the first woman granted this honour. The transfer took place in April 1995.",
+        "lens": "famous_residents",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "crypt with tombs of Jaures, Moulin, Schoelcher"
+        ],
+        "source_passage": "Francois Mitterand also used the Pantheon for a public relations gimmick after he had been elected President in 1981",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Inside the otherwise stark temple, two works preserve the memory of Saint Genevieve. Puvis de Chavannes painted a monumental cycle depicting her as the protector of Paris — simplified forms and pale, fresco-like coloring that became hugely influential. Above, Antoine-Jean Gros's mural of her apotheosis decorates the dome, lightening the dim interior where the 42 lateral windows were walled up when the building was converted from church to mausoleum.",
+        "lens": "visual_art",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "dome with Gros's apotheosis mural",
+          "Puvis de Chavannes Saint Genevieve cycle on walls",
+          "walled-up window recesses"
+        ],
+        "source_passage": "Puvis de Chavannes's work depicting her as the protector of Paris, and Gros's mural of her apotheosis",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Bibliotheque Sainte-Genevieve",
+    "short_description": "Public and university library on Place du Pantheon, with first iron-frame public building in Paris (Labrouste, 1850), inheriting the collection of the Abbey of Sainte-Genevieve.",
+    "latitude": 48.8463,
+    "longitude": 2.3462,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Bibliothèque Sainte-Geneviève",
+      "BSG"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At 10 Place du Pantheon stands the Bibliotheque Sainte-Genevieve, repository of tens of thousands of volumes rescued from the abbey during the Revolution. Built during the reign of Louis-Philippe and designed by Henri Labrouste, it was the first public building in the city with an exposed iron frame — predating the railway stations and Les Halles. It stands on the site of the notorious College de Montaigu, founded in 1314 and infamous for its filth, harsh discipline, and academic brilliance. Rabelais called it the 'college de pouillerie' (squalor), yet Erasmus, Ignatius of Loyola, Calvin, and likely Rabelais himself all studied here.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "elegant facade at 10 Place du Pantheon",
+          "names of scholars inscribed on building's exterior"
+        ],
+        "source_passage": "At n 10 Place du Pantheon is the library of Sainte-Genevieve... the first iron-frame building in the city",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Etienne-du-Mont",
+    "short_description": "Church near the Pantheon containing the last surviving rood screen in Paris and the shrine of Sainte Genevieve, patron saint of the city",
+    "latitude": 48.8466,
+    "longitude": 2.347344,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Saint-Etienne-du-Mont boasts the only surviving rood screen in Paris — a magnificent chancel screen in flamboyant style dating to about 1530. The church was built in the late 15th century when the adjacent abbey church grew too small. Its interior is striking for its asymmetrical structure, the ornate 17th-century organ, and fabulous 16th- and 17th-century stained glass displayed in the cloister of the Chapelle des Catechismes.",
+        "lens": "historic_arch",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "elaborate stone rood screen separating nave from choir",
+          "asymmetrical interior layout",
+          "cloister stained glass collection"
+        ],
+        "source_passage": "its magnificent chancel screen - the only one to have survived in Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Here lie the remains of Pascal and Racine, but more importantly, the relics of Saint Genevieve herself. They rest in a brass reliquary — a poor 19th-century substitute for the bejewelled original that vanished in the fury of the Revolution in 1793. The stone underneath was rescued from the abbey's crypt and is believed to be part of the Saint's original sarcophagus. On 6 September 1914, with Germans at the gates of Paris, Parisians thronged here to pray, just as they had faced the Huns 1500 years before. When the war ended, many returned to leave plaques of gratitude on the chapel walls.",
+        "lens": "sacred_traditions",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "brass reliquary containing Saint Genevieve's relics",
+          "gratitude plaques on the chapel walls",
+          "ancient stone beneath the reliquary"
+        ],
+        "source_passage": "Here lie the remains of Pascal and Racine, and more important still, the remains of Saint Genevieve",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Lycee Henri IV",
+    "short_description": "Elite secondary school housed in the former Abbey of Sainte-Genevieve, retaining medieval vestiges including the Clovis Tower, cloisters, and refectory.",
+    "latitude": 48.8464,
+    "longitude": 2.348,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Lycée Henri-IV",
+      "Abbey of Sainte-Genevieve",
+      "Tour Clovis"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Across rue Clovis, the Tour Clovis is the only remnant of the old abbey church of Sainte-Genevieve, which was abandoned, its Gothic style having gone out of fashion, torn down in 1790, and replaced by rue Clovis. The tower lost its spire in 1750 and is now enclosed within the prestigious Lycee Henri IV, founded after the Revolution. Its pupils included Alfred de Musset, Viollet-le-Duc, Baron Haussmann, and all the sons of Louis-Philippe. French schools being sealed to outsiders, you can only peep through the doorway to glimpse the lovely flower-filled courtyard and the abbey library, now the school dining room.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Tour Clovis rising above the school walls",
+          "doorway for a glimpse of the courtyard"
+        ],
+        "source_passage": "Across rue Clovis the tower of Clovis is the only remnant of the old abbey church",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Place de la Contrescarpe",
+    "short_description": "Historic village square at the top of rue Mouffetard, once 'Apache' territory and haunt of Renaissance poets at La Pomme de Pin.",
+    "latitude": 48.8446,
+    "longitude": 2.3494,
+    "importance_tier": 4,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Place de la Contrescarpe was 'Apache territory' in Hemingway's day and since time immemorial the haunt of students and youths. Though the square itself was only created in 1852, this junction was always a rowdy crossroads — sedan-chair carriers, servants, and revelers headed to taverns beyond the city walls where untaxed wine was cheaper. The most famous tavern was La Pomme de Pin, mentioned by Rabelais and frequented by the Renaissance poets of La Pleiade who united to promote the French language. Despite the inscription at no. 1, the tavern actually stood at the corner of rue Mouffetard and rue Blainville.",
+        "lens": "literary_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "misleading inscription at no. 1",
+          "corner of rue Mouffetard and rue Blainville"
+        ],
+        "source_passage": "Place de la Contrescarpe, the 'village' square of the neighbourhood, 'Apache' territory in Hemingway's day",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue Mouffetard",
+    "short_description": "Winding medieval market street on a former Roman road with daily open-air food stalls stretching through the 5th arrondissement",
+    "latitude": 48.842301,
+    "longitude": 2.349772,
+    "importance_tier": 3,
+    "trigger_radius": 75,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "La Mouffe"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Before the 15th century, the borough of Saint-Medard lay by the happy river Bievre, proud of its vineyards and bucolic surroundings. Prominent Parisians built country homes in these sunny parts. Then the butchers, dyers, and tanners came, ravaging the river into a nauseating stench — 'mouffettes' or 'moffettes' — possibly the origin of the name rue Mouffetard. With pollution came social havoc: hot-tempered butchers and rowdy youths fueled by cheap wine made brawls a daily occurrence. In the early 18th century, authorities stationed the gardes francaises at no. 36 to keep order.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "lower part of rue Mouffetard for authentic stretch",
+          "no. 36 where gardes francaises were stationed"
+        ],
+        "source_passage": "when the butchers, dyers and tanners came over, they ravaged the Bievre",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Eglise Saint-Medard",
+    "short_description": "Medieval church at the foot of rue Mouffetard, site of the Jansenist convulsionnaire hysteria of 1727-1732.",
+    "latitude": 48.8397,
+    "longitude": 2.35,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Église Saint-Médard",
+      "Saint-Médard"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "On 1 May 1727, the virtuous deacon Francois de Paris died at age 36. Despite his high birth, he had refused the priesthood and led an ascetic life of self-mortification. An ardent Jansenist during Louis XIV's persecution, his death unleashed mass hysteria. For five years, the convulsionnaires gathered at his grave — predominantly women — prancing, barking, mewing, nailing themselves to crosses, swallowing blazing charcoal, having their tongues pierced, and begging for more. When alarmed authorities shut down the graveyard in January 1732, the fanatics simply moved to private quarters. Only the expulsion of the Jesuits in 1762 ended this 35-year frenzy, which the Marquis d'Argenson considered a greater political threat than 'English philosophy.'",
+        "lens": "dark_history",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "graveyard replaced by a pleasant public garden beside the church",
+          "traces of graveyard door at no. 39 rue Daubenton"
+        ],
+        "source_passage": "the church of Saint-Medard entered history on 1 May 1727 when its virtuous and humble deacon, Paris, died",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Saint Medard lived in the 6th century as councillor to the Merovingian Kings. In the year 545, he crowned a fair and virtuous village girl with a garland of white roses and gave her a dowry of 25 pounds, starting the village tradition of the annual Fete des Rosieres — a celebration of chastity among the maidens. The church was built on the site of a 7th-century predecessor destroyed by the Norsemen in the 9th century, its remains only discovered in 1978.",
+        "lens": "sacred_traditions",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "15th-century flamboyant nave and facade"
+        ],
+        "source_passage": "Saint Medard lived in the 6th century and was councillor to the Merovingian Kings",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Grand Mosque of Paris",
+    "short_description": "Spanish-Moorish mosque built in 1926 to honour Muslim WWI soldiers, with ornate mosaics, a hammam, and a courtyard tea salon",
+    "latitude": 48.842071,
+    "longitude": 2.355103,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Grande Mosquee de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "A gem of Moorish architecture and a slice of North Africa, the Grande Mosquee de Paris was inaugurated in great pomp by President Doumergue in 1926, when France was anxious to honor her Muslim subjects for their contribution to the war effort. The best Moroccan artists and craftsmen decorated it with magnificent tiles and mosaics, walls draped in rich damask. The ceiling of its arcades was carved from Lebanese cedar, its Turkish baths panelled in marble. The patio, decked with rose beds and a marble fountain, still carries faint scents of Arabia. On Fridays, colorfully dressed Muslims gather at the main entrance on rue du Puits-de-l'Ermite.",
+        "lens": "historic_worship",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Moorish tiles and mosaics",
+          "patio with rose beds and marble fountain",
+          "salon de the entrance on rue Geoffroy-Saint-Hilaire"
+        ],
+        "source_passage": "Inaugurated in great pomp by President Doumergues in 1926",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Jardin des Plantes",
+    "short_description": "Paris's main botanical garden founded in 1626 with a natural history museum, alpine garden, and one of the oldest zoos in the world",
+    "latitude": 48.844346,
+    "longitude": 2.356212,
+    "importance_tier": 3,
+    "trigger_radius": 150,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Garden of Plants"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Next to the main entrance on rue Buffon stands the spacious 18th-century hotel bought by Buffon in 1772 to serve as the director's residence. Thomas Jefferson was a dinner guest here several times and both admired Buffon — 'a man of extraordinary powers in conversation' — and was warily deferential. Buffon died here fulfilled and happy in 1788, at age 80, just in time to avoid the Revolution. Under his supervision and with Louis XVI's support, the gardens reached their peak, containing some 10,000 species of plants, a tropical glasshouse, the trunk of a 2,000-year-old sequoia, and a cedar of Lebanon brought by Jussieu in 1734.",
+        "lens": "famous_residents",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "18th-century director's residence on rue Buffon",
+          "historic cedar of Lebanon in gardens"
+        ],
+        "source_passage": "a spacious 18th-century hotel, bought by Buffon in 1772 to serve as residence for the director of the gardens",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "On 9 July 1827, Charles X was offered a giraffe as a present from the Pasha of Egypt — the first giraffe to tread French soil. Named Zarafa, she was paraded through the streets on her way to the Jardin des Plantes, cheered by enthusiastic crowds. Over 600,000 Parisians jostled to see her. Paris was gripped by a giraffe craze — images appeared on brooches, combs, umbrellas, anything one could find. But in the terrible winter of 1870-71, when Prussians besieged Paris, starving citizens invaded the menagerie and devoured all its animals, along with the rats and cats of the capital.",
+        "lens": "local_legends",
+        "duration_sec": 55,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "menagerie where Zarafa once lived"
+        ],
+        "source_passage": "On 9 July 1826 Charles X was offered a giraffe as a present from the Pasha of Egypt",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Arenes de Lutece",
+    "short_description": "Remains of a 1st-century Gallo-Roman amphitheatre in the Latin Quarter that once seated 15,000 spectators for gladiatorial contests",
+    "latitude": 48.845126,
+    "longitude": 2.352309,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Lutece Arena",
+      "Arenes de Lutece"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Nobody believed the Roman arena really existed until the 1860s, when workmen building rue Monge stumbled upon it accidentally. Haussmann's remodelling was not to be hindered by such trifles: in 1870, two-thirds of the unearthed arena were demolished for new apartment blocks and an omnibus depot. The last third, dug up in 1883, was likewise marked for destruction, but Victor Hugo intervened. 'It is not possible,' he wrote, 'that Paris, the city of the future, should renounce the living proof that it was a city of the past.' What you see today is the original surviving section plus a 1918 reconstruction of the demolished portion.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "steep leafy rue des Arenes entrance",
+          "semi-circular amphitheatre facing east"
+        ],
+        "source_passage": "nobody believed the arena really existed until the 1860s, when some workmen came across it accidentally",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Institut du Monde Arabe",
+    "short_description": "Jean Nouvel's acclaimed 1987 building for Franco-Arab cultural collaboration, with photo-sensitive mashrabiya facade.",
+    "latitude": 48.8427,
+    "longitude": 2.3538,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Arab World Institute",
+      "IMA"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Designed by Jean Nouvel and inaugurated at the end of 1987, the Institut du Monde Arabe marked a new era of Franco-Arab cultural collaboration. It was one of Mitterrand's triumphant 'Grands Projets' that drew crowds eager to experience the novelty — above all the roof restaurant, with its spectacular view over the Seine. The building's south facade features 240 photo-sensitive mechanical apertures inspired by Arabic mashrabiya screens, automatically adjusting to sunlight. Unlike the Tour d'Argent a short way downriver, its meals remain within the bounds of affordability.",
+        "lens": "modern_design",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "mechanical apertures on south facade",
+          "rooftop restaurant with Seine views"
+        ],
+        "source_passage": "the Institut du Monde Arabe, designed by Jean Nouvel and inaugurated at the end of 1987",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "La Tour d'Argent",
+    "short_description": "Legendary restaurant dating to 1582 with views of Notre-Dame, where the fork was allegedly first used in France.",
+    "latitude": 48.8503,
+    "longitude": 2.3541,
+    "importance_tier": 3,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Tour d'Argent"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The world-famous Tour d'Argent at 15 quai des Tournelles first opened in 1582 as a countrified inn, yet even then it was a gastronomic establishment favored by the court of Henri III. Legend has it the fork was first used in France here during the reign of Henri IV, when the restaurant reached its peak. The Revolution destroyed this symbol of lavish decadence, but once the turmoil passed, the feast resumed. Since 1913, it has been in the hands of the Terrail family. Guests enjoy both cuisine and a spectacular view of Notre-Dame.",
+        "lens": "historic_cuisine",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "restaurant at 15 quai des Tournelles"
+        ],
+        "source_passage": "The first Tour d'Argent, which opened in 1582, was a countrified, one-storeyed inn",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Verlaine's Garret",
+    "short_description": "The miserable room at 39 rue Descartes where poet Paul Verlaine died on 8 January 1896.",
+    "latitude": 48.8457,
+    "longitude": 2.3488,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "39 rue Descartes",
+      "Maison de Verlaine"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At 39 rue Descartes, a dilapidated room on the third floor was the last home of Paul Verlaine. After attempting to shoot his former friend Arthur Rimbaud, he served time in jail, tried to return to Christianity, but absinthe won out and he sank into depravity. Verlaine shared his seedy room with a wretched companion, Eugenie Krantz, and died here on 8 January 1896.",
+        "lens": "literary_heritage",
+        "duration_sec": 35,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "third floor of 39 rue Descartes",
+          "plaque on building"
+        ],
+        "source_passage": "A dilapidated room on the third floor of n 39 rue Descartes was the home of Paul Verlaine",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "College des Bernardins",
+    "short_description": "13th-century Cistercian college turned cultural center, scene of a brutal episode during the 1792 September Massacres.",
+    "latitude": 48.8489,
+    "longitude": 2.3521,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Collège des Bernardins"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "On 2 September 1792, the three-day September Massacres began when the bloodthirsty mob stormed places of detention. The College des Bernardins, which had become a depot for convicts after the Chateau de la Tournelle grew too dilapidated, was falsely rumored to hold clergymen in disguise. The mob stormed the depot and assaulted its 73 occupants, who put up fierce resistance with their bare hands. All except three were slaughtered in a frenzy that swept through the prisons of Paris, killing over a thousand.",
+        "lens": "war_conflict",
+        "duration_sec": 45,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Gothic refectory at 20 rue de Poissy"
+        ],
+        "source_passage": "On 2 September 1792 the three-day massacre de Septembre began",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

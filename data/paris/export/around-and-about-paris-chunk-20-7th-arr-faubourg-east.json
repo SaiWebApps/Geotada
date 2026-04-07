@@ -1,0 +1,377 @@
+[
+  {
+    "name": "Eiffel Tower",
+    "short_description": "Iconic iron lattice tower built for the 1889 World's Fair.",
+    "latitude": 48.8584,
+    "longitude": 2.2945,
+    "importance_tier": 1,
+    "trigger_radius": 80,
+    "typical_duration_min": 7,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "La Tour Eiffel",
+      "La Colossale"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Eiffel Tower was designed not by Eiffel himself but by two engineers in his company, Koechlin and Nouguier, whose project won the competition for a striking monument for the 1889 Universal Exhibition. The Exhibition officially commemorated the centenary of the French Revolution — among competing proposals was a gigantic guillotine in honour of the victims of the Terror. Rising approximately 312 metres, the Tower was twice the height of the tallest structure previously built by man. Despite its gigantic dimensions, the iron structure weighed roughly 7,300 tonnes — an awesome technical feat. Yet on 7 May 1889, the day of its solemn inauguration, none of the lifts worked.",
+        "lens": "historic_arch",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Four great iron legs tapering to the summit",
+          "Open lattice ironwork"
+        ],
+        "source_passage": "Rising 318 metres above the ground, it was twice the height of the tallest construction hitherto ever built by man",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Not everyone welcomed the Tower. A petition signed by fifty leading figures from arts and letters — including Guy de Maupassant, Charles Gounod, Alexandre Dumas, and Charles Garnier — condemned the 'monstrous construction' in the name of Art and Civilisation. They showered it with metaphors: 'hollow candlestick', 'solitary riddled suppository', 'bald umbrella', 'skeleton'. Maupassant, contemplating leaving Paris, settled instead for lunching in the second-floor restaurant — the only spot in the city from which the Tower could not be seen. The painter Robert Delaunay saw it differently, making the Tower his favourite subject.",
+        "lens": "social_change",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Second-floor restaurant terrace",
+          "Open lattice that outraged aesthetes"
+        ],
+        "source_passage": "Guy de Maupassant, after an impulse to pack up and move out of the capital, decided instead to eat in the second-floor restaurant",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Tower was meant to be ephemeral — a temporary structure for the World's Fair — and in 1909 enemies intensified campaigns to demolish it, claiming it was useless. Its salvation came from its height: wireless telegraphy was emerging, and the tall iron tower made a marvellous antenna. The first spoken news bulletin was broadcast from the Eiffel Tower in 1925, and in 1935 France's first experimental television transmission was made from here — a milestone that a few dozen excited enthusiasts received on their sets.",
+        "lens": "science_tech",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Antenna mast at summit",
+          "Open lattice optimised for broadcasting"
+        ],
+        "source_passage": "The first news bulletin was broadcast from the Eiffel Tower in 1925",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On 31 March 1889, the second anniversary of the beginning of construction, a sixty-strong party of top-hatted and monocled dignitaries made the first official ascent. Prime Minister Gustave Tirard gave up at the first floor; most of the others followed. But Gustave Eiffel persevered, urging the last ten breathless participants to the summit, where — with Paris spread at his feet — the Minister of Trade awarded him the Légion d'honneur. The honour, the book notes, should rightly have been shared with the two original designers, Koechlin and Nouguier.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "First-floor platform",
+          "Stairs used before lifts operational"
+        ],
+        "source_passage": "On 31 March 1889, the second anniversary of the beginning of its construction",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The 1889 Universal Exhibition, and the Eiffel Tower at its heart, was not merely a celebration of engineering. The Third Republic, beleaguered by anarchists, revisionists and Boulangistes threatening its stability, organised the Exhibition to boost patriotic feeling and achieve political cohesion. It was to mark the Republic's recovery and trumpet France's entry into modernity — to dazzle the world and assert national prestige at a moment of profound internal vulnerability.",
+        "lens": "war_conflict",
+        "duration_sec": 45,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Champ-de-Mars military parade ground",
+          "Esplanade des Invalides opposite"
+        ],
+        "source_passage": "the Third Republic, beleaguered by anarchists, revisionists and Boulangistes",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Quai Voltaire",
+    "short_description": "Historic Left Bank embankment; Voltaire died at no. 27; Baudelaire, Wagner, Delacroix and Ingres all lived or worked here.",
+    "latitude": 48.8588,
+    "longitude": 2.3312,
+    "importance_tier": 2,
+    "trigger_radius": 40,
+    "typical_duration_min": 7,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "quai Voltaire",
+      "quai des Théatins"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Voltaire died at number 27 on 30 May 1778, aged 84. He had left the quai in 1723 finding it too noisy, but returned on 10 February 1778, and his host the Marquis de Villette gave him a room overlooking the quiet courtyard. When Voltaire's play Irène triumphed at the theatre, crowds pressed around his coach on the quai, then called quai des Théatins — named for the Order founded here by Mazarin in 1647. The Marquis illuminated the quai and replaced the street sign with a plaque reading quai Voltaire. Police removed it the next morning. The renaming only became official on 11 July 1791, when Voltaire's remains were transferred to the Panthéon.",
+        "lens": "literary_heritage",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Number 27 — where Voltaire died",
+          "Courtyard-facing upper rooms",
+          "Quai name itself as legacy"
+        ],
+        "source_passage": "where Voltaire died on 30 May 1778, at the age of 84",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The quai Voltaire reads like a roll-call of European culture. Delacroix lived at number 13 between 1829 and 1835, in a north-facing studio where the idea for his celebrated La Liberté Guidant le Peuple may have germinated. Corot came after; Ingres had a studio at number 17. Baudelaire lodged at number 19 between 1856 and 1858, working on Les Fleurs du Mal. Wagner completed Die Meistersinger here in the winter of 1861–62. Sibelius and Oscar Wilde also stayed at number 19. Alfred de Musset was at number 25 between 1839 and 1849.",
+        "lens": "famous_residents",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Number 13 — Delacroix's north-facing studio",
+          "Number 19 — hotel of Baudelaire, Wagner, Sibelius, Wilde",
+          "Number 25 — Musset"
+        ],
+        "source_passage": "Between 1829 and 1835 Delacroix lived on the 5th floor at n° 13",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "A mansion on the quai was occupied by Louise-Renée de Penacoët de Kéroualle, the artful mistress of Charles II of England, who used her charms to become Duchess of Portsmouth. Louis XIV valued her influence — it served his diplomatic dealings with England. When Charles II died, the Duchess removed as many works of art as she could carry from his magnificent collection and crammed them into her quai Voltaire residence.",
+        "lens": "dark_history",
+        "duration_sec": 45,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Grand 17th-century mansions",
+          "Antique shops now occupying some of these buildings"
+        ],
+        "source_passage": "Louise-Renée de Penacoét de Kéroualle, the artful mistress of Charles II",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Hôtel de Tessé at number 1 was built on the site of a mansion that burned down in 1760 — along with its owner. The 80-year-old Marquis de Bacqueville had gone to the Opera knowing a fire had broken out in his house. When he returned and found it in flames, he walked back inside to rescue papers and never came out again. The same eccentric had, eighteen years earlier, fitted himself with two pairs of wings, launched from his rooftop, and attempted to fly across the Seine. His brief flight ended on a wash-shed on the river, and he with a broken leg.",
+        "lens": "local_legends",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Number 1 — Hôtel de Tessé",
+          "The Seine below"
+        ],
+        "source_passage": "the 80-year-old Marquis de Bacqueville",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At number 29, the Hôtel de Mailly-Nesle was home to five sisters, grand-daughters of the Duc de Mazarin. One by one they became mistresses of Louis XV — all but the third, kept under tight guard by her husband. The last, the Duchesse de Châteauroux, received an annual pension of 80,000 pounds from the royal lover. The mob called her 'La P... du Roi.' She died suddenly in 1744, aged only 27, in a first-floor room that still exists. By the following year, the Marquise de Pompadour had captured the King's heart.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Number 29 — Hôtel de Mailly-Nesle",
+          "First-floor windows where Châteauroux died"
+        ],
+        "source_passage": "Five delectable sisters, the grand-daughters of the Duc de Mazarin",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Fontaine des Quatre Saisons",
+    "short_description": "Monumental 18th-century wall fountain at 57–59 rue de Grenelle, sculpted by Edme Bouchardon (1739–1745).",
+    "latitude": 48.8547,
+    "longitude": 2.3251,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Bouchardon Fountain",
+      "La Trompeuse",
+      "fontaine de Grenelle"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Bouchardon's giant fountain, known as La Fontaine des Quatre Saisons, occupies numbers 57–59 rue de Grenelle. The four seasons are represented by chubby cupids — in spring flowers, harvesting, grape-picking (a frightened rabbit making a dash to escape), and sheltering under a blanket. Voltaire was unimpressed. He found the street too narrow for such an overbearing monument, and nicknamed it 'La Trompeuse' — the deceiver — because it contained 'so much stone for so little water.' There was some wisdom in the complaint: the fountains of Paris were supplied with filthy Seine water and contributed to cholera epidemics. The fountain is also literally deceptive: it is only a thin facing on a wall, a consequence of the nuns of the Recollettes refusing to surrender more than a narrow strip of their estate.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Massive stone facade towering over narrow street",
+          "Four sculpted cupids in niches",
+          "Slender depth vs. imposing width"
+        ],
+        "source_passage": "Bouchardon's gigantic fountain known as La Fontaine des Quatre Saisons",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Thomas-d'Aquin",
+    "short_description": "17th-century Dominican church on Place Saint-Thomas-d'Aquin, parish church of returning aristocratic émigrés after the Revolution.",
+    "latitude": 48.8564,
+    "longitude": 2.3277,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Église Saint-Thomas-d'Aquin"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The church of Saint-Thomas-d'Aquin began as a Dominican noviciate, with its entrance on the now-demolished section of rue Saint-Dominique. Anne de Rohan-Montbazon, Duchesse de Luynes, laid the cornerstone on 5 March 1682. The Revolution dissolved the noviciate, but in 1804, when Christianity was no longer anathema, an enormous congregation gathered at the church's steps where Pope Pius VII gave them his blessing. It then became the parish church of the returning aristocratic émigrés of the Faubourg, their favourite place of worship.",
+        "lens": "historic_worship",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Classical facade (1765–1769)",
+          "Square before church"
+        ],
+        "source_passage": "Anne de Rohan-Montbazon, Duchesse de Luynes, was living at the Hétel de Luynes when she came over to lay the cornerstone",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Le Bon Marché",
+    "short_description": "The world's first modern department store, founded 1838 at 24 rue de Sèvres; inspiration for Zola's Au Bonheur des Dames.",
+    "latitude": 48.8511,
+    "longitude": 2.3244,
+    "importance_tier": 2,
+    "trigger_radius": 25,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Au Bon Marché",
+      "Le Bon Marché Rive Gauche"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1852, Aristide Boucicaut, a shop assistant at Au Petit Saint-Thomas on rue du Bac, was offered a partnership in a small hosiery shop, Au Bon Marché, at the corner of rue du Bac and rue de Sèvres. By 1863 he was its sole owner. Floor space grew from 30 square metres to 26,000 within sixty years. The extended premises used an iron structure involving Gustave Eiffel's firm (the 1872 expansion), the symbol of modernity. The story of Bon Marché is the story of triumphant capitalism — and Emile Zola explored its every mechanism to write his novel Au Bonheur des Dames.",
+        "lens": "historic_markets",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Grand iron-and-glass building at 24 rue de Sèvres",
+          "Light-flooded interior"
+        ],
+        "source_passage": "new extended premises had an iron structure, the symbol of modernity, and were designed by Gustave Eiffel",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Emile Zola called the great department stores of Paris 'gigantic modern bazaars' and saw in them the engine of consumer society — destroying helpless small tradesmen in the process. The Bon Marché became the subject of his novel Au Bonheur des Dames: a world of sham, where the irresistible weapon of advertising lured the female client in, and where she was inevitably trapped, dazzled by overflowing goods and ever-changing fashions. Zola's relentless sociological mission was the exploration of how the machinery of 19th-century capitalism actually worked.",
+        "lens": "literary_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Entrance on rue de Sèvres",
+          "Overwhelming accumulation of goods on every floor"
+        ],
+        "source_passage": "These gigantic 'modern bazaars', as Emile Zola called them",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "La Pagode",
+    "short_description": "Japanese-style pagoda cinema at 57 bis rue de Babylone, built 1895–96 by Alexandre Marcel; converted to cinema 1931.",
+    "latitude": 48.8516,
+    "longitude": 2.3185,
+    "importance_tier": 3,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Cinéma La Pagode",
+      "La Pagode cinema"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Down rue de Babylone at number 57 bis stands one of Paris's most extraordinary buildings: a pagoda-shaped structure built in 1895–96 by architect Alexandre Marcel — an authentic Frenchman despite the design — reportedly commissioned by a manager of the Bon Marché in an attempt to win back his unfaithful wife. Japonisme was the rage, which perhaps should have charmed Madame. The Chinese legation, who briefly rented the premises, moved out when they discovered murals inside celebrating Japan's victories over China. The building was converted into a cinema in 1931 and remains the only picture-house in the 7th arrondissement.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Pagoda roofline and Japanese architectural details",
+          "Ornate salon de thé"
+        ],
+        "source_passage": "a pagoda-shaped cinema, built in 1895/6",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  }
+]

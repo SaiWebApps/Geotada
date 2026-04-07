@@ -1,0 +1,400 @@
+[
+  {
+    "name": "Conciergerie",
+    "short_description": "Medieval royal palace turned Revolutionary prison where Marie Antoinette and over 2,700 inmates were held during the Reign of Terror",
+    "latitude": 48.8558,
+    "longitude": 2.3458,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "La Conciergerie"
+    ],
+    "parent_poi": "Ile de la Cite",
+    "beats": [
+      {
+        "script_body": "At no. 1 quai de l'Horloge stands the entrance to the Conciergerie — originally the seat of the governor of the King's palace, hence its name. It became a prison in 1391 and remained so until 1914. Not unlike a modern concierge supplementing his income, the Palace concierge profited from vendors who leased the many shops within the Palace walls. But the prison's reality was far darker. In the 15th century, passers-by could still hear the screams of tortured prisoners in the Tour Bonbec — the most westerly tower. The name 'bon-bec' (meaning 'prate' in the Middle Ages) probably alluded to the interrogations on the ground floor: a varied spectrum of torture methods was devised to make victims confess and denounce their accomplices. During a restoration in 1828, two oubliettes were found in the tower's basement, communicating with the river and spiked with iron points — needless to dwell on the fate of the prisoners.",
+        "lens": "dark_history",
+        "duration_sec": 64,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "the passer-by could still hear the screams of tortured prisoners in the Tour Bonbec... two oubliettes, communicating with the river and spiked with iron points, were found in its basement",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Among the notorious prisoners of the Conciergerie were Ravaillac, the assassin of Henri IV; the mass poisoner La Marquise de Brinvilliers (1630-1676), who had eliminated the better part of her numerous household; and Cartouche (1693-1721), the most notorious bandit of his age and the terror of Paris. To be admitted into Cartouche's prestigious gang, a candidate had to prove himself an expert cutpurse. Candidates were made to practise on dummies covered with little bells until they could strip them clean without the slightest tinkling. All three prisoners awaited execution at the Conciergerie.",
+        "lens": "dark_history",
+        "duration_sec": 40,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "Candidates were made to practise on dummies covered with little bells, until they could strip them without the slightest tinkling",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During the Revolution, the Conciergerie boasted an impressive list of illustrious prisoners awaiting their deaths. Madame Roland, who had supported the Revolution but sided with the Girondins at the wrong time. Marie-Antoinette, who occupied a dreary cell from 2 August to 16 October 1793, when she was taken to the guillotine on Place de la Révolution. Then Danton, Robespierre and Saint-Just were detained here in their turn — Danton and Robespierre occupying the cells adjacent to the Queen's. In all, some 2,780 victims of the Revolutionary Tribunal passed through the arcade entrance to the jeers of delighted tricoteuses huddled on the perron.",
+        "lens": "dark_history",
+        "duration_sec": 44,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "The arcade on the right of the Cour de Mai was the entrance to the Conciergerie before 1825"
+        ],
+        "source_passage": "Marie-Antoinette, who occupied a dreary cell from 2 August to 16 October 1793... Danton and Robespierre occupying the cells adjacent to the queen's",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "North of the Conciergerie's Gothic halls was a section of the prison leading to the dark cells, known as 'rue de Paris' — named after the Great Executioner, Monsieur de Paris. This post was held by seven successive generations of the Sanson family, from 1688 to 1847, transmitted from father to son. Shortly before the Revolution, Louis XVI had set his heart on improving their plight and granted Charles-Henri Sanson an annual fee of 16,000 pounds plus 2,000 crowns for the upkeep of the scaffold and pillory — never suspecting he would become his own executioner. Being a royalist, Charles-Henri had no desire to carry out that deed. On 15 August 1792 he was arrested as 'the despot's employee'; with each execution he would be dispatched from his cell to Place du Carrousel, where the guillotine stood, and afterwards taken back. When the guillotine began to work at full swing and his expert hand could not be dispensed with, he was released — but retired soon after executing his sovereign. His son Henri held the position during the Terror and beyond, until 1840. The film-maker Jean Renoir marvelled that his own grandfather — the painter's father, a tailor from Limoges — had known Henri's chief assistant during the Terror: a man who 'may have passed Voltaire and Benjamin Franklin in the street, heard Mozart play the harpsichord.' Old Renoir befriended the assistant, and as Jean Renoir observed: 'After all, they were two good workmen: one cut out cloth, the other cut off heads just as conscientiously.'",
+        "lens": "dark_history",
+        "duration_sec": 96,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "After all, they were two good workmen: one cut out cloth, the other cut off heads just as conscientiously",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  },
+  {
+    "name": "Ile de la Cite",
+    "short_description": "Heart of ancient Paris and one of two natural Seine islands, where the Parisii tribe first settled and Notre-Dame was built",
+    "latitude": 48.8544,
+    "longitude": 2.3472,
+    "importance_tier": 4,
+    "trigger_radius": 100,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "City Island"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1298, the extravagant Philippe le Bel ordered the reconstruction of a new palace on the Île de la Cité — 'the most beautiful that anyone in France ever saw.' Its Great Hall has survived as today's Salle des Pas Perdus. In its medieval heyday, the hall consisted of two naves separated by eight pillars, with a black-and-white chequered floor and polychrome walls. A huge marble table served both for sumptuous Gargantuan meals and as a stage for mystery plays, farces and other entertainments. Horrific skins of ferocious animals hung from the vaulted ceilings, and nobody seemed to mind the barbaric goings-on literally next door in the Conciergerie prison. The statues of every king of France stood against the pillars, gloriously painted in azure and gold — 58 in all by 1618, when a fire burnt down the hall with all its contents. Henri III had used the last available space for his own statue.",
+        "lens": "historic_arch",
+        "duration_sec": 64,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "Philippe le Bel ordered the reconstruction of a new palace, 'the most beautiful that anyone in France ever saw'",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "With King Jean II le Bon held captive in England, the provost of merchants Étienne Marcel reckoned on English support and believed he could overthrow the monarchy. On 22 February 1358, the Dauphin — the future Charles V — was sitting with two of his counsellors in the palace on the Île de la Cité when Marcel's men erupted in and slew the counsellors before his very eyes. The gushing blood of the victims stained the Dauphin's clothes, an experience he was never going to forget. A prudent politician, deservedly known as 'le Sage,' he left the palace one night stealthily by way of the river and moved to the Hôtel de Saint-Pol in the Marais, then arranged a residence within the safer walls of the Louvre, where he spent time from 1368 on. The kings of France never returned to the island, and the premises were taken over by the parliament — then the kingdom's court of justice.",
+        "lens": "social_change",
+        "duration_sec": 64,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "the provost's men erupted into the palace and slew his counsellors before his very eyes. The Dauphin was unhurt, but the gushing blood of the victims stained his clothes",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "corrected"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  },
+  {
+    "name": "Place Dauphine",
+    "short_description": "Triangular square created by Henri IV in 1607 on the Île de la Cité, one of Paris's most romantic hidden gems",
+    "latitude": 48.856407,
+    "longitude": 2.342655,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Place Dauphine, one of Paris's romantic gems, was created by Henri IV in 1607 in honour of his son the Dauphin — the future Louis XIII. The triangular square was enclosed on all sides by arcaded brick-and-stone houses, similarly to its contemporary Place des Vosges in the Marais. Bankers and tradesmen could carry on their negotiations undisturbed, conveniently located only a few steps from the Louvre. In the 18th century, talented young artists unable to exhibit at the official Salons were given an opportunity to hold an annual exhibition here — a precursor to the independent art scene. Today both business transactions and the art trade have moved elsewhere, and Place Dauphine is a haven of peace surrounded by small boutiques and pretty eating-places, a provincial nest in the heart of Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "Created by Henri IV in 1607 in honour of his son the Dauphin and future Louis XIII, it was enclosed on all sides by arcaded brick-and-stone houses",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Such Parisians as Simone Signoret and Yves Montand chose to make Place Dauphine their home — drawn by the enchanting atmosphere of this provincial nest in the heart of Paris, lit up by its lamp-posts like a shining diamond.",
+        "lens": "famous_residents",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "such Parisians as Simone Signoret and Yves Montand chose to make it their home",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  },
+  {
+    "name": "Place du Châtelet",
+    "short_description": "Major square on the Right Bank where the Grand Châtelet prison stood for nearly 1000 years, now flanked by two 1860s theatres and the Victoire fountain",
+    "latitude": 48.857524,
+    "longitude": 2.347463,
+    "importance_tier": 2,
+    "trigger_radius": 40,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Châtelet",
+      "Grand Châtelet"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Few who pass through Place du Châtelet today connect it with the ghastly prison of Le Grand Châtelet, which stood here for nearly a thousand years before being demolished between 1802 and 1810. A plan of the Grand-Châtelet is still engraved in marble on the façade of the Chambre des Notaires at 12 avenue Victoria, unnoticed by most passers-by. The prison was the most sinister in Paris — the mere sight of which chilled the passer-by. The 16th-century poet Clément Marot was locked up here simply for having eaten meat on Lent; he named his poem about the experience, significantly, 'L'Enfer' — Hell. The neighbouring streets were just as ghastly, filled with the stench, blood and screams of slaughtered animals — hence rue de la Grande-Boucherie, rue de la Triperie, rue de la Tuerie (carnage), rue de l'Écorcherie (skinning). North of the square, a maze of dark alleys was the realm of cut-throats, villains and felons.",
+        "lens": "dark_history",
+        "duration_sec": 68,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "A plan of the Grand-Châtelet is engraved in marble on the façade of the Chambre des Notaires at 12 avenue Victoria"
+        ],
+        "source_passage": "Few connect it with the ghastly prison of Le Grand Chitelet, which stood here for nearly a thousand years and was only demolished between 1802 and 1808",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "partially verified"
+      },
+      {
+        "script_body": "In 870, Charles le Chauve erected a primitive wooden tower in front of the bridge — Pont au Change — to defend it against the Norsemen, and it seems to have played its role effectively. Around 1130, Louis VI built a proper fortress on the site to protect the Île de la Cité and linked the two with a bridge, Le Grand Pont. But the city walls erected by Philippe-Auguste in 1190 made this fortress superfluous, and it therefore became the seat of the Paris courts of law, provostship and main prison. The governor of Paris — Préfet under the Romans, Comte de Paris in the early kingdom — was invested with military, financial and judiciary powers. In 1060, Philippe I delegated his powers to a newly appointed prévôt, who sat under a canopy decorated with fleurs-de-lis. Notably, Hugues Capet (987-996) had merged the functions of king and Comte de Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "In 870 Charles le Chauve erected a primitive wooden tower in front of the bridge to defend it against the Norsemen",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The maze of dark alleys north of Place du Châtelet was not merely a haunt of criminals — it was, more threateningly to the authorities, a lair of political opponents and rioters. This determined Napoleon III's right-hand man, Baron Haussmann, to reduce it to ashes. The broad artery of Boulevard Sébastopol replaced it, securing for government forces full control over the rabble. But it was also a health measure to clean up the area and turn it into a fashionable neighbourhood. Hence the new square, its two elegant theatres by Davioud built in the 1860s, and the pompous inauguration of the Théâtre du Châtelet in 1862. Yet the neighbourhood never attracted the fashionable set. Rather, it was a source of inspiration to the opening lines of T.S. Eliot's Wasteland.",
+        "lens": "social_change",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "a lair of political opponents and rioters, which determined Napoleon III's right-hand man, the Baron Haussmann, to reduce it to ashes",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "partially verified"
+      },
+      {
+        "script_body": "To generations of French provincials between the 1860s and the 1960s, the name Châtelet meant one thing: the Théâtre du Châtelet, the highlight of their visit to the capital. The theatre specialised in sugary operettas such as 'L'Auberge du Cheval Blanc' (The White Horse Inn), which made hearts throb and eyes weep. Luis Mariano was the adulated star, sweeping the ladies off their feet with his schmaltzy 'Mexico.' The theatre had opened with a magical performance of 'Around the World in Eighty Days' in 1862. To contemporary Parisians, however, the name Châtelet means more prosaically the inevitable central underground junction everyone is bound to hit upon occasionally.",
+        "lens": "music_heritage",
+        "duration_sec": 48,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "specializing in sugary operettas such as L'Auberge du Cheval Blanc, which made their hearts throb and their eyes weep. Luis Mariano was their adulated star",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  },
+  {
+    "name": "Pont Neuf",
+    "short_description": "Oldest surviving bridge in Paris built in 1578, the first stone bridge without houses on it, with 381 carved grotesque faces",
+    "latitude": 48.85675,
+    "longitude": 2.341033,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "New Bridge"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The green bookstalls of the bouquinistes lining the quais near Pont Neuf are a remnant from the time when the bridge itself was a world of its own, crowded with strollers, pedlars, acrobats, prostitutes and riff-raff. When the bridge was cleaned up in the late 18th century, its hucksters spilled over to the quais, eventually settling into the book trade that survives today.",
+        "lens": "hidden_history",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "a remnant from the time when the Pont-Neuf was a world of its own, crowded with strollers, pedlars, acrobats, prostitutes and riff-raff",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  },
+  {
+    "name": "Sainte-Chapelle",
+    "short_description": "13th-century Gothic royal chapel with 15 stained-glass windows depicting 1,113 biblical scenes across 600 square metres",
+    "latitude": 48.855358,
+    "longitude": 2.34483,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "The Holy Chapel"
+    ],
+    "parent_poi": "Ile de la Cite",
+    "beats": [
+      {
+        "script_body": "The Sainte-Chapelle was designed to have the light, lacy aspect of a reliquary — for that is precisely what it was. Saint Louis had bought a piece of the Holy Cross and the Crown of Thorns from Baudouin II, the last Emperor of Constantinople, who was in desperate need of funds to defend his city. The chapel that would house these relics was built by its architect — Pierre de Montreuil or, perhaps, Jean de Chelles — in barely five years. The result was stunningly beyond expectation: a masterpiece of harmonious proportions, delicate grace and equilibrium never attained before.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "the chapel was therefore designed to have the light, lacy aspect of a reliquary. The result was stunningly beyond expectation",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "So great is the Sainte-Chapelle's aura that it has completely overshadowed an earlier royal chapel on the same site: la Chapelle Saint-Michel, built in the 12th century by Louis VII, where Philippe-Auguste was baptised. This rudimentary rectangular structure with a flat roof was still standing in 1781. Its legacy survives across the river on the Left Bank: the Boulevard, Place, bridge, quai and fountain of Saint-Michel are all named after this forgotten chapel — a fact unknown to the millions who pass through Place Saint-Michel each year.",
+        "lens": "hidden_history",
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "the Boulevard, Place, bridge, quai and fountain of Saint-Michel are all named after it",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Sainte-Chapelle nearly did not survive. During the Revolution, the silver and gold reliquary containing the Crown of Thorns was dispatched to the Mint — but its contents miraculously survived, perhaps because even the standard-bearers of the Revolutionary ideal did not dare to tamper with the most holy of Christian symbols. The Crown of Thorns is now kept at Notre-Dame. The chapel itself was used first to store flour, then as a depot for court house archives. It became so dilapidated that it was put on the market for sale and demolition — in 1847 it still bore an inscription reading 'National property, for sale.' Fortunately, enlightened souls called upon Viollet-le-Duc and Lassus to restore it. In 1853, Lassus erected a new spire — the fifth in the chapel's history. Around two-thirds of the 1,113 original stained-glass scenes were preserved. Then on 24 May 1871, the Communards poured petrol over the Sainte-Chapelle — and only failed to set it on fire for lack of time.",
+        "lens": "hidden_history",
+        "duration_sec": 68,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "it was put on the market for sale and demolition. In 1847 it still bore an inscription which read: 'National property, for sale'",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "corrected"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  },
+  {
+    "name": "Tour de l'Horloge",
+    "short_description": "14th-century clock tower on the Ile de la Cite bearing the oldest public clock in Paris, installed in 1370 and still working",
+    "latitude": 48.856865,
+    "longitude": 2.343955,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Clock Tower of the Palais de la Cite"
+    ],
+    "parent_poi": "Ile de la Cite",
+    "beats": [
+      {
+        "script_body": "The Tour de l'Horloge on the quai de l'Horloge houses the oldest public clock in Paris, ordered by Charles V around the year 1371. It was later restored by Henri III, as may be deduced from its Latin inscription: 'He who already gave him two crowns will give him a third one.' Henri III was King of France and King of Poland — the two crowns — while the promised third crown refers to heaven. The King's monogram also adorns the clock face.",
+        "lens": "hidden_history",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "The clock was ordered by Charles V around the year 1371 and is the oldest clock in the capital",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal"
+    }
+  }
+]

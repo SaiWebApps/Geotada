@@ -1,0 +1,650 @@
+[
+  {
+    "name": "Centre Pompidou",
+    "short_description": "Iconic contemporary art centre with inside-out architecture",
+    "latitude": 48.8607,
+    "longitude": 2.3525,
+    "importance_tier": 1,
+    "trigger_radius": 100,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Centre Georges Pompidou",
+      "Beaubourg"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Centre Pompidou was conceived as a transparent cultural centre for the people — a place where the inner workings of the building would be visible from the outside. The architects turned architecture inside out, placing all the structural elements, ducts, and escalators on the exterior, leaving the interior as open, flexible exhibition space.",
+        "lens": "modern_design",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the exposed ductwork and colour-coded pipes on the exterior",
+          "Notice the glass-tube escalator climbing the west facade"
+        ],
+        "source_passage": "Transparent architecture; cultural centre for the people",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Parisians, never short of a cutting nickname, dubbed the Centre Pompidou 'Notre-Dame-des-Tuyaux' — Our Lady of the Pipes. The irreverent name captures both the outrage and the grudging affection Parisians developed for the building's industrial aesthetic in the heart of their historic city.",
+        "lens": "local_legends",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Centre Pompidou exterior"
+        ],
+        "source_passage": "Nicknamed Notre-Dame-des-Tuyaux",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Atelier Brancusi",
+    "short_description": "Recreated studio of the sculptor Constantin Brancusi, preserved beside the Centre Pompidou.",
+    "latitude": 48.8611,
+    "longitude": 2.352,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Constantin Brancusi bequeathed his entire studio to the French state on condition it be preserved exactly as he left it. The recreated atelier beside the Pompidou contains his tools, unfinished works, and personal effects. Man Ray's widow fought tenaciously for the studio's preservation, ensuring that one of the 20th century's most important sculptors would be remembered in situ.",
+        "lens": "visual_art",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the low modernist pavilion beside the Pompidou",
+          "Peer through the glass at Brancusi's original arrangement"
+        ],
+        "source_passage": "Brancusi's recreated studio; Man Ray's widow fought for studio",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Stravinsky Fountain",
+    "short_description": "Playful pop-art fountain with kinetic sculptures by Tinguely and Niki de Saint Phalle, inaugurated in 1983.",
+    "latitude": 48.8595,
+    "longitude": 2.3515,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Fontaine Stravinsky"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Stravinsky Fountain, inaugurated in 1983, is a collaboration between Jean Tinguely and Niki de Saint Phalle. Tinguely's black mechanical sculptures spray and spin alongside Saint Phalle's colourful, voluptuous figures — a joyful pop-art homage to the compositions of Igor Stravinsky, including The Firebird and The Rite of Spring.",
+        "lens": "visual_art",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Watch the mechanical sculptures spray water",
+          "Identify the Firebird and other Stravinsky-inspired figures"
+        ],
+        "source_passage": "Tinguely and Niki de Saint Phalle pop-art fountain, 1983",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Artist names corrected from OCR errors."
+      }
+    ]
+  },
+  {
+    "name": "Eglise Saint-Merri",
+    "short_description": "Flamboyant Gothic church with the oldest bell in Paris, dating from 1331.",
+    "latitude": 48.8591,
+    "longitude": 2.3509,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The church of Saint-Merri, built from 1520, is a fine example of flamboyant Gothic — one of the last Gothic churches in Paris, built when the Renaissance had already arrived. Its bell, cast in 1331, is the oldest in Paris, having survived revolutions, wars and the great foundry melts that claimed most medieval bells.",
+        "lens": "historic_worship",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the flamboyant Gothic tracery",
+          "The 1331 bell hangs in the tower above"
+        ],
+        "source_passage": "Flamboyant Gothic from 1520; bell from 1331 oldest in Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The church is named after Saint Mederic, a 7th-century abbot whose remains were said to scintillate with miraculous light. His cult drew pilgrims to this spot for centuries, and local legends attributed healing powers to his relics.",
+        "lens": "local_legends",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Saint-Merri interior"
+        ],
+        "source_passage": "Saint Mederic's miracles; scintillating remains",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Rue Saint-Martin, on which the church stands, follows the ancient Roman road that ran north from Lutetia. This was the main artery linking the Roman settlement to the northern provinces, and it remains one of the oldest continuously used streets in Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Stand on rue Saint-Martin and look north"
+        ],
+        "source_passage": "Roman road of rue Saint-Martin",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue de la Verrerie",
+    "short_description": "Medieval street where playing cards were first painted for the mad King Charles VI.",
+    "latitude": 48.857,
+    "longitude": 2.353,
+    "importance_tier": 4,
+    "trigger_radius": 40,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In the 14th century, the painter Jacquemin Gringonneur lived on this street and was commissioned to paint playing cards for the amusement of Charles VI, the mad king. Legend has it that the King of Hearts was modelled on Charles VI himself — a fitting tribute to a monarch whose bouts of insanity plunged France into chaos.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Walk along rue de la Verrerie"
+        ],
+        "source_passage": "Gringonneur painted playing cards for Charles VI; King of Hearts modeled on Charles VI",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Ville",
+    "short_description": "Paris's city hall on the site of the medieval Place de Greve",
+    "latitude": 48.8565,
+    "longitude": 2.3524,
+    "importance_tier": 1,
+    "trigger_radius": 100,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel de Ville de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "After the Commune burned the original Hotel de Ville in 1871, the Third Republic rebuilt it with lavish interiors designed to project the permanence and grandeur of the new regime. Inside you'll find a bust by Rodin and magnificent murals by Puvis de Chavannes — some of the finest civic decorations in Paris.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel de Ville facade",
+          "Ask about guided tours to see the interior decorations"
+        ],
+        "source_passage": "Third Republic interiors; Rodin bust; Puvis de Chavannes murals",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "BHV (Bazar de l'Hotel de Ville)",
+    "short_description": "Iconic Parisian department store famous for its basement hardware section, founded after a market survey by Xavier Ruel.",
+    "latitude": 48.8569,
+    "longitude": 2.3541,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "BHV Marais"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The BHV began when Xavier Ruel conducted one of Paris's first market surveys, standing outside the Hotel de Ville counting passersby. Convinced by the foot traffic, he opened a shop specialising in screws, nails and household hardware — a focus the store maintains to this day in its legendary basement. Originally called the Bazar Parisien, it was renamed after Napoleon III fell from power.",
+        "lens": "historic_markets",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "BHV facade across from Hotel de Ville",
+          "Visit the famous basement hardware department"
+        ],
+        "source_passage": "Xavier Ruel's market survey; screws and nails; renamed after Napoleon III fell",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Original name corrected from Bazar Napoleon to Bazar Parisien."
+      }
+    ]
+  },
+  {
+    "name": "Eglise des Billettes",
+    "short_description": "Church built on the site of a medieval anti-Jewish miracle legend, with Paris's only surviving medieval cloister.",
+    "latitude": 48.8581,
+    "longitude": 2.355,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": 10,
+    "kid_friendly": "caution",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1290, a Jew named Jonathas was accused of host desecration — stabbing a consecrated wafer that allegedly bled. He was burned at the stake and a chapel was erected on the site to commemorate the supposed miracle. This was one of many such blood libels that fuelled antisemitic violence across medieval Europe.",
+        "lens": "dark_history",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Eglise des Billettes entrance"
+        ],
+        "source_passage": "1290 host desecration libel; Jonathas burned at stake",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The cloister adjoining the church, built in 1427, is the only surviving medieval cloister in Paris. The church itself is now Protestant — a historical irony given its origins in anti-Jewish persecution under the Catholic Church.",
+        "lens": "historic_arch",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Enter the medieval cloister — the only one surviving in Paris",
+          "Notice the Gothic arches from 1427"
+        ],
+        "source_passage": "Only medieval cloister in Paris, built 1427, now Protestant",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Fondation Azzedine Alaia",
+    "short_description": "The studio and foundation of Tunisian-born fashion designer Azzedine Alaia in the heart of the Marais.",
+    "latitude": 48.8572,
+    "longitude": 2.3527,
+    "importance_tier": 4,
+    "trigger_radius": 30,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Tunisian-born designer Azzedine Alaia made his home and studio at 18 rue de la Verrerie, choosing to stay in the Marais when the fashion world migrated to the Right Bank and beyond. His foundation preserves the spirit of a designer who refused to follow trends or show on the official calendar.",
+        "lens": "famous_residents",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "18 rue de la Verrerie"
+        ],
+        "source_passage": "Tunisian designer at 18 rue de la Verrerie; stayed in Marais",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Half-Timbered Houses (Rue Francois-Miron)",
+    "short_description": "Two of Paris's only securely dated 14th-century half-timbered houses, with links to the Couperin musical dynasty.",
+    "latitude": 48.8553,
+    "longitude": 2.355,
+    "importance_tier": 4,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "These two half-timbered houses on rue Francois-Miron are the only ones in Paris securely dated to the 14th century. Their steep gabled roofs are a rare survival of medieval Paris. At number 4, the Couperin family of musicians lived for generations — a dynasty that dominated French keyboard music for nearly two centuries.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the gabled timber-frame facades",
+          "Notice number 4, home of the Couperin dynasty"
+        ],
+        "source_passage": "Only two securely dated to 14th century; gabled roofs; Couperin family at no 4",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Beauvais",
+    "short_description": "17th-century mansion where the young Mozart stayed and where Catherine Bellier initiated Louis XIV into manhood.",
+    "latitude": 48.8531,
+    "longitude": 2.355,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": 10,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Hôtel de Beauvais"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Catherine Bellier, known as 'Cateau la Borgnesse' (One-Eyed Kate), was a lady-in-waiting to Anne of Austria. She was entrusted with initiating the young Louis XIV into the ways of love. As her reward, she received the means to build this magnificent mansion, partly constructed with stones pilfered from the demolition of the old Louvre.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Hotel de Beauvais balcony on rue Francois-Miron"
+        ],
+        "source_passage": "Catherine Bellier initiated young Louis XIV; mansion built with Louvre stones",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 1763-64, the seven-year-old Wolfgang Amadeus Mozart stayed at the Hotel de Beauvais during his first visit to Paris. From here, the child prodigy was introduced to the court at Versailles, where he astonished Louis XV and his family with his extraordinary musical gifts.",
+        "lens": "music_heritage",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel de Beauvais facade"
+        ],
+        "source_passage": "Seven-year-old Mozart stayed 1763-64; introduced to Versailles",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Before Catherine Bellier's time, this site held the house of Marie Touchet, mistress of Charles IX. She bore the king his only surviving son — a child who, had legitimacy not been an obstacle, could have changed the entire line of French succession and perhaps averted the Wars of Religion.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel de Beauvais site"
+        ],
+        "source_passage": "Marie Touchet bore Charles IX's only son; could have changed succession",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Memorial de la Shoah",
+    "short_description": "Holocaust memorial and museum honouring the 75,000 Jews deported from France during World War II.",
+    "latitude": 48.8549,
+    "longitude": 2.3562,
+    "importance_tier": 2,
+    "trigger_radius": 60,
+    "typical_duration_min": 30,
+    "kid_friendly": "caution",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Memorial de la Shoah began as the Memorial to the Unknown Jewish Martyr, built in 1956. An eternal flame burns in the crypt, and the Wall of Names records the 75,000 Jews — men, women and children — deported from France to the Nazi death camps. Only 2,500 returned.",
+        "lens": "war_conflict",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "The eternal flame in the crypt",
+          "The Wall of Names listing 75,000 deportees"
+        ],
+        "source_passage": "Memorial to Unknown Jewish Martyr; eternal flame; 75,000 deportees",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel Chalons de Luxembourg",
+    "short_description": "17th-century Marais mansion with a notable lion's head portal, where poet Gabriele d'Annunzio once lived.",
+    "latitude": 48.8548,
+    "longitude": 2.3569,
+    "importance_tier": 4,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel Chalons de Luxembourg is distinguished by its magnificent lion's head portal. The Italian poet and adventurer Gabriele d'Annunzio lived here in 1914, during his flamboyant Parisian exile before returning to Italy to agitate for entry into the Great War.",
+        "lens": "historic_arch",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the lion's head portal"
+        ],
+        "source_passage": "Lion's head portal; d'Annunzio lived here 1914",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Eglise Saint-Gervais-Saint-Protais",
+    "short_description": "Church with Paris's first classical facade and nearly two centuries of the Couperin musical dynasty.",
+    "latitude": 48.8555,
+    "longitude": 2.3547,
+    "importance_tier": 2,
+    "trigger_radius": 60,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Saint-Gervais"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Saint-Gervais-Saint-Protais has origins reaching back to the 6th century, making it one of the oldest parish churches in Paris. Its west facade, completed in 1621, was the first in Paris to use the classical orders — Doric on the ground floor, Ionic above, and Corinthian at the top — a formula that would be widely imitated. Voltaire remarked that it was 'the most beautiful thing of its kind in France.'",
+        "lens": "historic_worship",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Study the three orders of the facade: Doric, Ionic, Corinthian from bottom to top"
+        ],
+        "source_passage": "6th-century origins; first classical facade (Doric/Ionic/Corinthian); Voltaire quote",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Column order corrected to standard classical progression: Doric, Ionic, Corinthian."
+      },
+      {
+        "script_body": "On Good Friday 1918, a German long-range shell from the infamous Big Bertha cannon struck the church during a service, bringing the roof crashing down on the congregation. Eighty-eight people were killed and sixty-eight wounded — one of the worst single attacks on civilians in Paris during the Great War.",
+        "lens": "war_conflict",
+        "duration_sec": 40,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Look for traces of the 1918 reconstruction in the nave ceiling"
+        ],
+        "source_passage": "Big Bertha Good Friday 1918",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Casualties corrected from 50 killed/200 wounded to 88 killed/68 wounded."
+      },
+      {
+        "script_body": "The Couperin dynasty held the post of organist at Saint-Gervais for an extraordinary 173 years, from 1653 to 1826. The most famous, Francois Couperin 'le Grand,' was appointed at the age of eighteen and became the finest keyboard composer of the French Baroque.",
+        "lens": "music_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the organ loft where eight generations of Couperins played"
+        ],
+        "source_passage": "Couperin dynasty 1653-1826; Francois Couperin child prodigy",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Start date corrected from 1656 to 1653."
+      },
+      {
+        "script_body": "Madame de Sevigne, the great epistolary writer, was married here on 4 August 1644 — at two o'clock in the morning. The peculiar hour was typical of aristocratic weddings of the period, designed to avoid crowds and spectacle.",
+        "lens": "famous_residents",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Saint-Gervais nave"
+        ],
+        "source_passage": "Sevigne married here 4 August 1644 at 2am",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel d'Aumont",
+    "short_description": "Grand 17th-century mansion designed by Le Vau and Mansart with interiors by Le Brun.",
+    "latitude": 48.8537,
+    "longitude": 2.358,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel d'Aumont"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel d'Aumont represents a collaboration between three of the greatest names in 17th-century French art. Louis Le Vau designed it for the playwright Scarron, then Francois Mansart remodelled it for the Duc d'Aumont, and Charles Le Brun painted the magnificent ceiling — a concentration of genius unmatched in any other private mansion in the Marais.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel d'Aumont facade",
+          "Look at the formal French garden"
+        ],
+        "source_passage": "Le Vau for Scarron, Mansart for d'Aumont, Le Brun ceiling",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

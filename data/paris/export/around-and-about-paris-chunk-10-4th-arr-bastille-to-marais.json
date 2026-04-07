@@ -1,0 +1,662 @@
+[
+  {
+    "name": "Place de la Bastille",
+    "short_description": "Historic square where the infamous fortress-prison once stood, stormed on July 14, 1789",
+    "latitude": 48.8533,
+    "longitude": 2.3692,
+    "importance_tier": 1,
+    "trigger_radius": 80,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Bastille was far from the grim dungeon of popular imagination. It functioned as a luxury prison for well-connected inmates. Voltaire completed his tragedy Oedipe here, composing verses and dining well. The Marquis de Sade draped his cell walls with fabric and had his own furniture brought in. When the fortress was finally stormed on July 14, 1789, the liberators found only seven prisoners inside — a far cry from the hundreds the revolutionaries imagined they would free.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the outline of the fortress traced in paving stones on the ground",
+          "Place de la Bastille"
+        ],
+        "source_passage": "Voltaire completed his tragedy Oedipe here; the Marquis de Sade draped his cell walls",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Voltaire's release date corrected from 1717 to 1718."
+      },
+      {
+        "script_body": "The Marquis de Sade was transferred to the Bastille from Vincennes in 1784. He fashioned a megaphone from a funnel and shouted to passersby that prisoners were being murdered inside. The authorities removed him in early July 1789 — just days before the storming. At the Bastille he wrote some of his most notorious works, including Justine.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Place de la Bastille"
+        ],
+        "source_passage": "Sade fashioned a megaphone and shouted to passersby; transferred from Vincennes 1784",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Sade's works corrected — Justine was written at the Bastille, not Vincennes."
+      },
+      {
+        "script_body": "The storming of the Bastille on July 14, 1789 became the founding myth of the French Revolution, yet the reality was far less dramatic. Finance minister Necker had already drawn up plans to demolish the fortress. When the mob broke in, they found only seven bewildered prisoners — four forgers, two madmen, and a young nobleman imprisoned at his family's request.",
+        "lens": "social_change",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place de la Bastille",
+          "July Column"
+        ],
+        "source_passage": "Necker had planned demolition; only 7 prisoners found",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Temple du Marais",
+    "short_description": "Mansart's 17th-century domed church, originally built for the Visitandine order, now a Protestant temple since Napoleon's decree of 1803.",
+    "latitude": 48.8539,
+    "longitude": 2.3649,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Temple Sainte-Marie",
+      "Eglise de la Visitation Sainte-Marie"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "This small church boasts one of Paris's most influential domes. Francois Mansart designed it with a circular plan and a striking 35-metre dome that became the model for two of France's greatest buildings: the Val-de-Grace and the Invalides. Napoleon gave the church to the Protestants in 1803, and it has served as a Reformed temple ever since.",
+        "lens": "historic_arch",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at Mansart's 35-metre dome",
+          "Notice the circular plan of the interior"
+        ],
+        "source_passage": "Mansart's 35m dome became the model for Val-de-Grace and Invalides; Napoleon gave to Protestants 1803",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Visitandine convent was a fashionable retreat for society women tired of worldly life. Madame de La Fayette, author of La Princesse de Cleves, retired here as Soeur Angelique. But not all residents took to piety: the tempestuous Hortense Mancini, niece of Cardinal Mazarin, once poured black ink into the holy water font.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Temple du Marais entrance"
+        ],
+        "source_passage": "Visitandines society retreat; Madame de La Fayette as Soeur Angelique; Hortense Mancini black ink in holy water",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Mayenne",
+    "short_description": "16th-century Marais mansion associated with Henri III's favourites and the Catholic League's assassination plots.",
+    "latitude": 48.8537,
+    "longitude": 2.3649,
+    "importance_tier": 4,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Hôtel de Mayenne"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1578, a savage duel took place near this mansion. Quelus, one of Henri III's favourites, was stabbed eighteen times. The distraught King ordered straw laid on the street to muffle passing carriages so his dying companion could rest in peace. The Hotel de Mayenne later became a centre for the Catholic League, and within these walls the assassination of Henri III was plotted.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Hotel de Mayenne facade"
+        ],
+        "source_passage": "1578 duel, Quelus stabbed 18 times, Henri III ordered straw on street",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Place des Vosges",
+    "short_description": "Paris's oldest planned square, surrounded by harmonious brick-and-stone mansions",
+    "latitude": 48.8554,
+    "longitude": 2.3656,
+    "importance_tier": 1,
+    "trigger_radius": 80,
+    "typical_duration_min": 25,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Place Royale"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Henri IV dreamed of making Paris a centre of silk manufacture, hoping to rival Lyon and undercut costly Italian imports. He brought 200 Italian workers to the site of this square and planted mulberry trees for their silkworms. But the northern climate defeated the enterprise — the silkworms simply could not survive Parisian winters, and the project was abandoned.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place des Vosges gardens"
+        ],
+        "source_passage": "Henri IV brought 200 Italian workers; silkworms couldn't survive winters",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Pavillon du Roi dominates the south side of the square, grander than the other 36 houses that form the harmonious ensemble. The square was inaugurated in 1612 with a spectacular three-day celebration for the double wedding of Louis XIII and Anne of Austria, and his sister Elisabeth with the future Philip IV of Spain. It was renamed Place des Vosges in 1800, honouring the first department to pay its taxes to the new Republic.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notice the Pavillon du Roi on the south side, taller than the rest",
+          "Count the 36 matching brick-and-stone houses"
+        ],
+        "source_passage": "Pavillon du Roi, 36 houses, inaugurated 1612, renamed Place des Vosges 1800",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On September 8, 1656, Christina of Sweden made a spectacular entry into the square. The former queen, who had abdicated her throne two years earlier, arrived in Paris amid great fanfare and was received with elaborate ceremony at Place Royale.",
+        "lens": "famous_residents",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place des Vosges arcades"
+        ],
+        "source_passage": "Christina of Sweden's spectacular entry September 8 1656",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Musee Victor Hugo",
+    "short_description": "Victor Hugo's former apartment at 6 Place des Vosges, now a museum dedicated to the great writer's life and works.",
+    "latitude": 48.8548,
+    "longitude": 2.3661,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Maison de Victor Hugo"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Victor Hugo moved to this apartment at 6 Place des Vosges in 1832 and lived here for sixteen years. In these rooms he wrote the drama Ruy Blas and sketched out the early plans for his masterwork Les Miserables. The apartment preserves his furniture and many of his own drawings and decorative pieces.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for number 6 on the southeast corner of Place des Vosges",
+          "Hugo's apartment on the second floor"
+        ],
+        "source_passage": "Hugo moved here 1832, wrote Ruy Blas, sketched Les Miserables",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Hugo's domestic life at Place des Vosges was turbulent. His wife Adele carried on an affair with their close friend, the critic Sainte-Beuve. Hugo himself began a passionate liaison with the actress Juliette Drouet, who lived nearby. A secret back staircase allowed discreet comings and goings — the arrangement lasted for fifty years until Drouet's death.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Musee Victor Hugo entrance"
+        ],
+        "source_passage": "Adele's affair with Sainte-Beuve; Hugo's liaison with Juliette Drouet; secret back staircase",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Sully",
+    "short_description": "Magnificent 17th-century mansion with a storied past, from its gambler builder to Voltaire's beating.",
+    "latitude": 48.8545,
+    "longitude": 2.3647,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel de Sully"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel de Sully was built in 1624 for Mesme Gallet, a notorious gambler who squandered his fortune on a single night's losses and had to sell up. The aged Duc de Sully bought it next, but his young wife's infidelities were legendary. The pragmatic duke installed a separate staircase so her lovers could come and go without crossing his path.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Hotel de Sully courtyard",
+          "Look for the ornate Renaissance facade"
+        ],
+        "source_passage": "Built 1624 for gambler Gallet; aged Duc de Sully installed separate staircase for wife's lovers",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In the early 18th century, Voltaire was beaten up by the lackeys of the Prince de Rohan near the Hotel de Sully. The young writer challenged the prince to a duel, but Rohan's aristocratic family had Voltaire thrown into the Bastille instead. Upon his release, Voltaire left for England — an exile that would profoundly shape his political philosophy and produce his influential Letters on the English.",
+        "lens": "literary_heritage",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel de Sully entrance on rue Saint-Antoine"
+        ],
+        "source_passage": "Voltaire beaten up by Prince de Rohan, challenged to duel, imprisoned, went to England",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Sens",
+    "short_description": "One of the oldest civilian buildings in Paris, a medieval fortress-mansion with a scandalous royal history.",
+    "latitude": 48.852,
+    "longitude": 2.3555,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 15,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Hôtel de Sens",
+      "Bibliothèque Forney"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel de Sens is one of the oldest civilian monuments in Paris. Its most dramatic episode came in 1606, when the ageing Queen Margot — Henri IV's first wife — was living here. As her coach was leaving, the Comte de Vermond shot dead a rival lover on the very threshold. Margot, enraged, had Vermond arrested, and he was beheaded the following day in front of the hotel.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Look at the medieval turrets and Gothic entrance",
+          "Imagine the threshold where the shooting took place"
+        ],
+        "source_passage": "Queen Margot, Comte de Vermond killed rival on threshold 1606, beheaded next day",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Paul-Saint-Louis",
+    "short_description": "Baroque Jesuit church on rue Saint-Antoine, noted for its musical heritage and Counter-Reformation architecture.",
+    "latitude": 48.8549,
+    "longitude": 2.3616,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The church of Saint-Paul-Saint-Louis was the stage for some of the greatest preaching and music of the 17th century. Marc-Antoine Charpentier composed his celebrated Miserere for these acoustics. The Jesuit preacher Bourdaloue was so popular that ladies would arrive six hours early to secure a seat — they even had a special hat named after him, designed to be worn during his lengthy sermons.",
+        "lens": "music_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Listen to the acoustics of the baroque interior",
+          "Saint-Paul-Saint-Louis nave"
+        ],
+        "source_passage": "Charpentier's Miserere; Bourdaloue preaching; hat named after him",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Jesuits arrived in Paris in 1580 and established themselves on rue Saint-Antoine. Louis XIII laid the cornerstone of this church in 1627, and Cardinal Richelieu celebrated its first mass in 1641. The imposing baroque facade, unusual for Paris, reflects the Counter-Reformation confidence of the Jesuit order.",
+        "lens": "historic_worship",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Baroque facade on rue Saint-Antoine",
+          "Notice the Jesuit architectural style"
+        ],
+        "source_passage": "Jesuits arrived 1580, Louis XIII laid cornerstone 1627, Richelieu celebrated mass 1641",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Village Saint-Paul",
+    "short_description": "A cluster of antique courtyards and shops in the former grounds of a medieval church destroyed by Norse invaders.",
+    "latitude": 48.8526,
+    "longitude": 2.3633,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Village Saint-Paul is a warren of interconnected courtyards filled with antique dealers and curiosity shops. It takes its name from a 7th-century church that once stood here — one of the oldest in Paris — which was destroyed by the Norsemen during their devastating raids on the city.",
+        "lens": "historic_markets",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Wander through the interconnected courtyards",
+          "Browse the antique shops"
+        ],
+        "source_passage": "Named after 7th-century church destroyed by Norsemen",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel Lamoignon",
+    "short_description": "Renaissance mansion housing the Historical Library of Paris, built for Henri II's illegitimate daughter.",
+    "latitude": 48.8564,
+    "longitude": 2.361,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel Lamoignon",
+      "Bibliothèque Historique"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Hotel Lamoignon was built for Diane de France, the illegitimate daughter of Henri II and a Piedmontese woman. Later, President Lamoignon established a literary academy here that attracted Racine, Boileau, and Madame de Sevigne. It was also the site of the trial of the notorious poisoner La Brinvilliers, whose crimes horrified 17th-century Paris.",
+        "lens": "literary_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the hunting motifs on the facade — a nod to Diane, the huntress",
+          "Hotel Lamoignon courtyard"
+        ],
+        "source_passage": "Built for Diane de France; Lamoignon's literary academy; trial of La Brinvilliers",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Synagogue de la rue Pavee",
+    "short_description": "Hector Guimard's Art Nouveau synagogue, the only religious building by the famed Metro architect.",
+    "latitude": 48.856,
+    "longitude": 2.3605,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Agoudas Hakehilos Synagogue",
+      "Guimard Synagogue"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "This is the only religious building ever designed by Hector Guimard, the Art Nouveau architect famous for his Paris Metro entrances. Its undulating facade in concrete is unmistakably Guimard. He married an American heiress, Miss Oppenheimer, suggesting a personal connection to the Jewish community that may have inspired this commission.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the sinuous Art Nouveau facade",
+          "Compare Guimard's style to the Metro entrances you may have seen"
+        ],
+        "source_passage": "Hector Guimard Art Nouveau, only religious building he created, married Miss Oppenheimer",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue des Rosiers",
+    "short_description": "The historic heart of the Marais Jewish quarter, known as the Pletzl, with deep roots in Paris's Jewish heritage.",
+    "latitude": 48.8568,
+    "longitude": 2.359,
+    "importance_tier": 2,
+    "trigger_radius": 50,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Pletzl",
+      "Jewish Quarter Marais"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Rue des Rosiers is the backbone of the pletzel — Yiddish for 'little square' — the historic Jewish quarter of the Marais. At number 20 stood the Hotel des Juifs, a reminder of the community's deep roots here. The street's most heartbreaking memorial marks the deportation of 165 pupils from a local school during the Occupation — children who never returned.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Walk along rue des Rosiers and notice the Hebrew shop signs",
+          "Look for the Hotel des Juifs plaque at number 20"
+        ],
+        "source_passage": "Backbone of pletzel; Hotel des Juifs at no 20; 165 pupils deported from school",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On the wall of the school on rue des Rosiers, an inscription reads 'N'OUBLIEZ PAS' — Do Not Forget. It commemorates the 165 Jewish pupils who were deported from this school during the Occupation and murdered in the death camps. None survived.",
+        "lens": "war_conflict",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look for the N'OUBLIEZ PAS inscription on the school wall"
+        ],
+        "source_passage": "N'OUBLIEZ PAS inscription; 165 deported pupils",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel Amelot de Bisseuil",
+    "short_description": "Magnificent Marais mansion where Beaumarchais wrote The Marriage of Figaro and arranged arms for the American Revolution.",
+    "latitude": 48.8582,
+    "longitude": 2.3579,
+    "importance_tier": 3,
+    "trigger_radius": 20,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel des Ambassadeurs de Hollande"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Beaumarchais lived in this magnificent mansion from 1776 and wrote Le Mariage de Figaro here — the play that scandalised the aristocracy and foreshadowed the Revolution. But he was also a secret agent: from this very address he set up a front company to supply arms and ammunition to the American revolutionaries fighting for independence from Britain, with the tacit approval of Louis XVI.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look at the ornate portal with its sculpted cherubs",
+          "Hotel Amelot de Bisseuil facade"
+        ],
+        "source_passage": "Beaumarchais from 1776 wrote Le Mariage de Figaro; set up arms company for American Revolution",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Dates corrected from 1766-1768 to 1776+."
+      }
+    ]
+  },
+  {
+    "name": "Notre-Dame-des-Blancs-Manteaux",
+    "short_description": "Church named after medieval white-robed begging friars from Marseilles, later replaced by black-gowned Guillemites.",
+    "latitude": 48.859,
+    "longitude": 2.3578,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The church takes its name from the white-robed begging friars who arrived from Marseilles in 1258, seeking alms in the neighbourhood. When Saint Louis suppressed mendicant orders, they were replaced by the black-gowned Guillemites — yet the name 'Blancs-Manteaux' (white cloaks) stuck, a ghostly reminder of those original penitents. Sartre later commemorated the street in a poem.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notre-Dame-des-Blancs-Manteaux facade"
+        ],
+        "source_passage": "White-robed beggars from Marseilles 1258; replaced by black-gowned Guillemites; Sartre poem",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "La Force Prison Site",
+    "short_description": "Former prison where the Princesse de Lamballe was murdered during the September Massacres of 1792.",
+    "latitude": 48.8558,
+    "longitude": 2.36,
+    "importance_tier": 4,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "caution",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "On this site stood La Force prison, the scene of one of the Revolution's most horrifying episodes. In September 1792, during the massacres, the Princesse de Lamballe — Marie-Antoinette's closest friend — was dragged from her cell and murdered by the mob. Her head was impaled on a pike and paraded to the Temple prison, where it was thrust before the windows of the captive Queen.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "The prison has been demolished — only the street layout preserves its memory"
+        ],
+        "source_passage": "Princesse de Lamballe murdered September 1792; head impaled and displayed before Marie-Antoinette",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

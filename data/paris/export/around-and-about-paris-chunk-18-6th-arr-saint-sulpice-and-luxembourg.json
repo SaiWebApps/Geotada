@@ -1,0 +1,574 @@
+[
+  {
+    "name": "Saint-Sulpice",
+    "short_description": "Paris's second-largest church, built over a century by six architects, famous for Delacroix murals and its monumental organ.",
+    "latitude": 48.8509,
+    "longitude": 2.335,
+    "importance_tier": 2,
+    "trigger_radius": 80,
+    "typical_duration_min": 9,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Église Saint-Sulpice",
+      "Church of Saint-Sulpice"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The French like things big — and in the 17th century, Saint-Sulpice's parish was swollen with pride. The northern tower rises 73 metres, four metres taller than Notre-Dame, making it the highest point on the entire Left Bank. But this colossus was built in stages by six successive architects over more than a century, the last being the famous Chalgrin. Anne of Austria laid the cornerstone in 1646; the ubiquitous Louis Le Vau was brought in to redesign and enlarge the church, but died before seeing it through. Crucially, the southern tower was never actually completed — leaving the asymmetry that still jars the eye today. Henry Miller had his own critique: he called them 'fat belfries.'",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Two mismatched towers",
+          "Facade attributed to Servandoni",
+          "Incomplete southern tower"
+        ],
+        "source_passage": "the northern tower rising 73 metres above the ground, 4 metres more than Notre-Dame",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "One of Saint-Sulpice's most notorious parishioners was baptized here: Talleyrand, born in 1754 at 4 rue Garancière just behind the church. He was later sent to study in the seminary that once stood opposite — but young Talleyrand had other priorities. He was repeatedly expelled for going over the wall for amorous rendezvous. The seminary's neighbour on rue Férou may have been part of the attraction: a celebrated actress of the Comédie-Française, Mademoiselle Luzy, lived there between 1770 and 1785.",
+        "lens": "famous_residents",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Rue Garancière sign",
+          "L'Allée du Séminaire"
+        ],
+        "source_passage": "One of the church's parishioners was Talleyrand, born in 1854 at 4 rue Garanciére",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The most famous works of art in Saint-Sulpice are Eugène Delacroix's mural paintings in the Chapelle des Saints-Anges — the first chapel on your right as you enter. Three works fill the space: Heliodorus Driven from the Temple, Jacob Wrestling with the Angel, and Saint Michael Slaying the Dragon in the dome above. Delacroix dedicated the last five years of his life to these paintings, working from 1856 to 1861 even as his health declined. The chapel was inaugurated in August 1861, just two years before his death.",
+        "lens": "visual_art",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "First chapel on right",
+          "Jacob Wrestling mural on left wall",
+          "Heliodorus mural on right wall",
+          "Saint Michael in dome"
+        ],
+        "source_passage": "Delacroix's mural paintings in the Chapelle des Deux-Anges",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Just inside the door of Saint-Sulpice stand two enormous shells mounted on marble pedestals — not ordinary holy water fonts. These were gifts from the Republic of Venice to François I, and Pigalle carved them into the form of seaweed with tentacles. The same Pigalle left a marble Virgin and Child at the far end of the church — a replacement for an earlier statue that had been sent to the Mint during the Revolution. That lost statue had reportedly been cast from silver cutlery that the artist Languet de Cergy systematically pilfered from dinner parties. It had been nicknamed Notre-Dame de la Vaisselle: Our Lady of the Crockery.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Two giant shell holy water stoups",
+          "Pigalle's marble Virgin and Child in Chapelle de la Vierge"
+        ],
+        "source_passage": "two great conches mounted on a marble socle, which were offered to Francois I by the Republic of Venice",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look down at the floor of Saint-Sulpice and you'll see a copper strip running from the south transept to an obelisk in the north transept. This is a gnomon — an astronomical instrument built to determine the spring equinox and thus calculate the exact date of Easter each year. A hole in the south transept window lets in a precise ray of sunlight at midday; on the relevant day, that ray travels along the copper strip and strikes a marked point on the obelisk. The method was devised by the watchmaker Henri Sully in 1727. Dan Brown later fictionalised this copper line as the 'Rose Line' in The Da Vinci Code — a claim the church famously refuted with a plaque inside the building.",
+        "lens": "science_tech",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Copper strip in floor north-south",
+          "White marble obelisk",
+          "Hole in south transept window"
+        ],
+        "source_passage": "This method of calculation was worked out by the watchmaker Henri Sully in 1727",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look up at the west end of Saint-Sulpice and you'll see the organ — originally designed by Chalgrin and reconstructed by Aristide Cavaillé-Coll in 1862. It was inaugurated on Easter Sunday, April 20, 1862. With over 7,000 pipes across five manuals, it remains Cavaillé-Coll's acknowledged masterpiece and one of the finest organs in the world. The church has been blessed with a distinguished succession of organists, including Marcel Dupré and Charles-Marie Widor, who famously wrote his Toccata — perhaps the most recognised organ piece in the world — for this very instrument.",
+        "lens": "music_heritage",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Organ case at west end of nave",
+          "Five-manual console"
+        ],
+        "source_passage": "originally designed by Chalgrin and reconstructed by Cavaillé-Coll in 1862. With its 6,500 pipes",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Rue Servandoni is named for the Italian architect who designed Saint-Sulpice's imposing facade — and the street still holds a remarkable secret at number 15. A plaque marks the spot where the philosopher Condorcet, a Girondin denounced for refusing to vote for the death sentence on Louis XVI, took shelter in July 1793, offered refuge by the widow of sculptor François Vernet. Blind to the Terror around him, he spent eight months writing his Esquisse des progrès de l'esprit humain — a treatise on human progress — while a revolution tried to kill him. He finally left in disguise on 25 March 1794, was caught almost immediately, sent to prison, and committed suicide on 6 April.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Rue Servandoni sign",
+          "Plaque at no. 15",
+          "No. 14 with carved medallions"
+        ],
+        "source_passage": "Condorcet, denounced for not having voted for the death sentence on Louis XVI",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The neighbourhood around Saint-Sulpice remains the stronghold of Catholicism in Paris — but the seminary that once defined it is long gone. After the Revolution swept away the original two seminaries, a new one was built in 1820 on the southern side of the square. In 1906, following the vote for separation of church and state, the government took over the seminary and handed it to the Ministry of Finance. What remained was a tree-shaded alley along rue Bonaparte, l'Allée du Séminaire, and a neighbourhood full of shops selling religious items, ceremonial gowns, and theological books.",
+        "lens": "historic_worship",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "L'Allée du Séminaire",
+          "Religious goods shops on Place Saint-Sulpice",
+          "Rue Férou wall of old seminary"
+        ],
+        "source_passage": "In 1906, after the vote for the separation of state and church, the government took over the seminary",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Marché Saint-Germain",
+    "short_description": "Covered market built on the site of the legendary medieval Foire Saint-Germain, destroyed by fire in 1762.",
+    "latitude": 48.8529,
+    "longitude": 2.3361,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Saint-Germain Market",
+      "Foire Saint-Germain site"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Before this tidy covered market stood here, the Foire Saint-Germain was the wildest party in Paris — a place where acrobats, tightrope dancers, and animal tamers entertained every social class, including the King himself. Henri III mingled with jeering crowds, and the poet Scarron chronicled the debauchery, prostitution, and murders that flourished where wine flowed freely. Then, on the night of 16–17 March 1762, a gigantic fire consumed the entire fair in five hours. The flames even reached Saint-Sulpice, damaging the Chapel of the Virgin. The new fair that rose in its place never recaptured the magic. Closed during the Revolution, replaced by a market in the early 19th century, stripped of two-thirds of its area in 1898, it nearly disappeared entirely. Today the soul is gone — but stand here a moment and imagine the acrobats.",
+        "lens": "dark_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Covered market building at rue Mabillon and rue Clément",
+          "Old houses at 6, 8, 10 rue de Mabillon"
+        ],
+        "source_passage": "It took only five hours for the fair to be consumed by a gigantic fire on the night of 16 - 17 March 1762.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The street you just walked down — rue Clément — once passed through a gate called La Porte de Treille, the main entrance to one of Paris's great medieval fairs. And rue Mabillon? It was simply known as rue de la Foire: Street of the Fair. The Foire Saint-Germain was a city within a city, with over a hundred trading stalls. The restaurant at number 10 rue de Mabillon still commemorates the Compagnons Charpentiers du Devoir de Liberté — the carpenters' guild — through its decoration and an adjoining museum. Look up at the old houses at 6, 8, and 10: they are the last witnesses of a world that burned to ashes in 1762.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Rue Mabillon street sign",
+          "Old houses at 6,8,10 rue de Mabillon"
+        ],
+        "source_passage": "Rue Clément led to the fair through a gate known as La Porte de Treille and rue Mabillon was known simply as rue de la Foire",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The poet Paul Scarron was a regular at the Foire Saint-Germain, famously arriving in his 'notorious invalid's chair' — he suffered from a severe rheumatic disorder that paralyzed him from his late twenties. He captured the fair's dark energy in verse: 'Fair, the element of gallants / Of rogues and of robbers / Fair where fewer trinkets are sold / Than human flesh.' It's a razor-sharp portrait of a place that was Paris's greatest entertainment and its most dangerous corner.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Covered market on rue Mabillon"
+        ],
+        "source_passage": "The poet Scarron, who would come here in his notorious invalid's chair",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Café de la Mairie",
+    "short_description": "Unassuming café on Place Saint-Sulpice frequented by Hemingway, Fitzgerald, Beckett; site of the last Sartre-Camus meeting in 1951.",
+    "latitude": 48.8511,
+    "longitude": 2.3349,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Cafe de la Mairie"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "This unpretentious café overlooking Visconti's fountain was a gathering place for literary Paris in the 1920s. Hemingway wrote about the pigeons perched on the statues of the four bishops here; Henry Miller mentioned them in Tropic of Cancer. Faulkner, Fitzgerald, and Beckett were regulars. But the most charged moment happened in 1951: the last meeting between Jean-Paul Sartre and Albert Camus took place at this very café. The two quarrelled and parted company — permanently. Two of the 20th century's greatest minds, ending a friendship at a table you could sit at today.",
+        "lens": "literary_heritage",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Terrace overlooking Place Saint-Sulpice",
+          "Visconti fountain with four bishop statues"
+        ],
+        "source_passage": "The last meeting between Sartre and Camus took place here in 1951",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Palais du Luxembourg",
+    "short_description": "17th-century palace built for Marie de Medici, now seat of the French Senate, housing Delacroix paintings in its library.",
+    "latitude": 48.8483,
+    "longitude": 2.3373,
+    "importance_tier": 2,
+    "trigger_radius": 80,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Luxembourg Palace",
+      "Sénat français"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "After the assassination of Henri IV, his widow Marie de Medici felt estranged at the Louvre and homesick for Florence. She bought the Hôtel du Petit-Luxembourg in 1611 and commissioned Salomon de Brosse to build an Italian-style palace. De Brosse, inspired by native genius, built a French one instead — the Palais du Luxembourg stands between its courtyard and gardens in the French manner. To flatter her, Rubens painted 24 narrative paintings on her life for the west wing. The palace took 15 years to complete (1615–1630), but barely had she settled in than Richelieu — the friend she had promoted — outmanoeuvred her politically. She was banished, died in Cologne in total destitution, and the second set of Rubens paintings she had planned, about Henri IV, was never made.",
+        "lens": "famous_residents",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Palace facade from rue de Vaugirard",
+          "Monumental portal with dome",
+          "Garden extending south"
+        ],
+        "source_passage": "The palace took 15 years to complete (1615-1630)",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During the Terror, the Palais du Luxembourg had a grim second act: it became a prison. Eight hundred prisoners were kept here, a third of whom were guillotined — among them Danton and Camille Desmoulins. When the storm subsided the building was wrecked. Repairs began in 1804 under Chalgrin, who transferred the main staircase to the west wing and created a new auditorium. The palace then served as a seat for the Directoire, then the Senate, then the Chamber of Peers during the Restoration.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "West wing with relocated staircase",
+          "Main entrance 15 rue de Vaugirard"
+        ],
+        "source_passage": "800 prisoners were kept here, a third of whom were guillotined, among them Danton and Camille Desmoulin",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Marie de Medici devoted most of her attention to the garden. She had 2,000 elms planted and — emulating the Romans of ancient Lutetia — commissioned an aqueduct built all the way from Arcueil, in the southern suburbs, to supply the fountains of her new Eden. The aqueduct took Salomon de Brosse 11 years to complete. Today the aqueduct is gone but the garden's spirit remains: the Order of the Chartreux once occupied the land to the south, growing succulent fruit. Their tradition lives on in the fruit orchards on the southern edge of the gardens, where two tons of fruit are produced yearly — including raspberries, blackcurrants, figs, and over 200 varieties of pears and apples.",
+        "lens": "parks_gardens",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Fruit orchards on southern edge",
+          "School of horticulture and apiary"
+        ],
+        "source_passage": "she had an aqueduct built all the way from Arcueil",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Luxembourg Gardens",
+    "short_description": "Iconic 17th-century gardens created for Marie de Medici.",
+    "latitude": 48.8462,
+    "longitude": 2.3372,
+    "importance_tier": 1,
+    "trigger_radius": 120,
+    "typical_duration_min": 6,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Jardin du Luxembourg"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Before the Luxembourg Gardens existed, this land was dominated by a sinister medieval castle: the Château de Vauvert. Its origins are lost, but it may have been the home of King Robert II the Pious in the late 10th century, banished from his palace on the Île de la Cité after the Pope forced him to renounce his beloved wife. For generations the castle was said to be haunted by the Devil, and no-one dared walk past it. The French expression aller au diable Vauvert — to go somewhere dangerously far away — still in use today, comes from that deeply-rooted fear. The Chartreux monks arrived in a beautiful procession on 21 November 1257, accepted the grounds from Saint Louis, and apparently frightened the Devil away for good.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Southern end of gardens near Boulevard Saint-Michel",
+          "No. 64 Boulevard Saint-Michel — former Chartreux entrance"
+        ],
+        "source_passage": "The expression aller au diable Vauvert (to go on a dangerous journey), still in use, refers to that deeply-rooted fear",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Luxembourg Gardens we see today are a shadow of what they once were. After the Chartreux were expelled following the Revolution, the gardens briefly extended all the way to Boulevard du Montparnasse — colossal by Parisian standards. Then the real-estate market took over: chunks were cut off to widen rue de Vaugirard, open Boulevard Saint-Michel, and make way for rue de Médicis. The public was outraged. The imperial couple was booed at the Odéon. Petitions poured in — one bearing 12,000 signatures. None of it worked. The customary minimal concession was made: Chalgrin's Avenue de l'Observatoire was allowed to survive. The present gardens date from the Second Empire.",
+        "lens": "social_change",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Garden boundaries hemmed in by rue de Vaugirard",
+          "Avenue de l'Observatoire"
+        ],
+        "source_passage": "one of them bore 12,000 signatures",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At the heart of the Luxembourg Gardens stands the famous central octagonal basin, encircled by 50 sculpted female heroines of the history of France. For generations, Latin Quarter students have deserted their austere libraries to bask in the sun on chairs ranked neatly around the water. Little children come to float model boats on the shimmering surface. Writers and poets have come here to think, to argue, and to recover from the intensity of the Left Bank's intellectual life. The basin is not just a fountain — it's the social centre of the gardens, the place where Hemingway first encountered Gertrude Stein as recalled in A Moveable Feast.",
+        "lens": "literary_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Octagonal stone basin",
+          "50 sculpted female figures on pedestals",
+          "Green metal chairs around water"
+        ],
+        "source_passage": "the famous central octogonal basin, the hub of the gardens, encircled by 50 sculpted female heroines",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look for the small surprise tucked in the south section of the Luxembourg Gardens: a small-scale replica of the Statue of Liberty. It was planted here — alongside a tree of liberty — by the American Ambassador to Paris in June 1993, to commemorate the 200th anniversary of Franco-American friendship. It's an easy detail to walk past, but the gesture is real: these gardens, shaped in part by an Italian queen who dreamed of Florence, now hold a fragment of New York's most recognizable skyline.",
+        "lens": "parks_gardens",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Small Statue of Liberty replica in southwestern section",
+          "Tree of liberty nearby"
+        ],
+        "source_passage": "planted by the American Ambassador to Paris in June 1993 to commemorate the 200th anniversary of Franco-American friendship",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Musée du Luxembourg",
+    "short_description": "Paris's first public museum, opened 1750 in the Luxembourg Palace's east wing, now an exhibition space in the orangery.",
+    "latitude": 48.8482,
+    "longitude": 2.3368,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Musee du Luxembourg",
+      "Luxembourg Museum"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Before the Louvre opened to the public, France had another museum — this one. In 1750, the east wing of the Luxembourg Palace was opened to the public, the first time such a step had been taken in France. About 50 paintings from the King's collection were shown twice a week, and on those occasions visitors were also admitted to the west wing to see Rubens's 24 paintings on the life of Marie de Medici — now in the Louvre. The present museum, a different institution, opened only in 1865 in the orangery that Alphonse de Gisors had built 30 years earlier. Here were exhibited the works of the academic Pompiers, considered modern art by the bourgeoisie of the time.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Museum entrance 19 rue de Vaugirard",
+          "West wing of Luxembourg Palace"
+        ],
+        "source_passage": "In 1750 the east wing was opened to the public, the first time such a step was taken in France",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "27 Rue de Fleurus",
+    "short_description": "Home of Gertrude Stein and Alice B. Toklas 1903–1938; legendary literary salon for American expatriates.",
+    "latitude": 48.8458,
+    "longitude": 2.3327,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Gertrude Stein's apartment"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Number 27 rue de Fleurus was the most important address in American literary Paris. Gertrude Stein lived here from 1903 to 1938, and her studio became a mecca for anyone who was anybody in the art world — provided they had a recommendation, unless she picked them up herself at Sylvia Beach's Shakespeare and Company. James Joyce was persona non grata. She called him 'a fifth-rate political schemer' and considered herself the main writer of the English language of the day. She dismissed Hemingway and his whole generation as 'a lost generation' — a phrase she borrowed from a garage owner who had used it about a young employee who'd been to war. The walls were hung with Renoir, Cézanne, Picasso, Braque, Matisse. It was Hemingway's idea of paradise.",
+        "lens": "literary_heritage",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "No. 27 rue de Fleurus",
+          "Shady courtyard"
+        ],
+        "source_passage": "N° 27 on your left was the home of Gertrude Stein between 1903 and 1937",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Rue Férou",
+    "short_description": "Quiet street behind Saint-Sulpice where Hemingway lived 1926–1928 and Man Ray settled after 1951.",
+    "latitude": 48.849,
+    "longitude": 2.334,
+    "importance_tier": 4,
+    "trigger_radius": 35,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Rue Ferou"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Rue Férou, behind Saint-Sulpice, has housed two of the 20th century's most iconic artists. In 1926, Hemingway moved here with Pauline Pfeiffer after leaving his wife Hadley — Pauline's Uncle Gus paid for the apartment at number 6. Here Hemingway worked on A Farewell to Arms. In 1951, Man Ray returned to Paris after the War and settled at 2 bis, into what his wife Juliet described as a space that 'looked like a garage.' Man Ray saw it differently: a whitewashed studio, flooded with light from skylights, open on three sides. He stayed until his death in 1976. Two artists, one quiet street, and a very different Paris separated by 25 years.",
+        "lens": "famous_residents",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "No. 6 rue Férou — Hemingway",
+          "No. 2 bis — Man Ray studio",
+          "Old seminary wall"
+        ],
+        "source_passage": "Man Ray settled in a sculptor's studio at n° 2 bis",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Fontaine Médicis",
+    "short_description": "Romantic grotto fountain in the Luxembourg Gardens, built c. 1630, rebuilt 1864–1866; features Leda and the swan by Auguste Ottin.",
+    "latitude": 48.8479,
+    "longitude": 2.3387,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Medici Fountain",
+      "Fontaine de Médicis"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Tucked away amidst dark vegetation in the Luxembourg Gardens, the Fontaine Médicis is the most romantically shaded corner of the park. The main grotto features the myth of Acis and Galatea surprised by the Cyclops Polyphemus. On the back face, added in 1866, is the Fontaine de Léda: Leda with Jupiter metamorphosed into a swan. The fountain was built around 1630 for Marie de Medici by architect Salomon de Brosse and rebuilt 1864–1866 by Alphonse de Gisors with sculpture by Auguste Ottin. It's a bliss during a heatwave, green and cool and forgotten by the crowds at the central basin.",
+        "lens": "visual_art",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Long narrow reflecting pool leading to grotto",
+          "Dark overhanging foliage",
+          "Bronze figures of Acis and Galatea under arch"
+        ],
+        "source_passage": "designed by the great Renaissance sculptor Jean Goujon",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  }
+]

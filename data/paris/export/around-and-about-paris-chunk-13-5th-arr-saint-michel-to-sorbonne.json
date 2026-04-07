@@ -1,0 +1,525 @@
+[
+  {
+    "name": "The Sorbonne",
+    "short_description": "13th-century university in the Latin Quarter where student protests in May 1968 nearly toppled the French government",
+    "latitude": 48.848643,
+    "longitude": 2.342038,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 18,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Universite de Paris",
+      "La Sorbonne"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The 5th arrondissement has the longest history of any district in mainland Paris, stretching back to the Roman occupation of Gaul. When the growing population of the Ile de la Cite spilled onto the left bank, Roman villas appeared on the slopes of Mount Leucotitius — now the Montagne Sainte-Genevieve. A north-south road, the cardo, ran along what is now rue Saint-Jacques, while a secondary cardo followed today's Boulevard Saint-Michel. By the end of the second century, this was a desirable neighbourhood of luxury — archaeological finds including marble and polychrome mosaics from rue de la Harpe attest to this. The Romans built three bath complexes: the northern ones at Cluny, the eastern ones at what is now the College de France, and the southern ones near rue Gay-Lussac. An aqueduct ran all the way from the Rungis basin near present-day Orly airport to supply them with water.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Boulevard Saint-Michel",
+          "rue Saint-Jacques",
+          "Montagne Sainte-Genevieve slope"
+        ],
+        "source_passage": "Roman villas appeared on the slopes of Mount Leucotitius (now the Montagne Sainte-Genevieve)",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In the 13th century, the Latin Quarter became the centre of learning for all of Western Europe. The first official reference to the Universitas Magistrorum et Scolarium Parisiensium dates from 1221. Initially it had no permanent home — teaching took place in the open air, on Place Maubert and mainly on rue de Fouarre nearby. Teachers stood on wooden trestles while students sat on their own fodder — 'fouarre' in old French — hence the street's name. Brawls and political agitation were so bad that in 1358 the Regent and future Charles V had the street barred with chains on both sides. Among the greatest thinkers who came to teach: Albert the Great, Thomas Aquinas, and Brunetto Latini, master of Dante. Dante himself came to study on rue de Fouarre in the early 14th century.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue de Fouarre",
+          "Place Maubert"
+        ],
+        "source_passage": "The first official written reference to the Universitas Magistrorum et Scolarium Parisiensium dates from 1221",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 1253, a college was founded by Robert, the chaplain and confessor of Saint Louis. Born to a humble family in the village of Sorbon in the Ardennes, he became so great a scholar that the King had him dine at his table. The college became the seat of the faculty of theology and was known as La Sorbonne, after the native village of its founder. Its expansion was so spectacular that it soon overshadowed other institutions and many foreigners still mistake it for the entire University of Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place de la Sorbonne",
+          "17th-century chapel with dome"
+        ],
+        "source_passage": "One such college was founded in 1253 by Robert, the chaplain and confessor of Saint Louis",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The enterprising Richelieu, who had been a student and later became dean of the Sorbonne, undertook its renovation. He laid the cornerstone of its chapel in 1635, designed by architect Jacques Lemercier. However, Richelieu's project was purely architectural — little was done to reform the curriculum, which until the Revolution remained restricted to theology. The beautiful compound, the work of Lemercier and Le Brun, was given rough treatment by the anti-clerical Revolutionaries. It was entirely reconstructed and expanded in the 19th century, including faculties of science and letters, inaugurated in 1901 with murals by Puvis de Chavannes.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "chapel dome visible from rue de la Sorbonne",
+          "Puvis de Chavannes murals in Grand Amphitheatre"
+        ],
+        "source_passage": "Richelieu, who had once been a student at the Sorbonne and was now its dean, undertook its renovation, laying the cornerstone of its chapel in 1625",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "In May 1968, a wind of revolt blew across the planet. Students transformed the Latin Quarter into a battlefield — not from premeditated political motivation but from a vague discontent with capitalism, imperialism, consumerism, and bourgeois rigidity. 'L'imagination au pouvoir' was scribbled on many a wall. Barricades were erected on all main arteries, cobblestones were dug from ancient streets and hurled at riot police, trees along the boulevards were felled. By autumn, the riots had died out. But the State proceeded to dismantle and decentralize the University, scattering students across the Paris area into numbered compounds — Paris I through XIII. The Latin Quarter lost its old cobbled streets, replaced with dull asphalt, and the arrondissement was forever changed.",
+        "lens": "social_change",
+        "duration_sec": 55,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Boulevard Saint-Michel",
+          "Place de la Sorbonne",
+          "asphalted streets where cobblestones once were"
+        ],
+        "source_passage": "in 1968, a wind of revolt blew across the planet, from the Latin Quarter to Prague",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Napoleon restructured French higher education by founding the celebrated Grandes Ecoles — elite engineering schools outside the university framework. The most prestigious, the Ecole Polytechnique, trains France's top mathematicians and remains a military school. Its cadets, the celebrated 'X', take part in the 14 July parade down the Champs-Elysees. Until 1976, it was located in the heart of the Latin Quarter in the premises of the medieval College de Navarre on rue de la Montagne-Sainte-Genevieve. Its transfer to Palaiseau deprived the Quarter of some festive pomp — previously, on ceremonial occasions, cadets could be seen passing in their Napoleonic uniforms bearing slender swords.",
+        "lens": "social_change",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue de la Montagne-Sainte-Genevieve (former Polytechnique site)"
+        ],
+        "source_passage": "The Ecole Polytechnique, the most prestigious of them all, trains France's top mathematicians",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The medieval Latin Quarter was a world of scholarly mischief. Neighbourhood taverns and brothels supplied the rowdy student population with cheap wines fit to 'boil the potted heads of wolves.' This was the Quarter that Francois Villon roamed in the 15th century, and of which Rabelais gave a saucy account. Favourite pranks included placing fried turds in graduates' hoods, pinning fox-tails or hare's ears to students' buttocks, making dogs run about with pots tied to their tails, and harassing maidservants. The church was a special target among these roguish, anticlerical youths. In Rabelais' story, the hero Pantagruel comes to study in Paris and visits the world-renowned library of the Abbey of Saint-Victor, which on the eve of the Revolution contained nearly 40,000 volumes and over 20,000 manuscripts.",
+        "lens": "literary_heritage",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Latin Quarter streets around the Sorbonne"
+        ],
+        "source_passage": "This was the Latin Quarter that Francois Villon roamed a century later and of which Rabelais gave a saucy account",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "When the Hundred Years' War broke out, the University — which had gradually lost its earlier privileges — sided with the English against the King of France and, later, against Jeanne d'Arc. Paris was in ruins, the territory of wolves, and the Montagne Sainte-Genevieve had become an 'annexe of Oxford.' In due course peace was restored and in 1437 the University submitted to the secular authority of Charles VII.",
+        "lens": "social_change",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Montagne Sainte-Genevieve"
+        ],
+        "source_passage": "the University sided with the English against the King of France and, later, against Jeanne d'Arc",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Place Maubert — 'la Maube' — had been home to rowdy students and ruffians since the Middle Ages, a place of crime, vice, and public executions. Erasmus called it 'the cesspit of la Maube.' In the early 20th century it was frequented by terrifying 'Apaches' and hoodlums. In Down and Out in Paris and London, published in 1933, George Orwell described the neighbouring rue du Pot-de-Fer — where he lived at number 6 — as 'a ravine of tall, leprous houses, lurching towards one another in queer attitudes, as though they had all been frozen in the act of collapse.' Amidst destitute Arabs, Poles, and Italians, respectable French shopkeepers quietly piled up small fortunes.",
+        "lens": "social_change",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Place Maubert",
+          "rue du Pot-de-Fer (number 6)"
+        ],
+        "source_passage": "In Down and Out in Paris and London, written in 1928, George Orwell gives a frightening account of the neighbouring rue du Pot-de-Fer",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Etienne-du-Mont",
+    "short_description": "Church near the Pantheon containing the last surviving rood screen in Paris and the shrine of Sainte Genevieve, patron saint of the city",
+    "latitude": 48.8466,
+    "longitude": 2.347344,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 6,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 451, Attila the Hun was at the gates of Paris with his army. The terrified population was ready to flee the left bank, but Genevieve bolstered their courage, prophesying that Paris would be spared. Though romanticized as a shepherdess in the 17th century, Genevieve was born in Nanterre to a well-to-do Roman father and a Greek mother. She led an ascetic life devoted to the poor and sick, performed miracles, and her prophecy came true. She became the patron saint of Paris. It was under her guidance — and through the influence of his wife Clotilde — that King Clovis converted to Christianity and made Paris his capital. The basilica of Saint-Pierre-Saint-Paul was built on this hilltop site, receiving in its crypt both Clovis, who died in 511, and Genevieve, who died in 512 aged 89.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Montagne Sainte-Genevieve hilltop",
+          "church of Saint-Etienne-du-Mont above altar"
+        ],
+        "source_passage": "in 451 Attila the Hun was at the gates of Paris with his 700,000 men",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Genevieve's reliquary, fashioned around 630 by the famous Saint Eloi — patron of goldsmiths and later minister to King Dagobert I — was chiselled in gold and studded with gems. In times of floods, epidemics, and calamities, following a day of penitence and fasting, it would be carried in procession to Notre-Dame through streets decked with multicoloured drapery and strewn with flowers, to the continuous chiming of all the city's church bells. The story goes that during a raging epidemic in 1130, all were cured except three sceptics who would not prostrate themselves and therefore died. By 1725 there had been 114 such processions. In November 1793, the Revolution stripped the reliquary of its precious stones and sent it to the Mint. Genevieve's remains were burnt on Place de Greve.",
+        "lens": "sacred_traditions",
+        "duration_sec": 55,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "reliquary above altar of Saint-Etienne-du-Mont"
+        ],
+        "source_passage": "Genevieve's reliquary was fashioned in 630 by the famous Saint Eloi",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In November 1793, the Revolution's anti-clerical fervour reached Saint Genevieve. Her reliquary was stripped of its precious stones and sent to the Mint to be melted down. Against all logic, the remains of Saint Genevieve — who had embodied precisely the same ideals as the Revolution, feeding the poor and defending Paris — were burnt on Place de Greve. In one fell swoop, the Revolution destroyed twelve hundred years of devotion. The wooden sculptures of the reliquary survived, though they lost their arms, and are now in the Louvre. In 1803, a fragment of the saint's sarcophagus was discovered in the crypt and placed in a new reliquary above the altar of Saint-Etienne-du-Mont, where it remains today.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "reliquary above altar",
+          "crypt below"
+        ],
+        "source_passage": "In November 1793 the reliquary was stripped of its precious stones and sent to the Mint to be melted down",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Lycee Henri IV",
+    "short_description": "Elite secondary school housed in the former Abbey of Sainte-Genevieve, retaining medieval vestiges including the Clovis Tower, cloisters, and refectory.",
+    "latitude": 48.8464,
+    "longitude": 2.348,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Lycée Henri-IV",
+      "Abbey of Sainte-Genevieve",
+      "Tour Clovis"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Revolution swept away the great Abbey of Sainte-Genevieve, founded in the 7th century by monks who settled next to Genevieve's holy shrine. But vestiges survive, now part of the Lycee Henri IV: medieval vaults, kitchens, a refectory, a cloister, the grand staircase dating from the 18th century, and the dome of the abbey's magnificent library. The square church tower on rue Clovis is the only element remaining in its original position. The abbey was a great place of learning, closely bound with the medieval University — its abbot held the post of chancellor and presented diplomas to graduates.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "square church tower on rue Clovis",
+          "medieval vaults visible through school gate"
+        ],
+        "source_passage": "Only the square church tower on rue Clovis remains in situ",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "College de France",
+    "short_description": "Prestigious research institution founded in 1530 by Francois I to counteract the dogmatic Sorbonne, offering free public lectures since its founding.",
+    "latitude": 48.8489,
+    "longitude": 2.3455,
+    "importance_tier": 2,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "College du Roi",
+      "College des Trois Langues",
+      "College Royal"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Italian campaigns of 1515 impressed upon Francois I the artistic and intellectual achievements of Italy compared to the fossilized University of Paris. In 1530, to counteract its dogmatic theology and propagate the humanistic ideal of the Renaissance, he founded the College de France next to the Sorbonne. First known as Le College des Trois Langues — Hebrew and Greek were taught alongside Latin — it was soon renamed the College du Roi. Lectures were given in French, a revolution in itself. Over the centuries, the number of chairs grew from the initial three to over 40, but its principles have never changed: it remains independent of the University and its lectures are still free and open to the public. Among its illustrious professors were the historian Michelet, Champollion who deciphered the Egyptian hieroglyphs, the physicist Ampere, and the philosopher Bergson.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "College de France building on Place Marcelin Berthelot"
+        ],
+        "source_passage": "In 1529, in order to counteract its dogmatic and strictly theological teachings and propagate the humanistic ideal of the Italian Renaissance, he founded the College de France",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Jardin des Plantes",
+    "short_description": "Paris's main botanical garden founded in 1626 with a natural history museum, alpine garden, and one of the oldest zoos in the world",
+    "latitude": 48.844346,
+    "longitude": 2.356212,
+    "importance_tier": 3,
+    "trigger_radius": 150,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Garden of Plants"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1640, Louis XIII chose a pleasant area on the sunny side of the 5th arrondissement as the site for a royal botanic garden for medicinal herbs, as suggested by his physician Jean Herouard. The Jardin Royal des Plantes Medicinales gathered 1,800 different plants for medical students. For two centuries, scientists of world renown developed natural science here: Cuvier, the father of paleontology; Buffon, who devoted decades to his Histoire Naturelle; and many others — Thouin, Tournefort, Linne, Geoffroy Saint-Hilaire, the Jussieu family — all now honoured in the surrounding street names.",
+        "lens": "science_tech",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Jardin des Plantes grounds",
+          "surrounding streets named after scientists"
+        ],
+        "source_passage": "in 1640 the area was still sufficiently pleasant for Louis XIII to choose it as a site for a botanic garden for medicinal herbs",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Caveau de la Huchette",
+    "short_description": "Jazz club in a 16th-century Latin Quarter cellar that was used as a courtroom and torture chamber during the Revolution",
+    "latitude": 48.852787,
+    "longitude": 2.346298,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "no",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At 5 rue de la Huchette sits one of Paris's most layered buildings. It was once a meeting-place of the Templars of the Rose Croix, then in 1772 taken over by the Freemasons who turned it into a secret lodge, complete with underground passages to the Chatelet and under the cloister of Saint-Severin. During the Revolution, it was requisitioned and used as a court of justice and prison. The most prominent players — Marat, Danton, Robespierre — were brought here for trial, and their effigies still decorate the walls.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "vaulted cellar at 5 rue de la Huchette",
+          "effigies of Marat, Danton, Robespierre on walls"
+        ],
+        "source_passage": "It was once a meeting-place of the Templars of the Rose Croix, then taken over in 1772 by the Freemasons",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In the late 1940s and 50s, the Caveau de la Huchette became a mecca of jazz. After the Nazi repression, jazz became the musical expression of the avant-garde. American legends performed here — Coleman Hawkins, Art Blakey, Lionel Hampton, and Memphis Slim. The vaulted cellar's intimate atmosphere was so inspiring that Liverpool's famous Cavern Club — the very venue where the Beatles would later be discovered — was modelled on it.",
+        "lens": "music_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "vaulted stone cellar",
+          "low ceiling",
+          "intimate performance space"
+        ],
+        "source_passage": "In the late 1940s and 50s the Caveau de la Huchette was a mecca of jazz",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Rue de la Huchette was already famous in the 17th century for its roasts and for its cutpurses, as a 1652 verse by Berthod warned: 'Vers la rue de la Huchette / Mais prends bien garde a tes pochettes!' — round rue de la Huchette, watch out for your purse! The street remained disreputable into the 20th century. In the 1920s it boasted three brothels, the most famous being Le Panier Fleuri on the southeastern corner of rue Xavier-Privas. A laundry on the opposite corner served as a clandestine annexe where a client could choose from among three laundresses without jeopardizing his reputation.",
+        "lens": "dark_history",
+        "duration_sec": 40,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "corner of rue Xavier-Privas and rue de la Huchette",
+          "17th-century house facades"
+        ],
+        "source_passage": "rue de la Huchette, already famous in the 17th century for its roasts and for its cutpurses",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Theatre de la Huchette",
+    "short_description": "Tiny theatre at 23 rue de la Huchette where Ionesco's La Cantatrice Chauve and La Lecon have been performed continuously since 1957, a Guinness world record.",
+    "latitude": 48.853,
+    "longitude": 2.3454,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Théâtre de la Huchette"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 23 rue de la Huchette sits a tiny theatre with a world record. Since 1957, Ionesco's absurdist masterpieces La Cantatrice Chauve (The Bald Soprano) and La Lecon (The Lesson) have been performed here continuously — the longest theatrical run ever recorded in Paris and indeed a Guinness World Record. The 1950s were a time of literary turmoil and avant-garde theatre in the Latin Quarter, and this intimate venue became a permanent shrine to the Theatre of the Absurd.",
+        "lens": "literary_heritage",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "tiny theatre facade at 23 rue de la Huchette"
+        ],
+        "source_passage": "In the Theatre de la Huchette at n 23, Ionesco's Cantatrice Chauve and La Lecon have been showing since 1957",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ecole Normale Superieure",
+    "short_description": "France's most prestigious teacher-training institution founded in 1794, located on rue d'Ulm south of the Place du Pantheon.",
+    "latitude": 48.8421,
+    "longitude": 2.3447,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "ENS",
+      "Normale Sup",
+      "Ecole Normale Superieure de la rue d'Ulm"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Ecole Normale Superieure was founded in 1794 to provide France with highly cultivated and competent teachers. The greatest scientists of France — those now commemorated in the street names of the arrondissement — numbered among its professors. Today it has expanded beyond the Latin Quarter and even to the provinces, but the premises on rue d'Ulm, south of the Place du Pantheon, remain the most prestigious.",
+        "lens": "famous_residents",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue d'Ulm campus entrance",
+          "south of Place du Pantheon"
+        ],
+        "source_passage": "the Ecole Normale Superieure, founded in 1794 to provide the nation with highly cultivated and competent teachers",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Arenes de Lutece",
+    "short_description": "Remains of a 1st-century Gallo-Roman amphitheatre in the Latin Quarter that once seated 15,000 spectators for gladiatorial contests",
+    "latitude": 48.845126,
+    "longitude": 2.352309,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Lutece Arena",
+      "Arenes de Lutece"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "To the west of the Roman settlement, on what is now rue Racine, stood a semicircular amphitheatre overlooking the Seine. The imposing arena was the second largest in all of Gaul after that of Nimes. It faced east to take advantage of the natural east-facing slope and the setting sun, which lit up the podium, with the pastoral Bievre meandering through green meadows towards the Seine in the background.",
+        "lens": "hidden_history",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "arena ruins",
+          "east-facing orientation"
+        ],
+        "source_passage": "the imposing arena, the second largest in the whole of Gaul after that of Nimes, faced the east",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

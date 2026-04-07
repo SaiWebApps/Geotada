@@ -1,0 +1,513 @@
+[
+  {
+    "name": "Hotel Matignon",
+    "short_description": "Official residence of the French Prime Minister since 1935; one of the grandest 18th-century mansions in the Faubourg Saint-Germain, with an immense private garden.",
+    "latitude": 48.8527,
+    "longitude": 2.3192,
+    "importance_tier": 2,
+    "trigger_radius": 80,
+    "typical_duration_min": 5,
+    "kid_friendly": "no",
+    "name_variations": [
+      "Hôtel Matignon",
+      "Hôtel de Matignon",
+      "57 rue de Varenne"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Behind the gates of 57 rue de Varenne stands Hôtel Matignon, the Prime Minister's residence and arguably the most sumptuous mansion in the Faubourg. In 1808, Talleyrand moved in and immediately put his legendary chef Carême to work — lavish dinner parties four times a week for 36 privileged guests. Carême was the most celebrated cook of his age, the inventor of the towering pièce montée; in this gilded dining room he was at his peak. Three years later Talleyrand sold the hôtel to the state, perhaps needing the cash to fund the next regime he planned to survive.",
+        "lens": "famous_residents",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Imposing gateway at 57 rue de Varenne",
+          "Glimpse of courtyard through gates when open",
+          "Plaque noting Prime Minister's residence"
+        ],
+        "source_passage": "The Hétel Matignon, at n° 57 rue de Varenne, is the residence of the Prime Minister and perhaps the most sumptuous mansion in the Faubourg.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The story of Hôtel Matignon reads like a history of French political instability. After Talleyrand sold it, the mansion passed to Louis XVIII, then the Duke of Galliera, whose widow lent it to the Comte de Paris — the Orléans pretender to the throne. When the Comte hosted his daughter's engagement party here, the Third Republic panicked and passed a law expelling the House of Orléans from France. The law lasted until after the Great War. When war broke out in 1914, the Prince d'Orléans came back to serve his country — and was promptly imprisoned for his trouble.",
+        "lens": "dark_history",
+        "duration_sec": 70,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Closed gates of Matignon hinting at inaccessible interior",
+          "Garden foliage visible above perimeter wall"
+        ],
+        "source_passage": "Louis XVIII swapped it for the Palais de l'Elysée... the Third Republic passed a law expelling the princes of the House of Orléans from France.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Hidden behind the Prime Minister's gates is one of the largest private gardens in Paris — and at its heart, a bejewelled 18th-century folly built as a music room and nicknamed Le Petit-Trianon. While Versailles has its famous Trianon, the Faubourg has this intimate echo: a gilded retreat where the sounds of the harpsichord once floated through jasmine-scented air, unreachable by the public and all the more tantalizing for it.",
+        "lens": "historic_arch",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Garden canopy visible over walls on rue de Varenne"
+        ],
+        "source_passage": "Besides splendid interior decoration, the Hotel Matignon has an immense garden with a bejewelled 18th-century folly, built as a music room and called Le Petit-Trianon.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Musee de la Legion d'Honneur",
+    "short_description": "Museum of medals, orders, and historical paraphernalia housed in the Hôtel de Salm, a neoclassical mansion set on fire during the Commune and beautifully restored.",
+    "latitude": 48.8605,
+    "longitude": 2.321,
+    "importance_tier": 3,
+    "trigger_radius": 80,
+    "typical_duration_min": 5,
+    "kid_friendly": "no",
+    "name_variations": [
+      "Musée de la Légion d'Honneur",
+      "Hôtel de Salm",
+      "Palais de la Légion d'Honneur"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The elegant Hôtel de Salm across from the Musée d'Orsay has a tragic founding story. Its first owner, Prince Frédéric III of Salm-Kyrburg, sincerely supported the Revolution — yet was accused of being merely 'the mask of patriotism' and sent to the guillotine. He was so deeply in debt that by the time the mansion was completed, he no longer owned it; he had become a tenant in his own home. After his execution, his sister bought a plot in what is now the 12th arrondissement — the cemetery of Picpus — where his remains rest alongside those of 1,300 other victims of the Revolution.",
+        "lens": "dark_history",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Neoclassical facade facing the Seine and Musée d'Orsay"
+        ],
+        "source_passage": "The mansion was named after its first owner, Frédéric Ill, the Prince of Salm-Kyrburg, who, despite his sincere support of the Revolution, was accused of being 'but the mask of patriotism' and was sent to the guillotine.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "After the Prince of Salm's execution, a former wigmaker named Claude Lenthereau had the audacity to reinvent himself as the 'Marquis de Beauregard.' He acquired the Hôtel de Salm, bought the jewel-like Château de Bagatelle on credit, kept a celebrated actress on a 10,000-pound pension, and threw unbelievably lavish banquets — all while Paris sneered. The satirical press dubbed him 'the foolishness of a parvenu rascal who, in order to efface any vestige of original powder, called himself the Marquis de Beauregard.' He was eventually unmasked, condemned, branded and put in irons for four years.",
+        "lens": "hidden_history",
+        "duration_sec": 70,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Restored neoclassical facade bearing no trace of the Commune fire"
+        ],
+        "source_passage": "Claude Lenthereau, a wigmaker who by the end of the Revolution called himself Marquis de Beauregard, became the next landlord of the Hotel de Salm.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Thomas Jefferson arrived in Paris in 1784 and, from his neighbor Lafayette's house at 123 rue de Lille, could admire the Hôtel de Salm under construction across the way. He brought other Americans to see it — the architect Charles Bulfinch and the painter John Trumbull — but most significantly Pierre L'Enfant, who is known to have been deeply inspired by Parisian architecture in designing the city of Washington D.C.",
+        "lens": "famous_residents",
+        "duration_sec": 55,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "View of facade from quai Anatole-France",
+          "Alignment with Musée d'Orsay across the street"
+        ],
+        "source_passage": "Thomas Jefferson, who arrived in Paris in 1784, was a frequent guest at Lafayette's home at n° 123 rue de Lille.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Eglise Sainte-Clotilde",
+    "short_description": "19th-century neo-Gothic church in the 7th arrondissement, built by architects Gau and Ballu; famous as the church where César Franck served as organist for over 30 years.",
+    "latitude": 48.855,
+    "longitude": 2.3182,
+    "importance_tier": 3,
+    "trigger_radius": 80,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Basilique Sainte-Clotilde",
+      "Sainte-Clotilde",
+      "Basilique Sainte-Clotilde et Sainte-Valère"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Square Samuel-Rousseau across from this neo-Gothic church is dedicated to the memory of César Franck, who served as organist at Sainte-Clotilde from 1858 until his death in 1890 — over three decades at the same instrument. A sculpture of the composer meditating stands in the square, an angel hovering above symbolizing divine inspiration. Franck transformed French organ music from this church; his students included d'Indy and Chausson, and his improvisations here were legendary.",
+        "lens": "music_heritage",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Sculpture of César Franck in Square Samuel-Rousseau",
+          "Twin neo-Gothic spires of Sainte-Clotilde"
+        ],
+        "source_passage": "the Square Samuel-Rousseau, with its colourful flower-beds, recalls the composer César Franck who, from 1858 until his death in 1890, was the organist of the church of Sainte-Clotilde.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Sainte-Clotilde is a 19th-century pastiche of Gothic architecture — built by Gau and completed by Ballu, the same architect who designed several other Parisian churches including the Trinité north of the Opéra. Unlike medieval Gothic cathedrals built over centuries, Sainte-Clotilde was conceived whole, its twin spires rising with the confident symmetry that only a Victorian-era architect would dare.",
+        "lens": "historic_arch",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Twin spires dominating the rue Las Cases approach"
+        ],
+        "source_passage": "The church is a 19th-century pastiche of Gothic architecture, built by Gau and Ballu.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Gallifet",
+    "short_description": "18th-century mansion on rue de Grenelle once home to Talleyrand across four different regimes; now the Italian Cultural Institute and Italian Embassy since 1909.",
+    "latitude": 48.8544,
+    "longitude": 2.3224,
+    "importance_tier": 3,
+    "trigger_radius": 70,
+    "typical_duration_min": 5,
+    "kid_friendly": "no",
+    "name_variations": [
+      "Hôtel de Galliffet",
+      "Hôtel de Gallifet",
+      "73 rue de Grenelle",
+      "Italian Embassy Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The politician who outlasted every revolution was Talleyrand — and at the Hôtel de Gallifet at 73 rue de Grenelle, he came to live not once but four times under four completely different regimes: the Directoire and into the Consulat, the First Empire, the First Restoration, and the Second Restoration after Waterloo. Napoleon, who was not fooled by this chameleon, famously defined him as 'shit in a silk stocking.' The insult stuck. The compliment was that Talleyrand kept his head.",
+        "lens": "famous_residents",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Main entrance on rue de Varenne",
+          "Italian Cultural Institute signage on rue de Grenelle"
+        ],
+        "source_passage": "The Hotel de Gallifet at n° 73 (main entrance being on rue de Varenne), has been occupied by the Italian Embassy since 1909.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Musee Rodin",
+    "short_description": "Sculpture museum in the 18th-century Hotel Biron with The Thinker and The Gates of Hell displayed in a formal garden",
+    "latitude": 48.854747,
+    "longitude": 2.315867,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Rodin Museum"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Before it was a museum, the Hôtel de Biron was Paris's most bohemian commune. When the religious congregation was dissolved in 1904, the empty rooms were let to artists at a modest rent. In moved Rainer Maria Rilke, Isadora Duncan, Rodin — and a nineteen-year-old Jean Cocteau. Cocteau described looking out from his meagrely furnished former solfeggio classroom into the unkempt garden where Rodin worked among wild briars and forget-me-not. At night, he could see a light burning in the window where Rilke was writing deep into the night — working on 'The Notebooks of Malte Laurids Brigge.'",
+        "lens": "literary_heritage",
+        "duration_sec": 75,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Overgrown garden areas near boundary walls",
+          "Rodin's 'The Thinker' in the garden"
+        ],
+        "source_passage": "Rainer Maria Rilke, Isadora Duncan, Rodin and Jean Cocteau became the privileged tenants of these enchanting surroundings. Cocteau was 19 when he arrived.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The story of the Musée Rodin begins with a wigmaker. Monsieur Peyrenc de Moras, from Languedoc, had made such a staggering fortune speculating in John Law's paper-money schemes that he commissioned a great architect — while his neighbor Charlotte Desmares, who'd bet on the same market, went bankrupt. Peyrenc's mansion was fit for royalty: Louise de Bourbon, daughter-in-law of Louis XIV and Madame de Montespan, bought it from the wigmaker's widow in 1732.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Grand 18th-century facade on rue de Varenne",
+          "Elaborate entrance gate and forecourt"
+        ],
+        "source_passage": "Originally the hdtel was built for Monsieur Peyrenc, a wigmaker from Languedoc.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "After the last private owner, the Duchesse de Charost, sold the Hôtel de Biron to a religious congregation in 1820, it became a school. In 1904, when French law dispersed the congregation, the school went public and the vast space was suddenly available. Rather than sell, someone had the inspired idea of renting rooms to artists cheaply — and so one of Paris's grandest private mansions became an accidental artists' commune, populated by the century's most influential creative minds.",
+        "lens": "social_change",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Scale of the building suggesting institutional use"
+        ],
+        "source_passage": "Its last owner, the Duchesse de Charost, sold it to a religious congregation in 1820.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Musee d'Orsay",
+    "short_description": "Impressionist and Post-Impressionist art museum housed in a converted 1900 Beaux-Arts railway station on the Left Bank",
+    "latitude": 48.859962,
+    "longitude": 2.326561,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Orsay Museum",
+      "Gare d'Orsay"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Paris loves novelty — and converting a railway station into a museum was bound to create a sensation. The Gare d'Orsay opened on the symbolic date of 14 July 1900, so beautiful that the painter Édouard Detaille suggested even then that it should become a museum. At its heart, the enormous Belle Époque dining room — with extravagant candelabras and an allegorical mural — has been preserved on the first floor, complete, while the magnificent vaulted glass-and-iron ceiling and the great station clock still preside over the converted nave below.",
+        "lens": "historic_arch",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Giant station clock visible from the main hall",
+          "Vaulted glass-and-iron ceiling",
+          "Belle Époque dining room on first floor"
+        ],
+        "source_passage": "this one was not inaugurated until 1900, on the symbolic date of 14 July, and was so beautiful that the painter Edouard Detaille suggested even then that it should be turned into a museum.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "Although the Musée d'Orsay is devoted to all art forms developed in France in the second half of the 19th century — and hosts chamber-music concerts too — most visitors come for the Impressionist collection on the upper floors. Its fame is built on those galleries, though the building itself is equally extraordinary: a temple to modernity from the age of steam, echoing Monet's paintings of the Gare Saint-Lazare and Zola's novel 'La Bête humaine.'",
+        "lens": "visual_art",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Impressionist paintings on upper level galleries",
+          "Rooftop terrace with views across the Seine"
+        ],
+        "source_passage": "Although the museum is devoted to all the forms of art that developed in France in the second half of the 19th century, and hosts other activities such as chamber-music concerts, most visitors come for the Impressionist collection.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Here is a piece of Parisian irony: the Musée d'Orsay's destiny as a museum was proposed the very year it opened as a train station. In 1900, the painter Édouard Detaille — seeing the grand Beaux-Arts architecture — suggested on the spot that it should be turned into a museum or art gallery. It took another 86 years for someone to act on the idea. The Cour des Comptes next door, meanwhile, was utterly destroyed and replaced by the station; the Commune left few architectural survivors in this quarter.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Exterior Beaux-Arts facade on quai Anatole-France",
+          "Giant ornamental clock on Seine-facing facade"
+        ],
+        "source_passage": "The Cour des Comptes (the revenue court), on the other hand, was utterly destroyed and replaced by the Orsay railway station.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Around the corner from the museum, at 31 rue de Bellechasse, Alphonse Daudet lived from 1885 to 1897. Proust visited his widow here and wrote that he knew of no place 'so filled with the past, with thought, so piously consecrated by memory.' The building's dead include the mathematician Monge, the physician Villemin, and the historian Bainville. Around the corner at number 27, Gustave Doré had his studio — the building still bears his initials GD.",
+        "lens": "literary_heritage",
+        "duration_sec": 55,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "31 rue de Bellechasse — building facade",
+          "Initials GD carved or mounted at 27 rue de Bellechasse"
+        ],
+        "source_passage": "n° 31 on your right, where Alphonse Daudet lived between 1885 and 1897.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Assemblee Nationale",
+    "short_description": "Neoclassical Palais Bourbon housing the French parliament since the Revolution, facing Place de la Concorde across the Seine",
+    "latitude": 48.860862,
+    "longitude": 2.318389,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Palais Bourbon",
+      "National Assembly"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The National Assembly's neoclassical facade is, technically, a lie — or at least a theatrical addition. Napoleon ordered it added in 1806 to the existing 18th-century Palais Bourbon so that it would mirror the Temple de la Gloire (today's Madeleine) across the Seine and across the Place de la Concorde. The symmetry is deliberate: a grand urban axis expressing French order. The Regency palace behind the facade was originally built for Louise-Françoise de Bourbon, legitimized daughter of Louis XIV and Madame de Montespan, by architects including Gabriel, Giardini, Lassurance and Aubert.",
+        "lens": "historic_arch",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Neoclassical colonnade visible from Pont de la Concorde",
+          "Symmetry with La Madeleine on the opposite bank"
+        ],
+        "source_passage": "The Neo-classical fagade of the building, however, is only a facing: the Emperor, a fervent admirer of Classical art, added it in 1806 to the 18th-century Palais-Bourbon to match the front of the Madeleine.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Next door to the Palais Bourbon, the Hôtel de Lassay — now the home of the President of the National Assembly — is a masterpiece of Regency architecture. It is essentially a single elongated raised floor with a row of elegant French doors, surmounted by a sculpted balustrade carrying urns and clusters of chubby cupids. Inside, five spacious halls still used for official receptions were decorated with mirrors, carved doors and delicate paintings — the aesthetic of discreet architecture contrasted with sumptuous interior decoration, ideally suited to the pleasure-seeking inmates of the 18th century.",
+        "lens": "historic_arch",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Balustrade with urns and cupids visible from the street"
+        ],
+        "source_passage": "The Hotel de Lassay consists essentially of a single, elongated, raised floor, with a row of elegant French doors along its front, surmounted by a sculpted balustrade carrying urns and clusters of chubby cupids - a masterpiece of Regency architecture.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On the streets running toward the Palais Bourbon, the Faubourg's grandeur has a darker underside. At 116 rue de Grenelle — now the Mairie of the 7th — the owner during Louis XVI's reign was the Duc de Brissac, Governor of Paris. On 9 September 1792, he was slain in the streets of Versailles during the September Massacres. His head was then sliced off and carried by the patriots all the way to Louveciennes — to be displayed before his ex-mistress, the Comtesse du Barry. She took the head back to Paris and buried it in the gardens, where it was discovered accidentally in 1901.",
+        "lens": "dark_history",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Mairie du 7e at 116 rue de Grenelle"
+        ],
+        "source_passage": "On 9 September 1792 the Duke was slain on the streets of Versailles, after which his head was sliced off and carried by the patriotes all the way to Louveciennes.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At the corner of rue de Bourgogne and rue de Grenelle — on the site of today's number 115 — lies the secret grave of Adrienne Lecouvreur, the most adulated actress of the Comédie-Française. When she died in 1730, the Church refused her Christian burial. The priest of Saint-Sulpice turned her away despite Voltaire's furious protest: she was carried by night to the river by three charitable souls, and buried here without ceremony. An 86-year-old admirer fixed a commemorative plaque under the portal of the Hôtel de Saumery built on the site in 1786. Her remains were searched for in 1797 at the instigation of the Comédie-Française — and never found.",
+        "lens": "dark_history",
+        "duration_sec": 70,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Corner of rue de Bourgogne and rue de Grenelle at n°115"
+        ],
+        "source_passage": "On the corner of rue de Bourgogne and rue de Grenelle, on the site of n° 115, the adulated Adrienne Lecouvreur from the Comédie-Frangaise, is said to have been buried secretly in 1730.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Ministry of Defence occupies what was once the Dominican convent of Saint-Joseph and the adjoining Hôtel de Brienne on rue Saint-Dominique. The convent was originally built for poor orphan girls — Madame de Montespan took great interest in it and made charitable donations, then retired there herself when Louis XIV left her for Madame de Maintenon. From 1747, the convent hosted the celebrated salon of Madame du Deffand, where all of Parisian intelligentsia and many honoured foreigners gathered. The Hôtel de Brienne passed to Lucien Bonaparte in 1802.",
+        "lens": "hidden_history",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Ministry of Defence signage at 10/12 and 14 rue Saint-Dominique"
+        ],
+        "source_passage": "The convent was originally built for poor orphan girls... From 1747 all the Parisian intelligentsia and many honoured foreigners gathered at Madame du Deffand's celebrated salon.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Rue de Grenelle is a museum of 18th-century aristocratic Paris — but one almost entirely closed to the public. The Hôtel de Baufremont at number 87 has barely been touched by renovators and retains its original Regency harmony. The Hôtel d'Avaray at number 85 remained in the Avaray family for a remarkable 200 years, until 1896; it was bought in 1920 by the Dutch government for its Embassy. The Russian Embassy at number 79 still preserves early 18th-century decoration in its lounges and a splendid staircase. Tzar Nicholas II and his Tsarina stayed here during their 1896 Paris visit.",
+        "lens": "social_change",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "Street facades of Hôtel de Baufremont, Hôtel d'Avaray, and Russian Embassy visible from rue de Grenelle"
+        ],
+        "source_passage": "Hétel d' Avaray at n° 85 was built at the same time and remained in the hands of the Avaray family for a remarkable 200 years.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 7th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

@@ -1,0 +1,585 @@
+[
+  {
+    "name": "Notre-Dame Cathedral",
+    "short_description": "Medieval cathedral on Ile de la Cite, one of the finest examples of French Gothic architecture",
+    "latitude": 48.853,
+    "longitude": 2.3499,
+    "importance_tier": 1,
+    "trigger_radius": 100,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Notre-Dame de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Beneath Notre-Dame's chancel, vestiges of a pillar-shaped monument dedicated to Jupiter were found in 1711 — the Pilier des Nautes, erected by the corporation of water merchants (Nautae Parisiaci). Inscriptions date it to the reign of Emperor Tiberius (AD 14-37), making it the oldest sculpted monument found in the capital. The merchants engraved their own gods alongside those of Rome. The pillar is now displayed in the Musee National du Moyen Age at the Hotel de Cluny.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "chancel of Notre-Dame (original find site)"
+        ],
+        "source_passage": "vestiges of a pillar-shaped monument dedicated to Jupiter, found in 1711 under the cathedral's chancel",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Tiberius reign corrected from AD 17-34 to AD 14-37."
+      },
+      {
+        "script_body": "Between 1163 and 1330, anonymous artisans carved Notre-Dame from stone, slipping imperceptibly from the Romanesque to the Gothic style yet sustaining architectural unity. Bishop Maurice de Sully initiated the project, commissioning a monument to transcend every other in the kingdom.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notre-Dame facade and structure"
+        ],
+        "source_passage": "Between 1163 and 1330, man's yearnings for the divine were carved into her stone",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Notre-Dame hosted only two coronations, both controversial: Henry VI of England, who had conquered France, and Emperor Napoleon. The legitimate French dynasties always used the cathedral of Reims. Henri IV's conversion to Catholicism was celebrated here in 1593 with a Te Deum, though the conversion ceremony itself took place at Saint-Denis.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "interior nave"
+        ],
+        "source_passage": "only two coronations, both controversial: that of Henry VI of England who had conquered France and that of the Emperor Napoleon",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In Rabelais's tale, the giant Gargantua visited Notre-Dame and, followed and gawked at by Parisians, climbed the church tower and urinated on the crowd below, drowning 260,418 people (exclusive of women and children). In Rabelais's version, the city of Lutetia became known as Paris — from 'par rie' (for a laugh) — in recognition of Gargantua's jest.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Notre-Dame tower"
+        ],
+        "source_passage": "Rabelais's hero Gargantua naturally went to Notre-Dame during his visit to Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ile de la Cite",
+    "short_description": "The historic island heart of Paris where the city was founded",
+    "latitude": 48.8534,
+    "longitude": 2.3488,
+    "importance_tier": 1,
+    "trigger_radius": 150,
+    "typical_duration_min": 40,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Île de la Cité"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Philippe-Auguste confiscated the Jews' possessions, using the proceeds partly to finance Les Halles market, and expelled them from France in 1182. Their centuries-old presence on rue de la Juiverie, the central axis of the Ile de la Cite, came to an end. When he invited the Jews back 16 years later to squeeze them dry once more, they settled on the right bank around rue des Rosiers.",
+        "lens": "dark_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Ile de la Cite"
+        ],
+        "source_passage": "Philippe-Auguste had it converted into the church of Sainte-Madeleine; at the same time he confiscated the Jews' possessions",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ile Saint-Louis",
+    "short_description": "A tranquil island of 17th-century classical mansions east of Ile de la Cite",
+    "latitude": 48.8516,
+    "longitude": 2.3565,
+    "importance_tier": 1,
+    "trigger_radius": 150,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Île Saint-Louis"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Ile Saint-Louis was originally two separate islands: l'Ile Notre-Dame, serving as the cathedral's recreational grounds, and l'Ile aux Vaches, the domain of grazing cows, laundresses and lovers. During the 14th century, a defence tower with a moat divided them. In the first half of the 17th century, the moat was filled in and the two islands united into the Ile Saint-Louis.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Ile Saint-Louis"
+        ],
+        "source_passage": "a defence tower was built on its eastern tip with a moat to its west, which divided it into two",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de Ville",
+    "short_description": "Paris's city hall on the site of the medieval Place de Greve",
+    "latitude": 48.8565,
+    "longitude": 2.3524,
+    "importance_tier": 1,
+    "trigger_radius": 100,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel de Ville de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The municipality of Paris grew from the corporation of water merchants who bought the strand (greve) from Louis VII in the 12th century. A tribunal of commerce was set up on Place de Greve, becoming the embryo of the municipality. The corporation's seal, inherited from the ancient Nautae Parisiaci, remains the coat of arms of Paris with only minor changes a thousand years later.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place de l'Hotel-de-Ville",
+          "coat of arms of Paris"
+        ],
+        "source_passage": "the strand was an invaluable asset to the corporation of water merchants",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Etienne Marcel, provost of Paris, was the first to settle the city government in a town hall on Place de Greve, buying a two-storeyed house from the king on behalf of the city in 1357. Known as La Maison des Piliers for its row of arcades, it was eventually replaced by a magnificent Renaissance building begun under Francois I.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place de l'Hotel-de-Ville"
+        ],
+        "source_passage": "Etienne Marcel was the first provost to settle in a town hall on Place de Gréve",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The anti-bourgeois proletarian Commune burnt down the Hotel de Ville in 1871. The victorious bourgeois government of the Third Republic rebuilt it at once in its old style, to brush off this incident and demonstrate that its possession was irrevocable.",
+        "lens": "war_conflict",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Hotel de Ville exterior"
+        ],
+        "source_passage": "The anti-bourgeois proletarian Commune, on the other hand, burnt it down in 1871",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Place de Greve served as Paris's main place of public executions, with gallows as a permanent fixture. Notable executions included Cartouche, the terror of early 18th-century Paris; Ravaillac, assassin of Henri IV; and the Marquise de Brinvilliers, mass poisoner.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Place de l'Hotel-de-Ville"
+        ],
+        "source_passage": "the Place de Gréve is remembered above all as the main place of public executions",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On Friday 17 July 1676, Madame de Sevigne watched the Marquise de Brinvilliers carried to Place de Greve. The Marquise had poisoned her father (requiring ten attempts) and two brothers. Her lover Godin de Sainte-Croix had learned the art of poison from an Italian named Exili while imprisoned in the Bastille. Sevigne wrote: 'At last, it is all over, the Brinvilliers is in the air.'",
+        "lens": "dark_history",
+        "duration_sec": 55,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Place de l'Hotel-de-Ville"
+        ],
+        "source_passage": "On Friday 17 July 1676, Madame de Sévigné watched the Marquise de Brinvilliers",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Place de Greve was where people gathered in early morning to seek work, a practice called 'faire la greve.' The expression survives in modern French but now means 'to go on strike' — the opposite of its original meaning of seeking employment.",
+        "lens": "social_change",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place de l'Hotel-de-Ville"
+        ],
+        "source_passage": "The Place de Gréve was also a focal site in the life of the city, where people would gather",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Place de Greve hosted the fete de la Saint-Jean on 24 June, when a 10-metre-high bonfire celebrated the birth of John the Baptist. Occasionally the King himself would come to light the fire, heralded by trumpets.",
+        "lens": "historic_worship",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Place de l'Hotel-de-Ville"
+        ],
+        "source_passage": "the féte de la Saint-Jean on 24 June, when a 10-metre-high bonfire",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Place des Vosges",
+    "short_description": "Paris's oldest planned square, surrounded by harmonious brick-and-stone mansions",
+    "latitude": 48.8554,
+    "longitude": 2.3656,
+    "importance_tier": 1,
+    "trigger_radius": 80,
+    "typical_duration_min": 25,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Place Royale"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Place Royale (now Place des Vosges) was the first open-air square in Paris. Its exquisite bright pink brick and white stone pavilions served in 1612 as the backdrop for the most dazzling celebration recalled by Parisians: the double wedding of Louis XIII and his sister Elisabeth.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "pink brick and white stone pavilions",
+          "arcades"
+        ],
+        "source_passage": "This was the first open-air square in Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Place Royale was a favourite site for duels, watched from balconies by ladies whose favours were being sought. Cardinal Richelieu banned duels in 1626. When Boutteville contravened the ruling, believing his glorious pedigree put him above the law, Richelieu had him decapitated at Place de Greve.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Place des Vosges arcades and balconies"
+        ],
+        "source_passage": "Place Royale was also a favourite choice for duels",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Marais in its golden age was studded with magnificent hotels. Great architects Mansart and Le Vau and painters Le Brun, Mignard and Vouet decorated the interiors. The Duc de Richelieu sold ten Nicolas Poussin paintings to Louis XIV and bought some twenty Rubens to replace them.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Marais hotel interiors"
+        ],
+        "source_passage": "great architects such as Mansart and Le Vau and painters such as Le Brun, Mignard and Vouet",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "With the court's transfer to Versailles in 1682, the Marais declined. In 1962, Andre Malraux's rehabilitation bill passed; in 1965 the area was declared a protected zone.",
+        "lens": "social_change",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue des Rosiers",
+          "Marais restored buildings"
+        ],
+        "source_passage": "With the transfer of the court to Versailles in 1682, the centre of gravity of Paris shifted west",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Centre Pompidou",
+    "short_description": "Iconic contemporary art centre with inside-out architecture",
+    "latitude": 48.8607,
+    "longitude": 2.3525,
+    "importance_tier": 1,
+    "trigger_radius": 100,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Centre Georges Pompidou",
+      "Beaubourg"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Richard Rogers and Renzo Piano designed the Centre Georges Pompidou with bright blue building and bright red and blue piping. Parisians were scandalized that two 'hippy' architects built a 'refinery' in the historic heart of Paris — twenty years later it still ranked first among monuments they wished to see wiped out. Yet it drew 28,000 visitors per day and 8 million per year, beating the Eiffel Tower's 2.5 million.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "coloured piping exterior",
+          "escalator tube",
+          "piazza"
+        ],
+        "source_passage": "Richard Rogers and Renzo Piano sought to express the spirit of the time",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Centre Pompidou's piazza became a focal point of Parisian street life, with buskers, acrobats, mime artists, jugglers, fire-eaters, portrait painters and pickpockets spontaneously recreating the medieval atmosphere of the parvis of Notre-Dame.",
+        "lens": "street_art",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Pompidou piazza",
+          "Stravinsky fountain"
+        ],
+        "source_passage": "Buskers, acrobats, mime artists, jugglers, fire-eaters, portrait painters and pickpockets share this spacious square",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Bibliotheque de l'Arsenal",
+    "short_description": "Historic library in the former Royal Arsenal, with magnificent Louis XIII interiors and a rich literary heritage.",
+    "latitude": 48.849,
+    "longitude": 2.365,
+    "importance_tier": 3,
+    "trigger_radius": 75,
+    "typical_duration_min": 25,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Bibliothèque de l'Arsenal",
+      "Arsenal Library"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Built in the 14th century for ammunition manufacture, the Arsenal lay along an arm of the Seine (now Boulevard Morland). In 1563 a gigantic explosion — heard as far as Melun, 46 km away — blew most of it up. The Duc de Sully built a palatial residence there. Louis XIV later used the abandoned foundry to cast bronze statues for the gardens of Versailles.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Boulevard Morland",
+          "Boulevard Henri IV"
+        ],
+        "source_passage": "Built in the 14th century for the manufacture of ammunition, the royal Arsenal",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "It was while Henri IV was on his way to the Arsenal from the Louvre, on 14 May 1610, that Ravaillac jumped onto his coach and stabbed him to death.",
+        "lens": "dark_history",
+        "duration_sec": 35,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Arsenal grounds"
+        ],
+        "source_passage": "It was in fact while Henri IV was on his way to the Arsenal from the Louvre",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "auto-corrected",
+        "fact_check_notes": "Date corrected from 10 May to 14 May 1610."
+      },
+      {
+        "script_body": "The Arsenal housed the court of justice where the trial of Nicolas Fouquet, Louis XIV's treasurer, was held in 1664. Despite Colbert's rigged magistrates, the courageous d'Ormesson defied the King's wish for a death sentence and voted for banishment. Louis XIV then commuted the sentence upward to life imprisonment.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Arsenal interior"
+        ],
+        "source_passage": "this was where the scandalous trial of Nicolas Foucquet",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "La Voisin's trial in 1680 at the Arsenal was another memorable event. Women of distinction, taking the Marquise de Brinvilliers as a model, set out to eliminate those they found cumbersome. So many names of high-ranking ladies leaked out that procedures were hastened to silence her.",
+        "lens": "dark_history",
+        "duration_sec": 40,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Arsenal interior"
+        ],
+        "source_passage": "La Voisin's trial in 1680 was another memorable event",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Charles Nodier, head of the library from 1824 to 1844, gathered the Romantic writers Victor Hugo, Lamartine, Alfred de Musset, Alexandre Dumas and Sainte-Beuve, perpetuating a 200-year Parisian tradition of salons litteraires.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Arsenal library reading rooms"
+        ],
+        "source_passage": "Charles Nodier, the head of the library from 1824 to 1844",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Arsenal houses the apartment of Madame de Meilleraye, a unique surviving example of a Louis XIII interior. The Marechal de Meilleraye commissioned Simon Vouet to create a dwelling of great splendour for his young bride.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Arsenal first floor apartments",
+          "music room"
+        ],
+        "source_passage": "The apartment of Madame de Meilleraye provides a unique example of a Louis XIII interior",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Pavillon de l'Arsenal",
+    "short_description": "19th-century glass-and-steel exhibition space for Paris urbanism and town planning.",
+    "latitude": 48.8484,
+    "longitude": 2.3648,
+    "importance_tier": 3,
+    "trigger_radius": 60,
+    "typical_duration_min": 15,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Pavillon de l'Arsenal"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Across from the Arsenal library stands the Pavillon de l'Arsenal, a 19th-century glass and steel structure that served as an art gallery and later as a warehouse of the Samaritaine department store. Since 1988 it has housed temporary exhibitions on different aspects of town planning in Paris.",
+        "lens": "modern_design",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "glass and steel facade",
+          "21 boulevard Morland"
+        ],
+        "source_passage": "Across the street is the Pavillon de l'Arsenal, a glass and steel structure dating from the 19th century",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 4th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

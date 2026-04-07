@@ -1,0 +1,673 @@
+[
+  {
+    "name": "Cafe de Flore",
+    "short_description": "Historic 1887 Left Bank cafe where Sartre, de Beauvoir, and Camus held court during the existentialist era",
+    "latitude": 48.854128,
+    "longitude": 2.33255,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Most visitors to Saint-Germain-des-Pres seek out Sartre's chair at the Deux Magots, but his actual wartime hangout was the upstairs of the next-door Flore. During the Occupation, the Deux Magots was infested with Germans, so Sartre and Simone de Beauvoir decamped to the Flore, where the owner Monsieur Paul Boubal had placed a heating stove in the middle of the room. During the harsh winter of 1943-44, they huddled at separate little tables, Sartre working on Les Chemins de la liberte, de Beauvoir on Tous les hommes sont mortels. By the time passers-by sought them out after the war, they had already migrated elsewhere, notably to the bar of the Pont-Royal hotel on rue du Bac.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "upstairs windows of Cafe de Flore",
+          "narrow terrace along Boulevard Saint-Germain"
+        ],
+        "source_passage": "Sartre's hang-out, during the last war, was not the German-infested Deux Magots but the upstairs of the next-door Flore",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Decades before the existentialists, the Flore harboured a far darker chapter. In 1899, during the retrial of Alfred Dreyfus, the virulent anti-Semite Charles Maurras, along with Leon Daudet, founded the Action Francaise movement and magazine here. This far-right publication prepared the ground for collaboration with the Nazis four decades later. When Maurras was sentenced to life imprisonment for collaboration in 1945 and expelled from the Academie Francaise, he cried out: 'It is the revenge of Dreyfus!' — connecting the cafe's dark political birth to its bitter end.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "first floor of Cafe de Flore"
+        ],
+        "source_passage": "Here in 1899, when the retrial of Alfred Dreyfus unleashed vehement passions throughout France, the virulent Jew-hater Charles Maurras, Leon Daudet, son of Alphonse, and others founded l'Action Francaise",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Saint-Germain-des-Pres",
+    "short_description": "Oldest church in Paris with origins in the 6th century, anchor of the Left Bank literary and existentialist neighbourhood",
+    "latitude": 48.853968,
+    "longitude": 2.334518,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 8,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Eglise Saint-Germain-des-Pres",
+      "Abbey of Saint-Germain-des-Pres"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The abbey of Saint-Germain-des-Pres began as a basilica in the late 6th century. A deed from December 6, 558 records Childebert, son of Clovis, declaring 'I have begun to build a church.' The Bishop of Paris, Saint Germain, urged Childebert to erect a sanctuary for Saint Vincent, the patron of wine-growers. A relic of Saint Vincent's tunic and a gold cross said to have belonged to King Solomon were laid in the new basilica. Saint Germain had it decorated with magnificent mosaics and topped with a gilded roof, glittering amidst peaceful meadows — earning it the nickname Saint-Germain-le-Dore. The church tower that still dominates the Place pierced the skies of Paris less than a century later, and on 21 April 1163, the completed church was consecrated by Pope Alexander III.",
+        "lens": "historic_arch",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "medieval tower visible from the square",
+          "church facade"
+        ],
+        "source_passage": "started as a basilica in the late 6th century: 'I have begun to build a church...' we are told by Childebert, son of Clovis, in a deed dating 6 December 558",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Three centuries after his death, Saint Germain reportedly defended his abbey against the Norsemen through supernatural intervention, as recorded by a monk named Abbon. One Danish brigand was tied to a chariot by the invisible Saint, then chased into hell by Death. Another lost his way on a turret and rolled off the steep roof. A third lost his sight when he turned his eyes toward the Saint's sepulchre, while a fourth was snatched away from above by the Saint's invisible hand. Abbon's testimony increased the prestige of Saint Germain as the patriot who fought back the invincible Dane.",
+        "lens": "local_legends",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "ancient tower"
+        ],
+        "source_passage": "it was thanks to Saint Germain's supernatural intervention that the abbey set up a heroic resistance to the Norsemen",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "When Paris was liberated, the entire neighbourhood of Saint-Germain blazed into freedom. Boris Vian and his friends celebrated with trumpet blasts through the small hours at the Tabou on rue Dauphine. Claude Luter brought his unbridled clarinet and Dixieland to the basement of Lorientais. Club Saint-Germain at 13 rue Saint-Benoit picked up the baton in 1948, hosting Charlie Parker, Coleman Hawkins, Duke Ellington and Miles Davis. Meanwhile, Juliette Greco, dressed in all-purpose black, became the spokeswoman of existentialist Saint-Germain, singing to lyrics by Sartre, Queneau and Prevert. A new generation of anti-establishment singer-poets — Georges Brassens, Jacques Brel, Leo Ferre — made their appearance in vaulted cabarets.",
+        "lens": "music_heritage",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue Dauphine where Tabou once stood",
+          "rue Saint-Benoit where Club Saint-Germain operated"
+        ],
+        "source_passage": "Boris Vian and his friends celebrated the end of oppression at the Tabou, on rue Dauphine",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "American expatriates flooded Saint-Germain in the 1920s, making good use of the favourable dollar exchange rate and breaking loose from Prohibition. The newly-wed Hemingways, arriving in December 1921, could enjoy a hearty meal at the Pre-aux-Clercs on the corner of rue Jacob and rue Bonaparte for just 6 francs. Natalie Barney's literary salon at 20 rue Jacob, with its charming ivy-overgrown courtyard, gathered the beautiful people in a mock Greek temple dubbed Le Temple de l'Amitie. Gertrude Stein opened her home at 27 rue de Fleurus to chosen writers, while Sylvia Beach published and sold their works through Shakespeare and Company at 12 rue de l'Odeon — including James Joyce's Ulysses in 1922.",
+        "lens": "literary_heritage",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue Jacob where Barney's salon was at number 20",
+          "rue de Fleurus where Stein lived at number 27"
+        ],
+        "source_passage": "The newly-wed Hemingways, freshly arrived in Paris in December 1921, could enjoy a hearty meal at the Pre-aux-Clercs",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Le Procope",
+    "short_description": "Oldest cafe in Paris (1686), birthplace of the Encyclopedie, haunt of Voltaire, Diderot, and Revolutionary leaders.",
+    "latitude": 48.8527,
+    "longitude": 2.3389,
+    "importance_tier": 2,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Café Procope",
+      "Procope"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "When two Armenians named Pascal and Maliban began selling coffee at the Saint-Germain fair in 1672 for two and a half sous per cup, the beverage received a mixed reception. Princess La Palatine declared it smelt like the breath of the Archbishop of Paris. A Sicilian nobleman, Francesco Procopio dei Coltelli — known as Francois Procope — added the cultural dimension when around 1686 he opened the first Parisian cafe on rue des Fosses-Saint-Germain. When the Comedie-Francaise moved across the street in 1689, Le Procope became its antechamber. By 1723 the chronicler Mercier counted between 600 and 700 cafes in the capital.",
+        "lens": "hidden_history",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "entrance at 13 rue de l'Ancienne-Comedie",
+          "historical information in windows"
+        ],
+        "source_passage": "Francois Procope, added to the beverage its cultural dimension when around 1685 he opened the first Parisian cafe",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The Procope was where Diderot and d'Alembert conceived the idea of the Encyclopedie, and where new ideas germinated that would bring about the fall of the Ancien Regime. Already in 1685, the head of police warned Louis XIV about 'gatherings of all sorts of people' in coffee houses. The King flooded them with spies, to which the philosophes responded by inventing a coded terminology: 'liberty' became Jeannette, 'religion' became Javotte, and God became Monsieur l'Etre. A century later the Procope became the stronghold of the Revolutionary intelligentsia — Danton, Camille Desmoulins, and Marat all gathered here. It is also believed that the Phrygian cap of the sans-culottes made its first appearance here, worn by Citizen Julien.",
+        "lens": "social_change",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Voltaire's table inside the Procope"
+        ],
+        "source_passage": "Diderot and d'Alembert conceived the idea of the Encyclopedie and where new ideas germinated that would bring about the fall of the Ancien Regime",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Cour du Commerce-Saint-Andre",
+    "short_description": "18th-century covered passage where Dr. Guillotin tested his execution device on sheep at No. 9 before the Revolution",
+    "latitude": 48.85253,
+    "longitude": 2.339298,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 9, the workshop of Tobias Schmidt — a German harpsichord maker, not a carpenter as sometimes claimed — was where in April 1792 the guillotine prototype was first tested on live sheep. Dr Joseph-Ignace Guillotin had proposed the humane decapitation device to the National Assembly in October 1789, telling them: 'The blade whistles, the head falls, the blood gushes forth — with my machine I shall make your heads topple off in a flash.' The actual machine was designed by Dr Antoine Louis and built by Schmidt. After the successful sheep experiment here, the machine was tried on corpses at Bicetre on April 17. By April 25, the first public execution took place on Place de Greve. The guillotine devoured indiscriminately — even Dr Guillotin himself was condemned to his own blade, spared only by the timely downfall of Robespierre.",
+        "lens": "dark_history",
+        "duration_sec": 65,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "number 9 in the passage where Schmidt's workshop stood",
+          "cobblestoned passageway"
+        ],
+        "source_passage": "N 9, the workshop of the German carpenter Schmidt, was the place where in April 1792, Dr Louis Guillotin first put into practice his theories about the guillotine",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "At number 8, directly opposite the guillotine workshop, Marat published his incendiary paper L'Ami du Peuple. Despite its benign name, the paper advocated wholesale executions, demanding the heads of 270,000 enemies of the homeland. Marat and his companion Marie-Simone Evrard had sold all their possessions to fund the publication. On July 13, 1793, Charlotte Corday arrived from Caen, bought a carving knife at Palais-Royal for 2 francs, and stabbed Marat through the neck as he sat in his bathtub. Asked about her deed, she said: 'I have not killed a man but a ferocious beast.'",
+        "lens": "dark_history",
+        "duration_sec": 60,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "number 8 opposite the guillotine workshop site",
+          "plaque commemorating Marat's press"
+        ],
+        "source_passage": "N 8 was the printing-shop where Marat published his paper l'Ami du Peuple",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The statue of Danton at Carrefour de l'Odeon marks the site of his home at what used to be number 20 Cour du Commerce-Saint-Andre, before the opening of Boulevard Saint-Germain cut away the southern section of the passage. Danton had been living there since 1789 when, on March 30, 1794, police burst into his large first-floor flat with a warrant for his arrest. Six days later he stepped onto the guillotine. Across the street, Camille Desmoulins and his young wife Lucile had been living at Place de l'Odeon when emissaries of the Terror came for them on the same day. Both husband and wife ended up on the guillotine.",
+        "lens": "war_conflict",
+        "duration_sec": 50,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "Danton's statue at Carrefour de l'Odeon",
+          "truncated southern end of the passage at Boulevard Saint-Germain"
+        ],
+        "source_passage": "The statue of Danton at Carrefour de l'Odeon marks the site of Danton's home",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At 28 rue Mazarine, just steps from the passage, Jean-Francois Champollion made his breakthrough discovery on September 14, 1822, cracking the principle of deciphering Egyptian hieroglyphs. He was studying reproductions of bas-reliefs from Abu Simbel when he realised he could read the names of pharaohs Ramses and Thutmose. He rushed to his brother crying 'I've got it!' before collapsing in a faint from exhaustion. Two weeks later he presented his findings to the Academy, launching the field of modern Egyptology.",
+        "lens": "science_tech",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "plaque at 28 rue Mazarine"
+        ],
+        "source_passage": "N 28 rue Mazarine was the home of Champollion where on 14 September 1822 he made his breakthrough discovery",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At 19 rue Mazarine, the famous poet Robert Desnos was living in 1944 when he was arrested by the Gestapo on February 22. A key figure in the Surrealist movement and an active member of the Resistance, Desnos was deported to Auschwitz, then Buchenwald, and finally to Theresienstadt (now Terezin in the Czech Republic), where he died of typhoid on June 8, 1945 — on the eve of the camp's liberation.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "19 rue Mazarine where Desnos lived"
+        ],
+        "source_passage": "In 1944 the famous poet Robert Desnos was living across the street, at n 19, when he was arrested and deported",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Fontaine Saint-Michel",
+    "short_description": "Monumental 1860 Davioud fountain depicting the archangel Michael slaying the dragon.",
+    "latitude": 48.8532,
+    "longitude": 2.344,
+    "importance_tier": 2,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Place Saint-Michel fountain"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Place Saint-Michel is dominated by Davioud's fountain of muscular energy, erected to the glory of the archangel Michael who struck down the dragon. The monument makes amends for the demolition in 1781 of the 12th-century chapel of Saint-Michel, which stood across the river next to the Sainte-Chapelle. Cleverly, the fountain is no more than a facing on the side wall of the first house on the block — a device to create a grand gateway to Boulevard Saint-Michel without taking up any space.",
+        "lens": "historic_arch",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "archangel Michael striking down the dragon",
+          "fountain as facade on building wall"
+        ],
+        "source_passage": "dominated by Davioud's fountain of muscular energy, erected to the glory of the archangel who struck down the dragon",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue de l'Hirondelle",
+    "short_description": "Medieval alley with a salamander-carved facade marking the love-nest of Francois I and Anne de Pisseleu.",
+    "latitude": 48.8533,
+    "longitude": 2.3433,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "20/22 rue de l'Hirondelle"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At 20/22 rue de l'Hirondelle, a derelict building with a magnificent entrance door conceals a salamander sculpted in stone — the emblem of Francois I. Here the King built a splendid love-nest for his favourite, Anne de Pisseleu, Duchesse d'Etampes. Renowned as 'la plus belle des savants et la plus savante des belles' (the most beautiful of the learned and the most learned of the beautiful), she patronized the arts and meddled in public affairs. But when Francois I introduced Diane de Poitiers to court, a seven-year war between the two women began. After Francois I died in 1547, Anne was banished to the provinces and ordered to hand over her personal jewellery to her rival.",
+        "lens": "famous_residents",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "salamander sculpted in stone above entrance",
+          "wrought-iron decoration of facade"
+        ],
+        "source_passage": "a salamander sculpted in the stone and eroded by time, the emblem, you may remember, of Francois I",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Caveau de la Bolee",
+    "short_description": "13th-century cellar cabaret on rue de l'Hirondelle frequented by Baudelaire, Verlaine and Oscar Wilde.",
+    "latitude": 48.8532,
+    "longitude": 2.3432,
+    "importance_tier": 4,
+    "trigger_radius": 8,
+    "typical_duration_min": 5,
+    "kid_friendly": "caution",
+    "name_variations": [
+      "Caveau de la Bolée"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At number 25 rue de l'Hirondelle, le Caveau de la Bolee is an old-time cabaret where Charles Baudelaire spent many a night with his mistress Jeanne Duval. Paul Verlaine and Oscar Wilde also frequented this place. Its 13th-century cellar hosts nightly French-style cabaret shows and modern jazz on Sundays.",
+        "lens": "literary_heritage",
+        "duration_sec": 35,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "entrance at 25 rue de l'Hirondelle",
+          "13th-century vaulted cellar"
+        ],
+        "source_passage": "At n 25 le Caveau de la Bolee is an old-time cabaret, where Charles Baudelaire spent many a night with his mistress Jeanne Duval",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Cour de Rohan",
+    "short_description": "Three hidden medieval courtyards off rue du Jardinet, a secret sanctuary of creepers, rose bushes and ancient wells.",
+    "latitude": 48.8522,
+    "longitude": 2.3383,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "La Cour de Rohan"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Through rue du Jardinet, three successive courtyards known as la Cour de Rohan unfold like nesting Chinese boxes. Each reveals new surprises: crooked paving, an ancient well, cascading creepers and rose bushes. The third courtyard is a painter's paradise with its jumble of balconies, terraces and windows of all shapes and sizes. Two trees stretch their slender trunks up from the shady courtyard, reaching for the sun and then spreading leafy branches above the roofs. Near the exit, terraces explode with rose bushes, ivy and honeysuckle climbing above a white cottage with bright blue shutters.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "ancient well at number 1",
+          "white cottage with bright blue shutters",
+          "two stretching trees in third courtyard"
+        ],
+        "source_passage": "three successive courtyards, known as la Cour de Rohan, are perhaps the jewel in the crown of the arrondissement",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Theatre de l'Odeon",
+    "short_description": "Neoclassical theatre inaugurated in 1782, home to premieres of Beaumarchais and Beckett.",
+    "latitude": 48.8494,
+    "longitude": 2.3387,
+    "importance_tier": 2,
+    "trigger_radius": 20,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Odéon-Théâtre de l'Europe",
+      "Théâtre de l'Odéon"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Theatre de l'Odeon was inaugurated on April 9, 1782, on the grounds of the Prince de Conde's former palace. Louis XVI deliberately chose a spot near the Luxembourg Gardens so that his subjects would have a promenade before or after the show. He insisted the theatre be built in the purest Classical Greek style — the largest in the capital with 1,913 seats, and the first to be lit by oil lamps. The surrounding streets were named after France's great playwrights: Corneille and Moliere flanking the building, with Racine, Voltaire, Crebillon and Regnard fanning out on either side. Rue de l'Odeon itself was the first street in Paris to have pavements and gutters.",
+        "lens": "historic_arch",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "neoclassical facade with Greek-style columns",
+          "semicircular Place de l'Odeon"
+        ],
+        "source_passage": "The theatre was inaugurated on 9 April 1782",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Theatre Francais lasted only seven years before the Revolution tore it apart. Beaumarchais's Marriage of Figaro had itself helped light the fuse by questioning the social order. Actors faithful to the royal troupe were imprisoned and the theatre was shut down between 1793 and 1794. In 1797 it was renamed the Odeon after the musical theatre of ancient Greece. Then in 1799 it burnt down entirely and lay as an abandoned ruin for eight years. Restored by Chalgrin in 1807 under Napoleon's Empire, it was renamed after Empress Josephine. Partly damaged by another fire in 1818, it was again restored in 1819.",
+        "lens": "dark_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "restored neoclassical facade"
+        ],
+        "source_passage": "In 1799, however, it burnt down altogether and remained an abandoned ruin for eight entire years",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Institut de France",
+    "short_description": "Domed 17th-century building housing the Academie Francaise and four other academies, built on the site of the medieval Hotel de Nesle.",
+    "latitude": 48.8568,
+    "longitude": 2.3365,
+    "importance_tier": 2,
+    "trigger_radius": 20,
+    "typical_duration_min": 6,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Collège des Quatre-Nations"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Institut de France began as Cardinal Mazarin's College des Quatre-Nations, founded to educate noble students from four provinces defeated and annexed by France. The site was the long-disused Hotel de Nesle, opposite the Louvre. Louis Le Vau created a magnificent monument with a domed chapel housing Mazarin's tomb, framed by two curving wings overlooking the Seine. During the Revolution the premises became a prison where, ironically, Dr Guillotin — father of the guillotine — was himself detained. In 1805, the five academies previously housed in the Louvre were transferred here: the Academie Francaise, des Belles-Lettres, des Sciences, des Beaux-Arts, and des Sciences Morales et Politiques.",
+        "lens": "hidden_history",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "iconic dome visible from across the Seine",
+          "curving wings along quai de Conti",
+          "Mazarin's mausoleum under the dome"
+        ],
+        "source_passage": "The forerunner of the Institut de France on the site was the College des Quatre-Nations, which was founded and funded by Mazarin",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Academie Francaise, founded by Richelieu in 1635, is a stronghold of conservatism whose 40 venerable members guard the French language. It waited 350 years before admitting its first woman, the writer Marguerite Yourcenar, in 1980. Throughout its history, the Academie has rejected nonconformists: La Fontaine, Beaumarchais, Balzac (rejected 4 times), and Emile Zola (24 times). Others spurned the honour: Descartes, Pascal, Diderot, Malraux, and de Gaulle. After World War II, Charles Maurras and Marechal Petain were expelled — a rare measure, since an Academicien is by definition 'immortal.'",
+        "lens": "social_change",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "green costume of an Academicien with gold embroidery"
+        ],
+        "source_passage": "A stronghold of conservatism, the Academie waited 350 years before it admitted its first woman, the writer Marguerite Yourcenar, in 1980",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Institut de France stands on the site of the medieval Hotel de Nesle and its infamous tower. In 1308, Philippe le Bel bought the palace where his three sons — the future Louis X, Philippe V, and Charles IV — lived with their wives Marguerite, Jeanne, and Blanche de Bourgogne. The tower served for their amorous liaisons until their sister-in-law Isabelle, wife of Edward II of England, noticed three gentlemen wearing purses she had given the princesses as gifts. The ensuing scandal was horrific: two of the lovers were castrated, decapitated, and hanged by the armpits for birds of prey. Marguerite was suffocated between two mattresses by order of her husband Louis X. According to the poet Francois Villon, one queen would lure passers-by to the tower and, after exhausting them, have them drowned in sacks in the Seine.",
+        "lens": "dark_history",
+        "duration_sec": 70,
+        "kid_friendly": "no",
+        "physical_cues": [
+          "plan on eastern wing facade showing original tower location",
+          "quai de Conti where first quay in Paris was built 1313"
+        ],
+        "source_passage": "Philippe le Bel bought it in 1308 and from then on it remained in the hands of the royal family",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Tour de Nesle earned an even darker reputation in medieval legend. According to the poet François Villon, one queen of France would lure passers-by up to the tower at night. After exhausting them, she would have them tied in sacks and dropped into the Seine below. Whether Marguerite, Jeanne, or Blanche inspired the tale — or none of them — the story became one of the most enduring legends of medieval Paris.",
+        "lens": "local_legends",
+        "duration_sec": 35,
+        "kid_friendly": "caution",
+        "physical_cues": [
+          "plan on eastern wing facade showing original Tour de Nesle location",
+          "Seine flowing below the Institut de France"
+        ],
+        "source_passage": "According to the poet Francois Villon, one queen would lure passers-by to the tower",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Hotel de la Monnaie",
+    "short_description": "Neoclassical 18th-century Paris Mint on quai de Conti, now housing a coin museum.",
+    "latitude": 48.8569,
+    "longitude": 2.3392,
+    "importance_tier": 3,
+    "trigger_radius": 15,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Monnaie de Paris",
+      "La Monnaie",
+      "Paris Mint"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Next to the Institut de France stands the Hotel de la Monnaie, the Paris Mint, stunningly beautiful from across the river when illuminated at night. It was the work of a yet-unknown young mason and son of a carpenter, Jacques-Denis Antoine, who won the competition for the best design in 1765. The first stone was laid in 1771. Built on the site of Mansart's Hotel Guenegaud — said to be the most splendid dwelling in the city — the new building replaced aristocratic splendour with Neoclassical civic grandeur. In this earlier setting, Boileau and Racine had given readings of their early works and Lully's opera Pomone was rehearsed before its opening.",
+        "lens": "historic_arch",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "stark neoclassical facade along quai de Conti",
+          "view from across river at night"
+        ],
+        "source_passage": "Commissioned by Louis XV in 1768, it was the work of a yet-unknown young mason and son of a carpenter, Jacques-Denis Antoine",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Shakespeare and Company",
+    "short_description": "Legendary English-language bookshop on the Left Bank where writers can sleep among the stacks as 'tumbleweeds'",
+    "latitude": 48.852575,
+    "longitude": 2.347112,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Shakespeare & Company"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At 12 rue de l'Odeon, Sylvia Beach opened Shakespeare and Company in 1921, across the street from her friend Adrienne Monnier's bookshop La Maison des Amis du Livre at number 7. Here the lost generation met: T.S. Eliot, Ezra Pound, Scott Fitzgerald, Hemingway, and James Joyce, whose Ulysses was first published here in 1922 thanks to Beach's faith and energy. During the Nazi Occupation, Beach was forced to close and in 1942 went into hiding at a students' hostel at 93 Boulevard Saint-Michel. This original Shakespeare and Company should not be confused with the current bookshop of the same name near Notre-Dame.",
+        "lens": "literary_heritage",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "12 rue de l'Odeon where original shop stood",
+          "7 rue de l'Odeon where Monnier's shop was"
+        ],
+        "source_passage": "the American Sylvia Beach in 1921 opened a bookshop across the street, at n 12, the celebrated Shakespeare and Company",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Pont Neuf",
+    "short_description": "Oldest surviving bridge in Paris built in 1578, the first stone bridge without houses on it, with 381 carved grotesque faces",
+    "latitude": 48.85675,
+    "longitude": 2.341033,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "New Bridge"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Rue Dauphine commemorates the Dauphin and future Louis XIII and was opened by Henri IV as a continuation of the Pont-Neuf and Place Dauphine. The Augustine monks protested the new street would encroach on their grounds, but Henri IV was a man of vision and refused to bend, saying he would use his guns to carry his project through if he had to. He argued the monks would draw greater income from houses along the new street than from their cabbage-beds. History proved him right: on the eve of the Revolution, their order was one of the wealthiest in the capital. Rue Dauphine became one of the most elegant arteries, especially after 1763 when it was the first to substitute oil lamps for candles.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "rue Dauphine stretching from Pont Neuf"
+        ],
+        "source_passage": "Rue Dauphine, at the end of the alley, commemorates the Dauphin and future Louis XIII and was opened by Henri IV",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]

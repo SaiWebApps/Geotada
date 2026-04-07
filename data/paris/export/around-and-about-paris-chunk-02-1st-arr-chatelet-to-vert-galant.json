@@ -1,0 +1,240 @@
+[
+  {
+    "name": "Conciergerie",
+    "short_description": "Medieval royal palace turned Revolutionary prison where Marie Antoinette and over 2,700 inmates were held during the Reign of Terror",
+    "latitude": 48.8558,
+    "longitude": 2.3458,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "La Conciergerie"
+    ],
+    "parent_poi": "Ile de la Cite",
+    "beats": [
+      {
+        "script_body": "At no. 115 rue Saint-Honoré stood the pharmacy where the Swedish Marshal Fersen is believed to have obtained the invisible ink for his secret correspondence with Marie-Antoinette during her sequestration at the Conciergerie. A close friend of the royal family, Fersen had tried to help them escape from France. Evidence of the existence of the pharmacy goes back to 1715, making it one of the oldest in Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "the pharmacy where the Swedish Marshal Fersen is believed to have obtained the invisible ink for his correspondence with Marie-Antoinette during her sequestration at the Conciergerie",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
+    }
+  },
+  {
+    "name": "Fontaine des Innocents",
+    "short_description": "The only surviving Renaissance fountain in Paris, designed by Pierre Lescot and sculpted by Jean Goujon in 1549 for Henri II's entry into the city",
+    "latitude": 48.860638,
+    "longitude": 2.348023,
+    "importance_tier": 2,
+    "trigger_radius": 20,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Fountain of the Innocents",
+      "Fontaine des Nymphes",
+      "Fountain of the Nymphs"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Fontaine des Innocents at Place Joachim du Bellay is the only Renaissance fountain surviving in Paris. Designed by architect Pierre Lescot and sculpted by Jean Goujon — the greatest sculptor of his time — it was inaugurated on 16 June 1549 for Henri II's solemn entry into the city. Originally the fountain stood at the corner of rue Saint-Denis and the present rue Berger, against the church of Saints-Innocents, and had three arcades with a balcony where prominent figures took shelter during royal processions. The fountain commemorates the old Cimetière des Innocents that occupied this site until 1787, when the cemetery was replaced by a colourful fruit, vegetable and herb market. The church of Saints-Innocents was demolished when the cemetery closed. The market itself was demolished in 1855, and the fountain was shifted, altered and restored to its present location.",
+        "lens": "historic_arch",
+        "duration_sec": 56,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "the only Renaissance fountain in Paris, was designed by Pierre Lescot and sculpted by Jean Goujon in 1549, the greatest sculptor of his time",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
+    }
+  },
+  {
+    "name": "Les Halles",
+    "short_description": "Site of Paris's central food market for 800 years from 1135 until its controversial demolition in 1969, now the Forum des Halles shopping centre",
+    "latitude": 48.861878,
+    "longitude": 2.347138,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 30,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Forum des Halles",
+      "Les Champeaux"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In the 13th century, rue de la Ferronnerie — just steps from Les Halles — was the stronghold of the iron trade after which it was named: a narrow, congested street cluttered with blacksmiths' and ironmongers' stalls. It was still much the same on 14 May 1610 when the royal coach carrying Henri IV was held up in traffic on his way from the Louvre to the Arsenal near the Bastille, where his minister Sully was residing. The King was absorbed in a letter when a man named Ravaillac jumped onto the coach and stabbed him to death. Ravaillac was declared mentally deranged but was nevertheless sentenced to be drawn and quartered on Place de Grève — today's Place de l'Hôtel-de-Ville — a sentence speedily carried out just thirteen days after the crime.",
+        "lens": "dark_history",
+        "duration_sec": 52,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "a man named Ravaillac jumped on to the coach and stabbed him. The assassin was declared mentally deranged but was nevertheless sentenced to be quartered",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At no. 93 rue Saint-Honoré, an apothecary bore witness to two of France's most traumatic royal events across nearly two centuries. An apothecary was already trading here on 14 May 1610, when Henri IV was stabbed by Ravaillac on the neighbouring rue de la Ferronnerie. One hundred and eighty-three years later, on the day of Marie-Antoinette's execution on 16 October 1793, the successor apothecary at the same address closed his shop 'Au Bourdon d'Or' as a sign of mourning.",
+        "lens": "hidden_history",
+        "duration_sec": 36,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "An earlier apothecary was trading here on 14 May 1610, when Henri IV was stabbed on the neighbouring rue de la Ferronnerie",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The corner house at 2 rue Sauval, in the heart of Les Halles, was the birthplace of Molière in 1622 — the playwright whose stormy funeral at Saint-Eustache nearby would one day require the King's personal intervention. The original house was later demolished and replaced by the one still standing today, where the composer Richard Wagner reportedly stayed in 1839.",
+        "lens": "famous_residents",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "The corner house at 2 rue Sauval... was the birthplace of Moliére in 1622. The house was later demolished and replaced by the one still standing today, where Wagner stayed in 1839",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "partially verified"
+      },
+      {
+        "script_body": "At the corner of rue Vauvilliers, near Les Halles, the first episode of the Fronde — the revolt against Louis XIV's mentor and Minister, Cardinal Mazarin — began in August 1648.",
+        "lens": "social_change",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "the corner of rue Vauvilliers where the first episode of the Fronde, the revolt against Louis XIV's mentor and Minister, Mazarin, began in August 1648",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "unverified"
+      },
+      {
+        "script_body": "Outside Saint-Eustache, the streets of rue du Jour, rue Montmartre and rue Montorgueil have retained the atmosphere of the old Les Halles market. Although trendy boutiques are gradually taking over, they have not yet ousted the colourful displays of food that spill into the streets — mainly on rue Montorgueil — ravishing the eye and delighting the palate. Nearby, at no. 6 rue Coquillère, Le Pied de Cochon has preserved its Belle Époque setting and still serves its famous onion soup.",
+        "lens": "markets_street_food",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "trendy boutiques are gradually taking over, they have not as yet ousted the colourful displays of food that spill into the streets",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
+    }
+  },
+  {
+    "name": "Place de la Concorde",
+    "short_description": "Largest square in Paris where over 1,300 people were guillotined in a single month during the 1794 Reign of Terror",
+    "latitude": 48.865608,
+    "longitude": 2.321038,
+    "importance_tier": 4,
+    "trigger_radius": 50,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Place de la Revolution"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "For a brief period, rue Saint-Honoré became the sinister route of the tumbrils on their way from the Conciergerie prison to the guillotine on Place de la Révolution — today's Place de la Concorde. On 16 October 1793, the painter Jacques-Louis David positioned himself on a corner house balcony at rue des Prouvaires and 54 rue Saint-Honoré, from where he had a clear view of Marie-Antoinette carried to her doom, her hands tied behind her back — a tragic sight he captured in his shattering portrait of the Queen. On the same day, the apothecary at no. 93 rue Saint-Honoré closed his shop 'Au Bourdon d'Or' as a sign of mourning — a quiet gesture in a city gripped by revolutionary justice.",
+        "lens": "dark_history",
+        "duration_sec": 48,
+        "kid_friendly": "no",
+        "physical_cues": [],
+        "source_passage": "the painter David was posted on the corner house balcony of rue des Prouvaires... from where he had a good view of Marie-Antoinette carried to her doom, her hands tied behind her back",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
+    }
+  },
+  {
+    "name": "Pont Neuf",
+    "short_description": "Oldest surviving bridge in Paris built in 1578, the first stone bridge without houses on it, with 381 carved grotesque faces",
+    "latitude": 48.85675,
+    "longitude": 2.341033,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "New Bridge"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Henri IV's early amorous adventures had gained him the affectionate nickname 'le Vert Galant' — the amorous youth. But the charm faded as he grew older. The population resented the fact that he had at least eleven illegitimate children scattered throughout the kingdom, which all but plunged France into civil strife yet again. Furthermore, he had expressed his intention to marry his favourite mistress, Gabrielle d'Estrées — an outrage to the raison d'état. Only her premature death prevented this infamy. As Femme Ladoucette, a Dame des Halles, had expressed it in her letter to the Queen: in the kingdom of France, one separated the sheep from the goats. The assassination on rue de la Ferronnerie in 1610 was not the first attempt on the King's life — his scandalous personal conduct had made him many enemies.",
+        "lens": "hidden_history",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "physical_cues": [],
+        "source_passage": "his early amorous adventures had gained him the affectionate nickname of le Vert Galant (the amorous youth), the charm faded as he grew older",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
+          "page": "Châtelet to Vert-Galant"
+        },
+        "fact_check_status": "corrected"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-04-04T03:00:06Z",
+      "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
+    }
+  }
+]

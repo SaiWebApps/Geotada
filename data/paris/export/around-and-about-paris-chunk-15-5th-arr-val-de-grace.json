@@ -1,0 +1,109 @@
+[
+  {
+    "name": "Val-de-Grace",
+    "short_description": "17th-century royal abbey commissioned by Anne of Austria, featuring a Mignard-painted dome, later converted into a military hospital.",
+    "latitude": 48.839,
+    "longitude": 2.344,
+    "importance_tier": 2,
+    "trigger_radius": 40,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Val-de-Grâce",
+      "Abbaye du Val-de-Grâce",
+      "Église du Val-de-Grâce"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Val-de-Grace owes its existence to a desperate royal prayer. Anne of Austria, wife of Louis XIII, had been childless for over twenty years when she vowed to build a temple to God if granted an heir. In 1638 her prayer was answered with the birth of the future Louis XIV. Seven years later, she brought the young king to lay the cornerstone of what would become one of the finest Baroque churches in Paris.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up at the graceful dome designed by Mansart and Lemercier",
+          "Notice the grand facade of the 17th-century abbey"
+        ],
+        "source_passage": "the story of the Val-de-Grace began with a vow, when the 36-year-old childless Anne of Austria vowed to build a temple to God should she be granted an heir.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Step inside and look up into the dome. Pierre Mignard spent months painting an astonishing fresco depicting over two hundred figures — prophets, saints, martyrs, and recognizable portraits including Queen Anne of Austria herself. It was the first dome fresco of its scale in Paris. The dome, designed by Lemercier after Mansart was dismissed from the project, inspired the later domes of the Pantheon and Les Invalides.",
+        "lens": "historic_arch",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Look up into the dome to see the Mignard fresco",
+          "Note the gilded decorative bands on the exterior dome"
+        ],
+        "source_passage": "designed by Francois Mansart and Lemercier, who took particular pride in its graceful dome. Inside the dome Mignard painted an astounding mural depicting 200 figures.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 1793, the French Revolution transformed this royal abbey into something utterly different. The Convention decreed it would become a military hospital and medical school — a role it would serve for over two centuries. By 1796 the hospital was operational, and Napoleon III later added a medical library housing an extraordinary collection of theses.",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Notice the contrast between the Baroque church and the surrounding hospital buildings",
+          "Look for traces of the restored cloister and garden"
+        ],
+        "source_passage": "In 1793 the Convention decided to convert the abbey into a hospital and a medical school for the army, a decision that came into effect in 1796.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "After decades of hospital expansion took its toll on the historic buildings, a restoration initiative began in the late 1970s to save the old monument. The chapel, cloister, and formal French garden have been beautifully restored. A museum of the army's health service was added, celebrating the site's unique dual identity as a place of both devotion and healing.",
+        "lens": "hidden_history",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Visit the restored cloister and garden a la francaise",
+          "Look for the museum of the army health service"
+        ],
+        "source_passage": "in 1978 a happy initiative was taken to restore the old monument and separate its activities from the rest of the hospital.",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The beauty of the Val-de-Grace was recognized from the very start. Germain Brice, in the first guidebook to Paris published in 1684, wrote: 'Foreigners here must agree that things in France can be made beautiful and regular like those one goes to admire in Italy.' It was a bold claim — that Paris could rival Rome — and the Val-de-Grace was his proof.",
+        "lens": "literary_heritage",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Stand back and take in the harmonious Baroque facade that so impressed 17th-century visitors"
+        ],
+        "source_passage": "you will perhaps agree with Guillaume Brice who, in 1685, wrote in the first guidebook to Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 5th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  }
+]

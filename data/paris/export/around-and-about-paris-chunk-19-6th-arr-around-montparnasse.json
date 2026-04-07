@@ -1,0 +1,479 @@
+[
+  {
+    "name": "La Closerie des Lilas",
+    "short_description": "Historic café-brasserie on Boulevard du Montparnasse, epicentre of the literary avant-garde; haunt of Hemingway, Picasso, and Paul Fort.",
+    "latitude": 48.8401564,
+    "longitude": 2.3359194,
+    "importance_tier": 2,
+    "trigger_radius": 60,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Closerie des Lilas",
+      "La Closerie"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "In 1905 this modest guinguette with its plane-tree shade became ground zero for a revolution in art. Poets André Salmon and Paul Fort launched their magazine Vers et Prose here, sending out invitations — Salmon claimed 23,000 letters, Fort a more modest 10,000 — to every artist they could think of. The gambit worked: Montparnasse became the world capital of art, and La Closerie its beating heart. By 1912 Fort had been elected 'Prince des Poètes,' and every Tuesday night he presided over up to 200 writers, painters, musicians and critics. Picasso, Apollinaire, Max Jacob, Léon-Paul Fargue and Alfred Jarry were regulars. Jarry once drew a pistol, fired at the mirror, and told the horrified young woman beside him: 'Now that the ice is broken, let us talk!'",
+        "lens": "literary_heritage",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Terrace on the corner of Boulevard du Montparnasse and Avenue de l'Observatoire",
+          "Brass plaques on café tables",
+          "Plane trees over the terrace"
+        ],
+        "source_passage": "In 1905 La Closerie des Lilas was put on the map",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "La Closerie des Lilas has never had a single lilac. Not one. When it first opened in the 1840s as a simple outdoor tavern — a guinguette — it sat under plane trees, not lilacs. The lilacs belonged to a rival establishment across the Boulevard, and the name was simply borrowed. The café stood at the edge of the Latin Quarter, a convenient stop for stage-coaches heading to Fontainebleau, and it was already pulling in Baudelaire, Verlaine, Strindberg and Oscar Wilde before anyone had heard of Montparnasse.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Plane trees along the terrace",
+          "Corner of Boulevard du Montparnasse and Avenue de l'Observatoire"
+        ],
+        "source_passage": "Despite its name, La Closerie has never had lilacs",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "When Hemingway returned from Canada with his newborn son Bumby in early 1924, he found La Closerie quiet and melancholy — a portrait immortalised by Paul Fort as 'Café des ombres.' For Hemingway, who lived just a few doors down at 113 rue Notre-Dame-des-Champs above a noisy sawmill, this was perfect. He came here to escape the racket and write. It was here that he worked on The Sun Also Rises, met Scott Fitzgerald and read the manuscript of The Great Gatsby, and read parts of The Torrents of Spring to John Dos Passos.",
+        "lens": "literary_heritage",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Back corner banquette",
+          "Brass plaque marking Hemingway's table",
+          "View up Avenue de l'Observatoire toward Ney's statue"
+        ],
+        "source_passage": "When Hemingway, back from Canada with the newborn Bumby, discovered the Closerie in 1924",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Statue of Marshal Ney",
+    "short_description": "Bronze statue by François Rude of Marshal Michel Ney, inaugurated 7 December 1853 near the corner of Avenue de l'Observatoire and Boulevard du Montparnasse.",
+    "latitude": 48.8406,
+    "longitude": 2.3351,
+    "importance_tier": 4,
+    "trigger_radius": 40,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Monument Marshal Ney",
+      "Statue Maréchal Ney"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "This bronze hero with sword aloft was one of Napoleon's greatest marshals — 'le Brave des braves' — and it cost him his life. After Napoleon's Hundred Days return, the Restoration government could not forgive Ney for rejoining his emperor. The Tribunal of Peers, meeting at the Palais du Luxembourg, condemned him for high treason despite a brilliant defence. On 7 December 1815 he was led to the corner of Avenue de l'Observatoire and Boulevard du Port-Royal and shot by a firing squad. The statue by sculptor François Rude was unveiled on the 38th anniversary of that execution — 7 December 1853 — erected on the very spot. When the Port-Royal railway station was extended, it was moved to its present location, where Hemingway liked to stop and contemplate 'my old friend, the statue of Marshal Ney with his sword out.'",
+        "lens": "war_conflict",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Bronze statue of Ney with sword raised",
+          "Pedestal inscribed with battle honours",
+          "Avenue de l'Observatoire behind"
+        ],
+        "source_passage": "On 7 December 1815, Ney was led to the present corner of Avenue de l'Observatoire and Boulevard du Port-Royal and shot",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Fontaine des Quatre-Parties-du-Monde",
+    "short_description": "Monumental 1874 fountain by Jean-Baptiste Carpeaux in the Jardin Marco Polo on Avenue de l'Observatoire.",
+    "latitude": 48.8439,
+    "longitude": 2.336,
+    "importance_tier": 3,
+    "trigger_radius": 50,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Fontaine de l'Observatoire",
+      "Carpeaux Fountain"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Step along Avenue de l'Observatoire and you come face to face with one of Paris's most spectacular pieces of public sculpture. Jean-Baptiste Carpeaux's fountain, completed in 1874, shows four women — representing Europe, Asia, Africa and the Americas — their bodies twisting dynamically as they support a great celestial sphere, the zodiac band encircling it. Horses rear in the basin below, and the whole composition conveys breathtaking movement. It sits on the axis of the Paris meridian, in the garden named for the explorer Marco Polo.",
+        "lens": "visual_art",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Four female bronze figures supporting the globe",
+          "Horses rearing in surrounding basin",
+          "Zodiac band around sphere"
+        ],
+        "source_passage": "Carpeaux's impressive fountain, The Four Corners of the World",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Rue Notre-Dame-des-Champs",
+    "short_description": "Historic Left Bank street associated with Hemingway's sawmill apartment and a medieval quarry route under Catherine de Medici.",
+    "latitude": 48.8445,
+    "longitude": 2.3329,
+    "importance_tier": 4,
+    "trigger_radius": 80,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Notre-Dame-des-Champs"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Before it was an address for artists and intellectuals, rue Notre-Dame-des-Champs was a country lane used to haul quarry stones. At the time of Catherine de Medici it was the route for transporting building material from the quarries south of Paris to her new Tuileries Palace under construction. By the late 19th century the lane had become a respectable address dotted with convents, attracting artists and professors who found its tranquillity appealing, though Balzac had earlier warned that 'robbery was the least of dangers one encountered there.'",
+        "lens": "hidden_history",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Street running south from Boulevard du Montparnasse",
+          "Entrance to Ecole Alsacienne at no. 109",
+          "Gap in house numbers 111 to 115 bis"
+        ],
+        "source_passage": "At the time of Catherine de Medici it was used for the transport of stones",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Ecole Alsacienne",
+    "short_description": "Prestigious Parisian school founded 1874 by Alsatian Protestant academics at 109 rue Notre-Dame-des-Champs; André Gide was an early pupil.",
+    "latitude": 48.8448,
+    "longitude": 2.3325,
+    "importance_tier": 4,
+    "trigger_radius": 35,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "École Alsacienne"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The grand entrance at 109 rue Notre-Dame-des-Champs belongs to the Ecole Alsacienne, founded in 1874 by Protestant teachers and academics who had fled Alsace after the Franco-Prussian War. Their school became a testing ground for progressive education — humanities, openness, tolerance, but without sacrificing academic ambition. One of its earliest notable students was André Gide. The school was non-religious from the start and one of the first to go co-educational, making it a quiet act of resistance against the rigid Catholic hegemony that dominated French schooling.",
+        "lens": "famous_residents",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Entrance facade at 109 rue Notre-Dame-des-Champs",
+          "Institutional gates and courtyard"
+        ],
+        "source_passage": "the prestigious Ecole Alsacienne, which was founded in 1874",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "College Stanislas",
+    "short_description": "Traditional Catholic school in the 6th arr; notable alumni include a young Charles de Gaulle.",
+    "latitude": 48.8462,
+    "longitude": 2.331,
+    "importance_tier": 4,
+    "trigger_radius": 35,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Collège Stanislas"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "While the Ecole Alsacienne nurtured freethinkers, its neighbour Collège Stanislas represented the other end of the educational spectrum — traditional, Catholic, rigorous. A 1986 guidebook to the 6th arrondissement gave the Ecole Alsacienne a single line while being effusive about Stanislas, concluding: 'How many of its pupils have suffered its harsh discipline which shapes the best minds!' Among those minds was a young Charles de Gaulle, remembered by a fellow student who served at mass with the young Charles de Gaulle.",
+        "lens": "famous_residents",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Imposing institutional facade"
+        ],
+        "source_passage": "writer Roger Wild, who remembered having served at mass one day with a 14-year-old boy named Charles de Gaulle",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "disputed"
+      }
+    ]
+  },
+  {
+    "name": "3 Rue Joseph-Bara",
+    "short_description": "Artists' studios at 3 rue Joseph-Bara, social hub of the Ecole de Paris in the 1920s; home to Kisling, Modigliani, Pascin.",
+    "latitude": 48.843,
+    "longitude": 2.3345,
+    "importance_tier": 4,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Kisling's studio"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Turn into rue Joseph-Bara and stop at number 3. This cluster of artists' studios — climbing erratically from street-level to the rooftop — was the social epicentre of Montparnasse in the 1920s. In 1913 the painter Kisling moved into the attic, romantically picturesque, baking in summer, freezing in winter. He didn't mind. His studio became the party hub for the entire Ecole de Paris: Modigliani, Cocteau, Radiguet, Max Jacob and Pascin all crowded in. Modigliani, put up by his art dealer Zborowski in the same building, only had to climb the stairs. André Salmon moved across the street when he married. The morning after one wild party Kisling was heard to complain: 'They have peed on my sketches!'",
+        "lens": "famous_residents",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Irregular studio building with pitched grey roof",
+          "Crooked gutters and quaint courtyard"
+        ],
+        "source_passage": "His attic became the social hub of Montparnasse, especially during the crazy years",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Musee Zadkine",
+    "short_description": "Studio-museum at 100 bis rue d'Assas dedicated to sculptor Ossip Zadkine (lived 1928–1967); free city museum.",
+    "latitude": 48.843059,
+    "longitude": 2.334026,
+    "importance_tier": 3,
+    "trigger_radius": 45,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Musée Zadkine",
+      "Zadkine Museum"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Tucked behind the respectable facade of rue d'Assas at number 100 bis is an oasis: the home and studio of sculptor Ossip Zadkine. He arrived in Paris with nothing, endured years of destitution, and never romanticised the experience. By 1928 he could afford to buy this provincial house with its enchanting garden, and he never left. Today it is a free city museum, richly endowed with some 400 sculptures, drawings and lithographs he bequeathed to Paris. The garden is still filled, as he described it, with the song of birds.",
+        "lens": "visual_art",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Discreet entrance on rue d'Assas",
+          "Garden with sculptures among trees and birdsong",
+          "Small-scale studio and workshop inside"
+        ],
+        "source_passage": "Zadkine hated the life of destitution he was forced to live during his first years in Paris",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "Reid Hall",
+    "short_description": "Historic American academic residence at 6 rue de Chevreuse; now a Columbia University global centre.",
+    "latitude": 48.8427,
+    "longitude": 2.333,
+    "importance_tier": 4,
+    "trigger_radius": 35,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Reid Hall Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At 6 rue de Chevreuse the exquisite premises of Reid Hall hide behind an unassuming street facade. Elisabeth Mills Reid, wife of Whitelaw Reid, the American minister to France, bought the property in 1893 and established the American Girls' Club — a hall of residence for young American women, mostly art students, who came to Paris seeking a creative education denied them at home. At the outbreak of World War One the building was converted into a military hospital. Today it is a Columbia University global centre, its beautiful garden still open to curious visitors.",
+        "lens": "social_change",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Entrance at 6 rue de Chevreuse",
+          "Formal garden and courtyard",
+          "19th-century residential character"
+        ],
+        "source_passage": "at n° 6 are the superb premises of Reid Hall",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Academie de la Grande-Chaumiere",
+    "short_description": "Celebrated independent art academy at 14 rue de la Grande-Chaumière, founded 1902; teachers included Bourdelle, later Giacometti and Léger.",
+    "latitude": 48.8422,
+    "longitude": 2.3318,
+    "importance_tier": 3,
+    "trigger_radius": 35,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Académie de la Grande-Chaumière"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "Rue de la Grande-Chaumière became the indispensable art school of Montparnasse, offering the freedom of expression that the Beaux-Arts denied. The Académie at number 14 opened in 1902 and its sister academy Colarossi was next door at number 10. Every Monday morning a 'models' fair' was held on the corner with Boulevard du Montparnasse, where artists chose from Italian models. A three-hour session cost five francs — a luxury only established artists could afford. Under Bourdelle the Russian and Polish painters of the Ecole de Paris found guidance here; a generation later, Giacometti and Léger were among the teachers.",
+        "lens": "visual_art",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Académie de la Grande-Chaumière at no. 14",
+          "Art supply shops on the street",
+          "Corner with Boulevard du Montparnasse"
+        ],
+        "source_passage": "specifically at the Académie de la Grande-Chaumiére at n° 14",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "26 Rue Vavin (Sauvage Building)",
+    "short_description": "Stepped-terrace apartment building at 26 rue Vavin designed by Henri Sauvage (1912–14), clad in white and blue ceramic tiles.",
+    "latitude": 48.8428,
+    "longitude": 2.334,
+    "importance_tier": 3,
+    "trigger_radius": 30,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Immeuble Sauvage",
+      "Carreaux Métro building"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "At the junction of rue Vavin you'll spot a building that looks like it belongs on a Métro platform. The striking stepped-terrace apartment block at number 26, designed by Henri Sauvage and built in 1912–14, is entirely clad in white and blue glazed ceramic tiles — hence its nickname 'Carreaux Métro.' Each upper floor is set back from the one below, giving each apartment a terrace and flooding the building with light. Sauvage chose the tiles for hygiene as much as beauty — easy to wash, easy to maintain. It was a radical idea for its time, patented in 1912, and it still draws architectural pilgrims today.",
+        "lens": "modern_design",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Stepped terrace silhouette",
+          "White and blue ceramic tile facade",
+          "Contrast with Haussmann buildings either side"
+        ],
+        "source_passage": "the extraordinary building at n° 26, put up by the architect Sauvage in 1912",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "La Rotonde",
+    "short_description": "Legendary Montparnasse café opened 1911 by Victor Libion; refuge for Modigliani, Lenin, Trotsky and the Ecole de Paris.",
+    "latitude": 48.8424,
+    "longitude": 2.3292,
+    "importance_tier": 2,
+    "trigger_radius": 50,
+    "typical_duration_min": 5,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Café de la Rotonde",
+      "La Rotonde Montparnasse"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "script_body": "The Rotonde started life as a shoe shop. In 1911 Victor Libion bought it, knocked through to a café, and fell in love with his artist clientele. He subscribed to foreign newspapers on their behalf, looked the other way when a croissant disappeared, and let customers sit for hours over an empty cup. He collected their paintings for the walls and created the atmosphere that made Montparnasse. But when he extended that same generosity to Russian revolutionaries — Lenin and Trotsky among them — and refused to inform on them to police, he signed his own ruin. The police eventually closed him down over American cigarettes. Libion sold up, moved south, and died a broken man, having been cheated out of the very Modigliani paintings he'd been given in lieu of café bills.",
+        "lens": "social_change",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Corner of Boulevard du Montparnasse and Boulevard Raspail",
+          "Large terrace at Carrefour Vavin",
+          "Original 1911 building refurbished"
+        ],
+        "source_passage": "The Rotonde started as a shoe shop, which was bought by Libion in 1911",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "By the early 1910s La Rotonde had become the unofficial embassy of the Ecole de Paris. Modigliani, Soutine, Picasso, Apollinaire, Rivera — they all passed through. Modigliani's passionate, short-lived affair with English poetess Beatrice Hastings played out across these café tables. It was the new centre of gravity for the colony of painters who had outgrown La Closerie — until the Rotonde too lost its soul when Libion sold up.",
+        "lens": "famous_residents",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "physical_cues": [
+          "Terrace at Carrefour Vavin",
+          "Historic photos of original café displayed inside"
+        ],
+        "source_passage": "within a year the colony had migrated to a new centre of gravity at the newly-opened Carrefour Vavin",
+        "source_attribution": {
+          "book_title": "Around and About Paris",
+          "author": "Thirza Vallois",
+          "chapter": "The 6th Arrondissement",
+          "page": ""
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  }
+]
