@@ -6,6 +6,7 @@
 <title>Travlr — Content Viewer</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-editable@1.2.0/src/Leaflet.Editable.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #0f0f0f; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; }
@@ -101,6 +102,10 @@
   /* Contents section heading */
   .contents-section h3 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
   .collapsed { display: none; }
+
+  /* Leaflet-editable vertex handles */
+  .leaflet-vertex-icon { width: 10px !important; height: 10px !important; margin-left: -5px !important; margin-top: -5px !important; background: #e67e22 !important; border: 2px solid #fff !important; border-radius: 50% !important; }
+  .leaflet-middle-icon { width: 8px !important; height: 8px !important; margin-left: -4px !important; margin-top: -4px !important; background: #888 !important; border: 1px solid #ccc !important; border-radius: 50% !important; opacity: 0.6 !important; }
 </style>
 </head>
 <body>
@@ -181,6 +186,15 @@ function parseWkt(wktStr) {
   }
 }
 
+function toWkt(latlngs) {
+  // latlngs is an array of [lat, lng] — convert to WKT POLYGON((lng lat, ...))
+  const ring = latlngs[0] || latlngs; // handle nested array from Leaflet
+  const coords = ring.map(ll => `${ll.lng.toFixed(6)} ${ll.lat.toFixed(6)}`);
+  // Close the ring if not already closed
+  if (coords[0] !== coords[coords.length - 1]) coords.push(coords[0]);
+  return `POLYGON((${coords.join(', ')}))`;
+}
+
 const AREA_COLORS = {
   city:         { color: '#666', fillColor: 'transparent', weight: 1, dashArray: '8 4', interactive: false },
   district:     { color: '#5b9bd5', fillColor: 'rgba(70,130,180,0.15)', weight: 2 },
@@ -219,7 +233,7 @@ async function loadCity(city) {
   document.getElementById('emptyState')?.remove();
 
   if (!map) {
-    map = L.map('map', { zoomControl: true }).setView([city.lat, city.lng], city.zoom);
+    map = L.map('map', { zoomControl: true, editable: true }).setView([city.lat, city.lng], city.zoom);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       attribution: '© OpenStreetMap © CARTO',
       maxZoom: 19
@@ -395,6 +409,24 @@ async function loadCity(city) {
 
         polygon.on('click', () => {
           if (!editMode) selectArea(area);
+        });
+
+        // Auto-save on vertex drag in edit mode
+        polygon.on('editable:vertex:dragend', async () => {
+          const wkt = toWkt(polygon.getLatLngs());
+          try {
+            const resp = await fetch(`${API}/nodes/Area/${area.id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ properties: { boundary: wkt } })
+            });
+            if (!resp.ok) throw new Error(`${resp.status} ${await resp.text()}`);
+            area.properties.boundary = wkt;
+            showToast(`Saved boundary: ${area.properties.name}`, 'success');
+          } catch (err) {
+            console.error('Boundary save failed', err);
+            showToast(`Save failed: ${area.properties.name}`, 'error');
+          }
         });
       }
 
@@ -723,8 +755,16 @@ function toggleEditMode() {
     if (editMode) m.dragging?.enable();
     else m.dragging?.disable();
   });
+  // Enable/disable polygon vertex editing
+  areaPolygons.eachLayer(layer => {
+    if (!layer._areaData) return;
+    const areaType = layer._areaData.properties?.area_type;
+    if (areaType === 'city') return; // city polygon not editable
+    if (editMode) layer.enableEdit();
+    else layer.disableEdit();
+  });
   if (editMode) {
-    showToast('Edit mode ON — drag pins to fix POI positions. Drops auto-save.', 'success');
+    showToast('Edit mode ON — drag pins or polygon vertices. Changes auto-save.', 'success');
   }
 }
 document.getElementById('editToggle').addEventListener('click', toggleEditMode);
