@@ -100,6 +100,7 @@
 
   /* Contents section heading */
   .contents-section h3 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
+  .collapsed { display: none; }
 </style>
 </head>
 <body>
@@ -181,12 +182,15 @@ function parseWkt(wktStr) {
 }
 
 const AREA_COLORS = {
-  city:         { color: '#666', fillColor: 'transparent', weight: 1, dashArray: '8 4' },
+  city:         { color: '#666', fillColor: 'transparent', weight: 1, dashArray: '8 4', interactive: false },
   district:     { color: '#5b9bd5', fillColor: 'rgba(70,130,180,0.15)', weight: 2 },
   neighborhood: { color: '#6dca8d', fillColor: 'rgba(100,200,100,0.12)', weight: 2 },
   island:       { color: '#e6a85c', fillColor: 'rgba(230,168,92,0.18)', weight: 2 },
   corridor:     { color: '#b48eda', fillColor: 'rgba(180,100,220,0.18)', weight: 2 },
 };
+
+// Render order: city first (back), districts, then neighborhoods/islands/corridors on top
+const AREA_TYPE_ORDER = { city: 0, district: 1, neighborhood: 2, island: 2, corridor: 2 };
 
 // ── City loading ──
 
@@ -220,6 +224,10 @@ async function loadCity(city) {
       attribution: '© OpenStreetMap © CARTO',
       maxZoom: 19
     }).addTo(map);
+    // Custom panes for area layering: city behind districts behind smaller areas
+    map.createPane('areaCity').style.zIndex = 350;
+    map.createPane('areaDistrict').style.zIndex = 360;
+    map.createPane('areaDetail').style.zIndex = 370;
   } else {
     map.setView([city.lat, city.lng], city.zoom);
   }
@@ -351,7 +359,14 @@ async function loadCity(city) {
 
     allAreas = rawAreas.filter(a => a.properties?.city_name === city.name);
 
-    allAreas.forEach(area => {
+    // Sort: city first (back), then districts, then smaller areas on top
+    const sorted = [...allAreas].sort((a, b) => {
+      const orderA = AREA_TYPE_ORDER[a.properties?.area_type] ?? 2;
+      const orderB = AREA_TYPE_ORDER[b.properties?.area_type] ?? 2;
+      return orderA - orderB;
+    });
+
+    sorted.forEach(area => {
       const boundary = area.properties?.boundary;
       if (!boundary) return;
       const coords = parseWkt(boundary);
@@ -360,22 +375,28 @@ async function loadCity(city) {
       const areaType = area.properties?.area_type || 'neighborhood';
       const style = AREA_COLORS[areaType] || AREA_COLORS.neighborhood;
 
+      const pane = areaType === 'city' ? 'areaCity' : areaType === 'district' ? 'areaDistrict' : 'areaDetail';
+
       const polygon = L.polygon(coords, {
         color: style.color,
         fillColor: style.fillColor,
         fillOpacity: 1,
         weight: style.weight,
         dashArray: style.dashArray || null,
+        interactive: style.interactive !== false,
+        pane: pane,
       });
 
-      polygon.bindTooltip(esc(area.properties.name), {
-        direction: 'center',
-        className: 'poi-tooltip'
-      });
+      if (style.interactive !== false) {
+        polygon.bindTooltip(esc(area.properties.name), {
+          direction: 'center',
+          className: 'poi-tooltip'
+        });
 
-      polygon.on('click', () => {
-        if (!editMode) selectArea(area);
-      });
+        polygon.on('click', () => {
+          if (!editMode) selectArea(area);
+        });
+      }
 
       polygon._areaData = area;
       areaPolygons.addLayer(polygon);
@@ -627,10 +648,18 @@ function renderAreaDetail(area, beats, contents) {
     subAreasHtml += '</div>';
   }
 
-  // POIs HTML
+  // POIs HTML — collapse behind toggle when sub-areas exist (avoids showing 181 POIs at city level)
   let poisHtml = '';
   if (pois.length > 0) {
-    poisHtml = `<div class="contents-section"><h3>Points of Interest</h3>`;
+    const collapsed = subAreas.length > 0;
+    const toggleId = 'poi-list-' + Date.now();
+    poisHtml = `<div class="contents-section">`;
+    if (collapsed) {
+      poisHtml += `<h3 class="toggle-header" onclick="document.getElementById('${toggleId}').classList.toggle('collapsed')" style="cursor:pointer;">Points of Interest (${pois.length}) ▸</h3>`;
+      poisHtml += `<div id="${toggleId}" class="collapsed">`;
+    } else {
+      poisHtml += `<h3>Points of Interest</h3>`;
+    }
     pois.forEach(p => {
       poisHtml += `
         <div class="content-item" onclick="navigateToContainedPoi('${escAttr(p.name)}')">
@@ -639,6 +668,7 @@ function renderAreaDetail(area, beats, contents) {
         </div>
       `;
     });
+    if (collapsed) poisHtml += '</div>';
     poisHtml += '</div>';
   }
 
