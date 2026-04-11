@@ -15,8 +15,8 @@ from src.schema.definitions import RELATIONSHIP_TYPES
 
 
 class TestRelType:
-    def test_has_eleven_types(self):
-        assert len(RelType) == 11
+    def test_has_twelve_types(self):
+        assert len(RelType) == 12
 
     def test_all_expected_types_present(self):
         expected = set(RELATIONSHIP_TYPES)

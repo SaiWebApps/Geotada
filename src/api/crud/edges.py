@@ -90,7 +90,7 @@ def create_edge(
     for key, val in properties.items():
         params[key] = val
 
-    use_merge = rel_type in ("HAS_BEAT", "TAGGED_WITH")
+    use_merge = rel_type in ("HAS_BEAT", "TAGGED_WITH", "WITHIN")
 
     if use_merge:
         set_parts = [

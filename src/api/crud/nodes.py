@@ -120,6 +120,27 @@ def create_node(
             f"SET {', '.join(set_parts)} "
             f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
         )
+    elif label == "Area":
+        # MERGE on compound key (name, area_type, city_name) for idempotent Area creation
+        lat = params.pop("centroid_lat")
+        lng = params.pop("centroid_lng")
+        params["lat"] = lat
+        params["lng"] = lng
+
+        set_parts = [
+            "n.id = coalesce(n.id, randomUUID())",
+            "n.created_at = coalesce(n.created_at, datetime())",
+            "n.centroid = point({latitude: $lat, longitude: $lng, srid: 4326})",
+        ]
+        for key in params:
+            if key not in ("lat", "lng", "name", "area_type", "city_name"):
+                set_parts.append(f"n.{key} = ${key}")
+
+        query = (
+            f"MERGE (n:Area {{name: $name, area_type: $area_type, city_name: $city_name}}) "
+            f"SET {', '.join(set_parts)} "
+            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+        )
     else:
         set_parts = [
             "n.id = randomUUID()",
@@ -155,6 +176,17 @@ def update_node(
         if lat is not None and lng is not None:
             set_parts.append(
                 "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})"
+            )
+            params["lat"] = lat
+            params["lng"] = lng
+
+    # Area: convert centroid_lat/centroid_lng to spatial point
+    if label == "Area" and ("centroid_lat" in properties or "centroid_lng" in properties):
+        lat = properties.pop("centroid_lat", None)
+        lng = properties.pop("centroid_lng", None)
+        if lat is not None and lng is not None:
+            set_parts.append(
+                "n.centroid = point({latitude: $lat, longitude: $lng, srid: 4326})"
             )
             params["lat"] = lat
             params["lng"] = lng

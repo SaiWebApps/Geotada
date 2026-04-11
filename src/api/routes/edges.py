@@ -73,6 +73,13 @@ def create_edge(
                 "Use a child or leaf lens.",
             )
 
+    # Validate WITHIN edge source/target labels
+    if rel_type.value == "WITHIN":
+        if body.source.label not in ("POI", "Area"):
+            raise HTTPException(422, "WITHIN source must be POI or Area")
+        if body.target.label != "Area":
+            raise HTTPException(422, "WITHIN target must be Area")
+
     result = crud.create_edge(
         session,
         rel_type.value,

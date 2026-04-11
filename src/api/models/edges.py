@@ -22,6 +22,7 @@ class RelType(str, Enum):
     HAS_BEAT = "HAS_BEAT"
     TAGGED_WITH = "TAGGED_WITH"
     IS_PARENT_OF = "IS_PARENT_OF"
+    WITHIN = "WITHIN"
 
 
 class EdgeEndpoint(BaseModel):

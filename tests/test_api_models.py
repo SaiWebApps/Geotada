@@ -12,8 +12,8 @@ from src.api.models.nodes import (
 
 
 class TestNodeLabel:
-    def test_has_seven_labels(self):
-        assert len(NodeLabel) == 7
+    def test_has_eight_labels(self):
+        assert len(NodeLabel) == 8
 
     def test_all_expected_labels_present(self):
         expected = {
@@ -24,6 +24,7 @@ class TestNodeLabel:
             "ItineraryItem",
             "POI",
             "NarrativeBeat",
+            "Area",
         }
         assert {label.value for label in NodeLabel} == expected
 

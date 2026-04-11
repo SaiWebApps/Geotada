@@ -12,8 +12,8 @@ from src.schema.definitions import (
 
 class TestUniqueConstraints:
     def test_count_matches_schema_v3(self):
-        """Schema_v3 §3 defines 9 unique constraints."""
-        assert len(UNIQUE_CONSTRAINTS) == 9
+        """Schema_v3 §3 defines 10 unique constraints (incl. Area)."""
+        assert len(UNIQUE_CONSTRAINTS) == 10
 
     def test_constraint_names_are_unique(self):
         names = [c.name for c in UNIQUE_CONSTRAINTS]
@@ -35,6 +35,12 @@ class TestIndexes:
         assert poi_indexes[0].index_type == "POINT"
         assert poi_indexes[0].properties == ("location",)
 
+    def test_area_spatial_index_exists(self):
+        area_indexes = [i for i in INDEXES if i.label == "Area"]
+        assert len(area_indexes) == 1
+        assert area_indexes[0].index_type == "POINT"
+        assert area_indexes[0].properties == ("centroid",)
+
     def test_narrative_beat_composite_index(self):
         nb_indexes = [i for i in INDEXES if i.label == "NarrativeBeat"]
         assert len(nb_indexes) == 1
@@ -42,9 +48,9 @@ class TestIndexes:
 
 
 class TestRelationships:
-    def test_eleven_relationship_types(self):
-        """Schema_v3 §4 defines exactly 11 relationships."""
-        assert len(RELATIONSHIP_TYPES) == 11
+    def test_twelve_relationship_types(self):
+        """Schema_v3 §4 defines exactly 12 relationships (incl. WITHIN)."""
+        assert len(RELATIONSHIP_TYPES) == 12
 
     def test_all_expected_types_present(self):
         expected = {
@@ -59,20 +65,23 @@ class TestRelationships:
             "HAS_BEAT",
             "TAGGED_WITH",
             "IS_PARENT_OF",
+            "WITHIN",
         }
         assert set(RELATIONSHIP_TYPES) == expected
 
 
 class TestLenses:
-    def test_eleven_mvp_lenses(self):
-        """11 top-level lenses in the hybrid hierarchy."""
-        assert len(MVP_LENSES) == 11
+    def test_eight_parent_lenses(self):
+        """8 universal parent lenses — the genres that never change."""
+        assert len(MVP_LENSES) == 8
 
-    def test_eight_dag_child_lenses(self):
-        assert len(DAG_CHILD_LENSES) == 8
+    def test_twentyone_universal_child_lenses(self):
+        """21 universal child lenses seeded globally."""
+        assert len(DAG_CHILD_LENSES) == 21
 
-    def test_sixteen_taggable_lenses(self):
-        assert len(TAGGABLE_LENSES) == 16
+    def test_twentyone_taggable_lenses(self):
+        """21 universal taggable lenses (all children, no parents)."""
+        assert len(TAGGABLE_LENSES) == 21
 
     def test_lens_names_are_unique(self):
         names = [lens["name"] for lens in MVP_LENSES]
@@ -100,7 +109,13 @@ class TestLenses:
                 f"Parent-only slug '{slug}' must not appear in TAGGABLE_LENSES"
             )
 
-    def test_taggable_equals_children_plus_leaves(self):
+    def test_taggable_equals_all_children(self):
+        """All parents have children now, so taggable = all children."""
         child_slugs = {c["name"] for c in DAG_CHILD_LENSES}
-        leaf_slugs = {l["name"] for l in MVP_LENSES if not l.get("is_parent")}
-        assert set(TAGGABLE_LENSES) == child_slugs | leaf_slugs
+        assert set(TAGGABLE_LENSES) == child_slugs
+
+    def test_all_parents_have_children(self):
+        """Every parent lens must have at least one child."""
+        parents_with_children = {c["parent_name"] for c in DAG_CHILD_LENSES}
+        all_parents = {l["name"] for l in MVP_LENSES if l.get("is_parent")}
+        assert all_parents == parents_with_children

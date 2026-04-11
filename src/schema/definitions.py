@@ -45,6 +45,7 @@ UNIQUE_CONSTRAINTS: list[UniqueConstraint] = [
     UniqueConstraint("NarrativeBeat", "id"),
     UniqueConstraint("Lens", "id"),
     UniqueConstraint("Lens", "name"),
+    UniqueConstraint("Area", "id"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -54,6 +55,7 @@ UNIQUE_CONSTRAINTS: list[UniqueConstraint] = [
 INDEXES: list[Index] = [
     Index("POI", ("location",), index_type="POINT"),
     Index("NarrativeBeat", ("active_status", "version"), index_type="RANGE"),
+    Index("Area", ("centroid",), index_type="POINT"),
 ]
 
 # ---------------------------------------------------------------------------
@@ -72,6 +74,7 @@ RELATIONSHIP_TYPES: list[str] = [
     "HAS_BEAT",
     "TAGGED_WITH",
     "IS_PARENT_OF",
+    "WITHIN",
 ]
 
 
@@ -108,47 +111,81 @@ RELATIONSHIP_SCHEMAS: dict[str, list[RelPropertyDef]] = {
         RelPropertyDef("confidence", "float", required=False, default=1.0),
     ],
     "IS_PARENT_OF": [],
+    "WITHIN": [],
 }
 
 # ---------------------------------------------------------------------------
-# MVP Lenses — Living Doc §08
+# Parent Lenses — 8 universal genres (never change)
 # ---------------------------------------------------------------------------
 
 MVP_LENSES: list[dict] = [
     {"name": "history", "display_label": "History", "is_parent": True},
     {"name": "arch_design", "display_label": "Architecture & Design", "is_parent": True},
-    {"name": "music_nightlife", "display_label": "Music & Nightlife", "is_parent": True},
-    {"name": "local_legends", "display_label": "Local Legends & Folklore"},
-    {"name": "food_culinary", "display_label": "Food & Culinary Culture"},
-    {"name": "art_street", "display_label": "Art & Street Culture"},
-    {"name": "literary_film", "display_label": "Literary & Film Locations"},
-    {"name": "religious_spiritual", "display_label": "Religious & Spiritual Sites"},
-    {"name": "nature_green", "display_label": "Nature & Green Spaces"},
-    {"name": "shopping_markets", "display_label": "Shopping & Markets"},
-    {"name": "science_innovation", "display_label": "Science & Innovation"},
+    {"name": "arts_culture", "display_label": "Arts & Culture", "is_parent": True},
+    {"name": "food_drink", "display_label": "Food & Drink", "is_parent": True},
+    {"name": "stories_characters", "display_label": "Stories & Characters", "is_parent": True},
+    {"name": "faith_spirituality", "display_label": "Faith & Spirituality", "is_parent": True},
+    {"name": "nature_landscape", "display_label": "Nature & Landscape", "is_parent": True},
+    {"name": "commerce_innovation", "display_label": "Commerce & Innovation", "is_parent": True},
 ]
 
-# Child lenses — each references a parent via parent_name
+# ---------------------------------------------------------------------------
+# Universal Child Lenses — exist in every city (seeded globally)
+# City-specific children are added by the lens-generate skill per city.
+# ---------------------------------------------------------------------------
+
 DAG_CHILD_LENSES: list[dict] = [
+    # History children
     {"name": "hidden_history", "display_label": "Hidden History", "parent_name": "history"},
-    {"name": "war_revolution", "display_label": "War & Revolution", "parent_name": "history"},
+    {"name": "war_conflict", "display_label": "War & Conflict", "parent_name": "history"},
     {"name": "dark_history", "display_label": "Dark History", "parent_name": "history"},
     {"name": "social_change", "display_label": "Social Change", "parent_name": "history"},
+    # Architecture & Design children
     {"name": "historic_arch", "display_label": "Historic Architecture", "parent_name": "arch_design"},
     {"name": "modern_design", "display_label": "Modern & Contemporary Design", "parent_name": "arch_design"},
-    {"name": "music_heritage", "display_label": "Music Heritage", "parent_name": "music_nightlife"},
-    {"name": "venues_scenes", "display_label": "Venues & Scenes", "parent_name": "music_nightlife"},
+    # Arts & Culture children
+    {"name": "music_heritage", "display_label": "Music Heritage", "parent_name": "arts_culture"},
+    {"name": "visual_art", "display_label": "Visual Art", "parent_name": "arts_culture"},
+    {"name": "street_art", "display_label": "Street Art", "parent_name": "arts_culture"},
+    {"name": "film_tv", "display_label": "Film & TV Locations", "parent_name": "arts_culture"},
+    # Food & Drink children
+    {"name": "historic_cuisine", "display_label": "Historic Cuisine", "parent_name": "food_drink"},
+    {"name": "markets_street_food", "display_label": "Markets & Street Food", "parent_name": "food_drink"},
+    # Stories & Characters children
+    {"name": "local_legends", "display_label": "Local Legends & Folklore", "parent_name": "stories_characters"},
+    {"name": "literary_heritage", "display_label": "Literary Heritage", "parent_name": "stories_characters"},
+    {"name": "famous_residents", "display_label": "Famous Residents", "parent_name": "stories_characters"},
+    # Faith & Spirituality children
+    {"name": "historic_worship", "display_label": "Historic Houses of Worship", "parent_name": "faith_spirituality"},
+    {"name": "sacred_traditions", "display_label": "Sacred Traditions", "parent_name": "faith_spirituality"},
+    # Nature & Landscape children
+    {"name": "parks_gardens", "display_label": "Parks & Gardens", "parent_name": "nature_landscape"},
+    {"name": "waterways_views", "display_label": "Waterways & Views", "parent_name": "nature_landscape"},
+    # Commerce & Innovation children
+    {"name": "historic_markets", "display_label": "Historic Markets & Shopping", "parent_name": "commerce_innovation"},
+    {"name": "science_tech", "display_label": "Science & Technology", "parent_name": "commerce_innovation"},
 ]
 
-# The 16 taggable lenses: 8 children + 8 leaves. Parents are NOT taggable.
+# ---------------------------------------------------------------------------
+# Taggable lenses — only children are taggable, never parents.
+# 21 universal children. City-specific children added at runtime.
+# ---------------------------------------------------------------------------
+
 TAGGABLE_LENSES: list[str] = [
-    # Children of history
-    "hidden_history", "war_revolution", "dark_history", "social_change",
-    # Children of arch_design
+    # History
+    "hidden_history", "war_conflict", "dark_history", "social_change",
+    # Architecture & Design
     "historic_arch", "modern_design",
-    # Children of music_nightlife
-    "music_heritage", "venues_scenes",
-    # Leaves (directly taggable)
-    "local_legends", "food_culinary", "art_street", "literary_film",
-    "religious_spiritual", "nature_green", "shopping_markets", "science_innovation",
+    # Arts & Culture
+    "music_heritage", "visual_art", "street_art", "film_tv",
+    # Food & Drink
+    "historic_cuisine", "markets_street_food",
+    # Stories & Characters
+    "local_legends", "literary_heritage", "famous_residents",
+    # Faith & Spirituality
+    "historic_worship", "sacred_traditions",
+    # Nature & Landscape
+    "parks_gardens", "waterways_views",
+    # Commerce & Innovation
+    "historic_markets", "science_tech",
 ]

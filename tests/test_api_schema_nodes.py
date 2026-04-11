@@ -27,10 +27,10 @@ class TestListNodeSchemas:
         resp = client.get("/api/v1/schema/nodes")
         assert resp.status_code == 200
 
-    def test_returns_seven_types(self, client):
+    def test_returns_eight_types(self, client):
         data = client.get("/api/v1/schema/nodes").json()
-        assert data["total"] == 7
-        assert len(data["items"]) == 7
+        assert data["total"] == 8
+        assert len(data["items"]) == 8
 
     def test_response_has_all_labels(self, client):
         data = client.get("/api/v1/schema/nodes").json()

@@ -27,10 +27,10 @@ class TestListRelSchemas:
         resp = client.get("/api/v1/schema/relationships")
         assert resp.status_code == 200
 
-    def test_returns_eleven_types(self, client):
+    def test_returns_twelve_types(self, client):
         data = client.get("/api/v1/schema/relationships").json()
-        assert data["total"] == 11
-        assert len(data["items"]) == 11
+        assert data["total"] == 12
+        assert len(data["items"]) == 12
 
     def test_response_has_all_rel_types(self, client):
         data = client.get("/api/v1/schema/relationships").json()
