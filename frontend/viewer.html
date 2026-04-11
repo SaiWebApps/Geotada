@@ -75,6 +75,31 @@
   /* Empty state */
   .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #555; text-align: center; gap: 8px; }
   .empty-state .icon { font-size: 48px; opacity: 0.3; }
+
+  /* Area type badges */
+  .badge-district { background: #1e3a5f; color: #5b9bd5; }
+  .badge-neighborhood { background: #1f3d2d; color: #6dca8d; }
+  .badge-island { background: #3d2d1f; color: #e6a85c; }
+  .badge-corridor { background: #2d1f3d; color: #b48eda; }
+  .badge-city { background: #2a2a2a; color: #888; }
+
+  /* Beat source badges */
+  .beat-source { font-size: 10px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .beat-source-area { background: #3d2d1f; color: #e6a85c; }
+  .beat-source-poi { background: #1e3a5f; color: #5b9bd5; }
+
+  /* Content items (sub-areas / POIs in area panel) */
+  .content-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border: 1px solid #333; border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-size: 13px; }
+  .content-item:hover { background: #2a2a2a; }
+  .content-item .item-name { color: #e0e0e0; }
+  .content-item .item-meta { color: #666; font-size: 11px; }
+
+  /* Parent navigation link */
+  .parent-link { font-size: 12px; color: #5b9bd5; cursor: pointer; margin-bottom: 12px; display: inline-block; }
+  .parent-link:hover { text-decoration: underline; }
+
+  /* Contents section heading */
+  .contents-section h3 { font-size: 13px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -111,6 +136,10 @@ let allPois = [];
 let beatCache = {};  // poi name -> beats array
 let selectedPoi = null;
 let editMode = false;
+let allAreas = [];
+let areaPolygons = L.layerGroup();
+let selectedArea = null;
+let parentAreaStack = [];
 
 // ── Toast ──
 function showToast(msg, type = 'success') {
@@ -129,9 +158,35 @@ function esc(s) {
   return d.innerHTML;
 }
 
+function escAttr(s) {
+  return esc(s).replace(/'/g, '&#39;');
+}
+
 function lensLabel(slug) {
   return (slug || 'unknown').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
+
+function parseWkt(wktStr) {
+  try {
+    const inner = wktStr.match(/POLYGON\(\((.+)\)\)/)?.[1];
+    if (!inner) return null;
+    return inner.split(',').map(pair => {
+      const [lng, lat] = pair.trim().split(/\s+/).map(Number);
+      return [lat, lng];  // Leaflet uses [lat, lng]
+    });
+  } catch (e) {
+    console.warn('WKT parse failed:', e);
+    return null;
+  }
+}
+
+const AREA_COLORS = {
+  city:         { color: '#666', fillColor: 'transparent', weight: 1, dashArray: '8 4' },
+  district:     { color: '#5b9bd5', fillColor: 'rgba(70,130,180,0.15)', weight: 2 },
+  neighborhood: { color: '#6dca8d', fillColor: 'rgba(100,200,100,0.12)', weight: 2 },
+  island:       { color: '#e6a85c', fillColor: 'rgba(230,168,92,0.18)', weight: 2 },
+  corridor:     { color: '#b48eda', fillColor: 'rgba(180,100,220,0.18)', weight: 2 },
+};
 
 // ── City loading ──
 
@@ -175,6 +230,10 @@ async function loadCity(city) {
   allPois = [];
   beatCache = {};
   selectedPoi = null;
+  selectedArea = null;
+  parentAreaStack = [];
+  areaPolygons.clearLayers();
+  allAreas = [];
   closePanel();
 
   document.getElementById('stats').textContent = 'Loading…';
@@ -206,8 +265,6 @@ async function loadCity(city) {
     const beatData = await beatResp.json();
     totalBeats = beatData.total || 0;
   } catch (e) {}
-
-  document.getElementById('stats').textContent = `${allPois.length} POIs · ${totalBeats} beats`;
 
   // Add markers
   allPois.forEach((poi, idx) => {
@@ -278,6 +335,58 @@ async function loadCity(city) {
     const group = L.featureGroup(markers);
     map.fitBounds(group.getBounds().pad(0.1));
   }
+
+  // Load Areas
+  try {
+    let areaSkip = 0;
+    let areaTotal = 0;
+    let rawAreas = [];
+    do {
+      const resp = await fetch(`${API}/nodes/Area?limit=200&skip=${areaSkip}`);
+      const data = await resp.json();
+      rawAreas.push(...data.items);
+      areaTotal = data.total;
+      areaSkip += 200;
+    } while (areaSkip < areaTotal);
+
+    allAreas = rawAreas.filter(a => a.properties?.city_name === city.name);
+
+    allAreas.forEach(area => {
+      const boundary = area.properties?.boundary;
+      if (!boundary) return;
+      const coords = parseWkt(boundary);
+      if (!coords) return;
+
+      const areaType = area.properties?.area_type || 'neighborhood';
+      const style = AREA_COLORS[areaType] || AREA_COLORS.neighborhood;
+
+      const polygon = L.polygon(coords, {
+        color: style.color,
+        fillColor: style.fillColor,
+        fillOpacity: 1,
+        weight: style.weight,
+        dashArray: style.dashArray || null,
+      });
+
+      polygon.bindTooltip(esc(area.properties.name), {
+        direction: 'center',
+        className: 'poi-tooltip'
+      });
+
+      polygon.on('click', () => {
+        if (!editMode) selectArea(area);
+      });
+
+      polygon._areaData = area;
+      areaPolygons.addLayer(polygon);
+    });
+
+    areaPolygons.addTo(map);
+  } catch (e) {
+    console.warn('Failed to load areas:', e);
+  }
+
+  document.getElementById('stats').textContent = `${allPois.length} POIs · ${allAreas.length} areas · ${totalBeats} beats`;
 }
 
 // ── POI selection ──
@@ -367,6 +476,7 @@ function renderPoiDetail(poi, beats) {
           <div class="beat-meta">
             <span>${dur}s</span>
             <span>${words} words</span>
+            <span class="beat-source beat-source-poi">POI</span>
           </div>
         </div>
       `;
@@ -402,6 +512,8 @@ function openPanel() {
 function closePanel() {
   document.getElementById('panel').classList.remove('open');
   selectedPoi = null;
+  selectedArea = null;
+  parentAreaStack = [];
   markers.forEach(m => {
     const el = m.getElement();
     const dot = el?.querySelector('.poi-dot');
@@ -411,6 +523,165 @@ function closePanel() {
     }
   });
   setTimeout(() => map?.invalidateSize(), 250);
+}
+
+// ── Area selection ──
+
+async function selectArea(area) {
+  selectedArea = area;
+  selectedPoi = null;
+
+  // Clear POI marker highlights
+  markers.forEach(m => {
+    const dot = m.getElement()?.querySelector('.poi-dot');
+    if (dot) { dot.style.boxShadow = ''; dot.style.transform = ''; }
+  });
+
+  // Zoom to polygon bounds
+  areaPolygons.eachLayer(layer => {
+    if (layer._areaData === area) {
+      map.fitBounds(layer.getBounds().pad(0.05));
+    }
+  });
+
+  // Show loading in panel
+  openPanel();
+  document.getElementById('panelInner').innerHTML = `
+    <div class="panel-header">
+      <h2>${esc(area.properties.name)}</h2>
+      <button class="close-btn" onclick="closePanel()">×</button>
+    </div>
+    <div class="loading"><div class="spinner"></div>Loading area…</div>
+  `;
+
+  try {
+    const [beatsResp, contentsResp] = await Promise.all([
+      fetch(`${API}/graph/area/${encodeURIComponent(area.properties.name)}/beats`),
+      fetch(`${API}/graph/area/${encodeURIComponent(area.properties.name)}/contents`)
+    ]);
+    const beatsData = await beatsResp.json();
+    const contentsData = await contentsResp.json();
+
+    if (selectedArea !== area) return;
+    renderAreaDetail(area, beatsData.beats || [], contentsData);
+  } catch (e) {
+    document.getElementById('panelInner').innerHTML = `
+      <div class="panel-header">
+        <h2>${esc(area.properties.name)}</h2>
+        <button class="close-btn" onclick="closePanel()">×</button>
+      </div>
+      <div style="color:#e74c3c;padding:20px;">Failed to load area data. Is the backend running?</div>
+    `;
+  }
+}
+
+function renderAreaDetail(area, beats, contents) {
+  const props = area.properties;
+  const areaType = props.area_type || 'neighborhood';
+  const subAreas = contents.sub_areas || [];
+  const pois = contents.pois || [];
+
+  // Parent link
+  let parentHtml = '';
+  if (parentAreaStack.length > 0) {
+    const parent = parentAreaStack[parentAreaStack.length - 1];
+    parentHtml = `<div class="parent-link" onclick="navigateToParent()">← ${esc(parent.properties.name)}</div>`;
+  }
+
+  // Beats HTML
+  let beatsHtml = '';
+  if (beats.length === 0) {
+    beatsHtml = '<div style="color:#666;font-style:italic;padding:12px 0;">No beats</div>';
+  } else {
+    beats.forEach(b => {
+      const lens = b.lens_slug || b.lens || '';
+      const body = b.script_body || '';
+      const dur = b.duration_sec || 0;
+      const words = body.split(/\s+/).length;
+      beatsHtml += `
+        <div class="beat-card">
+          <div class="beat-lens">${esc(lensLabel(lens))}</div>
+          <div class="beat-body">${esc(body)}</div>
+          <div class="beat-meta">
+            <span>${dur}s</span>
+            <span>${words} words</span>
+            <span class="beat-source beat-source-area">Area</span>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  // Sub-areas HTML
+  let subAreasHtml = '';
+  if (subAreas.length > 0) {
+    subAreasHtml = `<div class="contents-section"><h3>Sub-areas</h3>`;
+    subAreas.forEach(sa => {
+      subAreasHtml += `
+        <div class="content-item" onclick="navigateToSubArea('${escAttr(sa.name)}')">
+          <span class="item-name">${esc(sa.name)}</span>
+          <span class="item-meta">${sa.beat_count || 0} beats</span>
+        </div>
+      `;
+    });
+    subAreasHtml += '</div>';
+  }
+
+  // POIs HTML
+  let poisHtml = '';
+  if (pois.length > 0) {
+    poisHtml = `<div class="contents-section"><h3>Points of Interest</h3>`;
+    pois.forEach(p => {
+      poisHtml += `
+        <div class="content-item" onclick="navigateToContainedPoi('${escAttr(p.name)}')">
+          <span class="item-name">${esc(p.name)}</span>
+          <span class="item-meta">${p.beat_count || 0} beats</span>
+        </div>
+      `;
+    });
+    poisHtml += '</div>';
+  }
+
+  document.getElementById('panelInner').innerHTML = `
+    <div class="panel-header">
+      <h2>${esc(props.name)}</h2>
+      <button class="close-btn" onclick="closePanel()">×</button>
+    </div>
+    ${parentHtml}
+    <div class="poi-meta">
+      <span class="badge badge-${esc(areaType)}">${esc(areaType)}</span>
+      <span class="badge badge-beats">${beats.length} beat${beats.length !== 1 ? 's' : ''}</span>
+      <span class="badge badge-beats">${pois.length} POI${pois.length !== 1 ? 's' : ''}</span>
+    </div>
+    ${props.short_description ? `<div class="poi-desc">${esc(props.short_description)}</div>` : ''}
+    <div class="beats-section">
+      <h3>Beats</h3>
+      ${beatsHtml}
+    </div>
+    ${subAreasHtml}
+    ${poisHtml}
+  `;
+}
+
+function navigateToParent() {
+  const parent = parentAreaStack.pop();
+  if (parent) selectArea(parent);
+}
+
+function navigateToSubArea(name) {
+  const subArea = allAreas.find(a => a.properties.name === name);
+  if (subArea && selectedArea) {
+    parentAreaStack.push(selectedArea);
+    selectArea(subArea);
+  }
+}
+
+function navigateToContainedPoi(name) {
+  const idx = allPois.findIndex(p => p.properties.name === name);
+  if (idx >= 0) {
+    parentAreaStack = [];
+    selectPoi(idx);
+  }
 }
 
 // ── Edit mode ──
