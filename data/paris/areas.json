@@ -1,0 +1,159 @@
+[
+  {
+    "name": "Paris",
+    "area_type": "city",
+    "city_name": "Paris",
+    "osm_relation_id": 7444,
+    "parent_area": null
+  },
+  {
+    "name": "1st Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 20727,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "2nd Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9542,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "3rd Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 20742,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "4th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9597,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "5th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 20873,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "6th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9527,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "7th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9521,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "Île de la Cité",
+    "area_type": "island",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [48.8568, 2.3397],
+      [48.8561, 2.3427],
+      [48.8548, 2.3468],
+      [48.8537, 2.3500],
+      [48.8533, 2.3516],
+      [48.8541, 2.3519],
+      [48.8547, 2.3496],
+      [48.8558, 2.3460],
+      [48.8571, 2.3418],
+      [48.8574, 2.3403],
+      [48.8568, 2.3397]
+    ],
+    "parent_area": "4th Arrondissement"
+  },
+  {
+    "name": "Île Saint-Louis",
+    "area_type": "island",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [48.8520, 2.3519],
+      [48.8510, 2.3549],
+      [48.8507, 2.3574],
+      [48.8510, 2.3600],
+      [48.8517, 2.3618],
+      [48.8525, 2.3619],
+      [48.8531, 2.3598],
+      [48.8532, 2.3568],
+      [48.8528, 2.3538],
+      [48.8520, 2.3519]
+    ],
+    "parent_area": "4th Arrondissement"
+  },
+  {
+    "name": "Les Halles",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [48.8625, 2.3395],
+      [48.8625, 2.3480],
+      [48.8593, 2.3480],
+      [48.8593, 2.3395],
+      [48.8625, 2.3395]
+    ],
+    "parent_area": "1st Arrondissement"
+  },
+  {
+    "name": "Le Marais",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [48.8600, 2.3500],
+      [48.8600, 2.3650],
+      [48.8540, 2.3650],
+      [48.8540, 2.3500],
+      [48.8600, 2.3500]
+    ],
+    "parent_area": "3rd Arrondissement"
+  },
+  {
+    "name": "Latin Quarter",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [48.8530, 2.3400],
+      [48.8530, 2.3530],
+      [48.8460, 2.3530],
+      [48.8460, 2.3400],
+      [48.8530, 2.3400]
+    ],
+    "parent_area": "5th Arrondissement"
+  },
+  {
+    "name": "Saint-Germain-des-Prés",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [48.8560, 2.3260],
+      [48.8560, 2.3380],
+      [48.8510, 2.3380],
+      [48.8510, 2.3260],
+      [48.8560, 2.3260]
+    ],
+    "parent_area": "6th Arrondissement"
+  }
+]
