@@ -91,3 +91,59 @@ def get_poi_beats(poi_name: str, session: Session = Depends(get_session)):
         for r in result
     ]
     return {"poi_name": poi_name, "beats": beats}
+
+
+@router.get("/graph/area/{area_name}/beats")
+def get_area_beats(area_name: str, session: Session = Depends(get_session)):
+    """Fetch active beats and their lens tags for an Area by name."""
+    result = session.run(
+        "MATCH (a:Area {name: $name})-[:HAS_BEAT]->(b:NarrativeBeat)"
+        "-[:TAGGED_WITH]->(l:Lens) "
+        'WHERE b.active_status = "active" '
+        "RETURN b.id AS id, b.script_body AS script_body, "
+        "b.version AS version, b.active_status AS active_status, "
+        "b.duration_sec AS duration_sec, l.name AS lens_slug",
+        name=area_name,
+    )
+    beats = [
+        {
+            "id": r["id"],
+            "script_body": r["script_body"],
+            "version": r["version"],
+            "active_status": r["active_status"],
+            "duration_sec": r["duration_sec"],
+            "lens_slug": r["lens_slug"],
+        }
+        for r in result
+    ]
+    return {"area_name": area_name, "beats": beats}
+
+
+@router.get("/graph/area/{area_name}/contents")
+def get_area_contents(area_name: str, session: Session = Depends(get_session)):
+    """Fetch child Areas and POIs contained WITHIN an Area."""
+    result = session.run(
+        "MATCH (child)-[:WITHIN]->(a:Area {name: $name}) "
+        "OPTIONAL MATCH (child)-[:HAS_BEAT]->(b:NarrativeBeat) "
+        "WITH child, labels(child) AS lbls, count(b) AS beat_count "
+        "RETURN lbls, child.name AS name, child.id AS id, "
+        "child.area_type AS area_type, child.short_description AS short_description, "
+        "beat_count "
+        "ORDER BY lbls[0], name",
+        name=area_name,
+    )
+    sub_areas = []
+    pois = []
+    for r in result:
+        item = {
+            "name": r["name"],
+            "id": r["id"],
+            "short_description": r["short_description"],
+            "beat_count": r["beat_count"],
+        }
+        if "Area" in r["lbls"]:
+            item["area_type"] = r["area_type"]
+            sub_areas.append(item)
+        elif "POI" in r["lbls"]:
+            pois.append(item)
+    return {"area_name": area_name, "sub_areas": sub_areas, "pois": pois}
