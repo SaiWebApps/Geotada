@@ -174,18 +174,32 @@ def coords_to_wkt(coords: list[tuple[float, float]]) -> str:
     return f"POLYGON(({', '.join(pairs)}))"
 
 
-def point_in_polygon(lat: float, lng: float, wkt_str: str) -> bool:
+def point_in_polygon(
+    lat: float, lng: float, wkt_str: str, buffer_deg: float = 0.0
+) -> bool:
     """Test if a point is inside a WKT polygon.
+
+    Args:
+        buffer_deg: Optional buffer in degrees to account for polygon
+            simplification artifacts. 0.001 deg ≈ 100m at Paris latitude.
 
     Note: Shapely uses (x=lng, y=lat) ordering.
     """
     poly = wkt.loads(wkt_str)
+    if buffer_deg > 0:
+        poly = poly.buffer(buffer_deg)
     point = Point(lng, lat)
-    return poly.contains(point)
+    return poly.covers(point)
 
 
-def point_in_areas(lat: float, lng: float) -> list[dict]:
+def point_in_areas(
+    lat: float, lng: float, buffer_deg: float = 0.00075
+) -> list[dict]:
     """Find all Areas containing a given point by querying Neo4j.
+
+    Args:
+        buffer_deg: Buffer in degrees for polygon simplification tolerance.
+            Default 0.00075 deg ≈ 83m at Paris latitude.
 
     Returns list of dicts with name, area_type, city_name for matching areas.
     """
@@ -208,7 +222,7 @@ def point_in_areas(lat: float, lng: float) -> list[dict]:
 
         matches = []
         for area in result:
-            if point_in_polygon(lat, lng, area["boundary"]):
+            if point_in_polygon(lat, lng, area["boundary"], buffer_deg=buffer_deg):
                 matches.append(
                     {
                         "name": area["name"],
