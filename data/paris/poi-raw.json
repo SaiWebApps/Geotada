@@ -53,7 +53,9 @@
     "importance_tier": 5,
     "latitude": 48.858093,
     "longitude": 2.294694,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Louvre Museum",
@@ -109,7 +111,9 @@
     "importance_tier": 5,
     "latitude": 48.8609,
     "longitude": 2.3358,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -164,7 +168,9 @@
     "importance_tier": 5,
     "latitude": 48.852966,
     "longitude": 2.349902,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Arc de Triomphe",
@@ -216,7 +222,9 @@
     "importance_tier": 5,
     "latitude": 48.873756,
     "longitude": 2.294946,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=30m or area keywords in name/description)"
   },
   {
     "name": "Sacre-Coeur Basilica",
@@ -269,7 +277,9 @@
     "importance_tier": 5,
     "latitude": 48.886452,
     "longitude": 2.343121,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Musee d'Orsay",
@@ -303,7 +313,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 70,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 70: 3.8M annual visitors, 76,552 Google reviews, high search interest, extensive Wikipedia, UBIQUITOUS in guidebooks"
       },
       "geocode_audit": {
@@ -319,10 +329,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.859962,
     "longitude": 2.326561,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Champs-Elysees",
@@ -375,7 +387,9 @@
     "importance_tier": 5,
     "latitude": 48.86975,
     "longitude": 2.3074,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Luxembourg Gardens",
@@ -429,7 +443,9 @@
     "importance_tier": 5,
     "latitude": 48.846222,
     "longitude": 2.337051,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Sainte-Chapelle",
@@ -462,7 +478,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 63,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 63: 34,555 Google reviews, high search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -478,10 +494,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.855358,
     "longitude": 2.34483,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Pantheon",
@@ -514,7 +532,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 61,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 61: 46,541 Google reviews, moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -530,10 +548,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.846217,
     "longitude": 2.34604,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Palais Garnier",
@@ -568,7 +588,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 65,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 65: 36,845 Google reviews, high search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -584,10 +604,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.872536,
     "longitude": 2.331355,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Centre Pompidou",
@@ -639,7 +661,9 @@
     "importance_tier": 4,
     "latitude": 48.860657,
     "longitude": 2.352095,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Les Invalides",
@@ -693,7 +717,9 @@
     "importance_tier": 4,
     "latitude": 48.856892,
     "longitude": 2.3125,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Place de la Concorde",
@@ -727,7 +753,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 67,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 67: 56,279 Google reviews, moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -743,10 +769,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.865608,
     "longitude": 2.321038,
-    "trigger_radius": 50
+    "trigger_radius": 50,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=50m or area keywords in name/description)"
   },
   {
     "name": "Trocadero",
@@ -780,7 +808,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 72,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 72: 122,343 Google reviews, moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -796,10 +824,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.862725,
     "longitude": 2.287592,
-    "trigger_radius": 50
+    "trigger_radius": 50,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Grand Palais",
@@ -831,7 +861,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -847,10 +877,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.866096,
     "longitude": 2.312156,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Petit Palais",
@@ -882,7 +914,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 64: moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -898,10 +930,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.86595,
     "longitude": 2.3143,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Moulin Rouge",
@@ -933,7 +967,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 83,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 83: high search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -949,10 +983,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.884129,
     "longitude": 2.3324,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Palais-Royal",
@@ -986,7 +1022,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1002,10 +1038,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8637,
     "longitude": 2.3372,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Place des Vosges",
@@ -1038,7 +1076,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1054,10 +1092,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8555,
     "longitude": 2.3656,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)"
   },
   {
     "name": "Pont Neuf",
@@ -1090,7 +1130,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1106,10 +1146,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.85675,
     "longitude": 2.341033,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Pont Alexandre III",
@@ -1139,7 +1181,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 52,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 52: 29,486 Google reviews, moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1155,10 +1197,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.8637,
     "longitude": 2.3138,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Hotel de Ville",
@@ -1191,7 +1235,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1207,10 +1251,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.856373,
     "longitude": 2.35221,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Place de la Bastille",
@@ -1242,7 +1288,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 50,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 50: 20,270 Google reviews, moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1258,10 +1304,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.8532,
     "longitude": 2.3691,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=40m or area keywords in name/description)"
   },
   {
     "name": "Jardin des Tuileries",
@@ -1296,7 +1344,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: 95,180 Google reviews, moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1312,10 +1360,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8636,
     "longitude": 2.3274,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)"
   },
   {
     "name": "Conciergerie",
@@ -1349,7 +1399,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1365,10 +1415,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8558,
     "longitude": 2.3458,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Assemblee Nationale",
@@ -1400,7 +1452,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "RARE",
         "raw_composite": 48,
-        "assigned_gravity": 2,
+        "assigned_gravity": 4,
         "reasoning": "Composite 48: low search interest, extensive Wikipedia, RARE in guidebooks"
       },
       "geocode_audit": {
@@ -1416,10 +1468,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 4,
     "latitude": 48.860862,
     "longitude": 2.318389,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Pavillon de Flore",
@@ -1469,7 +1523,9 @@
     "importance_tier": 1,
     "latitude": 48.859382,
     "longitude": 2.336574,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Cour du Commerce-Saint-Andre",
@@ -1519,7 +1575,9 @@
     "importance_tier": 1,
     "latitude": 48.85253,
     "longitude": 2.339298,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Picpus Cemetery",
@@ -1570,7 +1628,9 @@
     "importance_tier": 2,
     "latitude": 48.844232,
     "longitude": 2.396359,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Ile de la Cite",
@@ -1602,7 +1662,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1618,10 +1678,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8544,
     "longitude": 2.3472,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)"
   },
   {
     "name": "Ile Saint-Louis",
@@ -1651,7 +1713,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1667,10 +1729,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.851674,
     "longitude": 2.356346,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=75m or area keywords in name/description)"
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -1704,7 +1768,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 64,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 64: 3.5M annual visitors, high search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1720,10 +1784,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.860764,
     "longitude": 2.393646,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)"
   },
   {
     "name": "Montmartre Cemetery",
@@ -1756,7 +1822,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1772,10 +1838,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.884898,
     "longitude": 2.330804,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Montparnasse Cemetery",
@@ -1807,7 +1875,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1823,10 +1891,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.839956,
     "longitude": 2.327684,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Musee Carnavalet",
@@ -1859,7 +1929,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1875,10 +1945,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.855076,
     "longitude": 2.361661,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Musee de l'Orangerie",
@@ -1910,7 +1982,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 64: moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -1926,10 +1998,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.862813,
     "longitude": 2.325314,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Musee Rodin",
@@ -1980,7 +2054,9 @@
     "importance_tier": 3,
     "latitude": 48.854747,
     "longitude": 2.315867,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Musee Picasso",
@@ -2013,7 +2089,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 42,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 42: 10,793 Google reviews, moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2029,10 +2105,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.85987,
     "longitude": 2.362115,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Musee de Cluny",
@@ -2066,7 +2144,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2082,10 +2160,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.850474,
     "longitude": 2.343391,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Palais de Tokyo",
@@ -2134,7 +2214,9 @@
     "importance_tier": 2,
     "latitude": 48.864631,
     "longitude": 2.29647,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Memorial de la Shoah",
@@ -2168,7 +2250,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2184,10 +2266,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.854985,
     "longitude": 2.356636,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Museum of Counterfeiting",
@@ -2237,7 +2321,9 @@
     "importance_tier": 1,
     "latitude": 48.870158,
     "longitude": 2.276777,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Musee des Arts Forains",
@@ -2288,7 +2374,9 @@
     "importance_tier": 1,
     "latitude": 48.832766,
     "longitude": 2.389338,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Cite des Sciences et de l'Industrie",
@@ -2322,7 +2410,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 65,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 65: 5.0M annual visitors, moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2338,10 +2426,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.895752,
     "longitude": 2.387976,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -2374,7 +2464,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2390,10 +2480,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.866098,
     "longitude": 2.355414,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Musee Pasteur",
@@ -2445,7 +2537,9 @@
     "importance_tier": 2,
     "latitude": 48.840383,
     "longitude": 2.311366,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Fondation Louis Vuitton",
@@ -2478,7 +2572,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 44,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 44: 1.4M annual visitors, moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2494,10 +2588,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.87665,
     "longitude": 2.263338,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Bibliotheque Francois Mitterrand",
@@ -2531,7 +2627,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2547,10 +2643,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.834283,
     "longitude": 2.377128,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -2583,7 +2681,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2599,10 +2697,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.853968,
     "longitude": 2.334518,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Sulpice",
@@ -2634,7 +2734,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2650,10 +2750,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.850987,
     "longitude": 2.33487,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -2683,7 +2785,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 37,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 37: minimal search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2699,10 +2801,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.8466,
     "longitude": 2.347344,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Eustache",
@@ -2734,7 +2838,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2750,10 +2854,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.863,
     "longitude": 2.3456,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "La Madeleine",
@@ -2785,7 +2891,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2801,10 +2907,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.870202,
     "longitude": 2.325391,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Grand Mosque of Paris",
@@ -2836,7 +2944,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "RARE",
         "raw_composite": 41,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 41: low search interest, moderate Wikipedia, RARE in guidebooks"
       },
       "geocode_audit": {
@@ -2852,10 +2960,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.842071,
     "longitude": 2.355103,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "L'Olympia",
@@ -2888,7 +2998,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2904,10 +3014,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.870144,
     "longitude": 2.328372,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Le Bataclan",
@@ -2939,7 +3051,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -2955,10 +3067,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.863166,
     "longitude": 2.370809,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Caveau de la Huchette",
@@ -3007,7 +3121,9 @@
     "importance_tier": 1,
     "latitude": 48.852787,
     "longitude": 2.346298,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -3039,7 +3155,7 @@
         "wikipedia_depth": "stub",
         "guidebook_presence": "COMMON",
         "raw_composite": 43,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 43: low search interest, stub Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3055,10 +3171,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.862792,
     "longitude": 2.361978,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Rue Mouffetard",
@@ -3090,7 +3208,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3106,10 +3224,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.842301,
     "longitude": 2.349772,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=75m or area keywords in name/description)"
   },
   {
     "name": "Stohrer",
@@ -3159,7 +3279,9 @@
     "importance_tier": 1,
     "latitude": 48.865249,
     "longitude": 2.346817,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Rue des Martyrs",
@@ -3208,7 +3330,9 @@
     "importance_tier": 1,
     "latitude": 48.881157,
     "longitude": 2.340028,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Berthillon",
@@ -3256,7 +3380,9 @@
     "importance_tier": 1,
     "latitude": 48.851111,
     "longitude": 2.358565,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Shakespeare and Company",
@@ -3288,7 +3414,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 64: moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3304,10 +3430,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.852575,
     "longitude": 2.347112,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Cafe des 2 Moulins",
@@ -3340,7 +3468,7 @@
         "wikipedia_depth": "stub",
         "guidebook_presence": "COMMON",
         "raw_composite": 43,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 43: low search interest, stub Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3356,10 +3484,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.884899,
     "longitude": 2.333703,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Cafe de Flore",
@@ -3389,7 +3519,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64,
-        "assigned_gravity": 3,
+        "assigned_gravity": 5,
         "reasoning": "Composite 64: moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3405,10 +3535,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 5,
     "latitude": 48.854128,
     "longitude": 2.33255,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "La Maison Rose",
@@ -3440,7 +3572,7 @@
         "wikipedia_depth": "stub",
         "guidebook_presence": "RARE",
         "raw_composite": 35,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 35: low search interest, stub Wikipedia, RARE in guidebooks"
       },
       "geocode_audit": {
@@ -3456,10 +3588,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.887974,
     "longitude": 2.339609,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "La Closerie des Lilas",
@@ -3511,7 +3645,9 @@
     "importance_tier": 2,
     "latitude": 48.840092,
     "longitude": 2.335973,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Place de l'Estrapade",
@@ -3559,7 +3695,9 @@
     "importance_tier": 1,
     "latitude": 48.845263,
     "longitude": 2.344818,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Pont des Arts",
@@ -3610,7 +3748,9 @@
     "importance_tier": 4,
     "latitude": 48.858408,
     "longitude": 2.337548,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Pont de Bir-Hakeim",
@@ -3642,7 +3782,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3658,10 +3798,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.855725,
     "longitude": 2.287548,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Parc des Buttes-Chaumont",
@@ -3693,7 +3835,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 49,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 49: low search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3709,10 +3851,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.879288,
     "longitude": 2.384246,
-    "trigger_radius": 150
+    "trigger_radius": 150,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Bois de Vincennes",
@@ -3744,7 +3888,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3760,10 +3904,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.836671,
     "longitude": 2.441435,
-    "trigger_radius": 150
+    "trigger_radius": 150,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=150m or area keywords in name/description)"
   },
   {
     "name": "Chateau de Vincennes",
@@ -3793,7 +3939,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 56,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 56: low search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3809,10 +3955,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.844673,
     "longitude": 2.438338,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Jardin des Plantes",
@@ -3844,7 +3992,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 55,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 55: 42,245 Google reviews, moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -3860,10 +4008,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.844346,
     "longitude": 2.356212,
-    "trigger_radius": 150
+    "trigger_radius": 150,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Promenade Plantee",
@@ -3895,7 +4045,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "RARE",
         "raw_composite": 41,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 41: low search interest, moderate Wikipedia, RARE in guidebooks"
       },
       "geocode_audit": {
@@ -3911,10 +4061,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.848458,
     "longitude": 2.373433,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=75m or area keywords in name/description)"
   },
   {
     "name": "Rue Cremieux",
@@ -3944,7 +4096,7 @@
         "wikipedia_depth": "stub",
         "guidebook_presence": "RARE",
         "raw_composite": 35,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 35: low search interest, stub Wikipedia, RARE in guidebooks"
       },
       "geocode_audit": {
@@ -3960,10 +4112,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.84688,
     "longitude": 2.370868,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=75m or area keywords in name/description)"
   },
   {
     "name": "Canal Saint-Martin",
@@ -3994,7 +4148,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 64: moderate search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -4010,10 +4164,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.88019,
     "longitude": 2.366885,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=75m or area keywords in name/description)"
   },
   {
     "name": "Nicholas Flamel's House",
@@ -4064,7 +4220,9 @@
     "importance_tier": 2,
     "latitude": 48.863538,
     "longitude": 2.35314,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Le Clos Montmartre",
@@ -4115,7 +4273,9 @@
     "importance_tier": 1,
     "latitude": 48.888201,
     "longitude": 2.339765,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Square des Peupliers",
@@ -4163,7 +4323,9 @@
     "importance_tier": 1,
     "latitude": 48.825462,
     "longitude": 2.353255,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "La Campagne a Paris",
@@ -4211,7 +4373,9 @@
     "importance_tier": 1,
     "latitude": 48.864712,
     "longitude": 2.408393,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "29 Avenue Rapp",
@@ -4262,7 +4426,9 @@
     "importance_tier": 1,
     "latitude": 48.859127,
     "longitude": 2.300876,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Tour de l'Horloge",
@@ -4312,7 +4478,9 @@
     "importance_tier": 1,
     "latitude": 48.856865,
     "longitude": 2.343955,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Abbey Bookshop",
@@ -4362,7 +4530,9 @@
     "importance_tier": 1,
     "latitude": 48.851794,
     "longitude": 2.344529,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Moulin de la Galette",
@@ -4395,7 +4565,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "RARE",
         "raw_composite": 41,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Composite 41: low search interest, moderate Wikipedia, RARE in guidebooks"
       },
       "geocode_audit": {
@@ -4411,10 +4581,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.887351,
     "longitude": 2.337141,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Galeries Lafayette",
@@ -4447,7 +4619,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 76,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 76: high search interest, moderate Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -4463,10 +4635,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8739,
     "longitude": 2.3322,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Place Vendome",
@@ -4496,7 +4670,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 4,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -4512,10 +4686,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 5,
     "latitude": 48.8677,
     "longitude": 2.3292,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)"
   },
   {
     "name": "Rue Denoyez",
@@ -4564,7 +4740,9 @@
     "importance_tier": 1,
     "latitude": 48.871651,
     "longitude": 2.378516,
-    "trigger_radius": 75
+    "trigger_radius": 75,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Le M.U.R. Oberkampf",
@@ -4615,7 +4793,9 @@
     "importance_tier": 1,
     "latitude": 48.864964,
     "longitude": 2.374194,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Butte-aux-Cailles",
@@ -4667,7 +4847,9 @@
     "importance_tier": 2,
     "latitude": 48.828055,
     "longitude": 2.352246,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "The Sorbonne",
@@ -4701,7 +4883,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71,
-        "assigned_gravity": 3,
+        "assigned_gravity": 5,
         "reasoning": "Composite 71: moderate search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -4717,10 +4899,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 5,
     "latitude": 48.848643,
     "longitude": 2.342038,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -4771,7 +4955,9 @@
     "importance_tier": 2,
     "latitude": 48.852192,
     "longitude": 2.351968,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Musee de la Liberation de Paris",
@@ -4822,7 +5008,9 @@
     "importance_tier": 1,
     "latitude": 48.834111,
     "longitude": 2.331722,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Paris Catacombs",
@@ -4858,7 +5046,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 52,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 52: 0.6M annual visitors, high search interest, extensive Wikipedia, COMMON in guidebooks"
       },
       "geocode_audit": {
@@ -4880,10 +5068,12 @@
       "generated_at": "2026-03-31T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 4,
     "latitude": 48.83388,
     "longitude": 2.33225,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Tour Montparnasse",
@@ -4935,7 +5125,9 @@
     "importance_tier": 4,
     "latitude": 48.8422,
     "longitude": 2.3219,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Arenes de Lutece",
@@ -4987,7 +5179,9 @@
     "importance_tier": 2,
     "latitude": 48.845126,
     "longitude": 2.352309,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Les Halles",
@@ -5024,7 +5218,7 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 58,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "62.5M annual footfall (shopping centre), extensive Wikipedia, high search interest as metro hub. Historic significance (800yr market) but current site is commercial. Comparable to Canal Saint-Martin."
       }
     },
@@ -5036,7 +5230,9 @@
     "latitude": 48.861878,
     "longitude": 2.347138,
     "trigger_radius": 50,
-    "importance_tier": 3
+    "importance_tier": 4,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=50m or area keywords in name/description)"
   },
   {
     "name": "Fontaine des Innocents",
@@ -5092,7 +5288,9 @@
     "latitude": 48.860638,
     "longitude": 2.348023,
     "trigger_radius": 20,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Place du Châtelet",
@@ -5129,7 +5327,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "RARE",
         "raw_composite": 35,
-        "assigned_gravity": 2,
+        "assigned_gravity": 3,
         "reasoning": "Major square with two theatres and historic fountain. Pass-through location for most tourists — the Grand Châtelet history adds depth but most visitors know it only as a metro station."
       }
     },
@@ -5141,7 +5339,9 @@
     "latitude": 48.857524,
     "longitude": 2.347463,
     "trigger_radius": 40,
-    "importance_tier": 2
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Place Dauphine",
@@ -5187,7 +5387,9 @@
     "latitude": 48.856407,
     "longitude": 2.342655,
     "trigger_radius": 30,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "La Samaritaine",
@@ -5215,7 +5417,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -5243,7 +5447,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Galerie Vero-Dodat",
@@ -5272,7 +5478,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Banque de France",
@@ -5298,7 +5506,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Place des Victoires",
@@ -5324,7 +5534,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Comedie-Francaise",
@@ -5354,7 +5566,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Hotel Le Meurice",
@@ -5384,7 +5598,9 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Eglise Saint-Roch",
@@ -5413,14 +5629,16 @@
       "prompt_version": "beat_from_book_v1",
       "generated_at": "2026-04-05T21:53:46Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Square du Temple",
     "short_description": "Public garden on the site of the Knights Templar fortress, later the prison of the Royal Family during the Revolution",
     "latitude": 48.8639,
     "longitude": 2.3602,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
@@ -5430,14 +5648,30 @@
       "Square du Temple-Elie Wiesel"
     ],
     "parent_poi": null,
-    "source_chunk": "chunk-07-3rd-arr-marais-du-temple"
+    "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
+    "_pipeline": {
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 42,
+        "assigned_gravity": 3,
+        "reasoning": "Public garden on site of Knights Templar fortress and royal family's Revolutionary prison; historic site + park",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Hotel de Soubise",
     "short_description": "Masterpiece of 18th-century architecture housing the National Archives, built on the ruins of the medieval Hôtel de Clisson and the Hôtel de Guise",
     "latitude": 48.85985,
     "longitude": 2.35765,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 30,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
@@ -5448,7 +5682,23 @@
       "Musee de l'Histoire de France"
     ],
     "parent_poi": null,
-    "source_chunk": "chunk-07-3rd-arr-marais-du-temple"
+    "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
+    "_pipeline": {
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 48,
+        "assigned_gravity": 4,
+        "reasoning": "18th-c architectural masterpiece, houses National Archives; rococo interiors; visitable museum",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Passage des Panoramas",
@@ -5490,7 +5740,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Theatre des Varietes",
@@ -5503,7 +5755,7 @@
     "latitude": 48.8714,
     "longitude": 2.3421,
     "trigger_radius": 10,
-    "importance_tier": 2,
+    "importance_tier": 1,
     "_pipeline": {
       "address": "7 Boulevard Montmartre, 75002 Paris",
       "discovery_sources": [
@@ -5518,7 +5770,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "NICHE",
         "raw_composite": 22,
-        "assigned_gravity": 2,
+        "assigned_gravity": 1,
         "reasoning": "Composite 22: Active historic theatre, moderate Wikipedia, appears in specialist guides"
       },
       "geocode_audit": {
@@ -5533,7 +5785,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Place de la Bourse",
@@ -5576,7 +5830,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -5619,7 +5875,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Bibliotheque Nationale de France - Richelieu",
@@ -5663,7 +5921,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Galerie Vivienne",
@@ -5705,7 +5965,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)"
   },
   {
     "name": "Square Louvois",
@@ -5717,7 +5979,7 @@
     "latitude": 48.868,
     "longitude": 2.3376,
     "trigger_radius": 10,
-    "importance_tier": 2,
+    "importance_tier": 1,
     "_pipeline": {
       "address": "Square Louvois, 75002 Paris",
       "discovery_sources": [
@@ -5731,7 +5993,7 @@
         "wikipedia_depth": "brief",
         "guidebook_presence": "NICHE",
         "raw_composite": 18,
-        "assigned_gravity": 2,
+        "assigned_gravity": 1,
         "reasoning": "Composite 18: Small park, Visconti fountain notable, mainly in specialist walking guides"
       },
       "geocode_audit": {
@@ -5746,7 +6008,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Passage Choiseul",
@@ -5759,7 +6023,7 @@
     "latitude": 48.868,
     "longitude": 2.3355,
     "trigger_radius": 10,
-    "importance_tier": 2,
+    "importance_tier": 1,
     "_pipeline": {
       "address": "40 rue des Petits-Champs, 75002 Paris",
       "discovery_sources": [
@@ -5774,7 +6038,7 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "NICHE",
         "raw_composite": 20,
-        "assigned_gravity": 2,
+        "assigned_gravity": 1,
         "reasoning": "Composite 20: Less famous covered passage, literary history interest"
       },
       "geocode_audit": {
@@ -5788,7 +6052,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Restaurant Drouant",
@@ -5830,7 +6096,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Harry's New York Bar",
@@ -5843,7 +6111,7 @@
     "latitude": 48.8692,
     "longitude": 2.3321,
     "trigger_radius": 8,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "_pipeline": {
       "address": "5 rue Daunou, 75002 Paris",
       "discovery_sources": [
@@ -5859,7 +6127,7 @@
         "wikipedia_depth": "detailed",
         "guidebook_presence": "STANDARD",
         "raw_composite": 45,
-        "assigned_gravity": 3,
+        "assigned_gravity": 4,
         "reasoning": "Composite 45: Internationally famous bar, strong cocktail history, appears in most Paris guides"
       },
       "geocode_audit": {
@@ -5873,7 +6141,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Rue de la Paix",
@@ -5896,12 +6166,16 @@
       "verified": true,
       "parent_poi": null,
       "gravity_audit": {
-        "google_trends": "moderate",
-        "wikipedia_depth": "detailed",
-        "guidebook_presence": "STANDARD",
-        "raw_composite": 52,
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 48,
         "assigned_gravity": 4,
-        "reasoning": "Composite 52: Iconic luxury street, Cartier flagship, haute couture birthplace, connects to Place Vendôme"
+        "reasoning": "Major luxury shopping street (Cartier, Boucheron, Van Cleef) running Vendôme to Opéra; well-known by name but functions as a shopping address, not a standalone sight",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       },
       "geocode_audit": {
         "source": "Nominatim OSM",
@@ -5914,7 +6188,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:00:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 named street but narrow (radius=15m), classified as stop"
   },
   {
     "name": "Palais Brongniart",
@@ -5951,7 +6227,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Grands Boulevards",
@@ -5986,7 +6264,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=15m or area keywords in name/description)"
   },
   {
     "name": "Porte Saint-Denis",
@@ -6021,7 +6301,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Passage de la Trinite",
@@ -6056,7 +6338,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -6091,7 +6375,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Tour Jean sans Peur",
@@ -6127,7 +6413,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Rue Montorgueil",
@@ -6162,7 +6450,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=15m), classified as stop"
   },
   {
     "name": "Place du Caire",
@@ -6197,7 +6487,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Rue de Clery",
@@ -6232,7 +6524,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -6268,7 +6562,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Place de Louvois",
@@ -6303,7 +6599,9 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Cafe du Croissant",
@@ -6340,14 +6638,16 @@
       "prompt_version": "pipeline_chunk_v1",
       "generated_at": "2026-04-05T23:30:00Z",
       "city": "Paris"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Synagogue Notre-Dame-de-Nazareth",
     "short_description": "The oldest of the 'great' synagogues of Paris, built in 1822 for the Ashkenazi community, rebuilt in 1852 with Rothschild funding.",
     "latitude": 48.867,
     "longitude": 2.36,
-    "importance_tier": 3,
+    "importance_tier": 1,
     "trigger_radius": 25,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6357,20 +6657,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 22,
+        "assigned_gravity": 1,
+        "reasoning": "Oldest 'great' Ashkenazi synagogue of Paris (1822/1852); religious site, not a major tourist draw",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Historic synagogue with significant community role, limited tourist footfall"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Priory of Saint-Martin-des-Champs",
     "short_description": "Medieval Benedictine priory with rare surviving crenellated walls and one of the earliest Gothic rib-vaulted churches in Paris.",
     "latitude": 48.8667,
     "longitude": 2.3553,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6380,40 +6694,68 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 40,
+        "assigned_gravity": 3,
+        "reasoning": "Medieval Benedictine priory, rare crenellated walls, early Gothic rib-vault church; now part of Musée des Arts et Métiers",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Significant medieval complex now housing Musee des Arts et Metiers, important architectural heritage"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Porte Saint-Martin",
     "short_description": "Triumphal arch built in 1674 for Louis XIV celebrating victories over the Germans, Spanish and Dutch.",
     "latitude": 48.869,
     "longitude": 2.354,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 45,
+        "assigned_gravity": 3,
+        "reasoning": "1674 triumphal arch for Louis XIV; prominent Grands Boulevards landmark, commonly photographed",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major historic monument on the Grands Boulevards"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Nicolas-des-Champs",
     "short_description": "Parish church showing the evolution from Gothic to Renaissance style, with a 15th-century tower and notable burials.",
     "latitude": 48.8655,
     "longitude": 2.3543,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6422,20 +6764,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 32,
+        "assigned_gravity": 2,
+        "reasoning": "Parish church showing Gothic-to-Renaissance evolution, 15th-c tower; secondary church site",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Architecturally interesting parish church, limited tourist profile"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "3 Rue Volta",
     "short_description": "A half-timbered house long claimed to be the oldest house in Paris, later dated to 1644.",
     "latitude": 48.8646,
     "longitude": 2.3568,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6444,20 +6800,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 22,
+        "assigned_gravity": 1,
+        "reasoning": "Formerly believed oldest house in Paris; debunked 1979 (actually 1644); listed historical monument, single photo-op curio",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Curiosity item, very minor site"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Convent of the Madelonnettes",
     "short_description": "Former 1618 convent for 'fallen women' where Ninon de Lenclos was imprisoned; demolished 1865-66.",
     "latitude": 48.8655,
     "longitude": 2.3593,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 15,
     "kid_friendly": "caution",
     "name_variations": [
@@ -6467,20 +6837,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 14,
+        "assigned_gravity": 1,
+        "reasoning": "Demolished 1865-66; historical plaque only; no visible site",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Demolished site, minimal physical trace, historic interest only"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Wallace Fountain (Passage du Pont-aux-Biches)",
     "short_description": "One of Paris's iconic green drinking fountains donated by Sir Richard Wallace in the 1870s.",
     "latitude": 48.8663,
     "longitude": 2.3585,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 10,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6489,13 +6873,27 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-08-3rd-arr-saint-martin-des-champs",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 18,
+        "assigned_gravity": 1,
+        "reasoning": "One individual example of Paris's common Wallace fountain; fountains themselves are iconic but this specific location is niche",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "MEDIUM",
       "gravity_reasoning": "One of many Wallace fountains; specific location adds local colour"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Bibliotheque de l'Arsenal",
@@ -6512,20 +6910,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-09-4th-arr-arsenal",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 32,
+        "assigned_gravity": 3,
+        "reasoning": "Historic library in former Royal Arsenal with Louis XIII interiors; specialist visit",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Important historic library with unique Louis XIII interior, moderate tourist interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Pavillon de l'Arsenal",
     "short_description": "19th-century glass-and-steel exhibition space for Paris urbanism and town planning.",
     "latitude": 48.8484,
     "longitude": 2.3648,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 60,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6534,20 +6946,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-09-4th-arr-arsenal",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Urbanism exhibition hall; niche interest for architecture enthusiasts",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Niche architecture/urbanism exhibition space, limited general tourist appeal"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Musee Victor Hugo",
     "short_description": "Victor Hugo's former apartment at 6 Place des Vosges, now a museum dedicated to the writer's life and works.",
     "latitude": 48.8548,
     "longitude": 2.3661,
-    "importance_tier": 2,
+    "importance_tier": 4,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6556,20 +6982,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 52,
+        "assigned_gravity": 4,
+        "reasoning": "Hugo's former apartment at 6 Place des Vosges; free public museum; major literary pilgrimage; included in most guidebooks",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Well-known literary museum on Place des Vosges, strong tourist interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Hotel de Sully",
     "short_description": "Magnificent 17th-century mansion with a storied past, from its gambler builder to Voltaire's beating.",
     "latitude": 48.8545,
     "longitude": 2.3647,
-    "importance_tier": 2,
+    "importance_tier": 4,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6578,20 +7018,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 48,
+        "assigned_gravity": 4,
+        "reasoning": "Magnificent 17th-c Marais mansion, seat of Centre des Monuments Nationaux; celebrated facade and garden",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major Marais mansion, Centre des monuments nationaux, moderate tourist footfall"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Temple du Marais",
     "short_description": "Mansart's 17th-century domed church, now a Protestant temple since Napoleon's 1803 decree.",
     "latitude": 48.8539,
     "longitude": 2.3649,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 25,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6601,20 +7055,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Mansart's 17th-c domed church now Protestant temple; architectural interest, niche",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Architecturally significant Mansart dome, limited tourist awareness"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel de Mayenne",
     "short_description": "16th-century Marais mansion associated with Henri III's favourites and Catholic League plots.",
     "latitude": 48.8537,
     "longitude": 2.3649,
-    "importance_tier": 4,
+    "importance_tier": 2,
     "trigger_radius": 20,
     "kid_friendly": "caution",
     "name_variations": [
@@ -6623,20 +7091,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "16th-c Marais mansion with historical plaque; usually closed to public; specialist interest",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Minor Marais mansion, primarily historic interest"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel de Sens",
     "short_description": "One of the oldest civilian buildings in Paris, a medieval fortress-mansion with a scandalous royal history.",
     "latitude": 48.852,
     "longitude": 2.3555,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "caution",
     "name_variations": [
@@ -6646,33 +7128,61 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 42,
+        "assigned_gravity": 3,
+        "reasoning": "One of Paris's oldest civilian medieval buildings, fortress-mansion, now Bibliothèque Forney; visitable courtyard",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "One of oldest civilian monuments in Paris, distinctive medieval architecture"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Paul-Saint-Louis",
     "short_description": "Baroque Jesuit church on rue Saint-Antoine, noted for musical heritage and Counter-Reformation architecture.",
     "latitude": 48.8549,
     "longitude": 2.3616,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 36,
+        "assigned_gravity": 3,
+        "reasoning": "Baroque Jesuit church on rue Saint-Antoine; landmark on the main Marais spine, frequently passed",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major Marais church with Jesuit heritage, moderate tourist interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Village Saint-Paul",
@@ -6686,20 +7196,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 34,
+        "assigned_gravity": 3,
+        "reasoning": "Cluster of antique courtyards; popular Marais stroll-through, shops and cafes",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Charming antique village, moderate tourist interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Hotel Lamoignon",
     "short_description": "Renaissance mansion housing the Historical Library of Paris, built for Henri II's illegitimate daughter.",
     "latitude": 48.8564,
     "longitude": 2.361,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 25,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6709,20 +7233,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Renaissance mansion housing Paris historical library; scholarly visit",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Notable Marais mansion with literary history, niche appeal"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Synagogue de la rue Pavee",
     "short_description": "Hector Guimard's Art Nouveau synagogue, the only religious building by the famed Metro architect.",
     "latitude": 48.856,
     "longitude": 2.3605,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6732,20 +7270,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Guimard's only religious-building Art Nouveau work; architectural curiosity",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Unique Guimard religious building, Art Nouveau architectural interest"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Rue des Rosiers",
     "short_description": "Historic heart of the Marais Jewish quarter, known as the Pletzl.",
     "latitude": 48.8568,
     "longitude": 2.359,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6755,20 +7307,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 44,
+        "assigned_gravity": 3,
+        "reasoning": "Historic heart of Marais Jewish quarter (Pletzl), famous falafel stops, iconic neighborhood street in every guidebook",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major Marais street with strong cultural identity, high tourist footfall"
-    }
+    },
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=50m or area keywords in name/description)"
   },
   {
     "name": "Hotel Amelot de Bisseuil",
     "short_description": "Magnificent Marais mansion where Beaumarchais wrote The Marriage of Figaro and arranged arms for the American Revolution.",
     "latitude": 48.8582,
     "longitude": 2.3579,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -6777,53 +7343,95 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Beaumarchais residence, arms-running for American Revolution; plaque and facade; private",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Notable Marais mansion with Beaumarchais connection, limited public access"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Notre-Dame-des-Blancs-Manteaux",
     "short_description": "Church named after medieval white-robed begging friars from Marseilles.",
     "latitude": 48.859,
     "longitude": 2.3578,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 25,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Church named after medieval white-robed friars; secondary Marais church",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Minor Marais church with interesting name origin"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "La Force Prison Site",
     "short_description": "Former prison where the Princesse de Lamballe was murdered during the September Massacres of 1792.",
     "latitude": 48.8558,
     "longitude": 2.36,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 20,
     "kid_friendly": "caution",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-10-4th-arr-bastille-to-marais",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 14,
+        "assigned_gravity": 1,
+        "reasoning": "Demolished; Princesse de Lamballe murder site 1792; marker only",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "MEDIUM",
       "gravity_reasoning": "Demolished site, no physical trace, historic interest only"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Atelier Brancusi",
@@ -6837,13 +7445,27 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 36,
+        "assigned_gravity": 3,
+        "reasoning": "Recreated sculptor's studio beside Pompidou; free, small but acclaimed",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Free art museum adjacent to Pompidou, moderate visitor interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Stravinsky Fountain",
@@ -6859,13 +7481,27 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 44,
+        "assigned_gravity": 3,
+        "reasoning": "Tinguely & Niki de Saint Phalle pop-art fountain next to Pompidou; heavily photographed landmark",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Popular public art near Pompidou, good tourist draw"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Eglise Saint-Merri",
@@ -6879,33 +7515,61 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 32,
+        "assigned_gravity": 3,
+        "reasoning": "Flamboyant Gothic church near Pompidou with Paris's oldest bell (1331); secondary religious site",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Significant Gothic church near Pompidou, architectural interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Rue de la Verrerie",
     "short_description": "Medieval street where playing cards were first painted for the mad King Charles VI.",
     "latitude": 48.857,
     "longitude": 2.353,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 40,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 22,
+        "assigned_gravity": 1,
+        "reasoning": "Medieval street (12th c.) once one of Paris's most important right-bank thoroughfares; today an ordinary Marais street, historical significance not visible on the ground",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Historic street with curiosity value, minor site"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "BHV (Bazar de l'Hotel de Ville)",
@@ -6921,80 +7585,136 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 36,
+        "assigned_gravity": 3,
+        "reasoning": "Iconic Paris department store opposite Hôtel de Ville; commonly referenced but functional retail",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major department store, well-known Parisian institution"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Eglise des Billettes",
     "short_description": "Church with Paris's only surviving medieval cloister, built on the site of a 1290 anti-Jewish libel.",
     "latitude": 48.8581,
     "longitude": 2.355,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 40,
     "kid_friendly": "caution",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Paris's only surviving medieval cloister; small-scale specialist interest",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Only medieval cloister in Paris, significant architectural rarity"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Fondation Azzedine Alaia",
     "short_description": "Studio and foundation of Tunisian-born fashion designer Azzedine Alaia in the Marais.",
     "latitude": 48.8572,
     "longitude": 2.3527,
-    "importance_tier": 4,
+    "importance_tier": 2,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 26,
+        "assigned_gravity": 2,
+        "reasoning": "Fashion designer's private foundation; niche fashion-world interest",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Niche fashion interest, limited general appeal"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Half-Timbered Houses (Rue Francois-Miron)",
     "short_description": "Two of Paris's only securely dated 14th-century half-timbered houses.",
     "latitude": 48.8553,
     "longitude": 2.355,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 20,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 38,
+        "assigned_gravity": 3,
+        "reasoning": "Pair of 15th-c half-timbered medieval houses (#11, #13), classified monuments, survived Haussmann; photo-worthy feature on guidebook Marais walks",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Rare medieval survivals, curiosity value for architecture enthusiasts"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Hotel de Beauvais",
     "short_description": "17th-century mansion where the young Mozart stayed and where Catherine Bellier initiated Louis XIV.",
     "latitude": 48.8531,
     "longitude": 2.355,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 40,
     "kid_friendly": "caution",
     "name_variations": [
@@ -7003,40 +7723,68 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "17th-c mansion, young Mozart stayed here; plaque-level interest",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Notable mansion with Mozart and royal connections, moderate interest"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel Chalons de Luxembourg",
     "short_description": "17th-century Marais mansion with a lion's head portal, where d'Annunzio once lived.",
     "latitude": 48.8548,
     "longitude": 2.3569,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 22,
+        "assigned_gravity": 1,
+        "reasoning": "17th-c Marais mansion with lion's head portal; private; facade-only interest",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Minor Marais mansion, primarily architectural detail interest"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Eglise Saint-Gervais-Saint-Protais",
     "short_description": "Church with Paris's first classical facade and nearly two centuries of the Couperin musical dynasty.",
     "latitude": 48.8555,
     "longitude": 2.3547,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 60,
     "kid_friendly": "yes",
     "name_variations": [
@@ -7045,20 +7793,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 38,
+        "assigned_gravity": 3,
+        "reasoning": "Paris's first classical facade, 200 years of the Couperin dynasty; visitable major church behind Hôtel de Ville",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major historic church with first classical facade, Couperin heritage, WWI tragedy"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Hotel d'Aumont",
     "short_description": "Grand 17th-century mansion designed by Le Vau and Mansart with Le Brun interiors.",
     "latitude": 48.8537,
     "longitude": 2.358,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -7067,13 +7829,27 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-11-4th-arr-pompidou-to-sens",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Le Vau/Mansart mansion with Le Brun interiors; now Administrative Court, limited public access",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Notable Marais mansion by major architects, now administrative tribunal"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel-Dieu",
@@ -7089,20 +7865,34 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 34,
+        "assigned_gravity": 3,
+        "reasoning": "Paris's oldest hospital, 12th-c foundation; functional hospital next to Notre-Dame, exterior landmark",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Historic hospital on Ile de la Cite, architectural and medical history interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Hotel de Lauzun",
     "short_description": "Opulent 17th-century mansion where Baudelaire lived and the Club des Haschichins gathered.",
     "latitude": 48.8514,
     "longitude": 2.3569,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 50,
     "kid_friendly": "caution",
     "name_variations": [
@@ -7111,13 +7901,27 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Opulent 17th-c Ile Saint-Louis mansion, Baudelaire and Club des Haschichins; visitable by booking",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Major literary heritage site, Baudelaire connection, opulent interiors"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel Lambert",
@@ -7133,93 +7937,163 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 34,
+        "assigned_gravity": 3,
+        "reasoning": "Le Vau's Ile Saint-Louis masterpiece, famous rotunda balcony, Polish exile heritage; private",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Architectural masterpiece by Le Vau, private but externally visible"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Pont-Marie",
     "short_description": "17th-century stone bridge named after developer Christophe Marie.",
     "latitude": 48.853,
     "longitude": 2.356,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 60,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 40,
+        "assigned_gravity": 3,
+        "reasoning": "17th-c stone bridge; photogenic Ile Saint-Louis crossing on many guidebook walks",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Historic bridge with naming curiosity, minor tourist interest"
-    }
+    },
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=60m or area keywords in name/description)"
   },
   {
     "name": "Rue Chanoinesse",
     "short_description": "Medieval street on Ile de la Cite where Abelard and Heloise's tragic love affair unfolded.",
     "latitude": 48.853,
     "longitude": 2.35,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 40,
     "kid_friendly": "caution",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 34,
+        "assigned_gravity": 3,
+        "reasoning": "Medieval canon cloister street on Île de la Cité, houses from 1512 at #24, tombstone-paved courtyard at #26; hidden gem behind Notre-Dame, moderate guidebook presence",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Historic street with Abelard-Heloise romance, literary pilgrimage interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=40m), classified as stop"
   },
   {
     "name": "Saint-Louis-en-l'Ile Church",
     "short_description": "Baroque church on Ile Saint-Louis designed by Le Vau with distinctive openwork spire.",
     "latitude": 48.8517,
     "longitude": 2.3552,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 38,
+        "assigned_gravity": 3,
+        "reasoning": "Baroque Le Vau church with distinctive openwork spire on Ile Saint-Louis; main landmark of the island",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Parish church of Ile Saint-Louis, architectural interest, limited tourist draw"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Quai de Bourbon",
     "short_description": "Northern quay of Ile Saint-Louis, home to Camille Claudel and Apollinaire.",
     "latitude": 48.8525,
     "longitude": 2.3545,
-    "importance_tier": 4,
+    "importance_tier": 2,
     "trigger_radius": 60,
     "kid_friendly": "yes",
     "name_variations": [],
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 32,
+        "assigned_gravity": 2,
+        "reasoning": "Northern Ile Saint-Louis quay, Camille Claudel and Apollinaire; scenic walking route",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Scenic quay with artistic heritage, moderate walking-tour interest"
-    }
+    },
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Crypte Archeologique de l'Ile de la Cite",
@@ -7233,13 +8107,27 @@
     "_pipeline": {
       "source": "around-and-about-paris",
       "chunk": "chunk-12-4th-arr-the-islands",
-      "extracted_at": "2026-04-05T12:00:00Z"
+      "extracted_at": "2026-04-05T12:00:00Z",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 40,
+        "assigned_gravity": 3,
+        "reasoning": "Underground archaeology museum beneath Notre-Dame parvis; paid official attraction",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
+      }
     },
     "_meta": {
       "geocode_source": "web search",
       "geocode_confidence": "HIGH",
       "gravity_reasoning": "Unique archaeological site beneath Notre-Dame parvis, good tourist interest"
-    }
+    },
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Val-de-Grace",
@@ -7278,7 +8166,9 @@
     "importance_tier": 2,
     "latitude": 48.839,
     "longitude": 2.344,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "College de France",
@@ -7317,7 +8207,9 @@
     "importance_tier": 2,
     "latitude": 48.8489,
     "longitude": 2.3455,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Theatre de la Huchette",
@@ -7354,7 +8246,9 @@
     "importance_tier": 3,
     "latitude": 48.853,
     "longitude": 2.3454,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Lycee Henri IV",
@@ -7393,7 +8287,9 @@
     "importance_tier": 3,
     "latitude": 48.8464,
     "longitude": 2.348,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Bibliotheque Sainte-Genevieve",
@@ -7431,7 +8327,9 @@
     "importance_tier": 3,
     "latitude": 48.8463,
     "longitude": 2.3462,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Ecole Normale Superieure",
@@ -7470,7 +8368,9 @@
     "importance_tier": 3,
     "latitude": 48.8421,
     "longitude": 2.3447,
-    "trigger_radius": 25
+    "trigger_radius": 25,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Place de la Contrescarpe",
@@ -7505,7 +8405,9 @@
     "importance_tier": 4,
     "latitude": 48.8446,
     "longitude": 2.3494,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=20m or area keywords in name/description)"
   },
   {
     "name": "Eglise Saint-Medard",
@@ -7543,7 +8445,9 @@
     "importance_tier": 3,
     "latitude": 48.8397,
     "longitude": 2.35,
-    "trigger_radius": 25
+    "trigger_radius": 25,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Institut du Monde Arabe",
@@ -7581,7 +8485,9 @@
     "importance_tier": 2,
     "latitude": 48.8427,
     "longitude": 2.3538,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "La Tour d'Argent",
@@ -7618,7 +8524,9 @@
     "importance_tier": 3,
     "latitude": 48.8503,
     "longitude": 2.3541,
-    "trigger_radius": 15
+    "trigger_radius": 15,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Verlaine's Garret",
@@ -7637,8 +8545,16 @@
       "verified": true,
       "parent_poi": null,
       "gravity_audit": {
-        "assigned_gravity": 4,
-        "reasoning": "Lonely Planet listing; plaque on building; literary heritage site."
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 24,
+        "assigned_gravity": 1,
+        "reasoning": "39 rue Descartes, Verlaine's death room 1896, Hemingway later wrote A Moveable Feast there; plaque on building; private, not visitable; niche literary pilgrimage",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       },
       "geocode_audit": {
         "source": "web search",
@@ -7653,10 +8569,12 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8457,
     "longitude": 2.3488,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "College des Bernardins",
@@ -7693,7 +8611,9 @@
     "importance_tier": 3,
     "latitude": 48.8489,
     "longitude": 2.3521,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Le Procope",
@@ -7731,7 +8651,9 @@
     "importance_tier": 2,
     "latitude": 48.8527,
     "longitude": 2.3389,
-    "trigger_radius": 15
+    "trigger_radius": 15,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Fontaine Saint-Michel",
@@ -7768,7 +8690,9 @@
     "importance_tier": 2,
     "latitude": 48.8532,
     "longitude": 2.344,
-    "trigger_radius": 15
+    "trigger_radius": 15,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Theatre de l'Odeon",
@@ -7806,7 +8730,9 @@
     "importance_tier": 2,
     "latitude": 48.8494,
     "longitude": 2.3387,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Institut de France",
@@ -7843,7 +8769,9 @@
     "importance_tier": 2,
     "latitude": 48.8568,
     "longitude": 2.3365,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel de la Monnaie",
@@ -7882,7 +8810,9 @@
     "importance_tier": 3,
     "latitude": 48.8569,
     "longitude": 2.3392,
-    "trigger_radius": 15
+    "trigger_radius": 15,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Cour de Rohan",
@@ -7919,7 +8849,9 @@
     "importance_tier": 3,
     "latitude": 48.8522,
     "longitude": 2.3383,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)"
   },
   {
     "name": "Rue de l'Hirondelle",
@@ -7937,8 +8869,16 @@
       "verified": true,
       "parent_poi": null,
       "gravity_audit": {
-        "assigned_gravity": 4,
-        "reasoning": "Minor historical footnote; interesting hidden history."
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 22,
+        "assigned_gravity": 1,
+        "reasoning": "Ancient (c.1200) Left Bank alley with hidden staircase access from Place Saint-Michel; Hôtel de la Salamandre (Francis I emblem) at #20-22; hidden curiosity",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       },
       "geocode_audit": {
         "source": "web search",
@@ -7953,10 +8893,12 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8533,
     "longitude": 2.3433,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Caveau de la Bolee",
@@ -7974,8 +8916,16 @@
       "verified": true,
       "parent_poi": null,
       "gravity_audit": {
-        "assigned_gravity": 4,
-        "reasoning": "Niche literary history site."
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 24,
+        "assigned_gravity": 1,
+        "reasoning": "Medieval vaulted cellar, former literary cabaret (Verlaine, Baudelaire, Villon); now bar 'La Vénus Noire'; niche literary pilgrimage",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       },
       "geocode_audit": {
         "source": "web search",
@@ -7990,10 +8940,12 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8532,
     "longitude": 2.3432,
-    "trigger_radius": 8
+    "trigger_radius": 8,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Place de Furstemberg",
@@ -8034,7 +8986,9 @@
     "importance_tier": 3,
     "latitude": 48.8543,
     "longitude": 2.3352,
-    "trigger_radius": 15
+    "trigger_radius": 15,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "L'Hotel Paris",
@@ -8074,7 +9028,9 @@
     "importance_tier": 3,
     "latitude": 48.8562,
     "longitude": 2.3365,
-    "trigger_radius": 12
+    "trigger_radius": 12,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Rue Visconti",
@@ -8112,7 +9068,9 @@
     "importance_tier": 3,
     "latitude": 48.856,
     "longitude": 2.3362,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=20m), classified as stop"
   },
   {
     "name": "Les Deux Magots",
@@ -8150,7 +9108,9 @@
     "importance_tier": 2,
     "latitude": 48.8543,
     "longitude": 2.3332,
-    "trigger_radius": 10
+    "trigger_radius": 10,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Brasserie Lipp",
@@ -8187,7 +9147,9 @@
     "importance_tier": 3,
     "latitude": 48.8537,
     "longitude": 2.3324,
-    "trigger_radius": 8
+    "trigger_radius": 8,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -8226,7 +9188,9 @@
     "importance_tier": 2,
     "latitude": 48.8567,
     "longitude": 2.337,
-    "trigger_radius": 25
+    "trigger_radius": 25,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Natalie Barney Salon",
@@ -8245,8 +9209,16 @@
       "verified": true,
       "parent_poi": null,
       "gravity_audit": {
-        "assigned_gravity": 4,
-        "reasoning": "Niche literary site; well-known in LGBT and literary history circles."
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "20 rue Jacob, 60-year literary salon (1909-70); hosted Stein, Cocteau, Fitzgerald, Gide; major lesbian/literary history site; private pavilion, not publicly visitable",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       },
       "geocode_audit": {
         "source": "web search",
@@ -8261,10 +9233,12 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 2,
     "latitude": 48.8558,
     "longitude": 2.3345,
-    "trigger_radius": 12
+    "trigger_radius": 12,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel d'Angleterre Paris",
@@ -8283,8 +9257,16 @@
       "verified": true,
       "parent_poi": null,
       "gravity_audit": {
-        "assigned_gravity": 4,
-        "reasoning": "Historical hotel with literary associations; still operating."
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": null,
+        "raw_composite": 26,
+        "assigned_gravity": 2,
+        "reasoning": "Historic hotel on rue Jacob, site of 1783 Treaty of Paris negotiations, Hemingway's room 14 in 1921; literary pilgrimage but private boutique hotel, not a public site",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       },
       "geocode_audit": {
         "source": "web search",
@@ -8299,10 +9281,12 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 2,
     "latitude": 48.8557,
     "longitude": 2.333,
-    "trigger_radius": 12
+    "trigger_radius": 12,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel d'York",
@@ -8341,7 +9325,9 @@
     "importance_tier": 3,
     "latitude": 48.8555,
     "longitude": 2.3318,
-    "trigger_radius": 12
+    "trigger_radius": 12,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Rue de Buci Market",
@@ -8379,7 +9365,9 @@
     "importance_tier": 3,
     "latitude": 48.8535,
     "longitude": 2.336,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=20m), classified as stop"
   },
   {
     "name": "Marché Saint-Germain",
@@ -8400,6 +9388,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Covered market on site of medieval fair; ordinary modern shopping arcade today",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8407,10 +9407,12 @@
       "source_chunk": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8529,
     "longitude": 2.3361,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Café de la Mairie",
@@ -8430,6 +9432,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 26,
+        "assigned_gravity": 2,
+        "reasoning": "Place Saint-Sulpice literary café; Hemingway, Beckett, Sartre-Camus last meeting; small neighborhood cafe",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8437,10 +9451,12 @@
       "source_chunk": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8511,
     "longitude": 2.3349,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Palais du Luxembourg",
@@ -8461,6 +9477,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 62,
+        "assigned_gravity": 4,
+        "reasoning": "17th-c palace by de Brosse for Marie de Medici; seat of French Senate; famous building, limited interior access; a major landmark of Left Bank Paris",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -8468,10 +9496,12 @@
       "source_chunk": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 4,
     "latitude": 48.8483,
     "longitude": 2.3373,
-    "trigger_radius": 80
+    "trigger_radius": 80,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "Musée du Luxembourg",
@@ -8492,6 +9522,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 42,
+        "assigned_gravity": 3,
+        "reasoning": "First public museum in Paris (1750); now rotating exhibitions in palace orangery; frequent tourist visit",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8502,7 +9544,9 @@
     "importance_tier": 3,
     "latitude": 48.8482,
     "longitude": 2.3368,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "27 Rue de Fleurus",
@@ -8522,6 +9566,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 32,
+        "assigned_gravity": 3,
+        "reasoning": "Gertrude Stein/Alice Toklas home and legendary American expat salon; plaque only, private",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8532,7 +9588,9 @@
     "importance_tier": 3,
     "latitude": 48.8458,
     "longitude": 2.3327,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Rue Férou",
@@ -8552,6 +9610,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Cobbled side-street, famous for Rimbaud's 'Bateau Ivre' calligraphed on a wall (2012); Hemingway lived at #6; genuine literary landmark with a unique visual feature",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8559,10 +9629,12 @@
       "source_chunk": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 2,
     "latitude": 48.849,
     "longitude": 2.334,
-    "trigger_radius": 35
+    "trigger_radius": 35,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Fontaine Médicis",
@@ -8583,6 +9655,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 44,
+        "assigned_gravity": 3,
+        "reasoning": "Romantic grotto fountain in Luxembourg Gardens; heavily photographed feature inside a Gravity-5 park",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8593,7 +9677,9 @@
     "importance_tier": 3,
     "latitude": 48.8479,
     "longitude": 2.3387,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Statue of Marshal Ney",
@@ -8614,6 +9700,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 22,
+        "assigned_gravity": 1,
+        "reasoning": "Single bronze statue (Rude, 1853); historical plaque-level curiosity",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8621,10 +9719,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8406,
     "longitude": 2.3351,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Fontaine des Quatre-Parties-du-Monde",
@@ -8645,6 +9745,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 32,
+        "assigned_gravity": 3,
+        "reasoning": "Carpeaux's 1874 monumental fountain in Jardin Marco Polo; notable sculpture ensemble",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8655,7 +9767,9 @@
     "importance_tier": 3,
     "latitude": 48.8439,
     "longitude": 2.336,
-    "trigger_radius": 50
+    "trigger_radius": 50,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Rue Notre-Dame-des-Champs",
@@ -8675,6 +9789,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Long Montparnasse street, Hemingway at #113, Whistler, Pound, Renoir, Victor Hugo; deep artistic heritage but spread across many addresses, not a single destination",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8682,10 +9808,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 2,
     "latitude": 48.8445,
     "longitude": 2.3329,
-    "trigger_radius": 80
+    "trigger_radius": 80,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Ecole Alsacienne",
@@ -8705,6 +9833,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 18,
+        "assigned_gravity": 1,
+        "reasoning": "Private school; closed to public; André Gide attended",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8712,10 +9852,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8448,
     "longitude": 2.3325,
-    "trigger_radius": 35
+    "trigger_radius": 35,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "College Stanislas",
@@ -8735,6 +9877,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 18,
+        "assigned_gravity": 1,
+        "reasoning": "Private Catholic school; closed to public; notable alumni only",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8742,10 +9896,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8462,
     "longitude": 2.331,
-    "trigger_radius": 35
+    "trigger_radius": 35,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "3 Rue Joseph-Bara",
@@ -8765,6 +9921,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 15,
+        "assigned_gravity": 1,
+        "reasoning": "Single address where painters Kisling, Pascin, Bugatti lived; niche art-history interest only; no landmark status",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8772,10 +9940,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.843,
     "longitude": 2.3345,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Musee Zadkine",
@@ -8796,6 +9966,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Free city museum in sculptor's former studio; niche visit",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8803,10 +9985,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.843059,
     "longitude": 2.334026,
-    "trigger_radius": 45
+    "trigger_radius": 45,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Reid Hall",
@@ -8826,6 +10010,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 16,
+        "assigned_gravity": 1,
+        "reasoning": "Columbia University global center; private academic building",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -8833,10 +10029,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 1,
     "latitude": 48.8427,
     "longitude": 2.333,
-    "trigger_radius": 35
+    "trigger_radius": 35,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Academie de la Grande-Chaumiere",
@@ -8856,6 +10054,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 26,
+        "assigned_gravity": 2,
+        "reasoning": "Independent art academy since 1902; Giacometti taught; private institution",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8863,10 +10073,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8422,
     "longitude": 2.3318,
-    "trigger_radius": 35
+    "trigger_radius": 35,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "26 Rue Vavin (Sauvage Building)",
@@ -8887,6 +10099,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 24,
+        "assigned_gravity": 2,
+        "reasoning": "Henri Sauvage 1912-14 stepped-terrace apartment, architectural curiosity; single building",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8894,10 +10118,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8428,
     "longitude": 2.334,
-    "trigger_radius": 30
+    "trigger_radius": 30,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "La Rotonde",
@@ -8918,6 +10144,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 38,
+        "assigned_gravity": 3,
+        "reasoning": "Legendary 1911 Montparnasse café, Modigliani, Lenin, Trotsky; still operating, guidebook-standard cafe stop",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -8925,10 +10163,12 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.8424,
     "longitude": 2.3292,
-    "trigger_radius": 50
+    "trigger_radius": 50,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Quai Voltaire",
@@ -8949,6 +10189,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 36,
+        "assigned_gravity": 3,
+        "reasoning": "Historic Left Bank embankment, Voltaire's death site, Baudelaire/Wagner/Delacroix/Ingres; scenic walk along Seine",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -8956,10 +10208,12 @@
       "source_chunk": "chunk-20-7th-arr-faubourg-east",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "latitude": 48.8588,
     "longitude": 2.3312,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=40m or area keywords in name/description)"
   },
   {
     "name": "Fontaine des Quatre Saisons",
@@ -8981,6 +10235,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 32,
+        "assigned_gravity": 3,
+        "reasoning": "Bouchardon 1739-45 monumental wall fountain on rue de Grenelle; sculptural landmark",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -8991,7 +10257,9 @@
     "importance_tier": 3,
     "latitude": 48.8547,
     "longitude": 2.3251,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
   },
   {
     "name": "Saint-Thomas-d'Aquin",
@@ -9011,6 +10279,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 26,
+        "assigned_gravity": 2,
+        "reasoning": "17th-c Dominican parish church in 7th; secondary religious site",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9018,10 +10298,12 @@
       "source_chunk": "chunk-20-7th-arr-faubourg-east",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8564,
     "longitude": 2.3277,
-    "trigger_radius": 20
+    "trigger_radius": 20,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Le Bon Marché",
@@ -9042,6 +10324,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 46,
+        "assigned_gravity": 4,
+        "reasoning": "World's first modern department store (1838); inspiration for Zola's Au Bonheur des Dames; major Paris retail landmark",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -9049,10 +10343,12 @@
       "source_chunk": "chunk-20-7th-arr-faubourg-east",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 4,
     "latitude": 48.8511,
     "longitude": 2.3244,
-    "trigger_radius": 25
+    "trigger_radius": 25,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "La Pagode",
@@ -9073,6 +10369,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 32,
+        "assigned_gravity": 2,
+        "reasoning": "1895 Japanese-pagoda cinema on rue de Babylone; architectural curiosity, cinema closed for years",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9080,10 +10388,12 @@
       "source_chunk": "chunk-20-7th-arr-faubourg-east",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8516,
     "longitude": 2.3185,
-    "trigger_radius": 15
+    "trigger_radius": 15,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel Matignon",
@@ -9105,6 +10415,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 32,
+        "assigned_gravity": 2,
+        "reasoning": "French PM residence since 1935; not open to public, iconic only by name",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -9115,7 +10437,9 @@
     "importance_tier": 2,
     "latitude": 48.8527,
     "longitude": 2.3192,
-    "trigger_radius": 80
+    "trigger_radius": 80,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Musee de la Legion d'Honneur",
@@ -9137,6 +10461,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 30,
+        "assigned_gravity": 2,
+        "reasoning": "Medals/orders museum in Hôtel de Salm; niche specialist interest",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9144,10 +10480,12 @@
       "source_chunk": "chunk-21-7th-arr-faubourg-west",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8605,
     "longitude": 2.321,
-    "trigger_radius": 80
+    "trigger_radius": 80,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -9169,6 +10507,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Neo-Gothic 19th-c church in 7th; César Franck organ heritage; secondary church",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9176,10 +10526,12 @@
       "source_chunk": "chunk-21-7th-arr-faubourg-west",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.855,
     "longitude": 2.3182,
-    "trigger_radius": 80
+    "trigger_radius": 80,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Hotel de Gallifet",
@@ -9202,6 +10554,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 24,
+        "assigned_gravity": 1,
+        "reasoning": "Talleyrand's former residence on rue de Grenelle; now Italian Cultural Institute; private",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9209,10 +10573,12 @@
       "source_chunk": "chunk-21-7th-arr-faubourg-west",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 1,
     "latitude": 48.8544,
     "longitude": 2.3224,
-    "trigger_radius": 70
+    "trigger_radius": 70,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
   },
   {
     "name": "Fontaine de Mars",
@@ -9233,6 +10599,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "Napoleonic neoclassical fountain with Mars and Hygeia; small scale",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 4
       }
     },
     "_meta": {
@@ -9240,10 +10618,12 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 2,
     "latitude": 48.8584,
     "longitude": 2.3026,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Église Saint-Pierre du Gros Caillou",
@@ -9264,6 +10644,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 25,
+        "assigned_gravity": 2,
+        "reasoning": "19th-c neoclassical parish church in 7th arr, by Godde 1822-29; notable only for Jean-Sylvain Bailly's grave; not a tourist draw; current T5 was clearly an agent error",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 5
       }
     },
     "_meta": {
@@ -9271,10 +10663,12 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 2,
     "latitude": 48.859,
     "longitude": 2.305,
-    "trigger_radius": 40
+    "trigger_radius": 40,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Rue Cler",
@@ -9294,6 +10688,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 42,
+        "assigned_gravity": 3,
+        "reasoning": "Pedestrianized market street in 7th arr; famous Rick-Steves-style village atmosphere; guidebook standard",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9304,7 +10710,9 @@
     "importance_tier": 3,
     "latitude": 48.8565,
     "longitude": 2.3028,
-    "trigger_radius": 60
+    "trigger_radius": 60,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=60m or area keywords in name/description)"
   },
   {
     "name": "Ecole Militaire",
@@ -9325,6 +10733,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 48,
+        "assigned_gravity": 4,
+        "reasoning": "18th-c military academy, Louis XV commission, massive facade anchoring the Champ de Mars axis; visible landmark, limited public access",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -9332,10 +10752,12 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 4,
     "latitude": 48.8537,
     "longitude": 2.3063,
-    "trigger_radius": 100
+    "trigger_radius": 100,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
   },
   {
     "name": "UNESCO Headquarters Paris",
@@ -9357,6 +10779,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 28,
+        "assigned_gravity": 2,
+        "reasoning": "1958 Y-shaped Modernist building by Breuer/Nervi/Zehrfuss; architectural landmark, limited visitor access",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 3
       }
     },
     "_meta": {
@@ -9364,10 +10798,12 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "latitude": 48.8512,
     "longitude": 2.3076,
-    "trigger_radius": 60
+    "trigger_radius": 60,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
   },
   {
     "name": "Champ de Mars",
@@ -9388,6 +10824,18 @@
         "visitor_volume": "UNKNOWN",
         "guidebook_presence": "PRESENT",
         "source_urls": []
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": null,
+        "guidebook_presence": "PRESENT",
+        "raw_composite": 72,
+        "assigned_gravity": 5,
+        "reasoning": "Massive public greenspace directly beneath the Eiffel Tower; iconic image of Paris; millions of visitors annually as the Eiffel Tower's front lawn; currently scored T2 which is clearly wrong",
+        "scored_by": "phase2_rescore_2026-04-08",
+        "previous_tier": 2
       }
     },
     "_meta": {
@@ -9395,9 +10843,11 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 2,
+    "importance_tier": 5,
     "latitude": 48.8556,
     "longitude": 2.2986,
-    "trigger_radius": 150
+    "trigger_radius": 150,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
   }
 ]
