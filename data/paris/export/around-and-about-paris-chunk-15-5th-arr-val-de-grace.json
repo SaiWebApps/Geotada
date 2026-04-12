@@ -31,7 +31,17 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Anne of Austria",
+          "Louis XIII",
+          "Louis XIV"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 30,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Step inside and look up into the dome. Pierre Mignard spent months painting an astonishing fresco depicting over two hundred figures — prophets, saints, martyrs, and recognizable portraits including Queen Anne of Austria herself. It was the first dome fresco of its scale in Paris. The dome, designed by Lemercier after Mansart was dismissed from the project, inspired the later domes of the Pantheon and Les Invalides.",
@@ -49,7 +59,22 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Anne of Austria",
+          "Lemercier",
+          "Les Invalides",
+          "Mansart",
+          "Pantheon",
+          "Pierre Mignard",
+          "Queen Anne",
+          "Step"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 27,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber"
       },
       {
         "script_body": "In 1793, the French Revolution transformed this royal abbey into something utterly different. The Convention decreed it would become a military hospital and medical school — a role it would serve for over two centuries. By 1796 the hospital was operational, and Napoleon III later added a medical library housing an extraordinary collection of theses.",
@@ -67,7 +92,16 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "French Revolution",
+          "Napoleon III"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 22,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "After decades of hospital expansion took its toll on the historic buildings, a restoration initiative began in the late 1970s to save the old monument. The chapel, cloister, and formal French garden have been beautifully restored. A museum of the army's health service was added, celebrating the site's unique dual identity as a place of both devotion and healing.",
@@ -85,7 +119,13 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 24,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The beauty of the Val-de-Grace was recognized from the very start. Germain Brice, in the first guidebook to Paris published in 1684, wrote: 'Foreigners here must agree that things in France can be made beautiful and regular like those one goes to admire in Italy.' It was a bold claim — that Paris could rival Rome — and the Val-de-Grace was his proof.",
@@ -102,8 +142,18 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Foreigners",
+          "Germain Brice"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 25,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   }
 ]

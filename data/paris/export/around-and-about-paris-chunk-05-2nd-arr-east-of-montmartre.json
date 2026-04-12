@@ -28,13 +28,32 @@
           "chapter": "The 2nd Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Boulevard du Palais",
+          "Cité",
+          "La Bourse",
+          "Maison Carrée",
+          "Napoleon",
+          "Second Empire",
+          "Temple",
+          "Théodore Brongniart",
+          "Trade",
+          "Tribunal",
+          "Vespasian"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Grands Boulevards",
@@ -63,13 +82,26 @@
           "chapter": "The 2nd Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Louis XIV",
+          "Madeleine",
+          "Marie de Medici",
+          "Reine",
+          "These Grands"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 43,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Porte Saint-Denis",
@@ -100,7 +132,19 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Blondel",
+          "Charles V",
+          "Charles X",
+          "Louis XIV",
+          "Since Roman"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 59,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Even those traveling to their deaths found solace on rue Saint-Denis. The tumbril carrying condemned prisoners from the prison of the Grand-Châtelet to the gallows of Montfaucon would pause at the convent of the Filles-Dieu to let them kiss the wooden cross. The convent's inmates — reformed prostitutes — would offer holy water, three morsels of bread and a glass of wine, and could even save their necks by consenting to marry them. It is said that one prisoner, offered rescue by a generous yet hideously ugly 'daughter of God,' urged the hangman to proceed with his task and deliver him from a still worse fate.",
@@ -115,13 +159,24 @@
           "chapter": "The 2nd Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Châtelet",
+          "Dieu",
+          "Montfaucon"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Passage de la Trinite",
@@ -152,13 +207,24 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Confrérie de la Passion",
+          "Fontaine Greneta",
+          "Les Enfants Bleus"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 54,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -189,13 +255,24 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Champagne",
+          "Denis",
+          "Messageries Royales"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Tour Jean sans Peur",
@@ -228,7 +305,23 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Burgundian",
+          "Duc de Bourgogne",
+          "House",
+          "Knowing",
+          "Marcel",
+          "Montereau",
+          "Robert II",
+          "Saint Louis",
+          "Tanguy du Châtel"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 58,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Just across the street at n°29 stood the Théâtre de l'Hôtel de Bourgogne, the first permanent theatre of Paris. In 1548, the Confrérie de la Passion took possession of this site, vacated by François I. Through wily lobbying, the resident Comédiens du Roi enjoyed Louis XIV's patronage and produced Racine's work. In 1680, Louis XIV ordered two rival troupes to merge — creating the Comédie-Française — and the Italian troupe took over, delighting Parisians with Harlequin, Colombine and Scaramouche. When they derided Madame de Maintenon as 'La Fausse Prude' in 1697, she had the theatre shut down. The fun-loving Regent brought them back in 1716, and they entertained audiences with Marivaux's light-hearted comedies until 1783, when they moved to new premises near the Boulevard des Italiens — named after them.",
@@ -243,13 +336,33 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Boulevard des Italiens",
+          "Colombine",
+          "Comédiens du Roi",
+          "Confrérie de la Passion",
+          "Hôtel de Bourgogne",
+          "La Fausse Prude",
+          "Louis XIV",
+          "Madame de Maintenon",
+          "Racine",
+          "Regent",
+          "Through",
+          "Théâtre"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 52,
+        "narrative_function": "transition",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Rue Montorgueil",
@@ -280,7 +393,23 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Balzac",
+          "Dieppe",
+          "Dumas",
+          "Eugène Sue",
+          "La Comédie Humaine",
+          "Le Rocher de Cancale",
+          "Les Halles",
+          "Since",
+          "Théophile Gautier"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 48,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "It was in Madame Gourdan's establishment on what is now rue Montorgueil that the notorious pimp Jean du Barry discovered the enticing Jeanne Bécu, known by her trade name Mademoiselle Lange. Having set her up as a courtesan, he introduced her to the Duc de Richelieu, who facilitated her presentation to Louis XV. A true professional, Jeanne introduced the licentious monarch to unsuspected pleasures, all the more appreciated since his predecessor, the Pompadour, had long lost her appetite. To make her socially acceptable, Jean du Barry married her off to his brother, Comte Guillaume, while the new Comtesse du Barry became the last of France's royal favourites. Outside the court, the people were infuriated by her prodigal spending. When the time came for revenge, a vindictive nation sent for her at her retreat in Louveciennes and dispatched her to the guillotine.",
@@ -295,13 +424,31 @@
           "chapter": "The 2nd Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Comte Guillaume",
+          "Comtesse du Barry",
+          "Duc de Richelieu",
+          "Having",
+          "Jean du Barry",
+          "Jeanne Bécu",
+          "Louis XV",
+          "Louveciennes",
+          "Madame Gourdan",
+          "Mademoiselle Lange"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Place du Caire",
@@ -332,13 +479,28 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Cour des Miracles",
+          "Dame de Paris",
+          "Egyptomania",
+          "Louis XIV",
+          "Napoleon",
+          "Nicolas de La Reynie",
+          "Victor Hugo"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 60,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Rue de Clery",
@@ -367,7 +529,18 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Farmer General Le Normant de Tournehem",
+          "Jeanne Poisson",
+          "Louis XV",
+          "Marquise de Pompadour"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 31,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Towards the end of his life, Pierre Corneille lived on rue de Cléry. After the death of his patron, the Duc de Guise, he had to vacate his apartment in the Marais. He solicited the King for lodging in the Louvre, taking the trouble to couch his request in rhyme, but the King turned a deaf ear — a deplorable attitude, as most of those granted accommodation there were base courtiers and parasites. Of all the plays he wrote on rue de Cléry, Psyché alone proved a success — written to the music of Lully, in collaboration with Quinault and Molière, it sealed Corneille's friendship with the latter. But Louis XIV, paired with the bigoted Madame de Maintenon, cut off altogether the pension of the playwright who had given him so much pleasure. On 1 October 1684, Pierre Corneille died a pauper on rue d'Argenteuil. Four days later, Psyché was taken up again, so great was its success.",
@@ -382,13 +555,28 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "But Louis XIV",
+          "Duc de Guise",
+          "Madame de Maintenon",
+          "Pierre Corneille",
+          "Psyché",
+          "Quinault",
+          "Towards"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 63,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -420,13 +608,25 @@
           "chapter": "The 2nd Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Impressionist",
+          "Nadar",
+          "Société",
+          "Third Republic"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Place de Louvois",
@@ -457,13 +657,24 @@
           "chapter": "The 2nd Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Carnival",
+          "Duc de Berry",
+          "Opera House"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Cafe du Croissant",
@@ -496,12 +707,29 @@
           "chapter": "The 2nd Arrondissement",
           "page": "East of Rue Montmartre"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Alfred Dreyfus",
+          "Aurore",
+          "Café du Croissant",
+          "Great War",
+          "Jean Jaurès",
+          "Raoul Villain",
+          "Sixteen",
+          "Tried",
+          "Zola"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 58,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-05-2nd-arr-east-of-montmartre"
-    }
+    },
+    "poi_role": "walk_by_only"
   }
 ]

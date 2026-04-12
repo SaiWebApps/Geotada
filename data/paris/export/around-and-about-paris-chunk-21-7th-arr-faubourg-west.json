@@ -32,7 +32,19 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Carême",
+          "Hôtel Matignon",
+          "Prime Minister",
+          "Talleyrand",
+          "Varenne"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The story of Hôtel Matignon reads like a history of French political instability. After Talleyrand sold it, the mansion passed to Louis XVIII, then the Duke of Galliera, whose widow lent it to the Comte de Paris — the Orléans pretender to the throne. When the Comte hosted his daughter's engagement party here, the Third Republic panicked and passed a law expelling the House of Orléans from France. The law lasted until after the Great War. When war broke out in 1914, the Prince d'Orléans came back to serve his country — and was promptly imprisoned for his trouble.",
@@ -50,7 +62,23 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "After Talleyrand",
+          "Comte de Paris",
+          "Duke",
+          "Great War",
+          "House",
+          "Hôtel Matignon",
+          "Louis XVI",
+          "Orléans",
+          "Third Republic"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Hidden behind the Prime Minister's gates is one of the largest private gardens in Paris — and at its heart, a bejewelled 18th-century folly built as a music room and nicknamed Le Petit-Trianon. While Versailles has its famous Trianon, the Faubourg has this intimate echo: a gilded retreat where the sounds of the harpsichord once floated through jasmine-scented air, unreachable by the public and all the more tantalizing for it.",
@@ -67,16 +95,28 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Faubourg",
+          "Hidden",
+          "Prime Minister",
+          "While Versailles"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "callback",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Musee de la Legion d'Honneur",
     "short_description": "Museum of medals, orders, and historical paraphernalia housed in the Hôtel de Salm, a neoclassical mansion set on fire during the Commune and beautifully restored.",
     "latitude": 48.8605,
     "longitude": 2.321,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 80,
     "typical_duration_min": 5,
     "kid_friendly": "no",
@@ -102,7 +142,18 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Hôtel de Salm",
+          "Musée",
+          "Orsay",
+          "Prince Frédéric III"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "After the Prince of Salm's execution, a former wigmaker named Claude Lenthereau had the audacity to reinvent himself as the 'Marquis de Beauregard.' He acquired the Hôtel de Salm, bought the jewel-like Château de Bagatelle on credit, kept a celebrated actress on a 10,000-pound pension, and threw unbelievably lavish banquets — all while Paris sneered. The satirical press dubbed him 'the foolishness of a parvenu rascal who, in order to efface any vestige of original powder, called himself the Marquis de Beauregard.' He was eventually unmasked, condemned, branded and put in irons for four years.",
@@ -119,7 +170,18 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Château de Bagatelle",
+          "Claude Lenthereau",
+          "Hôtel de Salm",
+          "Marquis de Beauregard"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "playful"
       },
       {
         "script_body": "Thomas Jefferson arrived in Paris in 1784 and, from his neighbor Lafayette's house at 123 rue de Lille, could admire the Hôtel de Salm under construction across the way. He brought other Americans to see it — the architect Charles Bulfinch and the painter John Trumbull — but most significantly Pierre L'Enfant, who is known to have been deeply inspired by Parisian architecture in designing the city of Washington D.C.",
@@ -137,16 +199,31 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Americans",
+          "Charles Bulfinch",
+          "Hôtel de Salm",
+          "John Trumbull",
+          "Pierre",
+          "Thomas Jefferson",
+          "Washington"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Eglise Sainte-Clotilde",
     "short_description": "19th-century neo-Gothic church in the 7th arrondissement, built by architects Gau and Ballu; famous as the church where César Franck served as organist for over 30 years.",
     "latitude": 48.855,
     "longitude": 2.3182,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 80,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -173,7 +250,17 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "César Franck",
+          "Indy",
+          "Rousseau"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 30,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Sainte-Clotilde is a 19th-century pastiche of Gothic architecture — built by Gau and completed by Ballu, the same architect who designed several other Parisian churches including the Trinité north of the Opéra. Unlike medieval Gothic cathedrals built over centuries, Sainte-Clotilde was conceived whole, its twin spires rising with the confident symmetry that only a Victorian-era architect would dare.",
@@ -190,16 +277,27 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Trinité",
+          "Unlike",
+          "Victorian-era"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 23,
+        "narrative_function": "callback",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Hotel de Gallifet",
     "short_description": "18th-century mansion on rue de Grenelle once home to Talleyrand across four different regimes; now the Italian Cultural Institute and Italian Embassy since 1909.",
     "latitude": 48.8544,
     "longitude": 2.3224,
-    "importance_tier": 3,
+    "importance_tier": 1,
     "trigger_radius": 70,
     "typical_duration_min": 5,
     "kid_friendly": "no",
@@ -227,9 +325,24 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Directoire",
+          "First Empire",
+          "First Restoration",
+          "Hôtel de Gallifet",
+          "Napoleon",
+          "Second Restoration",
+          "Talleyrand"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Musee Rodin",
@@ -261,7 +374,19 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Hôtel de Biron",
+          "Isadora Duncan",
+          "Jean Cocteau",
+          "Malte Laurids Brigge",
+          "Rainer Maria Rilke"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 39,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The story of the Musée Rodin begins with a wigmaker. Monsieur Peyrenc de Moras, from Languedoc, had made such a staggering fortune speculating in John Law's paper-money schemes that he commissioned a great architect — while his neighbor Charlotte Desmares, who'd bet on the same market, went bankrupt. Peyrenc's mansion was fit for royalty: Louise de Bourbon, daughter-in-law of Louis XIV and Madame de Montespan, bought it from the wigmaker's widow in 1732.",
@@ -279,7 +404,21 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Charlotte Desmares",
+          "John Law",
+          "Louis XIV",
+          "Louise de Bourbon",
+          "Madame de Montespan",
+          "Monsieur Peyrenc de Moras",
+          "Musée Rodin"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 29,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "After the last private owner, the Duchesse de Charost, sold the Hôtel de Biron to a religious congregation in 1820, it became a school. In 1904, when French law dispersed the congregation, the school went public and the vast space was suddenly available. Rather than sell, someone had the inspired idea of renting rooms to artists cheaply — and so one of Paris's grandest private mansions became an accidental artists' commune, populated by the century's most influential creative minds.",
@@ -296,16 +435,27 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Duchesse de Charost",
+          "Hôtel de Biron",
+          "Rather"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Musee d'Orsay",
     "short_description": "Impressionist and Post-Impressionist art museum housed in a converted 1900 Beaux-Arts railway station on the Left Bank",
     "latitude": 48.859962,
     "longitude": 2.326561,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -332,7 +482,16 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Belle",
+          "Detaille"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Although the Musée d'Orsay is devoted to all art forms developed in France in the second half of the 19th century — and hosts chamber-music concerts too — most visitors come for the Impressionist collection on the upper floors. Its fame is built on those galleries, though the building itself is equally extraordinary: a temple to modernity from the age of steam, echoing Monet's paintings of the Gare Saint-Lazare and Zola's novel 'La Bête humaine.'",
@@ -350,7 +509,20 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Gare",
+          "Impressionist",
+          "La Bête",
+          "Lazare",
+          "Musée",
+          "Zola"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 30,
+        "narrative_function": "callback",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Here is a piece of Parisian irony: the Musée d'Orsay's destiny as a museum was proposed the very year it opened as a train station. In 1900, the painter Édouard Detaille — seeing the grand Beaux-Arts architecture — suggested on the spot that it should be turned into a museum or art gallery. It took another 86 years for someone to act on the idea. The Cour des Comptes next door, meanwhile, was utterly destroyed and replaced by the station; the Commune left few architectural survivors in this quarter.",
@@ -368,7 +540,16 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Arts",
+          "Musée"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "transition",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Around the corner from the museum, at 31 rue de Bellechasse, Alphonse Daudet lived from 1885 to 1897. Proust visited his widow here and wrote that he knew of no place 'so filled with the past, with thought, so piously consecrated by memory.' The building's dead include the mathematician Monge, the physician Villemin, and the historian Bainville. Around the corner at number 27, Gustave Doré had his studio — the building still bears his initials GD.",
@@ -386,16 +567,27 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Alphonse Daudet",
+          "Gustave Doré",
+          "Proust"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 30,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Assemblee Nationale",
     "short_description": "Neoclassical Palais Bourbon housing the French parliament since the Revolution, facing Place de la Concorde across the Seine",
     "latitude": 48.860862,
     "longitude": 2.318389,
-    "importance_tier": 2,
+    "importance_tier": 4,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -421,7 +613,21 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Lassurance",
+          "Louis XIV",
+          "Madame de Montespan",
+          "Napoleon",
+          "Palais Bourbon",
+          "Place de la Concorde",
+          "Temple de la Gloire"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Next door to the Palais Bourbon, the Hôtel de Lassay — now the home of the President of the National Assembly — is a masterpiece of Regency architecture. It is essentially a single elongated raised floor with a row of elegant French doors, surmounted by a sculpted balustrade carrying urns and clusters of chubby cupids. Inside, five spacious halls still used for official receptions were decorated with mirrors, carved doors and delicate paintings — the aesthetic of discreet architecture contrasted with sumptuous interior decoration, ideally suited to the pleasure-seeking inmates of the 18th century.",
@@ -438,7 +644,19 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Hôtel de Lassay",
+          "National Assembly",
+          "Palais Bourbon",
+          "President",
+          "Regency"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "On the streets running toward the Palais Bourbon, the Faubourg's grandeur has a darker underside. At 116 rue de Grenelle — now the Mairie of the 7th — the owner during Louis XVI's reign was the Duc de Brissac, Governor of Paris. On 9 September 1792, he was slain in the streets of Versailles during the September Massacres. His head was then sliced off and carried by the patriots all the way to Louveciennes — to be displayed before his ex-mistress, the Comtesse du Barry. She took the head back to Paris and buried it in the gardens, where it was discovered accidentally in 1901.",
@@ -455,7 +673,22 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Comtesse du Barry",
+          "Duc de Brissac",
+          "Governor",
+          "Louis XVI",
+          "Mairie",
+          "Palais Bourbon",
+          "September Massacres",
+          "Versailles"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "At the corner of rue de Bourgogne and rue de Grenelle — on the site of today's number 115 — lies the secret grave of Adrienne Lecouvreur, the most adulated actress of the Comédie-Française. When she died in 1730, the Church refused her Christian burial. The priest of Saint-Sulpice turned her away despite Voltaire's furious protest: she was carried by night to the river by three charitable souls, and buried here without ceremony. An 86-year-old admirer fixed a commemorative plaque under the portal of the Hôtel de Saumery built on the site in 1786. Her remains were searched for in 1797 at the instigation of the Comédie-Française — and never found.",
@@ -472,7 +705,20 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Adrienne Lecouvreur",
+          "Bourgogne",
+          "Church",
+          "Hôtel de Saumery",
+          "Sulpice",
+          "Voltaire"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The Ministry of Defence occupies what was once the Dominican convent of Saint-Joseph and the adjoining Hôtel de Brienne on rue Saint-Dominique. The convent was originally built for poor orphan girls — Madame de Montespan took great interest in it and made charitable donations, then retired there herself when Louis XIV left her for Madame de Maintenon. From 1747, the convent hosted the celebrated salon of Madame du Deffand, where all of Parisian intelligentsia and many honoured foreigners gathered. The Hôtel de Brienne passed to Lucien Bonaparte in 1802.",
@@ -489,7 +735,23 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Defence",
+          "Dominican",
+          "Hôtel de Brienne",
+          "Joseph",
+          "Louis XIV",
+          "Lucien Bonaparte",
+          "Madame de Maintenon",
+          "Madame de Montespan",
+          "Madame du Deffand"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Rue de Grenelle is a museum of 18th-century aristocratic Paris — but one almost entirely closed to the public. The Hôtel de Baufremont at number 87 has barely been touched by renovators and retains its original Regency harmony. The Hôtel d'Avaray at number 85 remained in the Avaray family for a remarkable 200 years, until 1896; it was bought in 1920 by the Dutch government for its Embassy. The Russian Embassy at number 79 still preserves early 18th-century decoration in its lounges and a splendid staircase. Tzar Nicholas II and his Tsarina stayed here during their 1896 Paris visit.",
@@ -506,8 +768,21 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Avaray",
+          "Regency",
+          "Rue de Grenelle",
+          "Tsarina",
+          "Tzar Nicholas II"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   }
 ]

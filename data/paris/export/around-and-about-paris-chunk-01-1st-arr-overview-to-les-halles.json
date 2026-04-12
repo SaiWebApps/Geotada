@@ -4,7 +4,7 @@
     "short_description": "Heart of ancient Paris and one of two natural Seine islands, where the Parisii tribe first settled and Notre-Dame was built",
     "latitude": 48.8544,
     "longitude": 2.3472,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 100,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
@@ -26,20 +26,37 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Celtic",
+          "Chapelle Royale",
+          "Childebert",
+          "Holy Cross",
+          "Louis IX",
+          "Merovingian",
+          "Palais de Justice",
+          "Parisii",
+          "Roman Emperor Julian"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Jardin des Tuileries",
     "short_description": "Former royal garden designed by Andre Le Notre where Louis XVI and Marie Antoinette were held under house arrest after the Bastille fell",
     "latitude": 48.8636,
     "longitude": 2.3274,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 100,
     "typical_duration_min": 45,
     "kid_friendly": "yes",
@@ -62,7 +79,20 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Heading",
+          "Louis XIV",
+          "Louis XVI",
+          "Louvre",
+          "National Guards",
+          "Versailles"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "The Palais des Tuileries, built by Catherine de Medici in 1564, served as the seat of French power through every regime change of the 19th century. After his coup on 2 December 1851, Louis Napoleon promptly left the Republican Palais de l'Elysee for the royal Tuileries — the last ruler to use it. When the nascent Third Republic came to power after defeating the Paris Commune in 1871, it moved out of the 1st arrondissement entirely, heading west to the Palais de l'Elysee — the home of the Republic's Presidents ever since. The fire that had damaged the Tuileries during the Commune had tolled the knell of the arrondissement as the seat of power. In 1882, rather than restore the charred carcass, the Third Republic razed the Tuileries to the ground, 'securing irrevocably the definitive death of the monarchy.'",
@@ -77,20 +107,35 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Catherine de Medici",
+          "Elysee",
+          "Louis Napoleon",
+          "Paris Commune",
+          "Presidents",
+          "Republican Palais",
+          "Third Republic"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Les Halles",
     "short_description": "Site of Paris's central food market for 800 years from 1135 until its controversial demolition in 1969, now the Forum des Halles shopping centre",
     "latitude": 48.861878,
     "longitude": 2.347138,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 50,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
@@ -113,7 +158,17 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Les Champeaux",
+          "Louis VI",
+          "Philippe-Auguste"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 48,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "By the mid-19th century, France had entered the Industrial Age and iron was replacing stone. Impressed by Victor Baltard's newly built Gare de l'Est, Napoleon III commissioned him to rebuild the Les Halles market with a memorable instruction: 'Faites-moi des parapluies!' — make me umbrellas. Fourteen iron pavilions rose between 1851 and 1857, an artistic expression of the Industrial Revolution that stood for over a century. In 1969, the market was controversially transferred to Rungis south of Paris and the pavilions demolished. Only one of the fourteen survived, moved to the suburb of Nogent-sur-Marne. Sculptor Raymond Mason mourned: 'It was a place of bliss... the last vision of natural life in the City. It is now Paradise lost.' Social observer Louis Chevalier was blunter: 'The death of Les Halles has tolled the knell of Paris.'",
@@ -128,7 +183,27 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Faites-moi",
+          "Fourteen",
+          "Gare",
+          "Impressed",
+          "Industrial Age",
+          "Industrial Revolution",
+          "Louis Chevalier",
+          "Napoleon III",
+          "Paradise",
+          "Rungis",
+          "Sculptor Raymond Mason",
+          "Social",
+          "Victor Baltard"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 54,
+        "narrative_function": "climax",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Emile Zola dubbed Les Halles 'the belly of Paris,' a metaphor he used in 1873 for the title of one of his novels. For a year he haunted the market at all hours, recording the ever-changing hues of this gigantic digestive apparatus of the capital: dark bluish-grey metal structures against a light grey sky in wet weather, sheets of gold as the sun's rays penetrate on a fine day, glowing glass panes at sunset. He watched the robust porters — les forts des Halles, 'all nerves and muscles' — and descended into the undisclosable underground depths where the slaughter of fowl was carried out nightly, a place reeking of blood and pestilence and overrun by rats. This underworld was unknown to the bourgeois and the artist who, after a night at a cabaret, would drift to the market for onion soup and strong emotions.",
@@ -143,7 +218,15 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Emile Zola"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 58,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "The Dames des Halles — the market's notorious fishwives — occupied a unique position in Parisian society. On special occasions they were allowed into the King's Palace to pay their respects to the royal couple, and after a hearty meal they would return to Les Halles to pass on the latest Palace gossip. On 30 August 1608, one Femme Ladoucette wrote an astonishing letter to Marie de Medici, Henri IV's second wife. Having introduced herself as Dame des Halles 'from mother to daughter since Saint Louis,' she proceeded to complain about the King's philandering: a good fellow deep down, she wrote, but who 'fidgets at the sight of a coquette and scatters bastards around, although blessed with a most appetising Queen, so well conditioned to have little princes.' If the King wandered through Les Halles, she threatened, she would give him a sound thrashing for the love of her Queen. Femme Ladoucette received no scolding — instead she was promoted 'fournisseuse royale.'",
@@ -158,7 +241,21 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Dame des Halles",
+          "Femme Ladoucette",
+          "Having",
+          "Henri IV",
+          "Marie de Medici",
+          "Palace",
+          "Saint Louis"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 65,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "With its ceaseless human tide, Les Halles was picked out for public executions and punishments from the 14th century onward. Decapitations were preceded by customary torture and followed by the mutilation of bodies. The King's pillory, the largest of them all, was a sizeable octagonal structure with a pointed roof and weathervane, somewhat resembling a chapel. The ground floor was often inhabited by the King's Great Executioner, while the convicts were exposed in the tower above. The excited mob relished the spectacle, taunting exposed victims and pelting them with rubbish and litter. There were no gallows, however — the King conceding that the market was no place for bodies to be left rotting on a rope.",
@@ -173,13 +270,23 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Decapitations",
+          "Great Executioner"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Louvre Museum",
@@ -210,7 +317,20 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Gisors",
+          "Norsemen",
+          "Philippe-Auguste",
+          "Plantagenets",
+          "Third Crusade",
+          "Tour de Nesle"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Charles V began transforming the Louvre into his residence when he became king in 1364. In 1368, he repurposed the northwest tower — formerly known as the Tour de la Fauconnerie — into the first royal library of France, housing over nine hundred manuscripts. This collection was the seed of what would eventually become the Bibliotheque Nationale.",
@@ -225,7 +345,17 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Bibliotheque Nationale",
+          "Charles V",
+          "Tour de la Fauconnerie"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 23,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "In 1528, Francois I demolished the medieval Louvre fortress to build a Renaissance palace, and Parisians were genuinely upset. They mourned the loss of 'la Grosse Tour,' the great tower where Charles V used to read and meditate. But Francois had personal reasons for hating fortresses: he had just been released from the fortress of Madrid, where Emperor Charles V of Spain had kept him captive after defeating him at the Battle of Pavia in 1525. His rebuilt Louvre became a backdrop for extravagant celebrations designed to humiliate his former captor. When the Emperor visited in 1540, every weather vane had been gilded, the window panes coloured, and the staircases illuminated with brass candlesticks — all to dazzle and humble the man who had once imprisoned him.",
@@ -240,7 +370,21 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Battle",
+          "But Francois",
+          "Emperor Charles V",
+          "Francois I",
+          "Grosse Tour",
+          "Pavia",
+          "Spain"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 51,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Francois I didn't just rebuild the Louvre — he gave it its artistic soul. He bestowed the spirit of the Renaissance upon the palace and started the painting collection that would one day make it the largest painting museum in the world. His was an embryonic collection, but it already comprised works by Leonardo da Vinci, Raphael, and Titian. Most notably, Leonardo himself brought the Mona Lisa to France when he accepted Francois I's invitation in 1516, spending his final years at the Chateau d'Amboise under royal patronage. After Leonardo's death on 2 May 1519, his assistant Salai inherited the painting and sold it to the King for 4,000 gold coins.",
@@ -255,7 +399,20 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "After Leonardo",
+          "Amboise",
+          "Chateau",
+          "Francois I",
+          "Mona Lisa",
+          "Salai"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "climax",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Henri IV entered Paris on 22 March 1594, four years after his accession, having converted to Catholicism with the famous words 'Paris vaut bien une messe' — Paris is well worth a mass. His architectural ambition was immediate: he set out to connect the Louvre to the Palais des Tuileries via a colossal 460-metre wing along the Seine called La Grande Galerie, also known as la Galerie du Bord de l'Eau. A Swiss visitor confirmed the scale when he wrote that 'the edifice is so pompous and so vast that once completed there will be no other like it in all Christendom.' The gallery was completed by the elegant Pavillon de Flore at its western end, but the gigantic enterprise was a constant headache for his minister Sully, who had to squeeze segments of the population dry to raise funds.",
@@ -270,7 +427,21 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Catholicism",
+          "Galerie du Bord",
+          "Henri IV",
+          "La Grande Galerie",
+          "Palais des Tuileries",
+          "Pavillon de Flore",
+          "Swiss"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Henri IV's Grande Galerie wasn't built for display — it was built to house the best artisans and artists of the kingdom, realizing an artistic mission he had set for the Louvre. The palace became the home of both royalty, with their 1,500-strong army of servants, and a select artistic community living alongside them. This intimate coexistence of high and low was a hallmark of the 1st arrondissement that persisted for centuries.",
@@ -285,7 +456,16 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Grande Galerie",
+          "Henri IV"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 29,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Louis XIV was just 14 when he settled in the Louvre in 1652, after the princely rebellion of la Fronde had been quelled. He never liked the palace, but while there he channelled enormous energy into it — scintillating balls, ceremonial dinners of twenty courses, performances of plays by Corneille and Moliere. His Majesty and his brother Monsieur were great lovers of theatre, unlike their grandfather Henri IV, who once confided to a woman friend: 'Yesterday evening I saw the comedians play, when I fell asleep. It was midnight when they finished.' During Louis XIV's reign, the Louvre's painting collection grew from 200 to 2,000 works, driven by the feverish acquisitions of his minister Mazarin and Mazarin's successor Colbert, supported by donations from Nicolas Fouquet, the king's wealthy treasurer, before his disgrace.",
@@ -300,7 +480,24 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Colbert",
+          "Corneille",
+          "During Louis XIV",
+          "Fronde",
+          "Henri IV",
+          "His Majesty",
+          "Mazarin",
+          "Moliere",
+          "Nicolas Fouquet",
+          "Yesterday"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 53,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "When Louis XIV moved his court to Versailles in 1682, the Louvre descended into a bizarre state of decay. The King's own apartment, left vacant, was taken over by the Academie des Sciences, which filled it with an elephant skeleton, a stuffed camel, and various anatomical organs floating in alcohol-filled jars. Booths and stalls crammed the courtyard. The panelling of the royal apartments was torn off, and painted ceilings were drilled through to make room for skylights and stove pipes. A motley population of artisans, parasitical courtiers, and prowlers replaced the splendid court. The five newly founded Academies, paradoxically, contributed to the deterioration of the very palace they occupied.",
@@ -315,7 +512,18 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Academie des Sciences",
+          "Booths",
+          "Versailles",
+          "When Louis XIV"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Louis XIV's decision to move the court to Versailles in 1682 was not about architecture — it was about control. The Parisian aristocracy had grown dangerously independent, enjoying intellectual stimulation in the literary salons of enlightened ladies on the Faubourg Saint-Honore and Faubourg Saint-Germain. Louis had not forgotten the princely rebellion of the Fronde in 1650, which forced him into exile at Saint-Germain-en-Laye and ended his idyllic childhood at the Palais-Royal, where little Marie, his mother's chambermaid's daughter, had played his queen. By transferring the aristocracy to what the author calls a 'glorified ghetto' at Versailles, the astute monarch asserted his divine right and reduced the proudest nobles of France to glamorous lackeys in his service.",
@@ -330,7 +538,20 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Faubourg",
+          "Fronde",
+          "Honore",
+          "Laye",
+          "Louis XIV",
+          "Versailles"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "The painter Auguste Renoir grew up in one of the lanes that ran through the Esplanade of the Louvre, where royalty and the lower orders still lived side by side — an intimacy inconceivable today. Young Renoir was one of the little street urchins to whom Queen Amelie's ladies-in-waiting threw sweets through the window when the children made too much of a nuisance of themselves. His son, the celebrated film director Jean Renoir, later wondered 'how successive kings could have tolerated such a seedy neighbourhood under their very noses.'",
@@ -345,20 +566,33 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Auguste Renoir",
+          "Esplanade",
+          "Jean Renoir",
+          "Queen Amelie",
+          "Young Renoir"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Paris Catacombs",
     "short_description": "Underground ossuary in former quarry tunnels containing the carefully arranged remains of approximately six million people",
     "latitude": 48.83388,
     "longitude": 2.33225,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 10,
     "typical_duration_min": 30,
     "kid_friendly": "no",
@@ -382,13 +616,26 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bastille",
+          "Berger",
+          "Night",
+          "Square des Innocents",
+          "Voltaire"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 58,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Pavillon de Flore",
@@ -417,20 +664,33 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Grande Galerie",
+          "Henri IV",
+          "Louis XIV",
+          "Louvre",
+          "Palais des Tuileries"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 27,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Place Vendome",
     "short_description": "Octagonal 17th-century square with a 44-metre column cast from 1,200 captured cannons, ringed by luxury jewellers and the Ritz Paris",
     "latitude": 48.8677,
     "longitude": 2.3292,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 40,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
@@ -450,20 +710,35 @@
           "chapter": "The 1st Arrondissement",
           "page": "Overview"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Castiglione",
+          "Charles Worth",
+          "Empress Eugenie",
+          "Napoleonic",
+          "Ritz",
+          "Smith",
+          "Tuileries"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 57,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Saint-Eustache",
     "short_description": "Second-largest church in Paris near Les Halles with the largest pipe organ in France and a Gothic-Renaissance hybrid style",
     "latitude": 48.863,
     "longitude": 2.3456,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 10,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
@@ -485,7 +760,16 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Jean de La Fontaine",
+          "Moliere"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 45,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "A plaque on the wall of the southern aisle records that the funeral service for Anna Maria Mozart was held at Saint-Eustache in July 1788. She had accompanied her son Wolfgang on his third and last visit to Paris — an unhappy visit that left him bereaved and embittered. No longer a Wunderkind, Mozart was ignored by a shallow, unmusical Parisian society and had to share with his mother an insalubrious, draughty flat at no. 10 rue du Gros-Chenet, today's rue du Sentier. She took ill in June and died wretchedly on 3 July. Mozart gave a heart-rending account of the event in his Correspondence. Resentful and contemptuous of Parisian society, he left the city the following September never to return.",
@@ -502,7 +786,17 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Anna Maria Mozart",
+          "Resentful",
+          "Wolfgang"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 48,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Because of its remarkable acoustics, Saint-Eustache became a venue for some of the most powerful musical performances in 19th-century Paris. In 1855, Berlioz attended a performance of his uplifting Te Deum here by 950 musicians. In 1886, Liszt's majestic Grand Mass was premiered in the church, also in the presence of its composer. The famous choir was directed by none other than Charles Gounod, composer of Faust. Gounod's most outstanding pupil was a child by the name of Auguste Renoir — who felt a deeper urge to use his hands as a painter rather than as a singer, and went on to become one of the great Impressionists.",
@@ -517,7 +811,21 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Auguste Renoir",
+          "Because",
+          "Berlioz",
+          "Charles Gounod",
+          "Grand Mass",
+          "Liszt",
+          "Te Deum"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 43,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Saint-Eustache houses one of the most fabulous organs in Paris, built by the Dutch establishment Peter Jan Van Den Heuvel and installed in 1989. Its beautiful case was designed in the 19th century by Victor Baltard — the same architect who designed the iron pavilions of the Les Halles market next door. Equipped with both a mechanical and an electronic transmission system, it is the largest organ in France, making it particularly well suited for performances of 20th-century music.",
@@ -534,7 +842,18 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Equipped",
+          "Les Halles",
+          "Peter Jan Van Den Heuvel",
+          "Victor Baltard"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "callback",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Saint-Eustache served as the parish church to some of the most powerful figures in French history. Louis XIII received his first holy communion within its walls. Madame de Pompadour, the famous mistress of Louis XV, was baptised here. The composer Lully was married at Saint-Eustache, and Rameau — another of France's great composers — was buried here. The church's association with both Richelieu and the congregation of the plebeian Les Halles market next door captures the 1st arrondissement's signature contrast between high and low.",
@@ -549,12 +868,26 @@
           "chapter": "The 1st Arrondissement — Les Halles",
           "page": "Les Halles"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Les Halles",
+          "Louis XIII",
+          "Louis XV",
+          "Lully",
+          "Madame de Pompadour",
+          "Richelieu"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-01-1st-arr-overview-to-les-halles"
-    }
+    },
+    "poi_role": "stop"
   }
 ]

@@ -121,9 +121,16 @@ For each chunk, build a combined JSON file. Only include POIs that have beats fr
 - `source_passage` — kept for audit/verification
 - `source_attribution` — kept for provenance tracking
 - `fact_check_status` — simple status string (verified/corrected/unverified)
+- `entities` (list[str] — from enrichment)
+- `sensory_anchor` (bool — from enrichment)
+- `est_spoken_seconds` (int — from enrichment)
+- `narrative_function` (str — from enrichment)
+- `beat_type` (str — from enrichment)
+- `emotional_register` (str — from enrichment)
 
 ### What to include on each POI:
 - All `POICreate` schema fields (name, short_description, lat, lng, importance_tier, trigger_radius, typical_duration_min, kid_friendly, name_variations)
+- `poi_role` (str — stop/setting/walk_by_only)
 - `parent_poi` — for CONTAINS_POI relationship
 - Nested `beats` array
 - `_meta` with export timestamp and source chunk

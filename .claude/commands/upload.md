@@ -11,6 +11,32 @@ Parse the arguments:
 
 When in doubt about which chunks qualify as delta, show the user the proposed file list and ask before proceeding.
 
+## PRE-FLIGHT: Run regression tests
+
+Before any upload, run:
+```
+.venv/bin/python -m pytest tests/test_export_consistency.py tests/test_gravity_distribution.py tests/test_lens_drift.py -v
+```
+ALL must pass. If any fails, STOP and tell the user what's wrong. The most
+common cause is that someone updated `poi-raw.json` (e.g. via `/poi-gravity`)
+but forgot to sync the export files. The test message will say which file
+and which field is out of sync.
+
+## CANONICAL FIELDS COME FROM poi-raw.json, NOT THE EXPORT FILE
+
+When building POI payloads to send to the API, ALWAYS read these fields from
+`data/{city_slug}/poi-raw.json` rather than from the export chunk file:
+
+- `importance_tier`
+- `latitude`, `longitude`
+- `trigger_radius`
+- `name_variations`
+- `short_description`
+
+The export file is the source of truth ONLY for `beats[]`. Defense in depth:
+even if a sync step is skipped upstream, this rule prevents stale tier data
+from reaching Neo4j.
+
 ---
 
 ## CRITICAL SCHEMA NOTES
@@ -82,7 +108,7 @@ For each POI in the export file:
 1. **Match by exact name** against DB POIs (case-insensitive)
 2. **Match by name_variations** — check incoming name against DB name_variations, and incoming variations against DB names
 3. **If matched:** Record the DB POI's `id`. Do NOT call the API (avoids MERGE overwriting fields).
-4. **If new:** Call `POST /api/nodes/POI` with all schema fields. The MERGE will create it. Record the returned `id`.
+4. **If new:** Call `POST /api/nodes/POI` with all schema fields including `poi_role` (from poi-raw.json: stop/setting/walk_by_only). The MERGE will create it. Record the returned `id`.
 
 ### Step 3 — Create beats + HAS_BEAT relationships
 
@@ -92,6 +118,12 @@ Call `POST /api/nodes/NarrativeBeat` with:
 - `script_body`
 - `duration_sec` (from export, or calculate: word_count / 2.5)
 - `kid_friendly` (from export, or default "yes")
+- `entities` (from export, list[str])
+- `sensory_anchor` (from export, bool)
+- `est_spoken_seconds` (from export, int)
+- `narrative_function` (from export, str)
+- `beat_type` (from export, str)
+- `emotional_register` (from export, str)
 
 Record the returned beat `id`.
 

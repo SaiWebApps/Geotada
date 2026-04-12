@@ -4,7 +4,7 @@
     "short_description": "Medieval royal palace turned Revolutionary prison where Marie Antoinette and over 2,700 inmates were held during the Reign of Terror",
     "latitude": 48.8558,
     "longitude": 2.3458,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 10,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
@@ -26,13 +26,25 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Evidence",
+          "Honoré",
+          "Marie-Antoinette",
+          "Swedish Marshal Fersen"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 27,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Fontaine des Innocents",
@@ -63,20 +75,36 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Cimetière des Innocents",
+          "Denis",
+          "Designed",
+          "Henri II",
+          "Jean Goujon",
+          "Originally",
+          "Pierre Lescot",
+          "Place Joachim du Bellay"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Les Halles",
     "short_description": "Site of Paris's central food market for 800 years from 1135 until its controversial demolition in 1969, now the Forum des Halles shopping centre",
     "latitude": 48.861878,
     "longitude": 2.347138,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 50,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
@@ -99,7 +127,20 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Arsenal",
+          "Henri IV",
+          "Louvre",
+          "Place de Grève",
+          "Ravaillac",
+          "Sully"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 53,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "At no. 93 rue Saint-Honoré, an apothecary bore witness to two of France's most traumatic royal events across nearly two centuries. An apothecary was already trading here on 14 May 1610, when Henri IV was stabbed by Ravaillac on the neighbouring rue de la Ferronnerie. One hundred and eighty-three years later, on the day of Marie-Antoinette's execution on 16 October 1793, the successor apothecary at the same address closed his shop 'Au Bourdon d'Or' as a sign of mourning.",
@@ -114,7 +155,18 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Au Bourdon",
+          "Henri IV",
+          "Marie-Antoinette",
+          "Ravaillac"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The corner house at 2 rue Sauval, in the heart of Les Halles, was the birthplace of Molière in 1622 — the playwright whose stormy funeral at Saint-Eustache nearby would one day require the King's personal intervention. The original house was later demolished and replaced by the one still standing today, where the composer Richard Wagner reportedly stayed in 1839.",
@@ -129,7 +181,17 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "partially verified"
+        "fact_check_status": "partially verified",
+        "entities": [
+          "Eustache",
+          "Molière",
+          "Richard Wagner"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 24,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "At the corner of rue Vauvilliers, near Les Halles, the first episode of the Fronde — the revolt against Louis XIV's mentor and Minister, Cardinal Mazarin — began in August 1648.",
@@ -144,7 +206,16 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "unverified"
+        "fact_check_status": "unverified",
+        "entities": [
+          "Cardinal Mazarin",
+          "Louis XIV"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 12,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Outside Saint-Eustache, the streets of rue du Jour, rue Montmartre and rue Montorgueil have retained the atmosphere of the old Les Halles market. Although trendy boutiques are gradually taking over, they have not yet ousted the colourful displays of food that spill into the streets — mainly on rue Montorgueil — ravishing the eye and delighting the palate. Nearby, at no. 6 rue Coquillère, Le Pied de Cochon has preserved its Belle Époque setting and still serves its famous onion soup.",
@@ -159,20 +230,31 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Belle",
+          "Le Pied de Cochon",
+          "Montorgueil"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Place de la Concorde",
     "short_description": "Largest square in Paris where over 1,300 people were guillotined in a single month during the 1794 Reign of Terror",
     "latitude": 48.865608,
     "longitude": 2.321038,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 50,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
@@ -194,20 +276,35 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Au Bourdon",
+          "Conciergerie",
+          "Honoré",
+          "Louis David",
+          "Marie-Antoinette",
+          "Place de la Révolution",
+          "Prouvaires"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 49,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
-    }
+    },
+    "poi_role": "setting"
   },
   {
     "name": "Pont Neuf",
     "short_description": "Oldest surviving bridge in Paris built in 1578, the first stone bridge without houses on it, with 381 carved grotesque faces",
     "latitude": 48.85675,
     "longitude": 2.341033,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 10,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
@@ -229,12 +326,25 @@
           "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
           "page": "Châtelet to Vert-Galant"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Dame des Halles",
+          "Ferronnerie",
+          "Gabrielle",
+          "Henri IV",
+          "Vert Galant"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 54,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-04T03:00:06Z",
       "source_chunk": "chunk-02-1st-arr-chatelet-to-vert-galant"
-    }
+    },
+    "poi_role": "stop"
   }
 ]

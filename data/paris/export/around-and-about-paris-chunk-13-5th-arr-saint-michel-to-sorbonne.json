@@ -4,7 +4,7 @@
     "short_description": "13th-century university in the Latin Quarter where student protests in May 1968 nearly toppled the French government",
     "latitude": 48.848643,
     "longitude": 2.342038,
-    "importance_tier": 3,
+    "importance_tier": 5,
     "trigger_radius": 10,
     "typical_duration_min": 18,
     "kid_friendly": "yes",
@@ -31,7 +31,20 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "College de France",
+          "Harpe",
+          "Montagne",
+          "Mount Leucotitius",
+          "Orly",
+          "Rungis"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 59,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "In the 13th century, the Latin Quarter became the centre of learning for all of Western Europe. The first official reference to the Universitas Magistrorum et Scolarium Parisiensium dates from 1221. Initially it had no permanent home — teaching took place in the open air, on Place Maubert and mainly on rue de Fouarre nearby. Teachers stood on wooden trestles while students sat on their own fodder — 'fouarre' in old French — hence the street's name. Brawls and political agitation were so bad that in 1358 the Regent and future Charles V had the street barred with chains on both sides. Among the greatest thinkers who came to teach: Albert the Great, Thomas Aquinas, and Brunetto Latini, master of Dante. Dante himself came to study on rue de Fouarre in the early 14th century.",
@@ -49,7 +62,28 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Albert",
+          "Brawls",
+          "Brunetto Latini",
+          "Charles V",
+          "Dante",
+          "Fouarre",
+          "Initially",
+          "Place Maubert",
+          "Regent",
+          "Scolarium Parisiensium",
+          "Teachers",
+          "Thomas Aquinas",
+          "Universitas Magistrorum",
+          "Western Europe"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 54,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "In 1253, a college was founded by Robert, the chaplain and confessor of Saint Louis. Born to a humble family in the village of Sorbon in the Ardennes, he became so great a scholar that the King had him dine at his table. The college became the seat of the faculty of theology and was known as La Sorbonne, after the native village of its founder. Its expansion was so spectacular that it soon overshadowed other institutions and many foreigners still mistake it for the entire University of Paris.",
@@ -67,7 +101,17 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Born",
+          "Saint Louis",
+          "University"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "The enterprising Richelieu, who had been a student and later became dean of the Sorbonne, undertook its renovation. He laid the cornerstone of its chapel in 1635, designed by architect Jacques Lemercier. However, Richelieu's project was purely architectural — little was done to reform the curriculum, which until the Revolution remained restricted to theology. The beautiful compound, the work of Lemercier and Le Brun, was given rough treatment by the anti-clerical Revolutionaries. It was entirely reconstructed and expanded in the 19th century, including faculties of science and letters, inaugurated in 1901 with murals by Puvis de Chavannes.",
@@ -85,7 +129,18 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Jacques Lemercier",
+          "Le Brun",
+          "Puvis de Chavannes",
+          "Richelieu"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 39,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "In May 1968, a wind of revolt blew across the planet. Students transformed the Latin Quarter into a battlefield — not from premeditated political motivation but from a vague discontent with capitalism, imperialism, consumerism, and bourgeois rigidity. 'L'imagination au pouvoir' was scribbled on many a wall. Barricades were erected on all main arteries, cobblestones were dug from ancient streets and hurled at riot police, trees along the boulevards were felled. By autumn, the riots had died out. But the State proceeded to dismantle and decentralize the University, scattering students across the Paris area into numbered compounds — Paris I through XIII. The Latin Quarter lost its old cobbled streets, replaced with dull asphalt, and the arrondissement was forever changed.",
@@ -104,7 +159,18 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Barricades",
+          "Paris I",
+          "State",
+          "Students"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 48,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Napoleon restructured French higher education by founding the celebrated Grandes Ecoles — elite engineering schools outside the university framework. The most prestigious, the Ecole Polytechnique, trains France's top mathematicians and remains a military school. Its cadets, the celebrated 'X', take part in the 14 July parade down the Champs-Elysees. Until 1976, it was located in the heart of the Latin Quarter in the premises of the medieval College de Navarre on rue de la Montagne-Sainte-Genevieve. Its transfer to Palaiseau deprived the Quarter of some festive pomp — previously, on ceremonial occasions, cadets could be seen passing in their Napoleonic uniforms bearing slender swords.",
@@ -121,7 +187,21 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "College de Navarre",
+          "Ecole Polytechnique",
+          "Grandes Ecoles",
+          "Napoleonic",
+          "Palaiseau",
+          "Quarter",
+          "Until"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The medieval Latin Quarter was a world of scholarly mischief. Neighbourhood taverns and brothels supplied the rowdy student population with cheap wines fit to 'boil the potted heads of wolves.' This was the Quarter that Francois Villon roamed in the 15th century, and of which Rabelais gave a saucy account. Favourite pranks included placing fried turds in graduates' hoods, pinning fox-tails or hare's ears to students' buttocks, making dogs run about with pots tied to their tails, and harassing maidservants. The church was a special target among these roguish, anticlerical youths. In Rabelais' story, the hero Pantagruel comes to study in Paris and visits the world-renowned library of the Abbey of Saint-Victor, which on the eve of the Revolution contained nearly 40,000 volumes and over 20,000 manuscripts.",
@@ -138,7 +218,21 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Abbey",
+          "Favourite",
+          "Francois Villon",
+          "Neighbourhood",
+          "Pantagruel",
+          "Quarter",
+          "Rabelais"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 51,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "When the Hundred Years' War broke out, the University — which had gradually lost its earlier privileges — sided with the English against the King of France and, later, against Jeanne d'Arc. Paris was in ruins, the territory of wolves, and the Montagne Sainte-Genevieve had become an 'annexe of Oxford.' In due course peace was restored and in 1437 the University submitted to the secular authority of Charles VII.",
@@ -155,7 +249,20 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Charles VII",
+          "Genevieve",
+          "Hundred Years",
+          "Jeanne",
+          "Montagne",
+          "University"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Place Maubert — 'la Maube' — had been home to rowdy students and ruffians since the Middle Ages, a place of crime, vice, and public executions. Erasmus called it 'the cesspit of la Maube.' In the early 20th century it was frequented by terrifying 'Apaches' and hoodlums. In Down and Out in Paris and London, published in 1933, George Orwell described the neighbouring rue du Pot-de-Fer — where he lived at number 6 — as 'a ravine of tall, leprous houses, lurching towards one another in queer attitudes, as though they had all been frozen in the act of collapse.' Amidst destitute Arabs, Poles, and Italians, respectable French shopkeepers quietly piled up small fortunes.",
@@ -173,16 +280,29 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Amidst",
+          "Erasmus",
+          "George Orwell",
+          "Middle Ages",
+          "Place Maubert"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Saint-Etienne-du-Mont",
     "short_description": "Church near the Pantheon containing the last surviving rood screen in Paris and the shrine of Sainte Genevieve, patron saint of the city",
     "latitude": 48.8466,
     "longitude": 2.347344,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 10,
     "typical_duration_min": 6,
     "kid_friendly": "yes",
@@ -205,7 +325,20 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Attila",
+          "Christianity",
+          "Genevieve",
+          "King Clovis",
+          "Nanterre",
+          "Paul"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 55,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Genevieve's reliquary, fashioned around 630 by the famous Saint Eloi — patron of goldsmiths and later minister to King Dagobert I — was chiselled in gold and studded with gems. In times of floods, epidemics, and calamities, following a day of penitence and fasting, it would be carried in procession to Notre-Dame through streets decked with multicoloured drapery and strewn with flowers, to the continuous chiming of all the city's church bells. The story goes that during a raging epidemic in 1130, all were cured except three sceptics who would not prostrate themselves and therefore died. By 1725 there had been 114 such processions. In November 1793, the Revolution stripped the reliquary of its precious stones and sent it to the Mint. Genevieve's remains were burnt on Place de Greve.",
@@ -222,7 +355,17 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "King Dagobert I",
+          "Place de Greve",
+          "Saint Eloi"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 52,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "In November 1793, the Revolution's anti-clerical fervour reached Saint Genevieve. Her reliquary was stripped of its precious stones and sent to the Mint to be melted down. Against all logic, the remains of Saint Genevieve — who had embodied precisely the same ideals as the Revolution, feeding the poor and defending Paris — were burnt on Place de Greve. In one fell swoop, the Revolution destroyed twelve hundred years of devotion. The wooden sculptures of the reliquary survived, though they lost their arms, and are now in the Louvre. In 1803, a fragment of the saint's sarcophagus was discovered in the crypt and placed in a new reliquary above the altar of Saint-Etienne-du-Mont, where it remains today.",
@@ -240,9 +383,21 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Against",
+          "Mint",
+          "Place de Greve",
+          "Saint Genevieve"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 47,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Lycee Henri IV",
@@ -276,9 +431,19 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Abbey",
+          "Clovis"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "College de France",
@@ -311,16 +476,32 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Champollion",
+          "Egyptian",
+          "Francois I",
+          "Hebrew",
+          "Italy",
+          "Le College des Trois Langues",
+          "Lectures",
+          "University"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Jardin des Plantes",
     "short_description": "Paris's main botanical garden founded in 1626 with a natural history museum, alpine garden, and one of the oldest zoos in the world",
     "latitude": 48.844346,
     "longitude": 2.356212,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 150,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -345,9 +526,22 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Geoffroy",
+          "Histoire Naturelle",
+          "Jean Herouard",
+          "Jussieu",
+          "Louis XIII"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 37,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Caveau de la Huchette",
@@ -377,7 +571,21 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Chatelet",
+          "Danton",
+          "Freemasons",
+          "Marat",
+          "Robespierre",
+          "Rose Croix",
+          "Templars"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "In the late 1940s and 50s, the Caveau de la Huchette became a mecca of jazz. After the Nazi repression, jazz became the musical expression of the avant-garde. American legends performed here — Coleman Hawkins, Art Blakey, Lionel Hampton, and Memphis Slim. The vaulted cellar's intimate atmosphere was so inspiring that Liverpool's famous Cavern Club — the very venue where the Beatles would later be discovered — was modelled on it.",
@@ -396,7 +604,21 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Art Blakey",
+          "Beatles",
+          "Cavern Club",
+          "Coleman Hawkins",
+          "Lionel Hampton",
+          "Memphis Slim",
+          "Nazi"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "scene_setter",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Rue de la Huchette was already famous in the 17th century for its roasts and for its cutpurses, as a 1652 verse by Berthod warned: 'Vers la rue de la Huchette / Mais prends bien garde a tes pochettes!' — round rue de la Huchette, watch out for your purse! The street remained disreputable into the 20th century. In the 1920s it boasted three brothels, the most famous being Le Panier Fleuri on the southeastern corner of rue Xavier-Privas. A laundry on the opposite corner served as a clandestine annexe where a client could choose from among three laundresses without jeopardizing his reputation.",
@@ -414,9 +636,21 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Berthod",
+          "Le Panier Fleuri",
+          "Mais",
+          "Vers"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "wry"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Theatre de la Huchette",
@@ -447,9 +681,22 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Guinness World Record",
+          "La Cantatrice Chauve",
+          "La Lecon",
+          "Latin",
+          "Since"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Ecole Normale Superieure",
@@ -483,9 +730,19 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Place du Pantheon",
+          "Today"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 27,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Arenes de Lutece",
@@ -518,8 +775,19 @@
           "chapter": "The 5th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bievre",
+          "Gaul",
+          "Racine"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   }
 ]

@@ -2,10 +2,10 @@
   {
     "name": "Notre-Dame Cathedral",
     "short_description": "Medieval cathedral on Ile de la Cite, one of the finest examples of French Gothic architecture",
-    "latitude": 48.853,
-    "longitude": 2.3499,
-    "importance_tier": 1,
-    "trigger_radius": 100,
+    "latitude": 48.852966,
+    "longitude": 2.349902,
+    "importance_tier": 5,
+    "trigger_radius": 10,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -29,7 +29,21 @@
           "page": ""
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Tiberius reign corrected from AD 17-34 to AD 14-37."
+        "fact_check_notes": "Tiberius reign corrected from AD 17-34 to AD 14-37.",
+        "entities": [
+          "Emperor Tiberius",
+          "Hotel de Cluny",
+          "Inscriptions",
+          "Jupiter",
+          "Musee National du Moyen Age",
+          "Nautae Parisiaci",
+          "Pilier des Nautes"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 31,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Between 1163 and 1330, anonymous artisans carved Notre-Dame from stone, slipping imperceptibly from the Romanesque to the Gothic style yet sustaining architectural unity. Bishop Maurice de Sully initiated the project, commissioning a monument to transcend every other in the kingdom.",
@@ -46,7 +60,15 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bishop Maurice de Sully"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 16,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry"
       },
       {
         "script_body": "Notre-Dame hosted only two coronations, both controversial: Henry VI of England, who had conquered France, and Emperor Napoleon. The legitimate French dynasties always used the cathedral of Reims. Henri IV's conversion to Catholicism was celebrated here in 1593 with a Te Deum, though the conversion ceremony itself took place at Saint-Denis.",
@@ -63,7 +85,19 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Catholicism",
+          "Emperor Napoleon",
+          "Henri IV",
+          "Henry VI",
+          "Te Deum"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 20,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "In Rabelais's tale, the giant Gargantua visited Notre-Dame and, followed and gawked at by Parisians, climbed the church tower and urinated on the crowd below, drowning 260,418 people (exclusive of women and children). In Rabelais's version, the city of Lutetia became known as Paris — from 'par rie' (for a laugh) — in recognition of Gargantua's jest.",
@@ -80,17 +114,28 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Gargantua",
+          "Lutetia",
+          "Rabelais"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 23,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "playful"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Ile de la Cite",
     "short_description": "The historic island heart of Paris where the city was founded",
-    "latitude": 48.8534,
-    "longitude": 2.3488,
-    "importance_tier": 1,
-    "trigger_radius": 150,
+    "latitude": 48.8544,
+    "longitude": 2.3472,
+    "importance_tier": 5,
+    "trigger_radius": 100,
     "typical_duration_min": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -113,17 +158,28 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Jews",
+          "Les Halles",
+          "Philippe-Auguste"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 27,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "setting"
   },
   {
     "name": "Ile Saint-Louis",
     "short_description": "A tranquil island of 17th-century classical mansions east of Ile de la Cite",
-    "latitude": 48.8516,
-    "longitude": 2.3565,
-    "importance_tier": 1,
-    "trigger_radius": 150,
+    "latitude": 48.851674,
+    "longitude": 2.356346,
+    "importance_tier": 4,
+    "trigger_radius": 75,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -146,17 +202,24 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 25,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "setting"
   },
   {
     "name": "Hotel de Ville",
     "short_description": "Paris's city hall on the site of the medieval Place de Greve",
-    "latitude": 48.8565,
-    "longitude": 2.3524,
-    "importance_tier": 1,
-    "trigger_radius": 100,
+    "latitude": 48.856373,
+    "longitude": 2.35221,
+    "importance_tier": 5,
+    "trigger_radius": 30,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
     "name_variations": [
@@ -180,7 +243,17 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Louis VII",
+          "Nautae Parisiaci",
+          "Place de Greve"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 26,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Etienne Marcel, provost of Paris, was the first to settle the city government in a town hall on Place de Greve, buying a two-storeyed house from the king on behalf of the city in 1357. Known as La Maison des Piliers for its row of arcades, it was eventually replaced by a magnificent Renaissance building begun under Francois I.",
@@ -197,7 +270,19 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Etienne Marcel",
+          "Francois I",
+          "Known",
+          "La Maison des Piliers",
+          "Place de Greve"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 24,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "The anti-bourgeois proletarian Commune burnt down the Hotel de Ville in 1871. The victorious bourgeois government of the Third Republic rebuilt it at once in its old style, to brush off this incident and demonstrate that its possession was irrevocable.",
@@ -214,7 +299,15 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Third Republic"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 16,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Place de Greve served as Paris's main place of public executions, with gallows as a permanent fixture. Notable executions included Cartouche, the terror of early 18th-century Paris; Ravaillac, assassin of Henri IV; and the Marquise de Brinvilliers, mass poisoner.",
@@ -231,7 +324,18 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Henri IV",
+          "Marquise de Brinvilliers",
+          "Notable",
+          "Place de Greve"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 16,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "On Friday 17 July 1676, Madame de Sevigne watched the Marquise de Brinvilliers carried to Place de Greve. The Marquise had poisoned her father (requiring ten attempts) and two brothers. Her lover Godin de Sainte-Croix had learned the art of poison from an Italian named Exili while imprisoned in the Bastille. Sevigne wrote: 'At last, it is all over, the Brinvilliers is in the air.'",
@@ -248,7 +352,20 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Croix",
+          "Exili",
+          "Godin",
+          "Madame de Sevigne",
+          "Marquise de Brinvilliers",
+          "Place de Greve"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 26,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Place de Greve was where people gathered in early morning to seek work, a practice called 'faire la greve.' The expression survives in modern French but now means 'to go on strike' — the opposite of its original meaning of seeking employment.",
@@ -265,7 +382,15 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Place de Greve"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 17,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "wry"
       },
       {
         "script_body": "Place de Greve hosted the fete de la Saint-Jean on 24 June, when a 10-metre-high bonfire celebrated the birth of John the Baptist. Occasionally the King himself would come to light the fire, heralded by trumpets.",
@@ -282,17 +407,29 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Jean",
+          "John",
+          "Occasionally",
+          "Place de Greve"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 14,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Place des Vosges",
     "short_description": "Paris's oldest planned square, surrounded by harmonious brick-and-stone mansions",
-    "latitude": 48.8554,
+    "latitude": 48.8555,
     "longitude": 2.3656,
-    "importance_tier": 1,
-    "trigger_radius": 80,
+    "importance_tier": 5,
+    "trigger_radius": 40,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
     "name_variations": [
@@ -316,7 +453,16 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Louis XIII",
+          "Place Royale"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 18,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Place Royale was a favourite site for duels, watched from balconies by ladies whose favours were being sought. Cardinal Richelieu banned duels in 1626. When Boutteville contravened the ruling, believing his glorious pedigree put him above the law, Richelieu had him decapitated at Place de Greve.",
@@ -333,7 +479,18 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Cardinal Richelieu",
+          "Place Royale",
+          "Place de Greve",
+          "When Boutteville"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 18,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The Marais in its golden age was studded with magnificent hotels. Great architects Mansart and Le Vau and painters Le Brun, Mignard and Vouet decorated the interiors. The Duc de Richelieu sold ten Nicolas Poussin paintings to Louis XIV and bought some twenty Rubens to replace them.",
@@ -350,7 +507,23 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Le Brun",
+          "Le Vau",
+          "Louis XIV",
+          "Mansart",
+          "Mignard",
+          "Nicolas Poussin",
+          "Richelieu",
+          "Rubens",
+          "Vouet"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 19,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "With the court's transfer to Versailles in 1682, the Marais declined. In 1962, Andre Malraux's rehabilitation bill passed; in 1965 the area was declared a protected zone.",
@@ -368,17 +541,27 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Andre Malraux",
+          "Versailles"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 11,
+        "narrative_function": "transition",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "setting"
   },
   {
     "name": "Centre Pompidou",
     "short_description": "Iconic contemporary art centre with inside-out architecture",
-    "latitude": 48.8607,
-    "longitude": 2.3525,
-    "importance_tier": 1,
-    "trigger_radius": 100,
+    "latitude": 48.860657,
+    "longitude": 2.352095,
+    "importance_tier": 4,
+    "trigger_radius": 10,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -404,7 +587,18 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Centre Georges Pompidou",
+          "Eiffel Tower",
+          "Renzo Piano",
+          "Richard Rogers"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry"
       },
       {
         "script_body": "The Centre Pompidou's piazza became a focal point of Parisian street life, with buskers, acrobats, mime artists, jugglers, fire-eaters, portrait painters and pickpockets spontaneously recreating the medieval atmosphere of the parvis of Notre-Dame.",
@@ -422,9 +616,16 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 13,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Bibliotheque de l'Arsenal",
@@ -457,7 +658,18 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Boulevard Morland",
+          "Built",
+          "Louis XIV",
+          "Sully"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 26,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "It was while Henri IV was on his way to the Arsenal from the Louvre, on 14 May 1610, that Ravaillac jumped onto his coach and stabbed him to death.",
@@ -475,7 +687,16 @@
           "page": ""
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Date corrected from 10 May to 14 May 1610."
+        "fact_check_notes": "Date corrected from 10 May to 14 May 1610.",
+        "entities": [
+          "Henri IV",
+          "Ravaillac"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 12,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The Arsenal housed the court of justice where the trial of Nicolas Fouquet, Louis XIV's treasurer, was held in 1664. Despite Colbert's rigged magistrates, the courageous d'Ormesson defied the King's wish for a death sentence and voted for banishment. Louis XIV then commuted the sentence upward to life imprisonment.",
@@ -492,7 +713,18 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Despite Colbert",
+          "Louis XIV",
+          "Nicolas Fouquet",
+          "Ormesson"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 20,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "La Voisin's trial in 1680 at the Arsenal was another memorable event. Women of distinction, taking the Marquise de Brinvilliers as a model, set out to eliminate those they found cumbersome. So many names of high-ranking ladies leaked out that procedures were hastened to silence her.",
@@ -509,7 +741,17 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "La Voisin",
+          "Marquise de Brinvilliers",
+          "Women"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 18,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Charles Nodier, head of the library from 1824 to 1844, gathered the Romantic writers Victor Hugo, Lamartine, Alfred de Musset, Alexandre Dumas and Sainte-Beuve, perpetuating a 200-year Parisian tradition of salons litteraires.",
@@ -526,7 +768,19 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Alexandre Dumas",
+          "Alfred de Musset",
+          "Charles Nodier",
+          "Romantic",
+          "Victor Hugo"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 13,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The Arsenal houses the apartment of Madame de Meilleraye, a unique surviving example of a Louis XIII interior. The Marechal de Meilleraye commissioned Simon Vouet to create a dwelling of great splendour for his young bride.",
@@ -544,16 +798,27 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Louis XIII",
+          "Madame de Meilleraye",
+          "Simon Vouet"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 14,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Pavillon de l'Arsenal",
     "short_description": "19th-century glass-and-steel exhibition space for Paris urbanism and town planning.",
     "latitude": 48.8484,
     "longitude": 2.3648,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 60,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
@@ -578,8 +843,19 @@
           "chapter": "The 4th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Across",
+          "Samaritaine",
+          "Since"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 19,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   }
 ]

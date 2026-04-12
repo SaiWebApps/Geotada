@@ -4,7 +4,7 @@
     "short_description": "Public garden on the site of the Knights Templar fortress, later the prison of the Royal Family during the Revolution",
     "latitude": 48.8639,
     "longitude": 2.3602,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
@@ -31,7 +31,22 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Templar suppression corrected from 1313 to 1312 (papal bull Vox in excelso, March 22, 1312). Molay execution date corrected from March 12 to March 18, 1314 (widely accepted date; some scholars argue March 11)."
+        "fact_check_notes": "Templar suppression corrected from 1313 to 1312 (papal bull Vox in excelso, March 22, 1312). Molay execution date corrected from March 12 to March 18, 1314 (widely accepted date; some scholars argue March 11).",
+        "entities": [
+          "But Philippe",
+          "Grand Master",
+          "Holy Land",
+          "Jacques de Molay",
+          "Knights Templar",
+          "Organised",
+          "Place Dauphine",
+          "Templars"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 66,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "On 13 August 1792, a sumptuous dinner was served in the drawing-room of the Temple — the same room where Mozart had once played the harpsichord. The guests were the Royal Family, virtually prisoners of the Commune of Paris. The King was addressed merely as 'Monsieur' and treated with a courtesy that was entirely sham: as soon as dinner ended, the royal couple, their two children and the King's sister were locked in the Tower of the Temple. Louis XVI was held here until his execution on 21 January 1793. The Queen followed him to the Conciergerie the next summer. Their seven-year-old son, the Dauphin, was torn from his family and left to rot in a dark cell until his presumed death on 8 June 1795. When the body was exhumed in 1894, the bones proved to belong to an 18-year-old youth — and the mystery of the lost Dauphin has never been resolved. Napoleon prudently razed the Tower to the ground, but not before some forty pretenders had claimed the throne.",
@@ -50,7 +65,21 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Book claims '43 pretenders' — the number is disputed (some sources say ~40, others 100+). Changed to 'some forty' to reflect the scholarly range."
+        "fact_check_notes": "Book claims '43 pretenders' — the number is disputed (some sources say ~40, others 100+). Changed to 'some forty' to reflect the scholarly range.",
+        "entities": [
+          "Conciergerie",
+          "Dauphin",
+          "Louis XVI",
+          "Mozart",
+          "Napoleon",
+          "Royal Family",
+          "Tower"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 69,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "In 1766, the ten-year-old Mozart was brought to this very spot — then the glittering court of the Prince de Conti — on his second visit to Paris. The Grand Prior's Palace, built by Mansart in 1667, had become a free-thinking alternative court where 'gathered those who had nothing to hope for from the King,' as Horace Walpole noted. Mozart played the harpsichord in the drawing-room to a largely inattentive audience — a scene immortalised in Ollivier's famous painting. The Temple's brilliant social life masked a shallow artistic commitment. Earlier, the Prince had appointed the abbé Prévost, author of Manon Lescaut, as chaplain — unbothered that the clergyman never celebrated mass. When Prévost pointed this out, Conti retorted: 'It is of little consequence — I never listen to it.'",
@@ -67,7 +96,20 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Horace Walpole",
+          "Manon Lescaut",
+          "Mansart",
+          "Mozart",
+          "Prince de Conti",
+          "When Prévost"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 52,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Henri IV dreamed of transforming this area with a monumental Place de France — a grand new gateway to Paris from the east, with majestic avenues named after the kingdom's provinces fanning outward, and a canal running north from the Seine to lend a Venetian touch. But the concept died with the King, assassinated on 14 May 1610. Today only the shabby rues de Poitou, Bretagne and Normandie, and the curved rue Debelleyme that links them, survive as the ghostly trace of that magnificent unrealised project.",
@@ -84,7 +126,20 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bretagne",
+          "Debelleyme",
+          "Henri IV",
+          "Place de France",
+          "Today",
+          "Venetian"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The Enclos du Temple was a free zone, home to tax-exempt tradesmen, franchised craftsmen and insolvent debtors — some 4,000 people in all. Charlatan doctors practised here with impunity, and Parisians flocked to buy the Temple's herb-tea for constipation. In the 17th century, Sieur Darce began manufacturing imitation jewellery — a trade forbidden everywhere else in the kingdom. The Temple became the birthplace of fancy goods and fashion accessories, for the first time available to the masses. A vivid working-class jargon was born here too: 'chineur' for secondhand dealer and 'gonzesse' for a young woman both entered French dictionaries from the market stalls of the Temple.",
@@ -99,14 +154,24 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Charlatan",
+          "Sieur Darce"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "deepen",
+        "beat_type": "establishing",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": true
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Place des Vosges",
@@ -127,7 +192,21 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Book says 'wedding' — corrected to 'betrothal'. The actual marriages took place in 1615. 'Philip V' corrected to 'Philip IV' (OCR/typographical error in source)."
+        "fact_check_notes": "Book says 'wedding' — corrected to 'betrothal'. The actual marriages took place in 1615. 'Philip V' corrected to 'Philip IV' (OCR/typographical error in source).",
+        "entities": [
+          "Anne of Austria",
+          "Bastille",
+          "Elizabeth",
+          "Henri IV",
+          "Inaugurated",
+          "Louis XIII",
+          "Philip IV"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The presence of royalty in the Marais ended brutally on 30 June 1559, when Henri II was fatally wounded during a friendly tournament in the gardens of the Hôtel des Tournelles — the site on which this square now stands. His opponent, the Comte de Montgomery, captain of the Scottish guard, shattered a lance that pierced the King's eye. Henri lingered for ten agonising days before dying on 10 July. His bereaved wife Catherine de Medici abandoned the accursed place at once, eventually settling at the newly built Palais des Tuileries. In 1565 she ordered the Hôtel des Tournelles razed to the ground, to blot it from her memory — inadvertently clearing the ground for Henri IV's masterpiece.",
@@ -143,7 +222,21 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Book says 'death on 30 June 1559' — Henri II was wounded on June 30 but died on July 10, 1559, ten days later. Corrected."
+        "fact_check_notes": "Book says 'death on 30 June 1559' — Henri II was wounded on June 30 but died on July 10, 1559, ten days later. Corrected.",
+        "entities": [
+          "Catherine de Medici",
+          "Comte de Montgomery",
+          "Henri II",
+          "Henri IV",
+          "Hôtel des Tournelles",
+          "Palais des Tuileries",
+          "Scottish"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 47,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "At 36 rue des Tournelles, just steps from this square, the legendary Ninon Lenclos held court in a modest house where Molière, Boileau, La Fontaine and the Duc d'Orléans brought their own food in recognition of their hosts' slender means. Ninon transformed what in others was scandalous prostitution into a socially acceptable way of life — 'the triumph of vice conducted with wit,' as Saint-Simon put it. She was irresistible to the greatest men of France, welcoming them all into her generous bed. The puritanical Anne of Austria eventually had her locked up in the Madelonnettes, a convent-prison for repentant prostitutes — despite Ninon's famous protest that she was 'neither a whore nor repentant.' Undaunted, she ate ostentatiously during Lent and threw her meat bone out the window — a brave act when impiety was punishable by death.",
@@ -160,14 +253,33 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Anne of Austria",
+          "La Fontaine",
+          "Lent",
+          "Ninon Lenclos",
+          "Orléans",
+          "Simon"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 55,
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
-    }
+    },
+    "importance_tier": 5,
+    "trigger_radius": 40,
+    "kid_friendly": "yes",
+    "latitude": 48.8555,
+    "longitude": 2.3656,
+    "poi_role": "setting"
   },
   {
     "name": "Musee Carnavalet",
@@ -189,7 +301,24 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Construction date corrected from 1545 to c.1548 (construction began 1548, completed c.1560). Commissioner's name corrected from 'de Lingeris' to 'des Ligneris'."
+        "fact_check_notes": "Construction date corrected from 1545 to c.1548 (construction began 1548, completed c.1560). Commissioner's name corrected from 'de Lingeris' to 'des Ligneris'.",
+        "entities": [
+          "Built",
+          "Hôtel de Cluny",
+          "Hôtel de Sens",
+          "Hôtel de Ville",
+          "Italian Renaissance",
+          "Jacques des Ligneris",
+          "Jean Goujon",
+          "President",
+          "Seasons",
+          "Sun King"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Madame de Sévigné, born in 1626 on Place Royale — now Place des Vosges — lost her father in childhood and both her mother and grandparents by the age of ten. Constantly on the move through nine different homes in the Marais, she finally found her permanent home here at Hôtel Carnavalet in 1677. 'Thank God, we have it,' she wrote to her beloved daughter. 'It is an admirable affair — we shall have a beautiful courtyard, a beautiful garden, a beautiful neighbourhood.' She lived here for the last twenty years of her life, devouring books, observing the world around her and writing the extraordinary letters to her daughter that became an invaluable testimony of 17th-century Paris. Eight tapestries of Noah and seven of Psyche hung on her walls. The city purchased the Hôtel in 1866 and turned it into the museum of the history of Paris.",
@@ -204,7 +333,22 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Constantly",
+          "Hôtel Carnavalet",
+          "Madame de Sévigné",
+          "Noah",
+          "Place Royale",
+          "Place des Vosges",
+          "Psyche",
+          "Thank God"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 59,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "At 56 rue de Turenne, a plain house with a modest statue of the Virgin marks the former home of the burlesque writer Scarron and his fifteen-year-old bride Françoise d'Aubigné — an ill-matched couple if ever there was one. Scarron was deformed, crippled, and twenty-six years her elder; but an impoverished orphan's only choices were marriage or a nunnery. At night he screamed in pain that even opium could not relieve; by day he hid his suffering under sallies and laughs. Writers and noblemen climbed to his second-floor room to enjoy his company, drawing chairs around a four-poster bed covered in yellow damask. Scarron died here in 1660, leaving debts and a new literary genre. His practical young widow rose from governess to official mistress to wife of Louis XIV himself — Madame de Maintenon, the only woman in French history to make that ascent.",
@@ -221,14 +365,32 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Louis XIV",
+          "Madame de Maintenon",
+          "Scarron",
+          "Virgin",
+          "Writers"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 58,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
-    }
+    },
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "kid_friendly": "yes",
+    "latitude": 48.855076,
+    "longitude": 2.361661,
+    "poi_role": "stop"
   },
   {
     "name": "Musee Picasso",
@@ -249,7 +411,18 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Archbishop",
+          "Aubert de Fontenay",
+          "Corinthian",
+          "Mademoiselle Chastelain"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 53,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Behind this museum once stood the Théâtre du Marais, where in January 1637, Corneille's Le Cid electrified all of Paris. 'Tout Paris pour Chimène a les yeux de Rodrigue' — all Paris gazes at Chimène with the eyes of Rodrigue — wrote Boileau. But the soaring success was clouded by tragedy the following August, when the lead actor Mondory was struck by apoplexy on stage, leaving his arm and tongue permanently paralysed. The theatre survived and thrived: its new director pioneered the first special effects in Paris — Mercury descending from a star-studded sky, Jupiter hurling lightning bolts. In 1661, La Toison d'Or became the theatrical event of the century: Louis XIV himself travelled twice from the Louvre to rue Vieille-du-Temple to attend. But in 1673, after Molière's death, the jealous court musician Lully prevailed on the King to shut the theatre down.",
@@ -267,7 +440,27 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "disputed",
-        "fact_check_notes": "REVIEW: Book says 'December 1636' — most modern scholars date the premiere to early January 1637. Some older sources do cite late December 1636. Kept as 'January 1637' in script pending user resolution."
+        "fact_check_notes": "REVIEW: Book says 'December 1636' — most modern scholars date the premiere to early January 1637. Some older sources do cite late December 1636. Kept as 'January 1637' in script pending user resolution.",
+        "entities": [
+          "Chimène",
+          "Corneille",
+          "Jupiter",
+          "La Toison",
+          "Le Cid",
+          "Louis XIV",
+          "Louvre",
+          "Lully",
+          "Mercury",
+          "Mondory",
+          "Temple",
+          "Théâtre du Marais",
+          "Tout Paris"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 57,
+        "narrative_function": "climax",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber"
       },
       {
         "script_body": "André Malraux's heritage law of 4 August 1962 saved this mansion — and the entire Marais — from demolition. The Revolution had left the Hôtel Salé disfigured beyond recognition. The City of Paris bought it in 1962 and leased it to the state. After Picasso's death in 1973, his heirs donated not only his own works but paintings from his private collection by Renoir, Cézanne, Douanier Rousseau, Matisse and Braque — transforming a rescued ruin into one of the world's great museums of modern art.",
@@ -282,14 +475,32 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "After Picasso",
+          "André Malraux",
+          "Douanier Rousseau",
+          "Hôtel Salé",
+          "Matisse"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "climax",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
-    }
+    },
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "kid_friendly": "yes",
+    "latitude": 48.85987,
+    "longitude": 2.362115,
+    "poi_role": "stop"
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -307,7 +518,15 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Thirza Vallois"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 37,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Just around the corner, on the intersection of rue de Beauce and rue des Oiseaux, the enlightened Mademoiselle de Scudéry held one of the most sought-after salons of the 17th century. Every Saturday, men in cascading wigs and feathered hats and women with pyramid-like headdresses would climb the dark staircase to her 'muffled, obscure sanctuary.' Her garden was a gem — acacias and fruit trees whose exquisite fragrances masked the stench of the street. A warbler, a wren and a parrot lived among the branches, and the great philosopher Leibniz solemnly addressed the parrot in verse. Ninon Lenclos, having skimmed Scudéry's preposterous Carte du Tendre — a map of platonic love — dismissed the salon members as 'the Jansenists of Love: they talk about it endlessly but never make it.'",
@@ -324,21 +543,41 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Beauce",
+          "Carte du Tendre",
+          "Every Saturday",
+          "Jansenists",
+          "Leibniz",
+          "Mademoiselle de Scudéry",
+          "Ninon Lenclos"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 52,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
-    }
+    },
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "kid_friendly": "yes",
+    "latitude": 48.862792,
+    "longitude": 2.361978,
+    "poi_role": "stop"
   },
   {
     "name": "Hotel de Soubise",
     "short_description": "Masterpiece of 18th-century Parisian architecture housing the National Archives, built on the ruins of the medieval Hôtel de Clisson and the palatial Hôtel de Guise",
     "latitude": 48.85985,
     "longitude": 2.35765,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 30,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
@@ -366,7 +605,21 @@
           "page": "Marais du Temple"
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Guise assassination date corrected from '12 May 1588' to '23 December 1588' (confirmed by multiple sources)."
+        "fact_check_notes": "Guise assassination date corrected from '12 May 1588' to '23 December 1588' (confirmed by multiple sources).",
+        "entities": [
+          "Archbishop",
+          "Bartholomew",
+          "Château de Blois",
+          "Henri III",
+          "House Guise",
+          "Madame de Sévigné",
+          "Reims"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 60,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "On the night of 23 November 1407, just steps from here, eighteen hired killers armed with hatchets and pointed mallets lay in wait on rue Vieille-du-Temple. The Duc d'Orléans — brother of the mentally impaired Charles VI, and lover of Queen Isabeau — had been lured from her side by a false summons from the King. As he rode past on his mule, the assassins hurled themselves upon him. 'I am the Duke of Orléans!' he cried, believing it a mistake. 'Precisely so. You are the man we want.' A shoemaker's wife, watching from a top-floor window, screamed 'Murder! Murder!' — but too late. The butchered Duke lay in a puddle of blood. Two days later, his cousin Jean sans Peur, Duc de Bourgogne, admitted the crime — then unleashed a civil war that would open the gates of France to English invasion.",
@@ -383,7 +636,20 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Charles VI",
+          "Duc de Bourgogne",
+          "Duke",
+          "Jean",
+          "Precisely",
+          "Queen Isabeau"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 57,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "The present Hôtel de Soubise rose from the ruins of the Hôtel de Guise in 1705, built by the architect Delamair for the House of Rohan-Soubise. Its first proprietress, Anne de Rohan, had yielded her charms to Louis XIV, who gratefully financed the construction — a situation her cuckolded husband chose to ignore. Wagging tongues said that while 'Louis XIV had supplied the wood' — a pun, since 'bois' also means antler, as in a cuckold's horns — 'his friends threw in the stones.' Today the entire history of France is packed into 200 kilometres of archival shelves, while wall paintings by Boucher and Van Loo give the visitor an idea of aristocratic taste in the first half of the 18th century. The spectacular colonnade courtyard is unique in Paris, and Delamair preserved the two medieval Gothic turrets at a time when such architecture was held in contempt.",
@@ -402,13 +668,31 @@
           "chapter": "The 3rd Arrondissement",
           "page": "Marais du Temple"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Anne de Rohan",
+          "Boucher",
+          "Delamair",
+          "House",
+          "Hôtel de Guise",
+          "Hôtel de Soubise",
+          "Louis XIV",
+          "Today",
+          "Van Loo",
+          "Wagging"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 59,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "dramatic"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T23:00:00Z",
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": true
-    }
+    },
+    "poi_role": "stop"
   }
 ]

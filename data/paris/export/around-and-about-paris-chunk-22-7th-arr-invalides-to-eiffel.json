@@ -4,7 +4,7 @@
     "short_description": "Napoleonic-era neoclassical fountain at 129 rue Saint-Dominique depicting Mars and Hygeia, built 1806-1809.",
     "latitude": 48.8584,
     "longitude": 2.3026,
-    "importance_tier": 4,
+    "importance_tier": 2,
     "trigger_radius": 40,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -29,16 +29,27 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Dominique",
+          "Exposition",
+          "Napoleon"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Église Saint-Pierre du Gros Caillou",
     "short_description": "Parish church at 92 rue Saint-Dominique, the 1822 successor to the original village church of the Gros Caillou neighbourhood.",
     "latitude": 48.859,
     "longitude": 2.305,
-    "importance_tier": 5,
+    "importance_tier": 2,
     "trigger_radius": 40,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -63,9 +74,23 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Dominique",
+          "Germain",
+          "Grenelle",
+          "Invalides",
+          "Sulpice",
+          "West"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 43,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Rue Cler",
@@ -96,16 +121,26 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Gros Caillou",
+          "More"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 24,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "setting"
   },
   {
     "name": "Ecole Militaire",
     "short_description": "18th-century military academy on Avenue de la Motte-Picquet, commissioned by Louis XV with Madame de Pompadour's backing and designed by Gabriel.",
     "latitude": 48.8537,
     "longitude": 2.3063,
-    "importance_tier": 2,
+    "importance_tier": 4,
     "trigger_radius": 100,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -131,16 +166,29 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Champ de Mars",
+          "Corsican",
+          "Madame de Maintenon",
+          "Madame de Pompadour",
+          "Petit Trianon"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 33,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "UNESCO Headquarters Paris",
     "short_description": "UNESCO's Paris headquarters at Place de Fontenoy, a Y-shaped Modernist building (1958) by Breuer, Nervi, and Zehrfuss, with a Japanese garden by Isamu Noguchi.",
     "latitude": 48.8512,
     "longitude": 2.3076,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 60,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -166,16 +214,29 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Bernard Zehrfuss",
+          "Isamu Noguchi",
+          "Its Y-shaped",
+          "Marcel Breuer",
+          "Pier Luigi Nervi"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Champ de Mars",
     "short_description": "Large public greenspace flanking the Eiffel Tower, formerly the parade ground of the Ecole Militaire and site of successive Expositions Universelles.",
     "latitude": 48.8556,
     "longitude": 2.2986,
-    "importance_tier": 2,
+    "importance_tier": 5,
     "trigger_radius": 150,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -200,7 +261,22 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "American John Jeffries",
+          "Calais",
+          "Charles",
+          "Dover",
+          "English Channel",
+          "La Villette",
+          "Pierre Blanchard",
+          "Robert"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 54,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "In 1863 the photographer Nadar took off from the Champ de Mars in a huge balloon called Le Géant, accompanied by prominent figures, in a nacelle styled as a two-storey wicker house. On his second flight the balloon crashed in Hanover, Germany, injuring Nadar.",
@@ -217,7 +293,16 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Le Géant",
+          "Nadar"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 18,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The authorities of the Revolution chose the Champ de Mars as the site for the first Bastille Day celebrations — La Fête de la Fédération — on 14 July 1790, presided over by Talleyrand. 300,000 fervent patriots, including the Royal Family, gathered here; La Fayette, standing in the pouring rain, took the Nation's oath, the first citizen to do so. By 1793 the Terror had arrived: the guillotine was briefly erected here to execute the hated Bailly — former President of the Constituent Assembly and Mayor of Paris — who waited stoically while the blood-thirsty crowd covered him in spittle and mud.",
@@ -234,7 +319,23 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bastille Day",
+          "Constituent Assembly",
+          "La Fayette",
+          "La Fête de la Fédération",
+          "Mayor",
+          "President",
+          "Royal Family",
+          "Talleyrand",
+          "Terror"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "From 1855 the Champ de Mars became the playground of the emerging capitalist age — the site of successive Expositions Universelles where French technological achievements dazzled the world. The 1889 fair featured the Galerie des Machines (420 × 115 metres, 16,000 machines) and the just-completed Eiffel Tower rising 300 metres — never before had mortal eye embraced such horizons except from a balloon. In 1900, an electrically operated moving wooden platform transported visitors from the Champ de Mars to the Champs-Élysées and back, electricity still being a luxury. The age of Universal Exhibitions has gone, an ephemeral spark fizzled out by ennui before being swept away by universal cataclysms.",
@@ -251,7 +352,18 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Eiffel Tower",
+          "Expositions Universelles",
+          "Galerie des Machines",
+          "Universal Exhibitions"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "An event of great novelty occurred on the Champ de Mars one fine morning in 1780: two gentlemen ran a horse-race for a bet, the first of a series of sports imported from England that became fashionable in Paris throughout the 19th century. Marie-Antoinette gave enthusiastic support; even the Revolution adopted horse-racing, though the jockeys of those 'patriotic horse-races of public utility' wore tricoloured sashes. The Champ de Mars remained Paris's racecourse until 1855, when Longchamp in the Bois de Boulogne took over.",
@@ -268,9 +380,21 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bois de Boulogne",
+          "England",
+          "Longchamp",
+          "Marie-Antoinette"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 33,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Les Invalides",
@@ -303,7 +427,17 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Avenue de Breteuil",
+          "Jules-Hardouin Mansart",
+          "Royal Chapel"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 45,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "It was Louis XIV, assisted by his minister Louvois, who in 1670 founded the Hôtel des Invalides. Distressed by the sight of war cripples reduced to begging on the Pont-Neuf after loyal service on the battlefield, the Sun King felt he owed them respectable shelter. The initiative had earlier roots: Henri IV in 1604 had provided shelter for veterans on the present rue Broca, and Louis XIII and Richelieu built the hospital of Bicêtre. But Louis XIV tackled the issue on a grand scale, commissioning Libéral Bruant to build a monument colossal in size — its façade measures 195 metres across and the main courtyard, the Cour d'Honneur, 102 metres by 63 — yet subdued in character. Montesquieu wrote of it: 'I believe this to be the most respectable place on earth.'",
@@ -321,7 +455,26 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "But Louis XIV",
+          "Cour",
+          "Distressed",
+          "Henri IV",
+          "Hôtel des Invalides",
+          "Libéral Bruant",
+          "Louis XIII",
+          "Louvois",
+          "Montesquieu",
+          "Neuf",
+          "Richelieu",
+          "Sun King"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 53,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "wry"
       },
       {
         "script_body": "The veterans Louis XIV sheltered here were not easily persuaded to trade their scrappy independence on the Pont-Neuf for military discipline. And they had good reason to be alarmed: infractions were punished by anything from deprivation of wine to imprisonment, or by public humiliation astride a wooden horse. If caught with a woman of pleasure, both were exposed together for the amusement of passers-by. A complaint about poor soup once sparked a full-blown riot. Minister Louvois crushed the rebellion and had the most unruly rebel shot by a firing squad.",
@@ -338,7 +491,17 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Louis XIV",
+          "Minister Louvois",
+          "Neuf"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "Louvois was not a modest man and had his eye on the Invalides as his own sepulchre. Louis XIV would not tolerate such impertinence and had his remains removed elsewhere. But Louvois did find a subtle way to perpetuate his name: as you enter the Cour d'Honneur, look at the fifth garret to the right of the left-hand pavilion. Its bull's-eye window is framed by a wolf ('loup') that gazes ('voit') intensely down on the courtyard — a far-fetched pun, but one that passed unnoticed by the Sun King.",
@@ -355,7 +518,18 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "But Louvois",
+          "Cour",
+          "Louis XIV",
+          "Sun King"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 36,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "Napoleon wished to be buried 'on the banks of the Seine, by the French people whom I have loved so much.' After seven years of negotiations with the English, his ashes arrived from Saint Helena on 15 December 1840, travelling via Le Havre, up the Seine to Pont de Neuilly, then down the Champs-Élysées to the Invalides through a snowstorm. Victor Hugo, who was present, described the moment the sun broke through as the hearse appeared: 'The effect was prodigious indeed.' Some 850,000 Parisians came to pay homage in the following days. Napoleon's ashes were finally moved to their permanent tomb — designed by Visconti — on 2 April 1861. He lies within six nested coffins; a silver vase holds his heart; a silver box, his stomach.",
@@ -373,7 +547,19 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Le Havre",
+          "Napoleon",
+          "Pont de Neuilly",
+          "Saint Helena",
+          "Victor Hugo"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 51,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The church of Saint-Louis-des-Invalides — the original church of the institution, designed by Libéral Bruant — boasts a magnificent 17th-century organ. It was here, on 5 December 1837, that Hector Berlioz's Requiem received its world premiere, performed with 188 instrumentalists and 210 choristers, at a ceremony commemorating General Damrémont, killed at the Siege of Constantine.",
@@ -390,7 +576,19 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "General Damrémont",
+          "Hector Berlioz",
+          "Libéral Bruant",
+          "Requiem",
+          "Siege"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 22,
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Buried in the crypt of Saint-Louis-des-Invalides is Rouget de Lisle, the captain from Strasbourg who in 1792 composed 'Le Chant de guerre pour l'armée du Rhin' — the song that became La Marseillaise, France's ferociously sanguinary national anthem. His ashes were brought here on 14 July 1915, awaiting a planned transfer to the Panthéon that has never yet happened.",
@@ -407,7 +605,20 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Buried",
+          "La Marseillaise",
+          "Le Chant",
+          "Panthéon",
+          "Rouget de Lisle",
+          "Strasbourg"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 24,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry"
       },
       {
         "script_body": "Napoleon was determined to stamp his own identity on the Invalides and eclipse his predecessor. In 1797 he transferred the lion of the defeated Serenissima Republic to this stronghold of French military glory, placing it atop a fountain in the centre of the Esplanade. He also hoped to bring the golden cross of the Kremlin back as a trophy and display it on the Dome — but history decided otherwise. The Venetian lion's Parisian career was brief: by 1815 it had returned to its column in Piazza San Marco.",
@@ -424,9 +635,21 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Kremlin",
+          "Napoleon",
+          "Piazza San Marco",
+          "Serenissima Republic"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "29 Avenue Rapp",
@@ -459,9 +682,20 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Antoni",
+          "Art Nouveau",
+          "Jules Lavirotte"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 28,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Eiffel Tower",
@@ -494,7 +728,13 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "wry"
       },
       {
         "script_body": "The Tower has attracted both the heroic and the desperate. Eccentrics attempted to fly from it with homemade wings — an Austrian called Reichelt in 1912 hit the ground head first. In 1977 a French stunt man flew a hang-glider from the first floor; an English couple parachuted from the third; an American pilot flew between its legs and lost his licence. Of the 380 people who have hurled themselves from the Tower, only one escaped death — a young woman in 1964 who landed on the roof of a parked car. That year suicides averaged one per month, after which parapets were installed.",
@@ -511,7 +751,17 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Austrian",
+          "Eccentrics",
+          "Reichelt"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "During World War I, the Eiffel Tower played a crucial military role: Mata Hari, the infamous dancer-spy, was identified through radio transmissions intercepted at the Tower's wireless station. Coded messages sent by a German contact referred to agent 'H21' — swiftly identified as Mata Hari. She was captured and shot on 15 October 1917. Nearly 50,000 words were received and transmitted from the Tower during that war — alone a compelling reason not to demolish it.",
@@ -528,8 +778,20 @@
           "chapter": "The 7th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Coded",
+          "During World War I",
+          "Mata Hari",
+          "Nearly"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 30,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "stop"
   }
 ]

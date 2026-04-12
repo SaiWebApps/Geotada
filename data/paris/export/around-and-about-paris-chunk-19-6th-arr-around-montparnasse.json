@@ -2,10 +2,10 @@
   {
     "name": "La Closerie des Lilas",
     "short_description": "Historic café-brasserie on Boulevard du Montparnasse, epicentre of the literary avant-garde; haunt of Hemingway, Picasso, and Paul Fort.",
-    "latitude": 48.8401564,
-    "longitude": 2.3359194,
+    "latitude": 48.840092,
+    "longitude": 2.335973,
     "importance_tier": 2,
-    "trigger_radius": 60,
+    "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
     "name_variations": [
@@ -31,7 +31,23 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Alfred Jarry",
+          "Max Jacob",
+          "Montparnasse",
+          "Paul Fargue",
+          "Paul Fort",
+          "Poets André Salmon",
+          "Prince des Poètes",
+          "Prose",
+          "Vers"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 51,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "wry"
       },
       {
         "script_body": "La Closerie des Lilas has never had a single lilac. Not one. When it first opened in the 1840s as a simple outdoor tavern — a guinguette — it sat under plane trees, not lilacs. The lilacs belonged to a rival establishment across the Boulevard, and the name was simply borrowed. The café stood at the edge of the Latin Quarter, a convenient stop for stage-coaches heading to Fontainebleau, and it was already pulling in Baudelaire, Verlaine, Strindberg and Oscar Wilde before anyone had heard of Montparnasse.",
@@ -49,7 +65,18 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Baudelaire",
+          "Latin",
+          "Oscar Wilde",
+          "Strindberg"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 35,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "When Hemingway returned from Canada with his newborn son Bumby in early 1924, he found La Closerie quiet and melancholy — a portrait immortalised by Paul Fort as 'Café des ombres.' For Hemingway, who lived just a few doors down at 113 rue Notre-Dame-des-Champs above a noisy sawmill, this was perfect. He came here to escape the racket and write. It was here that he worked on The Sun Also Rises, met Scott Fitzgerald and read the manuscript of The Great Gatsby, and read parts of The Torrents of Spring to John Dos Passos.",
@@ -68,16 +95,33 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bumby",
+          "Café",
+          "Canada",
+          "Champs",
+          "John Dos Passos",
+          "Paul Fort",
+          "Scott Fitzgerald",
+          "Spring",
+          "When Hemingway"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Statue of Marshal Ney",
     "short_description": "Bronze statue by François Rude of Marshal Michel Ney, inaugurated 7 December 1853 near the corner of Avenue de l'Observatoire and Boulevard du Montparnasse.",
     "latitude": 48.8406,
     "longitude": 2.3351,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 40,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -104,9 +148,24 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "After Napoleon",
+          "Brave",
+          "Hemingway",
+          "Hundred Days",
+          "Observatoire",
+          "Palais du Luxembourg",
+          "Rude"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 56,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Fontaine des Quatre-Parties-du-Monde",
@@ -140,16 +199,30 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Africa",
+          "Baptiste Carpeaux",
+          "Horses",
+          "Marco Polo",
+          "Observatoire",
+          "Step"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Rue Notre-Dame-des-Champs",
     "short_description": "Historic Left Bank street associated with Hemingway's sawmill apartment and a medieval quarry route under Catherine de Medici.",
     "latitude": 48.8445,
     "longitude": 2.3329,
-    "importance_tier": 4,
+    "importance_tier": 2,
     "trigger_radius": 80,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -175,16 +248,27 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Balzac",
+          "Catherine de Medici",
+          "Tuileries Palace"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 35,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Ecole Alsacienne",
     "short_description": "Prestigious Parisian school founded 1874 by Alsatian Protestant academics at 109 rue Notre-Dame-des-Champs; André Gide was an early pupil.",
     "latitude": 48.8448,
     "longitude": 2.3325,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 35,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -209,16 +293,28 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Alsace",
+          "André Gide",
+          "Champs",
+          "Prussian War"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "College Stanislas",
     "short_description": "Traditional Catholic school in the 6th arr; notable alumni include a young Charles de Gaulle.",
     "latitude": 48.8462,
     "longitude": 2.331,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 35,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -242,16 +338,27 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "disputed"
+        "fact_check_status": "disputed",
+        "entities": [
+          "Charles de Gaulle",
+          "Collège Stanislas",
+          "Ecole Alsacienne"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "3 Rue Joseph-Bara",
     "short_description": "Artists' studios at 3 rue Joseph-Bara, social hub of the Ecole de Paris in the 1920s; home to Kisling, Modigliani, Pascin.",
     "latitude": 48.843,
     "longitude": 2.3345,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 30,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -276,16 +383,32 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "André Salmon",
+          "Ecole de Paris",
+          "Kisling",
+          "Max Jacob",
+          "Montparnasse",
+          "Pascin",
+          "Turn",
+          "Zborowski"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 47,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Musee Zadkine",
     "short_description": "Studio-museum at 100 bis rue d'Assas dedicated to sculptor Ossip Zadkine (lived 1928–1967); free city museum.",
     "latitude": 48.843059,
     "longitude": 2.334026,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 45,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -312,16 +435,28 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Assas",
+          "Ossip Zadkine",
+          "Today",
+          "Tucked"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Reid Hall",
     "short_description": "Historic American academic residence at 6 rue de Chevreuse; now a Columbia University global centre.",
     "latitude": 48.8427,
     "longitude": 2.333,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 35,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -347,16 +482,31 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "American Girls",
+          "Chevreuse",
+          "Columbia University",
+          "Elisabeth Mills Reid",
+          "Today",
+          "Whitelaw Reid",
+          "World War One"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Academie de la Grande-Chaumiere",
     "short_description": "Celebrated independent art academy at 14 rue de la Grande-Chaumière, founded 1902; teachers included Bourdelle, later Giacometti and Léger.",
     "latitude": 48.8422,
     "longitude": 2.3318,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 35,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -382,16 +532,35 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Arts",
+          "Boulevard du Montparnasse",
+          "Chaumière",
+          "Colarossi",
+          "Ecole de Paris",
+          "Every Monday",
+          "Giacometti",
+          "Léger",
+          "Polish",
+          "Russian",
+          "Under Bourdelle"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "26 Rue Vavin (Sauvage Building)",
     "short_description": "Stepped-terrace apartment building at 26 rue Vavin designed by Henri Sauvage (1912–14), clad in white and blue ceramic tiles.",
     "latitude": 48.8428,
     "longitude": 2.334,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 30,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -418,16 +587,26 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Carreaux Métro",
+          "Henri Sauvage"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 43,
+        "narrative_function": "hook",
+        "beat_type": "establishing",
+        "emotional_register": "playful"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "La Rotonde",
     "short_description": "Legendary Montparnasse café opened 1911 by Victor Libion; refuge for Modigliani, Lenin, Trotsky and the Ecole de Paris.",
     "latitude": 48.8424,
     "longitude": 2.3292,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -454,7 +633,19 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Lenin",
+          "Modigliani",
+          "Russian",
+          "Trotsky",
+          "Victor Libion"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 53,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "By the early 1910s La Rotonde had become the unofficial embassy of the Ecole de Paris. Modigliani, Soutine, Picasso, Apollinaire, Rivera — they all passed through. Modigliani's passionate, short-lived affair with English poetess Beatrice Hastings played out across these café tables. It was the new centre of gravity for the colony of painters who had outgrown La Closerie — until the Rotonde too lost its soul when Libion sold up.",
@@ -472,8 +663,20 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Beatrice Hastings",
+          "Ecole de Paris",
+          "La Closerie",
+          "Libion"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   }
 ]

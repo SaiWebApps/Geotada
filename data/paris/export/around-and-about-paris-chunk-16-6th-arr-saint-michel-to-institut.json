@@ -4,7 +4,7 @@
     "short_description": "Historic 1887 Left Bank cafe where Sartre, de Beauvoir, and Camus held court during the existentialist era",
     "latitude": 48.854128,
     "longitude": 2.33255,
-    "importance_tier": 3,
+    "importance_tier": 5,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -27,7 +27,21 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Deux Magots",
+          "Les Chemins",
+          "Monsieur Paul Boubal",
+          "Pres",
+          "Sartre",
+          "Simone de Beauvoir",
+          "Tous"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Decades before the existentialists, the Flore harboured a far darker chapter. In 1899, during the retrial of Alfred Dreyfus, the virulent anti-Semite Charles Maurras, along with Leon Daudet, founded the Action Francaise movement and magazine here. This far-right publication prepared the ground for collaboration with the Nazis four decades later. When Maurras was sentenced to life imprisonment for collaboration in 1945 and expelled from the Academie Francaise, he cried out: 'It is the revenge of Dreyfus!' — connecting the cafe's dark political birth to its bitter end.",
@@ -44,16 +58,32 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Academie Francaise",
+          "Action Francaise",
+          "Alfred Dreyfus",
+          "Decades",
+          "Leon Daudet",
+          "Nazis",
+          "Semite Charles Maurras",
+          "When Maurras"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 35,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Saint-Germain-des-Pres",
     "short_description": "Oldest church in Paris with origins in the 6th century, anchor of the Left Bank literary and existentialist neighbourhood",
     "latitude": 48.853968,
     "longitude": 2.334518,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 10,
     "typical_duration_min": 8,
     "kid_friendly": "yes",
@@ -79,7 +109,19 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Childebert",
+          "King Solomon",
+          "Pope Alexander III",
+          "Saint Germain",
+          "Saint Vincent"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 52,
+        "narrative_function": "hook",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Three centuries after his death, Saint Germain reportedly defended his abbey against the Norsemen through supernatural intervention, as recorded by a monk named Abbon. One Danish brigand was tied to a chariot by the invisible Saint, then chased into hell by Death. Another lost his way on a turret and rolled off the steep roof. A third lost his sight when he turned his eyes toward the Saint's sepulchre, while a fourth was snatched away from above by the Saint's invisible hand. Abbon's testimony increased the prestige of Saint Germain as the patriot who fought back the invincible Dane.",
@@ -96,7 +138,17 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Norsemen",
+          "One Danish",
+          "Saint Germain"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "When Paris was liberated, the entire neighbourhood of Saint-Germain blazed into freedom. Boris Vian and his friends celebrated with trumpet blasts through the small hours at the Tabou on rue Dauphine. Claude Luter brought his unbridled clarinet and Dixieland to the basement of Lorientais. Club Saint-Germain at 13 rue Saint-Benoit picked up the baton in 1948, hosting Charlie Parker, Coleman Hawkins, Duke Ellington and Miles Davis. Meanwhile, Juliette Greco, dressed in all-purpose black, became the spokeswoman of existentialist Saint-Germain, singing to lyrics by Sartre, Queneau and Prevert. A new generation of anti-establishment singer-poets — Georges Brassens, Jacques Brel, Leo Ferre — made their appearance in vaulted cabarets.",
@@ -114,7 +166,31 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Benoit",
+          "Boris Vian",
+          "Charlie Parker",
+          "Claude Luter",
+          "Club",
+          "Coleman Hawkins",
+          "Dixieland",
+          "Duke Ellington",
+          "Georges Brassens",
+          "Jacques Brel",
+          "Juliette Greco",
+          "Leo Ferre",
+          "Miles Davis",
+          "Queneau",
+          "Sartre",
+          "Tabou",
+          "When Paris"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 43,
+        "narrative_function": "transition",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "American expatriates flooded Saint-Germain in the 1920s, making good use of the favourable dollar exchange rate and breaking loose from Prohibition. The newly-wed Hemingways, arriving in December 1921, could enjoy a hearty meal at the Pre-aux-Clercs on the corner of rue Jacob and rue Bonaparte for just 6 francs. Natalie Barney's literary salon at 20 rue Jacob, with its charming ivy-overgrown courtyard, gathered the beautiful people in a mock Greek temple dubbed Le Temple de l'Amitie. Gertrude Stein opened her home at 27 rue de Fleurus to chosen writers, while Sylvia Beach published and sold their works through Shakespeare and Company at 12 rue de l'Odeon — including James Joyce's Ulysses in 1922.",
@@ -132,9 +208,30 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bonaparte",
+          "Clercs",
+          "Company",
+          "Fleurus",
+          "Gertrude Stein",
+          "Hemingway",
+          "Jacob",
+          "James Joyce",
+          "Le Temple",
+          "Natalie Barney",
+          "Shakespeare",
+          "Sylvia Beach",
+          "Ulysses"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 45,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Le Procope",
@@ -167,7 +264,25 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Archbishop",
+          "Armenians",
+          "Francaise",
+          "Francesco Procopio",
+          "Francois Procope",
+          "Germain",
+          "Maliban",
+          "Mercier",
+          "Pascal",
+          "Princess La Palatine",
+          "Sicilian"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "The Procope was where Diderot and d'Alembert conceived the idea of the Encyclopedie, and where new ideas germinated that would bring about the fall of the Ancien Regime. Already in 1685, the head of police warned Louis XIV about 'gatherings of all sorts of people' in coffee houses. The King flooded them with spies, to which the philosophes responded by inventing a coded terminology: 'liberty' became Jeannette, 'religion' became Javotte, and God became Monsieur l'Etre. A century later the Procope became the stronghold of the Revolutionary intelligentsia — Danton, Camille Desmoulins, and Marat all gathered here. It is also believed that the Phrygian cap of the sans-culottes made its first appearance here, worn by Citizen Julien.",
@@ -184,9 +299,26 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Alembert",
+          "Ancien Regime",
+          "Camille Desmoulins",
+          "Citizen Julien",
+          "Danton",
+          "Diderot",
+          "Louis XIV",
+          "Marat",
+          "Phrygian"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Cour du Commerce-Saint-Andre",
@@ -216,7 +348,22 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Bicetre",
+          "Dr Antoine Louis",
+          "Dr Guillotin",
+          "Ignace Guillotin",
+          "National Assembly",
+          "Place de Greve",
+          "Robespierre",
+          "Tobias Schmidt"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 57,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "At number 8, directly opposite the guillotine workshop, Marat published his incendiary paper L'Ami du Peuple. Despite its benign name, the paper advocated wholesale executions, demanding the heads of 270,000 enemies of the homeland. Marat and his companion Marie-Simone Evrard had sold all their possessions to fund the publication. On July 13, 1793, Charlotte Corday arrived from Caen, bought a carving knife at Palais-Royal for 2 francs, and stabbed Marat through the neck as he sat in his bathtub. Asked about her deed, she said: 'I have not killed a man but a ferocious beast.'",
@@ -234,7 +381,19 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Ami du Peuple",
+          "Asked",
+          "Charlotte Corday",
+          "Marat",
+          "Simone Evrard"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The statue of Danton at Carrefour de l'Odeon marks the site of his home at what used to be number 20 Cour du Commerce-Saint-Andre, before the opening of Boulevard Saint-Germain cut away the southern section of the passage. Danton had been living there since 1789 when, on March 30, 1794, police burst into his large first-floor flat with a warrant for his arrest. Six days later he stepped onto the guillotine. Across the street, Camille Desmoulins and his young wife Lucile had been living at Place de l'Odeon when emissaries of the Terror came for them on the same day. Both husband and wife ended up on the guillotine.",
@@ -252,7 +411,22 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Across",
+          "Camille Desmoulins",
+          "Carrefour",
+          "Danton",
+          "Germain",
+          "Lucile",
+          "Odeon",
+          "Terror"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "At 28 rue Mazarine, just steps from the passage, Jean-Francois Champollion made his breakthrough discovery on September 14, 1822, cracking the principle of deciphering Egyptian hieroglyphs. He was studying reproductions of bas-reliefs from Abu Simbel when he realised he could read the names of pharaohs Ramses and Thutmose. He rushed to his brother crying 'I've got it!' before collapsing in a faint from exhaustion. Two weeks later he presented his findings to the Academy, launching the field of modern Egyptology.",
@@ -269,7 +443,19 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Abu Simbel",
+          "Egyptian",
+          "Francois Champollion",
+          "Mazarin",
+          "Ramses"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 32,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "At 19 rue Mazarine, the famous poet Robert Desnos was living in 1944 when he was arrested by the Gestapo on February 22. A key figure in the Surrealist movement and an active member of the Resistance, Desnos was deported to Auschwitz, then Buchenwald, and finally to Theresienstadt (now Terezin in the Czech Republic), where he died of typhoid on June 8, 1945 — on the eve of the camp's liberation.",
@@ -286,9 +472,23 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Czech Republic",
+          "Gestapo",
+          "Mazarin",
+          "Robert Desnos",
+          "Surrealist",
+          "Terezin"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 28,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Fontaine Saint-Michel",
@@ -320,16 +520,25 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Michael"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 33,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Rue de l'Hirondelle",
     "short_description": "Medieval alley with a salamander-carved facade marking the love-nest of Francois I and Anne de Pisseleu.",
     "latitude": 48.8533,
     "longitude": 2.3433,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -354,16 +563,28 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "After Francois I",
+          "Anne de Pisseleu",
+          "Diane de Poitiers",
+          "Renowned"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Caveau de la Bolee",
     "short_description": "13th-century cellar cabaret on rue de l'Hirondelle frequented by Baudelaire, Verlaine and Oscar Wilde.",
     "latitude": 48.8532,
     "longitude": 2.3432,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 8,
     "typical_duration_min": 5,
     "kid_friendly": "caution",
@@ -388,9 +609,22 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Charles Baudelaire",
+          "French-style",
+          "Jeanne Duval",
+          "Oscar Wilde",
+          "Paul Verlaine"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 20,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Cour de Rohan",
@@ -423,9 +657,19 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Chinese",
+          "Through"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "setting"
   },
   {
     "name": "Theatre de l'Odeon",
@@ -458,7 +702,24 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Classical Greek",
+          "Corneille",
+          "Crebillon",
+          "Louis XVI",
+          "Luxembourg Gardens",
+          "Moliere",
+          "Prince de Conde",
+          "Racine",
+          "Regnard",
+          "Voltaire"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 46,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The Theatre Francais lasted only seven years before the Revolution tore it apart. Beaumarchais's Marriage of Figaro had itself helped light the fuse by questioning the social order. Actors faithful to the royal troupe were imprisoned and the theatre was shut down between 1793 and 1794. In 1797 it was renamed the Odeon after the musical theatre of ancient Greece. Then in 1799 it burnt down entirely and lay as an abandoned ruin for eight years. Restored by Chalgrin in 1807 under Napoleon's Empire, it was renamed after Empress Josephine. Partly damaged by another fire in 1818, it was again restored in 1819.",
@@ -475,9 +736,25 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Actors",
+          "Chalgrin",
+          "Empress Josephine",
+          "Figaro",
+          "Marriage",
+          "Napoleon",
+          "Partly",
+          "Restored"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Institut de France",
@@ -510,7 +787,22 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Academie Francaise",
+          "Cardinal Mazarin",
+          "College",
+          "Dr Guillotin",
+          "Hotel de Nesle",
+          "Louis Le Vau",
+          "Louvre",
+          "Sciences Morales"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The Academie Francaise, founded by Richelieu in 1635, is a stronghold of conservatism whose 40 venerable members guard the French language. It waited 350 years before admitting its first woman, the writer Marguerite Yourcenar, in 1980. Throughout its history, the Academie has rejected nonconformists: La Fontaine, Beaumarchais, Balzac (rejected 4 times), and Emile Zola (24 times). Others spurned the honour: Descartes, Pascal, Diderot, Malraux, and de Gaulle. After World War II, Charles Maurras and Marechal Petain were expelled — a rare measure, since an Academicien is by definition 'immortal.'",
@@ -527,7 +819,26 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Academicien",
+          "Academie",
+          "After World War II",
+          "Balzac",
+          "Charles Maurras",
+          "Emile Zola",
+          "La Fontaine",
+          "Marechal Petain",
+          "Marguerite Yourcenar",
+          "Others",
+          "Richelieu",
+          "Throughout"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 36,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "The Institut de France stands on the site of the medieval Hotel de Nesle and its infamous tower. In 1308, Philippe le Bel bought the palace where his three sons — the future Louis X, Philippe V, and Charles IV — lived with their wives Marguerite, Jeanne, and Blanche de Bourgogne. The tower served for their amorous liaisons until their sister-in-law Isabelle, wife of Edward II of England, noticed three gentlemen wearing purses she had given the princesses as gifts. The ensuing scandal was horrific: two of the lovers were castrated, decapitated, and hanged by the armpits for birds of prey. Marguerite was suffocated between two mattresses by order of her husband Louis X. According to the poet Francois Villon, one queen would lure passers-by to the tower and, after exhausting them, have them drowned in sacks in the Seine.",
@@ -545,7 +856,21 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Blanche de Bourgogne",
+          "Charles IV",
+          "Edward II",
+          "Hotel de Nesle",
+          "Louis X",
+          "Marguerite",
+          "Philippe V"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 56,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "The Tour de Nesle earned an even darker reputation in medieval legend. According to the poet François Villon, one queen of France would lure passers-by up to the tower at night. After exhausting them, she would have them tied in sacks and dropped into the Seine below. Whether Marguerite, Jeanne, or Blanche inspired the tale — or none of them — the story became one of the most enduring legends of medieval Paris.",
@@ -563,9 +888,20 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "According",
+          "Blanche",
+          "Whether Marguerite"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 29,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "playful"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Hotel de la Monnaie",
@@ -599,16 +935,33 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Boileau",
+          "Built",
+          "Denis Antoine",
+          "Hotel Guenegaud",
+          "Institut de France",
+          "Mansart",
+          "Paris Mint",
+          "Pomone",
+          "Racine"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 44,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Shakespeare and Company",
     "short_description": "Legendary English-language bookshop on the Left Bank where writers can sleep among the stacks as 'tumbleweeds'",
     "latitude": 48.852575,
     "longitude": 2.347112,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -633,16 +986,33 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Adrienne Monnier",
+          "Ezra Pound",
+          "Hemingway",
+          "James Joyce",
+          "La Maison des Amis du Livre",
+          "Nazi Occupation",
+          "Scott Fitzgerald",
+          "Sylvia Beach",
+          "Ulysses"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 41,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Pont Neuf",
     "short_description": "Oldest surviving bridge in Paris built in 1578, the first stone bridge without houses on it, with 381 carved grotesque faces",
     "latitude": 48.85675,
     "longitude": 2.341033,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -666,8 +1036,21 @@
           "chapter": "The 6th Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Henri IV",
+          "History",
+          "Louis XIII",
+          "Place Dauphine",
+          "Rue Dauphine"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 50,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "stop"
   }
 ]

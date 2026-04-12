@@ -26,7 +26,19 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "La Rochelle",
+          "Louise Jay",
+          "Musée",
+          "Neuf",
+          "When Ernest Cognacq"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 41,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Thirty years after its founding, Ernest Cognacq commissioned Frantz Jourdain to build a full-size department store — a structure of steel and glass in keeping with the progressive spirit of the time. In 1926, Jourdain and Henri Sauvage built the façade on the quai du Louvre, one of the best examples of Art Deco in Paris. In 1930 a new building was added on the corner of rue de Rivoli and rue Boucher, boasting an interesting frieze and an impressive staircase inside.",
@@ -41,13 +53,27 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Art Deco",
+          "Ernest Cognacq",
+          "Frantz Jourdain",
+          "Henri Sauvage",
+          "Rivoli",
+          "Thirty"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 33,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -78,7 +104,18 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Catherine de Medici",
+          "Charles IX",
+          "Marie",
+          "Protestants"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 37,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "When Catherine de Medici was told by her astrologer, Ruggieri, that she would die 'by Saint-Germain,' she moved out of the Palais des Tuileries so as to attend mass elsewhere, and settled in the Hôtel de Soissons. She never returned to her residence at Saint-Germain-en-Laye either. But there is no escaping one's destiny: while in Blois in the Loire Valley some 16 years later, she took ill, never to recover. A young priest was called to her bedside on 15 January 1589. The Queen asked his name: 'Julien de Saint-Germain,' replied the holy stranger.",
@@ -93,13 +130,28 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Blois",
+          "Hôtel de Soissons",
+          "Julien",
+          "Laye",
+          "Loire Valley",
+          "Palais des Tuileries",
+          "When Catherine de Medici"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 38,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Galerie Vero-Dodat",
@@ -131,13 +183,24 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Daumier",
+          "Messieurs Vérot",
+          "Rachel"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 49,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Banque de France",
@@ -164,13 +227,29 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Comte de Toulouse",
+          "Galerie Dorée",
+          "Hôtel de la Vrillière",
+          "Louis XIV",
+          "Madame de Montespan",
+          "Mansart",
+          "Marquis de la Vrillière",
+          "Napoleon"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 35,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Place des Victoires",
@@ -197,7 +276,22 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Bosio",
+          "Duc de La Feuillade",
+          "Germany",
+          "Jules",
+          "Louis XIV",
+          "Mansart",
+          "Maréchal",
+          "Sun King"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 55,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "During Napoleon's Consulate, a statue to General Desaix — the hero of the battle of Marengo — stood in Place des Victoires, representing the hero in his natural attire, emulating the heroes of ancient times. But the population of Paris was shocked by such indecent exposure and a fence was soon set up around the General to keep him out of view. In 1976, designer Kenzo signalled the rejuvenation of the area, its transformation into a stronghold of contemporary créateurs as opposed to traditional couturiers.",
@@ -212,20 +306,31 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "During Napoleon",
+          "General Desaix",
+          "Kenzo"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 34,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Palais-Royal",
     "short_description": "Former royal palace with arcaded gardens where Camille Desmoulins' rooftop speech on July 12 1789 triggered the storming of the Bastille",
     "latitude": 48.8637,
     "longitude": 2.3372,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 30,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
@@ -248,7 +353,23 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Anne of Austria",
+          "Fronde",
+          "Louis XIII",
+          "Louis XIV",
+          "Louis XVI",
+          "Mazarin",
+          "Orléans",
+          "Philippe",
+          "Richelieu"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 59,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber"
       },
       {
         "script_body": "Among the shops of the newly converted Palais-Royal was a cutlery establishment at no. 177 Galerie de Valois, which belonged to Monsieur Badin. Here on 13 July 1793, Charlotte Corday bought the knife with which she stabbed Marat in his bathtub the same day.",
@@ -263,7 +384,18 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Charlotte Corday",
+          "Galerie de Valois",
+          "Marat",
+          "Monsieur Badin"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 18,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       },
       {
         "script_body": "By the time Colette was living at 9 rue de Beaujolais and Jean Cocteau at 36 rue de Montpensier, the Palais-Royal had assumed its present aspect of outdated serenity. Colette described its nameless, silent citizens who followed a code of mysterious mutual courtesy: the elderly lady leaning on her stick, the gentleman cultivating cacti on his window sill. Cocteau, more than just a neighbour, was a friend and admirer who called Colette 'an ink fountain.' He described the gardens as 'La campagne en plein centre de Paris.'",
@@ -278,13 +410,24 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Beaujolais",
+          "Colette",
+          "Jean Cocteau"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 35,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Comedie-Francaise",
@@ -315,13 +458,31 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Argan",
+          "Le Cid",
+          "Le Malade Imaginaire",
+          "Le Petit Cardinal",
+          "Mlle Mars",
+          "Molière",
+          "Richelieu",
+          "Talma",
+          "Valois",
+          "Victor Louis"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "somber"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Hotel Le Meurice",
@@ -352,7 +513,20 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "corrected"
+        "fact_check_status": "corrected",
+        "entities": [
+          "Dickens",
+          "Down",
+          "George Orwell",
+          "London",
+          "Rivoli",
+          "Thackeray"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 49,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral"
       },
       {
         "script_body": "During the Second World War, the German High Command of the Paris garrison took up residence at the lavish Meurice.",
@@ -367,13 +541,23 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "German High Command",
+          "Second World War"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 8,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "stop"
   },
   {
     "name": "Eglise Saint-Roch",
@@ -403,20 +587,35 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "André Le Nôtre",
+          "Anne de Bourbon",
+          "Holy Communion",
+          "John Law",
+          "Louis XIV",
+          "Louise de la Vallière",
+          "Pierre Corneille"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 37,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Place Vendome",
     "short_description": "Octagonal 17th-century square with a 44-metre column cast from 1,200 captured cannons, ringed by luxury jewellers and the Ritz Paris",
     "latitude": 48.8677,
     "longitude": 2.3292,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 40,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
@@ -436,12 +635,32 @@
           "chapter": "The 1st Arrondissement — Louvre Westwards",
           "page": "Louvre Westwards"
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Austerlitz",
+          "Colonne",
+          "Henri IV",
+          "Marseillaise",
+          "Napoleon III",
+          "National Assembly",
+          "Neuf",
+          "Philippe",
+          "Place Vendôme",
+          "Roman Caesar",
+          "Sun King",
+          "Vert Galant"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 58,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
     ],
     "_meta": {
       "exported_at": "2026-04-05T21:53:46Z",
       "source_chunk": "chunk-04-1st-arr-louvre-westwards"
-    }
+    },
+    "poi_role": "setting"
   }
 ]

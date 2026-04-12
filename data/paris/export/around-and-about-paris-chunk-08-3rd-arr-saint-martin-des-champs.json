@@ -4,7 +4,7 @@
     "short_description": "The oldest of the 'great' synagogues of Paris, built in 1822 on rue Notre-Dame-de-Nazareth for the Ashkenazi community, later rebuilt in 1852 with funding from James de Rothschild.",
     "latitude": 48.867,
     "longitude": 2.36,
-    "importance_tier": 3,
+    "importance_tier": 1,
     "trigger_radius": 25,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
@@ -31,16 +31,27 @@
           "page": ""
         },
         "fact_check_status": "verified",
-        "fact_check_notes": "James de Rothschild funded rebuilding confirmed. Population statistics from source text verified."
+        "fact_check_notes": "James de Rothschild funded rebuilding confirmed. Population statistics from source text verified.",
+        "entities": [
+          "Charles VI",
+          "James de Rothschild",
+          "Jews"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 51,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Priory of Saint-Martin-des-Champs",
     "short_description": "Medieval Benedictine priory dating to the 12th century with rare surviving crenellated walls, a watch-tower saved by Victor Hugo, and one of the earliest Gothic rib-vaulted churches in Paris.",
     "latitude": 48.8667,
     "longitude": 2.3553,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 40,
     "typical_duration_min": 25,
     "kid_friendly": "yes",
@@ -68,7 +79,17 @@
           "page": ""
         },
         "fact_check_status": "partially-verified",
-        "fact_check_notes": "Hugo quote widely attributed but exact 1882 date not independently verified."
+        "fact_check_notes": "Hugo quote widely attributed but exact 1882 date not independently verified.",
+        "entities": [
+          "Demolish",
+          "Notice",
+          "Victor Hugo"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 45,
+        "narrative_function": "transition",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "The priory had a darker side. Its gaol was the scene of a savage massacre during the Hundred Years' War, when the Bourguignons slaughtered their Armagnac rivals within these walls. Under Louis XIV, prostitutes captured on the neighbouring streets were kept here awaiting deportation to New Orleans. In September 1719, 180 male prisoners were brought from the prison of Bicetre, to be married to 180 women. The couples were then chained together and marched all the way to La Rochelle on the Atlantic coast, where they embarked for Louisiana — a forced marriage and forced migration in one brutal stroke.",
@@ -86,7 +107,21 @@
           "page": ""
         },
         "fact_check_status": "partially-verified",
-        "fact_check_notes": "Mass deportations to Louisiana in 1719 confirmed by historical sources, specific location at Saint-Martin-des-Champs not independently verified."
+        "fact_check_notes": "Mass deportations to Louisiana in 1719 confirmed by historical sources, specific location at Saint-Martin-des-Champs not independently verified.",
+        "entities": [
+          "Armagnac",
+          "Atlantic",
+          "Bourguignons",
+          "Hundred Years",
+          "La Rochelle",
+          "New Orleans",
+          "Under Louis XIV"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 40,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber"
       },
       {
         "script_body": "The priory of Saint-Martin-des-Champs traces its origins to the 6th century, when a primitive oratory stood on the Ile de la Cite. In the 8th century a chapel replaced it north of the island, but the Normans tore it down a century later. The priory as a fortified complex wasn't built until the 12th century, situated outside the city walls. The monks played a major role in developing this part of Paris, and gave the kingdom renowned churchmen — notably Cardinal de Richelieu. It all came to an end with the Revolution, and in 1798 the newly founded Conservatoire des Arts et Metiers was granted the premises.",
@@ -104,7 +139,18 @@
           "page": ""
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Wikipedia sources indicate oldest documented structure dates to early 8th century, not 6th century. 6th-century claim may be tradition rather than documented history."
+        "fact_check_notes": "Wikipedia sources indicate oldest documented structure dates to early 8th century, not 6th century. 6th-century claim may be tradition rather than documented history.",
+        "entities": [
+          "Cardinal de Richelieu",
+          "Conservatoire des Arts",
+          "Metiers",
+          "Normans"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 43,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "The monks of Saint-Martin played a major role in developing this part of Paris, shaping its streets and economy over centuries. They were also associated with some of France's most powerful churchmen — including Cardinal de Richelieu, the mastermind behind the centralization of French royal power under Louis XIII.",
@@ -122,17 +168,27 @@
           "page": ""
         },
         "fact_check_status": "partially-verified",
-        "fact_check_notes": "Richelieu as Prior of Saint-Martin-des-Champs is plausible given his many ecclesiastical holdings but not independently verified."
+        "fact_check_notes": "Richelieu as Prior of Saint-Martin-des-Champs is plausible given his many ecclesiastical holdings but not independently verified.",
+        "entities": [
+          "Cardinal de Richelieu",
+          "Louis XIII"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 20,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Musee des Arts et Metiers",
     "short_description": "Museum of inventions and technology housed in the medieval priory of Saint-Martin-des-Champs since 1798.",
-    "latitude": 48.8667,
-    "longitude": 2.3553,
-    "importance_tier": 1,
-    "trigger_radius": 50,
+    "latitude": 48.866098,
+    "longitude": 2.355414,
+    "importance_tier": 4,
+    "trigger_radius": 10,
     "typical_duration_min": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -157,16 +213,27 @@
           "chapter": "The 3rd Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "English Channel",
+          "Follow",
+          "Musee National des Techniques"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 33,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Porte Saint-Martin",
     "short_description": "Triumphal arch built in 1674 for Louis XIV celebrating victories over the Germans, Spanish and Dutch.",
     "latitude": 48.869,
     "longitude": 2.354,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "typical_duration_min": 10,
     "kid_friendly": "yes",
@@ -190,7 +257,23 @@
           "chapter": "The 3rd Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Allied",
+          "Arc de Triomphe",
+          "Elysees",
+          "Louis XIV",
+          "Louis XV",
+          "Lutetia",
+          "Napoleon",
+          "Sun King",
+          "Walk"
+        ],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 40,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "Rue Saint-Martin lies on the ancient Roman road from Lutetia to the north, a continuation of the Roman cardo — the main urban street — which runs as rue Saint-Jacques south of the Seine. For centuries the Porte Saint-Martin was the ceremonial entry point to Paris.",
@@ -207,16 +290,26 @@
           "chapter": "The 3rd Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [
+          "Jacques",
+          "Lutetia"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 18,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent"
       }
-    ]
+    ],
+    "poi_role": "stop"
   },
   {
     "name": "Saint-Nicolas-des-Champs",
     "short_description": "Parish church showing the evolution from Gothic to Renaissance style, with a 15th-century tower and notable burials.",
     "latitude": 48.8655,
     "longitude": 2.3543,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 30,
     "typical_duration_min": 15,
     "kid_friendly": "yes",
@@ -241,7 +334,13 @@
           "chapter": "The 3rd Arrondissement",
           "page": ""
         },
-        "fact_check_status": "verified"
+        "fact_check_status": "verified",
+        "entities": [],
+        "sensory_anchor": true,
+        "est_spoken_seconds": 18,
+        "narrative_function": "scene_setter",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent"
       },
       {
         "script_body": "The church holds notable burials: Mademoiselle de Scudery, the celebrated novelist who died in 1701 aged 93; Guillaume de Bude, founder of the College de France, who died in 1540; and members of the La Bruyere and Ormesson families. The renowned 18th-century actor Talma was baptized here.",
@@ -259,16 +358,30 @@
           "page": ""
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Scudery age at death corrected from 94 to 93. Born 15 Nov 1607, died 2 June 1701 = mathematically 93."
+        "fact_check_notes": "Scudery age at death corrected from 94 to 93. Born 15 Nov 1607, died 2 June 1701 = mathematically 93.",
+        "entities": [
+          "College de France",
+          "Guillaume de Bude",
+          "La Bruyere",
+          "Mademoiselle de Scudery",
+          "Ormesson",
+          "Talma"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 19,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "3 Rue Volta",
     "short_description": "A half-timbered house long claimed to be the oldest house in Paris, though research later dated it to 1644.",
     "latitude": 48.8646,
     "longitude": 2.3568,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 10,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
@@ -294,16 +407,29 @@
           "page": ""
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "The 'oldest house' claim was debunked in 1979 — house dates to 1644. Oldest house is 51 rue de Montmorency (Nicolas Flamel, 1407)."
+        "fact_check_notes": "The 'oldest house' claim was debunked in 1979 — house dates to 1644. Oldest house is 51 rue de Montmorency (Nicolas Flamel, 1407).",
+        "entities": [
+          "Chinatown",
+          "Chinese",
+          "Gravilliers",
+          "Le Maire",
+          "World War I"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 26,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "wry"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   },
   {
     "name": "Convent of the Madelonnettes",
     "short_description": "Former 1618 convent for 'fallen women' where Ninon de Lenclos was imprisoned; demolished 1865-66, with only a wall fragment surviving.",
     "latitude": 48.8655,
     "longitude": 2.3593,
-    "importance_tier": 4,
+    "importance_tier": 1,
     "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "caution",
@@ -329,8 +455,20 @@
           "page": ""
         },
         "fact_check_status": "auto-corrected",
-        "fact_check_notes": "Demolition date corrected from 1868 to 1865-1866 per Wikipedia (Haussmann's construction of rue de Turbigo)."
+        "fact_check_notes": "Demolition date corrected from 1868 to 1865-1866 per Wikipedia (Haussmann's construction of rue de Turbigo).",
+        "entities": [
+          "Anne of Austria",
+          "Ninon de Lenclos",
+          "Temple",
+          "Volta"
+        ],
+        "sensory_anchor": false,
+        "est_spoken_seconds": 42,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic"
       }
-    ]
+    ],
+    "poi_role": "walk_by_only"
   }
 ]
