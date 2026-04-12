@@ -2,9 +2,11 @@
 
 from src.api.models.nodes import (
     CREATE_MODELS,
+    NarrativeBeatCreate,
     NodeLabel,
     NodeListResponse,
     NodeResponse,
+    POICreate,
 )
 
 
@@ -83,7 +85,7 @@ class TestCreateModels:
 
     def test_poi_create_requires_lat_lng(self):
         model = CREATE_MODELS[NodeLabel.POI]
-        instance = model(name="Test POI", latitude=48.8, longitude=2.3)
+        instance = model(name="Test POI", latitude=48.8, longitude=2.3, importance_tier=3)
         assert instance.latitude == 48.8
         assert instance.longitude == 2.3
 
@@ -92,3 +94,60 @@ class TestCreateModels:
         instance = model(name="test_lens", display_label="Test Lens")
         assert instance.name == "test_lens"
         assert instance.display_label == "Test Lens"
+
+
+# ── Beat enrichment fields ──
+
+
+class TestBeatEnrichmentFields:
+    def test_beat_create_with_enrichment_fields(self):
+        beat = NarrativeBeatCreate(
+            script_body="The cathedral was built in 1163.",
+            entities=["Notre-Dame"],
+            sensory_anchor=True,
+            est_spoken_seconds=10,
+            narrative_function="hook",
+            beat_type="anecdote",
+            emotional_register="dramatic",
+        )
+        d = beat.model_dump()
+        assert d["entities"] == ["Notre-Dame"]
+        assert d["sensory_anchor"] is True
+        assert d["est_spoken_seconds"] == 10
+        assert d["narrative_function"] == "hook"
+        assert d["beat_type"] == "anecdote"
+        assert d["emotional_register"] == "dramatic"
+
+    def test_beat_create_without_enrichment_fields(self):
+        beat = NarrativeBeatCreate(script_body="A simple beat.")
+        d = beat.model_dump()
+        assert d["entities"] == []
+        assert d["sensory_anchor"] is None
+        assert d["est_spoken_seconds"] is None
+        assert d["narrative_function"] == ""
+        assert d["beat_type"] == ""
+        assert d["emotional_register"] == ""
+
+
+# ── POI role field ──
+
+
+class TestPOIRoleField:
+    def test_poi_create_with_poi_role(self):
+        poi = POICreate(
+            name="Île de la Cité",
+            latitude=48.8534,
+            longitude=2.3488,
+            importance_tier=5,
+            poi_role="setting",
+        )
+        assert poi.model_dump()["poi_role"] == "setting"
+
+    def test_poi_create_default_poi_role(self):
+        poi = POICreate(
+            name="Test POI",
+            latitude=48.8,
+            longitude=2.3,
+            importance_tier=3,
+        )
+        assert poi.model_dump()["poi_role"] == "stop"

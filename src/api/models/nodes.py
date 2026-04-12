@@ -81,6 +81,7 @@ class POICreate(BaseModel):
     typical_duration_min: int = 30
     kid_friendly: str = "yes"
     name_variations: list[str] = []
+    poi_role: str = "stop"
     force_create: bool = False
 
     @field_validator("importance_tier")
@@ -112,6 +113,12 @@ class NarrativeBeatCreate(BaseModel):
     audio_url: str = ""
     duration_sec: int = 60
     kid_friendly: str = "yes"
+    entities: list[str] = []
+    sensory_anchor: bool | None = None
+    est_spoken_seconds: int | None = None
+    narrative_function: str = ""
+    beat_type: str = ""
+    emotional_register: str = ""
 
 
 class AreaCreate(BaseModel):
