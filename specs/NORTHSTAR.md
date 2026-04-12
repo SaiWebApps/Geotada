@@ -1,6 +1,6 @@
 # TRAVLR — North Star
 
-> **Last updated:** March 2026 · **Status:** Pre-launch (Phase 1)
+> **Last updated:** April 2026 · **Status:** Pre-launch (Phase 1)
 
 ---
 
@@ -46,7 +46,8 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - **Dual-mode product:** Structured Discovery (Planner) and Spontaneous Exploration (Wanderer). Both powered by graph traversals.
 - **Golden Ratio:** 20% Anchors (Gravity 5) + 80% Flavour (Gravity 1–4).
 - **Monetization:** B2C subscription ($4.99/mo, $39.99/yr) + per-city pass ($3.99–$4.99). Price-to-raise model.
-- **Launch city:** Boston.
+- **Area containment:** `Area` node type with `WITHIN` relationship for spatial hierarchy (city → district → neighborhood/island/corridor). Boundary stored as WKT POLYGON string, containment precomputed into WITHIN edges at ingest. MERGE key: `(name, area_type, city_name)`. See `specs/2026-04-09-area-containment/`.
+- **Launch city:** Paris.
 
 ---
 
@@ -62,7 +63,6 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - Payment gateway (all content free for demo phase)
 - Pipeline automation (PDF upload → auto-extraction abandoned; manual JSON upload instead)
 - Embedding-based lens similarity
-- POI hierarchy (IS_INSIDE relationship deferred)
 - Post-MVP graph nodes: UserPreferences, Badge, Achievement, Challenge, ChallengeCompletion
 
 **Will NOT do (process):**
@@ -85,6 +85,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 | **Data Miner Prompt V1** | *(in editorial workbench repo)* | Gemini extraction prompt — orientation blocks, sensory anchors, gravity scoring |
 | **Fact Check Prompt V1** | *(in editorial workbench repo)* | Audit prompt — two-signal gravity matrix, structured audit_notes |
 | **Editorial Workbench** | *(repo)* | Browser-based staging dashboard, split-screen editor, Leaflet map, Commit to Live flow |
+| **Area Containment Spec** | `specs/2026-04-09-area-containment/` | Area node type, WITHIN hierarchy, POI migration, spatial containment |
 
 ---
 

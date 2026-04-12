@@ -42,10 +42,11 @@ Travlr is a multi-city audio tour platform that transforms books and travel guid
 | Editorial map | OpenStreetMap/Leaflet | Editor pin drag-and-drop |
 | Database | Neo4j graph (Schema v3) | 3 domains: Vault, Atlas, Bridge |
 | Geofence radius | 10m fixed | Consistent across all POIs for MVP |
-| Gravity Score | Deep research pipeline | Gemini grounding + prompt rubric. Lensing attached post-scoring |
-| Lens system | Simple config file | Hardcoded distances, no embeddings for MVP |
+| Gravity Score | Quantitative pipeline | 5 signals: visitor stats, Google reviews, Google Trends, Wikipedia, guidebook. POI-level, relative to city |
+| Lens system | 8 parents, 21 children | Parents are universal genres. 21 universal children. No city-specific lenses for MVP |
 | Beat duration | Gravity × 60 seconds | Gravity 5 = 300 sec max |
-| MVP scope | Single city, 100 POIs | Max 1 beat per lens per POI (max 12 beats per POI) |
+| Beats per lens | Multiple allowed | Tour builder selects best fit at runtime. No cap on extraction |
+| MVP scope | Single city, 100 POIs | Content library — extract all beats, tour builder curates |
 
 ## Current Stack
 
@@ -81,20 +82,24 @@ Travlr is a multi-city audio tour platform that transforms books and travel guid
 ### Domain 4: Gamification & Rewards (Post-MVP)
 - Badges, achievements, challenge completions
 
-## The 12 Lenses (MVP)
+## Lens Hierarchy
 
-1. Hidden History
-2. Architecture & Design
-3. Local Legends & Folklore
-4. Food & Culinary Culture
-5. Art & Street Culture
-6. Dark History (crime, espionage, scandal)
-7. Literary & Film Locations
-8. Religious & Spiritual Sites
-9. Music & Nightlife History
-10. Revolutionary Moments
-11. Nature & Green Spaces
-12. Shopping & Markets
+**8 Parent Lenses (universal genres — never change):**
+
+| Parent | What it covers |
+|--------|---------------|
+| History | Events, conflicts, political turning points, social movements |
+| Architecture & Design | Built environment — ancient to modern |
+| Arts & Culture | Visual art, music, performance, street art, cinema |
+| Food & Drink | Culinary traditions, markets, historic restaurants |
+| Stories & Characters | Folklore, literary connections, film locations, famous residents |
+| Faith & Spirituality | Sacred sites, religious traditions, pilgrimage |
+| Nature & Landscape | Parks, gardens, waterways, viewpoints |
+| Commerce & Innovation | Markets, shopping, science, technology, trade |
+
+**21 Universal Children** (exist in every city — see `definitions.py` for full list)
+
+**City-specific lenses:** Deferred post-MVP. Thematic tour grouping (e.g., "French Revolution tour") will be handled by the tour builder using semantic content matching, not pre-assigned lens labels.
 
 ## Golden Ratio Algorithm
 
@@ -118,6 +123,30 @@ Travlr is a multi-city audio tour platform that transforms books and travel guid
 **IN:** Single city, 100 POIs, Book-to-Street pipeline, Wanderer mode, email/password auth, graceful degradation, Golden Ratio algorithm
 
 **OUT:** Social/sharing, payments, turn-by-turn nav, multi-language, POI photos, full offline packs, haptic feedback, gamification nodes
+
+## Content Pipeline — Skill Execution Order
+
+Skills must run in this order. Each step depends on the output of the previous.
+
+```
+Phase 1 — Discovery (run once per city)
+  1. /poi-generate {city}          → creates data/{city}/poi-raw.json
+  2. /poi-dedup {city}             → deduplicates + tags parent-child
+  3. /poi-gravity {city}           → assigns importance_tier 1-5
+  4. /poi-geocode {city}           → adds lat/lng + trigger_radius
+
+Phase 2 — Content (run per book)
+  5. /book-prep                    → chunks book into processable sections
+  6. /beat-from-book {city}        → extracts beats from each chunk (repeat per chunk)
+
+Phase 3 — QA (run after all content is extracted)
+  7. /fact-check {city}            → verifies beats + POI status
+
+Phase 4 — Export (run when ready to upload)
+  8. /export-validate {city}       → validates against Neo4j schema, strips _pipeline fields
+```
+
+Phase 2 can be repeated for additional books. Phase 3 should re-run after new content is added. Phase 1 skills can be re-run to add new POIs (poi-generate merges, poi-gravity supports --rescore).
 
 ## Team
 

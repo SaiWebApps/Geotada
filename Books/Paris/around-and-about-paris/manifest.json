@@ -1,0 +1,164 @@
+{
+  "book_title": "Around and About Paris",
+  "author": "Thirza Vallois",
+  "source_file": "Around and about Paris (Vallois, Thirza) (z-library.sk, 1lib.sk, z-lib.sk).pdf",
+  "total_pages": 312,
+  "total_chunks": 22,
+  "chunked_at": "2026-04-01T02:00:00Z",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-1st-arr-overview-and-les-halles.txt",
+      "section_title": "1st Arr: Overview & Les Halles",
+      "line_count": 444,
+      "summary": "1st Arr: Overview & Les Halles"
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-1st-arr-chatelet-to-vert-galant.txt",
+      "section_title": "1st Arr: Place du Chatelet to Square du Vert-Galant",
+      "line_count": 328,
+      "summary": "1st Arr: Place du Chatelet to Square du Vert-Galant"
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-1st-arr-samaritaine-to-palais-royal.txt",
+      "section_title": "1st Arr: Samaritaine to Palais-Royal",
+      "line_count": 343,
+      "summary": "1st Arr: Samaritaine to Palais-Royal"
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-1st-arr-louvre-westwards.txt",
+      "section_title": "1st Arr: From the Louvre Westwards",
+      "line_count": 667,
+      "summary": "1st Arr: From the Louvre Westwards"
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-2nd-arr-east-of-montmartre.txt",
+      "section_title": "2nd Arr: East of Rue Montmartre",
+      "line_count": 618,
+      "summary": "2nd Arr: East of Rue Montmartre"
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-2nd-arr-west-of-montmartre.txt",
+      "section_title": "2nd Arr: West of Rue Montmartre",
+      "line_count": 314,
+      "summary": "2nd Arr: West of Rue Montmartre"
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-3rd-arr-marais-du-temple.txt",
+      "section_title": "3rd Arr: The Marais du Temple",
+      "line_count": 1108,
+      "summary": "3rd Arr: The Marais du Temple"
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-3rd-arr-saint-martin-des-champs.txt",
+      "section_title": "3rd Arr: Saint-Martin-des-Champs",
+      "line_count": 178,
+      "summary": "3rd Arr: Saint-Martin-des-Champs"
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-4th-arr-arsenal.txt",
+      "section_title": "4th Arr: The Arsenal",
+      "line_count": 535,
+      "summary": "4th Arr: The Arsenal"
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-4th-arr-bastille-to-marais.txt",
+      "section_title": "4th Arr: Bastille to Heart of the Marais",
+      "line_count": 757,
+      "summary": "4th Arr: Bastille to Heart of the Marais"
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-4th-arr-pompidou-to-sens.txt",
+      "section_title": "4th Arr: Centre Pompidou to Hotels de Sens & d'Aumont",
+      "line_count": 296,
+      "summary": "4th Arr: Centre Pompidou to Hotels de Sens & d'Aumont"
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-4th-arr-the-islands.txt",
+      "section_title": "4th Arr: The Islands (Ile de la Cite & Ile Saint-Louis)",
+      "line_count": 497,
+      "summary": "4th Arr: The Islands (Ile de la Cite & Ile Saint-Louis)"
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-5th-arr-saint-michel-to-sorbonne.txt",
+      "section_title": "5th Arr: Place Saint-Michel to the Sorbonne",
+      "line_count": 732,
+      "summary": "5th Arr: Place Saint-Michel to the Sorbonne"
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-5th-arr-pantheon-eastwards.txt",
+      "section_title": "5th Arr: From the Pantheon Eastwards",
+      "line_count": 491,
+      "summary": "5th Arr: From the Pantheon Eastwards"
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-5th-arr-val-de-grace.txt",
+      "section_title": "5th Arr: The Val-de-Grace",
+      "line_count": 28,
+      "summary": "5th Arr: The Val-de-Grace"
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-16-6th-arr-saint-michel-to-institut.txt",
+      "section_title": "6th Arr: Place Saint-Michel to Institut de France",
+      "line_count": 1200,
+      "summary": "6th Arr: Place Saint-Michel to Institut de France"
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-17-6th-arr-saint-germain-des-pres.txt",
+      "section_title": "6th Arr: Saint-Germain-des-Pres",
+      "line_count": 524,
+      "summary": "6th Arr: Saint-Germain-des-Pres"
+    },
+    {
+      "chunk_number": 18,
+      "filename": "chunk-18-6th-arr-saint-sulpice-and-luxembourg.txt",
+      "section_title": "6th Arr: Saint-Sulpice & Luxembourg",
+      "line_count": 432,
+      "summary": "6th Arr: Saint-Sulpice & Luxembourg"
+    },
+    {
+      "chunk_number": 19,
+      "filename": "chunk-19-6th-arr-around-montparnasse.txt",
+      "section_title": "6th Arr: Around Montparnasse",
+      "line_count": 262,
+      "summary": "6th Arr: Around Montparnasse"
+    },
+    {
+      "chunk_number": 20,
+      "filename": "chunk-20-7th-arr-faubourg-east.txt",
+      "section_title": "7th Arr: Faubourg Saint-Germain (East)",
+      "line_count": 684,
+      "summary": "7th Arr: Faubourg Saint-Germain (East)"
+    },
+    {
+      "chunk_number": 21,
+      "filename": "chunk-21-7th-arr-faubourg-west.txt",
+      "section_title": "7th Arr: Faubourg Saint-Germain (West)",
+      "line_count": 314,
+      "summary": "7th Arr: Faubourg Saint-Germain (West)"
+    },
+    {
+      "chunk_number": 22,
+      "filename": "chunk-22-7th-arr-invalides-to-eiffel.txt",
+      "section_title": "7th Arr: Les Invalides to Eiffel Tower",
+      "line_count": 891,
+      "summary": "7th Arr: Les Invalides to Eiffel Tower"
+    }
+  ]
+}

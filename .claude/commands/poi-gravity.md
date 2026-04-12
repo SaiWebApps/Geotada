@@ -167,6 +167,59 @@ For each POI, add or update:
 
 Write the updated list back to: `data/{city_slug}/poi-raw.json`
 
+### MANDATORY: Sync export files to canonical poi-raw
+
+After updating `poi-raw.json`, you MUST propagate the new tiers (and any other
+canonical fields that changed) to all chunk export files in
+`data/{city_slug}/export/*.json`. Reason: those export files feed `/upload`,
+which writes to Neo4j. If you skip this step, the rescore is invisible
+downstream — Notre-Dame ends up tier 5 in poi-raw but still tier 1 in the DB.
+
+Run this Python snippet (or equivalent) BEFORE reporting to the user:
+
+```python
+import json, os
+from pathlib import Path
+
+city = "{city_slug}"
+base = Path(f"data/{city}")
+with open(base / "poi-raw.json") as f:
+    canonical = {p["name"].lower(): p for p in json.load(f)}
+
+CANONICAL_FIELDS = ("importance_tier", "trigger_radius", "latitude", "longitude")
+
+fixes = 0
+for export_file in sorted((base / "export").glob("*.json")):
+    data = json.loads(export_file.read_text())
+    changed = False
+    for poi in data:
+        c = canonical.get(poi["name"].lower())
+        if not c:
+            continue
+        for field in CANONICAL_FIELDS:
+            cv = c.get(field)
+            if cv is not None and poi.get(field) != cv:
+                poi[field] = cv
+                fixes += 1
+                changed = True
+    if changed:
+        export_file.write_text(json.dumps(data, indent=2, ensure_ascii=False))
+print(f"Synced {fixes} field(s) across export files from poi-raw.json")
+```
+
+After the sync, run the regression tests:
+```
+.venv/bin/python -m pytest tests/test_export_consistency.py tests/test_gravity_distribution.py -v
+```
+Both must pass before the rescore is considered complete. If either fails,
+something is wrong with the sync or the new scores — investigate before
+reporting success.
+
+**Why this is mandatory:** the user lost trust in gravity scores once
+because exports drifted from poi-raw, demoting Notre-Dame and Eiffel Tower
+to tier 1 in production. The regression test now catches this drift, but
+only if the sync step runs.
+
 ### Report to the user
 
 Present the full ranked list grouped by gravity tier:

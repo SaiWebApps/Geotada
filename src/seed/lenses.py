@@ -19,7 +19,8 @@ SET l.id = coalesce(l.id, randomUUID()),
 _MERGE_CHILD_WITH_PARENT = """
 MERGE (child:Lens {name: $child_name})
 SET child.id = coalesce(child.id, randomUUID()),
-    child.display_label = $child_label
+    child.display_label = $child_label,
+    child.is_parent = false
 WITH child
 MATCH (parent:Lens {name: $parent_name})
 MERGE (parent)-[:IS_PARENT_OF]->(child)
@@ -45,10 +46,31 @@ def _create_child_lens(tx, child: dict) -> None:
 
 
 def seed_lenses(driver: Driver) -> int:
-    """Seed all MVP lenses + DAG children. Returns total lens count."""
+    """Seed all MVP lenses + DAG children. Returns total lens count.
+
+    After seeding, asserts that the DB contains no Lens nodes with names
+    outside the canonical set defined in `definitions.py`. If unknown
+    lenses are found, raises RuntimeError listing them — this catches
+    schema drift from stale seed files or hand-run queries.
+    """
+    canonical = {lens["name"] for lens in MVP_LENSES} | {c["name"] for c in DAG_CHILD_LENSES}
+
     with driver.session() as session:
         for lens in MVP_LENSES:
             session.execute_write(_create_lens, lens)
         for child in DAG_CHILD_LENSES:
             session.execute_write(_create_child_lens, child)
+
+        # Drift detection: every Lens in the DB must be canonical
+        result = session.run(
+            "MATCH (l:Lens) WHERE NOT l.name IN $canonical RETURN l.name AS name",
+            canonical=list(canonical),
+        )
+        unknown = [r["name"] for r in result]
+        if unknown:
+            raise RuntimeError(
+                f"Lens drift detected: {len(unknown)} unknown lens(es) in DB: {unknown}. "
+                f"These are not in src/schema/definitions.py. Run cleanup or update definitions."
+            )
+
     return len(MVP_LENSES) + len(DAG_CHILD_LENSES)

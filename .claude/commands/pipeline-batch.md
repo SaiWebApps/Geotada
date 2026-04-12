@@ -233,6 +233,9 @@ After ALL exports are written:
 
 1. **Append new POIs** to `data/{city_slug}/poi-raw.json`
    - Include full `_pipeline` and `_meta` blocks
+   - **DO NOT include `importance_tier`** for new POIs. Tiers must come from the
+     formal `/poi-gravity` scoring pass, not agent guesses. The Phase B5 step
+     below will fail loudly if any POI in poi-raw.json lacks a `gravity_audit`.
    - Skip POIs that already exist (match by name, case-insensitive)
 
 2. **Append new beats** to `data/{city_slug}/beats.json`
@@ -244,6 +247,29 @@ After ALL exports are written:
 
 **IMPORTANT:** Process chunks in order (by chunk number) so that earlier chunks'
 new POIs are visible to later chunks' matching logic.
+
+### Step B5 — Mandatory gravity scoring (NEW POIs only)
+
+If this batch added any new POIs to `poi-raw.json`, you MUST run
+`/poi-gravity {city} --rescore` before the batch is considered complete.
+Reason: agents are not allowed to assign `importance_tier` themselves —
+that comes from the formal scoring pass with quantitative signals
+(visitor counts, Google reviews, Trends, Wikipedia, guidebook presence)
+plus the forced-distribution rule.
+
+After the rescore completes, run:
+```
+.venv/bin/python -m pytest tests/test_gravity_distribution.py tests/test_export_consistency.py -v
+```
+Both must pass before exporting tier data anywhere downstream. If either fails,
+the batch is NOT done and the user must be told what went wrong.
+
+**Why this is non-negotiable:** an earlier pipeline build let agents guess
+tiers, which produced a bell-curved distribution clustered at tier 3 with
+famous landmarks (Notre-Dame, Eiffel Tower) sitting at tier 1. The schema's
+silent default of `importance_tier=1` masked the demotions. Both bugs are
+fixed in `src/api/models/nodes.py` and the tests above, but only if the
+pipeline actually runs the scoring pass.
 
 ---
 

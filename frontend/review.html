@@ -154,12 +154,110 @@
   }
   .completion-banner.visible { display: block; }
 
+  /* ── Persistent map ── */
+  #persistent-map-container {
+    height: 40vh;
+    min-height: 200px;
+    border-bottom: 2px solid var(--border);
+    position: relative;
+  }
+  #persistent-map {
+    width: 100%;
+    height: 100%;
+  }
+  #persistent-map .leaflet-popup-content { color: #1a1a2e; font-size: 0.85rem; }
+  #persistent-map .leaflet-popup-content .popup-name { font-weight: 700; margin-bottom: 4px; }
+  #persistent-map .leaflet-popup-content .popup-coords { font-size: 0.78rem; color: #666; font-family: 'JetBrains Mono', monospace; }
+  #persistent-map .leaflet-popup-content .popup-beats { font-size: 0.78rem; color: #888; margin-top: 2px; }
+  #persistent-map .leaflet-popup-content .popup-merge-btn {
+    display: block; margin-top: 6px; padding: 4px 8px; background: var(--purple); color: #fff;
+    border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;
+  }
+  #persistent-map .leaflet-popup-content .popup-merge-btn:hover { opacity: 0.85; }
+  .merge-banner {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    background: var(--purple); color: #fff; padding: 8px 16px; border-radius: 6px;
+    font-size: 0.85rem; font-weight: 600; z-index: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .merge-banner .cancel-merge { margin-left: 12px; cursor: pointer; opacity: 0.8; text-decoration: underline; }
+  .merge-banner .cancel-merge:hover { opacity: 1; }
+
+  /* ── Manual match dropdown ── */
+  .manual-match-panel { margin: 12px 0; }
+  .manual-match-btn {
+    padding: 6px 12px; background: var(--blue); color: #fff; border: none;
+    border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+  }
+  .manual-match-btn:hover { opacity: 0.85; }
+  .manual-match-dropdown {
+    margin-top: 6px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden;
+  }
+  .manual-match-dropdown input {
+    width: 100%; padding: 6px 8px; background: var(--surface-2); border: none;
+    border-bottom: 1px solid var(--border); color: var(--text); font-size: 0.85rem;
+  }
+  .manual-match-dropdown input:focus { outline: none; }
+  .manual-match-list {
+    max-height: 200px; overflow-y: auto;
+  }
+  .manual-match-item {
+    padding: 6px 8px; cursor: pointer; font-size: 0.8rem;
+    display: flex; justify-content: space-between; border-bottom: 1px solid var(--border);
+  }
+  .manual-match-item:hover { background: var(--accent-dim); }
+  .manual-match-item .mm-name { font-weight: 500; }
+  .manual-match-item .mm-dist { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; }
+  .manual-match-badge {
+    display: inline-flex; align-items: center; gap: 6px; margin-top: 6px;
+    padding: 4px 10px; background: var(--blue-dim); border-radius: 4px;
+    font-size: 0.8rem; color: var(--blue); font-weight: 600;
+  }
+  .manual-match-badge .mm-clear { cursor: pointer; opacity: 0.7; }
+  .manual-match-badge .mm-clear:hover { opacity: 1; }
+
+  /* ── Merge preview modal ── */
+  .merge-preview-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center; z-index: 1100;
+  }
+  .merge-preview-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.5rem; max-width: 700px; width: 90%; max-height: 85vh; overflow-y: auto;
+  }
+  .merge-preview-card h2 { margin-bottom: 0.75rem; font-size: 1.1rem; }
+  .merge-poi-info {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;
+  }
+  .merge-poi-box {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 10px;
+  }
+  .merge-poi-box h4 { font-size: 0.85rem; margin-bottom: 4px; }
+  .merge-poi-box .poi-detail { font-size: 0.78rem; color: var(--text-muted); }
+  .merge-beat-item {
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 10px; margin-bottom: 8px;
+  }
+  .merge-beat-item.will-transfer { border-left: 3px solid var(--green); }
+  .merge-beat-item.has-collision { border-left: 3px solid var(--orange); }
+  .merge-beat-label { font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; }
+  .merge-beat-script { font-size: 0.8rem; color: var(--text-muted); max-height: 60px; overflow: hidden; }
+
+  /* ── Outer layout wrapper ── */
+  .outer-layout {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 52px);
+  }
+  .outer-layout.has-banner { height: calc(100vh - 52px - 44px); }
+
   /* ── Main layout ── */
   .main {
     display: flex;
-    height: calc(100vh - 52px);
+    flex: 1;
+    min-height: 0;
   }
-  .main.has-banner { height: calc(100vh - 52px - 44px); }
+  .main.has-banner { height: auto; }
 
   /* ── Left panel ── */
   .left-panel {
@@ -224,6 +322,62 @@
   .badge-flagged { background: var(--yellow-dim); color: var(--yellow); }
   .badge-deferred { background: var(--yellow-dim); color: var(--yellow); }
   .badge-uploaded { background: var(--green-dim); color: var(--green); }
+  .badge-db { background: var(--blue-dim); color: var(--blue); }
+  .badge-incoming { background: var(--orange-dim); color: var(--orange); }
+  .badge-updated { background: var(--green-dim); color: var(--green); }
+
+  /* ── DB POI read-only fields ── */
+  .readonly-field-block {
+    padding: 0.5rem 0.7rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    min-height: 2rem;
+  }
+  .db-beat-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .db-beat-card .beat-header {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 0.75rem; font-weight: 600;
+  }
+  .db-beat-card .script-preview {
+    white-space: pre-wrap; font-size: 0.85rem; color: var(--text-muted);
+    line-height: 1.5; margin-bottom: 0.5rem;
+  }
+  .db-beat-meta { font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ── Beat loading skeleton ── */
+  .beat-skeleton { display: flex; flex-direction: column; gap: 0.75rem; padding: 1rem 0; }
+  .skel-rect {
+    height: 80px;
+    background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
+    background-size: 200% 100%;
+    border-radius: var(--radius);
+    animation: skel-pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes skel-pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* ── DB POI section in worklist ── */
+  .db-section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.5rem 0.75rem; margin-top: 0.5rem;
+    border-top: 2px solid var(--border);
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .db-sort-toggle {
+    background: transparent; border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text-muted); font-size: 0.7rem; padding: 0.15rem 0.5rem; cursor: pointer;
+  }
+  .db-sort-toggle:hover { color: var(--text); border-color: var(--text-muted); }
+  .beat-fetch-error { color: var(--red); padding: 1rem 0; font-size: 0.9rem; }
   .left-footer {
     padding: 0.75rem;
     border-top: 1px solid var(--border);
@@ -798,40 +952,48 @@
 <!-- ── Completion Banner ── -->
 <div id="completionBanner" class="completion-banner">All entries reviewed. Ready for upload. <button class="upload-db-btn" id="uploadDbBtn" disabled title="No completed POIs to upload">Upload to Database</button></div>
 
-<!-- ── Main ── -->
-<div class="main" id="mainLayout">
-  <!-- Left panel -->
-  <div class="left-panel">
-    <div class="left-toolbar">
-      <input type="file" id="fileInput" accept=".json" style="display:none" />
-      <button class="btn btn-primary" id="loadJsonBtn" disabled>Load JSON</button>
-    </div>
-    <div class="worklist" id="worklist">
-      <div class="worklist-empty">Load a JSON file to begin review.</div>
-    </div>
-    <div class="left-footer">
-      <div class="progress-bar-wrap" id="progressWrap" style="display:none;">
-        <span id="progressLabel">0 / 0</span>
-        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-      </div>
-      <button class="btn btn-outline" id="nextBtn" disabled>Next Pending</button>
-    </div>
+<!-- ── Outer layout (map + main) ── -->
+<div class="outer-layout" id="outerLayout">
+  <!-- Persistent map -->
+  <div id="persistent-map-container">
+    <div id="persistent-map"></div>
   </div>
 
-  <!-- Right panel -->
-  <div class="right-panel" id="rightPanel">
-    <div class="detail-empty" id="detailEmpty">Select a POI from the worklist.</div>
-    <div id="detailView" style="display:none;">
-      <div class="detail-header">
-        <div class="nav-group">
-          <button class="btn btn-outline btn-sm" id="prevRowBtn" title="Previous">&larr; Prev</button>
-          <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
-        </div>
-        <h2 id="detailTitle"></h2>
-        <button class="btn btn-outline btn-sm" id="deferBtn" style="color:var(--yellow);border-color:var(--yellow);">Defer</button>
-        <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
+  <!-- ── Main ── -->
+  <div class="main" id="mainLayout">
+    <!-- Left panel -->
+    <div class="left-panel">
+      <div class="left-toolbar">
+        <input type="file" id="fileInput" accept=".json" style="display:none" />
+        <button class="btn btn-primary" id="loadJsonBtn" disabled>Load JSON</button>
       </div>
-      <div class="detail-body" id="detailBody"></div>
+      <div class="worklist" id="worklist">
+        <div class="worklist-empty">Load a JSON file to begin review.</div>
+      </div>
+      <div class="left-footer">
+        <div class="progress-bar-wrap" id="progressWrap" style="display:none;">
+          <span id="progressLabel">0 / 0</span>
+          <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        </div>
+        <button class="btn btn-outline" id="nextBtn" disabled>Next Pending</button>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="right-panel" id="rightPanel">
+      <div class="detail-empty" id="detailEmpty">Select a POI from the worklist.</div>
+      <div id="detailView" style="display:none;">
+        <div class="detail-header">
+          <div class="nav-group">
+            <button class="btn btn-outline btn-sm" id="prevRowBtn" title="Previous">&larr; Prev</button>
+            <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
+          </div>
+          <h2 id="detailTitle"></h2>
+          <button class="btn btn-outline btn-sm" id="deferBtn" style="color:var(--yellow);border-color:var(--yellow);">Defer</button>
+          <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
+        </div>
+        <div class="detail-body" id="detailBody"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -849,12 +1011,24 @@
   let cityCentre = null;   // { lat, lng }
   const GEOFENCE_KM = 50;
   let poiData = [];         // in-session memory
-  let activeIdx = -1;
+  let activeSelection = { source: null, idx: -1 };  // compound selector: source='incoming'|'db', idx into respective array
+  let activeIdx = -1;       // computed alias — equals activeSelection.idx when source='incoming', else -1
+  let beatFetchController = null;  // AbortController for in-flight DB beat fetches
+  let dbSortMode = 'default';     // 'default' = incoming-first, 'alpha' = alphabetical
   let map = null;
   let marker = null;
   let addressMarker = null;
   let geocodeAbortController = null;
   let geofenceCircle = null;
+
+  // ── Persistent map state ──
+  let persistentMap = null;
+  let dbMarkerLayer = null;
+  let incomingMarkerLayer = null;
+  let persistentMarkers = new Map();   // poiId → L.circleMarker (DB POIs)
+  let incomingMarkers = new Map();     // activeIdx → L.circleMarker (incoming POIs)
+  let selectedPersistentMarker = null; // currently highlighted marker
+  let mergeMode = null;                // { target: dbPoi } when in merge mode
 
   // ── DOM refs ──
   const cityOverlay = document.getElementById('cityOverlay');
@@ -881,6 +1055,7 @@
   const markCompleteBtn = document.getElementById('markCompleteBtn');
   const completionBanner = document.getElementById('completionBanner');
   const mainLayout = document.getElementById('mainLayout');
+  const outerLayout = document.getElementById('outerLayout');
   const errorToast = document.getElementById('errorToast');
   const successToast = document.getElementById('successToast');
   const progressWrap = document.getElementById('progressWrap');
@@ -995,7 +1170,7 @@
     updateProgress();
     const allDone = poiData.every(p => p._status === 'uploaded');
     completionBanner.classList.toggle('visible', allDone);
-    mainLayout.classList.toggle('has-banner', allDone);
+    outerLayout.classList.toggle('has-banner', allDone);
   }
 
   // ── City geocoding ──
@@ -1028,6 +1203,8 @@
       try {
         citySubmitBtn.textContent = 'Connecting to database…';
         await fetchLensesAndPoiList();
+        initPersistentMap();
+        renderWorklist();
         loadJsonBtn.disabled = false;
       } catch (lensErr) {
         loadJsonBtn.disabled = true;
@@ -1186,7 +1363,41 @@
       showDuplicateResolver(data, dupes);
     } else {
       poiData = data;
+      mergeIncomingIntoDbPois();
+      dbSortMode = 'default';
       renderWorklist();
+      addIncomingMarkers();
+      updateDbMarkerStyles();
+    }
+  }
+
+  // ── Merge incoming POIs into matching DB POIs ──
+
+  function mergeIncomingIntoDbPois() {
+    if (cachedPoiList.length === 0) return;
+    // Clear previous incoming beat attachments
+    for (const dbPoi of cachedPoiList) {
+      delete dbPoi._incomingBeats;
+      delete dbPoi._incomingPoiData;
+    }
+    // Iterate in reverse so splicing is safe
+    for (let i = poiData.length - 1; i >= 0; i--) {
+      const entry = poiData[i];
+      const matches = findProximityMatches(entry, cachedPoiList);
+      // Find first match with name similarity >= 50%
+      const match = matches.find(m => nameSimilarity(entry.poi_name, m.existingPoi.properties.name) >= 0.5);
+      if (match) {
+        match.existingPoi._incomingBeats = entry.beats;
+        match.existingPoi._incomingPoiData = entry;
+        poiData.splice(i, 1);
+      }
+    }
+    // If currently viewing a DB POI that gained incoming beats, re-render
+    if (activeSelection.source === 'db') {
+      const dbPoi = cachedPoiList[activeSelection.idx];
+      if (dbPoi && dbPoi._incomingBeats) {
+        renderDetail();
+      }
     }
   }
 
@@ -1314,19 +1525,26 @@
     }
     dupError.style.display = 'none';
     poiData = cleaned;
+    mergeIncomingIntoDbPois();
+    dbSortMode = 'default';
     dupOverlay.classList.add('hidden');
     renderWorklist();
+    addIncomingMarkers();
+    updateDbMarkerStyles();
   });
 
   // ── Worklist rendering ──
 
   function renderWorklist() {
-    if (poiData.length === 0) {
+    worklistEl.innerHTML = '';
+    if (poiData.length === 0 && cachedPoiList.length === 0) {
       worklistEl.innerHTML = '<div class="worklist-empty">No entries loaded.</div>';
       nextBtn.disabled = true;
       return;
     }
-    worklistEl.innerHTML = '';
+    if (poiData.length === 0) {
+      worklistEl.innerHTML = '<div class="worklist-empty">No entries loaded.</div>';
+    }
 
     // Build sorted index array by priority
     const indices = poiData.map((_, i) => i);
@@ -1398,9 +1616,68 @@
       worklistEl.appendChild(summary);
     }
 
-    nextBtn.disabled = false;
-    updateProgress();
-    checkAllComplete();
+    nextBtn.disabled = poiData.length === 0;
+    if (poiData.length > 0) {
+      updateProgress();
+      checkAllComplete();
+    }
+
+    // ── Database POIs section ──
+    if (cachedPoiList.length > 0) {
+      const dbSection = document.createElement('div');
+      dbSection.className = 'db-section-header';
+      const dbCount = cachedPoiList.length;
+      const incomingCount = cachedPoiList.filter(p => p._incomingBeats).length;
+      dbSection.innerHTML = `<span>Database POIs (${dbCount})${incomingCount > 0 ? ` \u00B7 ${incomingCount} with incoming` : ''}</span>`;
+      const sortBtn = document.createElement('button');
+      sortBtn.className = 'db-sort-toggle';
+      sortBtn.textContent = dbSortMode === 'default' ? 'Sort: Incoming first' : 'Sort: A\u2013Z';
+      sortBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dbSortMode = dbSortMode === 'default' ? 'alpha' : 'default';
+        renderWorklist();
+      });
+      dbSection.appendChild(sortBtn);
+      worklistEl.appendChild(dbSection);
+
+      // Build sorted DB POI indices
+      const dbIndices = cachedPoiList.map((_, i) => i);
+      if (dbSortMode === 'default') {
+        dbIndices.sort((a, b) => {
+          const aHas = cachedPoiList[a]._incomingBeats ? 0 : 1;
+          const bHas = cachedPoiList[b]._incomingBeats ? 0 : 1;
+          if (aHas !== bHas) return aHas - bHas;
+          return (cachedPoiList[a].properties.name || '').localeCompare(cachedPoiList[b].properties.name || '');
+        });
+      } else {
+        dbIndices.sort((a, b) => (cachedPoiList[a].properties.name || '').localeCompare(cachedPoiList[b].properties.name || ''));
+      }
+
+      const dbFrag = document.createDocumentFragment();
+      for (const i of dbIndices) {
+        const dbPoi = cachedPoiList[i];
+        const row = document.createElement('div');
+        const isActive = activeSelection.source === 'db' && activeSelection.idx === i;
+        row.className = 'worklist-row' + (isActive ? ' active' : '');
+        const badges = ['<span class="badge badge-db">DB</span>'];
+        if (dbPoi._incomingBeats) {
+          badges.push('<span class="badge badge-incoming">+ Incoming</span>');
+        }
+        if (dbPoi._updated) {
+          badges.push('<span class="badge badge-updated">\u2713 Updated</span>');
+        }
+        row.innerHTML = `
+          <div class="poi-info">
+            <div class="poi-name">${escHtml(dbPoi.properties.name)}</div>
+            <div class="poi-meta">-- beats</div>
+          </div>
+          ${badges.join('')}
+        `;
+        row.addEventListener('click', () => selectPoi({ source: 'db', idx: i }));
+        dbFrag.appendChild(row);
+      }
+      worklistEl.appendChild(dbFrag);
+    }
   }
 
   // ── Auto-save current edits ──
@@ -1444,12 +1721,61 @@
 
   // ── Select POI ──
 
-  async function selectPoi(idx) {
+  async function selectPoi(sel) {
     autoSaveCurrent();
-    activeIdx = idx;
+
+    // Normalize: accept number (legacy, source='incoming') or { source, idx }
+    if (typeof sel === 'number') {
+      activeSelection = { source: 'incoming', idx: sel };
+      activeIdx = sel;
+    } else {
+      activeSelection = { source: sel.source, idx: sel.idx };
+      activeIdx = sel.source === 'incoming' ? sel.idx : -1;
+    }
+
     renderWorklist();
 
-    const poi = poiData[idx];
+    if (activeSelection.source === 'db') {
+      // DB POI selected — fetch beats lazily
+      const dbPoi = cachedPoiList[activeSelection.idx];
+      if (!dbPoi) return;
+
+      detailEmpty.style.display = 'none';
+      detailView.style.display = '';
+      detailTitle.textContent = dbPoi.properties.name;
+      markCompleteBtn.style.display = 'none';
+      deferBtn.style.display = 'none';
+
+      if (!dbPoi._dbBeats) {
+        // Show skeleton, fetch beats
+        detailBody.innerHTML = '<div class="beat-skeleton"><div class="skel-rect"></div><div class="skel-rect"></div><div class="skel-rect"></div></div>';
+
+        // Abort prior in-flight request
+        if (beatFetchController) beatFetchController.abort();
+        beatFetchController = new AbortController();
+
+        try {
+          const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(dbPoi.properties.name)}/beats`, { signal: beatFetchController.signal });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          const data = await resp.json();
+          dbPoi._dbBeats = data.beats || [];
+        } catch (e) {
+          if (e.name === 'AbortError') return; // Superseded by newer selection
+          dbPoi._fetchError = true;
+          renderDetail();
+          return;
+        }
+      }
+
+      renderDetail();
+
+      // Pan persistent map to DB POI
+      panPersistentMapTo(activeSelection);
+      return;
+    }
+
+    // Incoming POI selected (existing behavior)
+    const poi = poiData[activeIdx];
 
     // Run per-POI conflict detection if not uploaded and not already cached
     if (poi._status !== 'uploaded' && !poi._conflicts) {
@@ -1469,6 +1795,9 @@
     }
 
     renderDetail();
+
+    // Pan persistent map to selected POI
+    panPersistentMapTo(activeSelection);
 
     // Address geocode marker (fire-and-forget after render)
     const currentPoi = poiData[activeIdx];
@@ -1521,6 +1850,11 @@
   // ── Mark as Complete ──
 
   markCompleteBtn.addEventListener('click', async () => {
+    // Handle "Update POI" for DB POIs with incoming beats
+    if (activeSelection.source === 'db') {
+      await uploadIncomingBeatsForDbPoi(activeSelection.idx);
+      return;
+    }
     if (activeIdx < 0) return;
     autoSaveCurrent();
     const poi = poiData[activeIdx];
@@ -1560,6 +1894,7 @@
     try {
       await uploadSinglePoi(activeIdx);
       poi._status = 'uploaded';
+      refreshDbMarkers();
       showSuccess(`"${poi.poi_name}" uploaded successfully.`);
 
       // Auto-advance to the next unreviewed POI
@@ -1587,6 +1922,230 @@
   // ── Render detail panel ──
 
   function renderDetail() {
+    // DB POI detail rendering
+    if (activeSelection.source === 'db') {
+      const dbPoi = cachedPoiList[activeSelection.idx];
+      if (!dbPoi) { detailView.style.display = 'none'; detailEmpty.style.display = 'flex'; return; }
+
+      detailEmpty.style.display = 'none';
+      detailView.style.display = '';
+      detailTitle.textContent = dbPoi.properties.name;
+      deferBtn.style.display = 'none';
+
+      // Fetch error state
+      if (dbPoi._fetchError) {
+        detailBody.innerHTML = `<div class="beat-fetch-error">Failed to load beats \u2014 <button class="btn btn-outline btn-sm beat-retry-btn">click to retry</button></div>`;
+        markCompleteBtn.style.display = 'none';
+        detailBody.querySelector('.beat-retry-btn').addEventListener('click', () => {
+          delete dbPoi._fetchError;
+          selectPoi({ source: 'db', idx: activeSelection.idx });
+        });
+        return;
+      }
+
+      const loc = dbPoi.properties && dbPoi.properties.location;
+      const lat = loc ? parseFloat(loc.lat) : NaN;
+      const lng = loc ? parseFloat(loc.lng) : NaN;
+
+      let html = `
+        <div class="field-group"><label>POI Name</label><div class="readonly-field-block">${escHtml(dbPoi.properties.name)}</div></div>
+        ${dbPoi.properties.short_description ? `<div class="field-group"><label>Short Description</label><div class="readonly-field-block">${escHtml(dbPoi.properties.short_description)}</div></div>` : ''}
+        <div class="field-row">
+          <div class="field-group"><label>Latitude</label><div class="readonly-field-block">${isNaN(lat) ? '--' : lat.toFixed(6)}</div></div>
+          <div class="field-group"><label>Longitude</label><div class="readonly-field-block">${isNaN(lng) ? '--' : lng.toFixed(6)}</div></div>
+        </div>
+      `;
+
+      // DB Beats (read-only)
+      const dbBeats = dbPoi._dbBeats || [];
+      const slugToLabel = {};
+      for (const [label, slug] of Object.entries(lensDisplayToSlug)) { slugToLabel[slug] = label; }
+
+      html += `<div class="beats-section"><h3>Database Beats (${dbBeats.length})</h3>`;
+      if (dbBeats.length === 0) {
+        html += '<div style="color:var(--text-muted);font-size:0.85rem;padding:0.5rem 0;">No beats yet</div>';
+      }
+      for (let bi = 0; bi < dbBeats.length; bi++) {
+        const beat = dbBeats[bi];
+        const lensLabel = slugToLabel[beat.lens_slug] || beat.lens_slug || '--';
+        const gravity = beat.duration_sec ? Math.round(beat.duration_sec / 60) : '--';
+        html += `
+          <div class="db-beat-card">
+            <div class="beat-header">Beat ${bi + 1} <span class="badge badge-db">DB</span></div>
+            <div class="script-preview">${escHtml(beat.script_body || '')}</div>
+            <div class="db-beat-meta">Lens: ${escHtml(lensLabel)} \u00B7 Gravity: ${escHtml(String(gravity))}${beat.physical_cue ? ' \u00B7 Cue: ' + escHtml(beat.physical_cue) : ''}</div>
+          </div>
+        `;
+      }
+      html += '</div>';
+
+      // Incoming beats (editable) — if this DB POI has matched incoming beats
+      if (dbPoi._incomingBeats && dbPoi._incomingBeats.length > 0) {
+        html += `<div class="beats-section"><h3>Incoming Beats (${dbPoi._incomingBeats.length}) <span class="badge badge-incoming">Incoming</span></h3>`;
+        dbPoi._incomingBeats.forEach((beat, bi) => {
+          const gVal = Number(beat.gravity);
+          const gravityBad = isNaN(gVal) || gVal < 1 || gVal > 5;
+          const scriptEmpty = !beat.script_body || beat.script_body.trim() === '';
+          let beatWarnings = [];
+          if (scriptEmpty) beatWarnings.push('No content \u2014 script_body is empty.');
+          if (gravityBad) beatWarnings.push('Gravity must be between 1 and 5.');
+
+          // Conflict badge and panel for this incoming beat
+          const conflict = beat._conflict;
+          const review = beat._review;
+          let conflictBadge = '';
+          if (conflict && conflict.matchType === 'hard') {
+            conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-hard">Conflict (same lens)</span>`;
+          } else if (conflict && conflict.matchType === 'soft') {
+            conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-soft">Conflict (${(conflict.similarity * 100).toFixed(0)}% similar)</span>`;
+          } else if (review) {
+            conflictBadge = `<span class="beat-conflict-badge beat-conflict-badge-review">Review (${(review.similarity * 100).toFixed(0)}% similar)</span>`;
+          }
+
+          let conflictPanel = '';
+          const conflictItem = conflict || review;
+          if (conflictItem) {
+            const resolution = beat._conflictResolution;
+            conflictPanel = `
+              <div class="beat-conflict-panel" data-db-conflict-beat="${bi}">
+                <div class="conflict-sides">
+                  <div class="conflict-side">
+                    <h4>Existing Beat (DB)</h4>
+                    <div class="script-preview">${escHtml(conflictItem.existing.script_body || '')}</div>
+                    <div class="field-row-small">Lens: ${escHtml(conflictItem.existing.lens_slug || '')} | Version: ${conflictItem.existing.version || 1}</div>
+                  </div>
+                  <div class="conflict-side">
+                    <h4>Incoming Beat</h4>
+                    <div class="script-preview">${escHtml(beat.script_body || '')}</div>
+                    <div class="field-row-small">Lens: ${escHtml(beat.lens || '')} | Gravity: ${beat.gravity || '?'}</div>
+                  </div>
+                </div>
+                ${resolution ? `<div class="beat-conflict-resolved-label" data-db-beat-idx="${bi}" data-db-change-resolution="true">${escHtml(resolution.label || 'Resolved: ' + resolution.action)} (click to change)</div>` : `
+                <div class="conflict-actions" data-db-beat-idx="${bi}">
+                  <button class="btn btn-primary btn-sm" data-db-beat-action="replace" data-db-beat-idx="${bi}">Replace</button>
+                  <button class="btn btn-outline btn-sm" data-db-beat-action="skip" data-db-beat-idx="${bi}">Skip</button>
+                  <button class="btn btn-outline btn-sm" data-db-beat-action="change-lens" data-db-beat-idx="${bi}">Change Lens</button>
+                </div>`}
+              </div>`;
+          }
+
+          html += `
+            <div class="beat-card" data-beat-index="${bi}">
+              <div class="beat-header">
+                Incoming Beat ${bi + 1}
+                <span class="badge badge-incoming">Incoming</span>
+                ${conflictBadge}
+                ${beatWarnings.map(w => `<span class="beat-warning">${w}</span>`).join(' ')}
+              </div>
+              ${conflictPanel}
+              <div class="field-group">
+                <label>Script Body</label>
+                <textarea data-incoming-beat-field="script_body" data-beat-idx="${bi}" placeholder="${scriptEmpty ? 'No content' : ''}">${escHtml(beat.script_body || '')}</textarea>
+              </div>
+              <div class="field-group">
+                <label>Physical Cue</label>
+                <input type="text" data-incoming-beat-field="physical_cue" data-beat-idx="${bi}" value="${escHtml(beat.physical_cue || '')}" />
+              </div>
+              <div class="field-row">
+                <div class="field-group" style="flex:2;">
+                  <label>Lens</label>
+                  <select data-incoming-beat-field="lens" data-beat-idx="${bi}" class="lens-select" style="width:100%;padding:0.5rem 0.7rem;">
+                    <option value="">Select lens...</option>
+                    ${Object.entries(lensDisplayToSlug).map(([label, slug]) =>
+                      `<option value="${escHtml(label)}" ${(beat.lens === label || beat.lens === slug) ? 'selected' : ''}>${escHtml(label)}</option>`
+                    ).join('')}
+                  </select>
+                </div>
+                <div class="field-group" style="flex:0 0 80px;">
+                  <label>Gravity</label>
+                  <input type="number" min="1" max="5" step="1" data-incoming-beat-field="gravity" data-beat-idx="${bi}" value="${beat.gravity !== undefined ? beat.gravity : ''}" style="text-align:center;" />
+                  ${gravityBad ? '<div class="field-warning">1\u20135</div>' : ''}
+                </div>
+              </div>
+              <div class="field-group">
+                <label>Source Passage</label>
+                <textarea data-incoming-beat-field="source_passage" data-beat-idx="${bi}" style="min-height:50px;">${escHtml(beat.source_passage || '')}</textarea>
+              </div>
+            </div>
+          `;
+        });
+        html += '</div>';
+      }
+
+      detailBody.innerHTML = html;
+
+      // Show/hide action button
+      if (dbPoi._incomingBeats && dbPoi._incomingBeats.length > 0) {
+        markCompleteBtn.style.display = '';
+        markCompleteBtn.textContent = 'Update POI';
+        markCompleteBtn.disabled = false;
+      } else {
+        markCompleteBtn.style.display = 'none';
+      }
+
+      // Save edits to incoming beats on change
+      if (dbPoi._incomingBeats) {
+        detailBody.querySelectorAll('[data-incoming-beat-field]').forEach(el => {
+          el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => {
+            const bi = parseInt(el.dataset.beatIdx);
+            const field = el.dataset.incomingBeatField;
+            if (field === 'gravity') {
+              dbPoi._incomingBeats[bi][field] = parseFloat(el.value);
+            } else {
+              dbPoi._incomingBeats[bi][field] = el.value;
+            }
+          });
+        });
+
+        // DB POI incoming beat conflict resolution handlers
+        detailBody.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-db-beat-action]');
+          const changeLabel = e.target.closest('[data-db-change-resolution]');
+
+          if (changeLabel) {
+            const bi = parseInt(changeLabel.dataset.dbBeatIdx);
+            delete dbPoi._incomingBeats[bi]._conflictResolution;
+            renderDetail();
+            return;
+          }
+
+          if (!btn) return;
+          const bi = parseInt(btn.dataset.dbBeatIdx);
+          const action = btn.dataset.dbBeatAction;
+          const beat = dbPoi._incomingBeats[bi];
+          const conflict = beat._conflict || beat._review;
+          if (!conflict) return;
+
+          if (action === 'replace') {
+            beat._conflictResolution = { action: 'replace', existingBeat: conflict.existing, label: 'Will replace existing' };
+            renderDetail();
+          } else if (action === 'skip') {
+            beat._conflictResolution = { action: 'skip', existingBeat: conflict.existing, label: 'Will skip (discard incoming)' };
+            renderDetail();
+          } else if (action === 'change-lens') {
+            const actionsDiv = btn.closest('.conflict-actions');
+            if (actionsDiv.querySelector('.lens-select')) return;
+            const select = document.createElement('select');
+            select.className = 'lens-select';
+            select.innerHTML = '<option value="">Select new lens...</option>' +
+              Object.entries(lensDisplayToSlug).map(([label, slug]) =>
+                `<option value="${slug}">${escHtml(label)}</option>`
+              ).join('');
+            actionsDiv.appendChild(select);
+            select.addEventListener('change', () => {
+              const newSlug = select.value;
+              if (!newSlug) return;
+              beat._conflictResolution = { action: 'change-lens', existingBeat: conflict.existing, newLensSlug: newSlug, label: `Lens changed to ${newSlug}` };
+              renderDetail();
+            });
+          }
+        });
+      }
+
+      return;
+    }
+
+    // Incoming POI detail rendering (existing logic)
     if (activeIdx < 0 || activeIdx >= poiData.length) {
       detailView.style.display = 'none';
       detailEmpty.style.display = 'flex';
@@ -1709,6 +2268,20 @@
         }
         html += '</div>';
       });
+      html += '</div>';
+    }
+
+    // Manual match panel (Task 7)
+    if (!isUploaded) {
+      const manualMatch = conflicts.matchedExistingPoi;
+      const isManualOverride = manualMatch && (!conflicts.proximityMatches || conflicts.proximityMatches.length === 0 ||
+        !conflicts.proximityMatches.some(m => m.existingPoi.id === manualMatch.id));
+      html += '<div class="manual-match-panel">';
+      if (manualMatch && (isManualOverride || conflicts.proximityResolution === 'same')) {
+        html += `<div class="manual-match-badge">Matched to: ${escHtml(manualMatch.properties.name)} <span class="mm-clear" data-action="clear-manual-match">&times; clear</span></div>`;
+      }
+      html += `<button class="manual-match-btn" data-action="open-manual-match">Match to existing POI...</button>`;
+      html += '<div class="manual-match-dropdown" id="manualMatchDropdown" style="display:none;"></div>';
       html += '</div>';
     }
 
@@ -1890,6 +2463,28 @@
             poi._conflicts.proximityResolution = 'different';
             poi._conflicts.isNew = true;
           }
+          renderDetail();
+          return;
+        }
+
+        // Manual match handlers (Task 7)
+        const manualMatchBtn = e.target.closest('[data-action="open-manual-match"]');
+        if (manualMatchBtn) {
+          openManualMatchDropdown();
+          return;
+        }
+        const clearManual = e.target.closest('[data-action="clear-manual-match"]');
+        if (clearManual) {
+          const poi = poiData[activeIdx];
+          poi._conflicts.matchedExistingPoi = null;
+          poi._conflicts.proximityResolution = null;
+          poi._conflicts.isNew = true;
+          poi._conflicts.beatConflicts = [];
+          poi._conflicts.beatReviewItems = [];
+          poi._conflicts.existingBeats = [];
+          // Re-run auto detection
+          const autoResult = await detectConflictsForPoi(poi);
+          poi._conflicts = autoResult;
           renderDetail();
           return;
         }
@@ -2203,9 +2798,10 @@
       lensSlugToId[slug] = l.id;
     }
 
-    // Fetch all POIs for conflict detection caching (paginate to avoid cap)
+    // Fetch POIs for conflict detection caching (paginate to avoid cap)
+    // Then filter to only POIs within the selected city's geofence
     try {
-      cachedPoiList = [];
+      let allPois = [];
       let poiSkip = 0;
       const poiPageSize = 200;
       while (true) {
@@ -2213,9 +2809,19 @@
         if (!poiResp.ok) break;
         const poiListData = await poiResp.json();
         const items = poiListData.items || [];
-        cachedPoiList.push(...items);
+        allPois.push(...items);
         if (items.length < poiPageSize) break;
         poiSkip += poiPageSize;
+      }
+      // Filter to geofence — only keep POIs within GEOFENCE_KM of cityCentre
+      if (cityCentre) {
+        cachedPoiList = allPois.filter(p => {
+          const loc = p.properties && p.properties.location;
+          if (!loc || loc.lat == null || loc.lng == null) return false;
+          return haversineKm(cityCentre.lat, cityCentre.lng, loc.lat, loc.lng) <= GEOFENCE_KM;
+        });
+      } else {
+        cachedPoiList = allPois;
       }
     } catch (e) { /* non-fatal — conflict detection will work without cache */ }
   }
@@ -2767,6 +3373,137 @@
     }
   }
 
+  // ── Upload incoming beats for a matched DB POI ──
+
+  async function uploadIncomingBeatsForDbPoi(dbIdx) {
+    const dbPoi = cachedPoiList[dbIdx];
+    if (!dbPoi || !dbPoi._incomingBeats || dbPoi._incomingBeats.length === 0) return;
+
+    const incomingBeats = dbPoi._incomingBeats;
+    const poiName = dbPoi.properties.name;
+    const lensMap = lensSlugToId;
+
+    markCompleteBtn.disabled = true;
+    markCompleteBtn.textContent = 'Uploading...';
+
+    try {
+      // Run beat-level conflict detection against this DB POI
+      const syntheticPoi = {
+        poi_name: poiName,
+        latitude: dbPoi.properties.location.lat,
+        longitude: dbPoi.properties.location.lng,
+        beats: incomingBeats,
+      };
+      const beatResult = await runBeatConflictDetection(syntheticPoi, poiName);
+
+      // If conflicts exist, attach them and re-render for resolution
+      if (beatResult.beatConflicts.length > 0 || beatResult.beatReviewItems.length > 0) {
+        // Store conflicts on incoming beats
+        for (const c of beatResult.beatConflicts) {
+          if (incomingBeats[c.beatIndex]) {
+            incomingBeats[c.beatIndex]._conflict = c;
+          }
+        }
+        for (const r of beatResult.beatReviewItems) {
+          if (incomingBeats[r.beatIndex]) {
+            incomingBeats[r.beatIndex]._review = r;
+          }
+        }
+
+        // Check all conflicts are resolved
+        const allConflicts = [...beatResult.beatConflicts, ...beatResult.beatReviewItems];
+        const unresolved = allConflicts.filter(c => !incomingBeats[c.beatIndex]._conflictResolution);
+        if (unresolved.length > 0) {
+          showError('Resolve all beat conflicts before uploading. Re-rendering with conflict panels.');
+          markCompleteBtn.textContent = 'Update POI';
+          markCompleteBtn.disabled = false;
+          renderDetail();
+          return;
+        }
+      }
+
+      // Upload each incoming beat
+      for (let bi = 0; bi < incomingBeats.length; bi++) {
+        const beat = incomingBeats[bi];
+        const resolution = beat._conflictResolution;
+
+        if (resolution && resolution.action === 'skip') continue;
+
+        let mapped;
+        let beatSlug;
+
+        if (resolution && resolution.action === 'merge' && resolution.mergedBeat) {
+          beatSlug = resolveLensSlug(resolution.mergedBeat.lens) || resolveLensSlug(beat.lens);
+          mapped = {
+            script_body: resolution.mergedBeat.script_body,
+            lens_slug: beatSlug,
+            version: (resolution.existingBeat.version || 1) + 1,
+            active_status: 'active',
+            duration_sec: (Number(resolution.mergedBeat.gravity) || 3) * 60,
+            kid_friendly: 'yes',
+          };
+        } else if (resolution && resolution.action === 'change-lens') {
+          mapped = mapBeatForApi(beat);
+          mapped.lens_slug = resolution.newLensSlug;
+          beatSlug = resolution.newLensSlug;
+        } else {
+          mapped = mapBeatForApi(beat);
+          beatSlug = mapped.lens_slug;
+        }
+
+        if (!beatSlug) throw new Error(`Beat ${bi + 1} lens unrecognized.`);
+        const lensId = lensMap[beatSlug];
+        if (!lensId) throw new Error(`Lens "${beatSlug}" not found in database.`);
+
+        // Deprecate existing beat if replacing or merging
+        if (resolution && (resolution.action === 'replace' || resolution.action === 'merge') && resolution.existingBeat) {
+          await fetch(`${API_BASE}/nodes/NarrativeBeat/${resolution.existingBeat.id}`, {
+            method: 'PUT', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
+          });
+          if (resolution.action === 'replace') {
+            mapped.version = (resolution.existingBeat.version || 1) + 1;
+          }
+        }
+
+        // Create beat node
+        const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(mapped),
+        });
+        if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
+        const beatNode = await beatResp.json();
+
+        // HAS_BEAT edge (link to existing POI)
+        await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ source: {label: 'POI', id: dbPoi.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
+        });
+
+        // TAGGED_WITH edge
+        await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
+        });
+      }
+
+      // Success: clean up
+      delete dbPoi._incomingBeats;
+      delete dbPoi._incomingPoiData;
+      delete dbPoi._dbBeats; // Force re-fetch to show new beats
+      dbPoi._updated = true;
+      showSuccess(`Incoming beats uploaded to "${poiName}" successfully.`);
+      updateDbMarkerStyles();
+      renderWorklist();
+      renderDetail();
+    } catch (err) {
+      showError('Upload failed: ' + err.message);
+    }
+
+    markCompleteBtn.textContent = 'Update POI';
+    markCompleteBtn.disabled = false;
+  }
+
   // ── Task 8: Upload execution with progress ──
 
   let progressOverlayEl = null;
@@ -3199,8 +3936,10 @@
       detailView.style.display = 'none';
       detailEmpty.style.display = 'flex';
       completionBanner.classList.remove('visible');
-      mainLayout.classList.remove('has-banner');
+      outerLayout.classList.remove('has-banner');
       updateUploadBtnState();
+      // Clear incoming markers from persistent map
+      if (incomingMarkerLayer) { incomingMarkerLayer.clearLayers(); incomingMarkers = new Map(); }
     });
 
     const retryBtn = document.getElementById('retryFailedBtn');
@@ -3210,6 +3949,606 @@
         // Re-run the upload flow
         uploadDbBtn.click();
       });
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // ── Persistent Map (Tasks 2–12) ──
+  // ══════════════════════════════════════════════════════════════
+
+  // ── Task 2: Initialize persistent map with database POI markers ──
+
+  function initPersistentMap() {
+    if (persistentMap) { persistentMap.remove(); persistentMap = null; }
+    persistentMarkers = new Map();
+    incomingMarkers = new Map();
+
+    const centre = cityCentre ? [cityCentre.lat, cityCentre.lng] : [42.36, -71.06]; // Boston default
+    persistentMap = L.map('persistent-map', { zoomControl: true, preferCanvas: true }).setView(centre, 12);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+    }).addTo(persistentMap);
+
+    // Geofence circle
+    if (cityCentre) {
+      L.circle([cityCentre.lat, cityCentre.lng], {
+        radius: GEOFENCE_KM * 1000, color: '#eab308', fillColor: '#eab308',
+        fillOpacity: 0.05, weight: 1, dashArray: '6 4'
+      }).addTo(persistentMap);
+    }
+
+    // Layer groups
+    dbMarkerLayer = L.layerGroup().addTo(persistentMap);
+    incomingMarkerLayer = L.layerGroup().addTo(persistentMap);
+
+    // Add database POI markers
+    const bounds = [];
+    for (const poi of cachedPoiList) {
+      const loc = poi.properties && poi.properties.location;
+      const lat = loc ? parseFloat(loc.lat) : NaN;
+      const lng = loc ? parseFloat(loc.lng) : NaN;
+      if (isNaN(lat) || isNaN(lng)) continue;
+      const m = L.circleMarker([lat, lng], {
+        radius: 6, fillColor: '#888', color: '#666', weight: 1, fillOpacity: 0.6
+      });
+      // Popup content (beat count lazy-loaded)
+      m._poiData = poi;
+      m._beatCountLoaded = false;
+      m.bindPopup(() => buildDbPopupContent(poi, m));
+      m.on('popupopen', () => lazyLoadBeatCount(poi, m));
+      m.on('click', () => {
+        if (mergeMode) {
+          handleMergeSourceClick(poi);
+        }
+      });
+      dbMarkerLayer.addLayer(m);
+      persistentMarkers.set(poi.id, m);
+      bounds.push([lat, lng]);
+    }
+
+    if (bounds.length > 0) {
+      persistentMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
+    }
+
+    // Resize handler (EC5)
+    window.addEventListener('resize', () => { if (persistentMap) persistentMap.invalidateSize(); });
+    setTimeout(() => { if (persistentMap) persistentMap.invalidateSize(); }, 200);
+  }
+
+  function buildDbPopupContent(poi, marker) {
+    const loc = poi.properties && poi.properties.location;
+    const lat = loc ? parseFloat(loc.lat) : NaN;
+    const lng = loc ? parseFloat(loc.lng) : NaN;
+    const beatText = marker._beatCount !== undefined ? `${marker._beatCount} beat${marker._beatCount !== 1 ? 's' : ''}` : 'Loading...';
+    return `<div class="popup-name">${escHtml(poi.properties.name)}</div>
+      <div class="popup-coords">${lat.toFixed(4)}, ${lng.toFixed(4)}</div>
+      <div class="popup-beats">${beatText}</div>
+      <button class="popup-merge-btn" onclick="window._startMergeMode('${escHtml(poi.id)}')">Merge into this POI...</button>`;
+  }
+
+  // ── Task 6: Lazy-load beat count ──
+
+  function lazyLoadBeatCount(poi, marker) {
+    if (marker._beatCountLoaded) return;
+    marker._beatCountLoaded = true;
+    fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.properties.name)}/beats`)
+      .then(r => r.json())
+      .then(data => {
+        marker._beatCount = (data.beats || []).length;
+        marker._beatData = data.beats || [];
+        if (marker.isPopupOpen()) {
+          marker.setPopupContent(buildDbPopupContent(poi, marker));
+        }
+      })
+      .catch(() => {
+        marker._beatCount = '?';
+      });
+  }
+
+  // ── Task 3: Add incoming POI markers on JSON load ──
+
+  function addIncomingMarkers() {
+    if (!persistentMap || !incomingMarkerLayer) return;
+    incomingMarkerLayer.clearLayers();
+    incomingMarkers = new Map();
+
+    for (let i = 0; i < poiData.length; i++) {
+      const poi = poiData[i];
+      const lat = parseFloat(poi.latitude);
+      const lng = parseFloat(poi.longitude);
+      if (isNaN(lat) || isNaN(lng)) continue;
+      const m = L.circleMarker([lat, lng], {
+        radius: 7, fillColor: '#e67e22', color: '#d35400', weight: 1, fillOpacity: 0.7
+      });
+      // Task 4: Click incoming marker → select in worklist
+      m._poiIdx = i;
+      m.on('click', () => {
+        if (mergeMode) return; // Don't select during merge mode
+        selectPoi(i);
+      });
+      incomingMarkerLayer.addLayer(m);
+      incomingMarkers.set(i, m);
+    }
+
+    // Fit bounds to show all markers
+    const allBounds = [];
+    dbMarkerLayer.eachLayer(l => allBounds.push(l.getLatLng()));
+    incomingMarkerLayer.eachLayer(l => allBounds.push(l.getLatLng()));
+    if (allBounds.length > 0) {
+      persistentMap.fitBounds(allBounds.map(ll => [ll.lat, ll.lng]), { padding: [30, 30], maxZoom: 14 });
+    }
+  }
+
+  // ── Task 5: Worklist → Map pan/zoom ──
+
+  function panPersistentMapTo(sel) {
+    if (!persistentMap) return;
+
+    // Accept number (legacy) or { source, idx }
+    let lat, lng, m;
+    if (typeof sel === 'number') {
+      const poi = poiData[sel];
+      if (!poi) return;
+      lat = parseFloat(poi.latitude);
+      lng = parseFloat(poi.longitude);
+      m = incomingMarkers.get(sel);
+    } else if (sel.source === 'db') {
+      const poi = cachedPoiList[sel.idx];
+      if (!poi) return;
+      const loc = poi.properties && poi.properties.location;
+      lat = loc ? parseFloat(loc.lat) : NaN;
+      lng = loc ? parseFloat(loc.lng) : NaN;
+      m = persistentMarkers.get(poi.id);
+    } else {
+      const poi = poiData[sel.idx];
+      if (!poi) return;
+      lat = parseFloat(poi.latitude);
+      lng = parseFloat(poi.longitude);
+      m = incomingMarkers.get(sel.idx);
+    }
+
+    if (isNaN(lat) || isNaN(lng)) return;
+    persistentMap.setView([lat, lng], 16);
+
+    // Highlight the marker
+    if (selectedPersistentMarker && selectedPersistentMarker !== m) {
+      selectedPersistentMarker.setRadius(selectedPersistentMarker._origRadius || 7);
+    }
+    if (m) {
+      m._origRadius = m.options.radius;
+      m.setRadius(10);
+      selectedPersistentMarker = m;
+      setTimeout(() => { if (m) m.setRadius(m._origRadius || 7); }, 1000);
+    }
+  }
+
+  // ── Task 7: Manual match — searchable dropdown ──
+
+  function openManualMatchDropdown() {
+    const dropdown = document.getElementById('manualMatchDropdown');
+    if (!dropdown) return;
+    if (dropdown.style.display !== 'none') { dropdown.style.display = 'none'; return; }
+
+    const poi = poiData[activeIdx];
+    const poiLat = parseFloat(poi.latitude);
+    const poiLng = parseFloat(poi.longitude);
+
+    // Sort by distance from incoming POI
+    const sorted = cachedPoiList.map(p => {
+      const loc = p.properties && p.properties.location;
+      const lat = loc ? parseFloat(loc.lat) : NaN;
+      const lng = loc ? parseFloat(loc.lng) : NaN;
+      const dist = (!isNaN(poiLat) && !isNaN(poiLng) && !isNaN(lat) && !isNaN(lng))
+        ? Math.round(haversineKm(poiLat, poiLng, lat, lng) * 1000)
+        : 999999;
+      return { poi: p, dist };
+    }).sort((a, b) => a.dist - b.dist);
+
+    dropdown.style.display = '';
+    dropdown.innerHTML = `<input type="text" placeholder="Search database POIs..." id="manualMatchSearch" />
+      <div class="manual-match-list" id="manualMatchList"></div>`;
+
+    function renderList(filter) {
+      const list = document.getElementById('manualMatchList');
+      const filtered = filter
+        ? sorted.filter(s => s.poi.properties.name.toLowerCase().includes(filter.toLowerCase()))
+        : sorted;
+      list.innerHTML = filtered.slice(0, 50).map((s, i) =>
+        `<div class="manual-match-item" data-mm-idx="${i}" data-mm-id="${s.poi.id}">
+          <span class="mm-name">${escHtml(s.poi.properties.name)}</span>
+          <span class="mm-dist">${s.dist < 999999 ? s.dist + 'm' : '—'}</span>
+        </div>`
+      ).join('');
+
+      list.querySelectorAll('.manual-match-item').forEach(el => {
+        el.addEventListener('click', async () => {
+          const id = el.dataset.mmId;
+          const selected = cachedPoiList.find(p => p.id === id);
+          if (!selected) return;
+          const activePoi = poiData[activeIdx];
+          activePoi._conflicts.proximityResolution = 'same';
+          activePoi._conflicts.matchedExistingPoi = selected;
+          activePoi._conflicts.isNew = false;
+          // Run beat conflict detection
+          const beatResult = await runBeatConflictDetection(activePoi, selected.properties.name);
+          activePoi._conflicts.existingBeats = beatResult.existingBeats;
+          activePoi._conflicts.beatConflicts = beatResult.beatConflicts;
+          activePoi._conflicts.beatReviewItems = beatResult.beatReviewItems;
+          if (beatResult.errors.length > 0) {
+            activePoi._conflicts.errors = [...(activePoi._conflicts.errors || []), ...beatResult.errors];
+          }
+          renderDetail();
+        });
+      });
+    }
+
+    renderList('');
+    const searchInput = document.getElementById('manualMatchSearch');
+    searchInput.focus();
+    searchInput.addEventListener('input', () => renderList(searchInput.value));
+  }
+
+  // ── Task 8: Merge mode — target + source selection ──
+
+  // Expose merge start to popup onclick
+  window._startMergeMode = function(poiId) {
+    const targetPoi = cachedPoiList.find(p => p.id === poiId);
+    if (!targetPoi) return;
+    // Close any open popup
+    persistentMap.closePopup();
+    enterMergeMode(targetPoi);
+  };
+
+  function enterMergeMode(targetPoi) {
+    mergeMode = { target: targetPoi };
+    document.getElementById('persistent-map-container').style.cursor = 'crosshair';
+
+    // Show merge banner
+    let banner = document.querySelector('.merge-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.className = 'merge-banner';
+      document.getElementById('persistent-map-container').appendChild(banner);
+    }
+    banner.innerHTML = `Click source POI to merge into <strong>${escHtml(targetPoi.properties.name)}</strong> <span class="cancel-merge" id="cancelMergeBtn">Cancel</span>`;
+    banner.style.display = '';
+
+    document.getElementById('cancelMergeBtn').addEventListener('click', exitMergeMode);
+
+    // Escape to cancel
+    document.addEventListener('keydown', mergeModeEscHandler);
+  }
+
+  function exitMergeMode() {
+    mergeMode = null;
+    document.getElementById('persistent-map-container').style.cursor = '';
+    const banner = document.querySelector('.merge-banner');
+    if (banner) banner.style.display = 'none';
+    document.removeEventListener('keydown', mergeModeEscHandler);
+  }
+
+  function mergeModeEscHandler(e) {
+    if (e.key === 'Escape') exitMergeMode();
+  }
+
+  function handleMergeSourceClick(sourcePoi) {
+    if (!mergeMode) return;
+    const targetPoi = mergeMode.target;
+
+    // EC1: Self-merge prevention
+    if (sourcePoi.id === targetPoi.id) {
+      showError('Cannot merge a POI into itself.');
+      return;
+    }
+
+    console.log(`Merge mode: target=${targetPoi.properties.name}, source=${sourcePoi.properties.name}`);
+    exitMergeMode();
+    showMergePreview(targetPoi, sourcePoi);
+  }
+
+  // ── Task 9: Merge preview & beat conflict resolution ──
+
+  async function showMergePreview(targetPoi, sourcePoi) {
+    // Fetch beats for both POIs
+    let targetBeats = [], sourceBeats = [];
+    try {
+      const [tResp, sResp] = await Promise.all([
+        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats`).then(r => r.json()),
+        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats`).then(r => r.json()),
+      ]);
+      targetBeats = tResp.beats || [];
+      sourceBeats = sResp.beats || [];
+    } catch (e) {
+      showError('Failed to fetch beats for merge preview: ' + e.message);
+      return;
+    }
+
+    // EC4: Zero beats on source
+    if (sourceBeats.length === 0) {
+      if (!confirm(`Source POI "${sourcePoi.properties.name}" has no beats. Merge will delete it. Continue?`)) return;
+      await executeMerge(targetPoi, sourcePoi, []);
+      return;
+    }
+
+    // Find collisions (same lens)
+    const targetLensSlugs = new Set(targetBeats.map(b => b.lens_slug));
+    const beatItems = sourceBeats.map(sb => {
+      const collision = targetLensSlugs.has(sb.lens_slug)
+        ? targetBeats.find(tb => tb.lens_slug === sb.lens_slug)
+        : null;
+      return { sourceBeat: sb, collision, resolution: collision ? null : 'transfer' };
+    });
+
+    // Build merge preview UI
+    const overlay = document.createElement('div');
+    overlay.className = 'merge-preview-overlay';
+    const card = document.createElement('div');
+    card.className = 'merge-preview-card';
+
+    let html = `<h2>Merge Preview</h2>`;
+    html += `<div class="merge-poi-info">
+      <div class="merge-poi-box" style="border-left:3px solid var(--green);">
+        <h4>Target (keeps)</h4>
+        <div class="poi-detail">${escHtml(targetPoi.properties.name)}</div>
+        <div class="poi-detail">${targetBeats.length} beat${targetBeats.length !== 1 ? 's' : ''}: ${targetBeats.map(b => b.lens_slug).join(', ')}</div>
+      </div>
+      <div class="merge-poi-box" style="border-left:3px solid var(--red);">
+        <h4>Source (will be deleted)</h4>
+        <div class="poi-detail">${escHtml(sourcePoi.properties.name)}</div>
+        <div class="poi-detail">${sourceBeats.length} beat${sourceBeats.length !== 1 ? 's' : ''}: ${sourceBeats.map(b => b.lens_slug).join(', ')}</div>
+      </div>
+    </div>`;
+
+    html += '<h3 style="margin:12px 0 8px;font-size:0.95rem;">Beats to Transfer</h3>';
+
+    beatItems.forEach((item, idx) => {
+      const isCollision = !!item.collision;
+      html += `<div class="merge-beat-item ${isCollision ? 'has-collision' : 'will-transfer'}" id="merge-beat-${idx}">
+        <div class="merge-beat-label">${escHtml(item.sourceBeat.lens_slug)} ${isCollision ? '<span style="color:var(--orange);">(collision with target)</span>' : '<span style="color:var(--green);">Will transfer</span>'}</div>
+        <div class="merge-beat-script">${escHtml((item.sourceBeat.script_body || '').substring(0, 150))}${(item.sourceBeat.script_body || '').length > 150 ? '...' : ''}</div>`;
+
+      if (isCollision) {
+        html += `<div style="margin-top:6px;font-size:0.78rem;color:var(--text-muted);">Existing: ${escHtml((item.collision.script_body || '').substring(0, 100))}...</div>`;
+        html += `<div class="conflict-actions" data-merge-beat-idx="${idx}" style="margin-top:6px;">
+          <button class="btn btn-primary btn-sm" data-merge-action="replace" data-merge-idx="${idx}">Replace</button>
+          <button class="btn btn-outline btn-sm" data-merge-action="skip" data-merge-idx="${idx}">Skip</button>
+          <button class="btn btn-outline btn-sm" data-merge-action="change-lens" data-merge-idx="${idx}">Change Lens</button>
+        </div>
+        <div class="merge-resolution-label" id="merge-res-${idx}" style="display:none;"></div>`;
+      }
+      html += '</div>';
+    });
+
+    html += `<div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn btn-primary" id="confirmMergeBtn" disabled style="flex:1;">Confirm Merge</button>
+      <button class="btn btn-outline" id="cancelMergePreviewBtn" style="flex:1;">Cancel</button>
+    </div>`;
+
+    card.innerHTML = html;
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    // Check if all collisions are resolved
+    function checkAllMergeResolved() {
+      const allResolved = beatItems.every(item => item.resolution !== null);
+      document.getElementById('confirmMergeBtn').disabled = !allResolved;
+    }
+    checkAllMergeResolved();
+
+    // Handle conflict resolution clicks
+    overlay.addEventListener('click', (e) => {
+      const actionBtn = e.target.closest('[data-merge-action]');
+      if (!actionBtn) return;
+      const idx = parseInt(actionBtn.dataset.mergeIdx);
+      const action = actionBtn.dataset.mergeAction;
+      const item = beatItems[idx];
+
+      if (action === 'replace') {
+        item.resolution = 'replace';
+        const label = document.getElementById(`merge-res-${idx}`);
+        label.textContent = 'Will replace existing beat';
+        label.style.display = 'block';
+        label.style.color = 'var(--green)';
+        actionBtn.closest('.conflict-actions').style.display = 'none';
+      } else if (action === 'skip') {
+        item.resolution = 'skip';
+        const label = document.getElementById(`merge-res-${idx}`);
+        label.textContent = 'Will skip (discard source beat)';
+        label.style.display = 'block';
+        label.style.color = 'var(--text-muted)';
+        actionBtn.closest('.conflict-actions').style.display = 'none';
+      } else if (action === 'change-lens') {
+        // Show lens dropdown inline
+        const actionsDiv = actionBtn.closest('.conflict-actions');
+        if (actionsDiv.querySelector('.lens-select')) return;
+        const select = document.createElement('select');
+        select.className = 'lens-select';
+        select.style.cssText = 'margin-top:4px;padding:4px;background:var(--surface-2);color:var(--text);border:1px solid var(--border);border-radius:4px;';
+        select.innerHTML = '<option value="">Select new lens...</option>' +
+          Object.entries(lensDisplayToSlug).map(([label, slug]) =>
+            `<option value="${slug}">${escHtml(label)}</option>`
+          ).join('');
+        actionsDiv.appendChild(select);
+        select.addEventListener('change', () => {
+          const newSlug = select.value;
+          if (!newSlug) return;
+          item.resolution = 'change-lens';
+          item.newLensSlug = newSlug;
+          const label = document.getElementById(`merge-res-${idx}`);
+          label.textContent = `Lens changed to ${newSlug}`;
+          label.style.display = 'block';
+          label.style.color = 'var(--blue)';
+          actionsDiv.style.display = 'none';
+          checkAllMergeResolved();
+        });
+        return; // Don't check resolved yet — wait for dropdown selection
+      }
+      checkAllMergeResolved();
+    });
+
+    // Cancel
+    document.getElementById('cancelMergePreviewBtn').addEventListener('click', () => {
+      overlay.remove();
+    });
+
+    // Confirm merge
+    document.getElementById('confirmMergeBtn').addEventListener('click', async () => {
+      overlay.remove();
+      await executeMerge(targetPoi, sourcePoi, beatItems);
+    });
+  }
+
+  // ── Task 10: Execute merge — beat transfer + source deletion ──
+
+  async function executeMerge(targetPoi, sourcePoi, beatItems) {
+    console.log(`Merge start: ${sourcePoi.properties.name} → ${targetPoi.properties.name}`);
+
+    try {
+      // Get max sort_order from target's beats
+      let maxSortOrder = 0;
+      try {
+        const tResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats`);
+        const tData = await tResp.json();
+        for (const b of (tData.beats || [])) {
+          if (b.sort_order && b.sort_order > maxSortOrder) maxSortOrder = b.sort_order;
+        }
+      } catch (e) { /* default to 0 */ }
+
+      for (const item of beatItems) {
+        const beat = item.sourceBeat;
+
+        if (item.resolution === 'skip') {
+          console.log(`Skipped beat ${beat.id} (${beat.lens_slug})`);
+          continue;
+        }
+
+        if (item.resolution === 'replace' && item.collision) {
+          // Deprecate target's conflicting beat
+          await fetch(`${API_BASE}/nodes/NarrativeBeat/${item.collision.id}`, {
+            method: 'PUT', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
+          });
+          console.log(`Deprecated beat ${item.collision.id} on target`);
+        }
+
+        if (item.resolution === 'change-lens' && item.newLensSlug) {
+          // Update TAGGED_WITH edge — create new edge with new lens, delete old
+          const newLensId = lensSlugToId[item.newLensSlug];
+          if (newLensId) {
+            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+              method: 'POST', headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beat.id}, target: {label: 'Lens', id: newLensId} }),
+            });
+            console.log(`Changed lens for beat ${beat.id} to ${item.newLensSlug}`);
+          }
+        }
+
+        // Create HAS_BEAT edge from target POI → beat
+        maxSortOrder++;
+        await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+          method: 'POST', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            source: {label: 'POI', id: targetPoi.id},
+            target: {label: 'NarrativeBeat', id: beat.id},
+            properties: { sort_order: maxSortOrder }
+          }),
+        });
+        console.log(`Transferred beat ${beat.id} to target (sort_order: ${maxSortOrder})`);
+
+        // Delete old HAS_BEAT edge from source POI → beat
+        try {
+          // Fetch edges to find the specific HAS_BEAT edge
+          const edgeResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats`);
+          // The edge deletion depends on API — try delete by source+target pattern
+          await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            method: 'DELETE', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              source: {label: 'POI', id: sourcePoi.id},
+              target: {label: 'NarrativeBeat', id: beat.id},
+            }),
+          });
+          console.log(`Deleted old HAS_BEAT edge from source for beat ${beat.id}`);
+        } catch (edgeErr) {
+          console.warn(`Could not delete old HAS_BEAT edge for beat ${beat.id}: ${edgeErr.message}`);
+        }
+      }
+
+      // Delete source POI
+      await fetch(`${API_BASE}/nodes/POI/${sourcePoi.id}`, { method: 'DELETE' });
+      console.log(`Deleted source POI ${sourcePoi.properties.name}`);
+
+      // Task 11: Post-merge map + cache update
+      postMergeUpdate(targetPoi, sourcePoi);
+
+      showSuccess(`Merged "${sourcePoi.properties.name}" into "${targetPoi.properties.name}"`);
+
+    } catch (err) {
+      console.error('Merge failed:', err);
+      showError(`Merge failed at step: ${err.message}. Both POIs may still exist — check the console for details.`);
+    }
+  }
+
+  // ── Refresh DB markers after upload (AC7) ──
+
+  function refreshDbMarkers() {
+    if (!persistentMap || !dbMarkerLayer) return;
+    for (const poi of cachedPoiList) {
+      if (persistentMarkers.has(poi.id)) continue; // already on map
+      const loc = poi.properties && poi.properties.location;
+      const lat = loc ? parseFloat(loc.lat) : NaN;
+      const lng = loc ? parseFloat(loc.lng) : NaN;
+      if (isNaN(lat) || isNaN(lng)) continue;
+      const m = L.circleMarker([lat, lng], {
+        radius: 6, fillColor: '#888', color: '#666', weight: 1, fillOpacity: 0.6
+      });
+      m._poiData = poi;
+      m._beatCountLoaded = false;
+      m.bindPopup(() => buildDbPopupContent(poi, m));
+      m.on('popupopen', () => lazyLoadBeatCount(poi, m));
+      m.on('click', () => { if (mergeMode) handleMergeSourceClick(poi); });
+      dbMarkerLayer.addLayer(m);
+      persistentMarkers.set(poi.id, m);
+    }
+  }
+
+  // ── Update DB marker styles based on incoming beats ──
+
+  function updateDbMarkerStyles() {
+    if (!persistentMap || !dbMarkerLayer) return;
+    for (const poi of cachedPoiList) {
+      const m = persistentMarkers.get(poi.id);
+      if (!m) continue;
+      if (poi._incomingBeats) {
+        m.setStyle({ fillColor: '#888', color: '#e67e22', weight: 2, fillOpacity: 0.7 });
+      } else {
+        m.setStyle({ fillColor: '#888', color: '#666', weight: 1, fillOpacity: 0.6 });
+      }
+    }
+  }
+
+  // ── Task 11: Post-merge map + cache update ──
+
+  function postMergeUpdate(targetPoi, sourcePoi) {
+    // Remove source marker from map
+    const sourceMarker = persistentMarkers.get(sourcePoi.id);
+    if (sourceMarker) {
+      dbMarkerLayer.removeLayer(sourceMarker);
+      persistentMarkers.delete(sourcePoi.id);
+    }
+
+    // Remove source from cachedPoiList
+    const sourceIdx = cachedPoiList.findIndex(p => p.id === sourcePoi.id);
+    if (sourceIdx >= 0) cachedPoiList.splice(sourceIdx, 1);
+
+    // Update target marker popup (reset beat count cache to force reload)
+    const targetMarker = persistentMarkers.get(targetPoi.id);
+    if (targetMarker) {
+      targetMarker._beatCountLoaded = false;
+      targetMarker._beatCount = undefined;
+      if (targetMarker.isPopupOpen()) {
+        lazyLoadBeatCount(targetPoi, targetMarker);
+      }
     }
   }
 

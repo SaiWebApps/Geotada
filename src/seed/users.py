@@ -33,11 +33,11 @@ TEST_USER_EMAIL = "testuser@travlr.app"
 PROFILES: list[dict] = [
     {
         "display_name": "Mom",
-        "lenses": ["hidden_history", "food_culinary", "literary_film"],
+        "lenses": ["hidden_history", "historic_cuisine", "literary_heritage"],
     },
     {
         "display_name": "Kid",
-        "lenses": ["art_street", "nature_green", "local_legends"],
+        "lenses": ["street_art", "parks_gardens", "local_legends"],
     },
 ]
 

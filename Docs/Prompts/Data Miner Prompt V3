@@ -17,19 +17,28 @@ This allows human reviewers to verify extraction completeness.
 
 PHASE 2 — BEAT GENERATION
 
-Convert each extracted fact into a narrative beat using the rules below.
+Convert each extracted fact into its own narrative beat using the rules below. There should be a 1:1 mapping between working list entries and beats. Do not merge or drop entries.
 
 ---
 
 RULES FOR BEAT GENERATION
 
-**Multi-beat extraction:**
-- A single location CAN and SHOULD have multiple beats. If the Old North Church has a story about its architecture, a separate story about the sexton's lanterns, and another about a buried crypt, those are three separate beats — same POI name and coordinates, different lenses.
-- If you find multiple distinct stories for the same lens at the same location, extract each as a separate beat. Tag them with the same POI name, coordinates, and lens. A human reviewer will choose which one to keep — do not make that decision yourself.
+**Multi-beat extraction (CRITICAL):**
+- A single location CAN and SHOULD have multiple beats. Do NOT write a "survey" beat that covers a building's date, its architect, and its current use all at once. Break these into separate beats: one for the architect's design choices (Historic Architecture), one for a specific historical event that happened inside (War & Revolution or Hidden History), one for a physical quirk or legend (Local Legends & Folklore).
+- Example: The Old State House should yield separate beats for its role as the seat of colonial government (War & Revolution), the Lion and Unicorn symbols of British authority on its gables (Hidden History), and its architectural transformation over the centuries (Historic Architecture).
+- If you find multiple distinct stories for the same lens at the same location, extract each as a separate beat. A human reviewer will choose which to keep -- do not make that decision yourself.
+- Every fact in your Phase 1 working list should become its own beat in Phase 2. Do NOT merge or consolidate multiple facts into a single beat. One fact = one beat.
+- A well-mined POI typically yields 2-5 beats. If you produce only 1 beat for a POI, you are almost certainly under-extracting -- go back to the source text and look harder.
+- Do not prioritize brevity over density. If the source text provides a specific name, a specific date, or a sensory detail tied to a distinct story, it deserves its own beat.
 
 **Lens-driven discovery:**
-- For every significant location you identify, actively scan the source text against ALL 12 lenses listed below. Do not stop at the most obvious lens. A tavern might yield Food & Culinary Culture AND Revolutionary Moments AND Dark History. Extract each as a separate beat.
-- The 12 lenses: Hidden History, Architecture & Design, Local Legends & Folklore, Food & Culinary Culture, Art & Street Culture, Dark History, Literary & Film Locations, Religious & Spiritual Sites, Music & Nightlife History, Revolutionary Moments, Nature & Green Spaces, Shopping & Markets
+- For every POI, perform an exhaustive scan against ALL 16 taggable lenses before moving to the next location. If a location was a department store (Shopping & Markets), was designed by a famous architect (Historic Architecture), and was the site of a famous broadcast (Venues & Scenes), you must produce three separate beats.
+- After writing beats for a POI, review the full lens list one more time and ask: "Did I miss any angle the source text supports?" If yes, extract it.
+- Lenses are organized in a parent-child hierarchy. Only the 16 taggable lenses (children and leaves) may be assigned to beats -- never use a parent name.
+- History children: Hidden History, War & Revolution, Dark History, Social Change
+- Architecture & Design children: Historic Architecture, Modern & Contemporary Design
+- Music & Nightlife children: Music Heritage, Venues & Scenes
+- Standalone lenses: Local Legends & Folklore, Food & Culinary Culture, Art & Street Culture, Literary & Film Locations, Religious & Spiritual Sites, Nature & Green Spaces, Shopping & Markets, Science & Innovation
 
 **Beat content:**
 - 125–175 words per beat (~60–90 seconds spoken aloud)
@@ -69,8 +78,11 @@ OUTPUT FORMAT
 First output your <working_list> block, then return a JSON array.
 Each element represents one unique POI. Beats are nested under their POI.
 
-Ensure the output is valid JSON. Escape all double quotes within string values.
-Do not include trailing commas. Do not wrap the JSON in markdown code fences.
+Ensure the output is valid, ASCII-safe JSON:
+- Escape all double quotes within string values.
+- Use only straight quotes and apostrophes (', "), never curly/smart quotes or apostrophes.
+- Use only ASCII dashes (--, —) — never Unicode en-dashes or em-dashes.
+- Do not include trailing commas. Do not wrap the JSON in markdown code fences.
 
 [
   {
@@ -83,7 +95,7 @@ Do not include trailing commas. Do not wrap the JSON in markdown code fences.
       {
         "script_body": "the full narration text, 125–175 words, storytelling voice, contains at least one sensory anchor and one physical cue woven naturally into the script",
         "physical_cue": "the single grounding instruction extracted verbatim from script_body",
-        "lens": "exactly ONE of the 12 lenses listed above",
+        "lens": "exactly ONE of the 16 taggable lenses listed above",
         "source_passage": "a direct quote of 10–20 words from the source text that grounds this beat — enables human hallucination check"
       }
     ],

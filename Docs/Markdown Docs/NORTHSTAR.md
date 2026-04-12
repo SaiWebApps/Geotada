@@ -32,9 +32,9 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 
 - **Database:** Neo4j graph database (Schema v3). Three domains: Traveler's Vault, Global Atlas, Execution Bridge.
 - **Graph spine:** User → Profile → Trip → ItineraryItem → POI → NarrativeBeat → Lens. Post-MVP nodes attach as branches, never insertions.
-- **Content primitive:** NarrativeBeat — versioned, lensed, gravity-scored (1–5). Max 1 beat per lens per POI (max 12 beats per POI).
-- **Gravity scoring:** Beat-level, not POI-level. Two-signal matrix: POI Reach × Beat Distinctiveness.
-- **Lens system:** 12 lenses, hardcoded config file. No embedding similarity for MVP.
+- **Content primitive:** NarrativeBeat — versioned, lensed, gravity-scored (1–5). Multiple beats per lens per POI allowed — the tour builder selects the best fit at runtime based on tour theme, time budget, and user preferences.
+- **Gravity scoring:** POI-level via importance_tier (1–5). Relative to city, not absolute.
+- **Lens system:** 8 parent lenses, 21 universal children, plus city-specific children. Parents are genres (never change), children are sub-genres (some universal, some city-specific).
 - **Audio engine:** ElevenLabs Conversational AI (~$15–20 per 60-min tour). MP3, 256kbps, Stereo, 44.1kHz. Stored on AWS S3.
 - **Beat duration formula:** Gravity × 60 seconds per beat.
 - **Geocoding:** OpenStreetMap (free) for MVP → Google Maps Geocoding API at launch. 6 decimal places (~10cm). Auto-flag <70% confidence.
@@ -46,7 +46,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - **Dual-mode product:** Structured Discovery (Planner) and Spontaneous Exploration (Wanderer). Both powered by graph traversals.
 - **Golden Ratio:** 20% Anchors (Gravity 5) + 80% Flavour (Gravity 1–4).
 - **Monetization:** B2C subscription ($4.99/mo, $39.99/yr) + per-city pass ($3.99–$4.99). Price-to-raise model.
-- **Launch city:** Boston.
+- **Launch city:** Paris (shifted from Boston — founder traveling to Paris for in-person testing, 2026-04-09).
 
 ---
 
@@ -62,7 +62,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - Payment gateway (all content free for demo phase)
 - Pipeline automation (PDF upload → auto-extraction abandoned; manual JSON upload instead)
 - Embedding-based lens similarity
-- POI hierarchy (IS_INSIDE relationship deferred)
+- ~~POI hierarchy~~ → **Moved to active** (2026-04-09): Area nodes with WITHIN containment. See `specs/2026-04-09-area-containment/`.
 - Post-MVP graph nodes: UserPreferences, Badge, Achievement, Challenge, ChallengeCompletion
 
 **Will NOT do (process):**

@@ -48,7 +48,7 @@ BEATS: list[dict] = [
             "across from him, writing her own masterpiece. The hot chocolate recipe "
             "hasn't changed since 1887."
         ),
-        "lens_names": ["literary_film"],
+        "lens_names": ["literary_heritage"],
         "importance_tier": 3,
     },
     {
@@ -69,7 +69,7 @@ BEATS: list[dict] = [
             "in 1951, still lets writers sleep among the shelves — they call them "
             "Tumbleweeds."
         ),
-        "lens_names": ["literary_film", "local_legends"],
+        "lens_names": ["literary_heritage", "local_legends"],
         "importance_tier": 2,
     },
 ]
