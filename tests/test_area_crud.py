@@ -56,6 +56,7 @@ def _create_area(client, **overrides) -> dict:
 def _create_poi(client, name: str, lat: float, lng: float) -> dict:
     resp = client.post("/api/v1/nodes/POI", json={
         "name": name,
+        "city_name": "paris",
         "latitude": lat,
         "longitude": lng,
         "importance_tier": 3,

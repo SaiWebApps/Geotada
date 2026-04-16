@@ -71,6 +71,8 @@ class ItineraryItemCreate(BaseModel):
 
 class POICreate(BaseModel):
     name: str
+    city_name: str  # REQUIRED — matches AreaCreate.city_name convention.
+                    # Part of the (name, city_name) MERGE key for multi-city safety.
     short_description: str = ""
     latitude: float
     longitude: float
@@ -115,7 +117,6 @@ class NarrativeBeatCreate(BaseModel):
     kid_friendly: str = "yes"
     entities: list[str] = []
     sensory_anchor: bool | None = None
-    est_spoken_seconds: int | None = None
     narrative_function: str = ""
     beat_type: str = ""
     emotional_register: str = ""

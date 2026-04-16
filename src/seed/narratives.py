@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from neo4j import Driver
 
 _MERGE_BEAT = """
-MATCH (p:POI {name: $poi_name})
+MATCH (p:POI {name: $poi_name, city_name: $city_name})
 MERGE (p)-[:HAS_BEAT]->(b:NarrativeBeat {script_body: $script_body})
 SET b.id            = coalesce(b.id, randomUUID()),
     b.version       = $version,
@@ -85,6 +85,7 @@ def _build_beat_params(beat: dict) -> dict:
     poi_slug = beat["poi_name"].lower().replace(" ", "_")
     return {
         "poi_name": beat["poi_name"],
+        "city_name": beat.get("city_name", "paris"),
         "script_body": beat["script_body"],
         "lens_names": beat["lens_names"],
         "version": 1,

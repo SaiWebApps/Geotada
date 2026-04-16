@@ -31,7 +31,7 @@ MERGE (p)-[:IS_CREW_OF]->(t)
 _MERGE_ITINERARY_ITEM = """
 MATCH (t:Trip {name: $trip_name})
 MATCH (prof:Profile {display_name: $profile_name})
-MATCH (poi:POI {name: $poi_name})
+MATCH (poi:POI {name: $poi_name, city_name: $city_name})
 MATCH (poi)-[:HAS_BEAT]->(beat:NarrativeBeat)
 WITH t, prof, poi, beat LIMIT 1
 MERGE (t)-[:HAS_STOP]->(item:ItineraryItem {sort_order: $sort_order})
@@ -56,10 +56,11 @@ TRIP_DEF = {
 }
 
 STOPS: list[dict] = [
-    {"poi_name": "Eiffel Tower", "sort_order": 1, "start_time": "09:00", "duration_min": 90},
-    {"poi_name": "Café de Flore", "sort_order": 2, "start_time": "11:00", "duration_min": 30},
+    {"poi_name": "Eiffel Tower", "city_name": "paris", "sort_order": 1, "start_time": "09:00", "duration_min": 90},
+    {"poi_name": "Café de Flore", "city_name": "paris", "sort_order": 2, "start_time": "11:00", "duration_min": 30},
     {
         "poi_name": "Shakespeare and Company",
+        "city_name": "paris",
         "sort_order": 3,
         "start_time": "12:00",
         "duration_min": 45,

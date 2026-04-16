@@ -47,6 +47,7 @@ class TestMergeIdempotency:
     def test_poi_merge_returns_same_id(self, client):
         payload = {
             "name": "Merge Test POI",
+            "city_name": "paris",
             "latitude": 42.3601,
             "longitude": -71.0589,
             "short_description": "Test",
@@ -173,7 +174,7 @@ class TestBeatTraversal:
         assert "food_culinary" in slugs
 
     def test_returns_empty_for_unknown_poi(self, client):
-        resp = client.get("/api/v1/graph/poi/NonExistentPOI/beats")
+        resp = client.get("/api/v1/graph/poi/NonExistentPOI/beats?city_name=paris")
         assert resp.status_code == 200
         assert resp.json()["beats"] == []
 
@@ -189,6 +190,7 @@ class TestForceCreate:
         """Two POIs with same name but force_create=true → two distinct nodes."""
         base_payload = {
             "name": "Force Create Test POI",
+            "city_name": "paris",
             "latitude": 42.3601,
             "longitude": -71.0589,
             "short_description": "Original",

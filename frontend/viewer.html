@@ -481,7 +481,7 @@ async function selectPoi(idx) {
   let beats = beatCache[name];
   if (!beats) {
     try {
-      const resp = await fetch(`${API}/graph/poi/${encodeURIComponent(name)}/beats`);
+      const resp = await fetch(`${API}/graph/poi/${encodeURIComponent(name)}/beats?city_name=paris`);
       const data = await resp.json();
       beats = data.beats || [];
       beatCache[name] = beats;

@@ -1,0 +1,23 @@
+[
+  {
+    "script_body": "Charles V founded the royal library here in 1368.",
+    "entities": ["Charles V", "Royal Library"],
+    "sensory_anchor": false,
+    "duration_sec": 4,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "neutral"
+  },
+  {
+    "script_body": "Look east at the medieval foundations of the Cour Carree, exposed after the 1984 excavation.",
+    "entities": ["Cour Carree", "Louvre fortress"],
+    "sensory_anchor": true,
+    "duration_sec": 6,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent"
+  },
+  {
+    "script_body": "A simple beat with only the required field."
+  }
+]

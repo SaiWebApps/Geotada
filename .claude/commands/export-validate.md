@@ -123,7 +123,7 @@ For each chunk, build a combined JSON file. Only include POIs that have beats fr
 - `fact_check_status` — simple status string (verified/corrected/unverified)
 - `entities` (list[str] — from enrichment)
 - `sensory_anchor` (bool — from enrichment)
-- `est_spoken_seconds` (int — from enrichment)
+- `duration_sec` (int — from enrichment, computed as word_count / 2.5)
 - `narrative_function` (str — from enrichment)
 - `beat_type` (str — from enrichment)
 - `emotional_register` (str — from enrichment)

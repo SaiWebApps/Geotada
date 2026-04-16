@@ -1,123 +1,80 @@
-# Scope: Pipeline Extraction & Spatial Precision
+# Scope: Pipeline Extraction — Tour-Builder-Ready Data
 
-**Date:** 2026-04-11
-**Status:** Draft
-**Related:** `specs/2026-04-11-beat-enrichment/` (companion scope — backfill & schema for metadata fields)
+**Date:** 2026-04-13 (supersedes 2026-04-11 draft)
+**Status:** Approved for Stage 2
+**Related:** `specs/2026-04-11-beat-enrichment/` (prior backfill, now superseded by re-extraction), `Docs/tour-builder/design.md` (consumer of this pipeline's output)
 
 ---
-
-## The problem
-
-The content pipeline has two gaps that prevent GPS-triggered tours from working well:
-
-### Gap 1: Forward extraction doesn't produce enrichment metadata
-
-The `beat-from-book` skill extracts `script_body`, `lens`, `physical_cues`, `key_claims`, and `source_attribution`. It does NOT extract the 6 metadata fields the tour builder needs (`entities`, `sensory_anchor`, `est_spoken_seconds`, `narrative_function`, `beat_type`, `emotional_register`). The companion scope backfills existing beats, but every future beat extracted by the pipeline will arrive without these fields unless the extraction skills are updated.
-
-### Gap 2: Large POIs have no spatial granularity
-
-The Louvre has 10 beats, all pinned to a single coordinate (48.8609, 2.3358) with a 10m trigger radius. The actual building spans ~700m east-to-west. A user standing at the Pyramid entrance is 400m from the Denon Wing. With the current model:
-
-- Beats about the Louvre's medieval fortress foundations (east end) trigger at the same point as beats about the Grande Galerie (center) and the Tuileries connection (west end).
-- The 10m trigger radius means a user must be within 10m of the single POI pin to trigger ANY Louvre beat — standing 50m away triggers nothing.
-- Physical cues that say "look at the gargoyles" or "the tower is ahead of you" have no spatial data to tell the app WHICH direction the user should be facing or WHERE they need to be standing.
-
-This isn't just a Louvre problem. It affects: Notre-Dame (26 beats, 10m radius), Palais Royal (12 beats, 10m radius), Luxembourg Gardens (4 beats, 100m radius), Champs-Elysees (4 beats, 30m radius), Tuileries (3 beats, 30m radius), and any future complex/campus/garden POI.
-
-**Current physical cues state:** 61% of beats have text-based physical cues, but they're unstructured strings like "Look at the gargoyles" with no coordinates, no directional data, and no zone identifiers. The Louvre's 10 beats have ALL EMPTY physical_cues arrays — zero spatial anchoring for the largest museum in the world.
 
 ## What we're building
 
-### Part A: Pipeline skill updates for enrichment metadata
+- **Unified extraction skill.** Merge `beat-from-book` + `beat-enrich` into one skill that emits every beat field in a single pass — `script_body`, `entities`, `sensory_anchor`, `narrative_function`, `beat_type`, `emotional_register`, structured `physical_cues`, and the duration field. Deprecate `beat-enrich` as a separate step. `poi-generate` likewise emits `poi_role` in one pass.
 
-Update `beat-from-book` (and any other extraction skills) to extract the 6 new beat metadata fields at initial extraction time, so new beats arrive enriched. This means:
+- **Clean-slate re-extraction of all Paris content, gated on single-chunk validation.** Paris currently has one processed book (`Around and About Paris`, 22 chunks); "single-book validation" in practice means running the unified skill on the *smallest chunk* of that book before touching the rest. Explicit sequence, non-negotiable: (1) snapshot the current `data/paris/beats.json` and export current Neo4j beats to a restore archive; (2) run the unified skill on the smallest Paris chunk; (3) verify no within-run ID collisions, POIs matched correctly, sub-POIs emerged plausibly, `poi-geocode` resolved sub-POI coordinates, Neo4j upload preserved all preservation-boundary fields; (4) only after (3) passes, wipe the rest of the Paris beats (Neo4j `NarrativeBeat` nodes + `HAS_BEAT`/`TAGGED_WITH` edges, `data/paris/beats.json`) and re-run extraction against every remaining chunk. Rationale: we can't confidently audit what we don't know is missing, and wipe-before-validate risks losing 548 beats to a skill bug.
 
-- Adding extraction instructions for `entities`, `sensory_anchor`, `narrative_function`, `beat_type`, `emotional_register` to the beat extraction prompt
-- Adding `est_spoken_seconds` computation (word count ÷ 2.5) as a post-extraction step
-- Adding `poi_role` classification to the POI generation/matching step
-- Updating export-validate to include the new fields in validation checks
-- Updating the upload skill's field mapping to handle the new properties
+- **New semantic `beat_id` format, multi-city safe.** Current format is `{poi_slug}_{lens_slug}_{topic_slug}_{book_slug}` (4-part — `topic_slug` already exists, e.g. `louvre_museum_hidden_history_library_around_and_about_paris`). The real problems: (a) no `city` prefix — Notre-Dame Paris vs Notre-Dame Reims collide, and (b) ordering buries the most-discriminating slug (`topic`) mid-id. New format: `{city}_{poi_slug}_{lens_slug}_{book_slug}_{topic_slug}` — adds city prefix up front and moves topic to the end so it reads as the finest-grained discriminator. City prefix matches the `Area` MERGE-key precedent in NORTHSTAR. The unified skill's self-verification checklist enforces within-run `topic_slug` uniqueness per `(city, poi, lens, book)`, so semantic collisions function as duplicate detection at extraction time.
 
-### Part B: Spatial precision for large POIs
+- **Sub-POI emergence in extraction, geocoding via `poi-geocode`.** When a beat references a distinct zone of a large POI (e.g., "the Denon Wing"), the extraction prompt identifies the sub-POI need (semantic step) and records its intended name + parent relationship + `poi_role` (classified from the same source passage, never made up) + a `source_passage` excerpt that grounds the role. Coordinates are then resolved by invoking the existing `poi-geocode` skill against the sub-POI name — not generated by the extraction LLM. Rationale for classifying `poi_role` inside the unified skill rather than re-running `poi-generate` after the fact: the source text is already loaded and being analyzed; any downstream skill would have to re-read the book to source-back the role, multiplying cost and drift risk. After extraction, new sub-POIs pass through `poi-dedup` before upload so adjacent chunks don't independently coin near-duplicate names. This preserves NORTHSTAR's geocoding commitment (OSM, 6 decimals, auto-flag `<70%` confidence) and separates semantic detection from spatial truth.
 
-The simplest path to solve the large-POI problem without changing the data model:
+- **Establishing-beat coverage.** For every `poi_role: stop` POI, the unified skill ensures ≥1 beat has `narrative_function: establishing`. If the source text supports one, extract it. If the POI is minor (tier 1–2 or just a plaque/address), mark `establishing_not_applicable: true` so we stop flagging it.
 
-**Approach: Sub-POIs for large sites.**
+- **Required structured physical cues.** Every beat with `sensory_anchor: true` must have a non-empty `physical_cues` array with structured fields (cue text, direction, feature_type). No longer stretch — required output.
 
-Create child POIs for distinct zones of large sites. Example for the Louvre:
+- **Long-beat flagging.** Beats with `est_spoken_seconds > 60` flagged in the pipeline report for human review. Keep whole (no auto-splitting).
 
-| Sub-POI | Coordinates | Trigger radius | Beats assigned |
-|---|---|---|---|
-| Louvre - Cour Napoleon (Pyramid) | 48.8611, 2.3358 | 30m | Pyramid construction, I.M. Pei |
-| Louvre - Medieval Foundations | 48.8606, 2.3381 | 20m | Philippe-Auguste fortress, moat |
-| Louvre - Grande Galerie | 48.8609, 2.3365 | 20m | Gallery construction, artisan quarters |
-| Louvre - Denon Wing | 48.8607, 2.3345 | 20m | Napoleon III apartments |
-
-This uses the existing POI model — no schema changes needed. Each sub-POI is a regular POI node with its own coordinates and trigger radius. The parent Louvre POI becomes `poi_role: setting` (the umbrella), and sub-POIs are `poi_role: stop`.
-
-**What this requires:**
-- Identifying which existing POIs need sub-POI decomposition (likely 10-15 for Paris)
-- Creating sub-POIs with precise coordinates for each zone
-- Reassigning existing beats to the correct sub-POI based on their content
-- Extracting richer physical cues from source text during re-read (the source books often describe specific locations within buildings — "in the northeast corner," "the tower facing the river" — that aren't currently captured because the extraction prompt doesn't look for sub-location precision)
-
-### Part C: Physical cue enrichment
-
-Upgrade physical cues from unstructured text to structured data that the GPS app can use:
-
-**Current:** `"physical_cues": ["Look at the gargoyles"]`
-
-**Proposed:**
-```json
-"physical_cues": [
-  {
-    "cue": "Look at the gargoyles — most are Viollet-le-Duc additions",
-    "direction": "up",
-    "feature_type": "architectural_detail",
-    "visibility_conditions": "exterior_only"
-  }
-]
-```
-
-This is a stretch goal. The minimum viable version is: ensure every beat with `sensory_anchor: true` has at least one non-empty physical cue. Currently 39% of beats have empty physical_cues — some of those should have them and the extraction missed them.
+- **Duration field resolution.** Pick one name (`duration_sec` vs `est_spoken_seconds`) across skill output, Pydantic model, Neo4j property, CRUD, frontend. Migrate before re-extraction lands.
 
 ## Why
 
-Without Part A, every new beat extracted by the pipeline arrives without enrichment metadata, creating an ever-growing backfill debt.
-
-Without Part B, the tour builder can't create tours that work at large sites. A user walking around the Louvre grounds for 30 minutes would hear nothing because they never get within 10m of the single POI pin — or they'd get all 10 beats dumped at once when they do, with no spatial sequencing.
-
-Without Part C (minimum version), sensory-anchored beats have no physical cue to actually anchor to — the `sensory_anchor: true` flag says "this beat references something visible" but doesn't say what or where.
+Every tour-builder rule in `Docs/tour-builder/design.md` — sensory anchoring, entity-driven theme discovery, narrative-function sequencing, silence budgeting, seasoning, source-traceability — depends on specific pipeline output fields being reliably present and correct. Without that, the tour-builder skill cannot enforce the rules. The pipeline must produce tour-builder-ready data before the tour-builder skill can be built.
 
 ## What we're NOT building
 
-- **Backfilling existing beats** with metadata — that's the companion scope (`beat-enrichment`). This scope updates the pipeline so future extraction produces enriched output.
-- **Indoor positioning / floor-level mapping** — GPS doesn't work inside buildings. Indoor beats (museum galleries, church interiors) are not GPS-triggerable and need a different UX (manual playback). Don't solve this now.
-- **Beat-level coordinates on every beat** — adding lat/lon to the NarrativeBeat schema is over-engineering. The sub-POI approach uses existing infrastructure. The beat's location is its parent POI's location.
-- **Automated sub-POI decomposition** — the decision of how to split a large POI into zones requires judgment about where a walker would actually stand. This is a human-guided process for 10-15 POIs, not an automated pipeline step.
-- **Tour builder skill** — depends on both this scope and the enrichment scope.
+- **Seasoning corridor coverage.** Walk-by beat coverage along walking routes is a tour-builder concern (pick anchors first, hunt for seasoning along the resulting route). Recorded here to prevent loss; deferred to a follow-up spec triggered by tour-builder construction.
+- **Etymology-as-hook distinct flagging.** Current `narrative_function: hook` covers these. Revisit only if tour-builder can't find them.
+- **Auto-splitting of long beats.** Flag only.
+- **Audio regeneration.** No TTS is in this scope; `audio_url` handling is a separate workstream.
+- **Area/WITHIN modifications.** Manual area work is preserved exactly as-is. This scope does not touch `Area` nodes, `WITHIN` edges, or `data/paris/areas.json`.
 
 ## What already exists
 
-- **`beat-from-book.md`** extracts `physical_cues` as text strings — the prompt already looks for directional/spatial instructions, but misses many (Louvre: 0/10 beats have physical cues). The prompt can be tightened.
-- **`pipeline-chunk.md`** orchestrates the full extraction chain — needs a new step for metadata enrichment after extraction.
-- **`poi-geocode.md`** assigns POI coordinates — can be extended to handle sub-POI geocoding.
-- **`export-validate.md`** validates export JSON — needs updated validation rules for new fields.
-- **`upload.md`** uploads to Neo4j — the CRUD layer already handles new properties via SET, so new fields flow through without CRUD changes.
-- **POI CRUD uses MERGE on name** — sub-POIs like "Louvre - Cour Napoleon" are distinct names, so they MERGE cleanly as separate nodes.
+- Chunked books in `Books/paris/` (no re-chunking needed)
+- 548 enriched beats + 239 POIs in Neo4j and `data/paris/`
+- `beat-from-book`, `beat-enrich`, `poi-generate` skills — to be refactored/merged
+- `Area` nodes, `WITHIN` edges, `data/paris/areas.json`, `data/paris/boundaries/` — **preserve exactly**
+- POI master data: `importance_tier`, geocodes (`lat`/`lon`), `name_variations`, `verified` flag, `trigger_radius`, `parent_poi` — **preserve**
+- Proven enrichment enums and field definitions from `specs/2026-04-11-beat-enrichment/`
 
-## Dependencies or risks
+## Preservation boundaries (explicit)
 
-1. **Part A depends on the companion scope** finalizing the field definitions and enum values. The extraction prompts need to know exactly what to extract. Recommend: finalize the enrichment scope first, backfill a batch of beats, validate the field definitions work, THEN update the pipeline skills.
+**Preserve unchanged (do not touch during re-extraction):**
+- Neo4j: all `Area` nodes, all `WITHIN` edges, all POI node properties (`importance_tier`, `lat`, `lon`, `name_variations`, `verified`, `trigger_radius`, `parent_poi`), `CONTAINS_POI` edges
+- Data files: `data/paris/areas.json`, `data/paris/boundaries/`, `data/paris/poi-raw.json`, `data/paris/book-log.json`
 
-2. **Sub-POI identification is manual.** Someone needs to walk through the POI list and decide which ones need decomposition. The signal is: `trigger_radius` < building footprint, or beat count > 5 with content that references different physical locations within the POI.
+**Replace (wipe and regenerate):**
+- Neo4j: all `NarrativeBeat` nodes, `HAS_BEAT` edges, `TAGGED_WITH` edges for Paris
+- Data files: `data/paris/beats.json` → cleared, `data/paris/export/` → regenerated
 
-3. **Beat reassignment.** Moving a beat from "Louvre Museum" to "Louvre - Medieval Foundations" means the `poi_name` changes, which changes the MERGE key for the HAS_BEAT relationship. Need to handle this as delete-old + create-new in the upload, not an in-place update.
+**Add (new during re-extraction):**
+- Sub-POI nodes (with `parent_poi` pointing at the large parent POI)
+- `establishing_not_applicable` flag on minor POIs where it applies
 
-4. **Source text re-reads.** Some physical cues that were missed during initial extraction exist in the source text but weren't captured. Enriching these means re-reading the relevant source passages — the `source_passage` field on each beat points back to the text. This can be done in the backfill pass (companion scope) if the prompts are extended to also extract/upgrade physical cues.
+Verifiable by pre/post Cypher queries comparing node counts and preserved field values.
 
-5. **Ordering.** Recommended sequence: enrichment backfill (companion scope) → pipeline skill updates (this scope Part A) → sub-POI decomposition (this scope Part B) → physical cue enrichment (this scope Part C). Each step validates the previous one.
+## Dependencies & risks
 
----
+1. **LLM nondeterminism.** Re-extraction won't produce byte-identical beats. Mitigate with temperature 0 and accept content variance. First validate on one book before full run.
+2. **Duration field rename touches multiple areas.** Schema + CRUD + frontend. Likely its own Stage 3 scope before re-extraction.
+3. **Sub-POI emergence is a new extraction capability.** Prompt may create sub-POIs that don't match where a human would pick. Spot-check mandatory on first book's output before proceeding.
+4. **Single-chunk validation gate.** Before full Paris re-extraction, run the unified skill on the smallest chunk. Verify: no within-run ID collisions, POIs matched correctly, sub-POIs emerged plausibly with source-backed `poi_role`, Neo4j upload lands with preservation boundaries intact. Only then proceed.
+5. **Scope size — 6-way split committed for Stage 3.** Touches extraction skills + data files + Neo4j upload + frontend (duration field) + multi-city POI metadata + tour-builder design completion. Committed split order:
+   - (a) Duration-field resolution — must land first so new beats write the resolved field name
+   - (b) POI city-tagging — add `city_name` property (matching `Area.city_name` convention) to existing POI data + nodes, backfill all 239 Paris POIs, update MERGE key to `(name, city_name)` in **both** `src/seed/locations.py` AND `src/api/crud/nodes.py` (the real production write path), and update all read-side `MATCH (p:POI {name: ...})` queries to include a `city_name` filter. Prerequisite for any multi-city-safe Cypher (AC-3, AC-6 depend on it). Existing POI schema has no city field anywhere; MERGE currently uses `{name: $name}` globally.
+   - (c) Tour-builder Scenario 2 hand-drafting completion — finish the pre-trip planning walkthrough so any additional required beat fields surface *before* the unified skill locks its field set. Prevents a second full re-extraction after tour-builder surfaces an unmet need.
+   - (d) Unified extraction skill + new `beat_id` format + within-run collision check
+   - (e) Sub-POI emergence (with `poi-geocode` routing, source-backed `poi_role`, `poi-dedup` handoff) + establishing-beat coverage + single-chunk validation gate
+   - (f) Full Paris re-extraction + preservation-boundary verification + restore-archive cleanup
 
-*This scope is a companion to `specs/2026-04-11-beat-enrichment/`. Together they form the enrichment prerequisite for the tour builder skill.*
+## Best-practices domains touched
+
+Data integrity (Neo4j wipe/replace semantics), prompt engineering (unified skill design), performance (re-extraction compute cost), UX (structured physical cues for GPS-triggered sensory anchoring).

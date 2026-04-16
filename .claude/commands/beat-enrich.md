@@ -62,7 +62,7 @@ Named people, historical events, specific buildings/monuments, and named groups 
 
 ### Computed field (no AI)
 
-**est_spoken_seconds** (int):
+**duration_sec** (int):
 `round(word_count(script_body) / 2.5)` — 2.5 words/sec = 150 wpm spoken pace. Compute this from the text, do not use AI.
 
 ### Output per beat
@@ -127,12 +127,12 @@ beats = json.load(open('data/{city}/beats.json'))
 for b in beats:
     assert 'entities' in b and isinstance(b['entities'], list), f'{b[\"beat_id\"]}: missing entities'
     assert 'sensory_anchor' in b and isinstance(b['sensory_anchor'], bool), f'{b[\"beat_id\"]}: missing sensory_anchor'
-    assert 'est_spoken_seconds' in b and isinstance(b['est_spoken_seconds'], int), f'{b[\"beat_id\"]}: missing est_spoken_seconds'
+    assert 'duration_sec' in b and isinstance(b['duration_sec'], int), f'{b[\"beat_id\"]}: missing duration_sec'
     assert b.get('narrative_function') in VALID_NF, f'{b[\"beat_id\"]}: bad narrative_function'
     assert b.get('beat_type') in VALID_BT, f'{b[\"beat_id\"]}: bad beat_type'
     assert b.get('emotional_register') in VALID_ER, f'{b[\"beat_id\"]}: bad emotional_register'
     expected = round(len(b['script_body'].split()) / 2.5)
-    assert b['est_spoken_seconds'] == expected, f'{b[\"beat_id\"]}: est mismatch'
+    assert b['duration_sec'] == expected, f'{b[\"beat_id\"]}: duration mismatch'
 print(f'All {len(beats)} beats validated.')
 "
 

@@ -50,13 +50,13 @@ Read these before writing any upload code. These come from inspecting the actual
 - `IS_PARENT_OF` = Lens → Lens (parent-child lens hierarchy). Also POI → POI for parent-child POIs, but this relationship type may not exist yet in the schema — check before attempting.
 
 **Built-in idempotency:**
-- POI creation uses `MERGE (n:POI {name: $name})` — if a POI with this name exists, it UPDATES its fields rather than creating a duplicate. This means re-uploading the same chunk will overwrite POI fields.
+- POI creation uses `MERGE (n:POI {name: $name, city_name: $city_name})` — if a POI with this name+city exists, it UPDATES its fields rather than creating a duplicate. Multi-city safe (Notre-Dame Paris vs Notre-Dame Reims don't collide). Re-uploading the same chunk overwrites POI fields.
 - NarrativeBeat creation uses `MERGE (n:NarrativeBeat {script_body: $script_body})` — exact duplicate beats are prevented at the database level. No need for manual dedup.
 
 **Seed code pattern (src/seed/narratives.py):**
 The existing seed code creates beats like this:
 ```cypher
-MATCH (p:POI {name: $poi_name})
+MATCH (p:POI {name: $poi_name, city_name: $city_name})
 MERGE (p)-[:HAS_BEAT]->(b:NarrativeBeat {script_body: $script_body})
 SET b.id = coalesce(b.id, randomUUID()), ...
 ```
@@ -120,7 +120,6 @@ Call `POST /api/nodes/NarrativeBeat` with:
 - `kid_friendly` (from export, or default "yes")
 - `entities` (from export, list[str])
 - `sensory_anchor` (from export, bool)
-- `est_spoken_seconds` (from export, int)
 - `narrative_function` (from export, str)
 - `beat_type` (from export, str)
 - `emotional_register` (from export, str)

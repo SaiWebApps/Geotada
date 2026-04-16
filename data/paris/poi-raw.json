@@ -55,7 +55,8 @@
     "longitude": 2.294694,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Louvre Museum",
@@ -113,7 +114,8 @@
     "longitude": 2.3358,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Notre-Dame Cathedral",
@@ -170,7 +172,8 @@
     "longitude": 2.349902,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Arc de Triomphe",
@@ -224,7 +227,8 @@
     "longitude": 2.294946,
     "trigger_radius": 30,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=30m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=30m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Sacre-Coeur Basilica",
@@ -279,7 +283,8 @@
     "longitude": 2.343121,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee d'Orsay",
@@ -334,7 +339,8 @@
     "longitude": 2.326561,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Champs-Elysees",
@@ -389,7 +395,8 @@
     "longitude": 2.3074,
     "trigger_radius": 100,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Luxembourg Gardens",
@@ -445,7 +452,8 @@
     "longitude": 2.337051,
     "trigger_radius": 100,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Sainte-Chapelle",
@@ -499,7 +507,8 @@
     "longitude": 2.34483,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Pantheon",
@@ -553,7 +562,8 @@
     "longitude": 2.34604,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Palais Garnier",
@@ -609,7 +619,8 @@
     "longitude": 2.331355,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Centre Pompidou",
@@ -663,7 +674,8 @@
     "longitude": 2.352095,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Les Invalides",
@@ -719,7 +731,8 @@
     "longitude": 2.3125,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Place de la Concorde",
@@ -774,7 +787,8 @@
     "longitude": 2.321038,
     "trigger_radius": 50,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=50m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=50m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Trocadero",
@@ -829,7 +843,8 @@
     "longitude": 2.287592,
     "trigger_radius": 50,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Grand Palais",
@@ -882,7 +897,8 @@
     "longitude": 2.312156,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Petit Palais",
@@ -935,7 +951,8 @@
     "longitude": 2.3143,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Moulin Rouge",
@@ -988,7 +1005,8 @@
     "longitude": 2.3324,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Palais-Royal",
@@ -1043,7 +1061,8 @@
     "longitude": 2.3372,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Place des Vosges",
@@ -1097,7 +1116,8 @@
     "longitude": 2.3656,
     "trigger_radius": 40,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Pont Neuf",
@@ -1151,7 +1171,8 @@
     "longitude": 2.341033,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Pont Alexandre III",
@@ -1202,7 +1223,8 @@
     "longitude": 2.3138,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Ville",
@@ -1256,7 +1278,8 @@
     "longitude": 2.35221,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Place de la Bastille",
@@ -1309,7 +1332,8 @@
     "longitude": 2.3691,
     "trigger_radius": 40,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=40m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=40m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Jardin des Tuileries",
@@ -1365,7 +1389,8 @@
     "longitude": 2.3274,
     "trigger_radius": 100,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Conciergerie",
@@ -1420,7 +1445,8 @@
     "longitude": 2.3458,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Assemblee Nationale",
@@ -1473,7 +1499,8 @@
     "longitude": 2.318389,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Pavillon de Flore",
@@ -1525,7 +1552,8 @@
     "longitude": 2.336574,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Cour du Commerce-Saint-Andre",
@@ -1577,7 +1605,8 @@
     "longitude": 2.339298,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Picpus Cemetery",
@@ -1630,7 +1659,8 @@
     "longitude": 2.396359,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Ile de la Cite",
@@ -1683,7 +1713,8 @@
     "longitude": 2.3472,
     "trigger_radius": 100,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Ile Saint-Louis",
@@ -1734,7 +1765,8 @@
     "longitude": 2.356346,
     "trigger_radius": 75,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=75m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=75m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Pere Lachaise Cemetery",
@@ -1789,7 +1821,8 @@
     "longitude": 2.393646,
     "trigger_radius": 100,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Montmartre Cemetery",
@@ -1843,7 +1876,8 @@
     "longitude": 2.330804,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Montparnasse Cemetery",
@@ -1896,7 +1930,8 @@
     "longitude": 2.327684,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee Carnavalet",
@@ -1950,7 +1985,8 @@
     "longitude": 2.361661,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee de l'Orangerie",
@@ -2003,7 +2039,8 @@
     "longitude": 2.325314,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee Rodin",
@@ -2056,7 +2093,8 @@
     "longitude": 2.315867,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee Picasso",
@@ -2110,7 +2148,8 @@
     "longitude": 2.362115,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee de Cluny",
@@ -2165,7 +2204,8 @@
     "longitude": 2.343391,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Palais de Tokyo",
@@ -2216,7 +2256,8 @@
     "longitude": 2.29647,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Memorial de la Shoah",
@@ -2271,7 +2312,8 @@
     "longitude": 2.356636,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Museum of Counterfeiting",
@@ -2323,7 +2365,8 @@
     "longitude": 2.276777,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Musee des Arts Forains",
@@ -2376,7 +2419,8 @@
     "longitude": 2.389338,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Cite des Sciences et de l'Industrie",
@@ -2431,7 +2475,8 @@
     "longitude": 2.387976,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee des Arts et Metiers",
@@ -2485,7 +2530,8 @@
     "longitude": 2.355414,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musee Pasteur",
@@ -2539,7 +2585,8 @@
     "longitude": 2.311366,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Fondation Louis Vuitton",
@@ -2593,7 +2640,8 @@
     "longitude": 2.263338,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Bibliotheque Francois Mitterrand",
@@ -2648,7 +2696,8 @@
     "longitude": 2.377128,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Germain-des-Pres",
@@ -2702,7 +2751,8 @@
     "longitude": 2.334518,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Sulpice",
@@ -2755,7 +2805,8 @@
     "longitude": 2.33487,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Etienne-du-Mont",
@@ -2806,7 +2857,8 @@
     "longitude": 2.347344,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Eustache",
@@ -2859,7 +2911,8 @@
     "longitude": 2.3456,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "La Madeleine",
@@ -2912,7 +2965,8 @@
     "longitude": 2.325391,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Grand Mosque of Paris",
@@ -2965,7 +3019,8 @@
     "longitude": 2.355103,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "L'Olympia",
@@ -3019,7 +3074,8 @@
     "longitude": 2.328372,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Le Bataclan",
@@ -3072,7 +3128,8 @@
     "longitude": 2.370809,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Caveau de la Huchette",
@@ -3123,7 +3180,8 @@
     "longitude": 2.346298,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Marche des Enfants Rouges",
@@ -3176,7 +3234,8 @@
     "longitude": 2.361978,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue Mouffetard",
@@ -3229,7 +3288,8 @@
     "longitude": 2.349772,
     "trigger_radius": 75,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=75m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=75m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Stohrer",
@@ -3281,7 +3341,8 @@
     "longitude": 2.346817,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Rue des Martyrs",
@@ -3332,7 +3393,8 @@
     "longitude": 2.340028,
     "trigger_radius": 75,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Berthillon",
@@ -3382,7 +3444,8 @@
     "longitude": 2.358565,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Shakespeare and Company",
@@ -3435,7 +3498,8 @@
     "longitude": 2.347112,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Cafe des 2 Moulins",
@@ -3489,7 +3553,8 @@
     "longitude": 2.333703,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Cafe de Flore",
@@ -3540,7 +3605,8 @@
     "longitude": 2.33255,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "La Maison Rose",
@@ -3593,7 +3659,8 @@
     "longitude": 2.339609,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "La Closerie des Lilas",
@@ -3647,7 +3714,8 @@
     "longitude": 2.335973,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Place de l'Estrapade",
@@ -3697,7 +3765,8 @@
     "longitude": 2.344818,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Pont des Arts",
@@ -3750,7 +3819,8 @@
     "longitude": 2.337548,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Pont de Bir-Hakeim",
@@ -3803,7 +3873,8 @@
     "longitude": 2.287548,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Parc des Buttes-Chaumont",
@@ -3856,7 +3927,8 @@
     "longitude": 2.384246,
     "trigger_radius": 150,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Bois de Vincennes",
@@ -3909,7 +3981,8 @@
     "longitude": 2.441435,
     "trigger_radius": 150,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=150m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=150m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Chateau de Vincennes",
@@ -3960,7 +4033,8 @@
     "longitude": 2.438338,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Jardin des Plantes",
@@ -4013,7 +4087,8 @@
     "longitude": 2.356212,
     "trigger_radius": 150,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Promenade Plantee",
@@ -4066,7 +4141,8 @@
     "longitude": 2.373433,
     "trigger_radius": 75,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=75m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=75m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Rue Cremieux",
@@ -4117,7 +4193,8 @@
     "longitude": 2.370868,
     "trigger_radius": 75,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=75m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=75m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Canal Saint-Martin",
@@ -4169,7 +4246,8 @@
     "longitude": 2.366885,
     "trigger_radius": 75,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=75m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=75m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Nicholas Flamel's House",
@@ -4222,7 +4300,8 @@
     "longitude": 2.35314,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Le Clos Montmartre",
@@ -4275,7 +4354,8 @@
     "longitude": 2.339765,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Square des Peupliers",
@@ -4325,7 +4405,8 @@
     "longitude": 2.353255,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "La Campagne a Paris",
@@ -4375,7 +4456,8 @@
     "longitude": 2.408393,
     "trigger_radius": 100,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "29 Avenue Rapp",
@@ -4428,7 +4510,8 @@
     "longitude": 2.300876,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Tour de l'Horloge",
@@ -4480,7 +4563,8 @@
     "longitude": 2.343955,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Abbey Bookshop",
@@ -4532,7 +4616,8 @@
     "longitude": 2.344529,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Moulin de la Galette",
@@ -4586,7 +4671,8 @@
     "longitude": 2.337141,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Galeries Lafayette",
@@ -4640,7 +4726,8 @@
     "longitude": 2.3322,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Place Vendome",
@@ -4691,7 +4778,8 @@
     "longitude": 2.3292,
     "trigger_radius": 40,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=40m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Rue Denoyez",
@@ -4742,7 +4830,8 @@
     "longitude": 2.378516,
     "trigger_radius": 75,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Le M.U.R. Oberkampf",
@@ -4795,7 +4884,8 @@
     "longitude": 2.374194,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Butte-aux-Cailles",
@@ -4849,7 +4939,8 @@
     "longitude": 2.352246,
     "trigger_radius": 100,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "The Sorbonne",
@@ -4904,7 +4995,8 @@
     "longitude": 2.342038,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Memorial des Martyrs de la Deportation",
@@ -4957,7 +5049,8 @@
     "longitude": 2.351968,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Musee de la Liberation de Paris",
@@ -5010,7 +5103,8 @@
     "longitude": 2.331722,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Paris Catacombs",
@@ -5073,7 +5167,8 @@
     "longitude": 2.33225,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Tour Montparnasse",
@@ -5127,7 +5222,8 @@
     "longitude": 2.3219,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Arenes de Lutece",
@@ -5181,7 +5277,8 @@
     "longitude": 2.352309,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Les Halles",
@@ -5232,7 +5329,8 @@
     "trigger_radius": 50,
     "importance_tier": 4,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=50m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=50m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Fontaine des Innocents",
@@ -5290,7 +5388,8 @@
     "trigger_radius": 20,
     "importance_tier": 2,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Place du Châtelet",
@@ -5341,7 +5440,8 @@
     "trigger_radius": 40,
     "importance_tier": 3,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Place Dauphine",
@@ -5389,7 +5489,8 @@
     "trigger_radius": 30,
     "importance_tier": 2,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "La Samaritaine",
@@ -5419,7 +5520,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Germain-l'Auxerrois",
@@ -5449,7 +5551,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Galerie Vero-Dodat",
@@ -5480,7 +5583,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Banque de France",
@@ -5508,7 +5612,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Place des Victoires",
@@ -5536,7 +5641,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Comedie-Francaise",
@@ -5568,7 +5674,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel Le Meurice",
@@ -5600,7 +5707,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Eglise Saint-Roch",
@@ -5631,7 +5739,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Square du Temple",
@@ -5664,7 +5773,8 @@
       }
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Soubise",
@@ -5698,7 +5808,8 @@
       }
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Passage des Panoramas",
@@ -5742,7 +5853,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Theatre des Varietes",
@@ -5787,7 +5899,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Place de la Bourse",
@@ -5832,7 +5945,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Notre-Dame-des-Victoires",
@@ -5877,7 +5991,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Bibliotheque Nationale de France - Richelieu",
@@ -5923,7 +6038,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Galerie Vivienne",
@@ -5967,7 +6083,8 @@
       "city": "Paris"
     },
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Square Louvois",
@@ -6010,7 +6127,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Passage Choiseul",
@@ -6054,7 +6172,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Restaurant Drouant",
@@ -6098,7 +6217,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Harry's New York Bar",
@@ -6143,7 +6263,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue de la Paix",
@@ -6190,7 +6311,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 named street but narrow (radius=15m), classified as stop"
+    "_poi_role_reasoning": "Tier 4 named street but narrow (radius=15m), classified as stop",
+    "city_name": "paris"
   },
   {
     "name": "Palais Brongniart",
@@ -6229,7 +6351,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Grands Boulevards",
@@ -6266,7 +6389,8 @@
       "city": "Paris"
     },
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=15m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=15m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Porte Saint-Denis",
@@ -6303,7 +6427,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Passage de la Trinite",
@@ -6340,7 +6465,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Passage du Grand-Cerf",
@@ -6377,7 +6503,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Tour Jean sans Peur",
@@ -6415,7 +6542,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Rue Montorgueil",
@@ -6452,7 +6580,8 @@
       "city": "Paris"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=15m), classified as stop"
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=15m), classified as stop",
+    "city_name": "paris"
   },
   {
     "name": "Place du Caire",
@@ -6489,7 +6618,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Rue de Clery",
@@ -6526,7 +6656,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "35 Boulevard des Capucines",
@@ -6564,7 +6695,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Place de Louvois",
@@ -6601,7 +6733,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Cafe du Croissant",
@@ -6640,7 +6773,8 @@
       "city": "Paris"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Synagogue Notre-Dame-de-Nazareth",
@@ -6677,7 +6811,8 @@
       "gravity_reasoning": "Historic synagogue with significant community role, limited tourist footfall"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Priory of Saint-Martin-des-Champs",
@@ -6714,7 +6849,8 @@
       "gravity_reasoning": "Significant medieval complex now housing Musee des Arts et Metiers, important architectural heritage"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Porte Saint-Martin",
@@ -6748,7 +6884,8 @@
       "gravity_reasoning": "Major historic monument on the Grands Boulevards"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Nicolas-des-Champs",
@@ -6784,7 +6921,8 @@
       "gravity_reasoning": "Architecturally interesting parish church, limited tourist profile"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "3 Rue Volta",
@@ -6820,7 +6958,8 @@
       "gravity_reasoning": "Curiosity item, very minor site"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Convent of the Madelonnettes",
@@ -6857,7 +6996,8 @@
       "gravity_reasoning": "Demolished site, minimal physical trace, historic interest only"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Wallace Fountain (Passage du Pont-aux-Biches)",
@@ -6893,7 +7033,8 @@
       "gravity_reasoning": "One of many Wallace fountains; specific location adds local colour"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Bibliotheque de l'Arsenal",
@@ -6930,7 +7071,8 @@
       "gravity_reasoning": "Important historic library with unique Louis XIII interior, moderate tourist interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Pavillon de l'Arsenal",
@@ -6966,7 +7108,8 @@
       "gravity_reasoning": "Niche architecture/urbanism exhibition space, limited general tourist appeal"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Musee Victor Hugo",
@@ -7002,7 +7145,8 @@
       "gravity_reasoning": "Well-known literary museum on Place des Vosges, strong tourist interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Sully",
@@ -7038,7 +7182,8 @@
       "gravity_reasoning": "Major Marais mansion, Centre des monuments nationaux, moderate tourist footfall"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Temple du Marais",
@@ -7075,7 +7220,8 @@
       "gravity_reasoning": "Architecturally significant Mansart dome, limited tourist awareness"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Mayenne",
@@ -7111,7 +7257,8 @@
       "gravity_reasoning": "Minor Marais mansion, primarily historic interest"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Sens",
@@ -7148,7 +7295,8 @@
       "gravity_reasoning": "One of oldest civilian monuments in Paris, distinctive medieval architecture"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Paul-Saint-Louis",
@@ -7182,7 +7330,8 @@
       "gravity_reasoning": "Major Marais church with Jesuit heritage, moderate tourist interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Village Saint-Paul",
@@ -7216,7 +7365,8 @@
       "gravity_reasoning": "Charming antique village, moderate tourist interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel Lamoignon",
@@ -7253,7 +7403,8 @@
       "gravity_reasoning": "Notable Marais mansion with literary history, niche appeal"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Synagogue de la rue Pavee",
@@ -7290,7 +7441,8 @@
       "gravity_reasoning": "Unique Guimard religious building, Art Nouveau architectural interest"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Rue des Rosiers",
@@ -7327,7 +7479,8 @@
       "gravity_reasoning": "Major Marais street with strong cultural identity, high tourist footfall"
     },
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=50m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=50m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Hotel Amelot de Bisseuil",
@@ -7363,7 +7516,8 @@
       "gravity_reasoning": "Notable Marais mansion with Beaumarchais connection, limited public access"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Notre-Dame-des-Blancs-Manteaux",
@@ -7397,7 +7551,8 @@
       "gravity_reasoning": "Minor Marais church with interesting name origin"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "La Force Prison Site",
@@ -7431,7 +7586,8 @@
       "gravity_reasoning": "Demolished site, no physical trace, historic interest only"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Atelier Brancusi",
@@ -7465,7 +7621,8 @@
       "gravity_reasoning": "Free art museum adjacent to Pompidou, moderate visitor interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Stravinsky Fountain",
@@ -7501,7 +7658,8 @@
       "gravity_reasoning": "Popular public art near Pompidou, good tourist draw"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Eglise Saint-Merri",
@@ -7535,7 +7693,8 @@
       "gravity_reasoning": "Significant Gothic church near Pompidou, architectural interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue de la Verrerie",
@@ -7569,7 +7728,8 @@
       "gravity_reasoning": "Historic street with curiosity value, minor site"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "BHV (Bazar de l'Hotel de Ville)",
@@ -7605,7 +7765,8 @@
       "gravity_reasoning": "Major department store, well-known Parisian institution"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Eglise des Billettes",
@@ -7639,7 +7800,8 @@
       "gravity_reasoning": "Only medieval cloister in Paris, significant architectural rarity"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Fondation Azzedine Alaia",
@@ -7673,7 +7835,8 @@
       "gravity_reasoning": "Niche fashion interest, limited general appeal"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Half-Timbered Houses (Rue Francois-Miron)",
@@ -7707,7 +7870,8 @@
       "gravity_reasoning": "Rare medieval survivals, curiosity value for architecture enthusiasts"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Beauvais",
@@ -7743,7 +7907,8 @@
       "gravity_reasoning": "Notable mansion with Mozart and royal connections, moderate interest"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel Chalons de Luxembourg",
@@ -7777,7 +7942,8 @@
       "gravity_reasoning": "Minor Marais mansion, primarily architectural detail interest"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Eglise Saint-Gervais-Saint-Protais",
@@ -7813,7 +7979,8 @@
       "gravity_reasoning": "Major historic church with first classical facade, Couperin heritage, WWI tragedy"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel d'Aumont",
@@ -7849,7 +8016,8 @@
       "gravity_reasoning": "Notable Marais mansion by major architects, now administrative tribunal"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel-Dieu",
@@ -7885,7 +8053,8 @@
       "gravity_reasoning": "Historic hospital on Ile de la Cite, architectural and medical history interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Lauzun",
@@ -7921,7 +8090,8 @@
       "gravity_reasoning": "Major literary heritage site, Baudelaire connection, opulent interiors"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel Lambert",
@@ -7957,7 +8127,8 @@
       "gravity_reasoning": "Architectural masterpiece by Le Vau, private but externally visible"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Pont-Marie",
@@ -7991,7 +8162,8 @@
       "gravity_reasoning": "Historic bridge with naming curiosity, minor tourist interest"
     },
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=60m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=60m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Rue Chanoinesse",
@@ -8025,7 +8197,8 @@
       "gravity_reasoning": "Historic street with Abelard-Heloise romance, literary pilgrimage interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=40m), classified as stop"
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=40m), classified as stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Louis-en-l'Ile Church",
@@ -8059,7 +8232,8 @@
       "gravity_reasoning": "Parish church of Ile Saint-Louis, architectural interest, limited tourist draw"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Quai de Bourbon",
@@ -8093,7 +8267,8 @@
       "gravity_reasoning": "Scenic quay with artistic heritage, moderate walking-tour interest"
     },
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Crypte Archeologique de l'Ile de la Cite",
@@ -8127,7 +8302,8 @@
       "gravity_reasoning": "Unique archaeological site beneath Notre-Dame parvis, good tourist interest"
     },
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Val-de-Grace",
@@ -8168,7 +8344,8 @@
     "longitude": 2.344,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "College de France",
@@ -8209,7 +8386,8 @@
     "longitude": 2.3455,
     "trigger_radius": 30,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Theatre de la Huchette",
@@ -8248,7 +8426,8 @@
     "longitude": 2.3454,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Lycee Henri IV",
@@ -8289,7 +8468,8 @@
     "longitude": 2.348,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Bibliotheque Sainte-Genevieve",
@@ -8329,7 +8509,8 @@
     "longitude": 2.3462,
     "trigger_radius": 10,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Ecole Normale Superieure",
@@ -8370,7 +8551,8 @@
     "longitude": 2.3447,
     "trigger_radius": 25,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Place de la Contrescarpe",
@@ -8407,7 +8589,8 @@
     "longitude": 2.3494,
     "trigger_radius": 20,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=20m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 4, large footprint area (trigger_radius=20m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Eglise Saint-Medard",
@@ -8447,7 +8630,8 @@
     "longitude": 2.35,
     "trigger_radius": 25,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Institut du Monde Arabe",
@@ -8487,7 +8671,8 @@
     "longitude": 2.3538,
     "trigger_radius": 30,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "La Tour d'Argent",
@@ -8526,7 +8711,8 @@
     "longitude": 2.3541,
     "trigger_radius": 15,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Verlaine's Garret",
@@ -8574,7 +8760,8 @@
     "longitude": 2.3488,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "College des Bernardins",
@@ -8613,7 +8800,8 @@
     "longitude": 2.3521,
     "trigger_radius": 20,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Le Procope",
@@ -8653,7 +8841,8 @@
     "longitude": 2.3389,
     "trigger_radius": 15,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Fontaine Saint-Michel",
@@ -8692,7 +8881,8 @@
     "longitude": 2.344,
     "trigger_radius": 15,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Theatre de l'Odeon",
@@ -8732,7 +8922,8 @@
     "longitude": 2.3387,
     "trigger_radius": 20,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Institut de France",
@@ -8771,7 +8962,8 @@
     "longitude": 2.3365,
     "trigger_radius": 20,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de la Monnaie",
@@ -8812,7 +9004,8 @@
     "longitude": 2.3392,
     "trigger_radius": 15,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Cour de Rohan",
@@ -8851,7 +9044,8 @@
     "longitude": 2.3383,
     "trigger_radius": 10,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=10m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Rue de l'Hirondelle",
@@ -8898,7 +9092,8 @@
     "longitude": 2.3433,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Caveau de la Bolee",
@@ -8945,7 +9140,8 @@
     "longitude": 2.3432,
     "trigger_radius": 8,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Place de Furstemberg",
@@ -8988,7 +9184,8 @@
     "longitude": 2.3352,
     "trigger_radius": 15,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "L'Hotel Paris",
@@ -9030,7 +9227,8 @@
     "longitude": 2.3365,
     "trigger_radius": 12,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue Visconti",
@@ -9070,7 +9268,8 @@
     "longitude": 2.3362,
     "trigger_radius": 20,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=20m), classified as stop"
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=20m), classified as stop",
+    "city_name": "paris"
   },
   {
     "name": "Les Deux Magots",
@@ -9110,7 +9309,8 @@
     "longitude": 2.3332,
     "trigger_radius": 10,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Brasserie Lipp",
@@ -9149,7 +9349,8 @@
     "longitude": 2.3324,
     "trigger_radius": 8,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Ecole des Beaux-Arts",
@@ -9190,7 +9391,8 @@
     "longitude": 2.337,
     "trigger_radius": 25,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Natalie Barney Salon",
@@ -9238,7 +9440,8 @@
     "longitude": 2.3345,
     "trigger_radius": 12,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel d'Angleterre Paris",
@@ -9286,7 +9489,8 @@
     "longitude": 2.333,
     "trigger_radius": 12,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel d'York",
@@ -9327,7 +9531,8 @@
     "longitude": 2.3318,
     "trigger_radius": 12,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue de Buci Market",
@@ -9367,7 +9572,8 @@
     "longitude": 2.336,
     "trigger_radius": 20,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=20m), classified as stop"
+    "_poi_role_reasoning": "Tier 3 named street but narrow (radius=20m), classified as stop",
+    "city_name": "paris"
   },
   {
     "name": "Marché Saint-Germain",
@@ -9412,7 +9618,8 @@
     "longitude": 2.3361,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Café de la Mairie",
@@ -9456,7 +9663,8 @@
     "longitude": 2.3349,
     "trigger_radius": 30,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Palais du Luxembourg",
@@ -9501,7 +9709,8 @@
     "longitude": 2.3373,
     "trigger_radius": 80,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Musée du Luxembourg",
@@ -9546,7 +9755,8 @@
     "longitude": 2.3368,
     "trigger_radius": 40,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "27 Rue de Fleurus",
@@ -9590,7 +9800,8 @@
     "longitude": 2.3327,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue Férou",
@@ -9634,7 +9845,8 @@
     "longitude": 2.334,
     "trigger_radius": 35,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Fontaine Médicis",
@@ -9679,7 +9891,8 @@
     "longitude": 2.3387,
     "trigger_radius": 30,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Statue of Marshal Ney",
@@ -9724,7 +9937,8 @@
     "longitude": 2.3351,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Fontaine des Quatre-Parties-du-Monde",
@@ -9769,7 +9983,8 @@
     "longitude": 2.336,
     "trigger_radius": 50,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Rue Notre-Dame-des-Champs",
@@ -9813,7 +10028,8 @@
     "longitude": 2.3329,
     "trigger_radius": 80,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Ecole Alsacienne",
@@ -9857,7 +10073,8 @@
     "longitude": 2.3325,
     "trigger_radius": 35,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "College Stanislas",
@@ -9901,7 +10118,8 @@
     "longitude": 2.331,
     "trigger_radius": 35,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "3 Rue Joseph-Bara",
@@ -9945,7 +10163,8 @@
     "longitude": 2.3345,
     "trigger_radius": 30,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Musee Zadkine",
@@ -9990,7 +10209,8 @@
     "longitude": 2.334026,
     "trigger_radius": 45,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Reid Hall",
@@ -10034,7 +10254,8 @@
     "longitude": 2.333,
     "trigger_radius": 35,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Academie de la Grande-Chaumiere",
@@ -10078,7 +10299,8 @@
     "longitude": 2.3318,
     "trigger_radius": 35,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "26 Rue Vavin (Sauvage Building)",
@@ -10123,7 +10345,8 @@
     "longitude": 2.334,
     "trigger_radius": 30,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "La Rotonde",
@@ -10168,7 +10391,8 @@
     "longitude": 2.3292,
     "trigger_radius": 50,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Quai Voltaire",
@@ -10213,7 +10437,8 @@
     "longitude": 2.3312,
     "trigger_radius": 40,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=40m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=40m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Fontaine des Quatre Saisons",
@@ -10259,7 +10484,8 @@
     "longitude": 2.3251,
     "trigger_radius": 20,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 3 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "Saint-Thomas-d'Aquin",
@@ -10303,7 +10529,8 @@
     "longitude": 2.3277,
     "trigger_radius": 20,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Le Bon Marché",
@@ -10348,7 +10575,8 @@
     "longitude": 2.3244,
     "trigger_radius": 25,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "La Pagode",
@@ -10393,7 +10621,8 @@
     "longitude": 2.3185,
     "trigger_radius": 15,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel Matignon",
@@ -10439,7 +10668,8 @@
     "longitude": 2.3192,
     "trigger_radius": 80,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Musee de la Legion d'Honneur",
@@ -10485,7 +10715,8 @@
     "longitude": 2.321,
     "trigger_radius": 80,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Eglise Sainte-Clotilde",
@@ -10531,7 +10762,8 @@
     "longitude": 2.3182,
     "trigger_radius": 80,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Hotel de Gallifet",
@@ -10578,7 +10810,8 @@
     "longitude": 2.3224,
     "trigger_radius": 70,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 1 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Fontaine de Mars",
@@ -10623,7 +10856,8 @@
     "longitude": 2.3026,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Église Saint-Pierre du Gros Caillou",
@@ -10668,7 +10902,8 @@
     "longitude": 2.305,
     "trigger_radius": 40,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Rue Cler",
@@ -10712,7 +10947,8 @@
     "longitude": 2.3028,
     "trigger_radius": 60,
     "poi_role": "setting",
-    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=60m or area keywords in name/description)"
+    "_poi_role_reasoning": "Tier 3, large footprint area (trigger_radius=60m or area keywords in name/description)",
+    "city_name": "paris"
   },
   {
     "name": "Ecole Militaire",
@@ -10757,7 +10993,8 @@
     "longitude": 2.3063,
     "trigger_radius": 100,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
+    "city_name": "paris"
   },
   {
     "name": "UNESCO Headquarters Paris",
@@ -10803,7 +11040,8 @@
     "longitude": 2.3076,
     "trigger_radius": 60,
     "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only"
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   },
   {
     "name": "Champ de Mars",
@@ -10848,6 +11086,7 @@
     "longitude": 2.2986,
     "trigger_radius": 150,
     "poi_role": "stop",
-    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop"
+    "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
   }
 ]

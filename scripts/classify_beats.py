@@ -590,14 +590,14 @@ def main():
             # Classify emotional register
             emotional_register = classify_emotional_register(text, lens)
 
-            # Compute est_spoken_seconds
+            # Compute duration_sec
             word_count = len(text.split())
-            est_spoken_seconds = round(word_count / 2.5)
+            duration_sec = round(word_count / 2.5)
 
             # Apply to beat
             beat['entities'] = entities
             beat['sensory_anchor'] = sensory_anchor
-            beat['est_spoken_seconds'] = est_spoken_seconds
+            beat['duration_sec'] = duration_sec
             beat['narrative_function'] = narrative_function
             beat['beat_type'] = beat_type
             beat['emotional_register'] = emotional_register
@@ -633,8 +633,8 @@ def main():
         if not isinstance(b.get('sensory_anchor'), bool):
             print(f"  ERROR {bid}: sensory_anchor not bool")
             errors += 1
-        if not isinstance(b.get('est_spoken_seconds'), int):
-            print(f"  ERROR {bid}: est_spoken_seconds not int")
+        if not isinstance(b.get('duration_sec'), int):
+            print(f"  ERROR {bid}: duration_sec not int")
             errors += 1
         if b.get('narrative_function') not in VALID_NF:
             print(f"  ERROR {bid}: bad narrative_function '{b.get('narrative_function')}'")
@@ -646,8 +646,8 @@ def main():
             print(f"  ERROR {bid}: bad emotional_register '{b.get('emotional_register')}'")
             errors += 1
         expected = round(len(b['script_body'].split()) / 2.5)
-        if b['est_spoken_seconds'] != expected:
-            print(f"  ERROR {bid}: est_spoken_seconds {b['est_spoken_seconds']} != {expected}")
+        if b['duration_sec'] != expected:
+            print(f"  ERROR {bid}: duration_sec {b['duration_sec']} != {expected}")
             errors += 1
 
     if errors == 0:

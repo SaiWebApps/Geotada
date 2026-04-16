@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from neo4j import Driver
 
 _MERGE_POI = """
-MERGE (p:POI {name: $name})
+MERGE (p:POI {name: $name, city_name: $city_name})
 SET p.id             = coalesce(p.id, randomUUID()),
     p.short_description = $short_description,
     p.location       = point({latitude: $lat, longitude: $lng, srid: 4326}),
@@ -21,6 +21,7 @@ SET p.id             = coalesce(p.id, randomUUID()),
 PARIS_POIS: list[dict] = [
     {
         "name": "Eiffel Tower",
+        "city_name": "paris",
         "short_description": "Iron lattice tower on the Champ de Mars, symbol of Paris.",
         "lat": 48.858400,
         "lng": 2.294500,
@@ -31,6 +32,7 @@ PARIS_POIS: list[dict] = [
     },
     {
         "name": "Café de Flore",
+        "city_name": "paris",
         "short_description": "Legendary Left Bank café, haunt of Sartre and de Beauvoir.",
         "lat": 48.854000,
         "lng": 2.332500,
@@ -41,6 +43,7 @@ PARIS_POIS: list[dict] = [
     },
     {
         "name": "Shakespeare and Company",
+        "city_name": "paris",
         "short_description": "Iconic English-language bookshop across from Notre-Dame.",
         "lat": 48.852600,
         "lng": 2.347100,

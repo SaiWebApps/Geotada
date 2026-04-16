@@ -87,21 +87,22 @@ def create_node(
             "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})",
         ]
         for key in params:
-            if key not in ("lat", "lng", "name"):
+            if key not in ("lat", "lng", "name", "city_name"):
                 set_parts.append(f"n.{key} = ${key}")
 
         if force_create:
-            # CREATE forces a new node even if name matches — used when editor
-            # confirms "different place" for a proximity match with same name.
+            # CREATE forces a new node even if (name, city_name) matches — used when
+            # editor confirms "different place" for a proximity match with same name.
             query = (
-                f"CREATE (n:POI {{name: $name}}) "
+                f"CREATE (n:POI {{name: $name, city_name: $city_name}}) "
                 f"SET {', '.join(set_parts)} "
                 f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
             )
         else:
-            # MERGE on name for idempotent POI creation (default path)
+            # MERGE on (name, city_name) for idempotent POI creation (default path).
+            # Multi-city safe — Notre-Dame Paris vs Notre-Dame Reims won't collide.
             query = (
-                f"MERGE (n:POI {{name: $name}}) "
+                f"MERGE (n:POI {{name: $name, city_name: $city_name}}) "
                 f"SET {', '.join(set_parts)} "
                 f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
             )
