@@ -108,6 +108,30 @@ class POICreate(BaseModel):
         return v
 
 
+Direction = Literal["up", "down", "north", "south", "east", "west", "here"]
+FeatureType = Literal[
+    "architectural_detail",
+    "plaque",
+    "view",
+    "interior",
+    "adjacent_landmark",
+]
+
+
+class PhysicalCue(BaseModel):
+    """One directional/spatial pointer tied to a beat.
+
+    Paired with a beat that has sensory_anchor=true. The tour builder uses
+    direction to orient the listener (cardinal translates to relative at
+    runtime via phone compass) and feature_type to pace the stop (a plaque
+    needs reading time; a view needs standing time).
+    """
+
+    cue: str
+    direction: Direction
+    feature_type: FeatureType
+
+
 class NarrativeBeatCreate(BaseModel):
     script_body: str
     version: int = 1
@@ -120,6 +144,20 @@ class NarrativeBeatCreate(BaseModel):
     narrative_function: str = ""
     beat_type: str = ""
     emotional_register: str = ""
+    subject_tag: str = ""
+    physical_cues: list[PhysicalCue] = []
+
+    @field_validator("subject_tag")
+    @classmethod
+    def subject_tag_shape(cls, v: str) -> str:
+        if v == "":
+            return v  # optional until Scope 4 re-extraction; empty allowed on legacy beats
+        if not 1 <= len(v) <= 32:
+            raise ValueError("subject_tag must be between 1 and 32 characters")
+        words = v.split()
+        if not 1 <= len(words) <= 3:
+            raise ValueError("subject_tag must be 1–3 words")
+        return v
 
 
 class AreaCreate(BaseModel):

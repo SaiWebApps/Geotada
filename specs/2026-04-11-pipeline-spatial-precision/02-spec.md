@@ -93,7 +93,7 @@ Produce tour-builder-ready content by running a single unified extraction skill 
 ## Open Questions
 
 1. **Duration field name.** `duration_sec` (current extraction/schema) or `est_spoken_seconds` (enrichment)? Stage 3 should pick whichever requires fewer downstream edits — grep both terms across `src/` and `frontend/` to decide.
-2. **Structured `physical_cues` enum values.** `direction` (e.g., `up`, `down`, `north`, `south`, ...) and `feature_type` (e.g., `architectural_detail`, `plaque`, `view`, ...) values need enumeration. Stage 3 defines.
+2. *(Resolved Scope 4.)* **Structured `physical_cues` enum values.** `direction` = {`up`, `down`, `north`, `south`, `east`, `west`, `here`} — cardinal + vertical + `here` for directionless cues. Runtime translates cardinal to relative using phone compass. `feature_type` = {`architectural_detail`, `plaque`, `view`, `interior`, `adjacent_landmark`} — chosen for runtime pacing utility (plaques need reading time, views need standing time, interiors are journeys). No `other` value — forces tight classification. Enumerated in `src/api/models/nodes.py` as `Direction` and `FeatureType` Literal types.
 3. *(Resolved — promoted into AC-6.)* `establishing_not_applicable` auto-flag is restricted to `importance_tier <= 2`. Higher-tier stops must carry a real establishing beat; no escape hatch.
 
 ---

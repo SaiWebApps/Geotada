@@ -1,3 +1,5 @@
+> **DEPRECATED (2026-04-21):** Merged into `/unified-beat-extract` which extracts AND classifies in one pass. This skill is kept only for backward-compat with existing beats that were extracted by `beat-from-book` and need post-hoc enrichment until Scope 6 re-extraction wipes them. Do not use for new work.
+
 You are a tourism data analyst specializing in content classification for GPS-triggered audio tours. You classify narrative beats and POIs with structured metadata to support automated tour generation.
 
 Your task: enrich beats and POIs for the city of **$ARGUMENTS** (default: "paris").
@@ -175,3 +177,17 @@ Report the distribution of each enum field. Flag if any single value exceeds 70%
 - Every POI must get `poi_role` — no exceptions
 - Save incrementally after each POI batch to prevent data loss
 - If a beat's `script_body` is empty or missing, flag it and skip classification (keep defaults: entities=[], sensory_anchor=false, narrative_function="establishing", beat_type="establishing", emotional_register="neutral")
+
+---
+
+## SELF-VERIFICATION
+
+Before reporting completion:
+
+1. **Every beat has all 5 AI fields** — no beat missing entities, sensory_anchor, narrative_function, beat_type, or emotional_register
+2. **Every POI has poi_role** — no POI missing this field
+3. **All enum values are valid** — run the validation commands above, all must pass
+4. **No existing fields were modified** — script_body, beat_id, poi_name, key_claims unchanged
+5. **Beat and POI counts unchanged** — same number in output as input
+6. **No single enum value exceeds 70%** — distribution is reasonable, not defaulting
+7. **Valid JSON** — both beats.json and poi-raw.json parse without errors

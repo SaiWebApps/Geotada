@@ -1,0 +1,41 @@
+[
+  {
+    "name": "The Clockwork Tower",
+    "city_name": "test_city_xx",
+    "short_description": "Fictional ornate bell tower at the center of the Old Square.",
+    "latitude": 12.345678,
+    "longitude": 98.765432,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 45,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "poi_role": "stop"
+  },
+  {
+    "name": "The Mariner's Arch",
+    "city_name": "test_city_xx",
+    "short_description": "Fictional stone arch by the river, built by the fishmongers' guild.",
+    "latitude": 12.346111,
+    "longitude": 98.766000,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "poi_role": "stop"
+  },
+  {
+    "name": "The Small Fountain",
+    "city_name": "test_city_xx",
+    "short_description": "Fictional minor fountain at a three-lane junction.",
+    "latitude": 12.345900,
+    "longitude": 98.765800,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "poi_role": "stop"
+  }
+]
