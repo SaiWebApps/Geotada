@@ -22,7 +22,7 @@ Produce tour-builder-ready content by running a single unified extraction skill 
 
 ## Outputs
 
-- `data/{city}/beats.json` — regenerated; every beat carries: `script_body`, `entities`, `sensory_anchor`, resolved duration field, `narrative_function`, `beat_type`, `emotional_register`, structured `physical_cues`, new-format `beat_id`, `parent_poi` where applicable, standard source attribution
+- `data/{city}/beats.json` — regenerated; every beat carries: `script_body`, `entities`, `sensory_anchor`, resolved duration field, `narrative_function`, `beat_type`, `emotional_register`, `subject_tag`, structured `physical_cues`, new-format `beat_id`, `parent_poi` where applicable, standard source attribution
 - `data/{city}/poi-raw.json` — updated in place; every POI has `poi_role` and `city_name`
 - New sub-POI entries with `parent_poi` set, `poi_role` classified from source with a `source_passage` excerpt, and coordinates from `poi-geocode` (not LLM). Sub-POIs pass through `poi-dedup` before upload.
 - Pipeline reports: long-beat flags, establishing-beat coverage, collision-check results, dedup-merge log for sub-POIs
@@ -44,7 +44,7 @@ Produce tour-builder-ready content by running a single unified extraction skill 
 - **AC-1** Duration field name is singular across `src/schema/`, `src/api/crud/`, `frontend/`, and skill output. The field name is chosen at Stage 3 (see Open Question 1); verification is `grep -r "{deprecated_name}" src/ frontend/` returning zero hits, where `{deprecated_name}` is the name not chosen.
 - **AC-2** Single-chunk validation run satisfies all of: (a) zero within-run `beat_id` collisions, (b) 100% of extracted beats either match an existing POI *or* emit `new_poi: true` with a pending-review entry in the pipeline report — no silent orphans, (c) for every sub-POI created, re-invoking `poi-geocode` on the sub-POI name returns coordinates within 10m of the stored `lat`/`lon` **AND** the sub-POI's coordinates differ from its parent POI's coordinates by ≥15m (if they're identical, OSM returned the parent centroid and the sub-POI is flagged, not accepted) **AND** `poi-geocode` confidence ≥70% (per NORTHSTAR), (d) zero preservation-boundary fields modified, (e) every new sub-POI has a non-empty `source_passage` quoted from the source text grounding its `poi_role` classification.
 - **AC-3** Post-full-re-extraction Cypher diff: `Area` count unchanged, `WITHIN` count unchanged, and the set of pre-existing POI MERGE keys is a subset of the post-extraction POI MERGE keys (no silent delete-and-recreate). Additionally, zero POIs lost `importance_tier`, `lat`, `lon`, `name_variations`, or `verified` value.
-- **AC-4** Every beat in output has all required fields populated (`entities`, `sensory_anchor`, `narrative_function`, `beat_type`, `emotional_register`, `physical_cues`, duration, new-format `beat_id`). Verified by `NarrativeBeatCreate` Pydantic model validation passing on every beat in `data/{city}/beats.json`.
+- **AC-4** Every beat in output has all required fields populated (`entities`, `sensory_anchor`, `narrative_function`, `beat_type`, `emotional_register`, `subject_tag`, `physical_cues`, duration, new-format `beat_id`). Verified by `NarrativeBeatCreate` Pydantic model validation passing on every beat in `data/{city}/beats.json`. `subject_tag` must be a non-empty string between 1 and 32 characters (enforced 1–3 words via post-extraction regex or Pydantic validator — Stage 3 decides).
 - **AC-5** Every beat where `sensory_anchor == true` has `len(physical_cues) >= 1`, each cue an object with cue text + `direction` + `feature_type`. Verified by `NarrativeBeatCreate` Pydantic model validation (structured `physical_cues` schema).
 - **AC-6** Every `poi_role: stop` POI satisfies: `(has ≥1 beat with narrative_function == "establishing") OR (establishing_not_applicable == true AND importance_tier <= 2)`. The auto-flag is restricted to tier ≤ 2; higher-tier stops must have a real establishing beat. Cypher join query returns zero offenders.
 - **AC-7** Restore archive exists and contains valid pre-wipe `beats.json` + Neo4j Cypher export scoped to the affected city, created before any destructive operation. Verified by **semantic round-trip**: importing the archive into a scratch Neo4j database yields a `NarrativeBeat` node count equal to the pre-wipe production beat count for that city. (Regex-counting `CREATE` statements is insufficient — APOC and `neo4j-admin` exports use varying batch shapes like `UNWIND […] CREATE`.)
@@ -69,6 +69,7 @@ Produce tour-builder-ready content by running a single unified extraction skill 
   "narrative_function": "deepen",
   "beat_type": "character_story",
   "emotional_register": "neutral",
+  "subject_tag": "royal library origin",
   "physical_cues": [
     {
       "cue": "The medieval foundations are exposed on the east side of the Cour Carrée",
