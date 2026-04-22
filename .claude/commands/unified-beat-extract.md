@@ -175,7 +175,7 @@ Extract directional/spatial instructions tied to this POI from the source text.
 
 ---
 
-## PHASE 3 — POI MATCHING
+## PHASE 3 — POI MATCHING + SUB-POI EMERGENCE
 
 For each beat, match it to a POI in `data/{city_slug}/poi-raw.json`.
 
@@ -185,16 +185,46 @@ Create the beat and assign it to the POI and lens.
 ### Case 2: POI exists, lens has existing beats
 Multiple beats per lens are allowed (disambiguated by topic_slug). Extract the new beat; let topic_slug carry the uniqueness. Do NOT conflict-check against existing beats — that's handled downstream by semantic dedup.
 
-### Case 3: POI does not exist
-For this scope, **emit `new_poi: true` and include the beat in output with a note.** DO NOT create new POI entries in `poi-raw.json`. Sub-POI emergence and new POI creation are Scope 5 concerns.
+### Case 3: Beat references a distinct zone of an existing large POI (sub-POI emergence)
 
-Include a pipeline report entry:
+When a beat's subject is a specific, named zone inside an already-existing large POI (e.g., "the Denon Wing" inside the Louvre, "the Place des Vosges colonnade" inside Place des Vosges, "Marie de Médicis's apartment" inside the Luxembourg Palace), emit a **sub-POI** — do NOT attach the beat to the parent POI, because the tour builder needs to route the user to the specific sub-spot.
+
+Sub-POI emission rules (AC-9):
+
+1. **`parent_poi`** set to the exact name of the existing POI the sub-POI lives inside.
+2. **`poi_role`** classified from the source text. Ask: does the book describe it as a place to stop and listen (`stop`), a contextual through-path (`setting`), or a minor reference to walk past (`walk_by_only`)? Use the text, not world knowledge.
+3. **`source_passage`** — a verbatim or near-verbatim quote from the source text (10–30 words) that justifies the `poi_role` classification. The passage must contain language that supports the role (e.g., "stand before", "as you walk through", "notice in passing"). Without this field the sub-POI is invalid.
+4. **`latitude` / `longitude`**: leave as `0.0` placeholder values. Coordinates are resolved by the `/poi-geocode` skill in a follow-up step — never by extraction. Flag in the pipeline report: *"Sub-POI pending geocode: [name]"*.
+5. **`trigger_radius`** defaults to 10. Parent may override later.
+6. **`kid_friendly`** inherited from parent POI unless the beat content requires otherwise.
+
+Append the sub-POI to `data/{city_slug}/poi-raw.json`. Existing POIs in that file remain untouched (preservation boundary).
+
+### Case 4: Beat references a location not in the POI list and not clearly a sub-POI
+
+Emit `new_poi: true` in the beat payload and include a pipeline report note:
 ```
 NEW POI FLAGGED: [name from book]
   Source: [chunk, passage]
   Beats attached: [count]
-  Status: pending Scope 5 sub-POI emergence
+  Relationship uncertain: alias / adjacent / independent (flag for user review)
+  Status: do not auto-create — user decides at poi-generate time
 ```
+Do NOT write these to `poi-raw.json`. The user triages them separately.
+
+---
+
+## PHASE 4 — ESTABLISHING-BEAT COVERAGE (AC-6)
+
+After all beats are emitted for this chunk, walk through every POI that received at least one new beat in this run. For each:
+
+1. **Does the POI have `poi_role: stop`?** If not (setting or walk_by_only), skip.
+2. **Does it now have at least one beat with `narrative_function: "establishing"`** (counting both pre-existing beats in `data/{city_slug}/beats.json` and beats just emitted)?
+   - **Yes** → nothing to do.
+   - **No**, and `importance_tier <= 2` → set `establishing_not_applicable: true` on the POI in `poi-raw.json`. Log in pipeline report: *"Auto-flagged establishing_not_applicable for tier-{n} {name}"*.
+   - **No**, and `importance_tier >= 3` → **DO NOT auto-flag.** Log in pipeline report as a blocker: *"Tier-{n} {name} ({role}) has no establishing beat — run extraction on additional source material or hand-author one before upload."*
+
+This enforces AC-6 at emission time rather than leaving it to downstream validation.
 
 ---
 
@@ -291,9 +321,20 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
 
 ### Write output
 
-- New beats: append to `data/{city_slug}/beats.json` (create if doesn't exist)
-- POIs: **DO NOT MODIFY `poi-raw.json`** in this scope. New POIs are flagged only.
-- Book processing log: update `data/{city_slug}/book-log.json`
+- **Beats:** append new beats to `data/{city_slug}/beats.json` (create if doesn't exist).
+- **Sub-POIs only:** append new sub-POI entries (those with `parent_poi` set and `source_passage` non-empty) to `data/{city_slug}/poi-raw.json`. Every existing entry in that file stays untouched (preservation boundary — verified in Scope 5's AC-2d check).
+- **Completely-new POIs (no parent):** flag only in the pipeline report. Do NOT write to `poi-raw.json`. The user triages these separately via `/poi-generate`.
+- **POI `establishing_not_applicable` auto-flag:** for every POI touched in this run that qualifies (see Phase 4), set the field on the existing entry in `poi-raw.json`. This is a permitted modification of existing POIs under the rule.
+- **Book processing log:** update `data/{city_slug}/book-log.json`.
+
+### Follow-up actions to report at the end (do not execute here)
+
+After writing the output, tell the user what to run next:
+
+1. **If any sub-POIs were emitted:** `/poi-geocode paris --missing-only` — this will fill in the `latitude`/`longitude` for every newly-created sub-POI using OpenStreetMap, with the NORTHSTAR ≥70% confidence threshold. Any sub-POI whose geocode resolves to its parent's exact coordinates or below the confidence threshold gets flagged for manual review (per AC-2c).
+2. **If any sub-POIs were emitted:** `/poi-dedup paris` after geocoding — the strict-merge skill catches any sub-POI that's actually an alias of an existing POI we missed.
+3. **If `new_poi: true` flags exist:** `/poi-generate` can enrich those separately; they are out of scope for this extraction run.
+4. **Before Neo4j upload:** run `.venv/bin/python scripts/verify_scope4_acs.py --beats data/{city_slug}/beats.json --city {city_slug}` to check every emitted beat passes Pydantic. Upload is handled by `/upload`, not here.
 
 ### Book log structure
 

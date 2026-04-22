@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Literal
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 
 class NodeLabel(str, Enum):
@@ -69,6 +69,9 @@ class ItineraryItemCreate(BaseModel):
     duration_min: int
 
 
+POIRole = Literal["stop", "setting", "walk_by_only"]
+
+
 class POICreate(BaseModel):
     name: str
     city_name: str  # REQUIRED — matches AreaCreate.city_name convention.
@@ -83,7 +86,16 @@ class POICreate(BaseModel):
     typical_duration_min: int = 30
     kid_friendly: str = "yes"
     name_variations: list[str] = []
-    poi_role: str = "stop"
+    poi_role: POIRole = "stop"
+    parent_poi: str | None = None  # Set on sub-POIs; names the parent POI
+    source_passage: str = ""       # Required when parent_poi is set (AC-9):
+                                   # verbatim/near-verbatim quote from source
+                                   # text grounding the poi_role classification
+    establishing_not_applicable: bool = False  # Per AC-6: auto-flag set during
+                                               # extraction when a poi_role: stop
+                                               # POI has tier ≤ 2 and lacks an
+                                               # establishing beat. Higher-tier
+                                               # stops must carry a real beat.
     force_create: bool = False
 
     @field_validator("importance_tier")
@@ -106,6 +118,17 @@ class POICreate(BaseModel):
         if not -180 <= v <= 180:
             raise ValueError("longitude must be between -180 and 180")
         return v
+
+    @model_validator(mode="after")
+    def sub_poi_requires_source_passage(self) -> "POICreate":
+        """Per AC-9: any POI with parent_poi set must carry a non-empty
+        source_passage quoting the source text that grounds the poi_role."""
+        if self.parent_poi and not self.source_passage.strip():
+            raise ValueError(
+                "sub-POI (parent_poi is set) requires a non-empty source_passage "
+                "grounding its poi_role classification"
+            )
+        return self
 
 
 Direction = Literal["up", "down", "north", "south", "east", "west", "here"]
