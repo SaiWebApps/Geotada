@@ -22,6 +22,8 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 REQUIRED_FIELDS = {
     "beat_id",
     "city_name",
@@ -66,6 +68,9 @@ ALLOWED_CONTEXT_PATTERNS = [
     r"book_title",         # book-title field references (e.g. "Around and About Paris")
     r"Around and About",   # book title series
     r"snake_case",         # slug-format examples enumerating valid city slugs
+    r"/poi-geocode",       # skill-invocation example in follow-up instructions
+    r"/poi-dedup",         # skill-invocation example in follow-up instructions
+    r"/unified-beat-extract",  # self-reference in skill file
 ]
 
 

@@ -636,6 +636,22 @@
           "pois_mentioned_no_content": [],
           "conflicts_resolved": 0,
           "fact_check_flags": 6
+        },
+        {
+          "chunk": "chunk-15-5th-arr-val-de-grace",
+          "processed_at": "2026-04-22T04:17:12Z",
+          "prompt_version": "unified_v1",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Val-de-Grace"
+          ],
+          "pois_created": [],
+          "sub_pois_emitted": [],
+          "new_pois_flagged": [],
+          "pois_mentioned_no_content": [],
+          "conflicts_resolved": 0,
+          "fact_check_flags": 0,
+          "notes": "Scope 5 validation-gate re-extraction via unified-beat-extract. Appended to prior pipeline_batch_v1 run (5 beats) from 2026-04-06."
         }
       ]
     }

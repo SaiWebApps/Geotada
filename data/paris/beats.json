@@ -28816,5 +28816,340 @@
       "enriched_at": "2026-04-12T04:38:53Z",
       "version": "v1"
     }
+  },
+  {
+    "beat_id": "paris_val_de_grace_historic_worship_around_and_about_paris_intact_17c_religious_monument",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "historic_worship",
+    "topic_slug": "intact_17c_religious_monument",
+    "script_body": "The Val-de-Grace is one of the most important religious monuments of seventeenth-century France, and the only one in Paris preserved entirely intact. Every other great church of that century in the capital has been damaged, rebuilt, or stripped of its surroundings in some way. Here the chapel, the cloister, and the garden a la francaise stand together as they were meant to stand, restored in recent decades and separated from the hospital wards that grew up around them. You are looking at the last complete Grand Siecle religious ensemble in the city.",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Grand Siecle"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "reverent",
+    "subject_tag": "intact ensemble",
+    "physical_cues": [
+      {
+        "cue": "The chapel, cloister, and garden a la francaise together",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "key_claims": [
+      "Val-de-Grace is one of the most important 17th-century religious monuments of France",
+      "It is the only one in Paris preserved in its entirety",
+      "The chapel, cloister, and garden a la francaise have been restored"
+    ],
+    "source_passage": "one of the most important religious monuments of 17th-century France and the only one in Paris to have been preserved in its entirety",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_val_de_grace_hidden_history_around_and_about_paris_anne_of_austria_vow_and_boy_king_cornerstone",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "anne_of_austria_vow_and_boy_king_cornerstone",
+    "script_body": "This abbey began as a desperate bargain with God. Anne of Austria was thirty-six years old and still childless when she vowed to build a temple if she were granted an heir. A year later, in 1638, a first son was born, the future Louis XIV. When he reached the age of reason in 1645, the Queen brought the boy king here herself to lay the cornerstone of the royal abbey she had promised. The Val-de-Grace is, in a very literal sense, the debt his mother paid for his birth.",
+    "duration_sec": 36,
+    "kid_friendly": "yes",
+    "entities": [
+      "Anne of Austria",
+      "Louis XIV"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "hook",
+    "beat_type": "anecdote",
+    "emotional_register": "dramatic",
+    "subject_tag": "queen's vow",
+    "physical_cues": [],
+    "key_claims": [
+      "Anne of Austria was 36 and childless when she made the vow",
+      "Louis XIV was born in 1638, a year after the vow",
+      "In 1645 at his age of reason, Louis XIV laid the cornerstone"
+    ],
+    "source_passage": "the 36-year-old childless Anne of Austria vowed to build a temple to God should she be granted an heir",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_val_de_grace_historic_arch_around_and_about_paris_mansart_lemercier_graceful_dome",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "mansart_lemercier_graceful_dome",
+    "script_body": "The abbey became one of the finest examples of 17th-century French architecture, designed by Francois Mansart and Lemercier. Both architects took particular pride in its graceful dome — the feature they considered their triumph here. You can still read that pride in the dome overhead: a balance of weight and lift that was meant, from the beginning, to be the thing you notice first.",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+      "Francois Mansart",
+      "Lemercier"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "graceful dome",
+    "physical_cues": [
+      {
+        "cue": "The graceful dome Mansart and Lemercier took particular pride in",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "key_claims": [
+      "Designed by Francois Mansart and Lemercier",
+      "One of the finest examples of 17th-century French architecture",
+      "Architects took particular pride in its dome"
+    ],
+    "source_passage": "designed by Francois Mansart and Lemercier, who took particular pride in its graceful dome",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_val_de_grace_visual_art_around_and_about_paris_mignard_dome_mural_two_hundred_figures",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "mignard_dome_mural_two_hundred_figures",
+    "script_body": "Inside the dome, Mignard painted an astounding mural depicting two hundred figures — among them Louis XIII and Anne of Austria, the couple whose childless years and eventual heir made this building possible in the first place. The mural is to the glory of God, but it is also, very deliberately, to the glory of the family that built the church. Two hundred painted figures, and the two whose vow started everything are among them.",
+    "duration_sec": 30,
+    "kid_friendly": "yes",
+    "entities": [
+      "Mignard",
+      "Louis XIII",
+      "Anne of Austria"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "dome fresco",
+    "physical_cues": [
+      {
+        "cue": "Mignard's mural of 200 figures inside the dome",
+        "direction": "up",
+        "feature_type": "interior"
+      }
+    ],
+    "key_claims": [
+      "Mignard painted a mural inside the dome",
+      "The mural depicts 200 figures",
+      "Among the figures are Louis XIII and Anne of Austria",
+      "The mural is dedicated to the glory of God"
+    ],
+    "source_passage": "Inside the dome Mignard painted an astounding mural depicting 200 figures, among them Louis XIII and Anne of Austria, to the glory of God",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_val_de_grace_hidden_history_around_and_about_paris_convention_converts_abbey_to_army_medical_school",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "convention_converts_abbey_to_army_medical_school",
+    "script_body": "In 1793 the Convention decided to convert the abbey into a hospital and a medical school for the army. The decision came into effect three years later, in 1796. In 1852 Napoleon III added a medical library to the school, and by then the collection already held 130,000 theses and 4,000 other works. Expansion was inevitable, and the buildings suffered much damage as the medical institution grew around the old royal church.",
+    "duration_sec": 29,
+    "kid_friendly": "yes",
+    "entities": [
+      "Convention",
+      "Napoleon III"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "army hospital",
+    "physical_cues": [],
+    "key_claims": [
+      "In 1793 the Convention converted the abbey into a hospital and army medical school",
+      "The decision came into effect in 1796",
+      "In 1852 Napoleon III added a medical library",
+      "The library held 130,000 theses and 4,000 other works",
+      "Expansion caused damage to the buildings"
+    ],
+    "source_passage": "In 1793 the Convention decided to convert the abbey into a hospital and a medical school for the army, a decision that came into effect in 1796",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_val_de_grace_hidden_history_around_and_about_paris_1978_restoration_and_health_service_museum",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "1978_restoration_and_health_service_museum",
+    "script_body": "In 1978 a happier initiative was taken: to restore the old monument and separate its activities from the rest of the hospital. The chapel, the cloister and the garden a la francaise have already been restored. By 1996, in time for the bicentennial, the project is to be completed with the addition of a museum of the army's health service — an institution that was born here during the Revolution coming home, in effect, to the building that first housed it.",
+    "duration_sec": 32,
+    "kid_friendly": "yes",
+    "entities": [
+      "Army Health Service Museum"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "callback",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "restoration museum",
+    "physical_cues": [
+      {
+        "cue": "The restored chapel, cloister, and garden a la francaise",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "key_claims": [
+      "In 1978 a restoration of the monument was launched",
+      "Restoration separated the monument from the rest of the hospital",
+      "Chapel, cloister, and garden a la francaise have been restored",
+      "A museum of the army's health service is planned for 1996 bicentennial"
+    ],
+    "source_passage": "in 1978 a happy initiative was taken to restore the old monument and separate its activities from the rest of the hospital",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_val_de_grace_literary_heritage_around_and_about_paris_brice_first_paris_guidebook_1685",
+    "city_name": "paris",
+    "poi_name": "Val-de-Grace",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "brice_first_paris_guidebook_1685",
+    "script_body": "In 1685, Guillaume Brice wrote what is called the first guidebook to Paris, and he singled this place out. Foreigners, he argued, must agree that things in France can be made beautiful and regular like those one goes to admire in Italy. It is a quiet boast — and a revealing one. At a moment when educated Europe still looked to Rome and Florence for the standard of architectural beauty, the first Parisian guidebook writer pointed his readers here, to the Val-de-Grace, to make the case that France could do the same.",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Guillaume Brice",
+      "Italy"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "callback",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "first guidebook",
+    "physical_cues": [],
+    "key_claims": [
+      "In 1685 Guillaume Brice wrote the first guidebook to Paris",
+      "Brice praised Val-de-Grace",
+      "Brice claimed French architecture could equal Italy's"
+    ],
+    "source_passage": "Foreigners here must agree that things in France can be made beautiful and regular like those one goes to admire in Italy",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "The 5th Arrondissement",
+      "page": ""
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v1",
+      "generated_at": "2026-04-22T04:17:12Z",
+      "city_name": "paris"
+    }
   }
 ]
