@@ -169,6 +169,20 @@ class PhysicalCue(BaseModel):
     feature_type: FeatureType
 
 
+class InlineForeignPhrase(BaseModel):
+    """Structured companion to inline foreign-phrase preservation (B3).
+
+    When a source text contains `foreign-word (gloss)` or `foreign-word, meaning X`,
+    the extractor keeps both the word and gloss verbatim in `script_body` AND
+    records the pair here so downstream skills (TTS pronunciation, glossary
+    rendering, cross-beat theme discovery) can reason over the foreign
+    vocabulary surface area without re-parsing prose.
+    """
+
+    phrase: str
+    gloss: str
+
+
 class NarrativeBeatCreate(BaseModel):
     script_body: str
     version: int = 1
@@ -188,6 +202,14 @@ class NarrativeBeatCreate(BaseModel):
     topic_slug: str = ""
     city_name: str = ""
     source_chunk_slug: str = ""
+
+    # Structural enrichment fields added by unified_v2 extraction prompt.
+    # All optional — legacy beats have them as None/""/[] and upload without issue.
+    sub_location: str | None = None      # Within-POI spatial tag (façade, crypt, nave...)
+    trigger_address: str | None = None   # Address-level GPS trigger ("no. 6 place des Vosges")
+    beat_length_class: str = ""          # anchor | mid | seasoning | micro; empty on legacy
+    inline_foreign_phrases: list[InlineForeignPhrase] = []
+    pronunciation: str | None = None     # Phonetic approximation, e.g. "plass-day-voge"
 
     @field_validator("subject_tag")
     @classmethod

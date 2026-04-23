@@ -57,6 +57,26 @@ If a different chunk from the same book was processed, continue — this is expe
 
 **Multi-pass requirement:** After the first pass, review your working list against the lens hierarchy. Are there lenses with zero extracted content? Go back and re-scan the relevant sections — you may have missed content that fits those lenses.
 
+**Multi-granularity requirement (B2):** A single source passage often carries beats at multiple spatial grains. Do NOT conflate them. A Rough-Guide-style entry with sub-headings (*Façade → Towers → Interior*) should produce one beat per sub-heading, not one merged beat. A Pariswalks-style passage that circles a square address-by-address (*No. 6 was Hugo's house. No. 8 was Gautier's…*) produces one beat per address, not one summary beat.
+
+Tag every item on your working list with its grain before writing beats:
+
+- `parent_only` — about the POI as a whole (square's founding, cathedral's history, street's origin)
+- `sub_location: <name>` — about a specific zone inside a large POI (façade, crypt, nave, salle-des-gens-darmes, marie-antoinette-cell-mockup, pavillon-du-roi)
+- `address: <street + number>` — a specific address threaded along a walking path (*No. 6 place des Vosges*, *No. 115 rue Saint-Honoré*, *4 rue des Saints-Pères*)
+
+Address-level material becomes a **seasoning beat** in PHASE 3 (see § Address recognition). Sub-location material becomes a beat with `sub_location` populated (see ENRICHMENT FIELDS).
+
+**Source structural signals to honor during this pass:**
+
+- Typographic sub-heads (bolded in the original, or hierarchical heading levels in `pdftotext -layout`) → sub_location split.
+- *"No. X [street/square]"*, *"At [address]"* + a micro-narrative → seasoning beat at that address.
+- Visually-boxed / indented / parenthetical-digression blocks that don't thread into the surrounding narrative → `beat_type: sidebar`.
+- Bolded directional imperatives (*"From the statue, cross the road..."*) → `beat_type: transit`.
+- Pre-narrative staging instructions (*"Sit in the garden near the children's area..."*) → `beat_type: stop_orientation`.
+
+These signals are *cues*, not hard triggers — use judgment. But when the source is visibly structured, honor the structure.
+
 ---
 
 ## PHASE 2 — BEAT GENERATION + CLASSIFICATION (ONE PASS)
@@ -72,8 +92,11 @@ Group related facts from the working list into **complete mini-stories** — eac
 - Related facts that form one narrative arc should be ONE beat, not split apart.
 - Unrelated facts at the same POI should be SEPARATE beats.
 - Do NOT write "survey" beats that list disconnected facts.
-- A well-mined POI from a rich source text typically yields 3-8 beats across multiple lenses.
-- If you produce only 1 beat for a POI that has substantial source text, you are almost certainly under-extracting.
+- **Expected richness scales with POI importance and source role:**
+  - Tier-3 POI, Rough-Guide-style reference entry: 2–5 beats typically
+  - Tier-4/5 POI in a walking guide with sub-heads: 5–15 beats, spread across distinct `sub_location` values
+  - Tier-4/5 POI that a guidebook circles address-by-address (Pariswalks Walk 4 on Place des Vosges): 15–30+ beats — a few anchor/mid at the square, many seasoning beats with `trigger_address` at individual houses
+- If you produce only 1 beat for a POI with substantial source text, or 2–3 beats for a Pariswalks-style circumnavigation, you are under-extracting.
 
 ### Exhaustive lens scan per POI
 
@@ -87,21 +110,54 @@ Do NOT choose the "best" story and discard others. Do NOT merge multiple stories
 
 ### Beat content rules
 
-**Complete stories, not bullet points:**
-- Each beat tells a self-contained story
-- Include WHO, WHAT, WHEN, WHY, and what makes it interesting
-- Write in clear prose — not a tour script, not an encyclopedia entry
-- 100-200 words typical; length should match the story's substance
+**Length discipline matched to source role (B5) — do NOT produce uniform-length beats:**
+
+Each beat commits to a `beat_length_class` based on what the source material *is*, then writes to the length the class permits. The prior extractor's 75-word median is a failure mode — anchor stops sound thin, seasoning stops sound bloated.
+
+- `anchor` (200–400w, ~90–180s audio) — tier-5 POI main historical narrative, or a deep sub_location essay. Reserved for stops where the listener is stationary and expects to dwell. Break only at natural prose transitions in the source. Example target: Pariswalks' 1000-word Place des Vosges opener decomposes into 2–3 anchor beats, each on a distinct sub-theme.
+- `mid` (80–200w, ~30–90s audio) — tier-3/4 primary beat, or a tier-5 secondary beat. A Rough-Guide-scale self-contained entry.
+- `seasoning` (20–80w, ~10–30s audio) — an address-level vignette or walk-by callout. Threaded along a walking path.
+- `micro` (<20w, <10s audio) — a walk-by factoid, one sentence max.
+
+Pick the class first based on the source role, then write to that length. If word count falls outside the class's range:
+- **Over-length in any class** → re-class up. An 85-word beat tagged `seasoning` is actually `mid`. Don't truncate the prose; the extractor mis-identified the source's scope.
+- **Under-length in `anchor`** → re-scan the source. A 150-word "anchor" from a passage the source clearly treats as a deep stationary stop is evidence the extractor compressed too aggressively. Go back to the source passage and recover the missing narrative before committing the class down to `mid`.
+- **Under-length in `mid`/`seasoning`** → re-class down. A 40-word beat tagged `mid` is actually `seasoning`; a 15-word beat tagged `seasoning` is actually `micro`.
+
+The asymmetry matters: demoting an anchor you under-wrote is quiet data loss. Rewriting up from the source is the only recovery.
+
+**Story completeness:**
+- Each beat tells a self-contained story with a beginning, middle, and payoff — proportional to the length class.
+- Include WHO, WHAT, WHEN, WHY, and what makes it interesting — at the scale the class permits.
+- Write in clear prose — not a tour script, not an encyclopedia entry.
 
 **No AI-invented content:**
 - Do NOT add atmospheric filler: "Imagine the sound of...", "Picture yourself..."
 - Do NOT add transitions: "Moving on to...", "Next we'll see..."
-- Do NOT invent sensory details the source doesn't provide
-- DO use the source text's own vivid language and narrative details
+- Do NOT invent sensory details the source doesn't provide.
+- DO use the source text's own vivid language and narrative details.
 
-**Source-locked:**
-- Every fact in the beat must come from the source text
-- Include a `source_passage` field with a 10-30 word direct quote from the book
+**Preserve-don't-paraphrase on inline foreign phrases (B3):**
+
+When the source contains `"foreign-word (inline-gloss)"`, `"foreign-word, meaning X"`, `"foreign-word — X"`, or any equivalent construction, the extractor MUST:
+
+1. **Keep the foreign word in `script_body` verbatim.** Do not replace it with the English equivalent.
+2. **Keep the gloss clause in `script_body` verbatim.** Do not drop it.
+3. **Also record the pair in the `inline_foreign_phrases` structured field** (see ENRICHMENT FIELDS below).
+
+Example — correct:
+> "The *pailleux* — prisoners who couldn't afford to bribe a guard for their own cell and had to sleep on straw (*paille*) — were penned behind an iron grille at the far end of the hall."
+
+Example — regression (do NOT do this):
+> "Poor prisoners who slept on straw were penned behind an iron grille at the far end of the hall."
+
+The foreign word is an audio-tour asset. Paraphrasing it away is a regression. "You are abroad" register depends on *marais, hôtel, ravalement, pavillon, oeil-de-boeuf, trompe-l'oeil, tricoteuses, bon-bec* landing in the listener's ear as the book wrote them.
+
+**Source-locked, source passage preserved verbatim (B7):**
+- Every fact in the beat must come from the source text.
+- `source_passage` must contain the **full verbatim sentence(s)** from the source that the beat derives from — not a summary, not a 10-word snippet. The minimum span where a neutral reader could map every claim in the beat back to the original.
+- If a beat's body carries three claims from three separate sentences, all three sentences belong in `source_passage`.
+- Downstream skills (`/fact-check`, `/beat-dedup`, future re-stitch passes) rely on this passage to retrieve detail the extraction compressed away.
 
 ---
 
@@ -137,6 +193,7 @@ Named people, historical events, specific buildings/monuments, and named groups 
 
 ### beat_type (enum — pick ONE)
 
+Narrative types:
 - `anecdote` — a specific story with characters and action
 - `character_story` — biographical focus on a person
 - `event` — something that happened at a specific time
@@ -144,6 +201,11 @@ Named people, historical events, specific buildings/monuments, and named groups 
 - `sensory_observation` — describes atmosphere/sound/light
 - `factoid` — a discrete surprising fact
 - `establishing` — basic identity of the POI
+
+Structural types (new in unified_v2):
+- `stop_orientation` — physical staging before narrative. Tells the listener where to stand, which direction to face, what to look at, with optional weather/comfort alternatives. Lands before content at a stop. Source example (Pariswalks Walk 4): *"Sit in the garden near the children's area so that you can watch the children play à la française (despite the mix of Hebrew, Yiddish, and Arabic you'll hear). If it is cold, try the café Ma Bourgogne, on the northwest corner of the place."* This is staging, not narrative — distinct extraction target.
+- `transit` — walking directions between stops, optionally carrying walk-by seasoning. Audio plays while the listener is moving. **For transit beats: `poi_name` = destination (the next stop the listener is walking toward); `trigger_address` = origin (the GPS point that starts the transit audio), optional.** Source example (Frommer's Walk 1): *"From the statue, cross the road into place Dauphine and turn left into rue de Harlay, walking around the Conciergerie. Turn right into boulevard du Palais, cross over to place Louis Lepine, stopping to admire the Conciergerie and the Sainte-Chapelle."*
+- `sidebar` — self-contained tangent that can be played (long-tour mode) or skipped (short-tour mode) without breaking the main flow. References a POI but is not part of its primary narrative arc. Heuristics: visually offset in the source (boxed, indented, different font in the PDF), self-contained (doesn't reference surrounding narrative), typically 80–200 words. Source example (Rough Guide): the "School for Scandal" box on Abélard and Héloïse dropped next to the Notre-Dame entry.
 
 ### emotional_register (enum — pick ONE)
 
@@ -171,6 +233,49 @@ Extract directional/spatial instructions tied to this POI from the source text.
 - `direction`: one of `up`, `down`, `north`, `south`, `east`, `west`, `here` (use `here` for directionless cues like "the worn step beneath your feet")
 - `feature_type`: one of `architectural_detail`, `plaque`, `view`, `interior`, `adjacent_landmark`
 - If `sensory_anchor == true`, this array MUST contain ≥1 cue. If `sensory_anchor == false`, this array MAY be empty.
+- **Tier-3+ enforcement (new in unified_v2):** every beat at a POI with `importance_tier >= 3` MUST have `physical_cues` populated if the source passage references any visible feature (a plaque, façade detail, interior element, adjacent landmark, view). An empty cue array on a tier-3+ beat is only acceptable when the source genuinely has no visible feature (a pure historical anecdote with no spatial anchor). If the source mentions a visible thing and you left the cue array empty, re-scan and fill it — this is the #1 audio-tour quality signal.
+
+### sub_location (string | null) — NEW in unified_v2
+
+Within-POI spatial tag. Populated only on tier-4/5 POIs where the source treats sub-locations as distinct (sub-headed sections, addressed rooms, named zones). `null` when the beat is about the POI as a whole.
+
+Examples:
+- Notre-Dame sub_locations: `"façade"`, `"central-portal"`, `"rose-window-north-transept"`, `"interior-nave"`, `"choir"`, `"towers"`, `"crypt"`, `"exterior-east-side"`, `"memorial-de-la-deportation"`
+- Conciergerie sub_locations: `"salle-des-gens-darmes"`, `"tour-bonbec"`, `"marie-antoinette-cell-mockup"`, `"prison-chapel"`, `"tour-de-lhorloge"`
+- Place des Vosges sub_locations: `"square-center-park"`, `"pavillon-du-roi"`, `"pavillon-de-la-reine"`, `"ma-bourgogne-corner"`, `"hugo-museum-no-6"`
+
+Use kebab-case, lowercase, descriptive. Within a single POI, two beats may share a `(lens, sub_location)` tuple only if they're genuinely different stories at the same sub-location (disambiguate via `topic_slug` as usual). Per the B1 (lens, sub_location) rule, distinct sub_locations lift the per-lens ceiling for tier-4/5 POIs.
+
+### trigger_address (string | null) — NEW in unified_v2
+
+Address-level micro-location string that GPS/geocoding can resolve to a specific point the listener walks past. Used for **seasoning beats** where `poi_name` is the containing anchor (square/street/neighborhood) but the audio should play at a specific address.
+
+Examples: `"no. 6 place des Vosges"`, `"no. 115 rue Saint-Honoré"`, `"4 rue des Saints-Pères"`, `"12 rue de Tournon"`.
+
+Rules:
+- Use the source's own numbering/wording when possible (*"no. 6"* not *"#6"*).
+- Null on most beats — only populated when the source explicitly anchors to an address.
+- When populated, `poi_name` is still the containing anchor (Place des Vosges, rue Saint-Honoré), NOT the address itself. The address is the GPS trigger; the anchor is the semantic container.
+- **For `beat_type: transit`**, `trigger_address` is optional and represents the origin (where the walking instruction starts firing); `poi_name` is the destination (the next stop the listener reaches).
+
+### beat_length_class (enum) — NEW in unified_v2
+
+One of `anchor` | `mid` | `seasoning` | `micro`. Declared before writing; word count must fall inside the class's range (see Beat content rules above for ranges). If the count drifts outside, re-class the beat — don't rewrite the prose. Legacy beats (pre-unified_v2) carry `""` and are exempt.
+
+### inline_foreign_phrases (list of `{phrase, gloss}`) — NEW in unified_v2
+
+Structured record of every foreign word + inline gloss preserved from the source per B3. Each entry is `{"phrase": "pailleux", "gloss": "prisoners who couldn't afford to bribe a guard for their own cell and had to sleep on straw"}`.
+
+Rules:
+- The foreign word MUST also remain in `script_body` verbatim (this field is a structured companion, not a replacement).
+- One entry per distinct phrase. If the source introduces *pailleux* and its root *paille* in the same sentence, emit two entries (both land in `script_body` per B3).
+- Empty list is fine for beats that don't cite foreign words.
+
+### pronunciation (string | null) — NEW in unified_v2
+
+Phonetic or approximate spelling for a proper noun or foreign word the listener needs to say or hear. Populated when the source explicitly provides pronunciation (Pariswalks does this consistently: *"pronounced plass-day-voge"*) or when the extractor judges the listener would meaningfully benefit.
+
+Examples: `"plass-day-voge"` for Place des Vosges, `"luv"` for Louvre, `"bohn-BECK"` for bon-bec. Null on most beats — set only when pronunciation is non-obvious.
 
 ### Computed field (no AI)
 
@@ -183,11 +288,43 @@ Extract directional/spatial instructions tied to this POI from the source text.
 
 For each beat, match it to a POI in `data/{city_slug}/poi-raw.json`.
 
+### Location-anchored poi_name (B9) — CRITICAL RULE
+
+A beat's `poi_name` (plus optional `trigger_address`) must identify the **geographic location where the listener should be standing when this beat plays.** Not the thematic topic. Not the famous figure. Not where the book classifies the anecdote.
+
+Known regression pattern: the Fersen / invisible-ink anecdote in the current corpus is tagged to the Conciergerie because it's *about* Marie-Antoinette's Conciergerie imprisonment — but the anecdote physically happens at no. 115 rue Saint-Honoré. If the listener stops at the Conciergerie, this beat plays at the wrong place.
+
+The rule:
+- `poi_name` = where the listener is when the audio plays.
+- `trigger_address` = a finer GPS trigger if the beat fires at a specific address inside the anchor's area.
+- Thematic association with other people/places/events goes in `entities` and `lens`. Not in `poi_name`.
+
+**Carve-out — `beat_type: transit`.** Transit beats play *while the listener is in motion between stops*; the listener is never standing at a single point when the audio fires. For transit beats only, B9 is replaced by this asymmetric convention:
+- `trigger_address` = **origin** (where the geofence fires the audio — typically the stop the listener just left). Required.
+- `poi_name` = **destination** (the next anchor the listener is walking toward, i.e., the semantic container the directions lead to).
+- This is the only `beat_type` where `poi_name` is NOT "where the listener stands when the audio plays." The runtime treats `trigger_address` as the geofence for transit beats.
+
+If the Fersen anecdote is thematically about Marie-Antoinette's Conciergerie imprisonment but physically happens at no. 115 rue Saint-Honoré, extract it as a seasoning beat at rue Saint-Honoré with `entities: ["Marie-Antoinette", "Fersen", "Conciergerie"]` — **not** attached to the Conciergerie POI.
+
+Test yourself on every beat before emission: "If a listener geofences this `poi_name` (+ `trigger_address`), are they standing where this story happened?" If the answer is no, re-assign.
+
+### Address recognition for seasoning beats (B4)
+
+When a source passage matches patterns like *"At no. X [street/square]"*, *"No. X was..."*, *"At [address]..."*, *"[address] housed..."* AND a micro-narrative follows, emit a **seasoning beat** with:
+
+- `poi_name` = the containing anchor (the square, the street, the neighborhood it lives in — e.g., *"Place des Vosges"*, *"rue Bonaparte"*, *"Marais"*)
+- `trigger_address` = the specific address string as the source wrote it (e.g., *"no. 6 place des Vosges"*, *"no. 115 rue Saint-Honoré"*)
+- `beat_length_class` = `seasoning` (20–80 words typically; micro if <20w)
+- `beat_type` = `anecdote` | `character_story` | `architectural_detail` as appropriate
+- `sub_location` = null (seasoning beats live outside the sub_location axis)
+
+These seasoning beats are the Pariswalks-style circumnavigation primitive. Every guidebook contains them; the extractor must know to produce them rather than conflating the material into the parent POI's main beat. A square that the source circles address-by-address should emit 8–15+ seasoning beats, not one merged summary.
+
 ### Case 1: POI exists, lens is open
 Create the beat and assign it to the POI and lens.
 
 ### Case 2: POI exists, lens has existing beats
-Multiple beats per lens are allowed (disambiguated by topic_slug). Extract the new beat; let topic_slug carry the uniqueness. Do NOT conflict-check against existing beats — that's handled downstream by semantic dedup.
+Multiple beats per lens are allowed (disambiguated by topic_slug and, for tier-4/5 POIs, by sub_location). Extract the new beat; let topic_slug carry the uniqueness. Do NOT conflict-check against existing beats — that's handled downstream by semantic dedup.
 
 ### Case 3: Beat references a distinct zone of an existing large POI (sub-POI emergence)
 
@@ -262,18 +399,23 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
   "parent_poi": null,
   "lens": "hidden_history",
   "topic_slug": "charles_v_royal_library",
-  "script_body": "Charles V founded the royal library here in 1368. ...",
-  "duration_sec": 52,
+  "sub_location": null,
+  "trigger_address": null,
+  "script_body": "Charles V founded the royal library here in 1368. The collection of nine hundred and seventeen manuscripts included works of Cicero, Seneca and Aristotle — a private scholar's hoard in an age when the Sorbonne's chained library ran to a few hundred titles, half of them liturgical.",
+  "beat_length_class": "mid",
+  "duration_sec": 20,
   "kid_friendly": "yes",
-  "entities": ["Charles V", "Royal Library"],
+  "entities": ["Charles V", "Royal Library", "Cicero", "Seneca", "Aristotle", "Sorbonne"],
   "sensory_anchor": false,
   "narrative_function": "deepen",
   "beat_type": "character_story",
   "emotional_register": "neutral",
   "subject_tag": "royal library origin",
   "physical_cues": [],
-  "key_claims": ["Charles V founded the royal library", "Library held 917 manuscripts"],
-  "source_passage": "Direct 10-30 word quote from the book",
+  "inline_foreign_phrases": [],
+  "pronunciation": null,
+  "key_claims": ["Charles V founded the royal library in 1368", "Library held 917 manuscripts including Cicero, Seneca, Aristotle"],
+  "source_passage": "Verbatim sentence(s) from the book covering every claim in this beat — full sentences, not a snippet.",
   "source_attribution": {
     "book_title": "Around and About Paris",
     "author": "T. Okey",
@@ -287,33 +429,107 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
   },
   "new_poi": false,
   "_meta": {
-    "prompt_version": "unified_v1",
+    "prompt_version": "unified_v2",
     "generated_at": "ISO 8601",
     "city_name": "paris"
   }
 }
 ```
 
-### Sensory-anchored beat example
+### Sensory-anchored sub_location beat example (tier-5 POI, anchor-class)
 
 ```json
 {
-  "beat_id": "paris_louvre_museum_historic_arch_around_and_about_paris_medieval_foundations",
+  "beat_id": "paris_conciergerie_dark_history_around_and_about_paris_pailleux_iron_grille",
   "city_name": "paris",
-  "poi_name": "Louvre Museum",
-  "lens": "historic_arch",
-  "topic_slug": "medieval_foundations",
-  "script_body": "The medieval foundations of the original Louvre fortress were excavated and exposed in 1984...",
+  "poi_name": "Conciergerie",
+  "lens": "dark_history",
+  "topic_slug": "pailleux_iron_grille",
+  "sub_location": "salle-des-gens-darmes",
+  "trigger_address": null,
+  "beat_length_class": "mid",
+  "script_body": "In the vaulted Salle des Gens d'Armes, dating to 1301–15, an iron grille still divides the hall at its far end. Beyond the grille lived the pailleux — prisoners who could not afford to bribe a guard for a private cell and had to sleep on straw (paille). Their richer fellow-prisoners, the pistoliers, occupied the cells you can see along the near walls; each bought his keep with a coin called the pistole. The grille separated the money from the mud.",
   "sensory_anchor": true,
   "physical_cues": [
     {
-      "cue": "Medieval foundations exposed on the east side of the Cour Carrée",
-      "direction": "east",
-      "feature_type": "architectural_detail"
+      "cue": "Iron grille separating the pailleux section at the far end of the Salle des Gens d'Armes",
+      "direction": "here",
+      "feature_type": "interior"
     }
   ],
-  "subject_tag": "medieval foundations",
-  ...
+  "inline_foreign_phrases": [
+    {"phrase": "pailleux", "gloss": "prisoners who could not afford to bribe a guard for their own cell and had to sleep on straw"},
+    {"phrase": "paille", "gloss": "straw"},
+    {"phrase": "pistoliers", "gloss": "prisoners who bought a private cell with a coin called the pistole"}
+  ],
+  "pronunciation": null,
+  "beat_type": "architectural_detail",
+  "narrative_function": "deepen",
+  "emotional_register": "somber",
+  "subject_tag": "pailleux grille",
+  "entities": ["Salle des Gens d'Armes", "pailleux", "pistoliers"],
+  "source_passage": "...",
+  "_meta": {"prompt_version": "unified_v2", "generated_at": "ISO 8601", "city_name": "paris"}
+}
+```
+
+### Seasoning beat example (address-anchored, walk-by vignette)
+
+```json
+{
+  "beat_id": "paris_place_des_vosges_literary_heritage_pariswalks_hugo_museum_no_6",
+  "city_name": "paris",
+  "poi_name": "Place des Vosges",
+  "lens": "literary_heritage",
+  "topic_slug": "hugo_museum_no_6",
+  "sub_location": null,
+  "trigger_address": "no. 6 place des Vosges",
+  "beat_length_class": "seasoning",
+  "script_body": "No. 6 is the Maison de Victor Hugo. The poet and novelist lived here from 1832 to 1848, in the second-floor apartment of the Hôtel de Rohan-Guéménée, writing much of Les Misérables within these walls before the Revolution of 1848 drove him into Channel-island exile.",
+  "sensory_anchor": true,
+  "physical_cues": [
+    {"cue": "Plaque marking Victor Hugo's second-floor apartment at no. 6", "direction": "here", "feature_type": "plaque"}
+  ],
+  "inline_foreign_phrases": [
+    {"phrase": "Maison de Victor Hugo", "gloss": "Victor Hugo's House (now a museum)"},
+    {"phrase": "Hôtel de Rohan-Guéménée", "gloss": "grand private residence of the Rohan-Guéménée family"}
+  ],
+  "pronunciation": null,
+  "beat_type": "character_story",
+  "narrative_function": "deepen",
+  "emotional_register": "reverent",
+  "subject_tag": "Hugo residence",
+  "entities": ["Victor Hugo", "Les Misérables", "Hôtel de Rohan-Guéménée"],
+  "source_passage": "...",
+  "_meta": {"prompt_version": "unified_v2", "generated_at": "ISO 8601", "city_name": "paris"}
+}
+```
+
+### Stop-orientation beat example (staging, not narrative)
+
+```json
+{
+  "beat_id": "paris_place_des_vosges_local_legends_pariswalks_staging_garden_bench",
+  "city_name": "paris",
+  "poi_name": "Place des Vosges",
+  "lens": "local_legends",
+  "topic_slug": "staging_garden_bench",
+  "sub_location": "square-center-park",
+  "beat_length_class": "seasoning",
+  "script_body": "Find a bench in the central garden, near the children's play area. From here you can take in the full sweep of the square — the red brick and white stone pavillons on all four sides, the slate roofs, the thirty-six matching townhouses Henri IV laid out to a single plan in 1605. If it is cold or wet, step into Café Ma Bourgogne at the northwest corner; the view is nearly as good from the window.",
+  "beat_type": "stop_orientation",
+  "narrative_function": "establishing",
+  "emotional_register": "neutral",
+  "sensory_anchor": true,
+  "physical_cues": [
+    {"cue": "Bench in the central garden near the children's play area", "direction": "here", "feature_type": "view"},
+    {"cue": "Café Ma Bourgogne at the northwest corner of the square", "direction": "north", "feature_type": "adjacent_landmark"}
+  ],
+  "subject_tag": "staging bench",
+  "entities": ["Henri IV"],
+  "pronunciation": "plass-day-voge",
+  "source_passage": "...",
+  "_meta": {"prompt_version": "unified_v2", "generated_at": "ISO 8601", "city_name": "paris"}
 }
 ```
 
@@ -374,21 +590,31 @@ After writing the output, tell the user what to run next:
 
 Before writing output:
 
-1. **Every beat has a source_passage** — no beat exists without a grounding quote
-2. **No hallucinated content** — every fact in every beat traces to source text
-3. **Beat IDs are unique within this run** — no two beats share the same beat_id
+1. **Every beat has a source_passage** — verbatim sentence(s) from the book, not a snippet (B7).
+2. **No hallucinated content** — every fact in every beat traces to source text.
+3. **Beat IDs are unique within this run** — no two beats share the same beat_id.
 4. **Every beat has all required fields:**
    - `beat_id`, `city_name`, `poi_name`, `lens`, `topic_slug`, `script_body`
    - `duration_sec` (computed, int)
    - `entities` (list, can be empty)
    - `sensory_anchor` (bool)
-   - `narrative_function`, `beat_type`, `emotional_register` (valid enum values)
+   - `narrative_function`, `beat_type`, `emotional_register` (valid enum values — including the new structural beat_types `stop_orientation`, `transit`, `sidebar`)
    - `subject_tag` (1–3 words, 1–32 chars)
    - `physical_cues` (list of objects; ≥1 if sensory_anchor is true)
    - `source_passage`, `source_attribution`
-5. **No city name hardcoded in my extraction logic** — use the `$ARGUMENTS` city parameter consistently
-6. **Preserve existing data** — `poi-raw.json` unchanged in this scope
-7. **Valid JSON** — output parses without errors
+   - `beat_length_class` (one of `anchor`, `mid`, `seasoning`, `micro`)
+   - `sub_location` (string or null), `trigger_address` (string or null)
+   - `inline_foreign_phrases` (list, possibly empty), `pronunciation` (string or null)
+5. **Word count falls inside `beat_length_class` range** — anchor 200–400w, mid 80–200w, seasoning 20–80w, micro <20w. If a beat drifts outside, **re-class it, don't re-write.** An out-of-range count means the extractor mis-identified the source's role.
+6. **Inline foreign phrases are consistent with script_body** — every `inline_foreign_phrases[].phrase` value must literally appear in `script_body`. If the structured entry exists but the word is missing from prose, the extractor paraphrased it away — restore the verbatim form (B3).
+7. **Tier-3+ physical_cues are populated when the source has a visible feature** — if a beat at an `importance_tier >= 3` POI cites plaques, façade details, views, interiors, or adjacent landmarks in its `source_passage`, `physical_cues` must not be empty.
+8. **poi_name is location-anchored (B9)** — for each non-transit beat, ask "if a listener geofences this `poi_name` (+ `trigger_address` if set), will they be standing where this story happened?" If no, re-assign. For `beat_type: transit` beats, verify the carve-out instead: `trigger_address` is the origin (required, non-null), `poi_name` is the destination (next stop), and origin ≠ destination.
+9. **Seasoning beats use `trigger_address`** — any beat at `beat_length_class: seasoning` that the source tied to a specific address (*"no. X..."*, *"at [address]..."*) must have `trigger_address` populated; `poi_name` is the containing anchor, not the address.
+10. **Transit/sidebar narrative_function** — `beat_type: transit` beats must not carry `narrative_function: establishing`; transit beats bridge stops, they don't introduce a POI's identity. `beat_type: sidebar` beats likewise should not be `narrative_function: establishing` (a digression can't be the anchoring identity).
+11. **Sub-POI and `sub_location` are not double-encoding** — when a beat's spatial zone is distinct enough that you emit a new sub-POI (PHASE 3 Case 3), `sub_location` on that beat is null (the sub-POI *is* the location). When the zone is just a named sub-area within the parent POI (façade, nave, crypt) and you do NOT emit a sub-POI, `sub_location` is populated. Never both.
+12. **No city name hardcoded in extraction logic** — use the `$ARGUMENTS` city parameter consistently.
+13. **Preserve existing data** — `poi-raw.json` unchanged in this scope beyond sub-POI emission and `establishing_not_applicable` flags per Phases 3–4.
+14. **Valid JSON** — output parses without errors.
 
 ---
 
@@ -423,3 +649,26 @@ After processing, report:
 7. **Sensory-anchor/physical-cues consistency:**
    - Beats with `sensory_anchor: true` and zero physical_cues (expected: 0)
    - Beats with physical_cues but `sensory_anchor: false` (listed as warning)
+   - Tier-3+ beats with empty physical_cues whose `source_passage` cites visible features (expected: 0; flag any)
+
+8. **Length-class distribution (unified_v2):**
+   - Count per `beat_length_class`: anchor / mid / seasoning / micro.
+   - Word-count range per class (min, median, max). Flag any beat whose word count falls outside its declared class's range — these are mis-classed, not mis-written (see SELF-VERIFICATION rule 5).
+   - A healthy tier-5-POI-rich chunk should produce a mix: ~10% anchor, ~40% mid, ~45% seasoning, ~5% micro. A chunk skewed 100% `mid` is evidence of length-class uniformity (the pre-unified_v2 failure mode).
+
+9. **Sub-location coverage:**
+   - Count of beats with `sub_location` populated, grouped by POI.
+   - For every tier-4/5 POI touched in this run, list its distinct sub_locations.
+   - Flag tier-5 POIs that got ≥3 beats but zero distinct sub_locations — likely under-structured extraction.
+
+10. **Trigger-address coverage:**
+    - Count of beats with `trigger_address` populated.
+    - Group by `poi_name` (the anchor). A square-scale POI treated Pariswalks-style should carry multiple seasoning beats with distinct `trigger_address` values.
+
+11. **Inline foreign-phrase preservation:**
+    - Total distinct phrases captured, and list of the first 20 (phrase → gloss).
+    - Flag any beat whose `inline_foreign_phrases` entry isn't present literally in `script_body` — this is a B3 regression.
+
+12. **New structural beat_types:**
+    - Count per structural type: `stop_orientation` / `transit` / `sidebar`.
+    - Expected: chunks from walk-scripted books (Frommer's, Rick Steves) produce `transit` beats; chunks with sit-down anchors (Pariswalks, Rough Guide Notre-Dame) produce `stop_orientation` beats; chunks with boxed asides produce `sidebar` beats. Zero on all three across a rich chunk is a warning.
