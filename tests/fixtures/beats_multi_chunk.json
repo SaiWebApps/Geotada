@@ -1,0 +1,50 @@
+[
+  {
+    "beat_id": "louvre_museum_war_conflict_fortress_around_and_about_paris",
+    "poi_name": "Louvre Museum",
+    "lens": "war_conflict",
+    "city_name": "paris",
+    "book_slug": "around_and_about_paris",
+    "topic_slug": "fortress",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "script_body": "The Louvre began as a fortress under Philippe-Auguste in 1190.",
+    "script_body_hash": "fa2cf90068df2a3398c81fac1c34dec9c31ba749decec402a071675994f35bef",
+    "_meta": {"prompt_version": "beat_from_book_v1"}
+  },
+  {
+    "beat_id": "paris_val_de_grace_historic_worship_around_and_about_paris_intact_17c",
+    "poi_name": "Val-de-Grace",
+    "lens": "historic_worship",
+    "city_name": "paris",
+    "book_slug": "around_and_about_paris",
+    "topic_slug": "intact_17c",
+    "source_chunk_slug": "chunk-15-5th-arr-val-de-grace",
+    "script_body": "Val-de-Grace remains intact from the seventeenth century.",
+    "script_body_hash": "be1041cab8f64c2f91d70c3091e371762daece6a03f6b7fec1e2f8aa1a4ba8f2",
+    "_meta": {"prompt_version": "unified_v1"}
+  },
+  {
+    "beat_id": "pont_neuf_hidden_history_oldest_legacy_a",
+    "poi_name": "Pont Neuf",
+    "lens": "hidden_history",
+    "city_name": "paris",
+    "book_slug": "legacy_unknown",
+    "topic_slug": "legacy_unknown",
+    "source_chunk_slug": "legacy_ambiguous",
+    "script_body": "The Pont Neuf is the oldest standing bridge in Paris.",
+    "script_body_hash": "a0630b19603bfb821a1243cca78ce5349622cd291c4baca0523ce19bbe9abd25",
+    "_meta": {"prompt_version": "pipeline_batch_v1"}
+  },
+  {
+    "beat_id": "pont_neuf_hidden_history_oldest_legacy_b",
+    "poi_name": "Pont Neuf",
+    "lens": "hidden_history",
+    "city_name": "paris",
+    "book_slug": "legacy_unknown",
+    "topic_slug": "legacy_unknown",
+    "source_chunk_slug": "legacy_ambiguous",
+    "script_body": "Despite its name meaning new bridge, the Pont Neuf is in fact the oldest still standing in Paris.",
+    "script_body_hash": "abaf6655b9e8627136435f5c5a858dddde4342d1d5fcdaefc7dca4fef1f71989",
+    "_meta": {"prompt_version": "db_backfill_v1"}
+  }
+]

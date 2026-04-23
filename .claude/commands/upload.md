@@ -11,9 +11,21 @@ Parse the arguments:
 
 When in doubt about which chunks qualify as delta, show the user the proposed file list and ask before proceeding.
 
+## PRE-FLIGHT: Validate beats.json (HARD-BLOCK)
+
+Before anything else, run the dedup validator on the city's beats.json:
+```
+.venv/bin/python scripts/validate_beats.py data/{city_slug}/beats.json
+```
+If exit code is non-zero, STOP. Print the validator's output verbatim and do
+not proceed to any other step. There is no warn-and-continue mode — duplicate
+or hash-colliding beats are a hard block per AC-9. Override only by fixing
+`beats.json` (e.g. via `/beat-wipe` then re-extract, or a manual delete) and
+re-running this skill from the top.
+
 ## PRE-FLIGHT: Run regression tests
 
-Before any upload, run:
+Once the beats validator passes, run:
 ```
 .venv/bin/python -m pytest tests/test_export_consistency.py tests/test_gravity_distribution.py tests/test_lens_drift.py -v
 ```
@@ -221,3 +233,16 @@ Errors: (none)
 - **MERGE handles beat dedup** — the database prevents exact script_body duplicates automatically
 - **Confirm before proceeding** — always show the plan and wait for approval
 - **Re-runnable** — running twice on the same file is safe due to MERGE idempotency
+
+---
+
+## SELF-VERIFICATION
+
+Before reporting completion:
+
+1. **Pre-flight tests passed** — `test_export_consistency.py`, `test_gravity_distribution.py`, and `test_lens_drift.py` all green
+2. **Every POI in the export was sent** — count of API calls matches count of POIs in the file
+3. **Every beat was sent** — count of HAS_BEAT relationships matches total beats in the file
+4. **No HTTP errors** — all API responses were 2xx
+5. **MERGE didn't overwrite** — existing POIs were skipped, not updated
+6. **Report matches reality** — created/skipped/failed counts in the report add up to the total

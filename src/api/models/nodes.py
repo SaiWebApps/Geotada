@@ -2,10 +2,24 @@
 
 from __future__ import annotations
 
+import hashlib
+import re
 from enum import Enum
 from typing import Any, Literal
 
 from pydantic import BaseModel, field_validator, model_validator
+
+
+def _normalized_script_body_hash(script_body: str) -> str:
+    """SHA-256 of `re.sub(r'\\s+', ' ', body.lower().strip())`.
+
+    Single source of truth for hash computation; reused by validators,
+    migration, and dedup tooling so a hash mismatch always means the body
+    actually differs after normalization, not because two callers normalized
+    differently.
+    """
+    normalized = re.sub(r"\s+", " ", script_body.lower().strip())
+    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
 class NodeLabel(str, Enum):
@@ -169,6 +183,11 @@ class NarrativeBeatCreate(BaseModel):
     emotional_register: str = ""
     subject_tag: str = ""
     physical_cues: list[PhysicalCue] = []
+    script_body_hash: str = ""
+    book_slug: str = ""
+    topic_slug: str = ""
+    city_name: str = ""
+    source_chunk_slug: str = ""
 
     @field_validator("subject_tag")
     @classmethod
@@ -181,6 +200,18 @@ class NarrativeBeatCreate(BaseModel):
         if not 1 <= len(words) <= 3:
             raise ValueError("subject_tag must be 1–3 words")
         return v
+
+    @model_validator(mode="after")
+    def hash_matches_normalized_body(self) -> "NarrativeBeatCreate":
+        expected = _normalized_script_body_hash(self.script_body)
+        if not self.script_body_hash:
+            self.script_body_hash = expected
+        elif self.script_body_hash != expected:
+            raise ValueError(
+                "script_body_hash does not match SHA-256 of normalized "
+                "script_body. Recompute or omit to auto-fill."
+            )
+        return self
 
 
 class AreaCreate(BaseModel):

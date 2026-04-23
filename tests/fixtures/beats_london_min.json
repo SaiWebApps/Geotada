@@ -1,0 +1,26 @@
+[
+  {
+    "beat_id": "tower_of_london_dark_history_intro_visitor_guide_london",
+    "poi_name": "Tower of London",
+    "lens": "dark_history",
+    "city_name": "london",
+    "book_slug": "visitor_guide_london",
+    "topic_slug": "intro",
+    "source_chunk_slug": "chunk-01-tower-and-bridge",
+    "script_body": "A baseline London beat about the Tower.",
+    "script_body_hash": "8bad8fd91fe8b2a880c841730280eef4ec7c679df49c8492fbe11bf4fcd800a2",
+    "_meta": {"prompt_version": "unified_v1"}
+  },
+  {
+    "beat_id": "tower_bridge_historic_arch_intro_visitor_guide_london",
+    "poi_name": "Tower Bridge",
+    "lens": "historic_arch",
+    "city_name": "london",
+    "book_slug": "visitor_guide_london",
+    "topic_slug": "intro",
+    "source_chunk_slug": "chunk-01-tower-and-bridge",
+    "script_body": "A second London beat about Tower Bridge.",
+    "script_body_hash": "ab44ecd91d035503379b23fe3887e33dd02e85d6ac055da9b87cb304671856f7",
+    "_meta": {"prompt_version": "unified_v1"}
+  }
+]
