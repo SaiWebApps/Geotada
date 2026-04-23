@@ -35,12 +35,16 @@ Violation of this policy poisons every downstream process. When in doubt, extrac
 
 ---
 
-## PRE-CHECK — BOOK LOG VALIDATION
+## PRE-CHECK — BOOK LOG VALIDATION (HARD REFUSE)
 
-Before processing, read `data/{city_slug}/book-log.json` if it exists. Check whether this book (by title and author) has already been processed:
-- If the EXACT same chunk was already processed, STOP and tell the user: "This chunk was already processed on [date]. [X] beats were extracted. Run again to re-extract, or skip."
-- If a different chunk from the same book was processed, continue — this is expected (processing chunk by chunk).
-- If no book-log.json exists, continue.
+Before any extraction work, read `data/{city_slug}/book-log.json` if it exists. For each book in `books_processed`, if the `{book_title, author, chunk}` tuple already appears in `chunks_processed`, HARD REFUSE:
+
+- Print verbatim: `Refused: {chunk} was processed on {processed_at} ({beats_extracted} beats extracted). Run /beat-wipe {city_slug}/{book_slug} --chunk {chunk_slug} first if you want to re-extract.`
+- Exit non-zero. Do NOT proceed to PHASE 1 or any other extraction step.
+
+The refusal is absolute — there is no "re-extract anyway" option at this layer. Duplicate prevention lives at the commit-to-disk boundary; re-extraction requires an explicit `/beat-wipe` first so the user acknowledges the destructive action.
+
+If a different chunk from the same book was processed, continue — this is expected (chunk-by-chunk processing). If no `book-log.json` exists, continue.
 
 ---
 
@@ -321,11 +325,19 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
 
 ### Write output
 
-- **Beats:** append new beats to `data/{city_slug}/beats.json` (create if doesn't exist).
+- **Beats + book log (atomic, validator-gated):** all writes to `data/{city_slug}/beats.json` and `data/{city_slug}/book-log.json` MUST go through the atomic commit helper. Never append to either file directly.
+
+  Compute the full final state:
+  1. Load the current `beats.json` (or `[]` if it doesn't exist) and `book-log.json` (or `{"city": "<City>", "books_processed": []}` if it doesn't exist).
+  2. Ensure every new beat carries `script_body_hash` (SHA-256 of `re.sub(r'\s+', ' ', body.lower().strip())`), `book_slug`, `topic_slug`, `city_name`, and `source_chunk_slug` — the validator will reject staged writes that lack any of these.
+  3. Extend the log: find the book entry matching this book_title + author (create a new entry if absent) and append a `chunks_processed` dict with `chunk`, `processed_at`, `beats_extracted`, `pois_touched`, `pois_created`, `pois_mentioned_no_content`.
+  4. Call `scripts.beats_io.commit(final_beats=existing + new_beats, final_log=updated_log, beats_path='data/{city_slug}/beats.json', log_path='data/{city_slug}/book-log.json')`.
+
+  If `commit` raises `BeatValidationError`: do NOT retry, do NOT partial-write, do NOT shell out to manually edit `beats.json`. Print the exception message (it includes the full validator report with colliding beat IDs and conflict types) and stop. The user resolves the conflict upstream and re-runs.
+
 - **Sub-POIs only:** append new sub-POI entries (those with `parent_poi` set and `source_passage` non-empty) to `data/{city_slug}/poi-raw.json`. Every existing entry in that file stays untouched (preservation boundary — verified in Scope 5's AC-2d check).
 - **Completely-new POIs (no parent):** flag only in the pipeline report. Do NOT write to `poi-raw.json`. The user triages these separately via `/poi-generate`.
 - **POI `establishing_not_applicable` auto-flag:** for every POI touched in this run that qualifies (see Phase 4), set the field on the existing entry in `poi-raw.json`. This is a permitted modification of existing POIs under the rule.
-- **Book processing log:** update `data/{city_slug}/book-log.json`.
 
 ### Follow-up actions to report at the end (do not execute here)
 
