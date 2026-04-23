@@ -1,0 +1,29 @@
+{
+  "spec_name": "beat-dedup",
+  "created_at": "2026-04-22",
+  "scopes_total": 3,
+  "scopes": [
+    {
+      "name": "Hash, Validator, Migration, Pre-Upload Gate",
+      "stage": "complete",
+      "commit": "457f6b3",
+      "challenger_invoked": true
+    },
+    {
+      "name": "Refuse-on-Reprocess, Atomic Write, /beat-wipe",
+      "stage": "complete",
+      "commit": "f6ae9fc",
+      "challenger_invoked": true
+    },
+    {
+      "name": "/beat-dedup skill + Val-de-Grace cleanup",
+      "stage": "complete",
+      "challenger_invoked": true,
+      "notes": "Live Haiku round-trip deferred — ANTHROPIC_API_KEY not set on user machine; skill + tests ship, live VdG run at spec defaults surfaces 0 pairs (confirms R-2 paraphrase under-retrieval), AC-8 holds vacuously."
+    }
+  ],
+  "current_scope": {
+    "index": 3,
+    "stage": "complete"
+  }
+}

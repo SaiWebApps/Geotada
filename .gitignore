@@ -257,3 +257,8 @@ temp/
 !.env.test.example
 # Generated audio files (local TTS output)
 audio_store/
+
+# Beat dedup review reports — intermediate human-review artifacts.
+# Keep _log.jsonl tracked as audit trail; exclude per-run markdown reports.
+data/*/_dedup_review/*.md
+!data/*/_dedup_review/_log.jsonl
