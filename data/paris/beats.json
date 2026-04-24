@@ -31912,5 +31912,1932 @@
     "script_body_hash": "2c75a33d847ce056e01393094a96d15c2e294cee50305a724a1279102c06e135",
     "book_slug": "around_and_about_paris",
     "source_chunk_slug": "chunk-15-5th-arr-val-de-grace"
+  },
+  {
+    "beat_id": "paris_place_des_vosges_parks_gardens_pariswalks_sit_in_the_garden",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "parks_gardens",
+    "topic_slug": "sit_in_the_garden",
+    "sub_location": "square-center-park",
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "Find a bench in the garden, near the children's play area, so you can watch the children play à la française — and despite the mix of Hebrew, Yiddish, and Arabic you'll hear, you're standing in what was for nearly two centuries the single most fashionable square in Paris. If it's cold, step into Café Ma Bourgogne at the northwest corner; the view of the square is nearly as good from the window.",
+    "script_body_hash": "637b564a3889206aad72c4cdb9599cb3a3bdf7bd917041e29fd09eff9515a236",
+    "duration_sec": 29,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "stop_orientation",
+    "emotional_register": "neutral",
+    "subject_tag": "staging bench",
+    "physical_cues": [
+      {
+        "cue": "Children's play area in the central garden",
+        "direction": "here",
+        "feature_type": "view"
+      },
+      {
+        "cue": "Symmetrical red-brick townhouses on all four sides of the square",
+        "direction": "here",
+        "feature_type": "view"
+      },
+      {
+        "cue": "Café Ma Bourgogne on the northwest corner",
+        "direction": "north",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "à la française",
+        "gloss": "French-style"
+      }
+    ],
+    "pronunciation": "plass-day-voge",
+    "source_passage": "Walk up the rue de Birague (stop and look at interesting shops) and continue into the place des Vosges (pronounced plass-day-voge) before you. A place is a square; this one has a large park in the middle and symmetrical townhouses all around. Sit in the garden near the children's area so that you can watch the children play à la française (despite the mix of Hebrew, Yiddish, and Arabic you'll hear). If it is cold, try the café Ma Bourgogne, on the northwest corner of the place.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "115"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_hidden_history_pariswalks_entry_rue_de_birague",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "hidden_history",
+    "topic_slug": "entry_rue_de_birague",
+    "sub_location": null,
+    "trigger_address": "rue de Birague (south entrance)",
+    "beat_length_class": "seasoning",
+    "script_body": "Walk up rue de Birague — stop and look at the shops — and continue into the place des Vosges. Henri IV himself planned that visiting dignitaries would enter the square exactly this way, through the rue de Birague gate.",
+    "script_body_hash": "3a157536abc6fd5fc0f3d086ef52c52417966978d59eca6c6a90210d14408abe",
+    "duration_sec": 16,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "transition",
+    "beat_type": "transit",
+    "emotional_register": "neutral",
+    "subject_tag": "birague entry",
+    "physical_cues": [
+      {
+        "cue": "Shops along rue de Birague leading into the square",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": "plass-day-voge",
+    "source_passage": "Walk up the rue de Birague (stop and look at interesting shops) and continue into the place des Vosges. [...] it was Henri's intention that all visiting foreign dignitaries arriving in Paris would enter by the gate just to the east of here, at the Bastille, travel down the rue Saint-Antoine, and then turn into the place Royale from what is now the rue de Birague, where you entered.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "115"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_dark_history_pariswalks_montgomery_lance_henri_ii",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "dark_history",
+    "topic_slug": "montgomery_lance_henri_ii",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Victor Hugo put it bluntly: \"It's the blow of Montgomery's lance that created the place des Vosges.\" In 1559 a royal palace called Tournelles stood on this ground, and Henri II, having already won two jousts that day, insisted on a third against the captain of his Scottish Guards, Gabriel de Lorges, sire de Montgomery. Montgomery was reluctant. The king, savoring his success, had his way. At the second pass Montgomery's lance broke, and by a freak accident the point pushed up the visor of the king's helmet and entered his head above his eye. For ten days Henri suffered. The greatest doctors were called; Ambroise Paré and Andreas Vesalius came all the way from Brussels. Four criminals under sentence of death were decapitated so that the doctors could study their cranial anatomy, but to no avail. Henri died — of infection if nothing else — and his widow Catherine de Médicis persuaded her son Charles IX to demolish the palace with its unhappy memories.",
+    "script_body_hash": "971ae28051e30d14b039d9c5cded4137aa4aa07858baa907a0bf53229a13b3cb",
+    "duration_sec": 66,
+    "kid_friendly": "no",
+    "entities": [
+      "Henri II",
+      "Gabriel de Lorges",
+      "Montgomery",
+      "Ambroise Paré",
+      "Andreas Vesalius",
+      "Catherine de Médicis",
+      "Charles IX",
+      "Victor Hugo"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "hook",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "montgomery lance",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "C'est le coup de lance de Montgomery qui a créé la place des Vosges. —Victor Hugo. [...] It remained the royal residence until 1559 and the joust that cost Henri II his life. The king had fought and won two jousts already that day, but he insisted on a third against the captain of his Scottish Guards, Gabriel de Lorges, sire de Montgomery. At the first pass, both combatants splintered their lances. The king wanted another run; Montgomery was reluctant. Of course, the king, savoring his success, had his way. Once again Montgomery's lance broke, but this time, by a freak accident, the point pushed up the visor of the king's helmet and entered his head above his eye. For ten days Henri suffered. The greatest doctors were called; Ambroise Paré and Andreas Vesalius came all the way from Brussels. Four criminals under sentence of death were decapitated so that the doctors could study their cranial anatomy, but to no avail. Henri died, of infection if nothing else, and his widow, Catherine de Médicis, persuaded her son Charles IX to demolish the palace with its unhappy memories.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "116"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_commerce_innovation_pariswalks_henri_iv_first_urban_project",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "commerce_innovation",
+    "topic_slug": "henri_iv_first_urban_project",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "After royalty abandoned the Tournelles palace, the ground was used by the militia for exercises, by the city for stables and a powder store, and for a long time by a horse market that attracted rogues. Henri IV found the answer: replace the market with Paris's first real urban development project. Parceling began in 1605. He reserved the south side for himself, the north for a silk factory à la façon de Milan, and sold the east and west to private owners. The Duc de Sully filled half of his side with friends; the Duc de Guise did likewise. The king, a recent convert to Catholicism, was pleased: the new square housed Protestants and Catholics side by side.",
+    "script_body_hash": "61af5f71a6ebb99df6c40e30376cf2b8dd143815f9f46abb8633a6387bedba79",
+    "duration_sec": 47,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV",
+      "Duc de Sully",
+      "Duc de Guise"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "first urban project",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "à la façon de Milan",
+        "gloss": "in the Milanese style"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Once royalty abandoned the palace, the ground on which it had stood was given over to a succession of improvised roles. The militia used it for its exercises. The city installed stables and used some of the buildings to store powder. [...] The answer was found by Henri IV. The horse market would be replaced by a development project, Paris's first. It would be a spacious, symmetrical public square to be known as the place Royale, a place of respectable residence and assembly. The parceling of terrain began in 1605 [...]. The Duc de Sully filled 50 percent of the pavilions with his friends. The Duc de Guise did likewise. The result was one that pleased Henri, a convert to Catholicism: a mix of Protestants and Catholics.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "116-117"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_bleu_blanc_rouge_trompe_loeil",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_arch",
+    "topic_slug": "bleu_blanc_rouge_trompe_loeil",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The façades were meant to be uniform: brick with pierre taillé — cut-stone — trim, two floors above four arcades of shops, capped by a steep slate roof pierced with mansard windows. The style was called bleu, blanc, rouge, for the slate roofs, the white stone trim, and the red bricks. In practice, only the first structures — the Pavillon du Roi among them — lived up to the plan. Brick was slow to lay and expensive, local workers lacked the skills, and Henri was in a hurry. Most later owners simply built in plaster on wood framing and painted them to resemble brick, in colors from dusty pink to dark red. Much of this trompe l'oeil is still visible around you. These masterpieces of French architecture, praised for their proportions and colors, were mostly façade.",
+    "script_body_hash": "352d88bd2982845f1799a2f5688f559d093c27e41f465991a8589e3034c06bef",
+    "duration_sec": 54,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "painted brick facades",
+    "physical_cues": [
+      {
+        "cue": "Red-brick facades (or painted plaster resembling brick) all around the square",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Steep slate roofs with mansard windows",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Four-arcade covered walkways at ground level",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "pierre taillé",
+        "gloss": "cut-stone"
+      },
+      {
+        "phrase": "bleu, blanc, rouge",
+        "gloss": "blue, white, red — for the slate roofs, white stone trim, and red bricks"
+      },
+      {
+        "phrase": "trompe l'oeil",
+        "gloss": "painted to deceive the eye"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The facades were to be all the same, built of brick with pierre taillé (cut-stone) trim. The ground floor, planned for shops, was set back to create a covered walkway of four arcades per lot: each building was to have two floors above that, the whole capped with a steep slate roof encompassing another two floors pierced with mansard windows. The style was known as bleu, blanc, rouge—for the slate roofs, the white stone trim, and the red bricks. [...] In principle, the buildings around the square were to be made of brick with stone trim. In fact, only the first structures, including the Pavillon du Roi, lived up to the plan. [...] the owners of the later buildings were only too happy to construct them of plaster on wood framing and then paint them to resemble brick, in colors ranging from dusty pink to dark red. Some of this trompe l'oeil is still visible. It is surprising that these masterpieces of French architecture—praised for their concept, size, proportions, and colors—were mostly facade.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "117-118"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_hidden_history_pariswalks_1612_inaugural_tournament_balconies",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "hidden_history",
+    "topic_slug": "1612_inaugural_tournament_balconies",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "anchor",
+    "script_body": "Henri IV was assassinated shortly before the square was finished, and so it was inaugurated by his son, the young Louis XIII — which is why the equestrian statue in the center of the square is of Louis XIII, not of Henri IV. The inauguration, on April 5, 6, and 7 of 1612, was a three-day spectacle. Jousting was forbidden now, but five equestrian ballets were staged for the cavaliers, each in different exotic costumes — one group dressed as American Indians. One quadrille alone involved the Duc de Longueville and his retainers in gray-violet satin with silver embroidery, their pages and horses in red velvet, four winged horses pulling a chariot with two rhinoceroses harnessed behind, and two blue-satin giants preceding the duke himself on a horse draped in repoussé silver and gold. There were one hundred and fifty musicians, continuous parades, fireworks at night, and ten thousand spectators. Members of the royal entourage had been assigned specific houses and balconies — and for the first time, Paris houses had been built with real balconies instead of the thin stone ledges Parisians had leaned on before. Once the place Royale had shown the way, balconies became de rigueur. The common people had to hang from chimneys or squeeze into the arcades. Of one delegation of ambassadors Mme de Motteville wrote: \"In general they are so fat that they give you heartburn, and concerning their bodies, they are dirty.\"",
+    "script_body_hash": "0183a92f4961096aadec3082d4f10a119ec5e36bf5165c09467589ba9431bf60",
+    "duration_sec": 96,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV",
+      "Louis XIII",
+      "Duc de Longueville",
+      "Mme de Motteville"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "inaugural tournament",
+    "physical_cues": [
+      {
+        "cue": "Wrought-iron balconies along the façades on every side of the square",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Equestrian statue of Louis XIII in the center of the square",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "de rigueur",
+        "gloss": "required by fashion or custom"
+      },
+      {
+        "phrase": "repoussé",
+        "gloss": "hammered in relief"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Unfortunately, Henri IV was assassinated shortly before the square's completion. The square was therefore inaugurated by the young Louis XIII. This is why the equestrian statue in the center of the square is of Louis XIII, and not of Henri IV. On April 5, 6, and 7, 1612, a fabulous tournament was held at the resplendent place Royale. Jousting was forbidden, but five equestrian ballets were organized for the cavaliers, each with different exotic costumes—including one group dressed as American Indians. [...] the Duc de Longueville and his retainers were dressed in gray violet satin with silver embroidery; the pages and the horses were dressed in red velvet; four winged horses pulled a chariot with two rhinoceroses harnessed to the back; and two giants in blue satin preceded the duke himself, who rode a horse draped with repoussé plaques of silver and gold. There were one hundred and fifty musicians, as well as games, continuous parades, and fireworks at night. The square was packed with ten thousand people [...]. It was the first time that houses had been built with real balconies; until then Parisians had had only small stone ledges to lean on. Once the place Royale had shown the way, balconies quickly became de rigueur. The common people had to hang from the chimneys or squeeze into the recesses of the arcades. [...] Of one delegation Mme de Motteville wrote, after describing their rich clothes studded with jewels, 'In general they are so fat that they give you heartburn, and concerning their bodies, they are dirty.'",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "118-119"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_dark_history_pariswalks_richelieu_ban_six_man_duel",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "dark_history",
+    "topic_slug": "richelieu_ban_six_man_duel",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "anchor",
+    "script_body": "The place Royale was the favourite dueling ground of the French aristocracy; fashionable ladies of the square enjoyed the spectacle, and swordsmen were encouraged by these admirers. In 1614 three out of four antagonists were killed in a single encounter. In 1626 Cardinal Richelieu, first minister of Louis XIII, forbade dueling on pain of death. The ban itself was the challenge: a year later, a six-man duel — two principals and four seconds, who were expected to do more than hold the combatants' coats — took place right in front of the Pavillon du Roi. Two dead, two fled to England, two off to Lorraine. The latter two were caught en route, brought back to Paris, and decapitated, over the protests of the nobility of France. Richelieu was not a man to take insolence lightly. In 1643, after his death, the last scion of the Protestant Colignys dueled with Henri, Duc de Guise — grandson of the man who had killed Coligny's grandfather, Admiral Coligny, in the 1572 Saint Bartholomew's Day Massacre. Guise was wounded first, but managed to grab Coligny's épée, hold it, and simply finish him off. The king, hoping to end the enmity between Catholics and Protestants, chose not to punish the victor.",
+    "script_body_hash": "41468f937cb5820d276eeba600c928898ce13fb4932f8525a5ffe4ddb3f39886",
+    "duration_sec": 82,
+    "kid_friendly": "no",
+    "entities": [
+      "Cardinal Richelieu",
+      "Louis XIII",
+      "Coligny",
+      "Henri Duc de Guise",
+      "Admiral Coligny"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "duels and ban",
+    "physical_cues": [
+      {
+        "cue": "Pavillon du Roi — the central pavilion on the south side",
+        "direction": "south",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "épée",
+        "gloss": "sword"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The place Royale was also the favorite dueling ground for the hotbloods of the French aristocracy. [...] In 1614, three out of four antagonists were killed in one encounter [...]. In 1626, Richelieu, first minister of Louis XIII, forbade dueling on pain of death. [...] Only one year later there occurred a six-man duel (two principals and four seconds, who were expected to do more than hold the combatants' coats) right in front of the Pavillon du Roi. Results: two dead, two fled to England, and two off to Lorraine. The latter two were caught en route, brought back to Paris, and decapitated, over the protests and appeals of the nobility of France. Richelieu was not a man to take insolence lightly. [...] In 1643, after Richelieu's death, the last scion of the Protestant Colignys dueled with Henri, Duc de Guise, grandson of the man who had killed Coligny's grandfather, Admiral Coligny, in the aftermath of the Saint Bartholomew's Day Massacre, the slaughter of the Protestants during the religious wars (1572). [...] Guise was wounded first, but managed to grab Coligny's épée (sword), hold it, and simply finish him off. This time the king, hoping to end the enmity between Catholics and Protestants, chose not to punish the victor.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "119-120"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_social_change_pariswalks_precieuses_ruelles",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "social_change",
+    "topic_slug": "precieuses_ruelles",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Not all the action in the square was outdoors. The place Royale became the centre of Parisian social life, and fashionable ladies of the neighbourhood — Ninon de Lenclos and Marion Delorme among them — invented a new and durable institution. They met at intimate gatherings called ruelles, at which the elegant guests rivaled one another in wit, fine speech, and social finesse. Molière parodied their excesses in his play Les Précieuses Ridicules. The gatherings took place in the hostesses' bedrooms, perhaps because an amazing number of the hostesses were as renowned for their sexual prowess as their social. Several of the great ladies of the place Royale could hardly keep track of their lovers.",
+    "script_body_hash": "573c4a9c5ae0ab8396f1ddc7a232a0a485ccfe8940c445ad18d8ca600f88de46",
+    "duration_sec": 46,
+    "kid_friendly": "no",
+    "entities": [
+      "Ninon de Lenclos",
+      "Marion Delorme",
+      "Molière",
+      "Les Précieuses Ridicules"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "wry",
+    "subject_tag": "precieuses and ruelles",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "ruelles",
+        "gloss": "intimate gatherings — literally 'little lanes,' held in the hostess's bedroom"
+      },
+      {
+        "phrase": "Les Précieuses Ridicules",
+        "gloss": "The Pretentious Young Ladies"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Not all the action in the place was outdoors. The place Royale was the center of Parisian social life, and such fashionable ladies of the neighborhood as Ninon de Lenclos and Marion Delorme invented a new and durable institution. They met at intimate gatherings called ruelles, at which the elegant guests rivaled one another in wit, fine speech, and social finesse. Molière parodied their excesses in his play Les Précieuses Ridicules. [...] these encounters took place in the hostesses' bedrooms, perhaps because an amazing number of the hostesses were as renowned for their sexual as for their social prowess. Several of the great ladies of the place Royale could hardly keep track of their lovers.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "120"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_social_change_pariswalks_1800_rename_vosges_first_tax",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "social_change",
+    "topic_slug": "1800_rename_vosges_first_tax",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "During the Revolution the place Royale was renamed the place de l'Indivisibilité, after the new Republic, one and indivisible. Then, in 1800, the name was changed again — to place des Vosges, to honour the first French département to pay its taxes that year. Lovers of old Paris still argue for the return of the original name.",
+    "script_body_hash": "3139761083d59c278cc88d545176408ed0b17a09a26e6e4b87eed6eddf0d4a0d",
+    "duration_sec": 23,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis Philippe",
+      "Victor Hugo"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "revolutionary rename",
+    "physical_cues": [
+      {
+        "cue": "The iron grille surrounding the central garden, a replacement from 1839",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "place de l'Indivisibilité",
+        "gloss": "place of the Indivisible (Republic)"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "During the Revolution the place Royale was renamed the place de l'Indivisibilité, after the new Republic, one and indivisible. Then, in 1800, the name was changed again. It became the place des Vosges to honor the region that paid its taxes first. Lovers of old Paris argue heatedly for the return of the original, historic name, place Royale.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "123"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_parks_gardens_pariswalks_tree_vista_controversy",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "parks_gardens",
+    "topic_slug": "tree_vista_controversy",
+    "sub_location": "square-center-park",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The garden is the subject of an ongoing argument: keep the trees, or cut them down. The large leafy trees you see were not here originally, and for good reason — they block the view of the place. The French have always been devoted to vistas, which is one reason why Paris is such a beautiful city. The original garden was minimal: lawns with paths cut on the diagonal, leaving an unobstructed view of the whole square. The trees standing here today are the second set; the first, a ring around the statue, were struck down by Dutch elm disease. From a second-floor window of the Musée Victor Hugo you can see how magnificent the whole square looks when it's uninterrupted by trees — and you too may side with the preservationists.",
+    "script_body_hash": "ccafd0c3e362fd32a6b252c8b4d6dca0c506127cd9eb3617e2c037fa6fb7f0f5",
+    "duration_sec": 53,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "trees vs vista",
+    "physical_cues": [
+      {
+        "cue": "Large leafy trees in the central garden, obstructing the view across the square",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The garden before you is the subject of great and ongoing controversy: to keep or not to keep the trees. To preservationists and purists, the large leafy trees are an intrusion. They weren't there originally, and for good reason: they block the view of the place. The French have always been devoted to vistas, which is one reason why Paris is such a beautiful city. [...] the original garden was minimal—lawns with paths cut on the diagonal—in order to leave an unobstructed view of the whole square. The trees that are here today are the second set of trees to be planted in the garden. The circle of trees that had surrounded the statue were stricken with dutch elm disease and were replaced. [...] When you visit the Musée Victor Hugo, look out of the windows from the second story onto the place. You will be astounded to see how magnificent the whole square looks when it is uninterrupted by the trees. You too may be tempted to side with the historical preservationists.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "123"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_social_change_pariswalks_marais_decline_ravalement_revival",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "social_change",
+    "topic_slug": "marais_decline_ravalement_revival",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Beginning in the eighteenth century the Marais went into a long decline. The aristocracy moved west to the Faubourg Saint-Honoré, where the Palais Elysée and the British and American embassies stand today — in part because the prevailing winds from the west carried the unpleasant odours of central Paris away from the new districts. The old palaces here were abandoned to manufacturing. Heavy machinery was bolted to parquet floors, reception rooms divided into two-storey workspaces, courtyards filled with sheds. If not for this industrial afterlife, the place des Vosges would not have survived — the factories kept the buildings heated and roofed. After World War II the trend reversed, and a 1962 law requiring the ravalement — the cleaning — of every Paris façade at least once a decade transformed the city. The Marais was one of the biggest winners: black and grey hôtels suddenly took on the colours and detail of their youth. Jacques Lang, the former minister of culture, was an early resident of the restored square.",
+    "script_body_hash": "df338fff80089425e70d0269b1c01d34c3a0b4999bd2dae6da80e8156dd8a769",
+    "duration_sec": 68,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jacques Lang",
+      "Palais Elysée"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "marais decline revival",
+    "physical_cues": [
+      {
+        "cue": "Restored red-brick façades, brighter where cleaning has been done",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Faubourg Saint-Honoré",
+        "gloss": "the western noble district"
+      },
+      {
+        "phrase": "ravalement",
+        "gloss": "cleaning of the façades"
+      },
+      {
+        "phrase": "hôtels",
+        "gloss": "grand private residences"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Beginning in the eighteenth century, the Marais went into a decline. The center of Paris fashion and social activity moved steadily westward. The aristocracy moved to the Faubourg Saint-Honoré, where the Palais Elysée and the British and American embassies are now located [...]. The fashionable neighborhoods grew toward the west, in part because the prevailing winds came from the west and carried the unpleasant odors of central and eastern Paris away from the residents of these fine new neighborhoods. Palaces were abandoned to manufacturing and trade. Heavy machinery was bolted to elegant parquet floors [...]. If not for these enterprises, the place des Vosges would have disappeared. They kept the buildings heated, roofed, and occupied. [...] Serious renewal of the Marais came later, with a special push from the law of 1962 that required the cleaning (ravalement) of the facades of all buildings at least once every decade or so. [...] Jacques Lang, the former minister of culture, was an early resident of the restored place des Vosges.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "122"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_pavillon_du_roi_never_occupied",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_arch",
+    "topic_slug": "pavillon_du_roi_never_occupied",
+    "sub_location": "pavillon-du-roi",
+    "trigger_address": "no. 1 place des Vosges",
+    "beat_length_class": "anchor",
+    "script_body": "The Pavillon du Roi at no. 1 — the central pavilion on the south side — was never occupied by the king himself. It was too small for him and his retinue; his concierge, the gatekeeper, was the first resident. Since 1666 it has been rented to different tenants, and today it is divided into apartments served by ugly stairs and an elevator crammed into the right-hand side of the central arcade — an eighteenth-century intrusion that still rankles, because it blocks part of the vista from the rue de Birague. As early as 1752 the writer Germain Brice argued that the three arcades of the pavilion should be torn down to leave the Louis XIII statue visible all the way from the rue Saint-Antoine: \"It has to hurt,\" he wrote, \"to see one of the three arcades blocked to make a nasty stairway… we have such little care for public embellishments in Paris.\" Look up, though: the balcony here is stone rather than wrought iron, and a bust of Henri IV watches the square from above. Walk through the arcade and, on the rue de Birague side, you'll see the king's arms and initials above the arches, still there from the original construction.",
+    "script_body_hash": "1efce1af96229d88aab040ee407dde24c720df0da7ffb5e7c1d66984a60a84b0",
+    "duration_sec": 82,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV",
+      "Germain Brice"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "pavillon du roi",
+    "physical_cues": [
+      {
+        "cue": "Central pavilion on the south wing, at no. 1 — the Pavillon du Roi",
+        "direction": "south",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Stone balcony above the central arch, with a bust of Henri IV",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Arms and initials of Henri IV above the arches, on the rue de Birague side",
+        "direction": "south",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The pavillon was never occupied by the king but rather by his concierge (gatekeeper), who was the first resident of the building. Since 1666 it has been rented to different tenants, and today it is divided into apartments that are served by the unattractive stairs and elevator built into the right-hand side of the entrance arcade. This blocking of the arcade, done in the eighteenth century, still rankles. [...] As early as 1752, the writer Germain Brice said that these three arcades themselves should be torn down to leave the view of Louis XIII's statue unobstructed from the rue Saint-Antoine. [...] 'It has to hurt to see one of the three arcades under the pavilion blocked to make a nasty stairway which defaces entirely the entrance from the side of the rue Royale [...] we have such little care for public embellishments in Paris.' Looking up at the facade of no. 1 you will see that the balcony here is stone rather than wrought iron and that the building is adorned with a bust of Henri IV which was added at some unknown time. Walk through the arcade and look at the other side of the building from the rue de Birague. On this side the pavillon is decorated with the arms and initials of Henri IV just above the arches; these date from the original construction.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "126-127"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_literary_heritage_pariswalks_sevigne_birthplace_hotel_coulanges",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "literary_heritage",
+    "topic_slug": "sevigne_birthplace_hotel_coulanges",
+    "sub_location": null,
+    "trigger_address": "no. 1 bis place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "The Hôtel de Coulanges at no. 1 bis is famous as the birthplace, in 1626, of the Marquise de Sévigné — Marie de Rabutin-Chantal — whose letters to her daughter remain one of the great collections in French literature. This was her grandfather Philippe de Coulanges's house. Orphaned at two, Marie lived here for ten years, was married off at seventeen to the Marquis de Sévigné, was widowed young when he was killed in a duel in 1651, and spent the rest of her life in the Marais, turning proposals of marriage into friendships. Her daughter married the Comte de Grignan and moved to Provence; the separation was painful, and the letters are the record of it. Look up — this is one of the oldest wrought-iron balconies in Paris, built in 1655, its straight, plain support poles marking its authenticity.",
+    "script_body_hash": "93577bedd019c750f8482327fae201a04d57b10c5203e45c11af6f4b0b65c7c1",
+    "duration_sec": 56,
+    "kid_friendly": "yes",
+    "entities": [
+      "Marquise de Sévigné",
+      "Marie de Rabutin-Chantal",
+      "Philippe de Coulanges",
+      "Comte de Grignan",
+      "Marquis de Sévigné"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "reverent",
+    "subject_tag": "Sévigné birthplace",
+    "physical_cues": [
+      {
+        "cue": "Four-arched Hôtel de Coulanges, next to the Pavillon du Roi",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "One of the oldest wrought-iron balconies in Paris, built 1655, with plain straight support poles",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Commemorative plaque on the wall",
+        "direction": "here",
+        "feature_type": "plaque"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "This grand house, the Hôtel de Coulanges, is famous as the birthplace, in 1626, of the Marquise de Sévigné, née Marie de Rabutin-Chantal. Note the plaque on the wall. This was the home of her maternal grandfather, Philippe de Coulanges. Marie, orphaned at two, lived here for ten years. At seventeen she was married off to the Marquis de Sévigné. [...] After the death of her husband, who was killed in a duel in 1651, [...] Mme de Sévigné lived in many different homes, always in the Marais. She was often courted and proposed to, but she chose instead to remain a widow, turning her aspiring lovers into friends. [...] her daughter married the Comte de Grignan, who took his new wife to live in Provence [...]. Their separation prompted one of the most famous collections of letters in French literature. [...] The building has one of the oldest wrought-iron balconies in Paris, built in 1655. Its straight, plain support poles are the sign of its authenticity.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "127-128"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_no_3_issey_miyake_painted_pipes",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_arch",
+    "topic_slug": "no_3_issey_miyake_painted_pipes",
+    "sub_location": null,
+    "trigger_address": "no. 3 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "Press the button marked porte at no. 3 and step into the charming courtyard behind — the first in the square to have been restored, and the only one with \"brick\" walls inside. Look closely: the brick is painted, trompe l'oeil, even down to the pipes in the corners. The pipes are painted pink where they run against the red \"brick,\" and ivory against the stone trim. The building went up in 1613 on the remains of the stables of the Hôtel des Tournelles, and two huge bronze urns stand against the back wall. The ground-floor shop today is Issey Miyake.",
+    "script_body_hash": "1dcf381cdb3290b6202267cdbb84ec6a0ef59b0e7eac8f9244d69b03fe6b6062",
+    "duration_sec": 40,
+    "kid_friendly": "yes",
+    "entities": [
+      "Issey Miyake"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "playful",
+    "subject_tag": "painted brick pipes",
+    "physical_cues": [
+      {
+        "cue": "Courtyard beyond the arcade at no. 3, the first restored courtyard in the place",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Painted trompe-l'oeil brick on the courtyard walls — even the pipes are painted pink against the red, ivory against the stone",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Two huge bronze urns against the back wall",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "porte",
+        "gloss": "door"
+      },
+      {
+        "phrase": "trompe l'oeil",
+        "gloss": "painted to deceive the eye"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The entrance to the courtyard at no. 3 place des Vosges can be unlocked by pressing the button marked porte. [...] This was one of the first buildings in the place to have been restored [...]. This is also the only building in the place with 'brick' walls in the courtyard. If you look closely at the front facade of this courtyard you will see that the 'brick' is painted, even down to the pipes in the corners. The pipes are painted pink when they are in front of 'brick' and ivory in front of the stone trim. [...] this house was built in 1613, on the remains of the stables of the Hôtel des Tournelles. Two huge bronze urns stand against the back wall.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "129"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_commerce_innovation_pariswalks_no_5_factory_rails",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "commerce_innovation",
+    "topic_slug": "no_5_factory_rails",
+    "sub_location": null,
+    "trigger_address": "no. 5 place des Vosges",
+    "beat_length_class": "seasoning",
+    "script_body": "Look at the pavement in front of no. 5: rails still set into the stones, installed to run heavy loads to the factory inside. If you want to see what the factory-filled place des Vosges was like, open the door here and look.",
+    "script_body_hash": "97d9efa82011b7def1593b41f1976156d7dbafbd5795d59c9410b4b528845d74",
+    "duration_sec": 17,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "factory rails",
+    "physical_cues": [
+      {
+        "cue": "Rails set into the pavement in front of no. 5, installed to move heavy loads into the factory inside",
+        "direction": "down",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "As you go past no. 5, look at the pavement to see rails installed that used to facilitate the delivery of heavy loads to the factory inside. If you want to see what the factory-filled place des Vosges was like, open the door here and look inside.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "129"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_hotel_de_chaulnes_mansart_nicolai",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_arch",
+    "topic_slug": "hotel_de_chaulnes_mansart_nicolai",
+    "sub_location": null,
+    "trigger_address": "no. 9 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "The Hôtel de Chaulnes at no. 9 was one of the most luxurious houses of the place Royale when it was built in 1607. Louis XIII stayed here during the 1612 inaugural tournament. In 1644 the house was bought by Honoré d'Albret, maréchal de France, Duc de Chaulnes. His wealthy widow remodelled; their third son, who liked living well, later hired Mansart to extend the right wing back to the rue de Turenne — Mansart gave it a large triangular fronton in the roofline and a monumental staircase whose wrought-iron rail was sold to an Englishman in the nineteenth century. In 1695 the Nicolai family took over. A Revolutionary legend says Aymard Charles de Nicolai hid in his wife's boudoir when the sans-culottes came looking; he was found and led straight to the guillotine. The actress Mlle Rachel lived here in the mid-nineteenth century. Today the whole first floor belongs to the Architecture Society. Step into the courtyard and look at the painted pink-and-green beams just visible through the last second-floor window on the left — the oratory of the duchess, decorated in 1654, among the last such ceilings in Paris.",
+    "script_body_hash": "a2c3a69580c2fdc2fdc45a9c59da8c2bfe49a3003df00d08f95901047c58c789",
+    "duration_sec": 76,
+    "kid_friendly": "no",
+    "entities": [
+      "Louis XIII",
+      "Honoré d'Albret",
+      "Duc de Chaulnes",
+      "Mansart",
+      "Nicolai family",
+      "Aymard Charles de Nicolai",
+      "Mlle Rachel"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "neutral",
+    "subject_tag": "Hôtel de Chaulnes",
+    "physical_cues": [
+      {
+        "cue": "Large courtyard of no. 9, with a statue of a satyr",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Mansart's right wing with its triangular fronton in the roofline, partially obscured by a gallery",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Painted pink-and-green beams of Mme de Chaulnes's oratory, visible through the last second-floor window in the left wing",
+        "direction": "up",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Arched doorways with mascaron mask decorations above",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "maréchal",
+        "gloss": "marshal"
+      },
+      {
+        "phrase": "fronton",
+        "gloss": "pediment"
+      },
+      {
+        "phrase": "sans-culottes",
+        "gloss": "working-class revolutionaries"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The Hôtel de Chaulnes, built in 1607, was one of the most luxurious houses in the place Royale. Louis XIII stayed here when the tournament inaugurated the place. [...] In 1644 the building was bought by Honoré d'Albret, maréchal (marshal) de France, Duc de Chaulnes [...]. In 1655 her third son [...] hired Mansart, the famous architect, to extend the right wing of the house back to the rue de Turenne. Mansart designed a facade with a large triangular fronton (pediment) in the roofline. [...] Mansart also built a monumental staircase [...] but the wrought-iron stair rail was sold to someone in England in the nineteenth century. [...] In 1695 the building was sold to the Nicolai family. [...] Legend has it that during the Revolution, Aymard Charles de Nicolai hid in his wife's boudoir when the sans-culottes (working-class revolutionaries) came looking for him. He was discovered and led straight to the guillotine. [...] Elisa Félix (1820-1858), better known as Mlle Rachel [...], lived here in the mid-nineteenth century. [...] Today the entire première étage of no. 9 is owned by the Architecture Society [...]. In the left wing, through the last second-floor window [...] you can see the painted pink and green beams of Mme de Chaulnes's oratory. The beams [...] were painted in 1654, among the last in Paris to be thus decorated.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "130-131"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_cuisine_pariswalks_l_ambroisie_three_star_trou_normand",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_cuisine",
+    "topic_slug": "l_ambroisie_three_star_trou_normand",
+    "sub_location": null,
+    "trigger_address": "no. 9 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "Also at no. 9 is L'Ambroisie, Bernard Pacaud's Michelin three-star restaurant — the only world-class kitchen in the Marais. Dinner for two runs about seven hundred euros; reservations come a month out. The trou normand arrives as a fruit sorbet set in a sabayon sauce — a modern descendant of the original, a shot of calvados to clear the palate between courses. Maupassant wrote of it in Contes de la Bécasse: \"Between each serving, the cleansing of the palate was done with a glass of eau-de-vie that lit a fire in the belly and madness in the head.\"",
+    "script_body_hash": "f564a3f2fc18d27b59741221caefc3b37ad12ac3bd9c131b061e59e1d1e1ec43",
+    "duration_sec": 39,
+    "kid_friendly": "yes",
+    "entities": [
+      "Bernard Pacaud",
+      "Maupassant"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "Michelin three-star",
+    "physical_cues": [
+      {
+        "cue": "Chandeliers visible through the windows of L'Ambroisie on the right side of the no. 9 courtyard",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "trou normand",
+        "gloss": "Norman-style palate cleanser, originally a shot of calvados between courses"
+      },
+      {
+        "phrase": "sabayon",
+        "gloss": "frothy egg sauce"
+      },
+      {
+        "phrase": "Contes de la Bécasse",
+        "gloss": "Woodcock Tales"
+      },
+      {
+        "phrase": "eau-de-vie",
+        "gloss": "spirit, literally 'water of life'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "L'Ambroisie, also at no. 9, is one of the points of pride in the revitalized place. A Michelin three-star restaurant, it is the only world-class restaurant in the Marais. [...] Today dinner for two is about €700. Chef Bernard Pacaud's food is extraordinarily fine [...]. The trou normand (cleansing the palate between courses) consists of a fruit sorbet set in a sabayon sauce. (The trou normand was originally a glass containing a shot of alcohol—calvados, no doubt. Maupassant writes [...] in his Contes de la Bécasse, 'Between each serving, the cleansing of the palate was done with a glass of eau-de-vie that lit a fire in the belly and madness in the head.')",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "132"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_visual_art_pariswalks_no_13_mirror_salon_rochebaron",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "visual_art",
+    "topic_slug": "no_13_mirror_salon_rochebaron",
+    "sub_location": null,
+    "trigger_address": "no. 13 place des Vosges",
+    "beat_length_class": "anchor",
+    "script_body": "No. 13, once the Hôtel d'Antoine de Rochebaron, was one of the most elegant houses on the square. According to an old description it was a gem: stucco ornaments by Van Obstal painted by Vouet, an alcove by the wood-sculptor Buirette who had épuisé tout son savoir — exhausted all his skill — in making it. There was a salon à l'italienne two storeys high, its ceiling shaped like a lantern, its walls lined with mirrors — a rare commodity in the seventeenth century. A chronicler wrote: \"When reclining in this salon, if we look to the right, we see, through the two glass doors, opening on to the place, carriages, people on foot or on horseback, and all that is happening in the place Royale. If we turn to the left, the same thing reflected in the mirrors is presented to our sight, so that, without getting out of bed, in summer as in winter, in sickness or health, we can enjoy the diversion.\" After Villequier the house passed to M. des Hameaux, ambassador to Venice, who brought back still more mirrors from Italy. Today the back wings have been re-extended to the rue de Turenne, a Versailles-pattern parquet runs through the apartments, and the first underground parking garage in the square has been dug beneath the courtyard.",
+    "script_body_hash": "ee4f1c396ec66c240f81cb3e1c127f936f7968cb7b85e181f2b30451d48136a5",
+    "duration_sec": 88,
+    "kid_friendly": "yes",
+    "entities": [
+      "Marquis de Villequier",
+      "Van Obstal",
+      "Vouet",
+      "Buirette",
+      "M. des Hameaux"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "mirror salon",
+    "physical_cues": [
+      {
+        "cue": "Courtyard of no. 13 visible through the windows of Antiquités Philippe Magloire",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Back wings re-extended to the rue de Turenne; front half redone in seventeenth-century brick style, back half in eighteenth-century style",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "à l'italienne",
+        "gloss": "in the Italian style"
+      },
+      {
+        "phrase": "épuisé tout son savoir",
+        "gloss": "exhausted all his skill"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "No. 13, Hôtel d'Antoine de Rochebaron, once the property of the Marquis de Villequier, was originally one of the most elegant houses of the square [...]. Stucco ornaments by Van Obstal were painted by Vouet; an alcove was decorated by Buirette, the foremost wood sculptor of the time, who had 'epuisé tout son savoir' (exhausted all his skill) in making it. There was a salon à l'italienne with a huge fireplace decorated with silver and gold. The salon itself calls for elaboration. It was two stories high, with a ceiling in the shape of a lantern, and was lined with mirrors [...]. A chronicler writes: 'When reclining in this salon, if we look to the right, we see, through the two glass doors, opening on to the place, carriages, people on foot or on horseback, and all that is happening in the place Royale. If we turn to the left, the same thing reflected in the mirrors is presented to our sight, so that, without getting out of bed, in summer as in winter, in sickness or health, we can enjoy the diversion.' After the Marquis de Villequier, the house was owned by the ambassador to Venice, M. des Hameaux, who added to its luxurious appointments, installing precious paintings, furniture, and even more mirrors, brought from Italy.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "133-135"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_cuisine_pariswalks_ma_bourgogne_soup_pisse_legend",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_cuisine",
+    "topic_slug": "ma_bourgogne_soup_pisse_legend",
+    "sub_location": "ma-bourgogne-corner",
+    "trigger_address": "no. 19 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "The café at no. 19, Ma Bourgogne, has been here since 1920 and specialises in charcuterie from Auvergne and wines from Burgundy and Bordeaux. The waiters tease; the coffee with steamed milk — café crème — is good at any hour. In the seventeenth century, though, this building belonged to the Conseiller d'État Robert Aubrey and his wife Claude de Pretevel, and the chronicler Tallement des Réaux recorded that \"she hated him so much that more than once she pissed into the soup she gave him.\" Hardly an appetising legacy for a building that now houses a café — fortunately those manners are far behind us.",
+    "script_body_hash": "5043d82b3898212360c056f76716558f5f2317777fc43e6f2c0f50d717f856cd",
+    "duration_sec": 42,
+    "kid_friendly": "no",
+    "entities": [
+      "Conseiller Robert Aubrey",
+      "Claude de Pretevel",
+      "Tallement des Réaux"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "Ma Bourgogne",
+    "physical_cues": [
+      {
+        "cue": "Café Ma Bourgogne at the northwest corner of the square, behind the arcades at no. 19",
+        "direction": "north",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "café crème",
+        "gloss": "coffee with steamed milk"
+      },
+      {
+        "phrase": "charcuterie",
+        "gloss": "cured-meat platter"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Next door, at no. 19, is the very popular café Ma Bourgogne. Stop here for a cup of coffee with steamed milk (café crème) [...]. Ma Bourgogne specializes in [...] wine from Burgundy and Bordeaux [...]. There has been a café here since 1920. [...] In the seventeenth century this building was owned by the Conseiller d'État Robert Aubrey, who lived here with his wife, Claude de Pretevel. Tallement des Réaux, the contemporary chronicler of life in the Marais, wrote astonishingly of this couple: 'Elle le méprisait beaucoup, de sorte qu'elle a pissé plus d'une fois dans les bouillons qu'elle lui faisait prendre' (She hated him so much that more than once she pissed into the soup that she gave him).",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "137-138"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_war_conflict_pariswalks_no_21_richelieu_revolutionary_forge",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "war_conflict",
+    "topic_slug": "no_21_richelieu_revolutionary_forge",
+    "sub_location": null,
+    "trigger_address": "no. 21 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "No. 21 was given to Cardinal Richelieu by Henri IV. No one knows if he ever lived here, but his grand-nephew's son certainly used this pied-à-terre to get to know almost every woman in the square. Look closely at the sides of the arcade pillars just above the pediments: you'll see little square stone patches. They date from the Revolution, when this stretch of arcade was used as a forge for making arms. The patches cover the points where metal curtains were hung to close off the forge. Until about 1930 these arcades were packed with butchers, shoemakers, and small shops that walled themselves in by setting beams into cuts in the stone; the very last was a shoemaker, still working here in the 1950s. Restoration in 1978 sent the owners back to the Versailles brickworks — the same kilns that had supplied the originals in the seventeenth century — to match the missing bricks, and their example inspired other owners to restore with real brick rather than paint.",
+    "script_body_hash": "c9f9833994ca59b1ab6e1d43da11a9a7ab3de2e793bddd657de0ce03593c8db1",
+    "duration_sec": 68,
+    "kid_friendly": "yes",
+    "entities": [
+      "Cardinal Richelieu",
+      "Henri IV",
+      "M. Balmés"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "Revolutionary forge patches",
+    "physical_cues": [
+      {
+        "cue": "Eight-arcade facade at no. 21, its arcades done in real brick from the Versailles brickworks",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Little square stone patches on the sides of the arcade pillars, just above the pediments — covering the points where metal curtains were hung",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Worn and sharply-cut vermicelli-patterned stones above the fifth pillar from the left — the same decoration as on the Seine side of the Louvre",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "pied-à-terre",
+        "gloss": "a small in-town residence used occasionally"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "No. 21 is another one of the larger and more elegant buildings in the place, with eight arcades. It was given to Cardinal Richelieu by Henri IV, but no one knows for sure if he ever lived here. [...] He bequeathed the building to his grand-nephew, who then passed it on to his son. The son never lived here either, but he is rumored to have made good use of his pied-à-terre to get to know almost every woman in the place. This hôtel was restored in the summer of 1978. [...] They went to the brickworks in Versailles, which had made the original bricks in the seventeenth century, and they matched the missing parts as closely as possible. [...] Look closely at the sides of the arcade pillars right above the pediments and you will find little square stone patches. These patches date from the Revolution, when this section of the arcade was used as a forge for making arms. The patches cover the points from which metal curtains were hung to close off the forge. [...] Until around 1930 the arcades were filled with shops of all kinds—butchers, shoemakers, and so on—and each shop walled itself in by setting beams into cuts in the stone.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "136-137"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_famous_residents_pariswalks_no_23_entragues_courtesans",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "famous_residents",
+    "topic_slug": "no_23_entragues_courtesans",
+    "sub_location": null,
+    "trigger_address": "no. 23 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "Look at the heavy wooden door of no. 23, decorated with thick wooden plaques attached by metal bolts. Inside, the small garden and vaulted brick entry belong to the Hôtel de Marie-Charlotte de Balzac d'Entragues — a woman whose career more than matched her name. She lived here with her mother, who had been the mistress of Charles IX; her sister Henriette had been the mistress of Henri IV. Decidedly these ladies did not bring good luck to their lovers. Marie-Charlotte was the mistress of the maréchal de Bassompierre and bore him a son, Louis, in 1610. When he refused to marry her despite a written promise, she consoled herself with a string of distinguished replacements: the archbishop of Paris Jean-François de Gondi, and the financier Le Plessis-Guénégaud among them.",
+    "script_body_hash": "ae4d00ef097972e50edea5c8435d5203c76e6926901ece3dec197f4d50662b0a",
+    "duration_sec": 52,
+    "kid_friendly": "no",
+    "entities": [
+      "Charles IX",
+      "Henri IV",
+      "Henriette d'Entragues",
+      "Marie-Charlotte de Balzac d'Entragues",
+      "Maréchal de Bassompierre",
+      "Jean-François de Gondi",
+      "Le Plessis-Guénégaud"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "Entragues dynasty",
+    "physical_cues": [
+      {
+        "cue": "Heavy wooden door at no. 23, decorated with thick wooden plaques attached by metal bolts",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Small garden and vaulted brick entry inside the courtyard",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "At no. 23, notice the heavy wooden door decorated with thick wooden plaques attached with metal bolts. [...] Inside the courtyard is a small garden and a vaulted brick entry. This was the Hôtel de Marie-Charlotte de Balzac d'Entragues. [...] She lived here with her mother, who had been the mistress of Charles IX. Her sister, Henriette d'Entragues, had been the mistress of Henri IV. (Decidedly, these ladies did not bring good luck to their lovers.) Marie-Charlotte was the mistress of the maréchal de Bassompierre and gave birth to his son, Louis, in 1610. Their relationship was very stormy, and Marie-Charlotte kept pressing the maréchal to marry her. He refused, reneging on his written promise. So Marie-Charlotte consoled herself with a series of lovers of equal distinction or equal means, among them the archbishop of Paris, Jean-François de Gondi, and the financier Le Plessis-Guénégaud.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "138-139"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_literary_heritage_pariswalks_guirlande_de_julie_1641",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "literary_heritage",
+    "topic_slug": "guirlande_de_julie_1641",
+    "sub_location": null,
+    "trigger_address": "no. 25 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "The restaurant Guirlande de Julie at no. 25 is named for a small seventeenth-century book of madrigals — each poem surrounded by a different flower — that the Duc de Montausier offered his wife on May 22, 1641. It's owned, like Coconnas at no. 2, by Claude Terrail of the Tour d'Argent. Look up at the right side of no. 25: the large hemisphere of glass on the ground floor usually marks a shop, but this is a private home, and the owners let the window serve as their view of the square.",
+    "script_body_hash": "98d5905f9737ea52b7f5f0a93d89491f314ecc0e705c12f85e92d032d08a988d",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Duc de Montausier",
+      "Claude Terrail"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "reverent",
+    "subject_tag": "Guirlande de Julie",
+    "physical_cues": [
+      {
+        "cue": "Hemispherical ground-floor window on the right side of no. 25 — a private home, not a shop",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "madrigals",
+        "gloss": "short lyric poems, often set to music"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "At no. 25 is the charming Guirlande de Julie. [...] The restaurant's name is from the history of the place. The Guirlande de Julie was a small book of madrigals, each surrounded by a different flower, that the Duc de Montausier offered to his wife on May 22, 1641. The restaurant, like Coconnas, also in the place, is owned by the colorful Claude Terrail, impresario of the famous Tour d'Argent restaurant. [...] The ground-floor window just past the doorway is a large hemisphere of glass usually associated with a shop-front window. This building, however, is occupied as a private home.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "139"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_pavillon_de_la_reine_medici_sun",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_arch",
+    "topic_slug": "pavillon_de_la_reine_medici_sun",
+    "sub_location": "pavillon-de-la-reine",
+    "trigger_address": "north center, place des Vosges (rue de Béarn)",
+    "beat_length_class": "seasoning",
+    "script_body": "You're now standing opposite Henri's pavilion, in front of the Pavillon de la Reine — the north-centre pavilion. It's an identical twin of the Pavillon du Roi except for two details: the Médicis sun emblem on its façade, and an unusually long iron balcony. The small street at the back, the rue de Béarn, was the exit route for every parade that passed through the place Royale.",
+    "script_body_hash": "cb307a2e662ed41751b72bf548899eb046b6229ad2f7c75ab64e047b890a6842",
+    "duration_sec": 27,
+    "kid_friendly": "yes",
+    "entities": [
+      "Médicis"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "pavillon-de-la-reine",
+    "physical_cues": [
+      {
+        "cue": "North-center pavilion, identical to the Pavillon du Roi across the square, except for its Médicis sun emblem and long iron balcony",
+        "direction": "north",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Rue de Béarn exit at the pavilion — originally the parade route out of the square",
+        "direction": "north",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "You have now gone halfway around the square and are standing in front of the Pavillon de la Reine, which is opposite Henri's pavilion, where we started. This one is exactly the same except for the sun emblem of the Médicis on the façade and the very long iron balcony. The small street here, the rue de Béarn, was the exit route for all the parades that passed through the place Royale.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "140"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_famous_residents_pariswalks_no_26_charlotte_vieux_pont",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "famous_residents",
+    "topic_slug": "no_26_charlotte_vieux_pont",
+    "sub_location": null,
+    "trigger_address": "no. 26 place des Vosges",
+    "beat_length_class": "micro",
+    "script_body": "No. 26 belonged to Charlotte de Vieux-Pont, the first précieuse of the place des Vosges.",
+    "script_body_hash": "c03c6b1dc1074b6092414e3ca421859cde4bac4938dc776a84ac71a223faf763",
+    "duration_sec": 6,
+    "kid_friendly": "yes",
+    "entities": [
+      "Charlotte de Vieux-Pont"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "neutral",
+    "subject_tag": "first précieuse",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "précieuse",
+        "gloss": "high-society woman with a ruelle, attended by her admirers and lovers"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "No. 26 was the hôtel of the first précieuse (a high-society woman with a ruelle, or salon, attended by her admirers and lovers) of the place des Vosges, Charlotte de Vieux-Pont.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "140"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_famous_residents_pariswalks_no_24_boufflers_married_at_fourteen",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "famous_residents",
+    "topic_slug": "no_24_boufflers_married_at_fourteen",
+    "sub_location": null,
+    "trigger_address": "no. 24 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "No. 24, the Hôtel du Maréchal de Géran, is less illustrious than its neighbours, but it did have one notorious resident: the wife of Duc de Boufflers, maréchal of France. She was fourteen when she married, and quickly became famous for her beauty, caustic wit, and number of lovers. A contemporary verse caught her reputation: \"Quand Boufflers parut à cour, / On crut voir la mère d'amour, / Chacun s'empressait à lui plaire / Et chacun l'avait à son tour.\" (When Boufflers appeared at court, / You would have thought you were looking at Venus; / Everyone tried to please her / And everyone had her in turn.)",
+    "script_body_hash": "c37d73bf38487c9baf2fb49fb8967cfd7843d7588e1d59ba7b2965d89b00e5bb",
+    "duration_sec": 43,
+    "kid_friendly": "no",
+    "entities": [
+      "Duc de Boufflers",
+      "Duchesse de Boufflers"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "Boufflers verse",
+    "physical_cues": [
+      {
+        "cue": "Fine wooden door at no. 24",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "mère d'amour",
+        "gloss": "mother of love — i.e., Venus"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "No. 24 has a fine wooden door, but the courtyard beyond is undistinguished. This hôtel, Hôtel du Maréchal de Géran, does not have as illustrious a history as some of the others, but it did have one famous, or notorious, resident, the wife of the maréchal of France, Duc de Boufflers. She was fourteen years old when she was married and she quickly became known for her beauty, caustic wit, and number of lovers. This verse was written about her: Quand Boufflers parut à cour, On crut voir le mère d'amour, Chacun s'empressait à lui plaire Et chacun l'avait à son tour. When Boufflers appeared at court, You would have thought you were looking at Venus; Everyone tried to please her And everyone had her in turn.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "140-141"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_du_pas_de_la_mule_markets_street_food_pariswalks_bissonet_butcher_turned_instrument",
+    "city_name": "paris",
+    "poi_name": "rue du Pas de la Mule",
+    "lens": "markets_street_food",
+    "topic_slug": "bissonet_butcher_turned_instrument",
+    "sub_location": null,
+    "trigger_address": "no. 6 rue du Pas de la Mule",
+    "beat_length_class": "mid",
+    "script_body": "A short walk out of the square east, at no. 6 rue du Pas de la Mule, is one of the most fascinating shops in Paris — called the Boucherie, the butcher's shop. Above the door, the old meat hooks still hang. The walls are original tile. M. Bissonet comes from a long line of butchers, but his passion for musical instruments slowly won out: first he hung violins and trumpets alongside the sausages, then the meat vanished. His cold-storage room is now a library of music books. He's shown visitors a silver-etched guitar, a porcelain trumpet, a tuba of Venetian glass — and played a Breton bombardon only twelve inches long that makes an enormous sound. If he's in, he might play something for you.",
+    "script_body_hash": "f9e1244ed59b7cbb2534634b41b56c060375b45828afa726f3fd1d6c19ff5982",
+    "duration_sec": 50,
+    "kid_friendly": "yes",
+    "entities": [
+      "M. Bissonet"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "playful",
+    "subject_tag": "butcher's music shop",
+    "physical_cues": [
+      {
+        "cue": "Metal hooks still visible above the doorway at no. 6 rue du Pas de la Mule — where the butcher's meat once hung",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Original tiled walls of the old butcher's shop, now crammed with violins, trumpets, guitars",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Boucherie",
+        "gloss": "butcher's shop"
+      },
+      {
+        "phrase": "bombardon",
+        "gloss": "a type of flute"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Walk east out of the place, to no. 6 rue du Pas de la Mule. This is one of the most fascinating shops in Paris. It was called the Boucherie (butcher's shop), but it now sells musical instruments. Note above the doorway the metal hooks from which meat was once hung. The tiled walls are original. M. Bissonet comes from a long line of butchers, and this shop was his until his passion for musical instruments gradually won out. He began by hanging violins and trumpets alongside his sausages, but eventually the meat vanished [...]. His cold-storage room has become a library of books on the topic [...]. He showed us a silver-etched guitar, a porcelain trumpet, and a tuba made of Venetian glass. He also played for us a Breton bombardon, a flutelike instrument that is only twelve inches long [...].",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "141"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_no_20_frozen_restoration",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_arch",
+    "topic_slug": "no_20_frozen_restoration",
+    "sub_location": null,
+    "trigger_address": "no. 20 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "Press the button above the keypad at no. 20 and step into the courtyard. The front wall has been paused mid-restoration for twenty-five years. An architect who specialised in prefabricated building wanted to recase the façade in hollow brick; the authorities objected that the original was plaster painted to resemble brick. The decision: status quo. So the ugly glass balcony and the partially-completed seventeenth-century façade stay exactly as you see them — and give you the best look anywhere in the square at the colombage technique, where large cornerstones frame the wall and small stones and rubble are bound together with plaster.",
+    "script_body_hash": "cdb09cc5e3bb34911cdddd0561d7587a266abe3e71051b58e1b62ea726909e6d",
+    "duration_sec": 41,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "construction in limbo",
+    "physical_cues": [
+      {
+        "cue": "Exposed wall at no. 20 showing the colombage technique — large cornerstones framing small stones and rubble filled with plaster",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Partially-completed glass balcony, construction halted twenty-five years ago",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "colombage",
+        "gloss": "timber-framing construction technique"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Press the button above the keypad at no. 20 to enter the courtyard, and face the front wall (facing the place). The wall is in the midst of repairs that were halted twenty-five years ago. [...] The architect's plan here was to build a new facade in the original seventeenth-century style that would encompass the hallways and incorporate them into the building. He began construction with hollow bricks, but when the authorities found out, they objected, saying that the original did not have bricks at all but rather plaster painted to resemble bricks. The decision? The building must remain in status quo, that is, the ugly glass balcony and the partially completed work would have to remain as they were. [...] Look at the window frames on the right and left of this wall as well as at the corners. You can see how the large stones were used as a frame, which was then filled in with small stones and rubble and covered with plaster. This is essentially the same colombage technique used in the sixteenth century.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "143"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_local_legends_pariswalks_no_18_bronze_gypsy_stolen",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "local_legends",
+    "topic_slug": "no_18_bronze_gypsy_stolen",
+    "sub_location": null,
+    "trigger_address": "no. 18 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "No. 18 was the hôtel of Marguerite de Béthune, Duchesse de Rohan, daughter of Sully, Henri IV's first minister. She was married at nine, in 1604, had innumerable lovers — many of them neighbours on this square — and of her nine children, only one daughter survived her. In the stairwell on the left you can see a bronze statue of a gypsy girl; she's missing the lantern from her left hand and one earring. The concierge will tell you, proudly, that Victor Hugo put her there, though we've never found that in writing. What we do know is that the gypsy was stolen some years ago. A resident called the police and got immediate results — she was found minutes later at a nearby traffic light, her head sticking out of the back of a pickup truck. She's now firmly bolted to her red-marble base, which is firmly bolted to the floor.",
+    "script_body_hash": "23907f41432281a472aad1afdb2ec0748508dd94bc63916eb428a2c2ac2d7f07",
+    "duration_sec": 61,
+    "kid_friendly": "yes",
+    "entities": [
+      "Marguerite de Béthune",
+      "Duchesse de Rohan",
+      "Sully",
+      "Victor Hugo"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "bronze gypsy",
+    "physical_cues": [
+      {
+        "cue": "Bronze statue of the gypsy in the stairwell on the left at no. 18 — missing the lantern from her left hand and one earring",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Greek-key pattern frieze on the façade of no. 18",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "No. 18 was the Hôtel de Marguerite de Béthune, the Duchesse de Rohan and the daughter of Sully, Henri IV's first minister. Married at the age of nine, in 1604, she later had innumerable lovers, many of them residents of the place Royale. Of her nine children, only one daughter survived her. [...] take a look at the bronze statue of the gypsy, in the stairwell on the left. She has lost the lantern from her left hand and one earring. The concierge proudly told us that Victor Hugo put the statue there, but we have not found mention of that anywhere else. We do know for a fact, though, that the gypsy was stolen some years ago. A woman resident called the police and got immediate results. The statue was found minutes later at the traffic light on a nearby corner. Her head was sticking out of the back of a pickup truck. She is now firmly attached to her red marble base, which is firmly attached to the floor.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "144"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_famous_residents_pariswalks_no_16_quart_decu_wife",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "famous_residents",
+    "topic_slug": "no_16_quart_decu_wife",
+    "sub_location": null,
+    "trigger_address": "no. 16 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "No. 16 was owned in the seventeenth century by a royal counsellor named François le Roux, who had the dubious distinction of marrying \"une petite garce qui se donnait pour un quart d'écu\" — a little bitch who gave herself for a quarter of an écu. That was slightly less than a livre, but in those days a livre was a day's wages for a manual worker, so Mme le Roux was not so cheap after all. Today the courtyard needs restoration, but step in to see the wrought-iron railing on the left and the mascarons over the portal and entry.",
+    "script_body_hash": "7f8ccfab03a92f5af73d0efef6e02cdbc64b2f37a0007b6ff3c5bab22b92eb6c",
+    "duration_sec": 40,
+    "kid_friendly": "no",
+    "entities": [
+      "François le Roux"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "quart d'écu wife",
+    "physical_cues": [
+      {
+        "cue": "Wrought-iron railing on the left of the no. 16 courtyard and mascarons over the portal and entry",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "une petite garce qui se donnait pour un quart d'écu",
+        "gloss": "a little bitch who gave herself for a quarter of an écu"
+      },
+      {
+        "phrase": "livre",
+        "gloss": "an old French monetary unit — roughly a day's wages for a manual worker"
+      },
+      {
+        "phrase": "mascarons",
+        "gloss": "mask decorations"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "No. 16 was owned in the seventeenth century by a royal counselor named François le Roux, who had the dubious distinction of marrying 'une petite garce qui se donnait pour un quart d'écu' (a little bitch who gave herself for a quarter of an écu). That was slightly less than a livre, but in those days a livre was a day's wages for a manual worker, so Mme le Roux was not so cheap after all. [...] Today the courtyard needs restoration, but take a look at its wrought-iron railing, on the left, and the mascarons over the portal and entry.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "144"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_worship_pariswalks_no_14_synagogue_abbe_la_riviere",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_worship",
+    "topic_slug": "no_14_synagogue_abbe_la_riviere",
+    "sub_location": "synagogue-no-14",
+    "trigger_address": "no. 14 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "No. 14 — the Hôtel de l'Abbé de la Rivière — is now one of the best-restored hôtels in the square, its six arcades redone in real brick and its wrought-iron balconies cleaned of rust. It's a synagogue today. The half facing the place serves the Ashkenazic community (eastern-European, mostly Yiddish-speaking); the half on the rue des Tournelles serves the Sephardic (Jews who settled in Spain and Portugal, now largely from North Africa). When the doors on the place are unlocked, Friday evenings and Saturday mornings, step inside to see wood-panelled walls, stairs carpeted with Oriental rugs, plants in the entry — the interior of a Victorian home, because that's exactly what it was: the chief rabbi of France once lived here with his wife and five children. The hôtel takes its name from a seventeenth-century owner, the Abbé de la Rivière, favourite of the Duc d'Orléans — a tailor's son who rose to duke and bishop of Langres, though he never quite made cardinal. The best painters of the era, Le Brun and Mignard, decorated his ceilings. Those ceilings are preserved today in the Musée Carnavalet.",
+    "script_body_hash": "9b8d808d86180acd1598750bc0b3d0944567ec6944453e0a9a0ad8f4244d8cf4",
+    "duration_sec": 75,
+    "kid_friendly": "yes",
+    "entities": [
+      "Abbé de la Rivière",
+      "Duc d'Orléans",
+      "Le Brun",
+      "Mignard",
+      "Mlle Rachel"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "synagogue history",
+    "physical_cues": [
+      {
+        "cue": "Six-arcade façade at no. 14, real brick, with cleaned wrought-iron balconies",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Campanile on the roof, added later; arched back of the façade visible from the rue des Tournelles",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Wood-panelled walls and Oriental-rug-carpeted stairs inside the Ashkenazic synagogue half",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "hôtel",
+        "gloss": "grand private residence"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The Hôtel de l'Abbé de la Rivière, no. 14, is now one of the best restored in the place. The six arcades have been redone in real brick and the wrought-iron balconies have been cleaned of rust. [...] Today this is a synagogue, and the half of the building that faces the place des Vosges is used by the Ashkenazic community (the eastern European Jews who are mostly Yiddish-speaking); the half on the rue des Tournelles belongs to the Sephardic community (Jews who settled in Spain and Portugal; now most are from North Africa). [...] The walls are wood-paneled; the stairs are carpeted with Oriental rugs; plants sit in the entry. The interior resembles a Victorian home. Indeed, this half once was. The chief rabbi of France lived here with his wife and five children. [...] No. 14 takes its name from one of its seventeenth-century owners, the Abbé de la Rivière, favorite of the Duc d'Orléans [...]. This son of a tailor, a veritable model of social advancement through the church, never did realize his dearest ambition, however—to be made a cardinal. The best painters of the era, Le Brun and Mignard, created a fabulous interior for la Rivière's hôtel. The decorated ceilings have been preserved in the Musée Carnavalet.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "145-146"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_literary_heritage_pariswalks_no_8_gautier_plaque",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "literary_heritage",
+    "topic_slug": "no_8_gautier_plaque",
+    "sub_location": null,
+    "trigger_address": "no. 8 place des Vosges",
+    "beat_length_class": "seasoning",
+    "script_body": "No. 8, as the plaque on the wall will tell you, was the home of the poet Théophile Gautier — who lent his name to the technical high school right next door.",
+    "script_body_hash": "bb64e63bba400c5068feab0db441148aa693155ff97c13953e29b2b928b4a3a9",
+    "duration_sec": 13,
+    "kid_friendly": "yes",
+    "entities": [
+      "Théophile Gautier"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "neutral",
+    "subject_tag": "Gautier residence",
+    "physical_cues": [
+      {
+        "cue": "Commemorative plaque at no. 8 for Théophile Gautier",
+        "direction": "here",
+        "feature_type": "plaque"
+      },
+      {
+        "cue": "Technical high school next door to no. 8, named for Gautier",
+        "direction": "here",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "No. 8, as the plaque tells us, was the home of the poet Théophile Gautier, who lent his name to the technical high school next door.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "146"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_literary_heritage_pariswalks_no_6_hugo_residence_before_exile",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "literary_heritage",
+    "topic_slug": "no_6_hugo_residence_before_exile",
+    "sub_location": "hugo-museum-no-6",
+    "trigger_address": "no. 6 place des Vosges",
+    "beat_length_class": "anchor",
+    "script_body": "The Musée Victor Hugo at no. 6 was Hugo's residence from 1832 to 1848 — until his disagreements with Louis Napoléon sent him into political exile on Guernsey. The museum is free; the top floor gives you Hugo's life, the second his drawings and mementos, the first a re-creation of his apartment, with each room dedicated to a period of his life. Don't miss the restored bedroom with his Louis-XIII deathbed and his death mask, or the striking Chinese-style dining room with its bright red chimney, which he built himself during his Guernsey exile. Before Hugo's time this was the hôtel of the Princesse de Guéménée — Anne de Montbazon — the most famous précieuse of the place. She was married at twelve, and like other premature wives of the day never settled into monogamy. Her lovers read like a guillotine list: the Comte de Montmorency-Bouteville, beheaded 1627 for his famous duel; Henri II of Montmorency, beheaded 1632; the Comte de Soissons, dead 1641; Auguste de Thou, beheaded 1642. She brought no luck to her lovers, but she herself lived to be eighty-one. The property stretched back to no. 17 rue des Tournelles with a discreet rear alley for quick exits — a feature Hugo himself often used when visiting his own mistresses. Before you leave the museum, look out of a second-floor window: from that height, above the trees, you can see the whole square.",
+    "script_body_hash": "1145c9c4c1f4285022fb2cbf5b608edc626f7552fb2175f689a32be4b54c5369",
+    "duration_sec": 94,
+    "kid_friendly": "no",
+    "entities": [
+      "Victor Hugo",
+      "Louis Napoléon",
+      "Princesse de Guéménée",
+      "Anne de Montbazon",
+      "Comte de Montmorency-Bouteville",
+      "Marion Delorme"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "reverent",
+    "subject_tag": "Hugo residence",
+    "physical_cues": [
+      {
+        "cue": "Musée Victor Hugo at no. 6, on the first, second, and third floors",
+        "direction": "here",
+        "feature_type": "adjacent_landmark"
+      },
+      {
+        "cue": "Hugo's Louis-XIII deathbed and death mask in the restored bedroom",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Chinese-style dining room from his Guernsey exile — bright red chimney, lavish plate collection",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "précieuse",
+        "gloss": "seventeenth-century salon hostess"
+      },
+      {
+        "phrase": "hôtel",
+        "gloss": "grand private residence"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The Musée Victor Hugo, at no. 6, was Hugo's residence from 1832 to 1848. Before Hugo's time it was the hôtel of the Princesse de Guéménée, Anne de Montbazon. She was the most famous précieuse of the place. She was married at twelve [...] Anne was mistress of the coadjutor of Retz; of the financier d'Emery; of the Comte de Montmorency-Bouteville, beheaded in 1627 for his famous duel; of the duke Henri II of Montmorency, beheaded in 1632; of the Comte de Soissons, who died tragically in 1641; and of the counselor of Parliament Auguste de Thou, beheaded in 1642. She did not bring luck to her lovers, but she herself lived to be eighty-one. [...] The property at no. 6 was large, stretching back to no. 17 rue des Tournelles, with a discreet rear alley for quick exits, a feature that Hugo often used when visiting his mistresses. Hugo lived here in a rented apartment one floor up, until his disagreements with Louis Napoléon required him to flee into political exile on the isle of Guernsey. Today the museum is on the first, second, and third floors of the building. [...] The museum has restored Hugo's bedroom with his Louis XIII deathbed and his death mask. Don't miss the romantic and striking Chinese-style dining room that he built himself in his second home in Guernsey. The wall with its bright red chimney and lavish plate collection reveals in how many ways Hugo was remarkable.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "146-148"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_famous_residents_pariswalks_marion_delorme_lovers",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "famous_residents",
+    "topic_slug": "marion_delorme_lovers",
+    "sub_location": null,
+    "trigger_address": "no. 6 place des Vosges",
+    "beat_length_class": "mid",
+    "script_body": "Marion Delorme may also have lived in a small pavilion at the back of no. 6, though most historians doubt she and Anne de Guéménée could have shared the same house peaceably — the traffic alone would have caused jams. Marion was Anne's equal in lovers and in the brilliance of her salon. She began as courtesan to Jacques Vallée — a notorious epicurean and avowed atheist — moved on to the handsome Marquis de Cinq-Mars, who plotted against Richelieu and lost his head for it (Alfred de Vigny's novel Cinq-Mars is about him). Then George Villiers, the first Duke of Buckingham, whom you may remember from The Three Musketeers. Then Louis II de Bourbon, Prince de Condé — the great Condé — who imprisoned his own wife on faked charges and wrote to the king asking she never be released. Nice fellow. Marion is said, finally, to have got Cardinal Richelieu himself into her bed — which neatly keeps everything in the family, since Condé's unfortunate wife was Richelieu's niece. Victor Hugo wrote a drama about her; Bottesini an opera.",
+    "script_body_hash": "369b9235645b5c672c7afd77e4ba4b560294563e2e73252ec4d67f92193e40a2",
+    "duration_sec": 72,
+    "kid_friendly": "no",
+    "entities": [
+      "Marion Delorme",
+      "Jacques Vallée",
+      "Marquis de Cinq-Mars",
+      "Cardinal Richelieu",
+      "George Villiers",
+      "Duke of Buckingham",
+      "Louis II de Bourbon",
+      "Prince de Condé",
+      "Victor Hugo"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "sidebar",
+    "emotional_register": "wry",
+    "subject_tag": "Marion Delorme",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Marion Delorme may also have lived here, in a small pavilion at the back [...]. Marion was a match for Anne in every way, in number of lovers and in the brilliance of her salon. She began her career as courtesan to Jacques Vallée, sieur Desbarreaux, a notorious 'epicurean' (read: hedonist) and, unforgivable at the time, an avowed atheist. Next came the Marquis de Cinq-Mars, a handsome, stylish courtier who made the mistake of plotting intrigue against Richelieu and lost his head. (The marquis may have died young, but his place in history and literature is assured as the protagonist of Alfred de Vigny's novel Cinq-Mars.) After the execution of Cinq-Mars, Marion is said to have gone on to a long series of lovers, including George Villiers, the first Duke of Buckingham. (You may remember him from The Three Musketeers.) Also Louis II de Bourbon, Prince de Condé (called 'the great Condé') [...]. Yet this great wencher had his own wife confined for her alleged unfaithfulness [...] and wrote his last letter to the king to ask that she never be released. Nice fellow. Last but not least, Marion is said to have gotten Cardinal Richelieu himself into her bed. [...] Victor Hugo wrote a drama called Marion Delorme, and G. Bottesini wrote an opera of the same name.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "147-148"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_cuisine_pariswalks_coconnas_poule_au_pot",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "lens": "historic_cuisine",
+    "topic_slug": "coconnas_poule_au_pot",
+    "sub_location": null,
+    "trigger_address": "no. 2 place des Vosges",
+    "beat_length_class": "seasoning",
+    "script_body": "Restaurant Coconnas at no. 2 (its front door actually opens on the rue de Birague around the corner) is owned by Claude Terrail of the Tour d'Argent. Both of Terrail's places appear in the film Who Is Killing the Great Chefs of Europe? The specialty here is poule-au-pot — stewed chicken — a menu that quietly commemorates Henri IV's famous promise of \"a chicken in every pot.\"",
+    "script_body_hash": "e6935bc461c3589e654cce010efbe3c73a828ed7606500e4f2131460ba81d3c4",
+    "duration_sec": 27,
+    "kid_friendly": "yes",
+    "entities": [
+      "Claude Terrail",
+      "Henri IV"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "poule-au-pot",
+    "physical_cues": [
+      {
+        "cue": "Restaurant Coconnas's front door on the rue de Birague, around the corner from no. 2",
+        "direction": "south",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "poule-au-pot",
+        "gloss": "stewed chicken — \"a chicken in every pot,\" Henri IV's famous promise"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Restaurant Coconnas is at no. 2 place des Vosges, although its front door opens on to the rue de Birague, around the corner. This restaurant is owned by Claude Terrail, who also owns the Tour d'Argent, and it is no accident that both places provided locales for the movie Who Is Killing the Great Chefs of Europe? [...] The specialty is poule-au-pot. The menu no doubt commemorates Henri IV's promise of a 'chicken in every pot.'",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "148"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_des_francs_bourgeois_hidden_history_pariswalks_continue_to_walk_5",
+    "city_name": "paris",
+    "poi_name": "rue des Francs-Bourgeois",
+    "lens": "hidden_history",
+    "topic_slug": "continue_to_walk_5",
+    "sub_location": null,
+    "trigger_address": "northwest corner of place des Vosges, by Ma Bourgogne",
+    "beat_length_class": "seasoning",
+    "script_body": "You've now completely circled the place des Vosges. If you still have the strength, Walk 5 begins right outside — exit the square at the northwest corner by Ma Bourgogne and turn left onto the rue des Francs-Bourgeois.",
+    "script_body_hash": "2b9ba76054091addf7397981f2e916893987e621cbe5d13c6ef74aaf031541c2",
+    "duration_sec": 15,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "transition",
+    "beat_type": "transit",
+    "emotional_register": "neutral",
+    "subject_tag": "walk 5 entry",
+    "physical_cues": [
+      {
+        "cue": "Café Ma Bourgogne at the northwest corner, marking the exit onto the rue des Francs-Bourgeois",
+        "direction": "north",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "You have now completely circled the place des Vosges. The area is so rich, now the richest in history and monuments in all Paris, that we have ended this walk here. But if you still have the strength, the walk continues in Walk 5, right outside the place. Exit the place from the northwest corner, by Ma Bourgogne, and turn left onto the rue des Francs-Bourgeois.",
+    "source_attribution": {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chapter": "Walk 4: Place des Vosges",
+      "page": "148"
+    },
+    "book_slug": "pariswalks",
+    "source_chunk_slug": "chunk-04-place-des-vosges",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T00:09:26Z",
+      "city_name": "paris"
+    }
   }
 ]

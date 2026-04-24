@@ -654,6 +654,24 @@
           "notes": "Scope 5 validation-gate re-extraction via unified-beat-extract. Appended to prior pipeline_batch_v1 run (5 beats) from 2026-04-06."
         }
       ]
+    },
+    {
+      "book_title": "Pariswalks",
+      "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+      "chunks_processed": [
+        {
+          "chunk": "chunk-04-place-des-vosges",
+          "processed_at": "2026-04-24T00:09:26Z",
+          "beats_extracted": 35,
+          "pois_touched": [
+            "Place des Vosges",
+            "rue des Francs-Bourgeois",
+            "rue du Pas de la Mule"
+          ],
+          "new_pois_flagged": [],
+          "pois_mentioned_no_content": []
+        }
+      ]
     }
   ]
 }
