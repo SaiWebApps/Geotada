@@ -6,39 +6,6 @@
       "author": "Thirza Vallois",
       "chunks_processed": [
         {
-          "chunk": "chunk-04-1st-arr-louvre-westwards",
-          "processed_at": "2026-04-05T21:53:46Z",
-          "beats_extracted": 16,
-          "pois_touched": [
-            "Hotel Le Meurice",
-            "La Samaritaine",
-            "Saint-Germain-l'Auxerrois",
-            "Place Vendome",
-            "Place des Victoires",
-            "Comedie-Francaise",
-            "Eglise Saint-Roch",
-            "Galerie Vero-Dodat",
-            "Banque de France",
-            "Palais-Royal"
-          ],
-          "pois_created": [
-            "La Samaritaine",
-            "Saint-Germain-l'Auxerrois",
-            "Galerie Vero-Dodat",
-            "Banque de France",
-            "Place des Victoires",
-            "Comedie-Francaise",
-            "Hotel Le Meurice",
-            "Eglise Saint-Roch"
-          ],
-          "pois_mentioned_no_content": [
-            "Bourse de Commerce",
-            "Rue Saint-Honore"
-          ],
-          "conflicts_resolved": 0,
-          "fact_check_flags": 3
-        },
-        {
           "chunk": "chunk-05-2nd-arr-east-of-montmartre",
           "processed_at": "2026-04-05T23:30:00Z",
           "beats_extracted": 16,
@@ -638,6 +605,32 @@
             "rue Saint-Honoré",
             "rue Sauval",
             "rue de la Ferronnerie"
+          ],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "chunk-04-1st-arr-louvre-westwards",
+          "processed_at": "2026-04-24T03:15:48Z",
+          "beats_extracted": 26,
+          "pois_touched": [
+            "Comedie-Francaise",
+            "Eglise Saint-Roch",
+            "Galerie Vero-Dodat",
+            "Hotel Le Meurice",
+            "Jardin des Tuileries",
+            "La Bourse du Commerce — Pinault Collection",
+            "La Samaritaine",
+            "Louvre Museum",
+            "Palais-Royal",
+            "Place Vendome",
+            "Place des Pyramides",
+            "Place des Victoires",
+            "Saint-Germain-l'Auxerrois",
+            "rue de Rivoli"
+          ],
+          "new_pois_flagged": [
+            "La Bourse du Commerce — Pinault Collection",
+            "rue de Rivoli"
           ],
           "pois_mentioned_no_content": []
         }

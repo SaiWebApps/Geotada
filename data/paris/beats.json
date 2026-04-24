@@ -1465,973 +1465,6 @@
     "source_chunk_slug": "legacy_ambiguous"
   },
   {
-    "beat_id": "la_samaritaine_historic_markets_cognacq_around_and_about_paris",
-    "poi_name": "La Samaritaine",
-    "lens": "historic_markets",
-    "script_body": "When Ernest Cognacq, a former draper's assistant from La Rochelle, first set up shop on rue du Pont-Neuf in 1867, he called it La Samaritaine in memory of the old water pump situated at the Pont-Neuf until the early 19th century. With the help of his dynamic wife, Louise Jay — also a draper's assistant, from rue Rambuteau — Cognacq used his meteoric success to build up a fabulous art collection, now housed in the Musée Cognacq-Jay in the Marais. Their story exemplifies the golden age of department stores, which enabled modest men of genius to build small empires within a few decades.",
-    "duration_sec": 44,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Cognacq set up shop 1867",
-      "Named after old water pump at Pont-Neuf",
-      "Wife Louise Jay also draper's assistant",
-      "Art collection now at Musée Cognacq-Jay"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "When Ernest Cognacq, a former draper's assistant at La Rochelle, first set up shop on rue du Pont-Neuf in 1867, he called it La Samaritaine",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 41,
-    "entities": [
-      "La Rochelle",
-      "Louise Jay",
-      "Musée",
-      "Neuf",
-      "When Ernest Cognacq"
-    ],
-    "sensory_anchor": true,
-    "narrative_function": "hook",
-    "beat_type": "anecdote",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "0ac8da7731ecbf0e721e24c39a6e480267380b44a4438acdf3f40849bd43dd07",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "cognacq",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "la_samaritaine_historic_arch_art_deco_around_and_about_paris",
-    "poi_name": "La Samaritaine",
-    "lens": "historic_arch",
-    "script_body": "Thirty years after its founding, Ernest Cognacq commissioned Frantz Jourdain to build a full-size department store — a structure of steel and glass in keeping with the progressive spirit of the time. In 1926, Jourdain and Henri Sauvage built the façade on the quai du Louvre, one of the best examples of Art Deco in Paris. In 1930 a new building was added on the corner of rue de Rivoli and rue Boucher, boasting an interesting frieze and an impressive staircase inside.",
-    "duration_sec": 36,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Frantz Jourdain steel and glass store",
-      "1926 Art Deco façade on quai du Louvre",
-      "1930 building with frieze and staircase"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "In 1926 Franz Jourdain and Henri Sauvage built the fagade on the quai du Louvre, one of the best examples of Art Deco in Paris",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 33,
-    "entities": [
-      "Art Deco",
-      "Ernest Cognacq",
-      "Frantz Jourdain",
-      "Henri Sauvage",
-      "Rivoli",
-      "Thirty"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "architectural_detail",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e65c5e6981ee663de0dcb4c2244ce4e225da95bfbab6282e137b0b5be4c86d1c",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "art_deco",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "saint_germain_lauxerrois_dark_history_bartholomew_around_and_about_paris",
-    "poi_name": "Saint-Germain-l'Auxerrois",
-    "lens": "dark_history",
-    "script_body": "On 24 August 1572, at the stroke of midnight, began one of the bloodiest pages in French history: the massacre of Saint-Bartholomew, ordered by Charles IX but instigated by his mother Catherine de Medici, during which 3,000 Protestants perished. Of the three bells that signalled the onset of the carnage — Marie, Germain and Vincent — only Marie has survived. It dates from 1527 and is one of the oldest bells in Paris. Saint-Germain-l'Auxerrois was the royal parish church, just opposite the Louvre, and the royal pew can still be seen inside.",
-    "duration_sec": 40,
-    "kid_friendly": "no",
-    "physical_cues": [
-      "the royal pew can still be seen inside"
-    ],
-    "key_claims": [
-      "St Bartholomew massacre 24 Aug 1572",
-      "3000 Protestants killed",
-      "Bell Marie from 1527 only survivor",
-      "Royal parish church opposite Louvre"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "On 24 August 1572, at the stroke of midnight, began one of the bloodiest pages in French history: the massacre of Saint-Bartholomew",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 37,
-    "entities": [
-      "Catherine de Medici",
-      "Charles IX",
-      "Marie",
-      "Protestants"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "463d3a620e3bdb02975c28d9ac86bc83e71be22116f61540ef3f6cf6e02bf7fe",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "bartholomew",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "saint_germain_lauxerrois_local_legends_catherine_prophecy_around_and_about_paris",
-    "poi_name": "Saint-Germain-l'Auxerrois",
-    "lens": "local_legends",
-    "script_body": "When Catherine de Medici was told by her astrologer, Ruggieri, that she would die 'by Saint-Germain,' she moved out of the Palais des Tuileries so as to attend mass elsewhere, and settled in the Hôtel de Soissons. She never returned to her residence at Saint-Germain-en-Laye either. But there is no escaping one's destiny: while in Blois in the Loire Valley some 16 years later, she took ill, never to recover. A young priest was called to her bedside on 15 January 1589. The Queen asked his name: 'Julien de Saint-Germain,' replied the holy stranger.",
-    "duration_sec": 40,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Ruggieri predicted death by Saint-Germain",
-      "Catherine moved from Tuileries",
-      "Died 15 Jan 1589 attended by priest named Saint-Germain"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "A young priest was called to her bedside on 15 January 1589... 'Julien de Saint-Germain,' replied the holy stranger",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 38,
-    "entities": [
-      "Blois",
-      "Hôtel de Soissons",
-      "Julien",
-      "Laye",
-      "Loire Valley",
-      "Palais des Tuileries",
-      "When Catherine de Medici"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "anecdote",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "7d63f7812febc90726b1398c78f544505a61a0fa561d83b1a832b5743f70f4b5",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "catherine_prophecy",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "galerie_vero_dodat_hidden_history_arcade_around_and_about_paris",
-    "poi_name": "Galerie Vero-Dodat",
-    "lens": "hidden_history",
-    "script_body": "The Galerie Véro-Dodat, entered through no. 19 rue J.J. Rousseau, carries you nearly two centuries back. Its beautiful glass ceiling, black-and-white chequered floor, mahogany panelling, and brass framings served as backdrop to the promenade of fair ladies in crinolines and gentlemen in tail-coats when it opened in 1826. The arcade's gas lights created quite a sensation and property prices rocketed. But somehow, Messieurs Vérot and Dodat — the two pork butchers who had built it — went bankrupt. In the late 1830s the celebrated actress Rachel moved to the 3rd floor of no. 38. The ground floor was occupied by the satirical paper Charivari, to which Daumier contributed his cartoons, and where the word 'Impressionist' was first coined by the journalist Leroy.",
-    "duration_sec": 52,
-    "kid_friendly": "yes",
-    "physical_cues": [
-      "beautiful glass ceiling, black-and-white chequered floor, mahogany panelling"
-    ],
-    "key_claims": [
-      "Opened 1826 with gas lights",
-      "Built by two pork butchers who went bankrupt",
-      "Rachel moved in late 1830s",
-      "Charivari coined Impressionist via Leroy"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "The arcade's gas lights created quite a sensation and prices of property rocketed. But somehow, Messieurs Verot and Dodat, the two charcutiers who had built the arcade, went bankrupt",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 49,
-    "entities": [
-      "Daumier",
-      "Messieurs Vérot",
-      "Rachel"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "anecdote",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "f702c18b2a4d02021d28f0bf0c6fbc8c9c98e3413649dbafef6302c524fb7443",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "arcade",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "banque_de_france_historic_arch_galerie_doree_around_and_about_paris",
-    "poi_name": "Banque de France",
-    "lens": "historic_arch",
-    "script_body": "The Banque de France, founded in 1800 on Napoleon's initiative, moved in 1812 to the sumptuous Hôtel de la Vrillière, built by Mansart in 1635 for the Marquis de la Vrillière. In 1713 the Comte de Toulouse — the legitimized son of Louis XIV and Madame de Montespan — bought it and totally transformed it, adding the stunning Galerie Dorée of approximately 40 metres, which many prefer to the one in Versailles. Unfortunately, this magnificent example of French early 18th-century interior decoration is rarely open to the public.",
-    "duration_sec": 40,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Founded 1800 on Napoleon's initiative",
-      "Moved to Hôtel de la Vrillière 1812",
-      "Mansart built it 1635",
-      "Galerie Dorée ~40m preferred to Versailles"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "the stunning 50-metre long Galerie Dorée, which many prefer to the one in Versailles",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 35,
-    "entities": [
-      "Comte de Toulouse",
-      "Galerie Dorée",
-      "Hôtel de la Vrillière",
-      "Louis XIV",
-      "Madame de Montespan",
-      "Mansart",
-      "Marquis de la Vrillière",
-      "Napoleon"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "architectural_detail",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "391e5ceb2e7d252390fce6c049a317504430d3167fc9fc091ad6ffa7a2769d2e",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "galerie_doree",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "place_des_victoires_hidden_history_statue_around_and_about_paris",
-    "poi_name": "Place des Victoires",
-    "lens": "hidden_history",
-    "script_body": "François d'Aubusson, Maréchal and Duc de La Feuillade, idolized Louis XIV so much that he put up a statue at his own expense on his own property. The statue was all covered with gold, with a disproportionately large head decorated with a laurel wreath. At the King's feet, four chained women dramatically embodied his trampled enemies — Spain, Holland, Germany and Franche-Comté. La Feuillade then called upon Jules Hardouin-Mansart to create a setting worthy of his idol: the result was the elegant Place des Victoires. La Feuillade, by then the laughing stock of Paris, is said to have relieved the King when he finally gave up the ghost. The statue was melted down during the Revolution; the current one by Bosio shows the Sun King on a horse, dressed as a Roman emperor — but keeping his wig.",
-    "duration_sec": 56,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "La Feuillade built golden statue at own expense",
-      "Hardouin-Mansart designed the square",
-      "Four chained women at feet",
-      "Current statue by Bosio keeps the wig"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "La Feuillade, by then the laughing stock of Paris, is said to have relieved the King when he finally gave up the ghost",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 55,
-    "entities": [
-      "Bosio",
-      "Duc de La Feuillade",
-      "Germany",
-      "Jules",
-      "Louis XIV",
-      "Mansart",
-      "Maréchal",
-      "Sun King"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "anecdote",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "d48e843de742bb9bdecd52f5dce493831d2425533f5f0cfe9adcda10d5663380",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "statue",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "place_des_victoires_social_change_desaix_around_and_about_paris",
-    "poi_name": "Place des Victoires",
-    "lens": "social_change",
-    "script_body": "During Napoleon's Consulate, a statue to General Desaix — the hero of the battle of Marengo — stood in Place des Victoires, representing the hero in his natural attire, emulating the heroes of ancient times. But the population of Paris was shocked by such indecent exposure and a fence was soon set up around the General to keep him out of view. In 1976, designer Kenzo signalled the rejuvenation of the area, its transformation into a stronghold of contemporary créateurs as opposed to traditional couturiers.",
-    "duration_sec": 36,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Naked Desaix statue shocked Paris, fenced off",
-      "Kenzo 1976 signalled fashion rejuvenation"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "the population of Paris was shocked by such indecent exposure and a fence was soon set up around the General to keep him out of view",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 34,
-    "entities": [
-      "During Napoleon",
-      "General Desaix",
-      "Kenzo"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "event",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "f90cc6f26c21bcf1ae1b4c3be83e76db9d294c79620df3f4f10f4cdbed7022cc",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "desaix",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "palais_royal_hidden_history_richelieu_orleans_around_and_about_paris",
-    "poi_name": "Palais-Royal",
-    "lens": "hidden_history",
-    "script_body": "When the palace was built for Richelieu it was known as le Palais-Cardinal. He bequeathed it to Louis XIII, and after the latter's death the royal family moved in. To facilitate Mazarin's rendezvous with Anne of Austria, a door was fitted into the palace wall — which proved handy during the Fronde in 1650, when the Queen and her two sons, the future Louis XIV and Philippe d'Orléans, escaped to Saint-Germain-en-Laye. The Regent Philippe d'Orléans later made the Palais-Royal notorious for his 'soupers' — veritable bacchanalia. His grandson Philippe, deep in debt, built the arcades and shops, turning it into a profitable business with gambling houses and brothels. 'Cousin,' said Louis XVI disdainfully, 'you have turned shop-keeper.' Philippe would have his revenge: in 1793, as Philippe Égalité, he voted for the death of his royal cousin. The guillotine took charge of him too, a few months later.",
-    "duration_sec": 64,
-    "kid_friendly": "no",
-    "physical_cues": [],
-    "key_claims": [
-      "Built for Richelieu as Palais-Cardinal",
-      "Mazarin's secret door for Anne of Austria",
-      "Fronde escape 1650",
-      "Philippe Égalité voted for Louis XVI's death then guillotined"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "les_halles_social_change_fronde_around_and_about_paris"
-    ],
-    "source_passage": "Cousin, he said disdainfully, you have turned shop-keeper and no doubt we shall see you only on Sundays",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 59,
-    "entities": [
-      "Anne of Austria",
-      "Fronde",
-      "Louis XIII",
-      "Louis XIV",
-      "Louis XVI",
-      "Mazarin",
-      "Orléans",
-      "Philippe",
-      "Richelieu"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "anecdote",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "606d569678cf6da0ccb77208f7f3b40bb8eb03817fef54722335e50e0cf730d3",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "richelieu_orleans",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "palais_royal_dark_history_corday_knife_around_and_about_paris",
-    "poi_name": "Palais-Royal",
-    "lens": "dark_history",
-    "script_body": "Among the shops of the newly converted Palais-Royal was a cutlery establishment at no. 177 Galerie de Valois, which belonged to Monsieur Badin. Here on 13 July 1793, Charlotte Corday bought the knife with which she stabbed Marat in his bathtub the same day.",
-    "duration_sec": 16,
-    "kid_friendly": "no",
-    "physical_cues": [],
-    "key_claims": [
-      "Cutlery shop at 177 Galerie de Valois",
-      "Charlotte Corday bought knife 13 July 1793",
-      "Stabbed Marat in bathtub same day"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Here on 13 July 1793 Charlotte Corday bought the knife with which she stabbed Marat in his bathtub the same day",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 18,
-    "entities": [
-      "Charlotte Corday",
-      "Galerie de Valois",
-      "Marat",
-      "Monsieur Badin"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "event",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "1d5a5ce996f7e8295bc6d4ed5a2f423c28734ff18a193a180c58940b9d1ad1c2",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "corday_knife",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "palais_royal_famous_residents_colette_cocteau_around_and_about_paris",
-    "poi_name": "Palais-Royal",
-    "lens": "famous_residents",
-    "script_body": "By the time Colette was living at 9 rue de Beaujolais and Jean Cocteau at 36 rue de Montpensier, the Palais-Royal had assumed its present aspect of outdated serenity. Colette described its nameless, silent citizens who followed a code of mysterious mutual courtesy: the elderly lady leaning on her stick, the gentleman cultivating cacti on his window sill. Cocteau, more than just a neighbour, was a friend and admirer who called Colette 'an ink fountain.' He described the gardens as 'La campagne en plein centre de Paris.'",
-    "duration_sec": 36,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Colette at 9 rue de Beaujolais",
-      "Cocteau at 36 rue de Montpensier",
-      "Cocteau called Colette an ink fountain"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Colette was living at 9 rue de Beaujolais, and Jean Cocteau at 36 rue de Montpensier",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 35,
-    "entities": [
-      "Beaujolais",
-      "Colette",
-      "Jean Cocteau"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "character_story",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "df38f0786ad7388bcbe71590c1e8a37d8cfe69e3b47daf4d0512acd6df5aea5b",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "colette_cocteau",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "comedie_francaise_famous_residents_moliere_around_and_about_paris",
-    "poi_name": "Comedie-Francaise",
-    "lens": "famous_residents",
-    "script_body": "The Comédie-Française was built between 1786 and 1790 by Victor Louis, the architect of the famous theatre of Bordeaux. The Comédiens-Français took over in 1799, with an inauguration of Le Cid and L'École des Maris, starring the great Talma and the adulated Mlle Mars. In the 17th century, another theatre had stood nearby on the corner of rue de Valois and rue Saint-Honoré, built by Richelieu and named Le Petit Cardinal. It was here that at 10 pm on 17 February 1673, Molière was acting the part of Argan in Le Malade Imaginaire when he collapsed during the performance and died later that evening at home.",
-    "duration_sec": 44,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Built 1786-1790 by Victor Louis",
-      "Inauguration 1799 Le Cid with Talma",
-      "Molière collapsed 17 Feb 1673 in Le Malade Imaginaire",
-      "Died later that evening at home"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "saint_eustache_dark_history_moliere_around_and_about_paris"
-    ],
-    "source_passage": "at 10 pm on 17 February 1673 Moliére was acting the part of Argan, le Malade Imaginaire, when he collapsed on the stage",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 42,
-    "entities": [
-      "Argan",
-      "Le Cid",
-      "Le Malade Imaginaire",
-      "Le Petit Cardinal",
-      "Mlle Mars",
-      "Molière",
-      "Richelieu",
-      "Talma",
-      "Valois",
-      "Victor Louis"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "character_story",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "bb766b79d3ab9aa4dbfac693886129d0a4d7618e5774a90908c730c26de79a81",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "moliere",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "hotel_le_meurice_literary_heritage_orwell_around_and_about_paris",
-    "poi_name": "Hotel Le Meurice",
-    "lens": "literary_heritage",
-    "script_body": "At no. 228 rue de Rivoli is the discreet entrance to the celebrated Meurice, where Thackeray and Dickens once stayed and where penniless George Orwell was widely believed to have worked to the bone as a plongeur — 'the slave of the slave' — as described in Down and Out in London and Paris. The hotel, which he omits to name, is 'a vast, grandiose place with a classical façade, and at one side a little, dark doorway like a rat hole, which was the service entrance.' The kitchens were 'a stifling low-ceilinged inferno of a cellar, red-lit from the fires, and deafening with oaths and clanging of pots and pans.' Only a double door separated the squalid scullery from the posh dining-room.",
-    "duration_sec": 52,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Thackeray and Dickens stayed here",
-      "Orwell widely believed to have worked as plongeur here",
-      "Down and Out in London and Paris descriptions"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [],
-    "source_passage": "penniless Orwell was worked to the bone as a plongeur, the slave of the slave, as we learn in Down and Out in London and Paris",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 49,
-    "entities": [
-      "Dickens",
-      "Down",
-      "George Orwell",
-      "London",
-      "Rivoli",
-      "Thackeray"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "character_story",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "d6bdf6d43ddda067be3e278936ff3839f2702eed3cb83aac382b0e76036e6842",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "orwell",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "hotel_le_meurice_war_conflict_german_hq_around_and_about_paris",
-    "poi_name": "Hotel Le Meurice",
-    "lens": "war_conflict",
-    "script_body": "During the Second World War, the German High Command of the Paris garrison took up residence at the lavish Meurice.",
-    "duration_sec": 8,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "German High Command Paris garrison at Le Meurice WWII"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [],
-    "source_passage": "the German High Command of the Paris garrison who, during the last war, took up residence at the lavish Meurice",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 8,
-    "entities": [
-      "German High Command",
-      "Second World War"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "event",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "39c696e8f01ed0b3b63b118dea942ac12c0fb0dd8f7c168d03ccf95aefc8e6bb",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "german_hq",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
-    "beat_id": "eglise_saint_roch_famous_residents_burials_around_and_about_paris",
-    "poi_name": "Eglise Saint-Roch",
-    "lens": "famous_residents",
-    "script_body": "Saint-Roch being the fashionable church of Paris, many illustrious Parisians were buried here — Pierre Corneille, Diderot, d'Holbach, André Le Nôtre, and Marie-Anne de Bourbon, the daughter of Louis XIV and his first mistress Louise de la Vallière. The funeral of the great Bossuet, Bishop of Meaux, was also celebrated here. The financier John Law donated 100,000 pounds towards the church's completion — not for spiritual motivation, but to be appointed contrôleur général. To that end he also converted to Catholicism, and it was at Saint-Roch that he received his first Holy Communion.",
-    "duration_sec": 44,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Corneille Diderot Le Nôtre buried here",
-      "Law donated 100,000 pounds for appointment",
-      "Law converted to Catholicism at Saint-Roch"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "the financier Law had not donated 100,000 pounds towards its completion, not for any spiritual motivation, but so as to be appointed contréleur général",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Louvre Westwards",
-      "page": "Louvre Westwards"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T21:53:46Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": []
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-05T21:53:46Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 37,
-    "entities": [
-      "André Le Nôtre",
-      "Anne de Bourbon",
-      "Holy Communion",
-      "John Law",
-      "Louis XIV",
-      "Louise de la Vallière",
-      "Pierre Corneille"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "character_story",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "40b428be0301cee98f59705039db5d98b7a9917674d949cc9bbc538cd3406b49",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "burials",
-    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards"
-  },
-  {
     "beat_id": "place_vendome_hidden_history_column_switchback_around_and_about_paris",
     "poi_name": "Place Vendome",
     "lens": "hidden_history",
@@ -34814,6 +33847,1402 @@
     "_meta": {
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_la_samaritaine_commerce_innovation_around_and_about_paris_cognacq_draper_kingkong_ad",
+    "city_name": "paris",
+    "poi_name": "La Samaritaine",
+    "lens": "commerce_innovation",
+    "topic_slug": "cognacq_draper_kingkong_ad",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Ernest Cognacq, a former draper's assistant from La Rochelle, set up shop on rue du Pont-Neuf in 1867. He called it La Samaritaine after the old water pump that had stood at the Pont-Neuf until the early 19th century. Thirty years later he commissioned Frantz Jourdain to put up a full-scale department store in steel and glass. In 1926 Jourdain and Henri Sauvage added the Art Deco façade on quai du Louvre, one of the best in Paris. With his dynamic wife Louise Jay — also a draper's assistant, from rue Rambuteau — Cognacq turned his success into a fabulous art collection, now the Musée Cognacq-Jay in the Marais. The old catch-phrase, \"On trouve tout à la Samaritaine,\" has lately been sharpened to \"On trouve Tout-Paris à la Samaritaine\" — a showbiz polish for a shop whose shoppers remain notoriously provincial.",
+    "script_body_hash": "4fc48ce575e546ecc61141d6a1780857d93666b8efd92f8305abfb2d670f9b15",
+    "duration_sec": 56,
+    "kid_friendly": "yes",
+    "entities": [
+      "Ernest Cognacq",
+      "Louise Jay",
+      "Frantz Jourdain",
+      "Henri Sauvage"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "character_story",
+    "emotional_register": "playful",
+    "subject_tag": "Cognacq's empire",
+    "physical_cues": [
+      {
+        "cue": "Steel-and-glass Samaritaine department store opposite the Pont-Neuf",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Art Deco façade on quai du Louvre, one of the best examples in Paris",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "On trouve tout à la Samaritaine",
+        "gloss": "One can find everything at the Samaritaine"
+      },
+      {
+        "phrase": "On trouve Tout-Paris à la Samaritaine",
+        "gloss": "One can find All-of-Paris at the Samaritaine — the showbiz-ified new tagline"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "When Ernest Cognacq, a former draper's assistant at La Rochelle, first set up shop on rue du Pont-Neuf in 1867, he called it La Samaritaine in memory of the old water pump situated at the Pont-Neuf till the early 19th century. Thirty years later he commissioned Frantz Jourdain to put up a building to house a full-size department store, a structure of steel and glass [...]. In 1926 Frantz Jourdain and Henri Sauvage built the façade on the quai du Louvre, one of the best examples of Art Deco in Paris. [...] With the help of his dynamic wife, Louise Jay, also a draper's assistant, from rue Rambuteau, Cognacq used his meteoric success to build up a fabulous art collection, now housed in the Musée Cognacq-Jay in the Marais. [...] Its celebrated catch-phrase On trouve tout à la Samaritaine ('One can find everything at the Samaritaine') has recently been changed into On trouve Tout-Paris à la Samaritaine.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_germain_l_auxerrois_dark_history_around_and_about_paris_st_bartholomew_massacre_marie_bell",
+    "city_name": "paris",
+    "poi_name": "Saint-Germain-l'Auxerrois",
+    "lens": "dark_history",
+    "topic_slug": "st_bartholomew_massacre_marie_bell",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "At the stroke of midnight on 24 August 1572, one of the bloodiest pages in French history began here. The massacre of Saint-Bartholomew, ordered by Charles IX but instigated by his mother Catherine de Medici, left three thousand Protestants dead. Three bells had signalled the onset of the carnage — Marie, Germain, and Vincent. Only Marie has survived. She dates from 1527, one of the oldest bells in Paris, and she still rings from above your head. This was the royal parish church, just opposite the Louvre; the royal pew can still be seen inside.",
+    "script_body_hash": "6d1699c1a3dc33c0477df64b2581fb5ed5aaff728ce1a5071cb486f7041fad2a",
+    "duration_sec": 38,
+    "kid_friendly": "no",
+    "entities": [
+      "Charles IX",
+      "Catherine de Medici"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Saint-Bartholomew",
+    "physical_cues": [
+      {
+        "cue": "The bell Marie, cast in 1527, still hanging in the belfry — one of the oldest bells in Paris",
+        "direction": "up",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Royal pew still visible inside — this was the royal parish church, opposite the Louvre",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "On 24 August 1572, at the stroke of midnight, began one of the bloodiest pages in French history: the massacre of Saint-Bartholomew, ordered by Charles IX but instigated by his mother Catherine de Medici, during which 3,000 Protestants perished. Of the three bells that had signalled the onset of the carnage - Marie, Germain and Vincent, only Marie has survived. It dates from 1527 and is one of the oldest bells in Paris. Saint-Germain-l'Auxerrois was the royal parish church, just opposite the Louvre, and the royal pew can still be seen inside.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_germain_l_auxerrois_local_legends_around_and_about_paris_catherine_medici_julien_saint_germain",
+    "city_name": "paris",
+    "poi_name": "Saint-Germain-l'Auxerrois",
+    "lens": "local_legends",
+    "topic_slug": "catherine_medici_julien_saint_germain",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Catherine de Medici's astrologer Ruggieri warned her she would die \"by Saint-Germain.\" She took the prophecy literally, moved out of her newly built Tuileries — west of this church — and stopped returning to her residence at Saint-Germain-en-Laye too. There is no escaping one's destiny. Sixteen years later, ill at Blois in the Loire Valley, she asked the young priest called to her bedside for the last sacrament on 15 January 1589 for his name. \"Julien de Saint-Germain,\" replied the holy stranger.",
+    "script_body_hash": "f26883a9021249ff92419d0510e762226591b1c70234ea4a3eef532be3627a93",
+    "duration_sec": 33,
+    "kid_friendly": "yes",
+    "entities": [
+      "Catherine de Medici",
+      "Ruggieri",
+      "Julien de Saint-Germain"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "dramatic",
+    "subject_tag": "Catherine's prophecy",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "When Catherine de Medici was told by her astrologer, Ruggieri, that she would die 'by Saint-Germain', she moved out of the Palais des Tuileries, her newly built residence west of the Louvre, so as to attend mass elsewhere. [...] the queen never returned to her residence at Saint-Germain-en-Laye either, but there is no escaping one's destiny: while in Blois in the Loire Valley, some 16 years later, she took ill, never to recover. A young priest was called to her bedside on 15 January 1589 to give her the last sacrament. The Queen asked his name: 'Julien de Saint-Germain,' replied the holy stranger.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_la_bourse_du_commerce_pinault_collection_hidden_history_around_and_about_paris_catherine_medici_astrologer_tower",
+    "city_name": "paris",
+    "poi_name": "La Bourse du Commerce — Pinault Collection",
+    "lens": "hidden_history",
+    "topic_slug": "catherine_medici_astrologer_tower",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The rotunda was first built by Louis XVI as La Halle au Blé for the trade of corn, flour, and sugar; the present structure dates from 1889. Look at the elegant buildings lining the northern curve of the circular rue des Viarmes — they sit on Catherine de Medici's Hôtel de Soissons, where she had fled Saint-Germain-l'Auxerrois after Ruggieri's prophecy. The tower from which her astrologer scrutinised the stars still stands, its graceful carving partly surviving. Ruggieri used the tower until the end of his life, and despite his unfavourable predictions, he never fell into disgrace — he had also, after all, correctly foretold the mortal injury of Henri II by Montgomery in 1559.",
+    "script_body_hash": "0103ac1059b0ece5135363b6275b7eef767c5b90925a235a680f02f6b833c55e",
+    "duration_sec": 46,
+    "kid_friendly": "yes",
+    "entities": [
+      "Catherine de Medici",
+      "Ruggieri",
+      "Henri II",
+      "Montgomery",
+      "Louis XVI"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "Ruggieri's tower",
+    "physical_cues": [
+      {
+        "cue": "Circular rue des Viarmes curving around the rotunda — traces the old Hôtel de Soissons footprint",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Catherine de Medici's astrologer tower, attached to the rotunda — exquisitely sculpted, partly surviving",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "the Bourse de Commerce first built by Louis XVI for the trade of corn, flour and sugar and known as La Halle au Blé. The present rotunda dates only from 1889. The elegant buildings that line the northern curve of the circular rue des Viarmes deserve special mention. The tower of Catherine de Medici's residence was sculpted with exquisite grace, as you can surmise from what has survived. Ruggieri used the tower until the end of his life, and despite his unfavourable predictions, he never fell into disgrace. Before bringing the Queen unpleasant news about her own fate, he had already predicted her husband's mortal injury in single combat. Indeed, Henri II was mortally injured by Montgomery during a friendly tournament.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_galerie_vero_dodat_visual_art_around_and_about_paris_impressionist_name_coined_charivari",
+    "city_name": "paris",
+    "poi_name": "Galerie Vero-Dodat",
+    "lens": "visual_art",
+    "topic_slug": "impressionist_name_coined_charivari",
+    "sub_location": null,
+    "trigger_address": "no. 19 rue J.J. Rousseau",
+    "beat_length_class": "mid",
+    "script_body": "Véro and Dodat, the two charcutiers — pork butchers — who built this arcade in 1826, went bankrupt shortly after. The gas lights created quite a sensation; property prices rocketed; fashionable ladies in crinolines and gentlemen in top hats flocked through. In 1836 the celebrated actress Rachel moved into the third floor of no. 38. The ground floor housed the satirical paper Charivari, to which Daumier contributed his cartoons. And it was in Charivari that a journalist called Louis Leroy first coined the word \"Impressionist\" — he borrowed it from Claude Monet's painting Impression, soleil levant, and applied it derogatorily to the entire group of painters who were striving in vain to gain recognition from a stuffy, conformist public that considered them mentally deranged. With the age of the stagecoach, the Messageries Générales opened premises on rue du Bouloi on the other side of the arcade. The magical spell broke; the beau-monde migrated elsewhere. What is left is an oasis of nostalgia — and at no. 26, Robert Capia, world-renowned antique-dolls dealer.",
+    "script_body_hash": "15e5bc1ddc66a392e2ef9213739162cbe5ced471ef1b46de318dfe0da8135f1c",
+    "duration_sec": 69,
+    "kid_friendly": "yes",
+    "entities": [
+      "Rachel",
+      "Honoré Daumier",
+      "Claude Monet",
+      "Louis Leroy",
+      "Robert Capia"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "wry",
+    "subject_tag": "Impressionist coined",
+    "physical_cues": [
+      {
+        "cue": "Entrance to the arcade at no. 19 rue J.J. Rousseau",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Glass ceiling, black-and-white chequered floor, mahogany panelling, brass framings and handles of the 1826 arcade",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "No. 38 — the third-floor apartment Rachel occupied from 1836; the ground floor housed the Charivari paper",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Robert Capia at no. 26 — world-renowned antique dolls dealer",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "charcutiers",
+        "gloss": "pork butchers"
+      },
+      {
+        "phrase": "Impression, soleil levant",
+        "gloss": "Impression, Sunrise — the Monet painting from which 'Impressionist' got its name"
+      },
+      {
+        "phrase": "beau-monde",
+        "gloss": "fashionable society"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "N° 19 opens on to a picturesque outdated arcade, overlooked by most contemporaries: la Galerie Véro-Dodat which will carry you nearly two centuries back. Its beautiful glass ceiling, its black-and-white chequered floor, its mahogany panelling, its brass framings and handles served as backdrop to the promenade of fair ladies in crinolines and gentlemen in tail-coats and top hats [...] when it opened in 1826. The arcade's gas lights created quite a sensation and prices of property rocketed. But somehow, Messieurs Véro and Dodat, the two charcutiers (pork butchers) who had built the arcade, went bankrupt. In 1836 the celebrated actress Rachel moved to the 3rd floor of n° 38. The ground floor of the house was occupied by the famous satirical paper Charivari, to which Daumier contributed his cartoons. It was in the Charivari that the word 'Impressionist' was first coined by a journalist called Leroy. He had borrowed it from Monet's painting Impression, soleil levant and applied it derogatorily to the entire group of painters [...]. With the age of the stagecoach, the Messageries Générales opened premises on rue du Bouloi, on the other side of the arcade. From then on, the place became a convenient shortcut for travellers and its magical spell was broken. The beau-monde migrated elsewhere. What is left is an oasis of nostalgia, charmingly antiquated shops, among them Robert Capia at n° 26, a world-renowned dealer in antique dolls.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_victoires_famous_residents_around_and_about_paris_la_feuillade_gold_statue_saga",
+    "city_name": "paris",
+    "poi_name": "Place des Victoires",
+    "lens": "famous_residents",
+    "topic_slug": "la_feuillade_gold_statue_saga",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "François d'Aubusson, maréchal and Duc de La Feuillade, idolised his king. He decided to put up a statue of Louis XIV on his own property, at his own expense — covered all over in gold, adorned with His Majesty's court cloak, crowned with a laurel wreath. At his feet, four chained women represented his trampled enemies: Spain, Holland, Germany, Franche-Comté. This done, the preposterous Maréchal called on the genius of Jules Hardouin-Mansart to create a setting worthy of the object of his worship. The result was the elegant Place des Victoires. La Feuillade, by then the laughing stock of Paris, is said to have relieved the King when he finally gave up the ghost. The statue was melted down during the Revolution; Bosio replaced it during the Restoration — this time Louis XIV sits on a caracoling horse, dressed as a Roman emperor, but still wearing his wig.",
+    "script_body_hash": "3d0bdce7266e79971ef6992b30b24d1ff910d832b1670fb66ebd9e0d8a2104b0",
+    "duration_sec": 59,
+    "kid_friendly": "yes",
+    "entities": [
+      "François d'Aubusson",
+      "Louis XIV",
+      "Jules Hardouin-Mansart",
+      "Bosio"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "La Feuillade statue",
+    "physical_cues": [
+      {
+        "cue": "Bosio's equestrian statue of Louis XIV in the centre of the square — Sun King on a caracoling horse, dressed as a Roman emperor, but still in his wig",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "maréchal",
+        "gloss": "marshal"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Ahead is the Place des Victoires, more famous today for its designer shops than for the victories of the Sun King it commemorates. François d'Aubusson, Maréchal and Duc de La Feuillade, idolized his King and decided to put up a statue in his honour on his own property and at his own expense. The statue was all covered with gold and adorned with His Majesty's court cloak. Its head was disproportionately large, overpowering the rest of the body and decorated with a laurel wreath. On the pedestal, at his feet, four chained women embodied dramatically the King's trampled enemies — Spain, Holland, Germany and Franche-Comté. [...] he called upon the genius of Jules Hardouin-Mansart. The result was the elegant Place des Victoires [...]. La Feuillade, by then the laughing stock of Paris, is said to have relieved the King when he finally gave up the ghost! The statue was naturally melted down during the Revolution, but was replaced by another one during the Restoration. This time the sculptor Bosio seated the Sun King on a caracoling horse, dressed him up as a Roman emperor, but kept his wig!",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_hidden_history_around_and_about_paris_richelieu_palais_cardinal_to_orleans",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "lens": "hidden_history",
+    "topic_slug": "richelieu_palais_cardinal_to_orleans",
+    "sub_location": "cour-d-honneur",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "When Richelieu built this palace, it was known as le Palais-Cardinal. He bequeathed it to Louis XIII, and after the king's death the royal family moved in. It sat conveniently close to Mazarin's home on neighbouring rue Neuve-des-Petits-Champs, so a door was fitted into the wall around the palace to facilitate his rendezvous with Anne of Austria. That door proved handy in 1650 during the princely revolt of the Fronde, when the Queen and her two sons — the future Louis XIV and Philippe d'Orléans — escaped to Saint-Germain-en-Laye through it.",
+    "script_body_hash": "0804758c0084d9cb3c98d678db720225280b732f833621748960214b9ce1b88b",
+    "duration_sec": 36,
+    "kid_friendly": "yes",
+    "entities": [
+      "Cardinal Richelieu",
+      "Louis XIII",
+      "Cardinal Mazarin",
+      "Anne of Austria",
+      "Philippe d'Orléans"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "Palais-Cardinal",
+    "physical_cues": [
+      {
+        "cue": "Gardens of the Palais-Royal — Venetian-touched arcaded enclosure, sleepy and provincial despite Buren's striped columns and weekend crowds",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "le Palais-Cardinal",
+        "gloss": "the Cardinal's Palace — the original name"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "When the palace was built for Richelieu it was known as le Palais-Cardinal. Richelieu bequeathed it to Louis XIII and after the latter's death the royal family moved in. It was conveniently situated close to Mazarin's home on the neighbouring rue Neuve-des-Petits-Champs. To facilitate his rendezvous with Anne of Austria, a door was fitted into the wall that surrounded the palace. It proved handy in 1650, during the princely revolt of the Fronde, when the Queen and her two sons, the future Louis XIV and Philippe d'Orléans, escaped to Saint-Germain-en-Laye.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_dark_history_around_and_about_paris_philippe_egalite_convention_guillotine",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "lens": "dark_history",
+    "topic_slug": "philippe_egalite_convention_guillotine",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The fifth Duc d'Orléans — Philippe, father of the future King Louis-Philippe — was in deep debt when he took over the Palais-Royal. He built the arcades and their shops, rented them out, turned the establishment into a profitable business. Gambling houses and brothels opened up too. His new line was not to the taste of his royal cousin: \"Cousin,\" said Louis XVI disdainfully, \"you have turned shop-keeper and no doubt we shall see you only on Sundays.\" Philippe had his revenge. In 1793 he joined the Revolution, sat in the Convention as \"Philippe Égalité,\" and voted for the death of the king. The guillotine took charge of him too, only a few months later.",
+    "script_body_hash": "c69d01337e741437c8e03c5e1e4a1ae69f1e1f7595b920430e5a3b607d0abfb0",
+    "duration_sec": 46,
+    "kid_friendly": "no",
+    "entities": [
+      "Philippe d'Orléans",
+      "Louis XVI",
+      "Philippe Égalité",
+      "Louis-Philippe"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "Philippe Égalité",
+    "physical_cues": [
+      {
+        "cue": "Arcades and shops of the Palais-Royal, built by the fifth Duc d'Orléans to pay off his debts",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "His grandson Philippe, the Fifth Duc d'Orléans and father of the future King Louis-Philippe, was in deep debt when he took over the Palais-Royal. He therefore built the arcades and their shops which he rented out, turning the establishment into a profitable business. Gambling houses and brothels opened up too [...]. The Duke's new line of activities was not to the taste of Louis XVI: \"Cousin,\" he said disdainfully, \"you have turned shop-keeper and no doubt we shall see you only on Sundays.\" Philippe d'Orléans would have his revenge: in 1793, having sided with the Revolution, he became member of the Convention under the name of Philippe Égalité and voted for the death of his royal cousin [...]. The guillotine, however, took charge of him too, only a few months later.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_dark_history_around_and_about_paris_charlotte_corday_knife_177",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "lens": "dark_history",
+    "topic_slug": "charlotte_corday_knife_177",
+    "sub_location": "galerie-de-valois",
+    "trigger_address": "no. 177 Galerie de Valois",
+    "beat_length_class": "seasoning",
+    "script_body": "Among the shops of the newly-converted Palais-Royal was a cutlery establishment at no. 177 Galerie de Valois, owned by Monsieur Badin. On 13 July 1793 Charlotte Corday walked in and bought the knife with which she stabbed Marat in his bathtub the same day.",
+    "script_body_hash": "ed305da28d4ccfe12c1e24ebc4563280cc58a1fbd1afdd9f57c4ff4c9fea8443",
+    "duration_sec": 18,
+    "kid_friendly": "no",
+    "entities": [
+      "Charlotte Corday",
+      "Marat",
+      "Monsieur Badin"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "factoid",
+    "emotional_register": "dramatic",
+    "subject_tag": "Corday's knife",
+    "physical_cues": [
+      {
+        "cue": "Galerie de Valois arcade — shop no. 177 was Badin's cutlery on 13 July 1793",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Among its shops was a cutlery establishment at n° 177 Galerie de Valois, which belonged to Monsieur Badin. Here on 13 July 1793 Charlotte Corday bought the knife with which she stabbed Marat in his bathtub the same day.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_hidden_history_around_and_about_paris_la_regence_chess_philidor_napoleon",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "lens": "hidden_history",
+    "topic_slug": "la_regence_chess_philidor_napoleon",
+    "sub_location": null,
+    "trigger_address": "no. 161 rue Saint-Honoré",
+    "beat_length_class": "mid",
+    "script_body": "At no. 161 rue Saint-Honoré stood the Café La Régence — the Mecca of chess players, according to Diderot's Neveu de Rameau. The chessboards were rented by the hour, more at night when a candle had to be fixed on either side. \"Paris is the place in the world, and the Café de la Régence the place in Paris where the game is best played.\" No fiction: François-André Danican-Philidor — composer, co-founder of the Opéra-Comique, and world chess champion — took on the world's best players here simultaneously and beat them one by one. His Analyse du jeu des échecs, published in London when he was twenty-two, remains a classic. In 1794, a young Napoleon shared a wretched existence between a dump of a hotel on rue d'Aboukir and La Régence, where he spent hours moving pieces on a chessboard — rehearsing, in his way, for the strategic showdown soon to come.",
+    "script_body_hash": "1849aed5f5c7ff04b85f34bde39117d167a5ffa991e46865d3ce25de4da8f82a",
+    "duration_sec": 61,
+    "kid_friendly": "yes",
+    "entities": [
+      "Denis Diderot",
+      "Rameau",
+      "François-André Philidor",
+      "Napoleon"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "La Régence chess",
+    "physical_cues": [
+      {
+        "cue": "Site of Café La Régence at no. 161 rue Saint-Honoré — the Mecca of chess players",
+        "direction": "south",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Neveu de Rameau",
+        "gloss": "Rameau's Nephew — Diderot's fictional beggarly character"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "the celebrated café La Régence (on the site of the present n° 161 rue Saint-Honoré) was the Mecca of chess players. [...] The chessboards were rented by the hour and cost more at night when a candle had to be fixed on either side. \"Paris is the place in the world, and the Café de la Régence the place in Paris where the game is best played,\" he tells us. [...] François André Danican-Philidor, composer and co-founder of the Opéra-Comique, and also world chess champion, would take on the world's best chess players simultaneously at La Régence, and beat them one by one mercilessly. His Analyse du jeu des échecs that he published in London when aged only 22, remains a classic. [...] In 1794 Napoleon, an excellent chess player too, shared a wretched existence between a dump of a hotel in today's rue d'Aboukir [...] and Café de La Régence where he spent hours moving pieces on a chessboard, rehearsing for the strategic showdown soon to come.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_historic_cuisine_around_and_about_paris_fragonard_dies_eating_sorbet",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "lens": "historic_cuisine",
+    "topic_slug": "fragonard_dies_eating_sorbet",
+    "sub_location": "galerie-de-beaujolais",
+    "trigger_address": "no. 83 Galerie de Beaujolais",
+    "beat_length_class": "mid",
+    "script_body": "The Café de Chartres at 79–82 Galerie de Beaujolais once served a Monarchist set menu of vermicelle et poitrine de mouton aux haricots. Its descendant, Le Grand Véfour, has abandoned homely fare for one of the best kitchens in Paris — and was, for this reason, targeted by Leftists to be blown up in December 1983. Next door at no. 83, Le Véry created a sensation as the first Paris establishment to offer meals at fixed prices. Among its clientele was the painter Fragonard, who actually expired here while savouring a sorbet.",
+    "script_body_hash": "0cfae041a745f507a58f515adb36d3a33c103dbccaf3badddf3dd0b0b4e9770b",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Fragonard",
+      "Claude Terrail",
+      "Grand Véfour"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "Fragonard's sorbet",
+    "physical_cues": [
+      {
+        "cue": "Galerie de Beaujolais — home of Le Grand Véfour today (former Le Café de Chartres)",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "vermicelle et poitrine de mouton aux haricots",
+        "gloss": "vermicelli with breast of mutton and beans — the original set menu"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Le Café de Chartres, at 79/82 Galerie de Beaujolais, another Monarchist stronghold, served a set menu of vermicelle et poitrine de mouton aux haricots. Today, its descendant Le Grand Véfour has abandoned homely fare: with its wealth of decorations and choice dishes it is one of the best restaurants in the capital, and as such was targeted by Leftists to be blown up in December 1983. At n° 83 Le Véry created a sensation when it first opened, being the first Parisian establishment to offer meals at fixed prices [...]. Among them was the illustrious painter Fragonard, who actually expired here while savouring a sorbet.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_literary_heritage_around_and_about_paris_colette_cocteau_ink_fountain",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "lens": "literary_heritage",
+    "topic_slug": "colette_cocteau_ink_fountain",
+    "sub_location": null,
+    "trigger_address": "9 rue de Beaujolais",
+    "beat_length_class": "mid",
+    "script_body": "By the time Colette was living at 9 rue de Beaujolais, and Jean Cocteau at 36 rue de Montpensier, the Palais-Royal had assumed its present aspect of outdated serenity. \"In the mornings,\" Colette wrote, \"we went out for a breath of fresh air — cat, bulldog and me — on the garden chairs, uncomfortable armchairs of venerable age.\" She catalogued her nameless, silent fellow citizens: the elderly lady leaning on her stick, the gentleman cultivating little cacti on his window sill, the other gentleman in straw slippers on his morning walk, the earnest little boy who might one day lay a marble in the palm of your hand, the lady who might read you the ode she had written to Victor Hugo. Cocteau dropped in on her \"en voisin\" — as a neighbour — though he was more than that, a friend and admirer who called her \"an ink fountain.\" To quote Cocteau once more, this was \"la campagne en plein centre de Paris.\"",
+    "script_body_hash": "fdc1ff3fdf1f76a5af33dc111fad39ccc4a6d34b64948dc8b91f9b93b052c9ce",
+    "duration_sec": 66,
+    "kid_friendly": "yes",
+    "entities": [
+      "Colette",
+      "Jean Cocteau",
+      "Victor Hugo"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "reverent",
+    "subject_tag": "Colette and Cocteau",
+    "physical_cues": [
+      {
+        "cue": "No. 9 rue de Beaujolais — Colette's apartment, overlooking the garden where she sat with her cat and bulldog",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "No. 36 rue de Montpensier — Jean Cocteau's apartment",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "en voisin",
+        "gloss": "as a neighbour"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "By the time Colette was living at 9 rue de Beaujolais, and Jean Cocteau at 36 rue de Montpensier, the Palais-Royal had become a closed world and assumed its present aspect of outdated serenity, as described by Colette: \"In the mornings we went out for a breath of fresh air - cat, bulldog and me - on the garden chairs, uncomfortable armchairs of venerable age\" [...]. She goes on to describe its nameless, silent citizens who followed a code of mysterious mutual courtesy: the elderly lady leaning on her stick, the gentleman cultivating little cacti on his window sill [...]. Jean Cocteau [...] dropped in on Colette 'en voisin'. He was a friend and admirer who called her 'an ink fountain'. [...] \"La campagne en plein centre de Paris,\" to quote Cocteau once more.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_comedie_francaise_music_heritage_around_and_about_paris_moliere_dies_on_stage_1673",
+    "city_name": "paris",
+    "poi_name": "Comedie-Francaise",
+    "lens": "music_heritage",
+    "topic_slug": "moliere_dies_on_stage_1673",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Comédie-Française was built between 1786 and 1790 by Victor Louis, the architect of the Bordeaux theatre. The Comédiens-Français inaugurated it on 30 May 1799 with a double bill of Le Cid and L'École des Maris, starring the great Talma and the adulated Mlle Mars. Among the surviving traditions: the baton-beats announcing the curtain rise, the declamation of the Marseillaise on Bastille Day, and the celebration of Molière's death every February. That death happened just around the corner. On the corner of rue de Valois and rue Saint-Honoré, Richelieu had built Le Petit Cardinal for his palace. It was there, on 17 February 1673 at ten in the evening, that Molière — playing Argan in Le Malade Imaginaire — collapsed on stage and died of a heart attack.",
+    "script_body_hash": "cd439aaf7ef71d189f10e2ef0f0f01effa16bed8edd41badd0b273edd90fe7d2",
+    "duration_sec": 51,
+    "kid_friendly": "yes",
+    "entities": [
+      "Molière",
+      "Cardinal Richelieu",
+      "Talma",
+      "Mlle Mars"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "Molière's last role",
+    "physical_cues": [
+      {
+        "cue": "Comédie-Française on the Cour d'Honneur's right — Victor Louis, 1786–90",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Corner of rue de Valois and rue Saint-Honoré — the site of Richelieu's Le Petit Cardinal theatre, where Molière collapsed",
+        "direction": "south",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Le Malade Imaginaire",
+        "gloss": "The Imaginary Invalid — Molière's last play"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "On your right is the home of the prestigious Comédie-Française, built between 1786 and 1790 by Victor Louis, the architect of the famous theatre of Bordeaux. [...] Their inauguration performance on 30 May 1799 was a double bill of Le Cid and L'École des Maris, starring the great Talma and the adulated Mlle Mars. [...] the baton beats announcing the curtain rise, the declamation of the Marseillaise on Bastille Day, and the celebration of Molière's death every February. [...] In the 17th century, another theatre stood on the corner of rue de Valois and rue Saint-Honoré, built by Richelieu for his palace and named Le Petit Cardinal. It was here that at 10 pm on 17 February 1673 Molière was acting the part of Argan, le Malade Imaginaire, when he collapsed on the stage and died of a heart attack.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_hidden_history_around_and_about_paris_louvre_wolf_etymology_lupara",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "hidden_history",
+    "topic_slug": "louvre_wolf_etymology_lupara",
+    "sub_location": "cour-carree",
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The name Louvre is believed to have come from Lupara, or Lupera — because wolves lurked here. The kings of France kept their treasures in the original keep, as specified in Louis VIII's will, who bequeathed his son Louis IX all the gold and silver kept \"in our tower in Paris near Saint-Thomas.\"",
+    "script_body_hash": "c48fbd9ec88b68b7641ac2a57a188479984f34e755dc23b7886b0ea317dc52e3",
+    "duration_sec": 21,
+    "kid_friendly": "yes",
+    "entities": [
+      "Philippe-Auguste",
+      "Louis VIII",
+      "Louis IX"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "wolf etymology",
+    "physical_cues": [
+      {
+        "cue": "Cour Carrée — site of Philippe-Auguste's 1190 keep, the original Louvre",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Lupara",
+        "gloss": "from the Latin for 'wolf-pack' — one proposed etymology of 'Louvre'"
+      },
+      {
+        "phrase": "Lupera",
+        "gloss": "alternative Latin form with the same wolf root"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The original Louvre was just the keep of the stronghold built by Philippe-Auguste in 1190, on the site of the present Cour Carrée. The name 'Louvre' is believed to have derived from Lupara or Lupera, because packs of wolves lurked here. The kings of France kept their treasures in this tower, as specified in Louis VIII's will, who left to his son, Louis IX, all the gold and silver kept 'in our tower in Paris near Saint-Thomas'.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_modern_design_around_and_about_paris_pei_pyramid_1989_5_million",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "modern_design",
+    "topic_slug": "pei_pyramid_1989_5_million",
+    "sub_location": "cour-napoleon-pyramid",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Urged initially by the dynamic Minister of Culture André Malraux, the archaeological excavation of the medieval Louvre began in 1983. President Mitterrand, a lover of \"grands projets,\" continued the scheme wholeheartedly. I.M. Pei's glass Pyramid — twenty-one metres high by thirty-four wide — crowned the new underground entrance, a scintillating diamond by night. Not everyone hailed it; some dismissed it as too avant-garde, others objected to its location on a historic site. Its supporters countered that its geometrical starkness and transparency blended harmoniously into the old environment. Either way, 5 million visitors swarmed in within the first six months of its April 1989 opening, beating every record. For the first time since François I, they could see vestiges of the medieval Louvre, known previously only from the illuminations of the Duc de Berry's Book of Hours.",
+    "script_body_hash": "337dd696dfb6a825467bc51d0e12ac378f4c90177f7d1911cd42b0941079bbb5",
+    "duration_sec": 54,
+    "kid_friendly": "yes",
+    "entities": [
+      "I.M. Pei",
+      "André Malraux",
+      "François Mitterrand"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "Pei's Pyramid",
+    "physical_cues": [
+      {
+        "cue": "I.M. Pei's glass Pyramid in the centre of the Cour Napoléon — 21 metres high by 34 wide",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Metal framework supporting the glass — partially obstructs the views of the Cour Napoléon façades",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "grands projets",
+        "gloss": "grand projects — Mitterrand's building programme"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Urged initially by the dynamic Minister of Culture, André Malraux, the archaeological excavation of the medieval Louvre began in 1983 [...]. President François Mitterrand, a lover of 'grands projets' [...], continued with the scheme wholeheartedly. [...] Its new underground entrance in the centre of the Cour Napoléon provided an ingenious solution [...]. Pei's glass Pyramid was to top it, perfect in proportions (21m high by 34 wide), a scintillating diamond by night. [...] 5 million visitors swarmed into it within the first six months of its opening, in April 1989, beating all records. Apart from the sensational Pyramid, they could now see - for the first time since the reign of François I - vestiges of the medieval Louvre, which only the 14th-century illuminated manuscript, the Duc de Berry's Book of Hours [...], had brought to our attention occasionally.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_hotel_le_meurice_literary_heritage_around_and_about_paris_orwell_down_and_out_kitchens",
+    "city_name": "paris",
+    "poi_name": "Hotel Le Meurice",
+    "lens": "literary_heritage",
+    "topic_slug": "orwell_down_and_out_kitchens",
+    "sub_location": null,
+    "trigger_address": "228 rue de Rivoli",
+    "beat_length_class": "mid",
+    "script_body": "At 228 rue de Rivoli is the discreet entrance to the Meurice, where Thackeray and Dickens once stayed and where a penniless George Orwell was worked to the bone as a plongeur — \"the slave of the slave,\" as he puts it in Down and Out in London and Paris. He never names the hotel; it is \"a vast, grandiose place with a classical façade, and at one side a little, dark doorway like a rat hole, which was the service entrance.\" The kitchens were the kingdom of hell: \"stifling low-ceilinged inferno of a cellar, red-lit from the fires, and deafening with oaths and clanging of pots and pans.\" Only a double door separated the squalid scullery from the dining room. \"There sat the customers in all their splendour and spotless table-cloths, bowls of flowers, mirrors and gilt cornices and painted cherubims; and here, just a few feet away we in our disgusting filth.\" A generation later, the German High Command of the Paris garrison took up residence at the lavish Meurice. One wonders whether any of them had read Down and Out.",
+    "script_body_hash": "d184d51a9fe1347bf3d2cd8144a55ff3da06af45e29bc30a5c66d02a259c516a",
+    "duration_sec": 73,
+    "kid_friendly": "no",
+    "entities": [
+      "George Orwell",
+      "Thackeray",
+      "Dickens"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "dramatic",
+    "subject_tag": "Orwell's kitchen",
+    "physical_cues": [
+      {
+        "cue": "Discreet main entrance of the Meurice at no. 228 rue de Rivoli",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Rat-hole service entrance to the side — Orwell's descent to the hell-kitchens below",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "plongeur",
+        "gloss": "dishwasher"
+      },
+      {
+        "phrase": "Down and Out in London and Paris",
+        "gloss": "Orwell's 1933 memoir"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "At n° 228 is the discreet entrance to the celebrated Meurice where Thackeray and Dickens once stayed and where penniless Orwell was worked to the bone as a plongeur, \"the slave of the slave\", as we learn in Down and Out in London and Paris. The hotel, which he omits to name, is \"a vast, grandiose place with a classical façade, and at one side a little, dark doorway like a rat hole, which was the service entrance.\" The kitchens are the kingdom of hell: \"stifling low-ceilinged inferno of a cellar, red-lit from the fires, and deafening with oaths and clanging of pots and pans.\" Only a double door separated the squalid scullery from the posh dining-room. \"There sat the customers in all their splendour and spotless table-cloths, bowls of flowers, mirrors and gilt cornices and painted cherubims; and here, just a few feet away we in our disgusting filth.\" We wonder whether the German High Command of the Paris garrison who, during the last war, took up residence at the lavish Meurice had ever read George Orwell.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_rivoli_famous_residents_around_and_about_paris_talleyrand_dies_at_258",
+    "city_name": "paris",
+    "poi_name": "rue de Rivoli",
+    "lens": "famous_residents",
+    "topic_slug": "talleyrand_dies_at_258",
+    "sub_location": null,
+    "trigger_address": "no. 258 rue de Rivoli",
+    "beat_length_class": "seasoning",
+    "script_body": "The house at no. 258 is crying out for repair, but was once the home of the great statesman Talleyrand — the only man to have wormed his way through all the shaky regimes of the time. He died here of old age on 17 May 1838, aged eighty-six. His mansion was said to be the most sumptuous palatial residence in the capital, overlooking the Tuileries.",
+    "script_body_hash": "7c5df53a3538601166b0ba48643edb21ba2320bf48fd4c9434150736241d59d5",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+      "Talleyrand"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "Talleyrand residence",
+    "physical_cues": [
+      {
+        "cue": "House at no. 258 rue de Rivoli — crying out for repair, once Talleyrand's sumptuous palatial mansion overlooking the Tuileries",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The house standing at n° 258 is crying out for repair, but was once the home of the great statesman Talleyrand, the only one to have wormed his way through all the shaky regimes of the time, and who died here of old age on 17 May 1838, aged 86. His home is believed to have been the most sumptuous palatial mansion in the capital, overlooking the Tuileries.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_rivoli_hidden_history_around_and_about_paris_manege_230_republic_proclaimed",
+    "city_name": "paris",
+    "poi_name": "rue de Rivoli",
+    "lens": "hidden_history",
+    "topic_slug": "manege_230_republic_proclaimed",
+    "sub_location": null,
+    "trigger_address": "no. 230 rue de Rivoli",
+    "beat_length_class": "mid",
+    "script_body": "In 1720 a manège — a riding school — was built here for young Louis XV, on what was then the edge of the Tuileries Gardens; rue de Rivoli did not yet exist. After Louis XV left for Versailles, the manège became a riding school for upper-class youths trained in fencing, dancing, and mathematics, as befitted the gentlemanly ideal. In the early Revolution the National Assembly sat here, followed by the Convention. It was on this exact site, on 21 September 1792, that Danton proclaimed the First Republic — and where, soon after, Louis XVI was brought to trial and sentenced to death.",
+    "script_body_hash": "e751c54d8269e9e0e7476e04f46aea8965ba3e9eb64ad3760259131ff6cb6b5f",
+    "duration_sec": 41,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XV",
+      "Louis XVI",
+      "Danton"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "First Republic site",
+    "physical_cues": [
+      {
+        "cue": "Site of no. 230 rue de Rivoli — where Louis XV's riding school, then the National Assembly and the Convention, stood until rue de Rivoli was cut through in 1808",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "manège",
+        "gloss": "riding school"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "In 1720 a manège was built for young Louis XV on the site of n° 230, then the edge of the Tuileries Gardens (rue de Rivoli being opened only in 1808). With his departure for Versailles it became a riding school for upper class youths, who were meanwhile trained in fencing, dancing and mathematics as befitted the gentlemanly ideal of the time. In the early stages of the Revolution the National Assembly sat here, followed by the Convention. Thus it was here that the first Republic was proclaimed on 21 September 1792 by Danton and that Louis XVI was brought to trial and sentenced to death.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_pyramides_war_conflict_around_and_about_paris_jeanne_darc_wounded_1429",
+    "city_name": "paris",
+    "poi_name": "Place des Pyramides",
+    "lens": "war_conflict",
+    "topic_slug": "jeanne_darc_wounded_1429",
+    "sub_location": null,
+    "trigger_address": "Place des Pyramides",
+    "beat_length_class": "mid",
+    "script_body": "Frémiet's statue of Jeanne d'Arc stands in the centre of the square. Historically it should be a little further east: at 161 rue Saint-Honoré stood Charles V's Porte Saint-Honoré, where the Maiden arrived on 8 September 1429 from the village of Monceaulx — today's Monceau in the 17th arrondissement — at the head of twelve thousand men, hoping to take the city. Injured in action, she had to retreat. The statue has become a shrine for all stripes of French patriotic fervour — today especially the far-right gatherings every first of May.",
+    "script_body_hash": "d8d55e5bc5ed17020872bc4a25f6ce5dbdf09b06e2e62f0a33539bfa60cc5be7",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jeanne d'Arc",
+      "Charles V",
+      "Frémiet"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "Jeanne d'Arc wound",
+    "physical_cues": [
+      {
+        "cue": "Frémiet's gilt statue of Jeanne d'Arc in the centre of Place des Pyramides",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Site of Charles V's Porte Saint-Honoré at 161 rue Saint-Honoré — a little east of the statue, where the Maiden actually arrived",
+        "direction": "east",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Walk on to Place des Pyramides, named after Napoleon's 1798 victorious campaign in Egypt. Frémiet's statue of Jeanne d'Arc stands in its centre, although historically it should have been a little further east: at 161 rue Saint-Honoré stood Charles V's Porte Saint-Honoré, where the Maiden arrived on 8 September 1429 from the village of Monceaulx (Monceau now in the 17th arr.), at the head of 12,000 men, hoping to take the city. Injured in action, she had to retreat.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_vendome_war_conflict_around_and_about_paris_column_saga_kings_and_emperors",
+    "city_name": "paris",
+    "poi_name": "Place Vendome",
+    "lens": "war_conflict",
+    "topic_slug": "column_saga_kings_and_emperors",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Place Vendôme is French classical architecture at its most polished — and its switchback statue sums up nineteenth-century France in a single column. Girardon's original equestrian Louis XIV went in the Revolution. Napoleon's Colonne d'Austerlitz replaced it in 1810. With the Restoration came an equestrian Henri IV, le Vert Galant. Then Louis-Philippe ousted the Bourbons and dispatched the Vert Galant to the Pont-Neuf; a bourgeois Napoleon in frock coat and low hat went up instead. Napoleon III substituted an imperial Napoleon dressed as a Roman Caesar. In 1871 the Commune — led on the square by the painter Gustave Courbet — sang the Marseillaise and le Chant de la Patrie as thousands of patriots pulled the column down. The Emperor, however, regained his lofty position the following year, when the victorious bourgeois Versaillais sent him back to the top. He has been dominating this Mecca of luxury ever since.",
+    "script_body_hash": "a6facbdce8c51df98575b99a2534fefd632e8fd313138d11a366d12af50e593b",
+    "duration_sec": 60,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIV",
+      "Girardon",
+      "Napoleon",
+      "Henri IV",
+      "Louis-Philippe",
+      "Napoleon III",
+      "Gustave Courbet"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "wry",
+    "subject_tag": "Vendôme column",
+    "physical_cues": [
+      {
+        "cue": "Napoleon in Roman Caesar guise on top of the Colonne d'Austerlitz at the centre of Place Vendôme",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Colonne d'Austerlitz",
+        "gloss": "Austerlitz Column — cast from melted-down enemy cannon"
+      },
+      {
+        "phrase": "Versaillais",
+        "gloss": "the bourgeois National Assembly that suppressed the Commune, sitting at Versailles"
+      },
+      {
+        "phrase": "le Chant de la Patrie",
+        "gloss": "The Song of the Fatherland"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Place Vendôme is a work of art in its own right, a masterpiece of French classical architecture. It also sums up in a nutshell the switchback history of 19th century France: Girardon's original equestrian statue of the Sun King having been disposed of during the Revolution, Napoleon's Colonne d'Austerlitz came to replace it in 1810. With the Restoration of the monarchy, it was replaced in its turn by the equestrian statue of Henri IV, le Vert Galant; but soon the bourgeois Orléanais Louis-Philippe was put on the throne of France, ousting definitively the Bourbon branch of the dynasty — the Vert Galant was dispatched to the Pont-Neuf and a bourgeois Napoleon in a frock coat and low hat was set up in its stead, to which his nephew Napoleon III substituted an imperial Napoleon in the guise of a Roman Caesar. But in 1871 the Commune, temporarily victorious on Place Vendôme and led by the enthusiastic painter Courbet, would have none of it - thousands of patriots struck up the Marseillaise and le Chant de la Patrie, to the sound of the triumphant fanfare, as the monument came tumbling down. The Emperor, however, regained his lofty position the following year, when the victorious bourgeois National Assembly of the Versaillais sent him back to the top of the column.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_vendome_historic_cuisine_around_and_about_paris_ritz_1898_first_bathtubs_fitzgeralds",
+    "city_name": "paris",
+    "poi_name": "Place Vendome",
+    "lens": "historic_cuisine",
+    "topic_slug": "ritz_1898_first_bathtubs_fitzgeralds",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The legendary Ritz opened on Place Vendôme in 1898 as the first hotel in Paris to install private bathtubs. It was the headquarters of the golden couple, the Fitzgeralds, through the 1920s — they made it their home but moved about Paris for the fun. Hemingway, by contrast, could only afford to come for a drink at the bar. That drink is still a worthwhile experience. The Ritz has since adjusted to modern demands — a cordon bleu cooking school, a basement health club.",
+    "script_body_hash": "b92b626fcc6bff2877d3c92fcdff266c7fe70cc5880cde17966cf9f8025d7e81",
+    "duration_sec": 34,
+    "kid_friendly": "yes",
+    "entities": [
+      "Fitzgeralds",
+      "Ernest Hemingway"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "Ritz first bathtubs",
+    "physical_cues": [
+      {
+        "cue": "The Ritz on Place Vendôme — Hemingway's bar still worth the drink",
+        "direction": "here",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "cordon bleu",
+        "gloss": "blue ribbon — denoting excellence, now also a cooking school"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "the fabulous Place Vendôme and the legendary Ritz, the headquarters of the golden couple the Fitzgeralds in the 1920s. They made it their home, but moved about Paris for the fun. Hemingway, quite the reverse, could only afford to come for a drink at its bar, still a worthwhile experience. The Ritz has adjusted to modern demands and opened a cordon bleu school, and a health club in its basement. When it opened in 1898, it was the first hotel to install private bathtubs.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_eglise_saint_roch_historic_worship_around_and_about_paris_law_purchases_conversion_controleur",
+    "city_name": "paris",
+    "poi_name": "Eglise Saint-Roch",
+    "lens": "historic_worship",
+    "topic_slug": "law_purchases_conversion_controleur",
+    "sub_location": null,
+    "trigger_address": "no. 286 rue Saint-Honoré",
+    "beat_length_class": "mid",
+    "script_body": "Saint-Roch — named after the man from Montpellier who dedicated his life to plague-victims in Italy and contracted the disease himself — took nearly a century to complete from the reign of Louis XIV for lack of funds. It would have taken much longer had the financier John Law not donated a hundred thousand pounds toward the finish — not for any spiritual motive, but to be appointed contrôleur général. To that end he also converted to Catholicism, receiving his first holy communion right here. Saint-Roch being the fashionable church of its day, many illustrious Parisians lie buried in it: Pierre Corneille, Diderot, Madame Geoffrin — who had married here — and André Le Nôtre.",
+    "script_body_hash": "d2a0f619cc2366863329e5c9c6a7b06845d1d1c7ecc81f633ac5aa6920e328e4",
+    "duration_sec": 46,
+    "kid_friendly": "yes",
+    "entities": [
+      "John Law",
+      "Louis XIV",
+      "Pierre Corneille",
+      "Diderot",
+      "André Le Nôtre"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "Law's purchased conversion",
+    "physical_cues": [
+      {
+        "cue": "Saint-Roch at no. 286 rue Saint-Honoré — the parish church of 17th-century fashionable Paris",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "18th-century organ — one of the most beautiful in France",
+        "direction": "up",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "contrôleur général",
+        "gloss": "Controller General — chief financial officer of the realm"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "the church of Saint-Roch commemorates the man from Montpellier who dedicated his life to the victims of the plague in Italy and ended by contracting the disease himself. [...] The present church was begun at the time of Louis XIV but took nearly a century to complete for lack of funds. It would have taken much longer if the financier Law had not donated 100,000 pounds towards its completion, not for any spiritual motivation, but so as to be appointed contrôleur général. To that end he also converted to Catholicism, and it was at Saint-Roch that he received his first Holy Communion. Saint-Roch being the fashionable church of Paris, many illustrious Parisians were buried here - Pierre Corneille, Diderot, d'Holbach, Madame Geoffrin (who had also married here), André Le Nôtre.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_jardin_des_tuileries_literary_heritage_around_and_about_paris_rambouillet_chambre_bleue_salon",
+    "city_name": "paris",
+    "poi_name": "Jardin des Tuileries",
+    "lens": "literary_heritage",
+    "topic_slug": "rambouillet_chambre_bleue_salon",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Arc du Carrousel's esplanade once held the sumptuous Hôtel de Rambouillet — red brick and white stone in the style of Henri IV and Louis XIII, on the now-vanished rue Saint-Thomas-du-Louvre. The Marquise de Rambouillet held her salon littéraire here in her chambre bleue — her blue-hung drawing room. All the literary set attended: Descartes, Scarron, Corneille, Madame de Sévigné, Madame de La Fayette, Mlle de Scudéry. The aristocracy too — Richelieu, the Prince de Condé. This is where the French language, hitherto as crude as the uncouth society that spoke it, was purified and polished; where conversation developed into an art, even an affectation; where French society finally shed its medieval remnants and was initiated into the urbane lifestyle that would dominate the next two centuries.",
+    "script_body_hash": "a28169a39d80da7cba0cb7333abd17247f8c928c2cc7041d4dc80d667a01edb3",
+    "duration_sec": 51,
+    "kid_friendly": "yes",
+    "entities": [
+      "Marquise de Rambouillet",
+      "Descartes",
+      "Corneille",
+      "Mme de Sévigné",
+      "Mme de La Fayette",
+      "Mlle de Scudéry",
+      "Cardinal Richelieu",
+      "Prince de Condé"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "reverent",
+    "subject_tag": "chambre bleue",
+    "physical_cues": [
+      {
+        "cue": "Arc du Carrousel at the eastern end of the gardens — the Hôtel de Rambouillet stood on the now-vanished rue Saint-Thomas-du-Louvre, level with the entrance to the Palais-Royal",
+        "direction": "east",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "salon littéraire",
+        "gloss": "literary salon"
+      },
+      {
+        "phrase": "chambre bleue",
+        "gloss": "blue chamber — the Marquise's famous blue-hung drawing room"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "originally these were sumptuous hôtels, erected in the immediate vicinity of the Louvre. The most famous was the Hôtel de Rambouillet, an elegant mansion of red brick and white stone, still in the style of Henri IV and Louis XIII. It stood on rue Saint-Thomas-du-Louvre, which ran parallel to the Tuileries Palace, level with the entrance to the Palais-Royal. Its fame was due to its landlady, la Marquise de Rambouillet, who in the 17th century held her prestigious salon littéraire in her chambre bleue. All the literary set attended her gatherings - Descartes, Scarron, Corneille, Madame de Sévigné, Madame de La Fayette, Mlle de Scudéry - and also the greatest aristocrats and statesmen, including Richelieu and Condé. This is where the French language, hitherto as crude as the manners of the uncouth society that spoke it, was purified and polished, where conversation developed into an art [...].",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_jardin_des_tuileries_historic_arch_around_and_about_paris_carousel_1662_louis_xiv_roman_emperor",
+    "city_name": "paris",
+    "poi_name": "Jardin des Tuileries",
+    "lens": "historic_arch",
+    "topic_slug": "carousel_1662_louis_xiv_roman_emperor",
+    "sub_location": "jardin-du-carrousel",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Catherine de Medici laid out the original Tuileries Gardens in 1564 in the Italian style, her native taste — and forbade access to the ramparts on the east side to protect her privacy in the small garden beside the palace. Henri IV had Jean Le Nôtre restore them after the wars of religion and planted mulberry trees, hoping to develop a French silk industry and break the Milanese monopoly. In 1664 Colbert commissioned Jean's grandson André to redesign the gardens west of the palace into a perfect jardin à la française. And in June 1662, Louis XIV — to celebrate the birth of his first son — held a spectacle of equestrian evolutions called a carousel. Fifteen thousand spectators packed the grandstand on the 2nd and 3rd. Dressed as a Roman Emperor, the Sun King caracoled and strutted, playing to his future favourite Louise de la Vallière. The name of the garden has stuck ever since — though today's visitor usually associates it with Napoleon's 1805 Arc du Carrousel at its eastern edge.",
+    "script_body_hash": "1585917366b4a4158bf52c24c11d83d3d34f6bcb9e8acbf822e4da95b9ab9a6e",
+    "duration_sec": 69,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIV",
+      "Louise de la Vallière",
+      "Pierre Le Nôtre",
+      "Jean Le Nôtre",
+      "André Le Nôtre",
+      "Colbert"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "1662 carousel",
+    "physical_cues": [
+      {
+        "cue": "Jardin du Carrousel — named for Louis XIV's 1662 equestrian celebration, not Napoleon's 1805 arch",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "jardin à la française",
+        "gloss": "French-style garden — strict geometrical order"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The original Carrousel and Tuileries Gardens were laid out for Catherine de Medici in 1564 by Pierre Le Nôtre and were Italian in style, to suit her native tastes. [...] The wars of religion left the gardens in a pitiful state and Henri IV had them restored by Jean Le Nôtre, the son of Pierre. [...] Driven also by economic considerations, he planted mulberry trees for the cultivation of silkworms, hoping to develop his own silk industry so as not to depend on expensive imports from Milan. [...] In 1664 André Le Nôtre, the grandson of Pierre, was commissioned by Louis XIV's Minister, Colbert, to redesign the gardens [...] a perfect model of a jardin à la française. [...] The birth of Louis XIV's first son in 1662 was no small event and Louis XIV meant to celebrate it with all the appropriate dazzling pomp, which included sumptuous equestrian evolutions known as carousel. 15,000 spectators gathered on the grandstand built for the occasion, to watch this brilliantly colourful spectacle on 2 and 3 June 1662. Dressed as a Roman Emperor, the Sun King took part in all the games of dexterity, caracoling and strutting about in order to impress his recent object of desire and future favourite, Louise de la Vallière. The impact of the carousel was such that the garden has been known as Le Jardin du Carrousel ever since.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_jardin_des_tuileries_dark_history_around_and_about_paris_robespierre_supreme_being_pyramid_monster",
+    "city_name": "paris",
+    "poi_name": "Jardin des Tuileries",
+    "lens": "dark_history",
+    "topic_slug": "robespierre_supreme_being_pyramid_monster",
+    "sub_location": "central-pool",
+    "trigger_address": null,
+    "beat_length_class": "anchor",
+    "script_body": "The central pool was the departure point of the Revolutionary ceremony for the Supreme Being, orchestrated by a thickly powdered Robespierre dressed in blue, a bouquet of flowers in one hand, a torch in the other, haranguing the crowds. The master of ceremony, the painter David, fretted at the head of a red-painted float drawn by eight oxen, surmounted by a Liberty figure. Two thousand four hundred singers and a thousand musicians accompanied the procession into the Place de la Révolution — today's Concorde — where they skirted the guillotine before heading for the Champ-de-Mars. Meanwhile, a monster emerged from the pool in the shape of a pyramid, representing atheism, egoism, false modesty, discord, and ambition. Set alight, the monster was reduced to ashes, and Wisdom appeared in her splendour. All that survives of this inflamed idealism are some marble benches in a semicircle on either side of the entrance to the central alley — placed by the well-intentioned Robespierre for the aged participants. On 10 October 1794, the remains of J.J. Rousseau, wrapped in a gold-studded azure flag, were deposited by this same pool on their way from Ermenonville to the Panthéon. Robespierre was not present: the guillotine had disposed of him too, a couple of months before.",
+    "script_body_hash": "41d009d8ae199fae6a551ec9faba28e4aa8c9a04d525a2f3572ac8be7778e5e0",
+    "duration_sec": 84,
+    "kid_friendly": "no",
+    "entities": [
+      "Robespierre",
+      "Jacques-Louis David",
+      "Jean-Jacques Rousseau"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "Supreme Being rite",
+    "physical_cues": [
+      {
+        "cue": "Central pool of the Tuileries Gardens — the departure point of the Supreme Being ceremony",
+        "direction": "here",
+        "feature_type": "view"
+      },
+      {
+        "cue": "Marble benches in a semicircle on either side of the entrance to the central alley — placed by Robespierre for the aged participants",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The central pool was the departure point of the revolutionary ceremony for 'the Supreme Being', orchestrated by a thickly powdered Robespierre dressed in blue, a bouquet of flowers in one hand, a torch in the other, haranguing the crowds. The master of ceremony, the painter David, fretted about at the head of a red-painted float drawn by eight oxen, surmounted by a Liberty figure. 2,400 singers and 1,000 musicians accompanied the huge procession into the Place de la Révolution (Concorde) [...]. Meanwhile a monster emerged from the pool in the shape of a pyramid (!), representing atheism, egoism, false modesty, discord and ambition. Once set on fire, the monster was reduced to ashes and Wisdom appeared in all her splendour. All that is now left of this inflamed idealism are some marble benches disposed in a semicircle on either side of the entrance to the central alley: they had been placed by the well-intentioned Robespierre to accommodate the aged participants. On 10 October 1794, the remains of J.J. Rousseau, wrapped in a gold-studded azure flag, were deposited by the central pool, on their way from Ermenonville [...] to the [...] Panthéon [...]. This time Robespierre was not present: the guillotine had disposed of him too, a couple of months before.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_commerce_innovation_around_and_about_paris_louvre_shopping_arcade_macdonalds_joke",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "commerce_innovation",
+    "topic_slug": "louvre_shopping_arcade_macdonalds_joke",
+    "sub_location": "carrousel-du-louvre",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Today's Louvre is also a business venture. Make your way underground and past Pei's reversed pyramid, and you'll find — just beyond — yet another shopping arcade. This had been cautiously played down during the 1993 inauguration publicity. That the world of haute couture should transfer its fashion shows here from the makeshift structures on Cour Napoléon seems right enough — the area having been the birthplace of haute couture in the last century. But a shopping arcade communicating directly with the Louvre is another matter. \"One day,\" as one visitor put it, \"a MacDonald's will open under Notre-Dame.\"",
+    "script_body_hash": "efed90cd381695d265547664c65d3be0105830e9ac91b125b13f6052dd5a015a",
+    "duration_sec": 40,
+    "kid_friendly": "yes",
+    "entities": [
+      "I.M. Pei"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "callback",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "Louvre arcade",
+    "physical_cues": [
+      {
+        "cue": "Reversed Pyramid in the Carrousel du Louvre underground — and just beyond it, the shopping arcade",
+        "direction": "down",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "haute couture",
+        "gloss": "high fashion"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Today's Louvre is also a business venture as we found out some time later. Making our way underground, the transparent pyramid above our head displaying an ever-changing silver-grey sky, we proceeded in the direction of the Carrousel with enthusiastic anticipation to see Pei's more recent reversed Pyramid, when we discovered that just beyond it lay yet another shopping arcade! This had been cautiously played down during the inaugurational publicity campaign. That the world of haute couture should transfer its fashion shows here from the makeshift structures on Cour Napoléon only seemed right, the area having been the birthplace of haute couture in the last century. But a shopping arcade that communicates directly with the Louvre is a different matter. \"One day a MacDonald's will open under Notre-Dame,\" someone next to me remarked.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Louvre westwards"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-04-1st-arr-louvre-westwards",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:15:48Z",
       "city_name": "paris"
     }
   }
