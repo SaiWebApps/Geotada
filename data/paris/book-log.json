@@ -6,27 +6,6 @@
       "author": "Thirza Vallois",
       "chunks_processed": [
         {
-          "chunk": "chunk-01-1st-arr-overview-to-les-halles",
-          "processed_at": "2026-04-01T06:00:00Z",
-          "beats_extracted": 17,
-          "pois_touched": [
-            "Louvre Museum",
-            "Jardin des Tuileries",
-            "Saint-Eustache",
-            "Les Halles",
-            "Paris Catacombs",
-            "Ile de la Cite",
-            "Place Vendome",
-            "Pavillon de Flore"
-          ],
-          "pois_created": [
-            "Les Halles"
-          ],
-          "pois_mentioned_no_content": [],
-          "conflicts_resolved": 0,
-          "fact_check_flags": 3
-        },
-        {
           "chunk": "chunk-02-1st-arr-chatelet-to-vert-galant",
           "processed_at": "2026-04-02T12:00:00Z",
           "beats_extracted": 9,
@@ -642,6 +621,22 @@
             "Quai de la Megisserie",
             "Sainte-Chapelle",
             "Square du Vert-Galant"
+          ],
+          "new_pois_flagged": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "chunk-01-1st-arr-overview-to-les-halles",
+          "processed_at": "2026-04-24T02:21:41Z",
+          "beats_extracted": 25,
+          "pois_touched": [
+            "Fontaine des Innocents",
+            "Hotel Le Meurice",
+            "Jardin des Tuileries",
+            "Les Halles",
+            "Louvre Museum",
+            "Porte Saint-Denis",
+            "Saint-Eustache"
           ],
           "new_pois_flagged": [],
           "pois_mentioned_no_content": []

@@ -1,1155 +1,5 @@
 [
   {
-    "beat_id": "louvre_museum_war_conflict_fortress_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "war_conflict",
-    "script_body": "The Louvre began not as a museum but as a military fortress. In 1190, Philippe-Auguste built it as a defence tower before embarking on the Third Crusade, wary that the English might invade via the Seine — the same route the Norsemen had used three centuries earlier to devastate Paris. He placed it at the westernmost point of the right bank fortification, facing the Tour de Nesle across the river, with the Plantagenets not far downstream at Gisors in Normandy. A wall 3,000 metres long, 3 metres thick and 10 metres high encircled the right bank, and upon his return in 1191, Philippe-Auguste deposited the Crown treasures and archives inside the Louvre, considering it the safest place in the capital. The fortress became known as 'la plus halte tor de Paris la citet' — the tallest tower in Paris the city.",
-    "physical_cues": [],
-    "key_claims": [
-      "Built as defence tower 1190 by Philippe-Auguste",
-      "Before Third Crusade against potential English invasion",
-      "Wall 3000m long 3m thick 10m high",
-      "Crown treasures deposited 1191"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "he erected the Louvre on the right bank, at the westernmost point of the fortification, facing the Tour de Nesle on the opposite bank",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 56,
-    "entities": [
-      "Gisors",
-      "Norsemen",
-      "Philippe-Auguste",
-      "Plantagenets",
-      "Third Crusade",
-      "Tour de Nesle"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "event",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "00f778409b02b6e095736d795a1cc03cf36d0648fa0676d13ef81fb46bb32f82",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "fortress",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_hidden_history_library_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "hidden_history",
-    "script_body": "Charles V began transforming the Louvre into his residence when he became king in 1364. In 1368, he repurposed the northwest tower — formerly known as the Tour de la Fauconnerie — into the first royal library of France, housing over nine hundred manuscripts. This collection was the seed of what would eventually become the Bibliotheque Nationale.",
-    "physical_cues": [],
-    "key_claims": [
-      "Charles V became king 1364 began transforming Louvre",
-      "Library established 1368 in Tour de la Fauconnerie",
-      "Over 900 manuscripts",
-      "Precursor to Bibliotheque Nationale"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [],
-    "source_passage": "he collected within its thick walls the kingdom's manuscripts and founded the first royal library of France",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [
-        {
-          "original_text": "Charles V made the Louvre his residence in 1368",
-          "corrected_text": "Charles V began transforming the Louvre into his residence when he became king in 1364. In 1368, he repurposed the northwest tower",
-          "source": "https://historyofinformation.com/detail.php?id=273 (primary/academic)",
-          "impact": "MEDIUM",
-          "reasoning": "Charles V became king in 1364 and started transforming the Louvre then. 1368 is specifically when the library was established. Added tower name and manuscript count from verified sources."
-        }
-      ],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "https://historyofinformation.com/detail.php?id=273 (academic)",
-        "https://en.wikipedia.org/wiki/Louvre_Palace (wikipedia)",
-        "https://blogs.bl.uk/digitisedmanuscripts/2016/06/from-the-louvre-to-treasures-gallery.html (academic/British Library)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 23,
-    "entities": [
-      "Bibliotheque Nationale",
-      "Charles V",
-      "Tour de la Fauconnerie"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "factoid",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e5b4c947a50c24290952d695b1cf695cffd995ced5876d372e972474032164bf",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "library",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_hidden_history_grosse_tour_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "hidden_history",
-    "script_body": "In 1528, Francois I demolished the medieval Louvre fortress to build a Renaissance palace, and Parisians were genuinely upset. They mourned the loss of 'la Grosse Tour,' the great tower where Charles V used to read and meditate. But Francois had personal reasons for hating fortresses: he had just been released from the fortress of Madrid, where Emperor Charles V of Spain had kept him captive after defeating him at the Battle of Pavia in 1525. His rebuilt Louvre became a backdrop for extravagant celebrations designed to humiliate his former captor. When the Emperor visited in 1540, every weather vane had been gilded, the window panes coloured, and the staircases illuminated with brass candlesticks — all to dazzle and humble the man who had once imprisoned him.",
-    "physical_cues": [],
-    "key_claims": [
-      "Demolished medieval fortress 1528",
-      "Parisians mourned la Grosse Tour",
-      "Captured at Pavia 1525 held in Madrid",
-      "Emperor Charles V visited 1540 humiliated by display"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "The people of Paris were quite upset by the sudden disappearance in 1528 of 'la Grosse Tour', where Charles V used to read and meditate",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 51,
-    "entities": [
-      "Battle",
-      "But Francois",
-      "Emperor Charles V",
-      "Francois I",
-      "Grosse Tour",
-      "Pavia",
-      "Spain"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "anecdote",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "7191b1d1e3da5a3d3d117e51f7f6e6e3a327e99a6843889e6c4e6d69877583a5",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "grosse_tour",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_visual_art_mona_lisa_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "visual_art",
-    "script_body": "Francois I didn't just rebuild the Louvre — he gave it its artistic soul. He bestowed the spirit of the Renaissance upon the palace and started the painting collection that would one day make it the largest painting museum in the world. His was an embryonic collection, but it already comprised works by Leonardo da Vinci, Raphael, and Titian. Most notably, Leonardo himself brought the Mona Lisa to France when he accepted Francois I's invitation in 1516, spending his final years at the Chateau d'Amboise under royal patronage. After Leonardo's death on 2 May 1519, his assistant Salai inherited the painting and sold it to the King for 4,000 gold coins.",
-    "physical_cues": [],
-    "key_claims": [
-      "Francois I started painting collection",
-      "Works by da Vinci Raphael Titian",
-      "Leonardo brought Mona Lisa to France 1516",
-      "Died 2 May 1519",
-      "Salai sold painting to Francis I for 4000 gold coins"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "the most renowned painting in the Louvre, the Mona Lisa, which Francois I is believed to have transferred to Paris from Amboise after the death of da Vinci in 1519",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [
-        {
-          "original_text": "the Mona Lisa is believed to have been transferred to Paris from Amboise in the Loire Valley after da Vinci's death in 1519",
-          "corrected_text": "Leonardo himself brought the Mona Lisa to France when he accepted Francois I's invitation in 1516... After Leonardo's death on 2 May 1519, his assistant Salai inherited the painting and sold it to the King for 4,000 gold coins",
-          "source": "https://en.wikipedia.org/wiki/Mona_Lisa (wikipedia), https://www.claudinehemingway.com/ (reference)",
-          "impact": "MEDIUM",
-          "reasoning": "The book implies passive transfer. Leonardo actually brought the painting himself in 1516. After his death, Salai sold it — it wasn't simply 'transferred.'"
-        }
-      ],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Mona_Lisa (wikipedia)",
-        "https://www.wonderfulmuseums.com/museum/why-is-the-mona-lisa-in-the-louvre-museum/ (reference)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 44,
-    "entities": [
-      "After Leonardo",
-      "Amboise",
-      "Chateau",
-      "Francois I",
-      "Mona Lisa",
-      "Salai"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "architectural_detail",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e553c6ac2938c6fee72aedb170b988c4ec6ef35c72460ca5f3ff6278dada4ba8",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "mona_lisa",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_historic_arch_grande_galerie_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "historic_arch",
-    "script_body": "Henri IV entered Paris on 22 March 1594, four years after his accession, having converted to Catholicism with the famous words 'Paris vaut bien une messe' — Paris is well worth a mass. His architectural ambition was immediate: he set out to connect the Louvre to the Palais des Tuileries via a colossal 460-metre wing along the Seine called La Grande Galerie, also known as la Galerie du Bord de l'Eau. A Swiss visitor confirmed the scale when he wrote that 'the edifice is so pompous and so vast that once completed there will be no other like it in all Christendom.' The gallery was completed by the elegant Pavillon de Flore at its western end, but the gigantic enterprise was a constant headache for his minister Sully, who had to squeeze segments of the population dry to raise funds.",
-    "physical_cues": [],
-    "key_claims": [
-      "Henri IV entered Paris 22 March 1594",
-      "Paris vaut bien une messe",
-      "Grande Galerie 460 metres along Seine",
-      "Completed by Pavillon de Flore",
-      "Minister Sully struggled to fund it"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "pavillon_de_flore_historic_arch_around_and_about_paris"
-    ],
-    "source_passage": "a colossal wing of monumental grandeur - 470 metres long - La Grande Galerie, also known as la Galerie du Bord de l'Eau",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [
-        {
-          "original_text": "470-metre wing",
-          "corrected_text": "460-metre wing",
-          "source": "https://en.wikipedia.org/wiki/Grande_Galerie (wikipedia), https://fr.m.wikipedia.org/wiki/Grande_Galerie_du_Louvre (wikipedia/fr)",
-          "impact": "LOW",
-          "reasoning": "Most sources cite 450-460m. Book's 470m is slightly high. Used 460m as commonly cited figure."
-        }
-      ],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Grande_Galerie (wikipedia)",
-        "https://fr.m.wikipedia.org/wiki/Grande_Galerie_du_Louvre (wikipedia/fr)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 56,
-    "entities": [
-      "Catholicism",
-      "Galerie du Bord",
-      "Henri IV",
-      "La Grande Galerie",
-      "Palais des Tuileries",
-      "Pavillon de Flore",
-      "Swiss"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "architectural_detail",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "a104395d4828a7ed92a298660e8245f46cb8c47eefde2fbc24aa5acfbef7c7c4",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "grande_galerie",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_hidden_history_artisans_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "hidden_history",
-    "script_body": "Henri IV's Grande Galerie wasn't built for display — it was built to house the best artisans and artists of the kingdom, realizing an artistic mission he had set for the Louvre. The palace became the home of both royalty, with their 1,500-strong army of servants, and a select artistic community living alongside them. This intimate coexistence of high and low was a hallmark of the 1st arrondissement that persisted for centuries.",
-    "physical_cues": [],
-    "key_claims": [
-      "Grande Galerie housed kingdom's best artisans and artists",
-      "1500 servants",
-      "Artistic community lived alongside royalty"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [
-      "louvre_museum_famous_residents_renoir_around_and_about_paris"
-    ],
-    "source_passage": "the best artisans and artists of the kingdom and thus realize the artistic mission Henri IV had set for the Louvre",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 29,
-    "entities": [
-      "Grande Galerie",
-      "Henri IV"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "anecdote",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "1a6fc5b23efba691092b393ff70588f57715d1bead63d738da45845f423f7e5a",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "artisans",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_famous_residents_louis_xiv_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "famous_residents",
-    "script_body": "Louis XIV was just 14 when he settled in the Louvre in 1652, after the princely rebellion of la Fronde had been quelled. He never liked the palace, but while there he channelled enormous energy into it — scintillating balls, ceremonial dinners of twenty courses, performances of plays by Corneille and Moliere. His Majesty and his brother Monsieur were great lovers of theatre, unlike their grandfather Henri IV, who once confided to a woman friend: 'Yesterday evening I saw the comedians play, when I fell asleep. It was midnight when they finished.' During Louis XIV's reign, the Louvre's painting collection grew from 200 to 2,000 works, driven by the feverish acquisitions of his minister Mazarin and Mazarin's successor Colbert, supported by donations from Nicolas Fouquet, the king's wealthy treasurer, before his disgrace.",
-    "physical_cues": [],
-    "key_claims": [
-      "Louis XIV settled age 14 in 1652",
-      "Paintings grew from 200 to 2000",
-      "Henri IV fell asleep at theatre",
-      "Mazarin Colbert and Fouquet drove acquisitions"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "During the reign of Louis XIV the number of paintings in the Louvre increased from 200 to 2,000",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 53,
-    "entities": [
-      "Colbert",
-      "Corneille",
-      "During Louis XIV",
-      "Fronde",
-      "Henri IV",
-      "His Majesty",
-      "Mazarin",
-      "Moliere",
-      "Nicolas Fouquet",
-      "Yesterday"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "character_story",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "42ad1fb27671202179b8f8b516d7b674bed6d95ca140b55aef849e4c419e2546",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "louis_xiv",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_hidden_history_elephant_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "hidden_history",
-    "script_body": "When Louis XIV moved his court to Versailles in 1682, the Louvre descended into a bizarre state of decay. The King's own apartment, left vacant, was taken over by the Academie des Sciences, which filled it with an elephant skeleton, a stuffed camel, and various anatomical organs floating in alcohol-filled jars. Booths and stalls crammed the courtyard. The panelling of the royal apartments was torn off, and painted ceilings were drilled through to make room for skylights and stove pipes. A motley population of artisans, parasitical courtiers, and prowlers replaced the splendid court. The five newly founded Academies, paradoxically, contributed to the deterioration of the very palace they occupied.",
-    "physical_cues": [],
-    "key_claims": [
-      "After 1682 Louvre deteriorated",
-      "Academie des Sciences in King's apartment with elephant skeleton stuffed camel organs in jars",
-      "Booths crammed courtyard panelling torn off ceilings drilled"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "The King's apartment became the premises of the Academie des Sciences, housing an elephant skeleton, a stuffed camel and various anatomical organs floating in alcohol-filled jars",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 44,
-    "entities": [
-      "Academie des Sciences",
-      "Booths",
-      "Versailles",
-      "When Louis XIV"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "anecdote",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "8a9cb76754a9334c93eaaeb43dbd27f0a62d70d73207cddfb3cb49cf5732b659",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "elephant",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_social_change_versailles_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "social_change",
-    "script_body": "Louis XIV's decision to move the court to Versailles in 1682 was not about architecture — it was about control. The Parisian aristocracy had grown dangerously independent, enjoying intellectual stimulation in the literary salons of enlightened ladies on the Faubourg Saint-Honore and Faubourg Saint-Germain. Louis had not forgotten the princely rebellion of the Fronde in 1650, which forced him into exile at Saint-Germain-en-Laye and ended his idyllic childhood at the Palais-Royal, where little Marie, his mother's chambermaid's daughter, had played his queen. By transferring the aristocracy to what the author calls a 'glorified ghetto' at Versailles, the astute monarch asserted his divine right and reduced the proudest nobles of France to glamorous lackeys in his service.",
-    "physical_cues": [],
-    "key_claims": [
-      "Move to Versailles was about controlling aristocracy",
-      "Fronde 1650 forced exile to Saint-Germain-en-Laye",
-      "Aristocracy reduced to glamorous lackeys"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "It was precisely in order to keep a close eye on this increasingly independent aristocracy that the astute monarch transferred its members to the glorified ghetto of Versailles",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 46,
-    "entities": [
-      "Faubourg",
-      "Fronde",
-      "Honore",
-      "Laye",
-      "Louis XIV",
-      "Versailles"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "event",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "3eaa2a908091549509622742ce6d59883b30db0e4a7963adebd133ab3cf1ad91",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "versailles",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "louvre_museum_famous_residents_renoir_around_and_about_paris",
-    "poi_name": "Louvre Museum",
-    "lens": "famous_residents",
-    "script_body": "The painter Auguste Renoir grew up in one of the lanes that ran through the Esplanade of the Louvre, where royalty and the lower orders still lived side by side — an intimacy inconceivable today. Young Renoir was one of the little street urchins to whom Queen Amelie's ladies-in-waiting threw sweets through the window when the children made too much of a nuisance of themselves. His son, the celebrated film director Jean Renoir, later wondered 'how successive kings could have tolerated such a seedy neighbourhood under their very noses.'",
-    "physical_cues": [],
-    "key_claims": [
-      "Renoir grew up in lanes through Esplanade of Louvre",
-      "Queen Amelie's ladies threw sweets to urchins",
-      "Son Jean Renoir the film director"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "saint_eustache_music_heritage_gounod_around_and_about_paris"
-    ],
-    "source_passage": "The painter Auguste Renoir grew up in one of the lanes that then ran through the Esplanade of the Louvre",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 36,
-    "entities": [
-      "Auguste Renoir",
-      "Esplanade",
-      "Jean Renoir",
-      "Queen Amelie",
-      "Young Renoir"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "character_story",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "7f7fd3d7597286888a891badb68180e4632b99a0a7724335993e89dc94c881bd",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "renoir",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "jardin_des_tuileries_war_conflict_louis_xvi_around_and_about_paris",
-    "poi_name": "Jardin des Tuileries",
-    "lens": "war_conflict",
-    "script_body": "On 6 October 1789, roughly a century after Louis XIV had moved the court to Versailles, the infuriated people of Paris transferred his great-great-grandson Louis XVI back. The days of absolutism were over and it was now the King's turn to be kept in check. Heading from Versailles to the Tuileries — the Louvre being too dilapidated to inhabit — the royal coach was made to follow a long and strange procession of National Guards, royal troops, excited throngs of Parisians, and carts of corn and flour escorted by sharp-eyed mutinous women. The Tuileries then replaced the Louvre as the residence of every subsequent king and emperor of France.",
-    "physical_cues": [],
-    "key_claims": [
-      "6 October 1789 Louis XVI transferred to Tuileries",
-      "Louvre too dilapidated",
-      "Procession of National Guards and mutinous women with carts of corn"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "jardin_des_tuileries_social_change_razed_around_and_about_paris"
-    ],
-    "source_passage": "the royal coach was made to follow a long and strange procession of National Guards, royal troops, excited throngs of Parisians and carts of corn and flour",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 44,
-    "entities": [
-      "Heading",
-      "Louis XIV",
-      "Louis XVI",
-      "Louvre",
-      "National Guards",
-      "Versailles"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e304142520d06be220197506a2245191ac09875eb1ef33d0cd1ac2eedb028f77",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "louis_xvi",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "jardin_des_tuileries_social_change_razed_around_and_about_paris",
-    "poi_name": "Jardin des Tuileries",
-    "lens": "social_change",
-    "script_body": "The Palais des Tuileries, built by Catherine de Medici in 1564, served as the seat of French power through every regime change of the 19th century. After his coup on 2 December 1851, Louis Napoleon promptly left the Republican Palais de l'Elysee for the royal Tuileries — the last ruler to use it. When the nascent Third Republic came to power after defeating the Paris Commune in 1871, it moved out of the 1st arrondissement entirely, heading west to the Palais de l'Elysee — the home of the Republic's Presidents ever since. The fire that had damaged the Tuileries during the Commune had tolled the knell of the arrondissement as the seat of power. In 1882, rather than restore the charred carcass, the Third Republic razed the Tuileries to the ground, 'securing irrevocably the definitive death of the monarchy.'",
-    "physical_cues": [],
-    "key_claims": [
-      "Tuileries built by Catherine de Medici 1564",
-      "Louis Napoleon moved there after 1851 coup",
-      "Third Republic razed it 1882",
-      "Securing irrevocably definitive death of the monarchy"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "jardin_des_tuileries_war_conflict_louis_xvi_around_and_about_paris"
-    ],
-    "source_passage": "rather than restore the charred carcass of the Palais des Tuileries, the Third Republic razed it to the ground, securing irrevocably the definitive death of the monarchy",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 56,
-    "entities": [
-      "Catherine de Medici",
-      "Elysee",
-      "Louis Napoleon",
-      "Paris Commune",
-      "Presidents",
-      "Republican Palais",
-      "Third Republic"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "9edbab0ceb0f07d619ceb847672a31597b368f93a67141e7dff247d42fb5adbd",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "razed",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "saint_eustache_dark_history_moliere_around_and_about_paris",
-    "poi_name": "Saint-Eustache",
-    "lens": "dark_history",
-    "script_body": "When the playwright Moliere died, the clergy of Saint-Eustache refused him a Christian burial. The church did not like 'stage men' and did not admit them into its fold — all the more so because those 'ill-mannered louts' would turn up in front of the church during Sunday morning mass to announce their forthcoming plays, entertainment more exciting than the sermon, thus inevitably turning many souls away from God. It took the direct intervention of the King himself to persuade the clergy to relent, and Moliere's funeral proceeded in riotous conditions. The funeral of the celebrated fable writer Jean de La Fontaine was also held at Saint-Eustache, apparently without the same drama.",
-    "physical_cues": [],
-    "key_claims": [
-      "Clergy refused Moliere Christian burial",
-      "King intervened",
-      "Actors announced plays during Sunday mass luring congregation",
-      "La Fontaine funeral also held here"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "it took the intervention of the King to persuade the clergy of Saint-Eustache to give this parishioner a Christian burial",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Les Halles",
-      "page": "Les Halles"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 45,
-    "entities": [
-      "Jean de La Fontaine",
-      "Moliere"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e1c38ecac0b5c1a051a1c2615815b6698089b4d11f396cbcedf08607f65903ad",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "moliere",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "saint_eustache_music_heritage_mozart_around_and_about_paris",
-    "poi_name": "Saint-Eustache",
-    "lens": "music_heritage",
-    "script_body": "A plaque on the wall of the southern aisle records that the funeral service for Anna Maria Mozart was held at Saint-Eustache in July 1788. She had accompanied her son Wolfgang on his third and last visit to Paris — an unhappy visit that left him bereaved and embittered. No longer a Wunderkind, Mozart was ignored by a shallow, unmusical Parisian society and had to share with his mother an insalubrious, draughty flat at no. 10 rue du Gros-Chenet, today's rue du Sentier. She took ill in June and died wretchedly on 3 July. Mozart gave a heart-rending account of the event in his Correspondence. Resentful and contemptuous of Parisian society, he left the city the following September never to return.",
-    "physical_cues": [
-      "A plaque on the wall of the southern aisle"
-    ],
-    "key_claims": [
-      "Anna Maria Mozart funeral July 1788",
-      "Third and last visit to Paris",
-      "Flat at 10 rue du Gros-Chenet",
-      "Mother died 3 July",
-      "Left September never returned"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "A plaque on the wall of the southern aisle informs you that the funeral service for Anna Maria Mozart was held here in July 1788",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Les Halles",
-      "page": "Les Halles"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "physical_cues_verified": false,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [
-        "Plaque location 'southern aisle' — sources mention Chapel of Saint Cecilia or Chapel of Saint-Joseph. Book says southern aisle. Kept per editorial decision to trust the book."
-      ],
-      "physical_cue_issues": [
-        "Plaque location unverified — book says southern aisle, other sources say different chapel"
-      ],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Anna_Maria_Mozart (wikipedia)",
-        "https://parisianfields.com/2022/02/27/madame-mozart-dies-in-paris/ (blog/reference)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 48,
-    "entities": [
-      "Anna Maria Mozart",
-      "Resentful",
-      "Wolfgang"
-    ],
-    "sensory_anchor": true,
-    "narrative_function": "deepen",
-    "beat_type": "anecdote",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "08e77334246113fa9af091a614d6abd04cabb7b14ccc711d4cb4620e8d2e4a10",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "mozart",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "saint_eustache_music_heritage_berlioz_liszt_around_and_about_paris",
-    "poi_name": "Saint-Eustache",
-    "lens": "music_heritage",
-    "script_body": "Because of its remarkable acoustics, Saint-Eustache became a venue for some of the most powerful musical performances in 19th-century Paris. In 1855, Berlioz attended a performance of his uplifting Te Deum here by 950 musicians. In 1886, Liszt's majestic Grand Mass was premiered in the church, also in the presence of its composer. The famous choir was directed by none other than Charles Gounod, composer of Faust. Gounod's most outstanding pupil was a child by the name of Auguste Renoir — who felt a deeper urge to use his hands as a painter rather than as a singer, and went on to become one of the great Impressionists.",
-    "physical_cues": [],
-    "key_claims": [
-      "Berlioz Te Deum 950 musicians 1855",
-      "Liszt Grand Mass premiered 1886",
-      "Gounod directed choir",
-      "Young Renoir was Gounod's pupil chose painting"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "louvre_museum_famous_residents_renoir_around_and_about_paris"
-    ],
-    "source_passage": "In 1855 Berlioz attended a performance of his uplifting Te Deum by 950 musicians",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Les Halles",
-      "page": "Les Halles"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 43,
-    "entities": [
-      "Auguste Renoir",
-      "Because",
-      "Berlioz",
-      "Charles Gounod",
-      "Grand Mass",
-      "Liszt",
-      "Te Deum"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "deepen",
-    "beat_type": "character_story",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "429db429b0fbc34d887b03d2cdf631bad46c1fe3ae42fb407464fe1b303d2880",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "berlioz_liszt",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "saint_eustache_music_heritage_organ_around_and_about_paris",
-    "poi_name": "Saint-Eustache",
-    "lens": "music_heritage",
-    "script_body": "Saint-Eustache houses one of the most fabulous organs in Paris, built by the Dutch establishment Peter Jan Van Den Heuvel and installed in 1989. Its beautiful case was designed in the 19th century by Victor Baltard — the same architect who designed the iron pavilions of the Les Halles market next door. Equipped with both a mechanical and an electronic transmission system, it is the largest organ in France, making it particularly well suited for performances of 20th-century music.",
-    "physical_cues": [
-      "as you make your way out through the northern aisle, you will notice in the wall a colourful niche depicting the life of the central market of Les Halles"
-    ],
-    "key_claims": [
-      "Organ by Van Den Heuvel installed 1989",
-      "Case by Baltard architect of Les Halles",
-      "Largest organ in France"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "the work of the Dutch establishment Peter Jan Van Den Heuvel. It was installed in 1989",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Les Halles",
-      "page": "Les Halles"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [
-        {
-          "original_text": "the biggest double transmission organ in the world",
-          "corrected_text": "the largest organ in France",
-          "source": "https://vandenheuvel-orgelbouw.nl/en/cms/frankrijk-en/sainteustacheparis-en (primary — organ builder's own site)",
-          "impact": "MEDIUM",
-          "reasoning": "Could not verify 'biggest double transmission organ in the world.' Van den Heuvel's own site confirms it as the largest organ in France (101 stops, ~8000 pipes). Tightened superlative to verified claim."
-        }
-      ],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "https://vandenheuvel-orgelbouw.nl/en/cms/frankrijk-en/sainteustacheparis-en (primary)",
-        "https://www.pipedreams.org/profile/paris-st-eustache-van-den-heuvel (reference)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 32,
-    "entities": [
-      "Equipped",
-      "Les Halles",
-      "Peter Jan Van Den Heuvel",
-      "Victor Baltard"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "callback",
-    "beat_type": "character_story",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "eefe9c2f599b2def8ea1cbbf5f8e9c02d1fda3c0dd1356d3c9c4ce51ae9720a3",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "organ",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
-    "beat_id": "saint_eustache_hidden_history_baptisms_around_and_about_paris",
-    "poi_name": "Saint-Eustache",
-    "lens": "hidden_history",
-    "script_body": "Saint-Eustache served as the parish church to some of the most powerful figures in French history. Louis XIII received his first holy communion within its walls. Madame de Pompadour, the famous mistress of Louis XV, was baptised here. The composer Lully was married at Saint-Eustache, and Rameau — another of France's great composers — was buried here. The church's association with both Richelieu and the congregation of the plebeian Les Halles market next door captures the 1st arrondissement's signature contrast between high and low.",
-    "physical_cues": [],
-    "key_claims": [
-      "Louis XIII first communion",
-      "Pompadour baptised",
-      "Lully married",
-      "Rameau buried",
-      "Associated with both Richelieu and Les Halles market"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Richelieu and the names of the greats are also associated with this church, where Louis XIII received his first holy communion",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Les Halles",
-      "page": "Les Halles"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 34,
-    "entities": [
-      "Les Halles",
-      "Louis XIII",
-      "Louis XV",
-      "Lully",
-      "Madame de Pompadour",
-      "Richelieu"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "anecdote",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "9a3bac3935b185697cab01aa8352972a82bfdd009dce31a114eedd1412b48fe1",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "baptisms",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
-  },
-  {
     "beat_id": "les_halles_hidden_history_origins_around_and_about_paris",
     "poi_name": "Les Halles",
     "lens": "hidden_history",
@@ -1475,75 +325,6 @@
     "book_slug": "around_and_about_paris",
     "topic_slug": "executions",
     "source_chunk_slug": "legacy_ambiguous"
-  },
-  {
-    "beat_id": "paris_catacombs_dark_history_innocents_around_and_about_paris",
-    "poi_name": "Paris Catacombs",
-    "lens": "dark_history",
-    "script_body": "The Cimetiere des Saints-Innocents had been piling up the remains of generations of Parisians since Gallo-Roman days, at the corner of rue Berger and rue Saint-Denis. By the late 18th century, the stench of putrefaction and the danger of epidemics were so great that a general outcry arose. Voltaire considered it a barbarity that placed the French below the Hottentots. One journalist who opposed the demolition on religious grounds was sent to the Bastille prison for an entire year. The transfer to the newly opened catacombs began on 7 April 1786 and took 15 months. Night after night, eerie processions carried draped remains from the different cemeteries of Paris to their new abode, where six million of them now rest. Today, the Square des Innocents bustles with street performers around the Renaissance fountain, unaware they are treading the soil that once buried the innocent dead.",
-    "physical_cues": [],
-    "key_claims": [
-      "Saints-Innocents cemetery since Gallo-Roman days",
-      "Transfer began 7 April 1786 took 15 months",
-      "Night processions",
-      "Six million remains",
-      "Voltaire called it barbarity",
-      "Journalist jailed for opposing"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Night after night eerie processions carried draped remains from the different cemeteries of Paris to their new abode where six millions of them now rest",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-02T19:00:00Z",
-      "claims_checked": 6,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [
-        "Duration '15 months' — some sources say 2 years for all cemetery transfers. 15 months likely refers to Saints-Innocents specifically. Kept as book is discussing Saints-Innocents."
-      ],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Holy_Innocents'_Cemetery (wikipedia)",
-        "https://en.wikipedia.org/wiki/Catacombs_of_Paris (wikipedia)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-01T06:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 58,
-    "entities": [
-      "Bastille",
-      "Berger",
-      "Night",
-      "Square des Innocents",
-      "Voltaire"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "c5fdf97006c5f288e9baf714b1deaf6743942ef0fc25bfae41de6817f6305d53",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "innocents",
-    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
   },
   {
     "beat_id": "ile_de_la_cite_hidden_history_origins_around_and_about_paris",
@@ -34281,6 +33062,1210 @@
     "_meta": {
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:07:15Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_war_conflict_around_and_about_paris_philippe_auguste_1190_keep",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "war_conflict",
+    "topic_slug": "philippe_auguste_1190_keep",
+    "sub_location": "cour-carree-west",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "In 1190, before leaving on the Third Crusade, Philippe-Auguste ringed the right bank with a three-thousand-metre wall — three metres thick, ten metres high — and anchored it on the west with a fortress at the river's edge, facing the Tour de Nesle opposite. He had reason to worry: the Plantagenets sat just downstream in Normandy, and within living memory the Norsemen had invaded Paris the same way. His brother-in-law Richard the Lionheart, companion on the holy journey to Jerusalem, was no more reliable than the rest. At the heart of the new fortification rose a round keep, nineteen metres in diameter, thirty-one metres above ground — the first Louvre. On his return in 1191 he deposited the Crown treasures and archives here, deeming it the safest place in Paris — \"la plus halte tor de Paris la citet,\" the tallest tower in Paris the city.",
+    "script_body_hash": "8b5c17723c4e3bd0e8c67de2e1d692f2f0d63db8e5d84bde540adeb16aac9a1d",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Philippe-Auguste",
+      "Richard the Lionheart",
+      "Plantagenets"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "original keep",
+    "physical_cues": [
+      {
+        "cue": "Western edge of the Cour Carrée — site of the original 19-metre-diameter keep Philippe-Auguste built in 1190",
+        "direction": "west",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "la plus halte tor de Paris la citet",
+        "gloss": "the tallest tower in Paris the city — medieval French"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Initially it was no more than a defence tower, part of the fortification system that Philippe-Auguste had built in 1190 round the part of Paris that lay north of the Seine [...]. Wary of a potential threat from England by way of the Seine, albeit upstream (which is how the Norsemen had invaded the city three centuries earlier), he erected the Louvre on the right bank [...]. With the presence of the Plantagenets not so far down the river [...], and with the vague memory of that horrendous devastation of Paris by the Norsemen, he had good reason for concern: [...] Richard the Lionheart [...] was his brother-in-law and was to accompany him on his holy journey to Jerusalem. Soon a wall 3,000 metres long, 3 metres thick and 10 metres high encircled the right bank [...]. Inside, a round keep, 19 metres in diameter, rose 31 metres above ground level - the initial Louvre. Upon his return in 1191, Philippe-Auguste deposited the Crown treasures and archives at the Louvre [...], 'la plus halte tor de Paris la citet' ('the tallest tower in Paris the city').",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_literary_heritage_around_and_about_paris_charles_v_1368_royal_library",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "literary_heritage",
+    "topic_slug": "charles_v_1368_royal_library",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "Charles V, though equally dedicated to fortifying his capital, was an enlightened king. Besides making the Louvre his residence in 1368, he collected within its thick walls the kingdom's manuscripts and founded the first royal library of France — the seed from which two centuries later the greatest painting collection in the world would grow.",
+    "script_body_hash": "03863914b5244473761e25302e1ddbbe1186b238629c8a33d7893caf64ac4b87",
+    "duration_sec": 22,
+    "kid_friendly": "yes",
+    "entities": [
+      "Charles V"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "reverent",
+    "subject_tag": "first royal library",
+    "physical_cues": [
+      {
+        "cue": "Tour de la Fauconnerie at the northwest corner of the old Louvre — where Charles V's manuscripts were held",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Charles V, though equally dedicated to the fortification of his capital, was also an enlightened king: besides making the Louvre his residence, he collected within its thick walls the kingdom's manuscripts and founded the first royal library of France.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_war_conflict_around_and_about_paris_francois_i_grosse_tour_pavia_captivity",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "war_conflict",
+    "topic_slug": "francois_i_grosse_tour_pavia_captivity",
+    "sub_location": "cour-carree-southwest",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "François I, settling into a new period of peace and refinement, decided to dispense with the defensive function of the Louvre and replace the medieval fortress with a Renaissance palace. The people of Paris were quite upset by the sudden disappearance in 1528 of la Grosse Tour — the Big Tower — where Charles V used to read and meditate. For François, however, fortresses carried unpleasant associations: he had recently been released from the fortress of Madrid, where Emperor Charles V of Spain had kept him captive after defeating him at Pavia in 1525. His overhauled Louvre was meant to be the opposite of a prison — a sumptuous backdrop for tournaments and jousts, where in 1540 he dazzled the same Emperor Charles V during his state visit.",
+    "script_body_hash": "260494c7d7459a46ffeea293299ca8d5e7496419d1e42caf02f22e543baf05d1",
+    "duration_sec": 51,
+    "kid_friendly": "yes",
+    "entities": [
+      "François I",
+      "Emperor Charles V",
+      "Philippe-Auguste"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "wry",
+    "subject_tag": "Grosse Tour demolition",
+    "physical_cues": [
+      {
+        "cue": "Southwest angle of the Cour Carrée — the two sections François I managed to build before his death",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "la Grosse Tour",
+        "gloss": "the Big Tower — the medieval keep Philippe-Auguste had raised in 1190"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "François I, settling into a new period of peace, well being and refinement, decided to dispense with the defensive function of the Louvre and replaced the medieval fortress with a Renaissance palace [...]. The people of Paris were quite upset by the sudden disappearance in 1528 of 'la Grosse Tour', where Charles V used to read and meditate. For François I, however, fortresses had unpleasant associations: he had recently been released from the fortress of Madrid where he had been kept captive by the Emperor Charles V, who had defeated him at Pavia in 1525.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_visual_art_around_and_about_paris_mona_lisa_from_amboise_1519",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "visual_art",
+    "topic_slug": "mona_lisa_from_amboise_1519",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "François I's painting collection was embryonic — works by Leonardo da Vinci, Raphael, Titian — but it was the seed of today's two-thousand-odd masterpieces. The Mona Lisa, the most renowned of them all, is believed to have been brought to Paris from Amboise in the Loire Valley after Leonardo's death there in 1519.",
+    "script_body_hash": "3875b5a4456db0619e3a6fc2e2840c49b02532cdd3d79a47fbb2ddc65e7983ac",
+    "duration_sec": 21,
+    "kid_friendly": "yes",
+    "entities": [
+      "François I",
+      "Leonardo da Vinci",
+      "Raphael",
+      "Titian"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "reverent",
+    "subject_tag": "Mona Lisa origin",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "he also started the painting collection that would one day make it the largest painting museum in the world. His was but an embryonic collection, comprising, nonetheless, the works of such great masters as Leonardo da Vinci, Raphael, Titian, among them, and probably, the most renowned painting in the Louvre, the Mona Lisa, which François I is believed to have transferred to Paris from Amboise (in the Loire Valley) after the death of da Vinci in 1519.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_hidden_history_around_and_about_paris_henri_iv_grande_galerie_sully",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "hidden_history",
+    "topic_slug": "henri_iv_grande_galerie_sully",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "In 1593, four years after his accession, Henri IV bartered his Protestant religion for Paris to end the bloody strife between Protestants and Catholics — \"Paris vaut bien une messe,\" Paris is well worth a mass. Paris meant first and foremost the Louvre. Catherine de Medici had built the Palais des Tuileries facing the Louvre in 1564, to the west, running north–south along the Seine. Henri IV set out to connect the two palaces with a colossal wing of monumental grandeur — La Grande Galerie, four hundred and seventy metres long, also known as the Galerie du Bord de l'Eau because it ran along the water's edge. It met the Tuileries at right angles and was capped with the elegant Pavillon de Flore. The enterprise was a constant headache for his minister Sully, who had to squeeze segments of the population dry to raise the funds.",
+    "script_body_hash": "d976728a42feb062a6eef2c310868209eb0cac8d1f490ada233c52d5e36d9cb9",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV",
+      "Catherine de Medici",
+      "Sully"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "Grande Galerie",
+    "physical_cues": [
+      {
+        "cue": "Grande Galerie (Galerie du Bord de l'Eau) running along the Seine — 470 metres of Henri IV's wing connecting the Louvre to the Tuileries",
+        "direction": "west",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Pavillon de Flore at the western end of the Grande Galerie",
+        "direction": "west",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Paris vaut bien une messe",
+        "gloss": "Paris is well worth a mass"
+      },
+      {
+        "phrase": "Galerie du Bord de l'Eau",
+        "gloss": "Waterfront Gallery"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "In 1593 [...] Henri IV agreed to barter his Protestant religion for Paris [...]: \"Paris vaut bien une messe\" (\"Paris is well worth a mass\") were his famous words. [...] the Palais des Tuileries [...] had been built by Catherine de Medici in 1564 [...]. Henri IV set out to connect the Palais des Tuileries to the Louvre by means of a colossal wing of monumental grandeur - 470 metres long - La Grande Galerie, also known as la Galerie du Bord de l'Eau ('waterfront gallery') since it ran along the Seine. It met the Palais des Tuileries at right angles and was completed by the elegant Pavillon de Flore. [...] This gigantic enterprise was a constant headache for his minister Sully, who had to squeeze segments of the population dry in order to raise the necessary funds.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_hidden_history_around_and_about_paris_louis_xiv_paintings_200_to_2000",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "hidden_history",
+    "topic_slug": "louis_xiv_paintings_200_to_2000",
+    "sub_location": "cour-carree",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Louis XIV was fourteen when he settled in the Louvre in 1652, after the princely rebellion — la Fronde — had been quelled and it was deemed safe for him to return to Paris. He never liked the Louvre and in 1682 moved his court to the newly-built palace at Versailles, leaving the Louvre to fall into decline. But as long as he resided here, he channelled enormous energy and money into completing the construction around the Cour Carrée; the show had to go on, and to exceed in flashy splendour that of his predecessors. His was the reign of glamour par excellence. Scintillating balls, ceremonial dinners of twenty dishes, then performances of Corneille and Molière — His Majesty and his brother Monsieur were great lovers of theatre, unlike their grandfather Henri IV, who once confided to a woman friend: \"Yesterday evening I saw the comedians play, when I fell asleep. It was midnight when they finished.\" During this reign the painting collection went from two hundred to two thousand pieces, largely thanks to his minister Mazarin's feverish acquisitions and Colbert's patronage — bolstered, before his disgrace, by ample donations from Nicolas Fouquet, the king's wealthy treasurer.",
+    "script_body_hash": "58113f5cc4158b20ebbd813c1a86851aed4f12371c29fb7a316163742d83df11",
+    "duration_sec": 79,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIV",
+      "Corneille",
+      "Molière",
+      "Mazarin",
+      "Colbert",
+      "Nicolas Fouquet"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "Mazarin acquisitions",
+    "physical_cues": [
+      {
+        "cue": "Cour Carrée — the construction around this courtyard was what Louis XIV poured money into before the Versailles move",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Monsieur",
+        "gloss": "the traditional style of the king's brother"
+      },
+      {
+        "phrase": "la Fronde",
+        "gloss": "the princely rebellion of 1648–1653"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Louis XIV was 14 when he settled in the Louvre in 1652, after the princely rebellion - la Fronde - had been quelled [...]. He never liked the Louvre and in 1682 moved his court to the newly built palace at Versailles, leaving the Louvre to fall into decline. However, as long as he resided there, he channelled a lot of energy and money into completing the construction around the Cour Carrée [...]. Scintillating balls, ceremonial dinners, each consisting of a score of dishes, were succeeded by performances of plays by Corneille and Molière. His Majesty and his brother, Monsieur, were great lovers of this form of entertainment, unlike their grandfather Henri IV, who once confided to a woman friend, \"Yesterday evening I saw the comedians play, when I fell asleep. It was midnight when they finished.\" During the reign of Louis XIV the number of paintings in the Louvre increased from 200 to 2,000, thanks largely to his enterprising aides, particularly his minister Mazarin [...]. Mazarin's successor, Colbert, also encouraged the development of the arts and sciences, supported by ample donations made by Nicolas Fouquet, the king's wealthy treasurer, before his disgrace.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_dark_history_around_and_about_paris_post_versailles_decay_elephant_skeleton",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "dark_history",
+    "topic_slug": "post_versailles_decay_elephant_skeleton",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Once Louis XIV moved to Versailles, the Louvre fell to pieces. The King's vacant apartment became the premises of the Académie des Sciences, housing an elephant skeleton, a stuffed camel, and various anatomical organs floating in alcohol-filled jars. Booths and stalls crammed the courtyard. The magnificent halls were devastated, the panelling of the royal apartments torn off, the painted ceilings drilled through to make room for skylights and stove pipes. A motley population of artisans, parasitical courtiers, and prowlers replaced the splendid members of the court who had moved to Versailles — reluctantly in many cases, resentful at having to give up the independence they had enjoyed in the city.",
+    "script_body_hash": "e5ffb4e0bf23931a0b1163d552a1f580cdd60d71cd01833e970b12409b1e2c18",
+    "duration_sec": 44,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIV",
+      "Académie des Sciences"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "sensory_observation",
+    "emotional_register": "wry",
+    "subject_tag": "Louvre decay",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The King's apartment, for example, left vacant when he moved to Versailles, became the premises of the Académie des Sciences, housing an elephant skeleton, a stuffed camel and various anatomical organs floating in alcohol-filled jars. Worse was to come: booths and stalls soon crammed the courtyard, the magnificent halls were devastated, the panelling of the royal apartments torn off, the painted ceilings drilled into to make room for skylights or stove pipes. A motley population of artisans, parasitical courtiers and prowlers replaced the splendid members of the court who had moved to Versailles. Many courtiers had gone reluctantly, resentful at having to give up the independence they had enjoyed in the city.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_jardin_des_tuileries_war_conflict_around_and_about_paris_tuileries_razed_1882",
+    "city_name": "paris",
+    "poi_name": "Jardin des Tuileries",
+    "lens": "war_conflict",
+    "topic_slug": "tuileries_razed_1882",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "On 6 October 1789 the infuriated people of Paris marched Louis XIV's great-great-grandson, Louis XVI, back from Versailles to the Tuileries — the Louvre being by then too dilapidated to inhabit. A long, strange procession escorted the royal coach: National Guards, royal troops, Parisian crowds, and carts of corn and flour watched over by sharp-eyed mutinous women. From that day the Tuileries replaced the Louvre as the residence of French monarchs. After his 1851 coup Louis Napoleon promptly abandoned the Republican Palais de l'Élysée for the royal Tuileries. In 1871 the Commune burned it; the infant Third Republic, victorious, refused to restore the charred carcass. In 1882 it razed the palace to the ground, \"securing irrevocably,\" as Vallois puts it, \"the definitive death of the monarchy.\"",
+    "script_body_hash": "906264beae0024e1f4f36ffb26a1073a0d7e12cd6657b0d638a8373ef508ef3d",
+    "duration_sec": 50,
+    "kid_friendly": "no",
+    "entities": [
+      "Louis XVI",
+      "Louis Napoleon",
+      "Third Republic",
+      "Commune"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Tuileries burned",
+    "physical_cues": [
+      {
+        "cue": "Eastern end of the Tuileries gardens — where the Palais des Tuileries stood until 1882, now an open view to the Louvre",
+        "direction": "east",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Roughly a century after the move to Versailles, on 6 October 1789, the infuriated people of Paris transferred Louis XIV's great-great-grandson, Louis XVI, back to Paris. [...] Heading from Versailles to the Tuileries (the Louvre being too dilapidated to be inhabited), the royal coach was made to follow a long and strange procession of National Guards, royal troops, excited throngs of Parisians and carts of corn and flour escorted by sharp-eyed mutinous women. From then on the Tuileries replaced the Louvre as the residence of the kings and emperors of France. This explains why, after his coup on 2 December 1851, Louis Napoleon promptly left the Republican seat of the Palais de l'Élysée [...] in favour of the Royal seat of the Tuileries. [...] The fire that had damaged the Tuileries during the civil strife of the Commune, had tolled the knell of the 1st arrondissement as the seat of power. In 1882, rather than restore the charred carcass of the Palais des Tuileries, the Third Republic razed it to the ground, securing irrevocably the definitive death of the monarchy.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_hotel_le_meurice_famous_residents_around_and_about_paris_english_corridor_galignani_wh_smith",
+    "city_name": "paris",
+    "poi_name": "Hotel Le Meurice",
+    "lens": "famous_residents",
+    "topic_slug": "english_corridor_galignani_wh_smith",
+    "sub_location": null,
+    "trigger_address": "228 rue de Rivoli",
+    "beat_length_class": "mid",
+    "script_body": "When the Tuileries was still the seat of power, the ladies of the Napoleonic nobility drew an English clientele to this stretch of rue de Rivoli: the prestigious Meurice at no. 228 faced the Tuileries Gardens, the English bookshop Galignani at 224 kept the daily papers of home, and WH Smith opened its Paris branch at 248 for their convenience. The jewellery and clothes shops of rue de Castiglione and Place Vendôme catered to the same set. It was here, serving Empress Eugénie and the other ladies of the Napoleonic court, that French haute couture was born in the second half of the 19th century — pioneered by Charles Worth, the Empress's English couturier. A century later its centre of gravity drifted westward to the 8th arrondissement.",
+    "script_body_hash": "c3d88707175a7291362b153ea0964da40f631f3219a9de1f33cea6d4832ec419",
+    "duration_sec": 51,
+    "kid_friendly": "yes",
+    "entities": [
+      "Empress Eugénie",
+      "Charles Worth"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "English corridor",
+    "physical_cues": [
+      {
+        "cue": "Hotel Le Meurice at 228 rue de Rivoli, facing the Tuileries Gardens",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Galignani bookshop at 224 rue de Rivoli, next door to the west",
+        "direction": "west",
+        "feature_type": "adjacent_landmark"
+      },
+      {
+        "cue": "WH Smith at 248 rue de Rivoli, further along",
+        "direction": "east",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "haute couture",
+        "gloss": "high fashion, literally 'high sewing'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "the prestigious Meurice opposite the Tuileries Gardens, at n° 228 rue de Rivoli, next door to the English bookshop, Galignani, at n° 224, where they would pop in to read the daily papers of their homeland. For their convenience too WH Smith opened a Parisian branch at n° 248. [...] In order to serve the Empress Eugénie and the other ladies of the Napoleonic nobility, the world of fashion concentrated in this area too. Thus French haute couture was born in the 1st arrondissement and the bordering 2nd in the second half of the 19th century and it was Charles Worth, the Empress's English couturier, who was its illustrious forerunner.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_porte_saint_denis_historic_worship_around_and_about_paris_royal_processional_coronation_funeral",
+    "city_name": "paris",
+    "poi_name": "Porte Saint-Denis",
+    "lens": "historic_worship",
+    "topic_slug": "royal_processional_coronation_funeral",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The regal rue Saint-Denis was the \"Champs-Élysées\" of medieval Paris — the sacred way by which royal processions entered the capital. Kings returning from coronation at Reims passed through here on their way to Notre-Dame; and at the other end of a reign, it was along this same route that each king was carried to his final resting place in the basilica of Saint-Denis, north of the city. One street, bookending the life of every French monarch.",
+    "script_body_hash": "32828a8c5293703f2fbc5c74cf5ca5796c9fbc80cc92fc40e338b135b289fd57",
+    "duration_sec": 31,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "royal processional way",
+    "physical_cues": [
+      {
+        "cue": "Rue Saint-Denis running north from here — the medieval processional way between Notre-Dame and the basilica of Saint-Denis",
+        "direction": "north",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Champs-Élysées",
+        "gloss": "Elysian Fields — the modern western grand avenue; here used metaphorically for 'grand avenue'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "the regal rue Saint-Denis, the 'Champs-Élysées' of medieval Paris, the sacred way through which the royal processions entered Paris, notably on their way to the cathedral of Notre-Dame after the king's coronation in Reims, and through which the kings were carried to their final resting place in the basilica of Saint-Denis, north of Paris.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_historic_markets_around_and_about_paris_louis_vi_1135_champeaux_market",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "historic_markets",
+    "topic_slug": "louis_vi_1135_champeaux_market",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "In 1135 Louis VI set up a primitive market here on a piece of land allotted by the Bishop of Paris, against a return of one-third of the revenue. The name — Les Champeaux, Little Fields — probably derived from the marshy market-gardens that surrounded it. You are standing on ground that has been a market for nearly nine hundred years.",
+    "script_body_hash": "8234e007f4e87de404b975207be9130a6c98d7aae2e7891efbcb5081713e7c7a",
+    "duration_sec": 24,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis VI"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "Les Champeaux origin",
+    "physical_cues": [
+      {
+        "cue": "Open gardens between the two Forums — sitting on the ground where Louis VI's primitive 1135 market stood",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Les Champeaux",
+        "gloss": "Little Fields — probably from champs, fields, referring to the marshy market-gardens around it"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "In 1135 Louis VI set up a primitive market on a piece of land allotted by the Bishop of Paris, against a return of a third of its revenue. Its name - Les Champeaux may have derived from the marshy fields (champs) covered with market-gardens that surrounded it.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_dark_history_around_and_about_paris_philippe_auguste_1183_jewish_confiscation",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "dark_history",
+    "topic_slug": "philippe_auguste_1183_jewish_confiscation",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "In 1183 Philippe-Auguste replaced the wooden market with two stone buildings — sheltering goods from the weather, fitted with locks against thieves. To fund the work, he confiscated the possessions of the Jews of Paris.",
+    "script_body_hash": "882350b41a1e92710e2ca0fd260953fbba4bbe726ea8f760852bc359a43d2788",
+    "duration_sec": 14,
+    "kid_friendly": "no",
+    "entities": [
+      "Philippe-Auguste"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "somber",
+    "subject_tag": "Jewish confiscation",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "In 1183 Philippe-Auguste replaced it with two stone buildings to shelter goods and vendors in bad weather, and secured them with locks to prevent thefts. In order to raise the funds for the project, he confiscated the possessions of the Jews.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_hidden_history_around_and_about_paris_name_etymology_pour_ce_que_chacun",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "hidden_history",
+    "topic_slug": "name_etymology_pour_ce_que_chacun",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The name stuck in its own colloquial wisdom: Les Halles, or les alles, \"pour ce que chacun y allait\" — for everyone went there.",
+    "script_body_hash": "2525817783bf6ed2891473f4b91843b824b61e4bc334fc00ded2e1a594376736",
+    "duration_sec": 10,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "name origin",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "pour ce que chacun y allait",
+        "gloss": "for everyone went there — the medieval French from which 'les alles' became 'Les Halles'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The new market became known as Les Halles, or les alles: 'pour ce que chacun y allait' ('for everyone went there'), and it was this name that stuck.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_historic_arch_around_and_about_paris_baltard_umbrellas_1851_1857",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "historic_arch",
+    "topic_slug": "baltard_umbrellas_1851_1857",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "Henri II rebuilt the market in 1553; three centuries later, in the Industrial Age, Napoleon III repeated the move. Impressed by Victor Baltard's newly-built Gare de l'Est, the emperor commissioned him to rebuild Les Halles, commending iron over stone: \"Faites-moi des parapluies!\" Make me umbrellas! Fourteen iron pavilions went up between 1851 and 1857, and stood until 1969.",
+    "script_body_hash": "36f18560c6b6766fcccf591efba58f3c946f4b2382eb19c3b88936b84fb59374",
+    "duration_sec": 23,
+    "kid_friendly": "yes",
+    "entities": [
+      "Napoleon III",
+      "Victor Baltard",
+      "Henri II"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "Baltard umbrellas",
+    "physical_cues": [
+      {
+        "cue": "Open gardens where the 14 iron pavilions stood from 1857 to 1969",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Faites-moi des parapluies!",
+        "gloss": "Make me umbrellas!"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Economic prosperity and demographic growth in the 16th century led Henri II to rebuild and enlarge the market in 1553, an initiative repeated by Napoleon III three centuries later [...]. Impressed by Victor Baltard's newly-built Gare de l'Est, Napoleon III commissioned him to build the new market, commending the use of iron: \"Faites-moi des parapluies!\" (\"make me umbrellas!\"). 14 iron pavilions were thus erected between 1851 and 1857 and stood till 1969.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_social_change_around_and_about_paris_1969_rungis_death_knell",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "social_change",
+    "topic_slug": "1969_rungis_death_knell",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "In 1969 the central market was transferred to Rungis, south of Paris — deemed unsuitable for modern times. Many Parisians were appalled by the demolition of Victor Baltard's iron pavilions, considered an artistic testimony to the Industrial Age. Only one of the fourteen was allowed to survive, and even it was moved to the suburb of Nogent-sur-Marne. A surreal gigantic hole — \"le trou des Halles\" — replaced the belly of Paris, then left gaping for a decade while ambitious politicians shilly-shallied about its fate. In 1979 the Forum des Halles rose out of the ashes: the largest pedestrian precinct in Europe, a genuine achievement in a traffic-ridden city, but also — barely more than another shopping centre, 240 shops, generally gaudy. Sculptor Raymond Mason mourned: \"Il est un lieu de bonheur... la dernière image du naturel dans la Ville. Il est maintenant le Paradis Perdu.\" Louis Chevalier, the Paris poet-historian, was blunter: \"La mort des Halles a sonné le glas de Paris\" — the death of Les Halles has tolled the knell of Paris.",
+    "script_body_hash": "a860cbf78dfe484403f76ee089f9ce10bdefca7c23d59fac2048667502f457e1",
+    "duration_sec": 70,
+    "kid_friendly": "yes",
+    "entities": [
+      "Raymond Mason",
+      "Louis Chevalier"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Rungis transfer",
+    "physical_cues": [
+      {
+        "cue": "Forum des Halles on the site of the demolished 14 iron pavilions — pedestrian precinct, 240 shops",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Chatelet-Les Halles underground station below, the largest in the capital — RER meets Métro",
+        "direction": "down",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "le trou des Halles",
+        "gloss": "the Hole of Les Halles — the gigantic pit left gaping for a decade"
+      },
+      {
+        "phrase": "Il est un lieu de bonheur... la dernière image du naturel dans la Ville. Il est maintenant le Paradis Perdu.",
+        "gloss": "It was a place of bliss... the last vision of natural life in the City. It is now Paradise lost"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Deemed unsuitable for modern times, the market was transferred in 1969 to Rungis, south of Paris. [...] Many Parisians were appalled by the demolition of Victor Baltard's iron pavilions [...]. One only of the 14 pavilions was allowed to survive, but was transferred to the suburb of Nogent-sur-Marne [...]. Il est un lieu de bonheur... la dernière image du naturel dans la Ville. Il est maintenant le Paradis Perdu. (It was a place of bliss... the last vision of natural life in the City. It is now Paradise lost), as sculptor Raymond Mason put it. Louis Chevalier, the superb social observer and poet of Paris, was more blunt: La mort des Halles a sonné le glas de Paris. (The death of Les Halles has tolled the knell of Paris.) A surreal gigantic hole - 'le trou des Halles' - replaced the 'belly' of Paris, then left gaping for a decade [...]. In 1979 the Forum des Halles rose out of the ashes of the picturesque central market. [...] 240 [shops], and generally gaudy.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_literary_heritage_around_and_about_paris_zola_belly_of_paris_1873",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "literary_heritage",
+    "topic_slug": "zola_belly_of_paris_1873",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "anchor",
+    "script_body": "In 1873 Emile Zola gave Les Halles its most enduring nickname — \"the belly of Paris\" — as the title of his novel. He had spent a year haunting the market at all hours, recording the ever-changing hues of this gigantic digestive apparatus of the capital: bluish-grey metal structures against a light grey sky in wet weather; sheets of gold on the hard-packed earth when the sun broke through; the glowing glass panes of the pavilions at sunset; gas-lamp lights against black roofs at night. Poultry, fish in wicker baskets, meat, cheese, butter and milk each had its own pavilion. Bouquets of thyme, laurel and garlic lay in neat rows at the foot of Saint-Eustache, the aroma of Provence vying with the smell of carrots and celery. He watched les forts des Halles — the robust porters, \"all nerves and muscles\" — then descended into the underground where the nightly slaughter was done, reeking of blood and overrun by rats. Meanwhile, in the upper world, bourgeois and artists drifted in from cabarets and theatres in the early hours, looking for strong emotions, finishing the onion soup and glass of wine with a chunk of baguette dunked in a café crème to celebrate the new day. Evelyn Waugh ate exactly that same onion soup at Au Père Tranquille in 1929.",
+    "script_body_hash": "6d4a4f5d52df5dcb7e7e1ded9ffdb88fc87e2b1228fe1ec2dfa540ba14736b24",
+    "duration_sec": 88,
+    "kid_friendly": "no",
+    "entities": [
+      "Emile Zola",
+      "Evelyn Waugh"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "sensory_observation",
+    "emotional_register": "playful",
+    "subject_tag": "belly of Paris",
+    "physical_cues": [
+      {
+        "cue": "Saint-Eustache just north of the gardens — the church Zola used as anchor for his descriptions of the thyme, laurel and garlic at dawn",
+        "direction": "north",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "les forts des Halles",
+        "gloss": "the strong men of Les Halles — the robust porters"
+      },
+      {
+        "phrase": "café crème",
+        "gloss": "coffee with steamed milk"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Emile Zola had dubbed its plebeian eastern parts 'the belly of Paris' a metaphor he used in 1873 for the title of one of his novels. For a year he had been haunting the central market of Les Halles at all times of day and night, imbibing the atmosphere and recording the ever-changing hues [...]: dark bluish-grey metal structures against a light grey sky in wet weather; sheets of gold on the hard-packed earth as the sun's rays penetrate through the grey atmosphere on a fine day; the glowing glass panes of the market's pavilions at sunset; the lights of gas lamps standing out against black roofs. Poultry, fish in wicker baskets, meat, cheese, butter and milk each had their own pavilion. [...] The smell of carrots, parsley and celery vie with the aroma of Provence - bouquets of thyme, laurel and garlic arrayed in neat rows at the foot of the church of Saint-Eustache. Having watched at work les forts des Halles - the robust porters, 'all nerves and muscles' - Zola descended into the undisclosable underground depths of the market, where the shameful slaughter of fowl and other creatures was carried out nightly, a place reeking of blood and pestilence and overrun by rats. [...] The onion soup and the glass of wine at the typical zinc bar would be followed at the break of dawn by a chunk of baguette dunked in a café crème [...]. where in 1929 Evelyn Waugh also dined on onion soup.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_dark_history_around_and_about_paris_kings_pillory_octagonal_scaffold",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "dark_history",
+    "topic_slug": "kings_pillory_octagonal_scaffold",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "From the 14th century on, the scaffold was part of the landscape here. The King's pillory, largest of all the pillories in Paris, was a sizeable octagonal structure with a pointed roof and weathervane — resembling, oddly, a chapel. The Great Executioner often lived on the ground floor, while convicts were exposed in the tower above. The excited mob relished the sight, taunting the exposed victims and pelting them with rubbish. There were no gallows at Les Halles, however — the King conceded this was no place to leave bodies rotting on a rope.",
+    "script_body_hash": "c148cf4fc1262bd9f1322e151a06f0d8eb7e6cef812df98541175cf96bfed45c",
+    "duration_sec": 38,
+    "kid_friendly": "no",
+    "entities": [],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "somber",
+    "subject_tag": "King's pillory",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "With its ceaseless human tide, the market-place was picked out for public executions and punishments and the scaffold was part of the landscape from the 14th century on. [...] the King's pillory, the largest of them all, was a sizeable octagonal structure, with a pointed roof and weathervane, somewhat resembling a chapel. The ground floor was often inhabited by the King's Great Executioner, while the convicts were exposed in the tower above. The excited mob relished the sight, taunting the exposed victims, pelting them with rubbish and litter. There were no gallows, however, at Les Halles, the King conceding that this was no place for bodies to be left rotting on a rope.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_famous_residents_around_and_about_paris_femme_ladoucette_1608_letter",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "famous_residents",
+    "topic_slug": "femme_ladoucette_1608_letter",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The notorious poissardes of Les Halles — the Dames des Halles — were on ceremonial occasions admitted into the King's Palace to pay their respects. They returned with Palace gossip, and the physical proximity of high and low bred a certain familiarity. On 30 August 1608, a market-woman named Femme Ladoucette wrote to Marie de Medici, Henri IV's second wife. She introduced herself as a Dame des Halles \"from mother to daughter since Saint Louis\" — and a mother of four by her husband (a guarantee of moral integrity) — and admitted to a forthright tongue, but, she added, not a lying one. She then complained about the Queen's philandering husband, the King — a good fellow deep down, but one who fidgets at the sight of a coquette and scatters bastards around despite being blessed with a most appetising Queen, so well conditioned to have little princes. If the King ever wandered through Les Halles, she wrote, she would give him a sound thrashing for the love of her Queen. Far from being scolded, Femme Ladoucette was promoted — fournisseuse royale, royal purveyor.",
+    "script_body_hash": "bd371d07c0fff20ffcc75d52386d26743ed9b830acf666f5d948528a466b97aa",
+    "duration_sec": 74,
+    "kid_friendly": "yes",
+    "entities": [
+      "Henri IV",
+      "Marie de Medici",
+      "Saint Louis",
+      "Femme Ladoucette"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "Ladoucette letter",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "poissardes",
+        "gloss": "fishwives — the notorious market-women of Les Halles"
+      },
+      {
+        "phrase": "Dames des Halles",
+        "gloss": "Ladies of the Halls — the grand title of the market-women"
+      },
+      {
+        "phrase": "fournisseuse royale",
+        "gloss": "royal purveyor — official supplier to the Crown"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "On special occasions these notorious poissardes were allowed into the King's Palace to pay their respects to the royal couple. [...] The Dames des Halles [...] an astonishing letter, written by Femme Ladoucette to Marie de Medici, Henri IV's second wife, on 30 August 1608. Having introduced herself as Dame des Halles 'from mother to daughter since Saint Louis', and a mother to four by her husband (which is a guarantee of moral integrity), she admits to a forthright tongue, but, she adds, it is no lying tongue... She then proceeds to complain to the Queen about her philandering husband, the King, a good fellow deep down but who fidgets at the sight of a coquette and scatters bastards around, although blessed with a most appetising Queen, so well conditioned to have little princes. If the King happened to wander through Les Halles, she pursues, she would give him a sound thrashing for the love of her Queen. Femme Ladoucette received no scolding for her bold letter - instead she was promoted 'fournisseuse (purveyor) royale'!",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_fontaine_des_innocents_dark_history_around_and_about_paris_cemetery_stench_voltaire_hottentots",
+    "city_name": "paris",
+    "poi_name": "Fontaine des Innocents",
+    "lens": "dark_history",
+    "topic_slug": "cemetery_stench_voltaire_hottentots",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "For centuries the Cimetière des Saints-Innocents piled up the remains of generations of Parisians on the corner of today's rue Berger and rue Saint-Denis, from Gallo-Roman days onward. By the late 18th century the stench of putrefaction and the risk of epidemics had grown so severe that a general outcry finally turned against the site. Voltaire called it a barbarity that placed the French below the Hottentots. One journalist, opposing the demolition on religious grounds, was sent to the Bastille for an entire year. Today the square bustles with street performers around a Renaissance fountain — most unaware they are treading the soil that once buried the innocent dead.",
+    "script_body_hash": "9d2f59f76b2eb402bc942640d525863ae2a528cf0a747758caf5d282ca860107",
+    "duration_sec": 44,
+    "kid_friendly": "no",
+    "entities": [
+      "Voltaire"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Saints-Innocents stench",
+    "physical_cues": [
+      {
+        "cue": "Corner of rue Berger and rue Saint-Denis — where the Cimetière des Saints-Innocents stood until 1786",
+        "direction": "here",
+        "feature_type": "view"
+      },
+      {
+        "cue": "Renaissance fountain of the Innocents at today's Place Joachim Du Bellay",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The Cimetière des Saints-Innocents, into which had been piled up the remains of generations of Parisians since Gallo-Roman days, stood on the corner of rue Berger and rue Saint-Denis. By the late 18th century the stench of putrefaction and the danger of epidemics were so great that a general outcry arose, this time against the preservation of a site. Voltaire considered it a barbarity that placed the French below the Hottentots! But one journalist who opposed the demolition on religious grounds, was sent to the Bastille prison for an entire year. [...] Today, the Square des Innocents, now Place Joachim Du Bellay, bustles with street performers and loitering crowds, who gather around the Renaissance fountain with its cascading water, unaware that they are treading the soil that once buried the innocent dead.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_fontaine_des_innocents_dark_history_around_and_about_paris_catacombs_transfer_1786_six_million",
+    "city_name": "paris",
+    "poi_name": "Fontaine des Innocents",
+    "lens": "dark_history",
+    "topic_slug": "catacombs_transfer_1786_six_million",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The transfer of the cemetery's occupants to the newly opened catacombs south of the city — now in the 14th arrondissement — began on 7 April 1786 and took fifteen months. Night after night, eerie processions carried draped remains from the different cemeteries of Paris to their new abode. Six million rest there now.",
+    "script_body_hash": "996eba5edb0306c6dfda0f9a4beda6a90c8d0aeafd6ae9704d4cddb231f65800",
+    "duration_sec": 22,
+    "kid_friendly": "no",
+    "entities": [],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "eerie processions",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The transfer of the cemetery's occupants to the newly opened catacombs south of the city (now in the 14th arrondissement), began on 7 April 1786 and took 15 months. Night after night eerie processions carried draped remains from the different cemeteries of Paris to their new abode where six millions of them now rest.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_eustache_historic_worship_around_and_about_paris_second_largest_royal_baptisms",
+    "city_name": "paris",
+    "poi_name": "Saint-Eustache",
+    "lens": "historic_worship",
+    "topic_slug": "second_largest_royal_baptisms",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "Saint-Eustache is the second-largest church in Paris after Notre-Dame — an imposing, somewhat maternal 16th-century witness to the congregation of Les Halles. Louis XIII received his first communion here, Madame de Pompadour was baptised here, Cardinal Richelieu was baptised here. Jean-Baptiste Lully was married here. Jean-Philippe Rameau was buried here. The church survived the market above it, the cemetery beside it, and stands still, watching the traffic-free gardens where mothers and their young now gather.",
+    "script_body_hash": "258e210efa2eabf468e469a4751c2dda0f2aadcb6766b8d2f595f73122209800",
+    "duration_sec": 30,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIII",
+      "Madame de Pompadour",
+      "Cardinal Richelieu",
+      "Jean-Baptiste Lully",
+      "Jean-Philippe Rameau"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "royal baptisms",
+    "physical_cues": [
+      {
+        "cue": "Saint-Eustache — the second-largest church in Paris after Notre-Dame, watching over the gardens of the Forum",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "proceed towards the church of Saint-Eustache, the second largest church in Paris after Notre-Dame. This imposing, somewhat maternal 16th-century church, is a surviving witness of an earlier era [...] when it watched over the plebeian congregation of Les Halles. [...] the names of the greats are also associated with this church, where Richelieu and Pompadour were baptized, Louis XIII received his first holy communion, Lully was married and Rameau was buried.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_eustache_music_heritage_around_and_about_paris_anna_maria_mozart_funeral_1788",
+    "city_name": "paris",
+    "poi_name": "Saint-Eustache",
+    "lens": "music_heritage",
+    "topic_slug": "anna_maria_mozart_funeral_1788",
+    "sub_location": "southern-aisle",
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "A plaque on the wall of the southern aisle records that the funeral service for Anna Maria Mozart was held here in July 1788. She had accompanied her son on his third and last visit to Paris. No longer the Wunderkind who had enchanted the courts of Europe, Mozart was ignored by a shallow, unmusical society and left Paris bereaved and embittered. His mother lay here.",
+    "script_body_hash": "4ddbdd42d32abfd48079a831ca9c71bce2d6bf0e8479435df20824327c4087be",
+    "duration_sec": 26,
+    "kid_friendly": "no",
+    "entities": [
+      "Mozart",
+      "Anna Maria Mozart"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Mozart's mother's funeral",
+    "physical_cues": [
+      {
+        "cue": "Plaque on the wall of the southern aisle recording Anna Maria Mozart's funeral, July 1788",
+        "direction": "south",
+        "feature_type": "plaque"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Wunderkind",
+        "gloss": "child prodigy — German"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "A plaque on the wall of the southern aisle informs you that the funeral service for Anna Maria Mozart was held here in July 1788. She had accompanied her son on his third and last visit to Paris, an unhappy visit which left Mozart both bereaved and embittered. No longer a Wunderkind, he was ignored by a shallow, unmusical society.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_louvre_museum_famous_residents_around_and_about_paris_renoir_slum_boyhood_queen_sweets",
+    "city_name": "paris",
+    "poi_name": "Louvre Museum",
+    "lens": "famous_residents",
+    "topic_slug": "renoir_slum_boyhood_queen_sweets",
+    "sub_location": "esplanade",
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The painter Auguste Renoir grew up in one of the slum lanes that then ran through the Esplanade of the Louvre. He was one of the street urchins to whom Queen Amélie's ladies-in-waiting threw sweets through the window when they made too much of a nuisance of themselves. Renoir's son Jean, the film director, later wondered \"how successive kings could have tolerated such a seedy neighbourhood under their very noses.\"",
+    "script_body_hash": "8ee4ada5522bc35968462e2798c3cc8ef6300933aeb8572a9cb2a2119259e173",
+    "duration_sec": 28,
+    "kid_friendly": "yes",
+    "entities": [
+      "Auguste Renoir",
+      "Queen Amélie",
+      "Jean Renoir"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "Renoir boyhood sweets",
+    "physical_cues": [
+      {
+        "cue": "Esplanade of the Louvre — where the lanes of slum housing ran until the 19th century",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The painter Auguste Renoir grew up in one of the lanes that then ran through the Esplanade of the Louvre and was one of the little street urchins to whom Queen Amélie's ladies-in-waiting threw sweets through the window when they made too much of a nuisance of themselves. Renoir's son, the celebrated film director, wondered \"how successive kings could have tolerated such a seedy neighbourhood under their very noses\".",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_literary_heritage_around_and_about_paris_villon_big_mouths_of_paris",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "literary_heritage",
+    "topic_slug": "villon_big_mouths_of_paris",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "François Villon, in his Ballade des Femmes de Paris, summed up the shrill fishwives of this market: \"Il n'est bon bec que de Paris\" — the big mouths of Paris are second to none.",
+    "script_body_hash": "20d7be83519b2d712146aaa056ce034f5cfea04814115582acbcc466a849ecde",
+    "duration_sec": 14,
+    "kid_friendly": "yes",
+    "entities": [
+      "François Villon"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "Villon Paris",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Il n'est bon bec que de Paris",
+        "gloss": "The big mouths of Paris are second to none — literally 'there's no better beak than a Paris one'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "brilliantly summed up by François Villon in the Ballade des Femmes de Paris: Quoy qu'on die d'Italiennes / Il n'est bon bec que de Paris. (Whatever be said of Italian women, the big mouths of Paris are second to none).",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_visual_art_around_and_about_paris_musee_grevin_belle_epoque_wax",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "visual_art",
+    "topic_slug": "musee_grevin_belle_epoque_wax",
+    "sub_location": null,
+    "trigger_address": "Forum des Halles, level -1",
+    "beat_length_class": "seasoning",
+    "script_body": "At level -1 of the Forum, the Musée Grévin presents twenty-one scenes from Belle Époque Paris in wax — kitschy and sketchy, but instructive: Victor Hugo, Emile Zola, Jules Verne, Pasteur, the old village of Montmartre, the 1900 Universal Exposition, the scintillating bourgeoisie at the Palais Garnier opera.",
+    "script_body_hash": "c9928dc86ea7c17db65e99f4fdc7575aa047c839dfa907ebbc32923a2a6b76a9",
+    "duration_sec": 19,
+    "kid_friendly": "yes",
+    "entities": [
+      "Victor Hugo",
+      "Emile Zola",
+      "Jules Verne",
+      "Pasteur"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "playful",
+    "subject_tag": "wax museum",
+    "physical_cues": [
+      {
+        "cue": "Musée Grévin at level -1 of the Forum des Halles",
+        "direction": "down",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Belle Époque",
+        "gloss": "the Beautiful Era — turn-of-the-20th-century Paris"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "visit the Musée Grévin at level -1. Twenty-one scenes from Belle Époque Paris are on display in this wax museum, providing a kitschy and sketchy yet truly instructive idea of turn-of-the-century Paris and its representative figures - Victor Hugo, Emile Zola, Jules Verne, Pasteur etc. You will travel to the old village of Montmartre, to the fashionable Champs-Élysées, to the bustling market of Les Halles, obviously; you will admire the 1900 Universal Exposition and will be dazzled by the scintillating bourgeoisie at the Opera of Palais Garnier.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Overview & Les Halles"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:21:41Z",
       "city_name": "paris"
     }
   }
