@@ -528,81 +528,6 @@
     "source_chunk_slug": "chunk-01-1st-arr-overview-to-les-halles"
   },
   {
-    "beat_id": "place_concorde_dark_history_antoinette_tumbril_around_and_about_paris",
-    "poi_name": "Place de la Concorde",
-    "lens": "dark_history",
-    "script_body": "For a brief period, rue Saint-Honoré became the sinister route of the tumbrils on their way from the Conciergerie prison to the guillotine on Place de la Révolution — today's Place de la Concorde. On 16 October 1793, the painter Jacques-Louis David positioned himself on a corner house balcony at rue des Prouvaires and 54 rue Saint-Honoré, from where he had a clear view of Marie-Antoinette carried to her doom, her hands tied behind her back — a tragic sight he captured in his shattering portrait of the Queen. On the same day, the apothecary at no. 93 rue Saint-Honoré closed his shop 'Au Bourdon d'Or' as a sign of mourning — a quiet gesture in a city gripped by revolutionary justice.",
-    "duration_sec": 48,
-    "kid_friendly": "no",
-    "physical_cues": [],
-    "key_claims": [
-      "Rue Saint-Honoré was tumbril route from Conciergerie to guillotine",
-      "David on balcony at rue des Prouvaires and 54 rue Saint-Honoré 16 Oct 1793",
-      "Marie-Antoinette hands tied behind her back",
-      "David captured it in shattering portrait",
-      "Apothecary at 93 closed Au Bourdon d'Or in mourning"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "les_halles_hidden_history_pharmacy_royal_tragedies_around_and_about_paris",
-      "conciergerie_hidden_history_fersen_invisible_ink_around_and_about_paris"
-    ],
-    "source_passage": "the painter David was posted on the corner house balcony of rue des Prouvaires... from where he had a good view of Marie-Antoinette carried to her doom, her hands tied behind her back",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
-      "page": "Châtelet to Vert-Galant"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-03T14:00:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "physical_cues_verified": true,
-      "omission_check": "No significant omissions",
-      "corrections": [],
-      "disputes": [],
-      "unverified_claims": [
-        "Apothecary Au Bourdon d'Or closed in mourning — from book only, plausible but unverified"
-      ],
-      "physical_cue_issues": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Execution_of_Marie_Antoinette (wikipedia)",
-        "https://en.wikipedia.org/wiki/Jacques-Louis_David (wikipedia)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-02T12:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 49,
-    "entities": [
-      "Au Bourdon",
-      "Conciergerie",
-      "Honoré",
-      "Louis David",
-      "Marie-Antoinette",
-      "Place de la Révolution",
-      "Prouvaires"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "a4f25fc630f72e346cf8935aa6c525bc387d11f601a06867c3077170fe65b27e",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "antoinette_tumbril",
-    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant"
-  },
-  {
     "beat_id": "les_halles_dark_history_henri_iv_assassination_around_and_about_paris",
     "poi_name": "Les Halles",
     "lens": "dark_history",
@@ -1024,72 +949,6 @@
     "book_slug": "around_and_about_paris",
     "topic_slug": "fronde",
     "source_chunk_slug": "legacy_ambiguous"
-  },
-  {
-    "beat_id": "fontaine_des_innocents_historic_arch_renaissance_around_and_about_paris",
-    "poi_name": "Fontaine des Innocents",
-    "lens": "historic_arch",
-    "script_body": "The Fontaine des Innocents at Place Joachim du Bellay is the only Renaissance fountain surviving in Paris. Designed by architect Pierre Lescot and sculpted by Jean Goujon — the greatest sculptor of his time — it was inaugurated on 16 June 1549 for Henri II's solemn entry into the city. Originally the fountain stood at the corner of rue Saint-Denis and the present rue Berger, against the church of Saints-Innocents, and had three arcades with a balcony where prominent figures took shelter during royal processions. The fountain commemorates the old Cimetière des Innocents that occupied this site until 1787, when the cemetery was replaced by a colourful fruit, vegetable and herb market. The church of Saints-Innocents was demolished when the cemetery closed. The market itself was demolished in 1855, and the fountain was shifted, altered and restored to its present location.",
-    "duration_sec": 56,
-    "kid_friendly": "yes",
-    "physical_cues": [],
-    "key_claims": [
-      "Only Renaissance fountain surviving in Paris",
-      "Designed by Lescot sculpted by Goujon 1549",
-      "Inaugurated 16 June 1549 for Henri II entry",
-      "Originally three arcades with balcony at corner of rue Saint-Denis",
-      "Cemetery replaced by market 1787",
-      "Church demolished when cemetery closed",
-      "Market demolished 1855"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "paris_catacombs_dark_history_innocents_around_and_about_paris"
-    ],
-    "source_passage": "the only Renaissance fountain in Paris, was designed by Pierre Lescot and sculpted by Jean Goujon in 1549, the greatest sculptor of his time",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 1st Arrondissement — Châtelet to Vert-Galant",
-      "page": "Châtelet to Vert-Galant"
-    },
-    "fact_check": {
-      "flagged_claims": [
-        "only Renaissance fountain in Paris"
-      ],
-      "status": "verified",
-      "notes": "Confirmed as the last remaining Renaissance fountain in Paris (Wikipedia, Paris Musées). Built 1547-1550 by Lescot and Goujon. Henri II's entry 1549 confirmed. Originally had 3 sides — 4th added by Pajou in 1858 (book doesn't mention this). Cemetery closed 1786-1787 confirmed."
-    },
-    "_meta": {
-      "prompt_version": "beat_from_book_v1",
-      "generated_at": "2026-04-02T12:00:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 56,
-    "entities": [
-      "Cimetière des Innocents",
-      "Denis",
-      "Designed",
-      "Henri II",
-      "Jean Goujon",
-      "Originally",
-      "Pierre Lescot",
-      "Place Joachim du Bellay"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "architectural_detail",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e681c1a8854b19ce4d6d83d1ef23abc537aa3aa879fbebaba25770b823b3be27",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "renaissance",
-    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant"
   },
   {
     "beat_id": "les_halles_markets_street_food_montorgueil_around_and_about_paris",
@@ -34266,6 +34125,695 @@
     "_meta": {
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:21:41Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_eustache_music_heritage_around_and_about_paris_mozart_mother_death_july_1788",
+    "city_name": "paris",
+    "poi_name": "Saint-Eustache",
+    "lens": "music_heritage",
+    "topic_slug": "mozart_mother_death_july_1788",
+    "sub_location": "southern-aisle",
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "Mozart and his mother shared an insalubrious, draughty flat at no. 10 rue du Gros-Chenet — today's rue Sentier in the 2nd arrondissement. She took ill in June of 1788 and died wretchedly on 3 July. Mozart gives a heart-rending account of the event in his Correspondence. Resentful and contemptuous of Parisian society, he left the city the following September, never to return. The plaque you just saw on the southern aisle marks her funeral service held here.",
+    "script_body_hash": "d0daa9f79adfc9365042e904863c7603a13fdaf2f4fe27105cd8f38bebc47dad",
+    "duration_sec": 31,
+    "kid_friendly": "no",
+    "entities": [
+      "Mozart",
+      "Anna Maria Mozart"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "callback",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "Mozart's mother death",
+    "physical_cues": [
+      {
+        "cue": "Southern aisle plaque — funeral service for Anna Maria Mozart, July 1788",
+        "direction": "south",
+        "feature_type": "plaque"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Correspondence",
+        "gloss": "Mozart's published letters"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "with his mother an insalubrious, draughty flat at n° 10 rue du Gros-Chenet (today's rue Sentier in the 2nd arr.). She took ill in June and died wretchedly on 3 July. Mozart gives a heart-rending account of this sorrowful event in his Correspondence. Resentful and contemptuous of Parisian society, he left the city the following September never to return.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_eustache_literary_heritage_around_and_about_paris_molieres_riotous_funeral",
+    "city_name": "paris",
+    "poi_name": "Saint-Eustache",
+    "lens": "literary_heritage",
+    "topic_slug": "molieres_riotous_funeral",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Two famous funeral services were held here. Jean de La Fontaine's passed without incident. Molière's did not. It took the intervention of the king to persuade the Saint-Eustache clergy to give this parishioner a Christian burial — the clergy did not like \"stage men\" and did not admit them into its fold. The actors gave them good reason: those ill-mannered louts would turn up in front of the church during Sunday morning mass to announce their forthcoming play, inevitably more exciting than mass, thus turning many souls away from God.",
+    "script_body_hash": "153f1558ae269c90f64f1e5ec43a8c51f5742295369dd6c3b004f9542bed8cff",
+    "duration_sec": 36,
+    "kid_friendly": "yes",
+    "entities": [
+      "Molière",
+      "Jean de La Fontaine"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "Molière burial",
+    "physical_cues": [
+      {
+        "cue": "Main nave where the funerals were held",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "stage men",
+        "gloss": "actors — a dismissive 17th-century clerical term"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The funeral service for the famous fable writer Jean de La Fontaine was also held here; so was Molière's, though in riotous conditions: it took the intervention of the King to persuade the clergy of Saint-Eustache to give this parishioner a Christian burial - the clergy did not like 'stage men' and did not admit them into its fold. All the more so because those ill-mannered louts would turn up in front of the church during Sunday morning mass to announce their forthcoming play - otherwise more exciting than mass - thus inevitably turning many souls away from God.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_eustache_music_heritage_around_and_about_paris_berlioz_liszt_gounod_renoir_pupil",
+    "city_name": "paris",
+    "poi_name": "Saint-Eustache",
+    "lens": "music_heritage",
+    "topic_slug": "berlioz_liszt_gounod_renoir_pupil",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The church's remarkable acoustics drew the great composers. In 1855 Berlioz attended a performance of his uplifting Te Deum by nine hundred and fifty musicians. In 1886 Liszt's majestic Grand Mass was premiered here, also in the presence of its composer. The choir was directed by no other than Charles Gounod — whose most outstanding pupil was a child by the name of Auguste Renoir. Gounod had built great hopes in young Renoir, who, however, felt a deeper urge to use his hands.",
+    "script_body_hash": "bb7fd3201afab114cc2ff3badec1a1849a2693b87e06ad2e2d1ab2b24cd8584f",
+    "duration_sec": 33,
+    "kid_friendly": "yes",
+    "entities": [
+      "Berlioz",
+      "Liszt",
+      "Charles Gounod",
+      "Auguste Renoir"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "Gounod pupil Renoir",
+    "physical_cues": [
+      {
+        "cue": "Remarkable acoustics of the nave — what drew Berlioz, Liszt, and Gounod here",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Te Deum",
+        "gloss": "Catholic hymn of praise — 'we praise you, God'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Because of its remarkable acoustics, the names of several illustrious musicians are associated with the church of Saint-Eustache. In 1855 Berlioz attended a performance of his uplifting Te Deum by 950 musicians and in 1886, Liszt's majestic Grand Mass was premiered here, also in the presence of its composer. The famous choir of Saint-Eustache was directed by no other than Charles Gounod, whose most outstanding pupil was a child by the name of Auguste Renoir. Gounod had built great hopes in young Renoir, who, however, felt a deeper urge to use his hands.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_eustache_music_heritage_around_and_about_paris_van_den_heuvel_organ_baltard_case",
+    "city_name": "paris",
+    "poi_name": "Saint-Eustache",
+    "lens": "music_heritage",
+    "topic_slug": "van_den_heuvel_organ_baltard_case",
+    "sub_location": "organ-loft",
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The church houses one of the most fabulous organs in Paris — the Dutch firm Peter Jan Van Den Heuvel installed it in 1989 inside a beautiful 19th-century case designed by Victor Baltard, the architect of Les Halles. The double-transmission mechanism — both mechanical and electronic — makes it the largest of its kind in the world. On your way out through the northern aisle, look for the colourful niche depicting the life of Les Halles — a tribute to the market's workers, the \"good people of Paris.\"",
+    "script_body_hash": "fe6407afaba2b00dc1681f83d39fb4431e54b220a0e14f0df64b793aeaea04dc",
+    "duration_sec": 35,
+    "kid_friendly": "yes",
+    "entities": [
+      "Peter Jan Van Den Heuvel",
+      "Victor Baltard"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "van-den-heuvel-organ",
+    "physical_cues": [
+      {
+        "cue": "Giant organ — Van Den Heuvel's 1989 instrument in Victor Baltard's 19th-century case",
+        "direction": "up",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Colourful niche in the northern aisle depicting the life of Les Halles market — tribute to the 'good people of Paris'",
+        "direction": "north",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "the church houses one of the most fabulous organs in Paris, the work of the Dutch establishment Peter Jan Van Den Heuvel. It was installed in 1989, while its beautiful case was designed in the 19th century by Victor Baltard, the architect of Les Halles. Equipped with both a mechanical and an electronic transmission system, this is the biggest double transmission organ in the world [...]. As you make your way out through the northern aisle, you will notice in the wall a colourful niche, depicting the life of the central market of Les Halles - a touching tribute to its workers, the 'good people of Paris'.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_social_change_around_and_about_paris_videotheque_paris_memory",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "social_change",
+    "topic_slug": "videotheque_paris_memory",
+    "sub_location": null,
+    "trigger_address": "New Forum, near the Bourse de Commerce rotunda",
+    "beat_length_class": "seasoning",
+    "script_body": "At the Vidéothèque, the entire memory of Paris is preserved in video archives — fiction and documentary alike. The siting is pointed: it sits on the ground where the organic heart of Paris once beat. A viewer need only press a button and the city comes to life on the screen. Of late, private homes have had links installed to the Vidéothèque, sparing the owners the bother of going outside — while disconnecting them from the real city around them.",
+    "script_body_hash": "83cb51608c354e0508354fb4bdb0d20604133222f849acdef01608ca12eb50cd",
+    "duration_sec": 32,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "Vidéothèque archive",
+    "physical_cues": [
+      {
+        "cue": "Rotunda of the Bourse de Commerce, visible from Porte du Jour steps down into the New Forum",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Vidéothèque",
+        "gloss": "video archive, literally 'video-library'"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "You could spend endless days at the Vidéothèque where the entire memory of Paris is preserved in video archives (both fiction and documentary), appropriately situated on the site where the organic heart of Paris once beat. To experience this vicariously, the viewer need only press a button and the city comes to life on the screen. Of late, private homes have had links installed to the Vidéothèque, sparing the owners the bother of going out, while at the same time disconnecting them from their real environment.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_modern_design_around_and_about_paris_parc_oceanique_cousteau_video_fish",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "lens": "modern_design",
+    "topic_slug": "parc_oceanique_cousteau_video_fish",
+    "sub_location": null,
+    "trigger_address": "New Forum (Parc Océanique Cousteau)",
+    "beat_length_class": "seasoning",
+    "script_body": "Next to the Vidéothèque is another world of visual illusion. At the Parc Océanique Cousteau, video has replaced both the ocean's waters and its creatures — the fish spared from languishing in boredom in an artificial environment by the simple expedient of not being there at all. Exorbitant admission fees fund the Cousteau Society's quality-of-life-on-our-planet work; the gift shop next door continues the same cause.",
+    "script_body_hash": "2144c3f1378fc72ccc0a708d71bcee61dfcf7cdcd0d9464044ff33dd2f95d7a7",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+      "Cousteau Society"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "Cousteau video aquarium",
+    "physical_cues": [
+      {
+        "cue": "Parc Océanique Cousteau next to the Vidéothèque in the New Forum",
+        "direction": "here",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Next to the Vidéothèque, le Parc Océanique Cousteau is yet another world of visual illusion. In this gigantic aquarium, the video has replaced both the ocean's waters and its creatures so as to prevent the fish languishing in boredom in an artificial environment. The expensive technology entailed accounts, perhaps, for the exorbitant admission fees. The receipts, however, are used for the protection and improvement of the quality of life on our planet. The gift shop next door is run by the Cousteau Society, for the same cause.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_saint_honor_dark_history_around_and_about_paris_david_sketches_marie_antoinette",
+    "city_name": "paris",
+    "poi_name": "rue Saint-Honoré",
+    "lens": "dark_history",
+    "topic_slug": "david_sketches_marie_antoinette",
+    "sub_location": null,
+    "trigger_address": "corner of rue des Prouvaires and 54 rue Saint-Honoré",
+    "beat_length_class": "mid",
+    "script_body": "Rue Saint-Honoré was a major artery in pre-Revolutionary days, leading to the Louvre and the Palais-Royal — but for a brief period it was the sinister route of the tumbrils, carrying the condemned from the Conciergerie prison to the guillotine on Place de la Révolution, today's Place de la Concorde. On 16 October 1793, the painter Jacques-Louis David posted himself on this corner balcony, 54 rue Saint-Honoré, and watched Marie-Antoinette carried to her doom — her hands tied behind her back. The tragic sight became his shattering portrait of the Queen.",
+    "script_body_hash": "4d0f725d93672c44057246deb38aced088dae0703fb968a34d0c5aaff19c778b",
+    "duration_sec": 36,
+    "kid_friendly": "no",
+    "entities": [
+      "Jacques-Louis David",
+      "Marie-Antoinette"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "David sketches Queen",
+    "physical_cues": [
+      {
+        "cue": "Corner house at rue des Prouvaires and 54 rue Saint-Honoré — the balcony where David was posted on 16 October 1793",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "tumbrils",
+        "gloss": "open carts used to carry condemned prisoners to the guillotine"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "rue Saint-Honoré. A major artery in pre-Revolutionary days, leading to the Louvre and to the Palais-Royal, the street is still lined with 17th- and 18th-century houses. For a brief period it was the sinister route of the tumbrils, on their way from the Conciergerie prison to the guillotine on Place de la Révolution (Concorde). Thus on 16 October 1793, the painter David was posted on the corner house balcony of rue des Prouvaires and 54 rue Saint-Honoré, on your right, from where he had a good view of Marie-Antoinette carried to her doom, her hands tied behind her back, a tragic sight captured in his shattering portrait of the Queen.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_saint_honor_hidden_history_around_and_about_paris_apothecary_93_closed_mourning",
+    "city_name": "paris",
+    "poi_name": "rue Saint-Honoré",
+    "lens": "hidden_history",
+    "topic_slug": "apothecary_93_closed_mourning",
+    "sub_location": null,
+    "trigger_address": "no. 93 rue Saint-Honoré",
+    "beat_length_class": "seasoning",
+    "script_body": "On the day of Marie-Antoinette's execution, the apothecary at no. 93 closed his shop — Au bourdon d'Or, At the Golden Bumblebee — as a sign of mourning. A quiet, private act of royalist grief, recorded here against her last journey down this street.",
+    "script_body_hash": "d61bdf9173e55e87568d99c69e71bcce1815d29f839947901fcfa76f5093caf1",
+    "duration_sec": 18,
+    "kid_friendly": "yes",
+    "entities": [
+      "Marie-Antoinette"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "somber",
+    "subject_tag": "apothecary mourning",
+    "physical_cues": [
+      {
+        "cue": "Façade at no. 93 rue Saint-Honoré — the site of the apothecary shop Au bourdon d'Or",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Au bourdon d'Or",
+        "gloss": "At the Golden Bumblebee"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "On the day of Marie-Antoinette's execution, the apothecary at n° 93 closed his shop Au bourdon d'Or as a sign of mourning.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_saint_honor_hidden_history_around_and_about_paris_fersen_invisible_ink_pharmacy_no_115",
+    "city_name": "paris",
+    "poi_name": "rue Saint-Honoré",
+    "lens": "hidden_history",
+    "topic_slug": "fersen_invisible_ink_pharmacy_no_115",
+    "sub_location": null,
+    "trigger_address": "no. 115 rue Saint-Honoré",
+    "beat_length_class": "seasoning",
+    "script_body": "At no. 115, a pharmacy documented since 1715 is believed to have supplied the Swedish Marshal Axel von Fersen with the invisible ink he used for his correspondence with Marie-Antoinette during her sequestration at the Conciergerie. A close friend of the royal family, Fersen had tried to help them escape. Now, a quiet Paris shopfront — where the conspiracy bought its secrecy in a bottle.",
+    "script_body_hash": "c4b47b46d9bcfd9617f3723c6deb6aff7fa27ac08a546a82d21f13ece9e6cb87",
+    "duration_sec": 26,
+    "kid_friendly": "no",
+    "entities": [
+      "Marie-Antoinette",
+      "Axel von Fersen",
+      "Conciergerie"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "dramatic",
+    "subject_tag": "Fersen invisible ink",
+    "physical_cues": [
+      {
+        "cue": "Façade at no. 115 rue Saint-Honoré — the pharmacy that supplied Fersen, documented since 1715",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "At n° 115 was situated the pharmacy where the Swedish Marshal Fersen is believed to have obtained the invisible ink for his correspondence with Marie-Antoinette during her sequestration at the Conciergerie. A close friend of the royal family, Fersen had tried to help them escape. Evidence of the existence of the pharmacy goes back to 1715.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_sauval_literary_heritage_around_and_about_paris_moliere_birthplace_wagner_1839",
+    "city_name": "paris",
+    "poi_name": "rue Sauval",
+    "lens": "literary_heritage",
+    "topic_slug": "moliere_birthplace_wagner_1839",
+    "sub_location": null,
+    "trigger_address": "2 rue Sauval",
+    "beat_length_class": "seasoning",
+    "script_body": "At the corner of rue Vauvilliers, the first episode of the Fronde — the revolt against Louis XIV's mentor and minister Mazarin — began in August 1648. Just further down, at 2 rue Sauval, was the birthplace of Molière in 1622. The original house was later demolished and replaced by the one still standing today — where Richard Wagner stayed in 1839.",
+    "script_body_hash": "11ca337ba0ff060e330235d8b1d79322830be2e9b044f0725b4c1d748b32161a",
+    "duration_sec": 25,
+    "kid_friendly": "yes",
+    "entities": [
+      "Molière",
+      "Richard Wagner",
+      "Cardinal Mazarin",
+      "Louis XIV"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "reverent",
+    "subject_tag": "Molière birthplace",
+    "physical_cues": [
+      {
+        "cue": "Corner of rue Vauvilliers and rue Sauval — first episode of the Fronde began here in August 1648",
+        "direction": "here",
+        "feature_type": "view"
+      },
+      {
+        "cue": "No. 2 rue Sauval — the later house still standing today, where Wagner stayed in 1839",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Continue to the corner of rue Vauvilliers where the first episode of the Fronde, the revolt against Louis XIV's mentor and Minister, Mazarin, began in August 1648. The corner house at 2 rue Sauval further down on your right, was the birth-place of Molière in 1622. The house was later demolished and replaced by the one still standing today, where Wagner stayed in 1839.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_la_ferronnerie_dark_history_around_and_about_paris_henri_iv_assassination_ravaillac_1610",
+    "city_name": "paris",
+    "poi_name": "rue de la Ferronnerie",
+    "lens": "dark_history",
+    "topic_slug": "henri_iv_assassination_ravaillac_1610",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "In the 13th century this street was the stronghold of the iron trade — narrow, congested, cluttered with blacksmiths' and ironmongers' stalls. It was still much the same on 14 May 1610, when the royal coach was held up here with the King aboard, on his way from the Louvre to the Arsenal near the Bastille where his minister Sully was residing. The King was absorbed in a letter. A man named Ravaillac jumped onto the coach and stabbed him. The assassin was declared mentally deranged but was nevertheless sentenced to be quartered on Place de Grève — today's Place de l'Hôtel-de-Ville — a sentence speedily carried out thirteen days after the crime. The King had been rushed to 93 rue Saint-Honoré, where an earlier apothecary was trading, but he could not be saved.",
+    "script_body_hash": "935c97ee2ab478c4ed75e72accbf3c050b017ebb3435d8b63369ea95427b8179",
+    "duration_sec": 54,
+    "kid_friendly": "no",
+    "entities": [
+      "Henri IV",
+      "Ravaillac",
+      "Sully"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "Henri IV assassinated",
+    "physical_cues": [
+      {
+        "cue": "Rue de la Ferronnerie — today a wide trendy street, in 1610 a cluttered maze of blacksmiths' stalls where the royal coach was hemmed in",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Place de Grève",
+        "gloss": "Strand Square — today's Place de l'Hôtel-de-Ville"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "rue de la Ferronnerie, today a wide trendy street [...]. However, in the 13th century, this was the stronghold of the iron trade [...] a narrow, congested street, cluttered with blacksmiths' and iron mongers' stalls. It was still much the same on 14 May 1610, when the royal coach was held up with the King aboard, on his way from the Louvre to the Arsenal, near the Bastille, where his minister Sully was residing. The King was absorbed in a letter when a man named Ravaillac jumped on to the coach and stabbed him. The assassin was declared mentally deranged but was nevertheless sentenced to be quartered on Place de Grève (today's Place de l'Hôtel-de-Ville), a sentence speedily carried out, thirteen days after the crime. [...] the King was stabbed on the neighbouring rue de la Ferronnerie. The King was rushed here but could not be saved.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_square_du_vert_galant_famous_residents_around_and_about_paris_vert_galant_nickname_bastards_gabrielle",
+    "city_name": "paris",
+    "poi_name": "Square du Vert-Galant",
+    "lens": "famous_residents",
+    "topic_slug": "vert_galant_nickname_bastards_gabrielle",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Henri IV's early amorous adventures had earned him the affectionate nickname of le Vert Galant — the amorous youth. The charm faded as he grew older. The population resented his dozens of bastard children scattered through the kingdom, which all but plunged France in civil strife again. Worse, he had expressed his intention to marry his favourite, Gabrielle d'Estrées — an outrage to the raison d'état. Only her premature death prevented the infamy. As Femme Ladoucette had written to the Queen, in the kingdom of France one separated the sheep from the goats.",
+    "script_body_hash": "78c82ba87664c20498bbcd13e7330a11c6fec14f4c8f817968a70f4fddb66a7f",
+    "duration_sec": 37,
+    "kid_friendly": "no",
+    "entities": [
+      "Henri IV",
+      "Gabrielle d'Estrées",
+      "Femme Ladoucette"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "Vert-Galant nickname",
+    "physical_cues": [
+      {
+        "cue": "Equestrian statue of Henri IV on the Pont-Neuf — the Vert-Galant himself, overlooking the garden that carries his nickname",
+        "direction": "up",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "le Vert Galant",
+        "gloss": "the Green Gallant — an affectionate nickname for an amorous youth"
+      },
+      {
+        "phrase": "raison d'état",
+        "gloss": "reason of state — the logic by which royal marriages served the kingdom rather than the heart"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "This was not the first murder attempt made on the life of the King; for while his early amorous adventures had gained him the affectionate nickname of le Vert Galant (the amorous youth), the charm faded as he grew older. The population resented the fact that he had dozens of bastard children scattered throughout the kingdom, which all but plunged France in civil strife yet again. Furthermore, he had expressed his intention to marry his favourite, Gabrielle - an outrage to the raison d'état. Only the latter's premature death prevented this infamy. In the kingdom of France, as Femme Ladoucette had expressed it in her letter to the Queen, one separated the sheep from the goats.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_fontaine_des_innocents_visual_art_around_and_about_paris_lescot_goujon_1549_henri_ii_entry",
+    "city_name": "paris",
+    "poi_name": "Fontaine des Innocents",
+    "lens": "visual_art",
+    "topic_slug": "lescot_goujon_1549_henri_ii_entry",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The Fontaine des Innocents — the only Renaissance fountain in Paris — was designed by Pierre Lescot and sculpted by Jean Goujon in 1549. Goujon was the greatest sculptor of his time. The fountain was inaugurated on 16 June 1549 for Henri II's solemn entry into Paris. It originally had three arcades and a balcony, where prominent figures sheltered during royal processions.",
+    "script_body_hash": "442d8232e427ba55f7516f2222db900000a8aa71cdde02ea91d7b9fd164cbde3",
+    "duration_sec": 25,
+    "kid_friendly": "yes",
+    "entities": [
+      "Pierre Lescot",
+      "Jean Goujon",
+      "Henri II"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "Lescot Goujon fountain",
+    "physical_cues": [
+      {
+        "cue": "Fontaine des Innocents — the only Renaissance fountain in Paris, designed by Pierre Lescot, sculpted by Jean Goujon in 1549",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Arcades of the fountain — where prominent figures once took shelter during royal processions",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Its impressive fountain, the only Renaissance fountain in Paris, was designed by Pierre Lescot and sculpted by Jean Goujon in 1549, the greatest sculptor of his time. Known as the Fontaine des Innocents, it commemorates the old cemetery of Paris, the cimetière des Innocents [...]. The fountain had three arcades and a balcony at the time, where prominent figures took shelter during royal processions. Indeed, it was inaugurated on 16 June 1549, on Henri II's solemn entry into the city.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_fontaine_des_innocents_social_change_around_and_about_paris_fountain_moved_1855",
+    "city_name": "paris",
+    "poi_name": "Fontaine des Innocents",
+    "lens": "social_change",
+    "topic_slug": "fountain_moved_1855",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The fountain has moved. It originally stood at the corner of rue Saint-Denis and today's rue Berger, against the church of Saints-Innocents which was demolished when the cemetery closed down. A colourful fruit, vegetable, and herb market replaced the cemetery in 1787. That market was demolished in 1855, and the fountain was shifted, altered, and restored a couple of times before it settled here at Place Joachim Du Bellay.",
+    "script_body_hash": "c62d35711c38e353fe4c289b8e1be348800ec56a9acff147b66f27673e74255d",
+    "duration_sec": 28,
+    "kid_friendly": "yes",
+    "entities": [],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "neutral",
+    "subject_tag": "fountain relocation",
+    "physical_cues": [
+      {
+        "cue": "Present square — Place Joachim Du Bellay, Renaissance fountain at its centre",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The fountain, however, stood at the corner of rue Saint-Denis and the present rue Berger at the time, against the church of Saints-Innocents which was demolished when the cemetery closed down. [...] The market was demolished in 1855, the fountain shifted, altered and restored a couple of times, and today its dashing waters [...]",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "1st Arr: Châtelet to Vert-Galant"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-02-1st-arr-chatelet-to-vert-galant",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T02:31:35Z",
       "city_name": "paris"
     }
   }

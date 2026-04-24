@@ -6,26 +6,6 @@
       "author": "Thirza Vallois",
       "chunks_processed": [
         {
-          "chunk": "chunk-02-1st-arr-chatelet-to-vert-galant",
-          "processed_at": "2026-04-02T12:00:00Z",
-          "beats_extracted": 9,
-          "pois_touched": [
-            "Place de la Concorde",
-            "Les Halles",
-            "Pont Neuf",
-            "Conciergerie",
-            "Fontaine des Innocents"
-          ],
-          "pois_created": [
-            "Fontaine des Innocents"
-          ],
-          "pois_mentioned_no_content": [
-            "Bourse de Commerce"
-          ],
-          "conflicts_resolved": 0,
-          "fact_check_flags": 5
-        },
-        {
           "chunk": "chunk-04-1st-arr-louvre-westwards",
           "processed_at": "2026-04-05T21:53:46Z",
           "beats_extracted": 16,
@@ -639,6 +619,26 @@
             "Saint-Eustache"
           ],
           "new_pois_flagged": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "chunk-02-1st-arr-chatelet-to-vert-galant",
+          "processed_at": "2026-04-24T02:31:35Z",
+          "beats_extracted": 14,
+          "pois_touched": [
+            "Fontaine des Innocents",
+            "Les Halles",
+            "Saint-Eustache",
+            "Square du Vert-Galant",
+            "rue Saint-Honoré",
+            "rue Sauval",
+            "rue de la Ferronnerie"
+          ],
+          "new_pois_flagged": [
+            "rue Saint-Honoré",
+            "rue Sauval",
+            "rue de la Ferronnerie"
+          ],
           "pois_mentioned_no_content": []
         }
       ]
