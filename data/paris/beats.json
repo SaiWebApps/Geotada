@@ -31956,7 +31956,7 @@
       }
     ],
     "pronunciation": "plass-day-voge",
-    "source_passage": "Walk up the rue de Birague (stop and look at interesting shops) and continue into the place des Vosges (pronounced plass-day-voge) before you. A place is a square; this one has a large park in the middle and symmetrical townhouses all around. Sit in the garden near the children's area so that you can watch the children play à la française (despite the mix of Hebrew, Yiddish, and Arabic you'll hear). If it is cold, try the café Ma Bourgogne, on the northwest corner of the place.",
+    "source_passage": "Sit in the garden near the children's area so that you can watch the children play à la française (despite the mix of Hebrew, Yiddish, and Arabic you'll hear). If it is cold, try the café Ma Bourgogne, on the northwest corner of the place.",
     "source_attribution": {
       "book_title": "Pariswalks",
       "author": "Sonia Landes, Alison Landes, Rebecca Landes",
@@ -31967,7 +31967,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32012,7 +32012,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32039,12 +32039,18 @@
       "Charles IX",
       "Victor Hugo"
     ],
-    "sensory_anchor": false,
+    "sensory_anchor": true,
     "narrative_function": "hook",
     "beat_type": "event",
     "emotional_register": "dramatic",
     "subject_tag": "montgomery lance",
-    "physical_cues": [],
+    "physical_cues": [
+      {
+        "cue": "The ground of the place des Vosges — where the Tournelles palace stood until Charles IX had it demolished after Henri II's death",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
     "inline_foreign_phrases": [],
     "pronunciation": null,
     "source_passage": "C'est le coup de lance de Montgomery qui a créé la place des Vosges. —Victor Hugo. [...] It remained the royal residence until 1559 and the joust that cost Henri II his life. The king had fought and won two jousts already that day, but he insisted on a third against the captain of his Scottish Guards, Gabriel de Lorges, sire de Montgomery. At the first pass, both combatants splintered their lances. The king wanted another run; Montgomery was reluctant. Of course, the king, savoring his success, had his way. Once again Montgomery's lance broke, but this time, by a freak accident, the point pushed up the visor of the king's helmet and entered his head above his eye. For ten days Henri suffered. The greatest doctors were called; Ambroise Paré and Andreas Vesalius came all the way from Brussels. Four criminals under sentence of death were decapitated so that the doctors could study their cranial anatomy, but to no avail. Henri died, of infection if nothing else, and his widow, Catherine de Médicis, persuaded her son Charles IX to demolish the palace with its unhappy memories.",
@@ -32058,7 +32064,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32080,12 +32086,18 @@
       "Duc de Sully",
       "Duc de Guise"
     ],
-    "sensory_anchor": false,
+    "sensory_anchor": true,
     "narrative_function": "establishing",
     "beat_type": "event",
     "emotional_register": "neutral",
     "subject_tag": "first urban project",
-    "physical_cues": [],
+    "physical_cues": [
+      {
+        "cue": "Pavillon du Roi at the south end of the square — the first building finished when parceling began in 1605",
+        "direction": "south",
+        "feature_type": "architectural_detail"
+      }
+    ],
     "inline_foreign_phrases": [
       {
         "phrase": "à la façon de Milan",
@@ -32104,7 +32116,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32172,7 +32184,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32234,7 +32246,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32288,7 +32300,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32311,12 +32323,18 @@
       "Molière",
       "Les Précieuses Ridicules"
     ],
-    "sensory_anchor": false,
+    "sensory_anchor": true,
     "narrative_function": "deepen",
     "beat_type": "event",
     "emotional_register": "wry",
     "subject_tag": "precieuses and ruelles",
-    "physical_cues": [],
+    "physical_cues": [
+      {
+        "cue": "Second-floor windows of the pavilions around the square — behind these are the bedrooms where the ruelles were held",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
     "inline_foreign_phrases": [
       {
         "phrase": "ruelles",
@@ -32339,7 +32357,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32390,7 +32408,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32433,7 +32451,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32492,7 +32510,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32548,7 +32566,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32607,7 +32625,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32671,7 +32689,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32714,7 +32732,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32793,7 +32811,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32856,7 +32874,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32919,7 +32937,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -32975,7 +32993,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33037,7 +33055,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33093,7 +33111,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33144,7 +33162,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33194,7 +33212,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33219,7 +33237,13 @@
     "beat_type": "character_story",
     "emotional_register": "neutral",
     "subject_tag": "first précieuse",
-    "physical_cues": [],
+    "physical_cues": [
+      {
+        "cue": "Façade of no. 26 place des Vosges",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
     "inline_foreign_phrases": [
       {
         "phrase": "précieuse",
@@ -33238,7 +33262,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33289,7 +33313,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33348,7 +33372,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33401,7 +33425,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33454,7 +33478,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33512,7 +33536,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33576,7 +33600,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33626,7 +33650,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33695,7 +33719,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33728,7 +33752,13 @@
     "beat_type": "sidebar",
     "emotional_register": "wry",
     "subject_tag": "Marion Delorme",
-    "physical_cues": [],
+    "physical_cues": [
+      {
+        "cue": "Façade of no. 6 place des Vosges",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
     "inline_foreign_phrases": [],
     "pronunciation": null,
     "source_passage": "Marion Delorme may also have lived here, in a small pavilion at the back [...]. Marion was a match for Anne in every way, in number of lovers and in the brilliance of her salon. She began her career as courtesan to Jacques Vallée, sieur Desbarreaux, a notorious 'epicurean' (read: hedonist) and, unforgivable at the time, an avowed atheist. Next came the Marquis de Cinq-Mars, a handsome, stylish courtier who made the mistake of plotting intrigue against Richelieu and lost his head. (The marquis may have died young, but his place in history and literature is assured as the protagonist of Alfred de Vigny's novel Cinq-Mars.) After the execution of Cinq-Mars, Marion is said to have gone on to a long series of lovers, including George Villiers, the first Duke of Buckingham. (You may remember him from The Three Musketeers.) Also Louis II de Bourbon, Prince de Condé (called 'the great Condé') [...]. Yet this great wencher had his own wife confined for her alleged unfaithfulness [...] and wrote his last letter to the king to ask that she never be released. Nice fellow. Last but not least, Marion is said to have gotten Cardinal Richelieu himself into her bed. [...] Victor Hugo wrote a drama called Marion Delorme, and G. Bottesini wrote an opera of the same name.",
@@ -33742,7 +33772,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33793,7 +33823,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   },
@@ -33836,7 +33866,7 @@
     "source_chunk_slug": "chunk-04-place-des-vosges",
     "_meta": {
       "prompt_version": "unified_v2",
-      "generated_at": "2026-04-24T00:09:26Z",
+      "generated_at": "2026-04-24T01:15:18Z",
       "city_name": "paris"
     }
   }

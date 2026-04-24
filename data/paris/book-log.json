@@ -661,7 +661,7 @@
       "chunks_processed": [
         {
           "chunk": "chunk-04-place-des-vosges",
-          "processed_at": "2026-04-24T00:09:26Z",
+          "processed_at": "2026-04-24T01:15:18Z",
           "beats_extracted": 35,
           "pois_touched": [
             "Place des Vosges",

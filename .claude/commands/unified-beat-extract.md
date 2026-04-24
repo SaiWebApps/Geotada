@@ -98,6 +98,18 @@ Group related facts from the working list into **complete mini-stories** — eac
   - Tier-4/5 POI that a guidebook circles address-by-address (Pariswalks Walk 4 on Place des Vosges): 15–30+ beats — a few anchor/mid at the square, many seasoning beats with `trigger_address` at individual houses
 - If you produce only 1 beat for a POI with substantial source text, or 2–3 beats for a Pariswalks-style circumnavigation, you are under-extracting.
 
+### Beat-type mutual exclusion (one sentence → one beat)
+
+A single source sentence (or tightly-coupled passage block) cannot produce multiple beats that differ only in `beat_type`. When a passage could plausibly be framed as navigation AND staging AND anecdote simultaneously, pick the ONE dominant frame and emit ONE beat:
+
+- **Navigation-dominant** (bolded imperatives, *"cross"/"turn"/"continue"/"walk up"* verbs that carry the listener toward the next stop) → `beat_type: transit`
+- **Staging-dominant** (*"sit"/"find"/"face"/"notice"* instructions that pause the listener before narrative content) → `beat_type: stop_orientation`
+- **Anecdote-dominant** (named people, dated events, verifiable specifics that stand on their own) → `beat_type: anecdote` / `character_story` / `event` / `architectural_detail` as appropriate
+
+**Source-passage exclusivity.** `source_passage` carries the **minimum** sentence span that grounds the beat's claims — not the whole surrounding paragraph. Two beats MAY come from adjacent sentences in the same paragraph, but each sentence is the primary derivation point for at most one beat. If two beats end up citing the same load-bearing sentence in their source_passage, one of them is redundant — merge, reclass, or cut.
+
+Failure mode to avoid (observed, 2026-04-23 Pariswalks Walk 4 run): emitting both a `transit` beat about the walking entry ("Walk up rue de Birague and continue into the place") AND a `stop_orientation` beat about the sit-in-the-garden staging, with both citing the full opening paragraph as source_passage. The source paragraph contains BOTH a navigation sentence AND a staging sentence — they are distinct claims, each grounding one beat. But source_passage on each must be scoped to its own sentence, not include both.
+
 ### Exhaustive lens scan per POI
 
 For every POI, after extracting obvious beats, perform an exhaustive scan against ALL taggable lenses and ask: "Did I miss any angle the source text supports?" Extract it if yes.
@@ -257,6 +269,7 @@ Rules:
 - Null on most beats — only populated when the source explicitly anchors to an address.
 - When populated, `poi_name` is still the containing anchor (Place des Vosges, rue Saint-Honoré), NOT the address itself. The address is the GPS trigger; the anchor is the semantic container.
 - **For `beat_type: transit`**, `trigger_address` is optional and represents the origin (where the walking instruction starts firing); `poi_name` is the destination (the next stop the listener reaches).
+- **Façade-as-cue rule:** when `trigger_address` is populated, the façade, door, plaque, or street-facing feature at that address is ALWAYS a valid `physical_cues` entry — even when the beat's narrative is indoor, historical, or biographical. The listener standing at the geofence can always look at the building. A beat about an eighteenth-century salon held in an upstairs bedroom still gets a cue like `{"cue": "Façade of no. 6 place des Vosges", "direction": "here", "feature_type": "architectural_detail"}` or `{"cue": "Plaque on the wall at no. 8", "direction": "here", "feature_type": "plaque"}`. `physical_cues` MUST therefore be non-empty on every beat carrying `trigger_address`.
 
 ### beat_length_class (enum) — NEW in unified_v2
 
@@ -607,7 +620,7 @@ Before writing output:
    - `inline_foreign_phrases` (list, possibly empty), `pronunciation` (string or null)
 5. **Word count falls inside `beat_length_class` range** — anchor 200–400w, mid 80–200w, seasoning 20–80w, micro <20w. If a beat drifts outside, **re-class it, don't re-write.** An out-of-range count means the extractor mis-identified the source's role.
 6. **Inline foreign phrases are consistent with script_body** — every `inline_foreign_phrases[].phrase` value must literally appear in `script_body`. If the structured entry exists but the word is missing from prose, the extractor paraphrased it away — restore the verbatim form (B3).
-7. **Tier-3+ physical_cues are populated when the source has a visible feature** — if a beat at an `importance_tier >= 3` POI cites plaques, façade details, views, interiors, or adjacent landmarks in its `source_passage`, `physical_cues` must not be empty.
+7. **Tier-3+ physical_cues are populated when the source has a visible feature** — if a beat at an `importance_tier >= 3` POI cites plaques, façade details, views, interiors, or adjacent landmarks in its `source_passage`, `physical_cues` must not be empty. **Separate rule (Fix 2):** every beat with a non-null `trigger_address` must have `physical_cues` non-empty — at minimum, a cue pointing to the façade/door/plaque at that address. The listener can always look at the building.
 8. **poi_name is location-anchored (B9)** — for each non-transit beat, ask "if a listener geofences this `poi_name` (+ `trigger_address` if set), will they be standing where this story happened?" If no, re-assign. For `beat_type: transit` beats, verify the carve-out instead: `trigger_address` is the origin (required, non-null), `poi_name` is the destination (next stop), and origin ≠ destination.
 9. **Seasoning beats use `trigger_address`** — any beat at `beat_length_class: seasoning` that the source tied to a specific address (*"no. X..."*, *"at [address]..."*) must have `trigger_address` populated; `poi_name` is the containing anchor, not the address.
 10. **Transit/sidebar narrative_function** — `beat_type: transit` beats must not carry `narrative_function: establishing`; transit beats bridge stops, they don't introduce a POI's identity. `beat_type: sidebar` beats likewise should not be `narrative_function: establishing` (a digression can't be the anchoring identity).
