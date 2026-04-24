@@ -47,30 +47,6 @@
           "fact_check_flags": 5
         },
         {
-          "chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal",
-          "processed_at": "2026-04-03T12:00:00Z",
-          "beats_extracted": 17,
-          "pois_touched": [
-            "Place du Châtelet",
-            "Pont Neuf",
-            "Ile de la Cite",
-            "Sainte-Chapelle",
-            "Conciergerie",
-            "Tour de l'Horloge",
-            "Place Dauphine"
-          ],
-          "pois_created": [
-            "Place du Châtelet",
-            "Place Dauphine"
-          ],
-          "pois_mentioned_no_content": [
-            "Palais de Justice",
-            "Quai de la Mégisserie"
-          ],
-          "conflicts_resolved": 0,
-          "fact_check_flags": 4
-        },
-        {
           "chunk": "chunk-04-1st-arr-louvre-westwards",
           "processed_at": "2026-04-05T21:53:46Z",
           "beats_extracted": 16,
@@ -652,6 +628,23 @@
           "conflicts_resolved": 0,
           "fact_check_flags": 0,
           "notes": "Scope 5 validation-gate re-extraction via unified-beat-extract. Appended to prior pipeline_batch_v1 run (5 beats) from 2026-04-06."
+        },
+        {
+          "chunk": "chunk-03-1st-arr-samaritaine-to-palais-royal",
+          "processed_at": "2026-04-24T02:07:15Z",
+          "beats_extracted": 20,
+          "pois_touched": [
+            "Conciergerie",
+            "Palais de Justice",
+            "Place Dauphine",
+            "Place du Chatelet",
+            "Pont Neuf",
+            "Quai de la Megisserie",
+            "Sainte-Chapelle",
+            "Square du Vert-Galant"
+          ],
+          "new_pois_flagged": [],
+          "pois_mentioned_no_content": []
         }
       ]
     },
