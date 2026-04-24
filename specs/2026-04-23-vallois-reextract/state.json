@@ -47,7 +47,10 @@
       "slug": "chunk-05-2nd-arr-east-of-montmartre",
       "file": "chunk-05-2nd-arr-east-of-montmartre.txt",
       "title": "2nd Arr: East of Rue Montmartre",
-      "status": "pending"
+      "status": "complete",
+      "commit": "5c30756",
+      "beats": 22,
+      "notes": "new_poi flagged: '140 rue Montmartre' (Molière burial + Zola J'accuse); Tour Jean sans Peur split into anchor (tower) + mid (Hôtel de Bourgogne theatre at no. 29); lens-avoidance at Porte Saint-Denis against chunk-01 historic_worship beat"
     },
     {
       "slug": "chunk-06-2nd-arr-west-of-montmartre",
