@@ -6,46 +6,6 @@
       "author": "Thirza Vallois",
       "chunks_processed": [
         {
-          "chunk": "chunk-05-2nd-arr-east-of-montmartre",
-          "processed_at": "2026-04-05T23:30:00Z",
-          "beats_extracted": 16,
-          "pois_touched": [
-            "Palais Brongniart",
-            "Grands Boulevards",
-            "Porte Saint-Denis",
-            "Passage de la Trinite",
-            "Passage du Grand-Cerf",
-            "Tour Jean sans Peur",
-            "Rue Montorgueil",
-            "Place du Caire",
-            "Rue de Clery",
-            "35 Boulevard des Capucines",
-            "Place de Louvois",
-            "Cafe du Croissant"
-          ],
-          "pois_created": [
-            "Palais Brongniart",
-            "Grands Boulevards",
-            "Porte Saint-Denis",
-            "Passage de la Trinite",
-            "Passage du Grand-Cerf",
-            "Tour Jean sans Peur",
-            "Rue Montorgueil",
-            "Place du Caire",
-            "Rue de Clery",
-            "35 Boulevard des Capucines",
-            "Place de Louvois",
-            "Cafe du Croissant"
-          ],
-          "pois_mentioned_no_content": [
-            "Boulevard des Italiens",
-            "Cafe Anglais",
-            "Restaurant Drouant"
-          ],
-          "conflicts_resolved": 0,
-          "fact_check_flags": 20
-        },
-        {
           "chunk": "chunk-07-3rd-arr-marais-du-temple",
           "processed_at": "2026-04-05T23:00:00Z",
           "beats_extracted": 18,
@@ -631,6 +591,29 @@
           "new_pois_flagged": [
             "La Bourse du Commerce — Pinault Collection",
             "rue de Rivoli"
+          ],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "chunk-05-2nd-arr-east-of-montmartre",
+          "processed_at": "2026-04-24T03:58:57Z",
+          "beats_extracted": 22,
+          "pois_touched": [
+            "35 Boulevard des Capucines",
+            "Cafe du Croissant",
+            "Grands Boulevards",
+            "Palais Brongniart",
+            "Passage de la Trinite",
+            "Passage du Grand-Cerf",
+            "Place de Louvois",
+            "Place du Caire",
+            "Porte Saint-Denis",
+            "Rue Montorgueil",
+            "Rue de Clery",
+            "Tour Jean sans Peur"
+          ],
+          "new_pois_flagged": [
+            "140 rue Montmartre"
           ],
           "pois_mentioned_no_content": []
         }

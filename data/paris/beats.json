@@ -2704,1150 +2704,6 @@
     "source_chunk_slug": "chunk-06-2nd-arr-west-of-montmartre"
   },
   {
-    "beat_id": "palais_brongniart_commerce_innovation_stock_exchange_around_and_about_paris",
-    "poi_name": "Palais Brongniart",
-    "lens": "commerce_innovation",
-    "script_body": "For nearly two centuries, the Paris stock exchange, La Bourse, has stood imposingly in the heart of the 2nd arrondissement, marking it as the financial centre of the capital. Napoleon commissioned architect Alexandre-Théodore Brongniart to endow the city with a new temple of finance, modeled on Roman temples — specifically the Temple of Vespasian and the Maison Carrée in Nîmes. Napoleon was not to see the completed monument: it was inaugurated in 1826, eleven years after his downfall. Originally, the Tribunal of Trade was also located here, but was transferred to Boulevard du Palais on Île de la Cité during the Second Empire.",
-    "physical_cues": [],
-    "key_claims": [
-      "Napoleon commissioned Brongniart",
-      "Modeled on Roman temples",
-      "Inaugurated 1826",
-      "Tribunal of Trade moved during Second Empire"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Napoleon commissioned his architect Brongniart to endow the city with a new temple of finance, emulating those of ancient Greece",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "emulating those of ancient Greece",
-          "corrected_text": "modeled on Roman temples",
-          "source": "https://en.wikipedia.org/wiki/Palais_Brongniart, https://www.napoleon.org/en/history-of-the-two-empires/objects/model-of-the-palais-de-la-bourse/",
-          "impact": "MEDIUM"
-        },
-        {
-          "original_text": "inaugurated only in 1825",
-          "corrected_text": "inaugurated in 1826",
-          "source": "https://en.wikipedia.org/wiki/Palais_Brongniart, Musée Carnavalet medal record",
-          "impact": "LOW"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Palais_Brongniart",
-        "https://www.napoleon.org/en/history-of-the-two-empires/objects/model-of-the-palais-de-la-bourse/"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 41,
-    "entities": [
-      "Boulevard du Palais",
-      "Cité",
-      "La Bourse",
-      "Maison Carrée",
-      "Napoleon",
-      "Second Empire",
-      "Temple",
-      "Théodore Brongniart",
-      "Trade",
-      "Tribunal",
-      "Vespasian"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "establishing",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "c26457342048703c3c677655a044e9aafafdc2dc14234bf91479c12f4b47d5a5",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "stock_exchange",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "grands_boulevards_history_louis_xiv_promenade_around_and_about_paris",
-    "poi_name": "Grands Boulevards",
-    "lens": "history",
-    "script_body": "In 1670, Louis XIV — fortified by his military victories — did away with the city walls and laid out tree-lined promenades in their place, emulating the Cour-la-Reine planted by his grandmother Marie de Medici along the Seine. These Grands Boulevards — the word comes from the German 'Bollwerk,' meaning the surface of a rampart — ran in a circular arc from the Madeleine to the Bastille, a long stretch that marked the northern boundary of Paris. By the 19th century they had become the playground of the privileged classes and the heart of the modern capital, symbolized by the first omnibus line which plied along them.",
-    "physical_cues": [],
-    "key_claims": [
-      "1670 Louis XIV replaced walls",
-      "Word from German Bollwerk",
-      "Madeleine to Bastille",
-      "First omnibus line"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "In 1676 Louis XIV, fortified by his military victories, did away with the walls and laid out a tree-lined promenade instead",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "In 1676",
-          "corrected_text": "In 1670",
-          "source": "https://en.wikipedia.org/wiki/City_walls_of_Paris, https://fabricofparis.com/2019/12/17/walls.html",
-          "impact": "MEDIUM"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/City_walls_of_Paris"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 43,
-    "entities": [
-      "Louis XIV",
-      "Madeleine",
-      "Marie de Medici",
-      "Reine",
-      "These Grands"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "anecdote",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "e47be42b4fcfc9b6d9536908f8f796952ea8b5f8f89fa96e752bfb341b9b15e4",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "louis_xiv_promenade",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "porte_saint_denis_historic_arch_triumphal_gate_around_and_about_paris",
-    "poi_name": "Porte Saint-Denis",
-    "lens": "historic_arch",
-    "script_body": "The Porte Saint-Denis has been the gateway to the city since the reign of Charles V in the 14th century. In 1672, Louis XIV — confident that Paris no longer needed to be defended after his spectacular victories — had architect François Blondel replace the medieval gate, a crenellated construction complete with towers and drawbridge, with the present triumphal arch for the sole purpose of glorifying his person. Since Roman days, this had been the route by which travelers entered and left the capital along rue Saint-Denis, which led to the villages of Saint-Denis and Pontoise, and on to Rouen. From the 8th century it became the royal highway through which the kings and queens of France entered solemnly 'the good city of Paris' on their way to Notre-Dame — a tradition maintained for over a thousand years, right up to the coronation of Charles X in 1827.",
-    "physical_cues": [
-      "Look up at the triumphal arch spanning the boulevard"
-    ],
-    "key_claims": [
-      "Gateway since Charles V",
-      "1672 Blondel replaced gate",
-      "Royal highway from 8th century",
-      "Tradition until Charles X 1827"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "In 1672, Louis XIV, confident that the city no longer needed to be defended after his spectacular victories, had Blondel replace the 14th-century gate",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Porte_Saint-Denis"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 59,
-    "entities": [
-      "Blondel",
-      "Charles V",
-      "Charles X",
-      "Louis XIV",
-      "Since Roman"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "architectural_detail",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "8221538a21bb4635e7863f553ac10e5f5e18538d177f8edc228ac6b32e52e84b",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "triumphal_gate",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "porte_saint_denis_dark_history_condemned_prisoners_around_and_about_paris",
-    "poi_name": "Porte Saint-Denis",
-    "lens": "dark_history",
-    "script_body": "Even those traveling to their deaths found solace on rue Saint-Denis. The tumbril carrying condemned prisoners from the prison of the Grand-Châtelet to the gallows of Montfaucon would pause at the convent of the Filles-Dieu to let them kiss the wooden cross. The convent's inmates — reformed prostitutes — would offer holy water, three morsels of bread and a glass of wine, and could even save their necks by consenting to marry them. It is said that one prisoner, offered rescue by a generous yet hideously ugly 'daughter of God,' urged the hangman to proceed with his task and deliver him from a still worse fate.",
-    "physical_cues": [],
-    "key_claims": [
-      "Tumbrils from Grand-Chatelet to Montfaucon",
-      "Filles-Dieu convent pause",
-      "Marriage rescue tradition"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [],
-    "source_passage": "The tumbril carrying them from the prison of the Grand-Chatelet would pause to allow them to kiss the wooden cross of the convent of the Filles-Dieu",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [],
-      "sources_consulted": [
-        "https://collections.louvre.fr/en/ark:/53355/cl020132471"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 42,
-    "entities": [
-      "Châtelet",
-      "Dieu",
-      "Montfaucon"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "4e7c0d34f6f2b251d7e19413a22361a842ce823db09f59774661e1398a39d6fd",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "condemned_prisoners",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "passage_de_la_trinite_hidden_history_birthplace_theatre_around_and_about_paris",
-    "poi_name": "Passage de la Trinite",
-    "lens": "hidden_history",
-    "script_body": "The Hôpital de la Trinité once extended between 164 and 142 rue Saint-Denis, set up originally for travelers unable to enter the city after curfew. In 1402, the Confrérie de la Passion rented a hall here and staged religious 'mysteries' telling the life of Jesus — making this the first permanent, officially authorized theatrical venue in Paris and the birthplace of Parisian theatre. So popular were these performances that the hospital became the capital's centre of entertainment. In the 16th century it became an orphanage for boys and girls known as 'Les Enfants Bleus' for their blue uniforms, and the children were taught crafts from a young age, generating a flourishing arts-and-crafts tradition in the area. At n°142 stands the Fontaine Greneta, built in 1502 — one of the oldest fountain sites in Paris.",
-    "physical_cues": [
-      "Look for the Passage de la Trinité entrance at n°164"
-    ],
-    "key_claims": [
-      "Located 142-164 rue Saint-Denis",
-      "1402 Confrérie de la Passion staged mysteries",
-      "First theatre in Paris",
-      "Enfants Bleus orphanage",
-      "Fontaine Greneta 1502"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "tour_jean_sans_peur_hidden_history_hotel_bourgogne_theatre_around_and_about_paris"
-    ],
-    "source_passage": "In 1402 the Confréres de la Passion were let a hall here and began to produce religious 'mysteries'",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "girls' orphanage",
-          "corrected_text": "orphanage for boys and girls (100 boys, 36 girls)",
-          "source": "https://www.sciencedirect.com/science/article/abs/pii/S1081602X01000835, https://books.openedition.org/irhis/2028",
-          "impact": "LOW"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://www.sciencedirect.com/science/article/abs/pii/S1081602X01000835",
-        "https://books.openedition.org/irhis/2028"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 54,
-    "entities": [
-      "Confrérie de la Passion",
-      "Fontaine Greneta",
-      "Les Enfants Bleus"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "anecdote",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "bd8c90a21f5692e496e5c5a5d0775e67b98028975b40ef02d15aa522789f69f6",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "birthplace_theatre",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "passage_du_grand_cerf_hidden_history_mail_coach_around_and_about_paris",
-    "poi_name": "Passage du Grand-Cerf",
-    "lens": "hidden_history",
-    "script_body": "At 145 rue Saint-Denis stands the Passage du Grand-Cerf, where before the Revolution a famous hostelry called 'the big stag' was situated. This was the Paris terminal of the royal mail-coach service to the north and east — the Messageries Royales connecting Paris with Alsace, Champagne and Flanders. The arcade has been recently renovated and now reflects the elegance of a newly gentrified Paris, its soaring glass ceiling making it one of the tallest covered passages in the city.",
-    "physical_cues": [
-      "Look up at the tall glass-roofed arcade"
-    ],
-    "key_claims": [
-      "Located at 145 rue Saint-Denis",
-      "Hostelry before Revolution",
-      "Terminal of royal mail-coach service"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "le Passage du Grand-Cerf where a famous hostelry by the same name ('the big hart') was situated before the Revolution",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 3,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [],
-      "sources_consulted": [
-        "Multiple Paris passage guides and historical references"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 32,
-    "entities": [
-      "Champagne",
-      "Denis",
-      "Messageries Royales"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "anecdote",
-    "emotional_register": "reverent",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "ffbf1cbe55571f7d1002fc7459bac06b673c9db32e4d14f5418b4508d4ee8ee3",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "mail_coach",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "tour_jean_sans_peur_war_conflict_defence_tower_around_and_about_paris",
-    "poi_name": "Tour Jean sans Peur",
-    "lens": "war_conflict",
-    "script_body": "At 20 rue Étienne-Marcel stands Paris's only surviving medieval military tower. In 1270, Robert II d'Artois, nephew of Saint Louis, built a hôtel here, which later passed to the House of Bourgogne. After the assassination of his cousin Louis, Duc d'Orléans, by his men in 1407, Jean sans Peur, Duc de Bourgogne, began constructing a defence tower within the walls of his property between 1409 and 1411. Knowing he had many foes, he slept on the topmost floor, sandwiched between his squire below and crossbowmen on the crenellated roof. A spiral staircase leads to his room, its vault carved with intertwined branches of oak, hawthorn and hops — emblems of the Burgundian dynasty. Despite these precautions, destiny caught up with him twelve years later: he was killed on the bridge of Montereau by Tanguy du Châtel, head of the Armagnacs, the supporters of his murdered cousin.",
-    "physical_cues": [
-      "Look for the medieval tower at n°20",
-      "The carved oak, hawthorn and hops vault is visible at the top of the spiral staircase"
-    ],
-    "key_claims": [
-      "Robert II d'Artois built hôtel 1270",
-      "Louis Duc d'Orléans assassinated 1407",
-      "Tower built 1409-1411",
-      "Only surviving medieval military tower",
-      "Killed at Montereau 12 years later"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "tour_jean_sans_peur_hidden_history_hotel_bourgogne_theatre_around_and_about_paris"
-    ],
-    "source_passage": "Jean sans Peur, Duc de Bourgogne, was back in Paris after a year's absence following the assassination by his men of his cousin, Philippe Duc d'Orléans",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "Philippe Duc d'Orléans",
-          "corrected_text": "Louis Duc d'Orléans",
-          "source": "https://en.wikipedia.org/wiki/Tour_Jean-sans-Peur, https://fr.wikipedia.org/wiki/Assassinat_de_Louis_Ier_d%27Orl%C3%A9ans",
-          "impact": "HIGH"
-        },
-        {
-          "original_text": "early 1408",
-          "corrected_text": "1409-1411",
-          "source": "https://en.wikipedia.org/wiki/Tour_Jean-sans-Peur, https://worldinparis.com/tour-jean-sans-peur",
-          "impact": "MEDIUM"
-        },
-        {
-          "original_text": "11 years",
-          "corrected_text": "12 years (1407-1419)",
-          "source": "https://en.wikipedia.org/wiki/Assassination_of_John_the_Fearless",
-          "impact": "LOW"
-        },
-        {
-          "original_text": "oak tree symbolizing the House of Bourgogne",
-          "corrected_text": "oak, hawthorn and hops — three family emblems",
-          "source": "https://en.wikipedia.org/wiki/Tour_Jean-sans-Peur, https://bonjourparis.com/monuments-and-sights/tour-jean-sans-peur-the-remarkable-medieval-tower-in-paris/",
-          "impact": "MEDIUM"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Tour_Jean-sans-Peur",
-        "https://worldinparis.com/tour-jean-sans-peur",
-        "https://bonjourparis.com/monuments-and-sights/tour-jean-sans-peur-the-remarkable-medieval-tower-in-paris/"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 58,
-    "entities": [
-      "Burgundian",
-      "Duc de Bourgogne",
-      "House",
-      "Knowing",
-      "Marcel",
-      "Montereau",
-      "Robert II",
-      "Saint Louis",
-      "Tanguy du Châtel"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "anecdote",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "11d36c0d78d19a398e333ed0548fc34146b7c36819626ebbebaab9601541e114",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "defence_tower",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "tour_jean_sans_peur_hidden_history_hotel_bourgogne_theatre_around_and_about_paris",
-    "poi_name": "Tour Jean sans Peur",
-    "lens": "hidden_history",
-    "script_body": "Just across the street at n°29 stood the Théâtre de l'Hôtel de Bourgogne, the first permanent theatre of Paris. In 1548, the Confrérie de la Passion took possession of this site, vacated by François I. Through wily lobbying, the resident Comédiens du Roi enjoyed Louis XIV's patronage and produced Racine's work. In 1680, Louis XIV ordered two rival troupes to merge — creating the Comédie-Française — and the Italian troupe took over, delighting Parisians with Harlequin, Colombine and Scaramouche. When they derided Madame de Maintenon as 'La Fausse Prude' in 1697, she had the theatre shut down. The fun-loving Regent brought them back in 1716, and they entertained audiences with Marivaux's light-hearted comedies until 1783, when they moved to new premises near the Boulevard des Italiens — named after them.",
-    "physical_cues": [],
-    "key_claims": [
-      "1548 Confrérie de la Passion moved here",
-      "1680 two troupes merged into Comédie-Française",
-      "La Fausse Prude 1697",
-      "Italian troupe returned 1716",
-      "Left 1783 for Boulevard des Italiens"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [
-      "passage_de_la_trinite_hidden_history_birthplace_theatre_around_and_about_paris"
-    ],
-    "source_passage": "In 1548 the Confréres de la Passion were expelled from the Hopital de la Trinité and took possession of this site",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "three troupes to merge",
-          "corrected_text": "two troupes to merge",
-          "source": "https://en.wikipedia.org/wiki/Com%C3%A9die-Fran%C3%A7aise, https://www.comedie-francaise.fr/en/once-upon-a-time",
-          "impact": "MEDIUM"
-        },
-        {
-          "original_text": "in 1715",
-          "corrected_text": "in 1716",
-          "source": "https://en.wikipedia.org/wiki/Com%C3%A9die-Italienne",
-          "impact": "LOW"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Com%C3%A9die-Fran%C3%A7aise",
-        "https://en.wikipedia.org/wiki/Com%C3%A9die-Italienne"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 52,
-    "entities": [
-      "Boulevard des Italiens",
-      "Colombine",
-      "Comédiens du Roi",
-      "Confrérie de la Passion",
-      "Hôtel de Bourgogne",
-      "La Fausse Prude",
-      "Louis XIV",
-      "Madame de Maintenon",
-      "Racine",
-      "Regent",
-      "Through",
-      "Théâtre"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "transition",
-    "beat_type": "anecdote",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "796c252809b835d4f259b7761099589155768c7f820dedb03c5cbafee766a923",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "hotel_bourgogne_theatre",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "rue_montorgueil_historic_cuisine_oyster_market_around_and_about_paris",
-    "poi_name": "Rue Montorgueil",
-    "lens": "historic_cuisine",
-    "script_body": "Rue Montorgueil was the fish section of the great market of Les Halles and the central oyster market of Paris until 1866. Since the fresh sea catch from the north arrived here, the street was lined with fish stalls and the sales office of the oyster trade from Étretat and Dieppe operated from n°61/63. Rue Montorgueil was also a gourmet's mecca: the restaurant Le Rocher de Cancale at n°59 was, in Balzac's estimation, 'the meeting place of the best society of Paris and the establishment which best honours French cuisine.' All the heroes of La Comédie Humaine dined there, alongside Dumas père, Eugène Sue and Théophile Gautier. The building still stands with the name engraved on its shabby facade.",
-    "physical_cues": [
-      "Look for the name 'Rocher de Cancale' engraved on the facade near n°59"
-    ],
-    "key_claims": [
-      "Fish section of Les Halles",
-      "Oyster market until 1866",
-      "Le Rocher de Cancale at n°59",
-      "Balzac quote"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "this became the fish section of the market of Les Halles and also the central oyster market of Paris until 1866",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Au_Rocher_de_Cancale",
-        "https://www.sortiraparis.com/en/where-to-eat-in-paris/restaurant/articles/309169-history-restaurant-au-rocher-de-cancale-paris-2"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 48,
-    "entities": [
-      "Balzac",
-      "Dieppe",
-      "Dumas",
-      "Eugène Sue",
-      "La Comédie Humaine",
-      "Le Rocher de Cancale",
-      "Les Halles",
-      "Since",
-      "Théophile Gautier"
-    ],
-    "sensory_anchor": true,
-    "narrative_function": "establishing",
-    "beat_type": "sensory_observation",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "28595b83650d4a27ed7992a40565d2e0229ab52df3e9929e1cee14f10b67632a",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "oyster_market",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "rue_montorgueil_famous_residents_comtesse_du_barry_around_and_about_paris",
-    "poi_name": "Rue Montorgueil",
-    "lens": "famous_residents",
-    "script_body": "It was in Madame Gourdan's establishment on what is now rue Montorgueil that the notorious pimp Jean du Barry discovered the enticing Jeanne Bécu, known by her trade name Mademoiselle Lange. Having set her up as a courtesan, he introduced her to the Duc de Richelieu, who facilitated her presentation to Louis XV. A true professional, Jeanne introduced the licentious monarch to unsuspected pleasures, all the more appreciated since his predecessor, the Pompadour, had long lost her appetite. To make her socially acceptable, Jean du Barry married her off to his brother, Comte Guillaume, while the new Comtesse du Barry became the last of France's royal favourites. Outside the court, the people were infuriated by her prodigal spending. When the time came for revenge, a vindictive nation sent for her at her retreat in Louveciennes and dispatched her to the guillotine.",
-    "physical_cues": [],
-    "key_claims": [
-      "Gourdan's brothel on rue Montorgueil",
-      "Jean du Barry discovered Jeanne Bécu",
-      "Married to Comte Guillaume du Barry",
-      "Last royal favourite",
-      "Guillotined from Louveciennes"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [],
-    "source_passage": "it was in Madame Gourdan's glamorous establishment on rue de la Comtesse d'Artois (now rue Montorgueil), that the notorious pimp Jean du Barry discovered the enticing Jeanne Bécu",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [
-        {
-          "claim": "How du Barry met Bécu at Gourdan's",
-          "note": "Exact circumstances contested across sources; core narrative preserved"
-        }
-      ],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Madame_du_Barry",
-        "https://en.wikipedia.org/wiki/Marguerite_Gourdan"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 56,
-    "entities": [
-      "Comte Guillaume",
-      "Comtesse du Barry",
-      "Duc de Richelieu",
-      "Having",
-      "Jean du Barry",
-      "Jeanne Bécu",
-      "Louis XV",
-      "Louveciennes",
-      "Madame Gourdan",
-      "Mademoiselle Lange"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "character_story",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "d6ef8ddbcb169506350f1d7b003b92ecd8397439e114c6a09dd24b8d7a420c27",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "comtesse_du_barry",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "place_du_caire_dark_history_cour_des_miracles_around_and_about_paris",
-    "poi_name": "Place du Caire",
-    "lens": "dark_history",
-    "script_body": "You are standing in the one-time realm of the underworld — the notorious Cour des Miracles, immortalized in Victor Hugo's Notre-Dame de Paris. Between the 15th and 17th centuries, the destitute organized into fearsome bands with their own language and laws. By day they spilled into the streets as 'blind' or 'maimed' beggars, preying upon passers-by. By night they vanished into dead-end alleys where they laid aside their crutches and 'miraculously' recovered their eyesight and missing limbs. Hugo described it as 'a gutter of vice and beggary, of vagrancy that spills over into the streets of the capital.' In 1667, Louis XIV ordered his police lieutenant Nicolas de La Reynie to clean up this hotbed of banditry. The occupants put up heroic resistance; once defeated, many ended up in the galleys of the king's fleet. The Egyptian-themed sculptures on Place du Caire commemorate Napoleon's campaigns and the Egyptomania that ensued.",
-    "physical_cues": [
-      "Look for the Egyptian sphinx and lotus-column relief on the facade at 2 Place du Caire"
-    ],
-    "key_claims": [
-      "Victor Hugo immortalized Cour des Miracles",
-      "Hugo transposed to Middle Ages",
-      "La Reynie cleaned up 1667",
-      "Many sent to galleys"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "a gutter of vice and beggary, of vagrancy that spills over into the streets of the capital",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Cour_des_miracles",
-        "https://www.herodote.net/15_mars_1667-evenement-16670315.php"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 60,
-    "entities": [
-      "Cour des Miracles",
-      "Dame de Paris",
-      "Egyptomania",
-      "Louis XIV",
-      "Napoleon",
-      "Nicolas de La Reynie",
-      "Victor Hugo"
-    ],
-    "sensory_anchor": true,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "7d564e835e6a1be6c780fb5a01311b8cc2fcb4d7033dcec18ae204ed1a83ba32",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "cour_des_miracles",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "rue_de_clery_famous_residents_pompadour_around_and_about_paris",
-    "poi_name": "Rue de Clery",
-    "lens": "famous_residents",
-    "script_body": "Of all the inhabitants of rue de Cléry, Jeanne Poisson — born roughly on the site of the present n°29 — was destined for the most glorious future. After her father François Poisson fled France, she was raised by the Farmer General Le Normant de Tournehem. When she was 23, she won the heart of Louis XV at a masked ball and became the celebrated Marquise de Pompadour, to the indignation of the court and its scandalized ladies.",
-    "physical_cues": [],
-    "key_claims": [
-      "Jeanne Poisson born at n°29 rue de Cléry",
-      "Father was François Poisson",
-      "Raised by Le Normant de Tournehem",
-      "Age 23 when met Louis XV"
-    ],
-    "confidence": "MEDIUM",
-    "related_beats": [],
-    "source_passage": "Born to an unknown father, roughly on the site of the present n° 29, she was educated by the Farmer General Le Norman de Tournehem",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "Born to an unknown father",
-          "corrected_text": "Legal father was François Poisson (biological paternity suspected of Tournehem)",
-          "source": "https://en.wikipedia.org/wiki/Madame_de_Pompadour, https://www.britannica.com/biography/Jeanne-Antoinette-Poisson-marquise-de-Pompadour",
-          "impact": "MEDIUM"
-        },
-        {
-          "original_text": "When she was 24",
-          "corrected_text": "When she was 23",
-          "source": "https://en.wikipedia.org/wiki/Madame_de_Pompadour, https://en.chateauversailles.fr/discover/history/great-characters/madame-pompadour",
-          "impact": "LOW"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Madame_de_Pompadour",
-        "https://www.britannica.com/biography/Jeanne-Antoinette-Poisson-marquise-de-Pompadour"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 31,
-    "entities": [
-      "Farmer General Le Normant de Tournehem",
-      "Jeanne Poisson",
-      "Louis XV",
-      "Marquise de Pompadour"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "character_story",
-    "emotional_register": "neutral",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "2aec57df69359f1deabe69eff7bcc04b287c1b16432b305b021cd44f83e500e8",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "pompadour",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "rue_de_clery_literary_heritage_corneille_around_and_about_paris",
-    "poi_name": "Rue de Clery",
-    "lens": "literary_heritage",
-    "script_body": "Towards the end of his life, Pierre Corneille lived on rue de Cléry. After the death of his patron, the Duc de Guise, he had to vacate his apartment in the Marais. He solicited the King for lodging in the Louvre, taking the trouble to couch his request in rhyme, but the King turned a deaf ear — a deplorable attitude, as most of those granted accommodation there were base courtiers and parasites. Of all the plays he wrote on rue de Cléry, Psyché alone proved a success — written to the music of Lully, in collaboration with Quinault and Molière, it sealed Corneille's friendship with the latter. But Louis XIV, paired with the bigoted Madame de Maintenon, cut off altogether the pension of the playwright who had given him so much pleasure. On 1 October 1684, Pierre Corneille died a pauper on rue d'Argenteuil. Four days later, Psyché was taken up again, so great was its success.",
-    "physical_cues": [],
-    "key_claims": [
-      "Corneille lived on rue de Cléry",
-      "Patron Duc de Guise died",
-      "Psyché with Lully/Quinault/Molière",
-      "Died 1 October 1684",
-      "Psyché revived 4 days later"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Of all those he wrote on rue de Cléry, Psyché alone proved a success. Written to the music of Lully, in collaboration with Quinault and Moliére",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 5,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "Six days later",
-          "corrected_text": "Four days later (died Oct 1, revived Oct 5)",
-          "source": "https://fr.wikipedia.org/wiki/Psych%C3%A9_(trag%C3%A9die-ballet), https://en.wikipedia.org/wiki/Psych%C3%A9_(play)",
-          "impact": "LOW"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://fr.wikipedia.org/wiki/Psych%C3%A9_(trag%C3%A9die-ballet)",
-        "https://en.wikipedia.org/wiki/Psych%C3%A9_(play)"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 63,
-    "entities": [
-      "But Louis XIV",
-      "Duc de Guise",
-      "Madame de Maintenon",
-      "Pierre Corneille",
-      "Psyché",
-      "Quinault",
-      "Towards"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "climax",
-    "beat_type": "anecdote",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "27bbb032c13ab2f6786940b8ed6dfbc243ba5a5cf467a18ee58430e211e9716f",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "corneille",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "35_boulevard_des_capucines_visual_art_impressionist_around_and_about_paris",
-    "poi_name": "35 Boulevard des Capucines",
-    "lens": "visual_art",
-    "script_body": "In April 1874, the first Impressionist exhibition took place right here at 35 Boulevard des Capucines. The photographer Nadar lent his painter friends his studio for the occasion. The show was organized by the Société anonyme des artistes peintres, sculpteurs et graveurs — a joint-stock company the artists formed themselves. The press was less than sympathetic, describing the works as the product of 'hoaxers' or 'lunatics' and 'mental derangement.' It was all too much for the bourgeoisie of the nascent Third Republic — yet this exhibition would change the course of art history forever.",
-    "physical_cues": [
-      "The building at n°35 marks where Nadar's studio once stood"
-    ],
-    "key_claims": [
-      "First Impressionist exhibition 1874",
-      "At 35 Boulevard des Capucines",
-      "Nadar lent his studio",
-      "Organized by Société anonyme des artistes"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "In 1874 the first Impressionist exhibition took place at 35 Boulevard des Capucines within the framework of the Salon des Indépendants",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "within the framework of the Salon des Indépendants",
-          "corrected_text": "organized by the Société anonyme des artistes peintres, sculpteurs et graveurs (Salon des Indépendants not founded until 1884)",
-          "source": "https://en.wikipedia.org/wiki/First_Impressionist_Exhibition, https://www.musee-orsay.fr/en/whats-on/exhibitions/tonight-impressionists-paris-1874",
-          "impact": "HIGH"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/First_Impressionist_Exhibition",
-        "https://www.musee-orsay.fr/en/whats-on/exhibitions/tonight-impressionists-paris-1874"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 38,
-    "entities": [
-      "Impressionist",
-      "Nadar",
-      "Société",
-      "Third Republic"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "architectural_detail",
-    "emotional_register": "wry",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "cf1d06b2a2a424087fffbf970a72c72f9d0a73611d473f36d2b1774928d1c878",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "impressionist",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "place_de_louvois_dark_history_duc_de_berry_around_and_about_paris",
-    "poi_name": "Place de Louvois",
-    "lens": "dark_history",
-    "script_body": "Place de Louvois was the site of the Opera House of Paris during the Restoration, and the scene of one of its darkest nights. On 13 February 1820, the Duc de Berry — heir to the throne — was assassinated here during a performance of the Carnival of Venice. The King ordered the theatre razed to the ground so as to eradicate the memory of the evil deed, which provided the congested arrondissement with its only open-air garden — the pleasant square you see today.",
-    "physical_cues": [
-      "The 1844 Visconti fountain in the centre of the square marks where the opera house once stood"
-    ],
-    "key_claims": [
-      "Site of Opera House during Restoration",
-      "Duc de Berry assassinated 13 Feb 1820",
-      "During Carnival of Venice",
-      "Theatre razed by King's order"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "the scene of the assassination of the Duc de Berry, heir to the throne, on 13 February 1820, during a performance of the Carnival of Venice",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "Overview"
-    },
-    "fact_check": {
-      "status": "verified",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 4,
-      "source_passage_verified": true,
-      "corrections": [],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Charles_Ferdinand,_Duke_of_Berry"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 34,
-    "entities": [
-      "Carnival",
-      "Duc de Berry",
-      "Opera House"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "establishing",
-    "beat_type": "event",
-    "emotional_register": "dramatic",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "ebdd595a9c3d9cea94cb5797f73f58768378fec6efb90ffc71e84e8bbcb5382c",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "duc_de_berry",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
-    "beat_id": "cafe_du_croissant_social_change_jaures_assassination_around_and_about_paris",
-    "poi_name": "Cafe du Croissant",
-    "lens": "social_change",
-    "script_body": "On 31 July 1914 — the eve of the Great War — Jean Jaurès, founder of the socialist paper L'Humanité, was having an animated dinner with fellow journalists by an open window at the Café du Croissant. Raoul Villain, a 29-year-old nationalist standing outside, drew the curtain, aimed and fired twice. Jaurès was dead for having opposed the war — and became, ironically, its first French victim. His assassin was acquitted. This neighbourhood was the heart of the Paris press. Sixteen years earlier, at nearby 140 rue Montmartre, the newspaper L'Aurore had published Émile Zola's historic J'accuse on its front page — 300,000 copies hawked on the streets of Paris in defence of Alfred Dreyfus. Tried for libel, Zola fled to England. He was found suffocated in his house on 29 September 1902 — many, including his son, have always believed it was murder.",
-    "physical_cues": [
-      "Inside the café you can see a copy of L'Humanité's front page announcing Jaurès's death, and his table with a blood stain that never came off"
-    ],
-    "key_claims": [
-      "Jaurès shot 31 July 1914",
-      "Founder of L'Humanité",
-      "Raoul Villain aged 29",
-      "Villain acquitted",
-      "J'accuse 13 Jan 1898",
-      "300,000 copies",
-      "Zola died 29 Sept 1902"
-    ],
-    "confidence": "HIGH",
-    "related_beats": [],
-    "source_passage": "Jean Jaurés, the founder of the socialist paper l'Humanité, was shot dead through the window of La Chope du Croissant",
-    "source_attribution": {
-      "book_title": "Around and About Paris",
-      "author": "Thirza Vallois",
-      "chapter": "The 2nd Arrondissement",
-      "page": "East of Rue Montmartre"
-    },
-    "fact_check": {
-      "status": "corrected",
-      "checked_at": "2026-04-05T23:30:00Z",
-      "claims_checked": 7,
-      "source_passage_verified": true,
-      "corrections": [
-        {
-          "original_text": "24-year-old nationalist",
-          "corrected_text": "29-year-old (born 19 Sept 1885)",
-          "source": "https://en.wikipedia.org/wiki/Raoul_Villain, https://historica.fandom.com/wiki/Raoul_Villain",
-          "impact": "LOW"
-        },
-        {
-          "original_text": "30 September 1902",
-          "corrected_text": "29 September 1902",
-          "source": "https://en.wikipedia.org/wiki/%C3%89mile_Zola, https://www.historytoday.com/archive/months-past/strange-death-%C3%A9mile-zola",
-          "impact": "LOW"
-        },
-        {
-          "original_text": "La Chope du Croissant",
-          "corrected_text": "Café du Croissant",
-          "source": "https://en.wikipedia.org/wiki/Assassination_of_Jean_Jaur%C3%A8s, https://www.bistrotducroissant.fr/notre-histoire",
-          "impact": "LOW"
-        }
-      ],
-      "disputes": [],
-      "sources_consulted": [
-        "https://en.wikipedia.org/wiki/Assassination_of_Jean_Jaur%C3%A8s",
-        "https://en.wikipedia.org/wiki/Raoul_Villain",
-        "https://en.wikipedia.org/wiki/%C3%89mile_Zola"
-      ]
-    },
-    "_meta": {
-      "prompt_version": "pipeline_chunk_v1",
-      "generated_at": "2026-04-05T23:30:00Z",
-      "city": "Paris"
-    },
-    "est_spoken_seconds": 58,
-    "entities": [
-      "Alfred Dreyfus",
-      "Aurore",
-      "Café du Croissant",
-      "Great War",
-      "Jean Jaurès",
-      "Raoul Villain",
-      "Sixteen",
-      "Tried",
-      "Zola"
-    ],
-    "sensory_anchor": false,
-    "narrative_function": "hook",
-    "beat_type": "event",
-    "emotional_register": "somber",
-    "_enrichment": {
-      "model": "claude-opus-4-6",
-      "enriched_at": "2026-04-12T04:38:53Z",
-      "version": "v1"
-    },
-    "script_body_hash": "dc012ad0a625234d7ddce7f7ce6e30590b38ea8e0c62cc35a468447ca3f66ece",
-    "city_name": "paris",
-    "book_slug": "around_and_about_paris",
-    "topic_slug": "jaures_assassination",
-    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre"
-  },
-  {
     "beat_id": "synagogue_notre_dame_de_nazareth_hidden_history_ashkenazi_community_around_and_about_paris",
     "poi_name": "Synagogue Notre-Dame-de-Nazareth",
     "lens": "hidden_history",
@@ -35244,6 +34100,1273 @@
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T03:15:48Z",
       "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_brongniart_commerce_innovation_around_and_about_paris_napoleon_stock_exchange",
+    "city_name": "paris",
+    "poi_name": "Palais Brongniart",
+    "parent_poi": null,
+    "lens": "commerce_innovation",
+    "topic_slug": "napoleon_stock_exchange",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "For nearly two centuries the Paris stock exchange, La Bourse, has stood here as the financial centre of the capital. To honour the nascent capitalist era, Napoleon commissioned his architect Brongniart to endow the city with a new temple of finance, emulating those of ancient Greece. Napoleon never saw it finished: the monument was inaugurated in 1825, ten years after his downfall. Originally the Tribunal of Trade sat here too, but under the Second Empire it moved to Boulevard du Palais on the Île de la Cité. The stock exchange stayed, drawing French and foreign banks to the arrondissement and confirming its long-held role as the centre of financial transactions.",
+    "script_body_hash": "7f93045adb7b82e906f11970f7ba8d64ea66f02132e9b3fbcc9c7658c4e55e28",
+    "duration_sec": 44,
+    "kid_friendly": "yes",
+    "entities": [
+      "Napoleon",
+      "Brongniart",
+      "La Bourse",
+      "Tribunal of Trade"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "neutral",
+    "subject_tag": "stock-exchange origin",
+    "physical_cues": [
+      {
+        "cue": "Colonnaded façade of the Palais Brongniart, modelled on Greek temples",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "La Bourse",
+        "gloss": "the Exchange"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "For nearly two centuries, the Paris stock exchange, La Bourse, has stood imposingly in the heart of the 2nd arrondissement, marking it as the financial centre of the capital. To honour the nascent capitalist era, Napoleon commissioned his architect Brongniart to endow the city with a new temple of finance, emulating those of ancient Greece. Napoleon, however, was not to see the completed monument, which was inaugurated only in 1825, 10 years after his downfall. Originally, the Tribunal of Trade was also located here, but it was transferred to Boulevard du Palais on Ile de la Cité during the Second Empire. The stock exchange remained on the site and drew to the arrondissement a wide spectrum of financial establishments, both French and foreign, thus confirming the position the 2nd had long held as the centre of financial transactions and other communications.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_grands_boulevards_hidden_history_around_and_about_paris_louis_xiv_promenade_bollwerk",
+    "city_name": "paris",
+    "poi_name": "Grands Boulevards",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "louis_xiv_promenade_bollwerk",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "In 1676 Louis XIV, fortified by his military victories, did away with the old city walls and laid out a tree-lined promenade in their place, emulating the Cour-la-Reine that his grandmother Marie de Médicis had planted along the Seine. These became the Grands Boulevards — the word comes from the German Bollwerk, meaning the top surface of a rampart. The arc ran from the Madeleine to the Bastille, a stretch that took a hundred years to complete and marked the northern boundary of Paris. In the 19th century the boulevards were the playground of the rising bourgeoisie and the heart of the modern capital, a fact symbolized by the first omnibus line, which plied between the Madeleine and the Bastille along their length.",
+    "script_body_hash": "bd7549225a76d7e95628ca813956994befe30074309549e725c19d4d4005fbd3",
+    "duration_sec": 49,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIV",
+      "Marie de Médicis",
+      "Cour-la-Reine"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "boulevards origin",
+    "physical_cues": [
+      {
+        "cue": "Tree-lined boulevard arc from the Madeleine to the Bastille",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Bollwerk",
+        "gloss": "the top surface of a rampart"
+      },
+      {
+        "phrase": "Cour-la-Reine",
+        "gloss": "Queen's Walk — the promenade planted by Marie de Médicis along the Seine"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "In 1676 Louis XIV, fortified by his military victories, did away with the walls and laid out a tree-lined promenade instead, emulating the Cour-la-Reine (now the 8th arr.), the promenade planted by his grandmother Marie de Medici along the Seine. These Grands Boulevards (the word comes from the German Bollwerk, meaning the top surface of a rampart) ran in a circular arc from the Madeleine to the Bastille, a long stretch that took a hundred years to complete and marked the northern boundary of Paris. [...] the playground of the new privileged classes and the heart of the modern capital, as symbolized by the first omnibus line, which plied along them between the Madeleine and the Bastille.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_porte_saint_denis_social_change_around_and_about_paris_monet_1878_third_republic",
+    "city_name": "paris",
+    "poi_name": "Porte Saint-Denis",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "monet_1878_third_republic",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "On 30 June 1878 the young Third Republic chose rue Saint-Denis for a national celebration, depicted in Monet's painting Rue Saint-Denis, now in the Musée des Beaux-Arts at Rouen — the street bursting with a riot of tricolours. The Republic needed a ritual to enforce its legitimacy, but was careful to avoid celebrating Bastille Day: the civil war of the Commune was only seven years past, and revolutionary feelings were still dangerous to rouse. The holiday was instead timed to coincide with the Universal Exhibition, which was bound to draw large crowds.",
+    "script_body_hash": "f4f881176d43a5ab3a174b46d4c3a228efe0e42819715ec8beb561a5b05ab443",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Monet",
+      "Third Republic",
+      "Commune",
+      "Universal Exhibition"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "1878 republic holiday",
+    "physical_cues": [
+      {
+        "cue": "View down rue Saint-Denis from the arch — the street Monet painted",
+        "direction": "south",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Honoured by royalty, it was also selected for the celebrations on 30 June 1878 of the young Third Republic, as depicted in Monet's painting Rue Saint-Denis (now in the Musée des Beaux-Arts in Rouen), bursting with a riot of tricolours. The Republic needed a ritual to enforce its legitimacy but was careful to avoid celebrating Bastille Day so as not to arouse revolutionary feelings only seven years after the civil war of the Commune. A national holiday was proclaimed to coincide with the Universal Exhibition, which was bound to draw large crowds.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_place_de_louvois_dark_history_around_and_about_paris_duc_de_berry_assassination",
+    "city_name": "paris",
+    "poi_name": "Place de Louvois",
+    "parent_poi": null,
+    "lens": "dark_history",
+    "topic_slug": "duc_de_berry_assassination",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "This pretty square was the site of the Paris Opera House during the Restoration, and the scene of the assassination of the Duc de Berry, heir to the throne, on 13 February 1820, during a performance of the Carnival of Venice. The King ordered the theatre razed to the ground so as to eradicate the memory of the evil deed — and in doing so provided the congested arrondissement with its only open-air garden.",
+    "script_body_hash": "c33f961c41ab0df6062dd362cd9053454ac524cb08deb9ed1b79e25a16ad1986",
+    "duration_sec": 30,
+    "kid_friendly": "yes",
+    "entities": [
+      "Duc de Berry",
+      "Carnival of Venice",
+      "Paris Opera House"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "berry assassination",
+    "physical_cues": [
+      {
+        "cue": "Open-air garden on Place de Louvois, on the razed site of the old Opera House",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "This was the site of the Opera House of Paris during the Restoration and the scene of the assassination of the Duc de Berry, heir to the throne, on 13 February 1820, during a performance of the Carnival of Venice. The King ordered the theatre to be razed to the ground so as to eradicate the memory of the evil deed, which provided the congested arrondissement with its only open-air garden.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_porte_saint_denis_historic_arch_around_and_about_paris_blondel_vanity_arch",
+    "city_name": "paris",
+    "poi_name": "Porte Saint-Denis",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "blondel_vanity_arch",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Porte Saint-Denis had been the northern gateway to the capital since Charles V — a crenellated 14th-century construction complete with towers and drawbridge. In 1672 Louis XIV, confident that his spectacular victories meant Paris no longer needed defending, had the architect Blondel replace the defensive gate with the present monumental arch for the sole purpose of glorifying his person. Military function gave way to royal pageantry: the old fortification with its working drawbridge was dismantled and a trophy in stone took its place, a king's monument to a king whose armies, he believed, had made city walls obsolete.",
+    "script_body_hash": "05caf625c8295e7b87a103cb90e500b918d14ece257769b0151192b0ec92bc5f",
+    "duration_sec": 40,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis XIV",
+      "Charles V",
+      "Blondel"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "Blondel vanity arch",
+    "physical_cues": [
+      {
+        "cue": "Triumphal arch of the Porte Saint-Denis, successor to Charles V's drawbridge gate",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The Porte Saint-Denis at its northern end had been the gateway to the city since the reign of Charles V. In 1672, Louis XIV, confident that the city no longer needed to be defended after his spectacular victories, had Blondel replace the 14th-century gate, a crenellated construction complete with towers and drawbridge, with the present one for the sole purpose of glorifying his person.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_porte_saint_denis_dark_history_around_and_about_paris_filles_dieu_corde_au_cou",
+    "city_name": "paris",
+    "poi_name": "Porte Saint-Denis",
+    "parent_poi": null,
+    "lens": "dark_history",
+    "topic_slug": "filles_dieu_corde_au_cou",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Condemned prisoners on their way from the Grand-Châtelet prison to the gallows of Montfaucon would pass under this gate in a tumbril. At no. 237 rue Saint-Denis — just inside the walls — stood the wooden cross of the convent of the Filles-Dieu, and the tumbril would pause to let the prisoner kiss it. The convent's inmates, reformed prostitutes, would welcome the condemned man with a share of holy water, three morsels of bread and a glass of wine; they could even save his neck by consenting to marry him. One prisoner, offered rescue by a generous yet hideously ugly 'daughter of God', urged the hangman to proceed with his task and deliver him from a still worse fate. This may be the origin of the expression passer la corde au cou — 'to put someone's head in the noose', or to trap a man into marriage.",
+    "script_body_hash": "97d06a8407bb2fbb6a850bff8887e8f533879ed3d7e10792fd4a40adb276ad85",
+    "duration_sec": 59,
+    "kid_friendly": "yes",
+    "entities": [
+      "Filles-Dieu",
+      "Grand-Châtelet",
+      "Montfaucon"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "climax",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "filles-dieu tumbril",
+    "physical_cues": [],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "passer la corde au cou",
+        "gloss": "to put someone's head in the noose, or to trap a man into marriage"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Even those travelling to their deaths found solace here on their way to the gallows of Montfaucon (now 10th arr.). The tumbril carrying them from the prison of the Grand-Chatelet would pause to allow them to kiss the wooden cross of the convent of the Filles-Dieu (n°s 223-239). The convent's inmates, reformed prostitutes, would welcome them to a share of holy water, three morsels of bread and a glass of wine, and could even save their necks by consenting to marry them. It is said that one prisoner, who was offered rescue by a generous yet hideously ugly 'daughter of God', urged the hangman to proceed with his task and deliver him from a still worse fate. This may be the origin of the expression passer la corde au cou — 'to put someone's head in the noose', or to trap a man into marriage.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_passage_de_la_trinite_literary_heritage_around_and_about_paris_confreres_passion_theatre_birth",
+    "city_name": "paris",
+    "poi_name": "Passage de la Trinite",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "confreres_passion_theatre_birth",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The Hôpital de la Trinité once extended between the present nos 164 and 142 rue Saint-Denis, set up originally to provide for belated travellers unable to enter the city after curfew. In 1402 the Confréres de la Passion were let a hall here and began to produce religious 'mysteries' — the life and feats of Jesus, probably amplifying the Old Testament stories enacted on the street during royal processions. So popular were these that the Hôpital de la Trinité became the capital's centre of entertainment and the birthplace of its theatre. In the 16th century it became a girls' orphanage, Les Enfants Bleus — 'the blue children', named for their blue uniforms; the girls were taught a craft from a very young age, generating a flourishing arts-and-crafts tradition that lasted until the Revolution.",
+    "script_body_hash": "cf79fe0c56a8ed84294b3633f3e3488a22affaec90aacd5ffdba05cb8cbdd2c6",
+    "duration_sec": 53,
+    "kid_friendly": "yes",
+    "entities": [
+      "Confréres de la Passion",
+      "Les Enfants Bleus",
+      "Hôpital de la Trinité"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "event",
+    "emotional_register": "neutral",
+    "subject_tag": "paris theatre birth",
+    "physical_cues": [
+      {
+        "cue": "Passage de la Trinité at no. 164 rue Saint-Denis, marking the old Hôpital's north end",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Confréres de la Passion",
+        "gloss": "Brothers of the Passion"
+      },
+      {
+        "phrase": "Les Enfants Bleus",
+        "gloss": "the blue children"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "The Hôpital de la Trinité extended between the present n°s 164 and 142, to which bears witness today the Passage de la Trinité at n° 164. It was set up originally to provide for belated travellers, unable to enter the city after curfew. In 1402 the Confréres de la Passion were let a hall here and began to produce religious 'mysteries', telling the life and feats of Jesus, probably to amplify the stories from the Old Testament that were enacted on the street during royal processions. So popular were these that the Hôpital de la Trinité became the capital's centre of entertainment and the birthplace of its theatre. In the 16th century it became a girls' orphanage known as Les Enfants Bleus because of the blue uniforms of its inmates. The girls were taught a craft from a very young age, an initiative which generated a flourishing arts and crafts tradition in the area up to the Revolution.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_passage_du_grand_cerf_hidden_history_around_and_about_paris_royal_mail_coach_terminal",
+    "city_name": "paris",
+    "poi_name": "Passage du Grand-Cerf",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "royal_mail_coach_terminal",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "Behind this arcade once stood a famous pre-Revolution hostelry, le Grand-Cerf — 'the big hart' — which also served as the Paris terminal of the royal mail-coach service to the north and east. Today, recently renovated, the arcade reflects the elegance of a gentrified Paris.",
+    "script_body_hash": "2912175d0c1e3b5021996548f87d4e281e56f7420ec3a71d5ce28f537cba5cfb",
+    "duration_sec": 18,
+    "kid_friendly": "yes",
+    "entities": [
+      "le Grand-Cerf",
+      "royal mail-coach service"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "wry",
+    "subject_tag": "mail-coach terminal",
+    "physical_cues": [
+      {
+        "cue": "Glass-and-iron arcade of the Passage du Grand-Cerf at no. 145 rue Saint-Denis",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "le Grand-Cerf",
+        "gloss": "the big hart"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Ahead of you to the right (n° 145) is yet another arcade, le Passage du Grand-Cerf where a famous hostelry by the same name ('the big hart') was situated before the Revolution. This was also the Paris terminal of the royal mail-coach service to the north and east. The arcade has been recently renovated and now reflects the elegance of a newly gentrified Paris.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_tour_jean_sans_peur_war_conflict_around_and_about_paris_defence_tower_bourgogne",
+    "city_name": "paris",
+    "poi_name": "Tour Jean sans Peur",
+    "parent_poi": null,
+    "lens": "war_conflict",
+    "topic_slug": "defence_tower_bourgogne",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "anchor",
+    "script_body": "In early 1408 Jean sans Peur, Duc de Bourgogne, was back in Paris after a year's absence following the assassination by his men of his cousin Philippe, Duc d'Orléans. Knowing he had many foes, he built himself a defence tower within the walls of his Hôtel and slept on the fourth and topmost floor, sandwiched between his squire, who slept on the third, and a squad of crossbowmen on the look-out on the crenellated roof. The tower still stands at no. 20 rue Étienne-Marcel — the only vestige of the Hôtel de Bourgogne, and Paris's only military medieval tower to have survived in its entirety, except for the 18th-century roof. The Spanish Ambassador persuaded Henri III to spare it while the rest of the property had been parcelled up by François I, hence the neighbouring rue Française, originally named Françoise. Jean sans Peur's room is reached by a spiral staircase, whose first section is in a square turret adjoining the tower and protected by an iron gate. At its top the proliferating branches of an oak tree are carved into the stone, symbolizing the power of the House of Bourgogne. A second iron gate once protected the last and narrower section of the staircase in a corbelled turret. In spite of these precautions, destiny caught up with Jean sans Peur, even though it took his assassin eleven years to get him. He was killed on the bridge of Montereau, south-east of Paris, at the confluence of the Seine and the Yonne. The murderer — in a perfectly balanced Shakespearean conclusion — was Tanguy du Châtel, head of the Armagnacs, the supporters of his own murdered cousin Philippe d'Orléans.",
+    "script_body_hash": "9f6bef357d1ab223fb50de18c27993d07f7374fdc29929f8cd05e9db366d158e",
+    "duration_sec": 111,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean sans Peur",
+      "Philippe d'Orléans",
+      "Henri III",
+      "François I",
+      "Tanguy du Châtel",
+      "Armagnacs",
+      "House of Bourgogne"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "dramatic",
+    "subject_tag": "defence tower",
+    "physical_cues": [
+      {
+        "cue": "Medieval tower at no. 20 rue Étienne-Marcel, Paris's only military tower still standing intact",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      },
+      {
+        "cue": "Oak-tree branches carved into the stone at the top of the spiral staircase, symbol of the House of Bourgogne",
+        "direction": "up",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "In early 1408 Jean sans Peur, Duc de Bourgogne, was back in Paris after a year's absence following the assassination by his men of his cousin, Philippe Duc d'Orléans. Knowing he had many foes, he built himself a defence tower within the walls of his property and slept on the fourth and topmost floor, sandwiched between his squire, who slept on the third, and a squad of crossbowmen on the look-out on the crenellated roof. The tower still stands at n° 20, but cannot normally be visited, the only vestige of the Hôtel de Bourgogne and Paris's only military medieval tower to have survived in its entirety (except for the roof, which dates from the 18th century). The Spanish Ambassador persuaded Henri III to spare the tower, while the rest of the property had been parcelled up by François I (hence the neighbouring rue Française, originally named Françoise). Jean sans Peur's room can be reached by a spiral staircase, of which the first section is in a square turret adjoining the tower and is protected by an iron gate. At its top the proliferating branches of an oak tree are carved into the stone, symbolizing the power of the House of Bourgogne. A second iron gate once protected the last and narrower section of the staircase in a corbelled turret. In spite of these precautions, destiny caught up with Jean sans Peur, even though it took his assassin eleven years to get him. He was killed on the bridge of Montereau, south-east of Paris, at the confluence of the Seine and the Yonne. The murderer — in a perfectly balanced Shakespearean conclusion — was Tanguy du Chatel, head of the Armagnacs, the supporters of his murdered cousin Philippe d'Orléans.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_tour_jean_sans_peur_hidden_history_around_and_about_paris_hotel_bourgogne_theatre",
+    "city_name": "paris",
+    "poi_name": "Tour Jean sans Peur",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "hotel_bourgogne_theatre",
+    "sub_location": null,
+    "trigger_address": "no. 29 rue Étienne-Marcel",
+    "beat_length_class": "mid",
+    "script_body": "Further down and across the street, at no. 29 rue Étienne-Marcel, stood the Théâtre de l'Hôtel de Bourgogne, the first theatre of Paris. In 1548 the Confréres de la Passion, expelled from the Hôpital de la Trinité, took possession of the site. Hard times forced them to let the premises to three rival troupes who made history: Louis XIV's favoured Comédiens du Roi, who staged Racine; the Théâtre du Marais, which staged Corneille; and Molière's Théâtre Illustre. In 1680 the king ordered the three to merge and settle on the Left Bank. Only the Italian troupe was tolerated here — Harlequin, Colombine and Scaramouche — until in 1697 they derided Madame de Maintenon as La Fausse Prude and she had the theatre closed down. The Regent Philippe d'Orléans re-invited them in 1715, and in 1762 they obtained from the Opéra the privilege of creating a new genre in the same vein as the Opera Buffa, the Opéra-Comique. They stayed until 1783, when they moved to new premises on the Boulevard des Italiens, named after them; the Hôtel de Bourgogne was replaced by a leather market.",
+    "script_body_hash": "c7fdbdedf74583104da03e86908faac68e0e73ca80e08886d7f1521ec4b944f7",
+    "duration_sec": 74,
+    "kid_friendly": "yes",
+    "entities": [
+      "Confréres de la Passion",
+      "Comédiens du Roi",
+      "Racine",
+      "Corneille",
+      "Molière",
+      "Théâtre du Marais",
+      "Théâtre Illustre",
+      "Louis XIV",
+      "Madame de Maintenon",
+      "Philippe d'Orléans",
+      "Marivaux",
+      "Opéra-Comique"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "playful",
+    "subject_tag": "bourgogne theatre",
+    "physical_cues": [
+      {
+        "cue": "Stretch of rue Étienne-Marcel opposite the tower, at no. 29, where the Hôtel de Bourgogne theatre stood",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "La Fausse Prude",
+        "gloss": "the False Prude — the Italian troupe's thinly-disguised caricature of Madame de Maintenon"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "Further down and across the street, at n° 29, was the Théatre de l'Hôtel de Bourgogne, the first theatre of Paris. The site is in the present 1st arrondissement, but for the convenience of sightseers and for historical coherence it is mentioned here. In 1548 the Confréres de la Passion were expelled from the Hopital de la Trinité and took possession of this site, vacated by François I. Hard times forced them to let the premises to different troupes, two of which went on to make history. The first one was the Comédiens du Roi who, through wily lobbying, enjoyed the patronage of Louis XIV, to the detriment of the rivalling Théatre du Marais, which staged Corneille's plays, and Molière's Théatre Illustre. The Hôtel de Bourgogne produced Racine's work. In 1680 Louis XIV, increasingly bent on imposing his authority, ordered the three troupes to merge into one and to settle on the Left Bank. The only other troupe he tolerated was the Italian one, which was allowed to take over the Hôtel de Bourgogne, delighting Parisians with the adventures of Harlequin, Colombine and Scaramouche. But when in 1697 the troupe derided Madame de Maintenon, thinly disguised as La Fausse Prude, she had the theatre closed down. When the fun-loving Regent, Philippe Duc d'Orléans succeeded Louis XIV in 1715, [...] The Italian troupe was invited again to the Hôtel de Bourgogne, where they entertained the audience with Marivaux's light-hearted comedies [...]. With the growing popularity of the Italian opera, in 1762 the troupe obtained from the Opéra the privilege of creating a new genre in the same vein as the Italian Opera Buffa, the Opéra-Comique [...]. The Italian troupe stayed here till 1783, when they moved to new premises just off the up-and-coming Boulevard des Italiens, named after them. The Hôtel de Bourgogne was replaced by a new leather market, more in keeping with the economic activities of the area.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_rue_montorgueil_historic_cuisine_around_and_about_paris_oyster_market_rocher_cancal",
+    "city_name": "paris",
+    "poi_name": "Rue Montorgueil",
+    "parent_poi": null,
+    "lens": "historic_cuisine",
+    "topic_slug": "oyster_market_rocher_cancal",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Rue Montorgueil is a picturesque pedestrian artery lined with colourful food stalls. Since the fresh sea catch from the north used to arrive here, this became the fish section of the market of Les Halles, and the central oyster market of Paris until 1866. The sales office of the Société des Huîtres d'Étretat et de Dieppe was located at no. 61/63 from 1780 until the middle of the 19th century, called Au Rocher d'Étretat after the famous coastal landmark in Normandy. In the same century the street was a gourmet's mecca: Philippe at no. 54 and Le Rocher de Cancale at no. 59 until 1845, then across the street at no. 78. Balzac considered Le Rocher de Cancale 'the meeting place of the best society of Paris and the establishment which best honours French cuisine.' All the heroes of La Comédie Humaine dined there, and so did Balzac's contemporaries — Dumas Père, Eugène Sue and Théophile Gautier. The building at no. 78 still stands with the name of the restaurant engraved on its shabby façade.",
+    "script_body_hash": "9ad605b9b164c04fb7e773bbe7f2e06e893f0d91a93aaed01d05a6fbb804ceae",
+    "duration_sec": 70,
+    "kid_friendly": "yes",
+    "entities": [
+      "Les Halles",
+      "Société des Huîtres d'Étretat et de Dieppe",
+      "Au Rocher d'Étretat",
+      "Philippe",
+      "Le Rocher de Cancale",
+      "Balzac",
+      "Dumas Père",
+      "Eugène Sue",
+      "Théophile Gautier",
+      "La Comédie Humaine"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "oyster market",
+    "physical_cues": [
+      {
+        "cue": "Pedestrian rue Montorgueil with its colourful food stalls",
+        "direction": "here",
+        "feature_type": "view"
+      },
+      {
+        "cue": "Shabby façade of no. 78 with the name of Le Rocher de Cancale still engraved",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Turn right into rue Montorgueil, a picturesque pedestrian artery lined with colourful food stalls (closed between 1 and 4 pm and on Monday all day). Since the fresh sea catch from the north used to arrive here, this became the fish section of the market of Les Halles and also the central oyster market of Paris until 1866. The sales office of the Société des huitres [oysters] d'Étretat et de Dieppe was located at n° 61/63 from 1780 until the middle of the 19th century and was called Au Rocher d'Étretat, after the famous coastal landmark in Normandy. The town of Fécamp had its sales office further south on rue Tiquetonne. Rue de Montorgueil was also a gourmet's mecca in the last century, famous for such restaurants as Philippe at n° 54 and Le Rocher de Cancal at n° 59 until 1845, then across the street, at n° 78. Balzac considered Le Rocher de Cancal 'the meeting place of the best society of Paris and the establishment which best honours French cuisine.' All the heroes of La Comédie Humaine dined there, but also Balzac's contemporaries - Dumas Père, Eugène Sue and Théophile Gautier among others. The building still stands with the name of the restaurant engraved on the shabby facade.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_rue_montorgueil_famous_residents_around_and_about_paris_du_barry_discovery",
+    "city_name": "paris",
+    "poi_name": "Rue Montorgueil",
+    "parent_poi": null,
+    "lens": "famous_residents",
+    "topic_slug": "du_barry_discovery",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "It was in Madame Gourdan's glamorous establishment on this street — then called rue de la Comtesse d'Artois — that the notorious pimp Jean du Barry discovered the enticing Jeanne Bécu, Mademoiselle Lange by her trade name. Having set her up as procuress in the bordello Dupressoir on rue de Damiette, he threw her into the arms of the Duc de Richelieu, the Cardinal's great-nephew, who, hoping to promote his own interests, threw her into those of the King. To make her socially acceptable, Jean du Barry married her off to his brother, Comte Guillaume du Barry, who was compensated substantially for the deal and left for Toulouse, while the new Comtesse du Barry became the last of France's royal favourites. The people of France were infuriated by her prodigal spending on finery and on her sumptuous new mansion at Louveciennes. When the time came for revenge, a vindictive nation sent for her at Louveciennes and dispatched her to the guillotine.",
+    "script_body_hash": "eaeed93400d65964e6c25c51e385b2c59caadd7cefda9b9779f5508836f50277",
+    "duration_sec": 64,
+    "kid_friendly": "yes",
+    "entities": [
+      "Madame Gourdan",
+      "Jean du Barry",
+      "Jeanne Bécu",
+      "Comtesse du Barry",
+      "Duc de Richelieu",
+      "Louis XV",
+      "Guillaume du Barry",
+      "Louveciennes"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "dramatic",
+    "subject_tag": "du-barry discovery",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "It was in Madame Gourdan's glamorous establishment on rue de la Comtesse d'Artois (now rue Montorgueil), that the notorious pimp Jean du Barry discovered the enticing Jeanne Bécu, Mademoiselle Lange by her trade name. Having set her up as procuress in the bordello Dupressoir on rue de Damiette, he threw her into the arms of the Duc de Richelieu, the Cardinal's great-nephew, who, hoping to promote his own interests, threw her into those of the King. [...] In order to make her socially acceptable, Jean du Barry married her off to his brother, Comte Guillaume du Barry, who was compensated substantially for the deal and left for Toulouse, while the new Comtesse du Barry became the last of France's royal favourites to the outrage of the scandalized court. [...] Outside the court, the people of France were infuriated by the Comtesse's prodigal spending, squandering the country's revenue on finery and on her sumptuous new mansion at Louveciennes. When the time came for revenge, a vindictive nation sent for her in her retreat at Louveciennes and dispatched her to the guillotine.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_place_du_caire_dark_history_around_and_about_paris_cour_des_miracles",
+    "city_name": "paris",
+    "poi_name": "Place du Caire",
+    "parent_poi": null,
+    "lens": "dark_history",
+    "topic_slug": "cour_des_miracles",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "The narrow streets radiating from this place — rue du Nil, rue des Forges, rue de Damiette — cover the ground of the most notorious Cour des Miracles in Paris. By day the destitute bands who lived here spilled into the streets, metamorphosed into 'blind' or 'maimed' beggars, and preyed on passers-by. By night they vanished into the dead-end alleys, where they laid aside their crutches and 'miraculously' recovered their eyesight and missing limbs — hence the name. Victor Hugo's Notre-Dame de Paris brought worldwide notoriety to this one, calling it 'a gutter of vice and beggary, of vagrancy that spills over into the streets of the capital.' Hugo tampered with history, transposing this 17th-century den of thieves to the late Middle Ages to suit Romantic fancy. In 1667 Louis XIV ordered his police lieutenant Nicolas de La Reynie to clean up the hotbed of banditry. Its occupants put up heroic resistance; once defeated, many ended up in the galleys of the king's growing fleet — one way of tackling the problem of homelessness, which afflicted 40,000 souls, or one tenth of the population of Paris.",
+    "script_body_hash": "b50ef39937f74f492ffa9db89e14a7f409d166da398848ad7bed04405bfb04b9",
+    "duration_sec": 74,
+    "kid_friendly": "yes",
+    "entities": [
+      "Victor Hugo",
+      "Notre-Dame de Paris",
+      "Louis XIV",
+      "Nicolas de La Reynie"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "cour-des-miracles",
+    "physical_cues": [
+      {
+        "cue": "Narrow streets rue du Nil, rue des Forges and rue de Damiette radiating from the place",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Cour des Miracles",
+        "gloss": "Court of Miracles"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "these alleys came to be known as 'Cours des Miracles', the most notorious one being situated on rue Neuve-Saint-Sauveur (roughly on the site of the rue du Nil, rue des Forges and rue de Damiette), and ran conveniently along the city walls, the gaps of which provided exits in case of emergency. Victor Hugo's novel Notre-Dame de Paris brought worldwide notoriety to the Cour des Miracles of rue Neuve-Saint-Sauveur, 'a gutter of vice and beggary, of vagrancy that spills over into the streets of the capital [...].' Hugo, however, took the liberty of tampering with history by transposing this den of thieves from the 17th century to the late Middle Ages, to suit contemporary Romantic fancy. The rabble of the 'Cour des Miracles' made the streets of Paris so unsafe that in 1667 Louis XIV ordered his police lieutenant Nicolas de La Reynie to clean up this hotbed of banditry. This was no easy task, for its occupants put up a heroic resistance. Once defeated, many ended up in the galleys of the king's growing fleet; this was one way of tackling the problem of homelessness, which afflicted one tenth of the population of Paris or 40,000 souls. [...] By day they spilled out into the streets of Paris, metamorphosed into 'blind' or 'maimed' beggars, and preyed upon passers-by. By night they vanished into the neighbourhood's dead-end alleys, where they laid aside their crutches and 'miraculously' recovered their eyesight and missing limbs.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_place_du_caire_dark_history_around_and_about_paris_prostitute_street_names",
+    "city_name": "paris",
+    "poi_name": "Place du Caire",
+    "parent_poi": null,
+    "lens": "dark_history",
+    "topic_slug": "prostitute_street_names",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "The proximity of the old city walls and of the central market of Les Halles had brought an influx of prostitutes to the neighbourhood, who left the mark of their trade in the old street names: rue Tire-Boudin — 'sausage-jack', now rue Marie-Stuart — and rue Gratte-Cul — 'bum-scraper', now rue Gaston Dussoubs.",
+    "script_body_hash": "672b66b03a5e85697bda6811e3b5794c2451102369536eb28d5a6018b6118e77",
+    "duration_sec": 21,
+    "kid_friendly": "no",
+    "entities": [
+      "Les Halles"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "wry",
+    "subject_tag": "prostitute streets",
+    "physical_cues": [
+      {
+        "cue": "Street signs for rue Marie-Stuart (formerly Tire-Boudin) and rue Gaston Dussoubs (formerly Gratte-Cul)",
+        "direction": "here",
+        "feature_type": "adjacent_landmark"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "rue Tire-Boudin",
+        "gloss": "sausage-jack"
+      },
+      {
+        "phrase": "rue Gratte-Cul",
+        "gloss": "bum-scraper"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "As Victor Hugo observed, the proximity of the city walls had brought an influx of prostitutes to the neighbourhood. They took up residence in the south-eastern section of the arrondissement, close to the abundant reservoir of clientele provided by the central market of Les Halles, and left the mark of their trade by way of street names: rue Tire-Boudin ('sausage-jack'; now Marie-Stuart), rue Gratte-Cul ('bum-scraper'; now Gaston Dussoubs)...",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_clery_literary_heritage_around_and_about_paris_corneille_decline_psyche",
+    "city_name": "paris",
+    "poi_name": "Rue de Clery",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "corneille_decline_psyche",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "Towards the end of his life Pierre Corneille lived on rue de Cléry. After the death of his patron the Duc de Guise, he had to vacate the apartment in the Marais palace and petitioned the King for rooms in the artists' quarters in the Louvre. He couched the request in rhyme with all the customary florid flattery, but Louis XIV turned a deaf ear. Corneille's star was in decline and his plays had become outmoded: of all those he wrote here, Psyché alone proved a success — written to the music of Lully in collaboration with Quinault and Molière, it sealed Corneille's friendship with the latter. Louis XIV had meanwhile paired with the bigoted Madame de Maintenon, was losing interest in the theatre, and needed funds for the Spanish wars. He cut off altogether the pension of the playwright who had given him so much pleasure in his younger days. On 1 October 1684 Corneille died a pauper on rue d'Argenteuil, to which he had moved from rue de Cléry two years before. Six days later Psyché was revived at the Opéra, so great was its success.",
+    "script_body_hash": "78249f96f1b5bca100a8da58bed1a23c44ab923e064569db3a550b297b04c1c4",
+    "duration_sec": 75,
+    "kid_friendly": "yes",
+    "entities": [
+      "Pierre Corneille",
+      "Duc de Guise",
+      "Louis XIV",
+      "Lully",
+      "Quinault",
+      "Molière",
+      "Madame de Maintenon",
+      "Psyché"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "somber",
+    "subject_tag": "corneille decline",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Towards the end of his life, Pierre Corneille lived in the rue de Cléry. After the death of his patron, the Duc de Guise, Corneille had to vacate the apartment given him in his patron's palace in the Marais and consequently solicited his sovereign to allow him to move to the artists' quarters in the Louvre. Although he took the trouble to couch his request in rhyme and pepper it with all the customary florid flattery, the King turned a deaf ear, a deplorable attitude as most of those granted accommodation in the Louvre were base courtiers and parasites. Corneille's star was in the decline and his plays had become outmoded: of all those he wrote on rue de Cléry, Psyché alone proved a success. Written to the music of Lully, in collaboration with Quinault and Molière, it sealed Corneille's friendship with the latter and offered him some comfort. Meanwhile, however, Louis XIV had paired with the bigoted Madame de Maintenon and was losing interest in the theatre. Moreover, the resumption of the Spanish wars meant that he was in need of substantial funds. He cut off altogether the pension of the playwright who had given him so much pleasure in his younger days. On 1 October 1684 Pierre Corneille died a pauper on rue d'Argenteuil (now between Avenue de l'Opéra and rue Saint-Honoré), to which he had moved from rue de Cléry two years before. Six days later, Psyché was taken up again at the Opéra, so great was its success.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_clery_famous_residents_around_and_about_paris_pompadour_birth_no_29",
+    "city_name": "paris",
+    "poi_name": "Rue de Clery",
+    "parent_poi": null,
+    "lens": "famous_residents",
+    "topic_slug": "pompadour_birth_no_29",
+    "sub_location": null,
+    "trigger_address": "no. 29 rue de Cléry",
+    "beat_length_class": "seasoning",
+    "script_body": "Jeanne Poisson, unquestionably the street's most famously destined resident, was born to an unknown father roughly on the site of the present no. 29 rue de Cléry. Educated by the Farmer General Le Normant de Tournehem — the King's tax collector — she won the heart of Louis XV at the age of twenty-four and became the Marquise de Pompadour, to the indignation of the court and its scandalized ladies.",
+    "script_body_hash": "95a9d0a32001676717a5ee6bdbc7ac84875456bf5f000562a05efbfbb87aee84",
+    "duration_sec": 28,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jeanne Poisson",
+      "Marquise de Pompadour",
+      "Louis XV",
+      "Le Normant de Tournehem"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "playful",
+    "subject_tag": "pompadour birth",
+    "physical_cues": [
+      {
+        "cue": "Façade of no. 29 rue de Cléry, the present site of Pompadour's birth",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "Of all the street's inhabitants Jeanne Poisson was unquestionably the one destined to the most glorious future. Born to an unknown father, roughly on the site of the present n° 29, she was educated by the Farmer General (the King's tax collector) Le Norman de Tournehem. When she was 24 she won the heart of Louis XV and became the celebrated Marquise de Pompadour, to the indignation of the court and of its scandalized ladies.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_clery_literary_heritage_around_and_about_paris_chenier_guillotined_no_97",
+    "city_name": "paris",
+    "poi_name": "Rue de Clery",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "chenier_guillotined_no_97",
+    "sub_location": null,
+    "trigger_address": "no. 97 rue de Cléry",
+    "beat_length_class": "seasoning",
+    "script_body": "At no. 97 lived André Chénier, the greatest French poet of his time — although few read his poems. He has gone down in history as one of the most tragic figures of the Revolution: a friend of it at the start, he later condemned its excesses, notably the death sentence of Louis XVI, and siding with Charlotte Corday after her murder of Marat got him into further trouble. He was guillotined only two days before the downfall of Robespierre.",
+    "script_body_hash": "11934a57f4fed27f2338426cdc103e17865b810c20ffc1bd14ecc94fd7c6277d",
+    "duration_sec": 32,
+    "kid_friendly": "yes",
+    "entities": [
+      "André Chénier",
+      "Louis XVI",
+      "Charlotte Corday",
+      "Marat",
+      "Robespierre"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "somber",
+    "subject_tag": "chenier guillotined",
+    "physical_cues": [
+      {
+        "cue": "Façade of no. 97 rue de Cléry, André Chénier's address",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "André Chénier, the greatest French poet of his time, lived at n° 97. Although few read his poems, he has gone down in history as one of the most tragic figures of the Revolution, having been guillotined only two days before the downfall of Robespierre. A friend of the Revolution at the start, he later condemned its excesses, notably the death sentence of Louis XVI. Siding with Charlotte Corday after her murder of Marat also got him into trouble.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_rue_de_clery_dark_history_around_and_about_paris_batz_plot_to_save_louis",
+    "city_name": "paris",
+    "poi_name": "Rue de Clery",
+    "parent_poi": null,
+    "lens": "dark_history",
+    "topic_slug": "batz_plot_to_save_louis",
+    "sub_location": null,
+    "trigger_address": "corner of rue de Cléry and boulevard Bonne-Nouvelle",
+    "beat_length_class": "mid",
+    "script_body": "The corner of rue de Cléry and Boulevard Bonne-Nouvelle is the spot where, on 21 January 1793, the Baron de Batz and some of his supporters waited for the royal tumbril carrying Louis XVI from the Temple — where he had been sequestered — to the guillotine on Place de la Révolution by way of the Grands Boulevards. Batz had hoped to kidnap the King and save his head, but the plot failed, and two of his accomplices were massacred on the spot. Batz managed to escape and later devised a scheme to save Marie-Antoinette, then detained at the Conciergerie.",
+    "script_body_hash": "c1bf31c54798e417f22830de95f5075455273ca50e619047e7750b6ccc378735",
+    "duration_sec": 40,
+    "kid_friendly": "yes",
+    "entities": [
+      "Baron de Batz",
+      "Louis XVI",
+      "Marie-Antoinette",
+      "Temple",
+      "Place de la Révolution",
+      "Conciergerie"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "batz plot",
+    "physical_cues": [
+      {
+        "cue": "Street corner at rue de Cléry and boulevard Bonne-Nouvelle, where Batz's ambush waited",
+        "direction": "here",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "The corner of Boulevard Bonne-Nouvelle is the spot where, on 21 January 1793, the Baron de Batz and some of his supporters waited for the royal tumbril on its way from the Temple, where Louis XVI had been sequestrated, to the guillotine on Place de la Révolution (Concorde), by way of the Grands Boulevards. Batz had hoped to kidnap the King and save his head, but his plot failed and two of his accomplices were massacred on the spot. Batz managed to escape and devised a scheme to save Marie-Antoinette, then detained at the Conciergerie.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_35_boulevard_des_capucines_visual_art_around_and_about_paris_impressionist_debut_nadar",
+    "city_name": "paris",
+    "poi_name": "35 Boulevard des Capucines",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "impressionist_debut_nadar",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "seasoning",
+    "script_body": "In 1874 the first Impressionist exhibition opened at no. 35 Boulevard des Capucines, within the framework of the Salon des Indépendants. The photographer Nadar had lent his painter friends his studio for the occasion. The press was less sympathetic: the works were described as 'black dribbles', 'slip-bang, swish-swash', done by 'hoaxers' or 'lunatics', the result of 'mental derangement'. It was all too much for the bourgeoisie of the nascent Third Republic.",
+    "script_body_hash": "76b414e05f65b9a1b81aee4d7c25b56ebe203cc0ecde728d09d53a1ab933bdaa",
+    "duration_sec": 28,
+    "kid_friendly": "yes",
+    "entities": [
+      "Nadar",
+      "Salon des Indépendants",
+      "Third Republic"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "wry",
+    "subject_tag": "impressionist debut",
+    "physical_cues": [
+      {
+        "cue": "Façade of no. 35 Boulevard des Capucines, Nadar's old photography studio",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "In 1874 the first Impressionist exhibition took place at 35 Boulevard des Capucines within the framework of the Salon des Indépendants. The photographer Nadar lent his painter friends his studio for the occasion. The press, however, was less sympathetic and described their works as 'black dribbles', 'slip-bang, swish-swash', done by 'hoaxers' or 'lunatics', the result of 'mental derangement'. It was all too much for the bourgeoisie of the nascent Third Republic.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_cafe_du_croissant_social_change_around_and_about_paris_jaures_assassination",
+    "city_name": "paris",
+    "poi_name": "Cafe du Croissant",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "jaures_assassination",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "On 31 July 1914, at around 9.30 pm, Jean Jaurès was having an animated dinner with fellow journalists from his paper L'Humanité, seated by an open window at La Chope du Croissant on the corner of rue du Croissant and rue Montmartre. Raoul Villain, a twenty-four-year-old nationalist, stood outside, drew the curtain, aimed at Jaurès and fired twice: Jaurès was dead for having opposed the war. The founder of the socialist paper — who had tried desperately to prevent the outbreak of the Great War — ironically became its first French victim. Villain benefited from the 'confusion of the time', in other words the prevailing nationalist hysteria, and was acquitted. Inside the café is displayed a copy of the next morning's front page of L'Humanité announcing the death of Jaurès, along with cuttings from other papers. Jaurès's table is there too, with a blood stain that never came off. Periodically, faithful disciples of Jean Jaurès gather here for dinner and even strike up the Internationale before breaking up.",
+    "script_body_hash": "9ec78b27def47d4bdd4f3a06182b77244abce4e87ad32d76466e47234c561081",
+    "duration_sec": 67,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean Jaurès",
+      "Raoul Villain",
+      "L'Humanité",
+      "Internationale",
+      "Great War"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "jaures assassination",
+    "physical_cues": [
+      {
+        "cue": "Jaurès's table inside the café, still bearing the blood stain that never came off",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "Copy of L'Humanité's next-morning front page, on display with cuttings from other papers",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "On 31 July 1914, at around 9.30 pm, Jean Jaurès was having an animated dinner with fellow journalists from his paper L'Humanité, seated by an open window at the the café La Chope du Croissant on the corner of rue du Croissant on your right. Raoul Villain, standing outside, drew the curtain, aimed at Jaurès and fired twice: Jaurès was dead for having opposed the war. Inside the café is displayed a copy of the next morning's front page of L'Humanité announcing the death of Jaurès, along with cuttings from other papers. Jean Jaures's table is there too, with a blood stain that never came off. Periodically, faithful disciples of Jean Jaurès gather here for dinner and even strike up the Internationale before breaking up. [...] Jean Jaurès, the founder of the socialist paper l'Humanité, was shot dead through the window of La Chope du Croissant, a hang-out of papermen on the corner of rue du Croissant and rue Montmartre, by Raoul Villain, a 24-year-old nationalist. Jaurès who had tried desperately to prevent the outbreak of the war, ironically, became its first French victim. His assassin benefited from the 'confusion of the time', in other words, from the prevailing nationalist hysteria, and was acquitted.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_140_rue_montmartre_literary_heritage_around_and_about_paris_moliere_burial_saint_joseph",
+    "city_name": "paris",
+    "poi_name": "140 rue Montmartre",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "moliere_burial_saint_joseph",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "At no. 140/144 rue Montmartre, between rue Saint-Joseph and rue du Croissant, once stood the cemetery of Saint-Joseph, where Molière was buried on 21 February 1672. It took four days of tough negotiations and the King's intervention to persuade the recalcitrant clergy of Saint-Eustache in Les Halles, who regarded the theatrical profession as an insult to the Church, to agree to the burial at all. For a long time it was also thought erroneously that the fable writer La Fontaine had been buried here; there was confusion, too, as to the exact site of Molière's grave. When the Revolutionary authorities ordered the remains of the two illustrious writers to be exhumed and honoured elsewhere, other bones were dug up in their stead and eventually found their way to the cemetery of Père Lachaise, where they still receive undue homage. The cemetery was replaced by a market in 1806, and the market in turn by a building where, until 1914, several major newspapers were published. The façade still carries the engraved names of Le Journal du Soir and La France, supported by four female sculptures.",
+    "script_body_hash": "6e1103355e2d2927e3c76444227ce152091312be8d8acf3aed55bfe01c93b67b",
+    "duration_sec": 74,
+    "kid_friendly": "yes",
+    "entities": [
+      "Molière",
+      "Saint-Eustache",
+      "La Fontaine",
+      "Père Lachaise",
+      "Le Journal du Soir",
+      "La France"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "moliere burial",
+    "physical_cues": [
+      {
+        "cue": "Façade at no. 140-144 rue Montmartre with the engraved names Le Journal du Soir and La France, supported by four female sculptures",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "source_passage": "At n° 140/144 on the right, between rue Saint-Joseph and rue du Croissant, was the cemetery of Saint-Joseph, where Molière was buried on 21 February 1672. It took four days of tough negotiations and the intervention of the King to persuade the recalcitrant clergy of Saint-Eustache, in Les Halles, who regarded the theatrical profession as an insult to the church, to agree to the burial. For a long time it was erroneously thought that the fable writer La Fontaine was also buried here. There was also confusion as to the exact site of Molière's grave. Consequently, when the Revolutionary authorities ordered the remains of the two illustrious writers to be exhumed and honoured elsewhere, other remains were dug up in their stead and eventually found their way to the cemetery of Père Lachaise (now in the 20th arr.), where they still receive undue homage. The cemetery was replaced by a market in 1806, and that in turn in 1882 by a building where, until 1914, several major newspapers were published - La Patrie, Le Radical, La Presse and L'Aurore. You can still see the building with the names of Le Journal du Soir and La France engraved on its facade, supported by four female sculptures.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": true,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
+    }
+  },
+  {
+    "beat_id": "paris_140_rue_montmartre_literary_heritage_around_and_about_paris_zola_jaccuse_laurore",
+    "city_name": "paris",
+    "poi_name": "140 rue Montmartre",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "zola_jaccuse_laurore",
+    "sub_location": null,
+    "trigger_address": null,
+    "beat_length_class": "mid",
+    "script_body": "On 13 January 1898 L'Aurore — printed in this building — ran on its front page the dramatic headline J'accuse!, followed by Émile Zola's open letter to the President of the Republic, Félix Faure, defending Alfred Dreyfus and directly accusing members of the General Staff. Three hundred thousand copies were hawked that day on the streets of Paris. Tried for libel and sentenced to one year's imprisonment and a heavy fine, Zola fled to England, like other French intellectuals who voiced unacceptable opinions. His manifesto polarized opinion on the Dreyfus case: there were mass riots and street duels fought with swords and pistols. Ten years later the fury had not abated. On the occasion of his pantheonization in June 1908 — the greatest posthumous honour bestowed on the Republic's heroes — his enemies marched through the streets shouting 'Spit on Zola! Death to Zola!', while Dreyfus himself was shot in the arm in an attempt on his life. On 30 September 1902 Zola's body had been found suffocated in his house, officially an accidental death, although many, including Zola's son, have always believed it was murder.",
+    "script_body_hash": "c6b88b13bed330bb198a2622fb6b4bdf9bf92a0a617522ca772746e759a7559f",
+    "duration_sec": 74,
+    "kid_friendly": "yes",
+    "entities": [
+      "Émile Zola",
+      "L'Aurore",
+      "Félix Faure",
+      "Alfred Dreyfus",
+      "General Staff"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "zola jaccuse",
+    "physical_cues": [
+      {
+        "cue": "The same building at no. 140-144 rue Montmartre where L'Aurore was printed — four female sculptures still support its façade",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "L'Aurore",
+        "gloss": "The Dawn"
+      },
+      {
+        "phrase": "J'accuse!",
+        "gloss": "I accuse!"
+      }
+    ],
+    "pronunciation": null,
+    "source_passage": "On 13 January 1898 L'Aurore ran on its front page the dramatic headline J'accuse!, followed by Emile Zola's historic open letter to the President of the Republic, Félix Faure, in defence of Alfred Dreyfus, of truth and justice and a direct accusation against members of the General Staff. 300,000 copies were hawked that day on the streets of Paris and France at large. Tried for libel and sentenced to one year's imprisonment and a heavy fine, Zola fled to England, like other members of France's intelligentsia, before and after, who voiced unacceptable opinions (Voltaire, Victor Hugo, Charles de Gaulle...) But Zola's manifesto polarized French opinion on the Dreyfus case. There were mass riots and street duels fought with swords and pistols. Ten years later the fury against Zola had not abated and his enemies had not disarmed. On the occasion of his pantheonization in June 1908 - the greatest posthumous honour bestowed on the Republic's heroes - they marched through the streets shouting 'Spit on Zola ! Death to Zola !', while Dreyfus himself was shot in the arm in an attempt on his life. On 30 September 1902 Zola's body was found suffocated in his house, officially an accidental death, although many, including Zola's son, have always believed it was murder.",
+    "source_attribution": {
+      "book_title": "Around and About Paris",
+      "author": "Thirza Vallois",
+      "chapter": "2nd Arr: East of Rue Montmartre"
+    },
+    "book_slug": "around_and_about_paris",
+    "source_chunk_slug": "chunk-05-2nd-arr-east-of-montmartre",
+    "new_poi": true,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-04-24T03:58:57Z",
+      "city_name": "paris"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "notes": ""
     }
   }
 ]
