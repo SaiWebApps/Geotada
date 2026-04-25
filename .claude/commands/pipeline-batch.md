@@ -25,7 +25,20 @@ in the main conversation. This pipeline splits work into:
 
 ## BEFORE STARTING
 
-Read these files once in the main conversation:
+**Check for an existing pipeline state file:** `data/{city_slug}/.pipeline-state.json`
+
+If this file exists, read it. It means a previous run was interrupted. Resume from the recorded stage:
+- If `stage` is `"agents_launched"` or `"agents_running"` — agents were lost. Re-launch only the chunks listed in `chunks_pending`.
+- If `stage` is `"collecting"` — skip agent launch, proceed to Phase B with the completed chunks.
+- If `stage` is `"dedup_done"` — skip to Step B3 (export writing).
+- If `stage` is `"exports_written"` — skip to Step B4 (tracking files).
+- If `stage` is `"tracking_updated"` — skip to Step B5 (gravity scoring).
+- If `stage` is `"gravity_done"` — skip to Phase C (report).
+- If `stage` is `"complete"` — tell the user this batch is already done. Ask if they want to re-run.
+
+If the file does NOT exist, start fresh.
+
+**Then read** these files once in the main conversation:
 - `data/{city_slug}/book-log.json` — check which chunks are already processed; skip them
 - `src/schema/definitions.py` — get valid lens slugs and schema definitions
 
@@ -49,6 +62,40 @@ hidden_history, war_conflict, dark_history, ...
 Build this with a small Python script that reads poi-raw.json, beats.json, and definitions.py and writes the txt file. This file is the single source of truth for the agent run; delete it after the batch completes.
 
 Resolve chunk identifiers to full file paths using glob. Skip any chunks already in book-log.json (warn the user).
+
+**Write the initial pipeline state file** — `data/{city_slug}/.pipeline-state.json`:
+```json
+{
+  "stage": "init",
+  "city": "{city_slug}",
+  "book": "{book_slug}",
+  "chunks_total": ["chunk-04", "chunk-05", "chunk-06"],
+  "chunks_completed": [],
+  "chunks_failed": [],
+  "chunks_pending": ["chunk-04", "chunk-05", "chunk-06"],
+  "new_pois_created": 0,
+  "gravity_scored": false,
+  "export_validated": false,
+  "started_at": "ISO-8601 timestamp"
+}
+```
+
+---
+
+## PIPELINE STATE UPDATES
+
+Update `data/{city_slug}/.pipeline-state.json` at every phase transition listed below. This enables resume after crash or context compaction. Only update the fields that changed — don't rewrite the whole file from memory.
+
+| When | Set `stage` to | Also update |
+|------|----------------|-------------|
+| After launching agents | `"agents_running"` | — |
+| As each agent completes | (keep `"agents_running"`) | Move chunk from `chunks_pending` → `chunks_completed` (or `chunks_failed`) |
+| All agents done | `"collecting"` | — |
+| After cross-chunk dedup | `"dedup_done"` | — |
+| After writing export files | `"exports_written"` | `export_validated: true` |
+| After updating tracking files | `"tracking_updated"` | `new_pois_created: N` |
+| After gravity scoring + tests pass | `"gravity_done"` | `gravity_scored: true` |
+| After report delivered | `"complete"` | — |
 
 ---
 
@@ -77,15 +124,27 @@ structured JSON in your final response.
 ## TASK — Run these steps in order:
 
 ### Step 1 — BEAT EXTRACTION
-Read the chunk file. Extract beats following these rules:
+
+**Follow the full extraction contract in `.claude/commands/unified-beat-extract.md`** — read that file once before extracting. It is the authoritative spec; this prompt is a thin agent harness around it.
+
+That contract includes (non-exhaustive):
+- All four phases of the unified_v2 pipeline
+- Every B-rule (B2 multi-granularity, B3 preserve-don't-paraphrase, B4 address-recognition for seasoning, B5 length discipline with asymmetric re-class, B6 sidebar detection, B7 verbatim source_passage, B9 location-anchored poi_name)
+- The 5 v2 fields on every beat: `sub_location`, `trigger_address`, `beat_length_class` (one of `anchor`/`mid`/`seasoning`/`micro`), `inline_foreign_phrases` (list of `{phrase, gloss}`), `pronunciation`
+- The 3 new beat_type values: `stop_orientation`, `transit`, `sidebar` (in addition to the 7 narrative types)
+- **Fix 1**: a single source sentence grounds at most one beat; `source_passage` carries the minimum span; no two beats share the first real sentence of their source_passage
+- **Fix 2**: every beat with non-null `trigger_address` must have non-empty `physical_cues` — at minimum a façade/door/plaque cue at that address
+- Tier-3+ POIs: `physical_cues` populated whenever the source passage cites a visible feature
+- `subject_tag` ≤ 3 space-separated words (use kebab-hyphenation for proper-noun French compounds like `poule-au-pot`, `pavillon-de-la-reine`)
+- `_meta.prompt_version` = `"unified_v2"` on every beat
+
+Other extraction principles still apply:
 - Zero hallucination — every fact traceable to source text
 - One story = one beat
-- Exhaustive lens scan per POI (check all 21 child lenses)
-- Source passage required on every beat
-- Physical cues extracted separately
+- Exhaustive lens scan per POI (all 21 child lenses)
+- `source_passage` required on every beat (full verbatim sentence(s), not a snippet)
 
-After extraction, re-read the chunk and verify each source_passage can be found
-in the text (approximate match, allow for OCR artifacts). Flag any that can't.
+After extraction, re-read the chunk and verify each `source_passage` can be found in the text (approximate match, allow for OCR artifacts). Flag any that can't.
 
 ### Step 2 — POI MATCHING
 Match extracted beats to the existing POI names provided above (case-insensitive,
@@ -130,17 +189,35 @@ or <30 words, source passages not found, new POIs within 100m of existing POIs.
   ],
   "beats": [
     {
-      "beat_id": "poi_slug_lens_slug_topic_slug_book_slug",
+      "beat_id": "city_poi_slug_lens_slug_book_slug_topic_slug",
+      "city_name": "paris",
       "poi_name": "POI Name",
       "lens": "hidden_history",
+      "topic_slug": "...",
+      "book_slug": "...",
+      "source_chunk_slug": "chunk-XX-...",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor|mid|seasoning|micro",
       "script_body": "...",
-      "physical_cues": ["..."],
-      "key_claims": ["..."],
-      "confidence": "HIGH",
-      "source_passage": "...",
-      "source_passage_verified": true,
       "duration_sec": 45,
       "kid_friendly": "yes",
+      "entities": ["..."],
+      "sensory_anchor": true,
+      "narrative_function": "establishing|hook|deepen|climax|scene_setter|transition|callback",
+      "beat_type": "anecdote|character_story|event|architectural_detail|sensory_observation|factoid|establishing|stop_orientation|transit|sidebar",
+      "emotional_register": "reverent|somber|playful|dramatic|wry|neutral",
+      "subject_tag": "1-3 words or kebab-hyphenated French",
+      "physical_cues": [
+        {"cue": "...", "direction": "up|down|north|south|east|west|here", "feature_type": "architectural_detail|plaque|view|interior|adjacent_landmark"}
+      ],
+      "inline_foreign_phrases": [{"phrase": "...", "gloss": "..."}],
+      "pronunciation": null,
+      "key_claims": ["..."],
+      "source_passage": "verbatim sentence(s) from source",
+      "source_passage_verified": true,
+      "source_attribution": {"book_title": "...", "author": "...", "chapter": "..."},
+      "confidence": "HIGH",
       "fact_check_status": "verified|corrected|disputed",
       "corrections": [
         {
@@ -150,7 +227,8 @@ or <30 words, source passages not found, new POIs within 100m of existing POIs.
           "impact": "LOW|MEDIUM|HIGH"
         }
       ],
-      "disputes": []
+      "disputes": [],
+      "_meta": {"prompt_version": "unified_v2", "generated_at": "ISO 8601", "city_name": "paris"}
     }
   ],
   "review_queue": [
@@ -314,18 +392,16 @@ READY FOR UPLOAD: YES/NO
 Once the user resolves all REVIEW QUEUE items:
 1. Apply their decisions (corrections, merges, removals)
 2. Regenerate affected export files
-3. Confirm: "X export files ready. Run `/upload Paris` to push to Neo4j."
+3. Update pipeline state to `"complete"`
+4. Confirm: "X export files ready. Run `/upload Paris` to push to Neo4j."
+
+**Cleanup:** Delete `data/{city_slug}/.pipeline-context.txt` after the batch completes. Keep `.pipeline-state.json` with `stage: "complete"` — it serves as a record and prevents accidental re-runs.
 
 ---
 
-## GUARDRAILS — INHERITED FROM pipeline-chunk
+## GUARDRAILS
 
-All guardrails from `/pipeline-chunk` apply to each parallel agent:
-1. Two-source minimum for auto-corrections
-2. Source passage verification
-3. Proximity check for new POIs (100m)
-4. Never auto-resolve: living people, superlative disputes, story deletions
-5. Every auto-correction logged with sources
+Apply the 5 pipeline guardrails from CLAUDE.md (they are baked into the agent prompt template above).
 
 **Additional batch guardrails:**
 6. Cross-chunk dedup check before export
@@ -333,3 +409,19 @@ All guardrails from `/pipeline-chunk` apply to each parallel agent:
 8. If total anomalies exceed 20% of beats, pause and alert user before exporting
 9. If an agent fails entirely, report it — don't silently drop a chunk
 10. Process chunk file writes in order to maintain data consistency
+
+---
+
+## SELF-VERIFICATION
+
+Before delivering the Phase C report:
+
+1. **All chunks accounted for** — chunks_completed + chunks_failed = chunks_total (none silently dropped)
+2. **Cross-chunk dedup ran** — no duplicate POIs or >50% overlapping beats across chunks
+3. **Every export file is valid JSON** — parseable, matches schema of existing exports
+4. **poi-raw.json has no importance_tier on new POIs** — tiers come from `/poi-gravity`, not agents
+5. **Gravity scoring completed (if new POIs)** — `test_gravity_distribution.py` and `test_export_consistency.py` both pass
+6. **book-log.json updated** — every processed chunk has an entry
+7. **Pipeline state set to "complete"** or appropriate stage — `.pipeline-state.json` reflects reality
+8. **Report totals are consistent** — sum of per-chunk beats/POIs matches the TOTAL row
+9. **Failed chunks listed prominently** — not buried in the report
