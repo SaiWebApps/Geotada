@@ -2,6 +2,9 @@
   "spec_name": "vallois-reextract",
   "campaign_type": "re-extraction under upgraded prompt",
   "created_at": "2026-04-23",
+  "campaign_status": "deferred",
+  "deferred_at": "2026-04-24",
+  "deferred_reason": "Pivoted to 6-book /pipeline-batch (Pariswalks remaining + Rough Guide + Frommer's + Rick Steves + Hazan + AAP-13-20). Vallois re-extraction can resume by changing chunks 06+ from 'deferred' to 'pending' and invoking /vallois-reextract.",
   "book_title": "Around and About Paris",
   "author": "Thirza Vallois",
   "book_slug": "around_and_about_paris",
@@ -56,55 +59,64 @@
       "slug": "chunk-06-2nd-arr-west-of-montmartre",
       "file": "chunk-06-2nd-arr-west-of-montmartre.txt",
       "title": "2nd Arr: West of Rue Montmartre",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-07-3rd-arr-marais-du-temple",
       "file": "chunk-07-3rd-arr-marais-du-temple.txt",
       "title": "3rd Arr: The Marais du Temple",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-08-3rd-arr-saint-martin-des-champs",
       "file": "chunk-08-3rd-arr-saint-martin-des-champs.txt",
       "title": "3rd Arr: Saint-Martin-des-Champs",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-09-4th-arr-arsenal",
       "file": "chunk-09-4th-arr-arsenal.txt",
       "title": "4th Arr: The Arsenal",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-10-4th-arr-bastille-to-marais",
       "file": "chunk-10-4th-arr-bastille-to-marais.txt",
       "title": "4th Arr: Bastille to Heart of the Marais",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-11-4th-arr-pompidou-to-sens",
       "file": "chunk-11-4th-arr-pompidou-to-sens.txt",
       "title": "4th Arr: Centre Pompidou to Hôtels de Sens & d'Aumont",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-12-4th-arr-the-islands",
       "file": "chunk-12-4th-arr-the-islands.txt",
       "title": "4th Arr: The Islands (Île de la Cité & Île Saint-Louis)",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-13-5th-arr-saint-michel-to-sorbonne",
       "file": "chunk-13-5th-arr-saint-michel-to-sorbonne.txt",
       "title": "5th Arr: Place Saint-Michel to the Sorbonne",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-14-5th-arr-pantheon-eastwards",
       "file": "chunk-14-5th-arr-pantheon-eastwards.txt",
       "title": "5th Arr: From the Panthéon Eastwards",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-15-5th-arr-val-de-grace",
@@ -117,43 +129,50 @@
       "slug": "chunk-16-6th-arr-saint-michel-to-institut",
       "file": "chunk-16-6th-arr-saint-michel-to-institut.txt",
       "title": "6th Arr: Place Saint-Michel to Institut de France",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-17-6th-arr-saint-germain-des-pres",
       "file": "chunk-17-6th-arr-saint-germain-des-pres.txt",
       "title": "6th Arr: Saint-Germain-des-Prés",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "file": "chunk-18-6th-arr-saint-sulpice-and-luxembourg.txt",
       "title": "6th Arr: Saint-Sulpice & Luxembourg",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-19-6th-arr-around-montparnasse",
       "file": "chunk-19-6th-arr-around-montparnasse.txt",
       "title": "6th Arr: Around Montparnasse",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-20-7th-arr-faubourg-east",
       "file": "chunk-20-7th-arr-faubourg-east.txt",
       "title": "7th Arr: Faubourg Saint-Germain (East)",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-21-7th-arr-faubourg-west",
       "file": "chunk-21-7th-arr-faubourg-west.txt",
       "title": "7th Arr: Faubourg Saint-Germain (West)",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     },
     {
       "slug": "chunk-22-7th-arr-invalides-to-eiffel",
       "file": "chunk-22-7th-arr-invalides-to-eiffel.txt",
       "title": "7th Arr: Les Invalides to Eiffel Tower",
-      "status": "pending"
+      "status": "deferred",
+      "notes": "Deferred 2026-04-24 per Option 3 pivot to 6-book batch."
     }
   ],
   "carry_forward_notes": [
