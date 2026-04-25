@@ -103,7 +103,7 @@ Update `data/{city_slug}/.pipeline-state.json` at every phase transition listed 
 
 Launch one Agent per chunk. **ALL agents in a single message.** Use:
 - `subagent_type: "general-purpose"`
-- `model: "sonnet"` — **REQUIRED.** Beat extraction + fact-checking is structured work; Sonnet 4.6 handles it at ~5× lower cost than Opus with no quality loss. Do NOT omit this.
+- `model: "opus"` — **REQUIRED for unified_v2 extraction.** The v2 contract (5 new fields, 3 new beat_types, B5 length-class with asymmetric re-class, B9 location-anchored poi_name, Fix 1 source-passage scoping, Fix 2 trigger_address→cues, tier-3+ cue rule, subject_tag ≤3 words) is materially more complex than the v1 contract Sonnet was originally specified for. **Sonnet smoke-tested at 56% tier-3+ cue coverage** (target ≥95%), 76% Pydantic schema acceptance (24% subject_tag failures), 48% length-class self-consistency, and zero trigger_address beats — an unacceptable regression. Opus matches the quality of hand-extracted Vallois chunks (chunks 01–05). Revisit Sonnet only if a future Sonnet release handles the v2 contract cleanly on a fresh smoke test of Rough Guide chunk-01 (target: ≥95% Pydantic acceptance, ≥95% tier-3+ cue coverage, ≥90% length-class consistency).
 - `run_in_background: true`
 
 ### Agent prompt template
