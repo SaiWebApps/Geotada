@@ -1,0 +1,488 @@
+{
+  "stage": "phase_3_wave_3_complete",
+  "phase_3_wave_3": {
+    "model": "sonnet",
+    "wave_size_attempted": 7,
+    "first_attempt_outcome": "6/6 stalled — diagnosed as transient API issue (W12 single-chunk diagnostic re-run succeeded in 4m 7s confirming transience)",
+    "retry_outcome": "7/7 succeeded on retry",
+    "chunks_committed": [
+      "frommers-24-great-walks/chunk-09-romantic-island",
+      "frommers-24-great-walks/chunk-11-bohemian-montmartre",
+      "frommers-24-great-walks/chunk-12-how-the-other-half-live",
+      "frommers-24-great-walks/chunk-13-phantom-of-the-opera",
+      "frommers-24-great-walks/chunk-15-bridges-of-paris",
+      "frommers-24-great-walks/chunk-17-iron-lady-of-paris",
+      "rick-steves-paris/chunk-04-sights-left-bank"
+    ],
+    "chunks_failed": [],
+    "beats_committed": 136,
+    "new_pois_flagged_total": 30,
+    "phase_b_fixup_summary": {
+      "subject_tag_fixed": 32,
+      "beat_length_class_reclassed": 36,
+      "script_body_hash_filled": 136,
+      "validation_failed": 0,
+      "empty_cue_review_flagged": 10,
+      "anchor_overlength_flagged": 0
+    },
+    "review_items_total": 43,
+    "corpus_size": "957 -> 1093 beats",
+    "tier5_coverage_delta": {
+      "sacre_coeur_basilica": "9 beats added (W11) — gypsum origins, Abadie/Romanesque facade, Prussian-defeat penance + WWII bomb threat, interior mosaic, largest-bell-in-France, parvis view, pylon engineering, funiculaire approach",
+      "ile_saint_louis_cluster": "15 beats added (W9) — Hotel Lambert (Voltaire/Chopin/Czartoryski), Hotel de Lauzun fish-drainpipes, Saint-Louis-en-l'Ile pierced spire, Hotel Chenizot/Mgr Affre 1848 shooting, Marie Curie corner address, Bakers' Corporation HQ no. 7 quai d'Anjou",
+      "eiffel_tower": "16 beats added (W17 Iron Lady of Paris)",
+      "opera_garnier": "18 beats added (W13 Phantom of the Opera)",
+      "musee_dorsay_pont_alexandre_iii_assemblee_nationale": "13 beats added (W15 Bridges) — Rodin Gates of Hell origin, Pont Alexandre III prefab steel/Franco-Russian alliance, Bastille-stone Pont de la Concorde, Tuileries tile-factory etymology",
+      "left_bank_sights_cluster": "26 beats added (RS ch-04) — Luxembourg/Pantheon/Cluny museum range",
+      "passy_chaillot_cluster": "23 beats added (W12 How the Other Half Live)"
+    }
+  },
+  "phase_3_wave_2": {
+    "model": "sonnet",
+    "wave_size_attempted": 7,
+    "chunks_committed": [
+      "frommers-24-great-walks/chunk-08-home-of-the-famous-dead",
+      "rick-steves-paris/chunk-11-rue-cler-walk",
+      "rick-steves-paris/chunk-17-left-bank-walk",
+      "rick-steves-paris/chunk-19-champs-elysees-walk",
+      "rick-steves-paris/chunk-20-marais-walk"
+    ],
+    "chunks_failed": [
+      {
+        "chunk": "rick-steves-paris/chunk-22-pere-lachaise-cemetery-tour",
+        "reason": "content_filter_block_at_final_output",
+        "model": "sonnet",
+        "duration_ms": 465523,
+        "notes": "Sonnet filter trip on celebrity-death anecdotes (Wilde lipstick, Morrison drug death). Same pattern as Pariswalks 02/03. ~$1 burned. Frommer's W8 already covers Père-Lachaise (24 beats committed)."
+      },
+      {
+        "chunk": "rick-steves-paris/chunk-23-montmartre-walk",
+        "reason": "watchdog_stall_600s",
+        "model": "sonnet",
+        "notes": "646-line chunk above the ~500-line Sonnet threshold. Sacré-Cœur and Montmartre tier-5 coverage NOT obtained from this wave."
+      }
+    ],
+    "beats_committed": 146,
+    "new_pois_flagged_total": 32,
+    "phase_b_fixup_summary": {
+      "subject_tag_fixed": 26,
+      "beat_length_class_reclassed": 45,
+      "script_body_hash_filled": 146,
+      "validation_failed": 0,
+      "empty_cue_review_flagged": 11,
+      "anchor_overlength_flagged": 0
+    },
+    "review_items_total": 39,
+    "corpus_size": "811 -> 957 beats"
+  },
+  "phase_3_wave_1": {
+    "model": "sonnet",
+    "wave_size_attempted": 6,
+    "chunks_committed": [
+      "frommers-24-great-walks/chunk-02-pyramids-and-palaces",
+      "frommers-24-great-walks/chunk-04-alchemists-and-artists",
+      "frommers-24-great-walks/chunk-06-saints-and-sinners",
+      "frommers-24-great-walks/chunk-07-backstreets-of-bastille"
+    ],
+    "chunks_failed": [
+      {
+        "chunk": "frommers-24-great-walks/chunk-03-french-paradox",
+        "reason": "watchdog_stall_600s",
+        "model": "sonnet",
+        "notes": "Agent attempted a ~31-beat extraction in one go; watchdog killed before final JSON. Visible reasoning showed agent had nearly composed the full output."
+      },
+      {
+        "chunk": "frommers-24-great-walks/chunk-08-home-of-the-famous-dead",
+        "reason": "user_quota_limit_hit",
+        "model": "sonnet",
+        "notes": "User account hit Sonnet rate limit (resets 1:10pm America/Chicago). Agent ran 6m 53s before being cut off."
+      }
+    ],
+    "beats_committed": 90,
+    "new_pois_flagged": 21,
+    "phase_b_fixup_applied": true,
+    "fixup_summary": {
+      "subject_tag_fixed": 35,
+      "beat_length_class_reclassed": 42,
+      "script_body_hash_filled": 90,
+      "validation_failed": 0,
+      "empty_cue_review_flagged": 5,
+      "anchor_overlength_flagged": 0
+    },
+    "review_items_total": 25,
+    "corpus_size": "721 -> 811 beats"
+  },
+  "retry_outcome": {
+    "rough-guide-paris/chunk-06-marais": {
+      "status": "stalled_again",
+      "model": "opus",
+      "cleaned_input_size_lines": 635,
+      "agent_last_message": "I have what I need. Let me check what existing Place des Vosges, Hotel de Sully, Musee Carnavalet, etc. beats already exist so I can avoid topic_slug collisions.",
+      "diagnosis": "Cleaning fixed input-read but extraction-phase silence still exhausts 10-min watchdog."
+    },
+    "rough-guide-paris/chunk-08-quartier-latin": {
+      "status": "stalled_again",
+      "model": "opus",
+      "cleaned_input_size_lines": 558,
+      "agent_last_message": "Now I have full context for the chunk and the lens slugs. Let me also check the lens slugs from the context file.",
+      "diagnosis": "Same as ch-06. Both inputs are larger than RG ch-01 (364 lines) which was the only RG that succeeded. Empirical chunk-size threshold ~450-500 lines for v2 Opus extraction within 10-min watchdog."
+    }
+  },
+  "phase_2_5_conclusion": {
+    "pre_clean_outcome": "successful — 116 chunks cleaned, 0 prose loss, durable noise reduction on RG corpus",
+    "retry_outcome": "both failed — different failure mode than diagnosed; not input format but extraction-phase silence",
+    "next_lever_options": [
+      "(i) split RG chunks >450 cleaned lines into halves, retry the halves separately",
+      "(ii) switch to Sonnet for RG (faster turnaround per task; quality cost per smoke test)",
+      "(iii) accept partial RG coverage; rely on Frommer's/Vallois/Pariswalks for missing areas"
+    ]
+  },
+  "blocked_chunks_deferred": [
+    {
+      "chunk": "pariswalks/chunk-02-la-huchette",
+      "reason": "content_filter_block_at_final_output",
+      "model_attempted": "opus",
+      "deferral_note": "DO NOT retry in this campaign. Recovery deferred to a separate post-launch effort (likely API-direct extraction or hand-extraction)."
+    },
+    {
+      "chunk": "pariswalks/chunk-03-saint-germain-des-pres",
+      "reason": "content_filter_block_at_final_output",
+      "model_attempted": "opus",
+      "deferral_note": "DO NOT retry in this campaign."
+    },
+    {
+      "chunk": "pariswalks/chunk-05-rue-des-francs-bourgeois",
+      "reason": "presumed_content_filter_risk_pending_test",
+      "model_attempted": null,
+      "deferral_note": "Not yet attempted. Pariswalks content (bawdy historical anecdotes) likely to trigger the same filter as 02/03. DEFERRED in this campaign."
+    },
+    {
+      "chunk": "pariswalks/chunk-06-bastille-to-saint-gervais",
+      "reason": "presumed_content_filter_risk_pending_test",
+      "model_attempted": null,
+      "deferral_note": "DEFERRED in this campaign."
+    },
+    {
+      "chunk": "pariswalks/chunk-07-les-grandes-trois",
+      "reason": "presumed_content_filter_risk_pending_test",
+      "model_attempted": null,
+      "deferral_note": "DEFERRED in this campaign."
+    }
+  ],
+  "pre_clean_2026_04_25": {
+    "script": "scripts/strip_pdf_artifacts.py",
+    "books_processed": 6,
+    "chunks_processed": 116,
+    "suspicious_files": 0,
+    "summary": "Rough Guide is the only book with material map artifacts. Other 5 books are essentially clean source. Per-chunk reduction: Frommer's 0%, Rick Steves 0%, Hazan 0%, AAP-13-20 ~0%, Pariswalks ~0%, Rough Guide chunks 02-18 average ~15% non-ws reduction (max 25.4% on chunk-13). chunk-19 (history chapter) had 0%.",
+    "validation": "21/21 verifiable source_passages from successful chunk-01 extraction preserved in cleaned chunk-01. Zero prose lines (length>=40 + density>0.4) lost across all 4 test chunks."
+  },
+  "campaign_chunks_completed": [],
+  "new_pois_flagged_pending_generate": [
+    {
+      "name": "Place du Marche Ste Catherine",
+      "from": "frommers-24-great-walks/chunk-05-knights-and-mansions",
+      "needs": "/poi-generate"
+    },
+    {
+      "name": "Mont de Piete",
+      "from": "frommers-24-great-walks/chunk-05-knights-and-mansions",
+      "needs": "/poi-generate",
+      "warning": "may duplicate Credit Municipal de Paris under different name; verify before generating"
+    }
+  ],
+  "previous_waves": [
+    {
+      "name": "phase_1_probe_pariswalks",
+      "model": "opus",
+      "chunks_attempted": [
+        "pariswalks/chunk-01",
+        "pariswalks/chunk-02",
+        "pariswalks/chunk-03"
+      ],
+      "chunks_committed": [],
+      "chunks_failed": [
+        {
+          "chunk": "pariswalks/chunk-02",
+          "reason": "content_filter_block",
+          "duration_ms": 364895
+        },
+        {
+          "chunk": "pariswalks/chunk-03",
+          "reason": "content_filter_block",
+          "duration_ms": 564339
+        },
+        {
+          "chunk": "pariswalks/chunk-01",
+          "reason": "watchdog_stall_600s",
+          "duration_ms": 600000
+        }
+      ]
+    },
+    {
+      "name": "phase_1_pivot_rough_guide",
+      "model": "opus",
+      "chunks_attempted": [
+        "rough-guide-paris/chunk-01-islands"
+      ],
+      "chunks_committed": [
+        "rough-guide-paris/chunk-01-islands"
+      ],
+      "duration_ms": 383721,
+      "agent_total_tokens": 82010,
+      "beats_committed": 30,
+      "validation": "8/8 checklist passes; mid-heavy length distribution acceptable for Rough Guide reference register"
+    }
+  ],
+  "current_wave": {
+    "name": "phase_2_anchor_wave",
+    "model": "opus",
+    "chunks_pending": [
+      "rough-guide-paris/chunk-06-marais",
+      "frommers-24-great-walks/chunk-01-birthplace-of-the-city",
+      "frommers-24-great-walks/chunk-05-knights-and-mansions",
+      "rough-guide-paris/chunk-08-quartier-latin"
+    ],
+    "chunks_completed": [],
+    "chunks_failed": [
+      {
+        "chunk": "rough-guide-paris/chunk-06-marais",
+        "reason": "watchdog_stall_600s",
+        "model": "opus",
+        "notes": "ASCII map noise from pdftotext + long extraction = silent stall. Frommer's Walk 5 (also Marais) succeeded as partial coverage."
+      },
+      {
+        "chunk": "rough-guide-paris/chunk-08-quartier-latin",
+        "reason": "watchdog_stall_600s",
+        "model": "opus",
+        "notes": "Same ASCII map + silent extraction stall pattern. No partial coverage committed for Quartier Latin yet."
+      }
+    ],
+    "launched_at": "2026-04-25T03:30:00Z",
+    "rationale": "4 anchor chunks (down from default 6); covers Marais/Place des Vosges (chunk-06 + Frommer's 5), Île de la Cité parallel to committed chunk-01 (Frommer's 1), Quartier Latin/Sorbonne/Panthéon (chunk-08). Dropped Rick Steves chunk-07 (overlaps committed chunk-01) per recommendation."
+  },
+  "city": "paris",
+  "campaign": "6-book-v2-reextract",
+  "campaign_total_chunks": 112,
+  "campaign_chunks_pending": {
+    "pariswalks": [
+      "chunk-01",
+      "chunk-02",
+      "chunk-03",
+      "chunk-05",
+      "chunk-06",
+      "chunk-07"
+    ],
+    "rough-guide-paris": [
+      "chunk-01",
+      "chunk-02",
+      "chunk-03",
+      "chunk-04",
+      "chunk-05",
+      "chunk-06",
+      "chunk-07",
+      "chunk-08",
+      "chunk-09",
+      "chunk-10",
+      "chunk-11",
+      "chunk-12",
+      "chunk-13",
+      "chunk-14",
+      "chunk-15",
+      "chunk-16",
+      "chunk-17",
+      "chunk-18",
+      "chunk-19"
+    ],
+    "frommers-24-great-walks": [
+      "chunk-01",
+      "chunk-02",
+      "chunk-03",
+      "chunk-04",
+      "chunk-05",
+      "chunk-06",
+      "chunk-07",
+      "chunk-08",
+      "chunk-09",
+      "chunk-10",
+      "chunk-11",
+      "chunk-12",
+      "chunk-13",
+      "chunk-14",
+      "chunk-15",
+      "chunk-16",
+      "chunk-17",
+      "chunk-18",
+      "chunk-19",
+      "chunk-20",
+      "chunk-21",
+      "chunk-22",
+      "chunk-23",
+      "chunk-24"
+    ],
+    "rick-steves-paris": [
+      "chunk-01",
+      "chunk-02",
+      "chunk-03",
+      "chunk-04",
+      "chunk-05",
+      "chunk-06",
+      "chunk-07",
+      "chunk-08",
+      "chunk-09",
+      "chunk-10",
+      "chunk-11",
+      "chunk-12",
+      "chunk-13",
+      "chunk-14",
+      "chunk-15",
+      "chunk-16",
+      "chunk-17",
+      "chunk-18",
+      "chunk-19",
+      "chunk-20",
+      "chunk-21",
+      "chunk-22",
+      "chunk-23",
+      "chunk-24",
+      "chunk-25",
+      "chunk-26",
+      "chunk-27",
+      "chunk-28"
+    ],
+    "a-walk-through-paris": [
+      "chunk-01",
+      "chunk-02",
+      "chunk-03",
+      "chunk-04",
+      "chunk-05",
+      "chunk-06",
+      "chunk-07",
+      "chunk-08"
+    ],
+    "around-and-about-paris-13-20": [
+      "chunk-01",
+      "chunk-02",
+      "chunk-03",
+      "chunk-04",
+      "chunk-05",
+      "chunk-06",
+      "chunk-07",
+      "chunk-08",
+      "chunk-09",
+      "chunk-10",
+      "chunk-11",
+      "chunk-12",
+      "chunk-13",
+      "chunk-14",
+      "chunk-15",
+      "chunk-16",
+      "chunk-17",
+      "chunk-18",
+      "chunk-19",
+      "chunk-20",
+      "chunk-21",
+      "chunk-22",
+      "chunk-23",
+      "chunk-24",
+      "chunk-25",
+      "chunk-26",
+      "chunk-27"
+    ]
+  },
+  "phase_plan": {
+    "phase_1_probe": {
+      "model": "opus",
+      "chunks": [
+        "pariswalks/chunk-01",
+        "pariswalks/chunk-02",
+        "pariswalks/chunk-03"
+      ],
+      "purpose": "Calibration probe to measure per-chunk Opus cost and validate v2 quality before larger waves"
+    },
+    "phase_2_anchor_wave": {
+      "model": "opus",
+      "default_chunks": [
+        "rough-guide-paris/chunk-01",
+        "frommers-24-great-walks/chunk-01",
+        "rough-guide-paris/chunk-06",
+        "frommers-24-great-walks/chunk-05",
+        "rough-guide-paris/chunk-08",
+        "rick-steves-paris/chunk-07"
+      ],
+      "fallback_4ch": [
+        "rough-guide-paris/chunk-01",
+        "frommers-24-great-walks/chunk-01",
+        "rough-guide-paris/chunk-06",
+        "frommers-24-great-walks/chunk-05"
+      ],
+      "purpose": "Anchor tier-5 POI extraction at Opus quality"
+    },
+    "phase_3_filler_waves": {
+      "model": "sonnet",
+      "wave_size": "10-12 chunks per wave",
+      "phase_b_fixup": [
+        "truncate subject_tag to <=3 words",
+        "re-class beat_length_class from word count",
+        "tolerant JSON parse (demjson3 + regex)",
+        "Pydantic validation; failures to review_queue",
+        "tier-3+ empty physical_cues with visible feature in source -> review_queue (no auto-fix)"
+      ],
+      "purpose": "Bulk filler ingest with quality fixup pass"
+    }
+  },
+  "previous_state_cleared_from": {
+    "stage": "wave_1_agents_running",
+    "wave_chunks_attempted_15": [
+      "6 pariswalks + 9 rough-guide"
+    ],
+    "result": "lost work, blew Max $100 quota",
+    "cleared_at": "2026-04-25 handoff"
+  },
+  "started_at": "2026-04-25T03:00:00Z",
+  "phase_1b_poi_generate": {
+    "stage": "poi_generate_complete",
+    "started_at": "2026-04-26T02:30:00Z",
+    "completed_at": "2026-04-26T13:18:12.554489+00:00",
+    "inventory": {
+      "total_flagged_in_beats": 90,
+      "alias_drop": 3,
+      "sub_poi_or_retag": 21,
+      "to_generate": 64
+    },
+    "new_pois_created": 64,
+    "poi_raw_size": {
+      "before": 239,
+      "after": 303
+    },
+    "beats_retagged_total": 89,
+    "beats_retagged_breakdown": {
+      "phase_1b_first_pass_sub_poi_and_re_tag": 39,
+      "phase_1b_second_pass_canonical_normalization": 45,
+      "phase_1b_third_pass_alias_drop_orphan_cleanup": 5
+    },
+    "marais_routed_to_review_queue": {
+      "beat_count": 2,
+      "review_queue_path": "data/paris/review_queue.json"
+    },
+    "research_summary": {
+      "batches": 5,
+      "verified_true_count": 64,
+      "verified_false_count": 0,
+      "unknown_address_count": 0,
+      "skipped": 0
+    },
+    "notes": [
+      "Mont-de-Piété confirmed via web as same institution as Crédit Municipal de Paris (1918 decree); generated as one POI with Mont-de-Piété in name_variations.",
+      "Marais beats routed to review_queue.json — Marais is a neighborhood/Area not a POI per Schema v3.",
+      "100m proximity check vs existing POIs deferred to /poi-geocode pass (new POIs lack lat/lng; address-string proximity is noisy).",
+      "All POIs lack importance_tier as required — populate via /poi-gravity --rescore (Step 2 of closeout).",
+      "Pre-existing canonical mismatches surfaced and fixed: Place du Chatelet (4), Hôtel de Sully (2), Musée des Arts et Métiers (1), Palais de Chaillot→Trocadero (1)."
+    ],
+    "existing_pois_modified": {
+      "Place de Furstemberg": "added 'Delacroix Museum' to name_variations",
+      "Hotel Lamoignon": "added 'Bibliothèque Historique de la Ville de Paris' to name_variations",
+      "Synagogue de la rue Pavee": "added 'Synagogue Agoudas Hakehilos' to name_variations"
+    }
+  }
+}

@@ -1,0 +1,262 @@
+[
+  {
+    "name": "Pont de la Concorde",
+    "short_description": "Late-18th-century Seine arch bridge built partly with masonry from the demolished Bastille, linking Place de la Concorde to the Assemblée Nationale.",
+    "name_variations": ["Pont Louis XVI", "Pont de la Révolution", "Concorde Bridge"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Pont de la Concorde, 75007 / 75008 Paris (between Quai des Tuileries and Quai d'Orsay)",
+      "discovery_sources": ["Wikipedia", "Britannica", "Atlas Obscura", "Sortiraparis"],
+      "discovery_notes": "Symbolic Revolution-era bridge incorporating Bastille stones; key sightline between Concorde and the National Assembly.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Pont_de_la_Concorde_(Paris)","https://www.britannica.com/topic/Pont-de-la-Concorde","https://www.atlasobscura.com/places/pont-de-la-concorde"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Cimetière de Passy",
+    "short_description": "Small aristocratic Right-Bank cemetery opened in 1820 with an Art Deco entrance and burials including Debussy, Manet, Givenchy, and Berthe Morisot.",
+    "name_variations": ["Passy Cemetery", "Cimetiere de Passy"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 rue du Commandant Schloesing, 75116 Paris",
+      "discovery_sources": ["Wikipedia", "Paris.fr", "TripAdvisor", "Find a Grave"],
+      "discovery_notes": "Compact cemetery with very high famous-burial density per square metre, near Trocadéro — strong fit for Hidden History and Music Heritage lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Passy_Cemetery","https://www.paris.fr/lieux/cimetiere-de-passy-4481","https://www.tripadvisor.com/Attraction_Review-g187147-d232108-Reviews-Cimetiere_de_Passy-Paris_Ile_de_France.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Pont d'Iéna",
+    "short_description": "Napoleonic five-arch stone bridge of 1808–1814 linking the Eiffel Tower to the Trocadéro Gardens, pedestrianised since the 2024 Olympics.",
+    "name_variations": ["Pont d'Iena", "Iéna Bridge", "Jena Bridge", "Pont de l'École Militaire"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Pont d'Iéna, 75007 / 75016 Paris (between Quai Branly and Port de la Bourdonnais)",
+      "discovery_sources": ["Wikipedia", "Sortiraparis", "TripAdvisor", "TheParisianGuide"],
+      "discovery_notes": "Iconic Eiffel Tower–Trocadéro axis bridge; commemorates Napoleon's 1806 victory at Jena and once threatened with demolition by Blücher.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://en.wikipedia.org/wiki/Pont_d'I%C3%A9na","https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/173592-history-of-the-iena-bridge","https://www.tripadvisor.com/Attraction_Review-g187147-d1991147-Reviews-Pont_d_Iena-Paris_Ile_de_France.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Opéra Bastille",
+    "short_description": "Carlos Ott-designed modern opera house inaugurated on 13 July 1989 with 2,745 seats, the principal stage of the Opéra national de Paris.",
+    "name_variations": ["Opera Bastille", "Opéra national de Paris - Bastille", "Bastille Opera"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "120 rue de Lyon, 75012 Paris",
+      "discovery_sources": ["Wikipedia", "Opéra national de Paris", "Paris je t'aime", "Eutouring"],
+      "discovery_notes": "Bicentenary commission by Mitterrand on the site of the former Bastille railway station; principal venue of the Paris Opera.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://www.operadeparis.fr/en/visits/opera-bastille","https://parisjetaime.com/eng/culture/opera-national-de-paris-opera-bastille-p3565","https://www.eutouring.com/opera_bastille_in_paris.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue du Pas-de-la-Mule",
+    "short_description": "Short Marais street built in 1604 alongside Place des Vosges, named after a mounting block once used by nobles arriving on muleback at the Château des Tournelles.",
+    "name_variations": ["rue du Pas de la Mule", "rue Royale (former)", "petite rue Royale (former)", "rue des Vosges (former)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue du Pas-de-la-Mule, 75003 / 75004 Paris (from 31 boulevard Beaumarchais to 22 Place des Vosges)",
+      "discovery_sources": ["Wikipedia (FR)", "Paris Musées (Carnavalet)", "Paristoric", "The Parisienne"],
+      "discovery_notes": "Hinge street between boulevard Beaumarchais and Place des Vosges; preserved 17th-century fabric of the original Marais grid.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Rue_du_Pas-de-la-Mule","https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/place-des-vosges-intersection-avec-la-rue-du-pas-de-la-mule","https://www.theparisienne.fr/2016/08/a-la-decouverte-de-la-rue-du-pas-de-la-mule/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Quai de la Mégisserie",
+    "short_description": "Right-bank Seine quay laid out in 1369, long known for the leather tanners and bird-and-pet shops that still cluster between Châtelet and the Pont Neuf.",
+    "name_variations": ["Quai de la Megisserie", "Quai de la Saunerie (former)", "Quai de la Ferraille (former)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Quai de la Mégisserie, 75001 Paris (between Pont au Change and Pont Neuf)",
+      "discovery_sources": ["Paris ZigZag", "Jardins à l'Anglaise", "Yelp", "Pages Jaunes"],
+      "discovery_notes": "Atmospheric riverside walk lined with garden and pet shops; one of the oldest commercial quays in Paris.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://www.pariszigzag.fr/sortir-paris/balade-paris/entre-faune-et-flore-sur-le-quai-de-la-megisserie/","https://jardinsalanglaise.wordpress.com/2013/11/05/quai-de-la-megisserie-paris/","https://www.yelp.com/biz/oisellerie-du-pont-neuf-paris"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Sauval",
+    "short_description": "Short street near Les Halles whose No. 2 is traditionally identified as the birthplace of Molière in 1622.",
+    "name_variations": ["rue Sauval", "rue des Vieilles-Étuves-Saint-Honoré (former)", "rue de Varennes-Halles-au-Blé (former)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Sauval, 75001 Paris (between rue Saint-Honoré and rue Coquillière)",
+      "discovery_sources": ["Wikipedia (FR)", "Paris Musées (Carnavalet)", "Paris Pittoresque", "Archi-blog"],
+      "discovery_notes": "Reputed birthplace of Molière (No. 2) and a remnant of the medieval street pattern around the old Halles.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Rue_Sauval","https://www.paris-pittoresque.com/rues/119.htm","https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/halle-au-ble-rue-coquilliere-prise-de-la-rue-sauval-5-aout-1887-1er"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Place du Marché Sainte-Catherine",
+    "short_description": "Quiet rectangular Marais square laid out in 1784 on the site of a demolished 13th-century priory and used as an open-air market until 1939.",
+    "name_variations": ["Place du Marché Ste Catherine", "Place du Marche Ste Catherine", "Place du Marché-Sainte-Catherine", "Place Sainte-Catherine"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Marché Sainte-Catherine, 75004 Paris (off rue Saint-Antoine)",
+      "discovery_sources": ["Wikipedia (FR)", "Lonely Planet", "Urbansider", "Paris la douce"],
+      "discovery_notes": "Pedestrian café square hidden a few steps off rue Saint-Antoine; classic Marais 'secret place' frequently in walking-tour itineraries.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Place_du_March%C3%A9-Sainte-Catherine","https://www.lonelyplanet.com/france/paris/marais-and-menilmontant/attractions/place-du-marche-ste-catherine/a/poi-sig/1591387/1322812","https://www.urbansider.com/sightseeing/place-du-marche-sainte-catherine/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Théâtre de la Ville",
+    "short_description": "Davioud-designed 1862 theatre on Place du Châtelet that Sarah Bernhardt directed for 24 years and which reopened after renovation in 2023 as the Théâtre de la Ville - Sarah Bernhardt.",
+    "name_variations": ["Théâtre de la Ville - Sarah Bernhardt", "Théâtre Sarah-Bernhardt", "Théâtre de la Cité (1940s)", "Théâtre Lyrique (original)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 place du Châtelet, 75004 Paris",
+      "discovery_sources": ["Wikipedia", "Théâtre de la Ville official site", "Paris je t'aime", "Visit Paris Region"],
+      "discovery_notes": "Twin Châtelet theatre indelibly tied to Sarah Bernhardt's late career, with a rich Belle Époque and contemporary-dance programming history.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Th%C3%A9%C3%A2tre_de_la_Ville","https://www.theatredelaville-paris.com/en/le-theatre-de-la-ville/l-histoire-59a00fac5efee","https://parisjetaime.com/eng/culture/theatre-de-la-ville-chatelet-p1140"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Passage Saint-Paul",
+    "short_description": "Quiet Marais passageway running from rue Saint-Paul to a side entrance of the Saint-Paul-Saint-Louis church, on land once part of the Hôtel de la Rochepot.",
+    "name_variations": ["Passage Saint Paul"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Passage Saint-Paul, 75004 Paris (from 43 rue Saint-Paul to the side door of Saint-Paul-Saint-Louis)",
+      "discovery_sources": ["Wikipedia (FR)", "Paris Musées (Carnavalet)", "Mappy", "Village Saint-Paul"],
+      "discovery_notes": "Concealed pedestrian shortcut through the Village Saint-Paul antiques district; a hidden Marais tour beat.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Passage_Saint-Paul","https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/passage-saint-paul-49-rue-saint-paul-4eme-arrondissement-paris","https://levillagesaintpaul.com/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Port de l'Arsenal",
+    "short_description": "Former cargo basin converted in 1983 into a 177-berth pleasure-boat marina linking the Bastille end of the Canal Saint-Martin to the Seine.",
+    "name_variations": ["Port de Plaisance de Paris-Arsenal", "Bassin de l'Arsenal", "Paris-Arsenal Marina"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "11 boulevard de la Bastille, 75012 Paris",
+      "discovery_sources": ["Wikipedia", "Paris.fr", "Paris je t'aime", "Eutouring"],
+      "discovery_notes": "Tree-lined leisure marina at the foot of the Bastille — gateway between the Seine and Canal Saint-Martin and a popular waterside walk.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Bassin_de_l'Arsenal","https://www.paris.fr/lieux/port-de-l-arsenal-19156","https://parisjetaime.com/eng/transport/port-de-l-arsenal-p1888"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Colonne de Juillet",
+    "short_description": "47-metre bronze column at the centre of Place de la Bastille (1835–1840) commemorating the Trois Glorieuses of July 1830, with a crypt holding the remains of 615 revolution victims.",
+    "name_variations": ["July Column", "Colonne de Juillet", "Génie de la Liberté (figure on top)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place de la Bastille, 75004 / 75011 / 75012 Paris",
+      "discovery_sources": ["Wikipedia", "Paris je t'aime", "Un jour de plus à Paris", "TripAdvisor"],
+      "discovery_notes": "Centerpiece of the Place de la Bastille; commemorates the 1830 revolution and serves as a rallying point for political demonstrations.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://en.wikipedia.org/wiki/July_Column","https://parisjetaime.com/eng/culture/colonne-de-juillet-p1853","https://www.unjourdeplusaparis.com/en/paris-insolite/colonne-de-juillet-bastille"]
+      },
+      "parent_poi": "Place de la Bastille"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Statue de Beaumarchais",
+    "short_description": "1895 bronze statue by Louis Clausade depicting the playwright Pierre-Augustin Caron de Beaumarchais arms-crossed, inaugurated in 1897 near his former Marais residence.",
+    "name_variations": ["Beaumarchais Statue", "Monument à Beaumarchais", "Statue de Pierre-Augustin Caron de Beaumarchais"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Square at the corner of rue Saint-Antoine and rue des Tournelles, 75004 Paris (near 4 boulevard Beaumarchais)",
+      "discovery_sources": ["Paris Musées (Carnavalet)", "e-monumen.net", "Vivre le Marais", "TripAdvisor"],
+      "discovery_notes": "Discreet bronze tribute to the author of The Marriage of Figaro, sited near his former Marais home; a quiet stop linking literary and revolutionary lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/statue-de-pierre-augustin-caron-de-beaumarchais-1732-1799-rue-saint-antoine","https://e-monumen.net/patrimoine-monumental/monument-a-beaumarchais-paris-4e-arr/","https://www.tripadvisor.com/Attraction_Review-g187147-d11718629-Reviews-Statue_de_Beaumarchais-Paris_Ile_de_France.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  }
+]

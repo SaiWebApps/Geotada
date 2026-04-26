@@ -1,0 +1,314 @@
+[
+  {
+    "name": "Parc Monceau",
+    "short_description": "Romantic English-style public park in the 8th arrondissement, created in 1778 and famous for its scattered architectural follies including a Roman colonnade and miniature Egyptian pyramid.",
+    "name_variations": ["Monceau Park", "Jardin de Monceau", "Folie de Chartres"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "35 Boulevard de Courcelles, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "Paris Insiders Guide", "Paris Je T'aime"],
+      "discovery_notes": "Site of the world's first silk parachute jump in 1797 by Andre-Jacques Garnerin and the first public park created by Haussmann; rich for Hidden History and Nature & Green Spaces lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Parc_Monceau",
+          "https://www.parisinsidersguide.com/parc-monceau-paris.html",
+          "https://parisjetaime.com/eng/culture/parc-monceau-p3553"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Place du Tertre",
+    "short_description": "Historic square at the summit of Montmartre where roughly 140 licensed artists work in one-square-meter pitches assigned by jury.",
+    "name_variations": ["Tertre Square", "Montmartre Artists' Square"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Tertre, 75018 Paris",
+      "discovery_sources": ["Wikipedia", "TripAdvisor", "Paris Je T'aime", "Paris Insiders Guide"],
+      "discovery_notes": "Former village square of Montmartre opened in 1635, central to the bohemian art scene from the late 18th century until WWI; high tourist traffic and strong Art & Street Culture lens potential.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Place_du_Tertre",
+          "https://www.parisinsidersguide.com/montmartre-artists-square-place-du-tertre-paris.html",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d190982-Reviews-Place_Du_Tertre-Paris_Ile_de_France.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Palais de Justice",
+    "short_description": "Vast judicial complex on the Ile de la Cite occupying the former medieval royal palace of the kings of France and housing the Court of Cassation, France's highest ordinary court.",
+    "name_variations": ["Palais de Justice de Paris", "Paris Law Courts", "Palais de la Cite"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "4 Boulevard du Palais, 75001 Paris",
+      "discovery_sources": ["Wikipedia", "History Hit", "Paris Je T'aime"],
+      "discovery_notes": "Continuous seat of French justice and royal power since the Capetians; shares its complex with Sainte-Chapelle and the Conciergerie, anchoring War & Revolution and Hidden History lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Palais_de_Justice,_Paris",
+          "https://en.wikipedia.org/wiki/Palais_de_la_Cit%C3%A9",
+          "https://www.historyhit.com/locations/palais-de-justice/"
+        ]
+      },
+      "parent_poi": "Ile de la Cite"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Square du Vert-Galant",
+    "short_description": "Triangular pocket-park at the western tip of Ile de la Cite, sitting roughly seven meters below modern street level and pointing downstream beneath the Pont Neuf.",
+    "name_variations": ["Vert-Galant Square", "Vert Galant"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Pont-Neuf, 75001 Paris",
+      "discovery_sources": ["Wikipedia", "Ville de Paris", "Paris Je T'aime", "Urbansider"],
+      "discovery_notes": "Created in 1884 by joining the former Ile aux Juifs (where Jacques de Molay was burned in 1314) to Ile de la Cite; nicknamed for the amorous reputation of Henri IV, whose equestrian statue stands above. Strong Hidden History and Local Legends lens material.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Square_du_Vert-Galant",
+          "https://www.paris.fr/lieux/square-du-vert-galant-2825",
+          "https://parisjetaime.com/eng/culture/square-du-vert-galant-p1128"
+        ]
+      },
+      "parent_poi": "Ile de la Cite"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Saint-Honoré",
+    "short_description": "Two-kilometer medieval street running west from the Louvre, lined with luxury boutiques and historic addresses including the house at no. 398 where Robespierre lodged before the guillotine.",
+    "name_variations": ["Saint-Honore Street", "rue Saint Honore"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Saint-Honoré, 75001 Paris",
+      "discovery_sources": ["Wikipedia", "TripAdvisor", "Paris Je T'aime", "Culture Travel"],
+      "discovery_notes": "Joan of Arc was wounded at the former Porte Saint-Honore in 1429 (plaque at no. 163) and Robespierre lived at no. 398 with the Duplay family; strong Revolution, Literary and Shopping lens density.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_Saint-Honor%C3%A9",
+          "https://parisjetaime.com/eng/transport/rue-saint-honore-p1966",
+          "https://culturetravel.com/rue-saint-honore/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Crédit Municipal de Paris",
+    "short_description": "Paris's oldest financial institution, a municipal pawnbroker re-established by Louis XVI in 1777 and renamed from Mont-de-Piété to Crédit Municipal de Paris by decree on 24 October 1918.",
+    "name_variations": ["Mont-de-Piété", "Mont de Piete", "Mont de Piété", "Chez ma tante", "CMP"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "55 Rue des Francs-Bourgeois, 75004 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "creditmunicipal.fr", "Paris ZigZag", "Marais Visites"],
+      "discovery_notes": "Inaugurated on this Marais site on 9 February 1778 with a Louis XVI-style extension by Charles-Francois Viel; nicknamed 'Chez ma tante' after Prince de Joinville's pawned watch. Distinctive Social Change and Hidden History lens material.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Cr%C3%A9dit_municipal_de_Paris",
+          "https://www.creditmunicipal.fr/en/histoire/",
+          "https://www.pariszigzag.fr/insolite/histoire-insolite-paris/histoire-credit-municipal-paris/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Tour Saint-Jacques",
+    "short_description": "Lone 52-meter Flamboyant Gothic bell tower built 1509-1523, the only surviving fragment of the church of Saint-Jacques-de-la-Boucherie demolished in 1797.",
+    "name_variations": ["Saint-Jacques Tower", "Saint James' Tower", "Tour Saint-Jacques-de-la-Boucherie"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Square de la Tour Saint-Jacques, 39 Rue de Rivoli, 75004 Paris",
+      "discovery_sources": ["Wikipedia", "Paris Je T'aime", "France-Voyage", "Paris Unlocked"],
+      "discovery_notes": "Spared in 1793 as a condition of the church's sale, restored in the Second Empire and reputed starting point of the medieval Camino de Santiago pilgrimage from Paris; strong Religious & Spiritual and Historic Architecture lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Tour_Saint-Jacques",
+          "https://parisjetaime.com/eng/culture/tour-saint-jacques-p993",
+          "https://www.travelfranceonline.com/tour-saint-jacques-in-rue-de-rivoli/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue de la Ferronnerie",
+    "short_description": "Narrow former ironmongers' street where King Henri IV was assassinated by Francois Ravaillac on 14 May 1610, marked today by a commemorative stone in the pavement at no. 11.",
+    "name_variations": ["Ferronnerie Street"],
+    "kid_friendly": "no",
+    "_pipeline": {
+      "address": "Rue de la Ferronnerie, 75001 Paris",
+      "discovery_sources": ["Wikipedia", "French Moments", "Un Jour de Plus à Paris", "Sortiraparis"],
+      "discovery_notes": "Site of one of France's most consequential regicides; the carriage was halted by a wine-cart traffic jam beside the old Saints-Innocents cemetery. Anchor for Dark History and War & Revolution lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_de_la_Ferronnerie",
+          "https://en.wikipedia.org/wiki/Assassination_of_Henry_IV",
+          "https://frenchmoments.eu/assassination-of-henri-iv/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Saint-Antoine",
+    "short_description": "Wide Gallo-Roman-origin artery in the Marais once called the 'most beautiful street in Paris' for its 17th-century hôtels particuliers, including the Hôtel de Sully at no. 62.",
+    "name_variations": ["Saint-Antoine Street", "rue Saint Antoine", "Rue St. Antoine"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Saint-Antoine, 75004 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Paris Marais", "Paris Evous", "Travel Curious"],
+      "discovery_notes": "King Henry II was fatally wounded in a tournament on this street in 1559; later the route of royal entries and an axis from the Bastille to the Hotel de Ville. Rich for Historic Architecture and War & Revolution lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Rue_Saint-Antoine_(Paris)",
+          "https://www.parismarais.com/en/discover-the-marais/history-of-the-marais/historical-marais.html",
+          "https://paris.evous.fr/rue-saint-antoine-a-paris"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Quai d'Anjou",
+    "short_description": "Northern quay of Ile Saint-Louis lined with 17th-century hôtels particuliers, several designed by Louis Le Vau before his work at Vaux-le-Vicomte and Versailles.",
+    "name_variations": ["Anjou Quay"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Quai d'Anjou, 75004 Paris",
+      "discovery_sources": ["Wikipedia", "Paris La Douce", "Ville de Paris", "Paris Historique"],
+      "discovery_notes": "The Hotel de Lauzun at no. 17 hosted the Club des Hashischins (Baudelaire, Gautier, Delacroix) in the 1840s; one of the best-preserved 17th-century streetscapes in Paris. Strong Literary & Film and Historic Architecture lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/H%C3%B4tel_de_Lauzun",
+          "https://www.parisladouce.com/2022/02/quai-danjou-ile-saint-louis.html",
+          "https://www.paris.fr/pages/l-hotel-de-lauzun-tresor-cache-de-l-ile-saint-louis-15679"
+        ]
+      },
+      "parent_poi": "Ile Saint-Louis"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Place des Abbesses",
+    "short_description": "Lively Montmartre square fronted by one of only two surviving glass-canopied 'dragonfly' Metro entrances designed by Hector Guimard, salvaged in 1974 from the Hotel de Ville station.",
+    "name_variations": ["Abbesses Square"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place des Abbesses, 75018 Paris",
+      "discovery_sources": ["Wikipedia", "TripAdvisor", "French Moments", "Travel France Online"],
+      "discovery_notes": "Named for the abbesses of the medieval Montmartre Abbey; the adjoining station entry is the deepest in the Paris network at 36 m below street level. Anchors Modern & Contemporary Design and Historic Architecture lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Abbesses_station",
+          "https://en.wikipedia.org/wiki/Paris_M%C3%A9tro_entrances_by_Hector_Guimard",
+          "https://frenchmoments.eu/abbesses-metro-station-montmartre/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Musée Cernuschi",
+    "short_description": "City of Paris museum of Asian arts opened in 1898 in the former mansion of banker Henri Cernuschi, holding nearly 15,000 Chinese, Korean, Japanese, and Vietnamese objects.",
+    "name_variations": ["Musée des Arts de l'Asie de la Ville de Paris", "Cernuschi Museum", "Asian Arts Museum of the City of Paris"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "7 Avenue Vélasquez, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "cernuschi.paris.fr", "Paris Je T'aime", "Sortiraparis"],
+      "discovery_notes": "Second-largest Asian art collection in Paris after the Musee Guimet; permanent collections free to enter and the building sits at the eastern edge of Parc Monceau. Strong Hidden History and Religious & Spiritual lens potential.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Mus%C3%A9e_Cernuschi",
+          "https://www.cernuschi.paris.fr/en/",
+          "https://www.paris.fr/lieux/musee-cernuschi-musee-des-arts-de-l-asie-de-la-ville-de-paris-1521"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Cathédrale Saint-Alexandre-Nevsky",
+    "short_description": "Russian Orthodox cathedral consecrated in 1861, the first permanent Russian Orthodox place of worship in Paris, built in a Byzantine-Muscovite style with five gilded onion domes.",
+    "name_variations": ["Alexander Nevsky Cathedral", "Cathédrale Saint-Alexandre-Nevsky de Paris", "Cathédrale orthodoxe russe Saint-Alexandre-Nevsky"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "12 Rue Daru, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "cathedrale-orthodoxe.com", "Archeveche.eu", "POP Merimee"],
+      "discovery_notes": "Designed by Roman Kouzmine and Ivan Strohm of the St. Petersburg Academy and a long-time anchor of Paris's 'Little Russia' quarter near Parc Monceau; Pablo Picasso married Olga Khokhlova here in 1918. Distinctive Religious & Spiritual and Hidden History lens material.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Alexander_Nevsky_Cathedral,_Paris",
+          "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Saint-Alexandre-Nevsky_de_Paris",
+          "https://cathedrale-orthodoxe.com/cathedrale/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted", "generated_at": "2026-04-25T00:00:00Z", "city": "Paris"},
+    "city_name": "paris"
+  }
+]

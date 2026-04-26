@@ -1,0 +1,266 @@
+[
+  {
+    "name": "Voltaire Statue (Square Honoré-Champion)",
+    "short_description": "Stone replacement statue of the philosopher Voltaire by Léon-Ernest Drivier, installed in 1962 to replace the original 1885 bronze on Quai Malaquais that was melted down by the Nazis in 1941.",
+    "name_variations": ["Statue de Voltaire", "Voltaire Quai Malaquais", "Voltaire Statue (Quai Malaquais)", "Monument à Voltaire", "Voltaire Square Honoré-Champion"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Square Honoré-Champion, 1 rue de Seine, 75006 Paris",
+      "discovery_sources": ["Wikipedia", "Paristoric", "Le Curieux des Arts", "Ministère de la Culture"],
+      "discovery_notes": "Commemorates Voltaire near Quai Voltaire where he died in 1778; the original 1885 bronze was a Third Republic monument and the current Drivier statue was reinstalled in June 2024 after restoration.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.paristoric.com/index.php/paris-d-hier/statues/autres-statues/2371-la-statue-de-voltaire",
+          "https://www.lecurieuxdesarts.fr/2024/06/en-catimini-la-statue-de-voltaire-reinstallee-a-paris.html",
+          "https://www.culture.gouv.fr/presse/deplacement-ministre/deplacement-de-mme-rachida-dati-ministre-de-la-culture-au-square-honore-champion-a-paris-a-l-occasion-de-la-reinstallation-du-voltaire-de-leon"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue de Rivoli",
+    "short_description": "Long arcaded thoroughfare decreed by Napoleon in 1801 and named for his 1797 victory at the Battle of Rivoli, running along the Louvre and Tuileries.",
+    "name_variations": ["Rivoli Street", "rue de Rivoli"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue de Rivoli, 75001/75004 Paris (1st and 4th arrondissements)",
+      "discovery_sources": ["Wikipedia", "Napoleon.org", "Paris Je T'aime", "Bonjour Paris"],
+      "discovery_notes": "One of Paris's most famous shopping and ceremonial streets, running from Place de la Concorde to the Marais and lined with Percier-and-Fontaine arcades.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://en.wikipedia.org/wiki/Rue_de_Rivoli","https://www.napoleon.org/en/magazine/places/rue-rivoli-paris/","https://parisjetaime.com/eng/transport/rue-de-rivoli-paris-p4672"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Place des Pyramides",
+    "short_description": "Square at Rue de Rivoli holding Emmanuel Frémiet's 1874 gilded equestrian statue of Joan of Arc, near the spot where she was wounded in her 1429 attempt to take Paris.",
+    "name_variations": ["Joan of Arc Square", "Pyramides Square"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place des Pyramides, Rue de Rivoli, 75001 Paris",
+      "discovery_sources": ["Wikipedia", "TripAdvisor", "Un Jour de Plus à Paris", "The Parisian Guide"],
+      "discovery_notes": "Royalist and Catholic pilgrimage point centred on the gilded Joan of Arc statue; popular Instagram spot just off Rue de Rivoli at the Tuileries.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Jeanne_d'Arc_(Fr%C3%A9miet)","https://www.unjourdeplusaparis.com/en/paris-insolite/statue-jeanne-darc-place-pyramides","https://www.theparisianguide.com/s/statue-of-joan-of-arc/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Quartier de l'Horloge",
+    "short_description": "Modernist 1970s redevelopment north of the Pompidou Centre, named for Jacques Monestier's 1979 bronze automaton clock 'Le Défenseur du Temps' on Rue Bernard de Clairvaux.",
+    "name_variations": ["Horloge Quarter", "Clock Quarter", "Le Défenseur du Temps neighbourhood"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "8 Rue Bernard de Clairvaux, 75003 Paris",
+      "discovery_sources": ["Wikipedia", "Bonjour Paris", "Secrets of Paris", "Sortir à Paris", "Travel France Online"],
+      "discovery_notes": "The four-metre brass automaton clock fights a rooster, crab and dragon hourly — a quirky kinetic sculpture restored in 2022–23 after years of silence.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://en.wikipedia.org/wiki/Le_D%C3%A9fenseur_du_Temps","https://secretsofparis.com/art-artists/defenseur-du-temps/","https://bonjourparis.com/archives/quartier-horloge-clockwatching-paris-third/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Charles V",
+    "short_description": "Quiet Marais street named for Charles V, who in the 14th century moved his royal residence to the nearby Hôtel Saint-Pol and triggered the district's transformation from marsh to noble quarter.",
+    "name_variations": ["Charles V Street"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Charles V, 75004 Paris",
+      "discovery_sources": ["Wikipedia (The Marais)", "MIJE", "Evendo", "Paris Marais"],
+      "discovery_notes": "Backstreet of the southern Marais lined with discreet 17th-century hôtels particuliers; useful axis between Place des Vosges and the Bastille area.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://en.wikipedia.org/wiki/The_Marais","https://www.parismarais.com/en/discover-the-marais/history-of-the-marais/historical-marais.html","https://www.mije.com/en/youth-hostel-in-paris/marais-district/history-3-4-arrondissements"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue de Lappe",
+    "short_description": "Working-class Bastille street that became the heartland of the bal-musette accordion-dance scene from 1900, home to Balajo and once over a dozen rowdy dance halls.",
+    "name_variations": ["Lappe Street", "Rue de la Bastoche"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue de Lappe, 75011 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Brassaï/Holden Luntz", "INA Fresques", "Paris Best Lodge", "Grokipedia"],
+      "discovery_notes": "Auvergnat immigrants brought the cabrette and accordion here; Brassaï photographed its smoky bals in the 1930s and Balajo still operates at no. 9.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Rue_de_Lappe","https://www.holdenluntz.com/magazine/photo-spotlight/brassai-la-bastoche-and-le-bal-des-quatre-saisons/","https://fresques.ina.fr/danses-sans-visa-en/fiche-media/Dasavi00705/history-of-the-bals-musette-dances-with-accordion-music.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Fouquet's",
+    "short_description": "Red-awninged brasserie founded by Louis Fouquet in 1899, listed as a French historical monument since 1990 and host of the annual post-César Awards dinner.",
+    "name_variations": ["Le Fouquet's", "Brasserie Fouquet's", "Fouquet's Paris"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "99 Avenue des Champs-Élysées, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "Hôtels Barrière", "Paris Je T'aime", "TripAdvisor", "Visit Paris Region"],
+      "discovery_notes": "Long-time hangout of French film and political elites at the corner of Champs-Élysées and Avenue George V; iconic Parisian power-lunch venue.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Fouquet's","https://www.hotelsbarriere.com/en/collection-fouquet-s/paris/restaurants-and-bars/brasserie-fouquet-s-paris","https://parisjetaime.com/eng/restaurant/fouquet-s-paris-p3348"]
+      },
+      "parent_poi": "Champs-Elysees"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rimbaud Statue (Sully Morland)",
+    "short_description": "Bronze 'L'Homme aux semelles devant' by Jean-Robert Ipoustéguy, inaugurated in 1984 at Place du Père-Teilhard-de-Chardin, its title a pun on Rimbaud's nickname 'man with soles of wind'.",
+    "name_variations": ["L'Homme aux semelles devant", "Statue d'Arthur Rimbaud", "Hommage à Rimbaud", "L'Homme aux semelles de vent (nickname source)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Père-Teilhard-de-Chardin, near Boulevard Henri-IV, 75004 Paris (statue relocated in 2018 to the Musée de la Sculpture en Plein Air at Port Saint-Bernard / Square Tino-Rossi, 75005 Paris)",
+      "discovery_sources": ["Wikipedia (FR)", "Paristoric", "TripAdvisor", "Paris au fil des rues", "Art@Site"],
+      "discovery_notes": "One of the few public sculptures of Rimbaud in Paris; the wind-pun pose makes it a literary-tour anchor near Sully-Morland metro.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/L'Homme_aux_semelles_devant","https://www.paristoric.com/index.php/paris-d-hier/statues/autres-statues/2354-la-statue-de-rimbaud","https://parisaufildesrues.wordpress.com/2015/09/25/arthur-rimbaud-lhomme-aux-semelles-devant/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Église Saint-Pierre de Montmartre",
+    "short_description": "Romanesque-Gothic church begun in 1133 and consecrated by Pope Eugenius III in 1147, the surviving sanctuary of the destroyed Montmartre Abbey and one of the oldest churches in Paris.",
+    "name_variations": ["Saint Peter of Montmartre", "Église Saint-Pierre", "St-Pierre de Montmartre", "Eglise Saint-Pierre de Montmartre"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 Rue du Mont-Cenis, 75018 Paris",
+      "discovery_sources": ["Wikipedia", "French Moments", "Travel France Online", "Sortir à Paris", "The Parisian Guide"],
+      "discovery_notes": "Hidden behind Sacré-Cœur on the western flank of the butte and often missed by tourists despite being effectively the second oldest church in Paris.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Saint-Pierre_de_Montmartre","https://frenchmoments.eu/eglise-saint-pierre-de-montmartre-paris/","https://www.travelfranceonline.com/saint-pierre-de-montmartre-church/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Lapin Agile",
+    "short_description": "Surviving Montmartre cabaret on the slope behind Sacré-Cœur, taking its name from André Gill's 1875 painted sign of a rabbit leaping from a saucepan and immortalized by Picasso's 1905 painting.",
+    "name_variations": ["Au Lapin Agile", "Cabaret des Assassins", "Au rendez-vous des voleurs", "Le Lapin à Gill", "Nimble Rabbit Cabaret"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "22 Rue des Saules, 75018 Paris",
+      "discovery_sources": ["Wikipedia", "Met Museum", "Sortir à Paris", "Bonjour Paris", "Montmartre Footsteps"],
+      "discovery_notes": "Picasso, Modigliani, Apollinaire and Utrillo all drank here during the Bohemian heyday; still operating nightly chanson cabaret.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Au_Lapin_Agile","https://www.metmuseum.org/art/collection/search/486162","https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/332828-history-lapin-agile-cabaret-mythique-montmartre-boheme-artistique-paris-18"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Musée Nissim de Camondo",
+    "short_description": "Petit-Trianon-inspired mansion built 1911–14 by Count Moïse de Camondo to display 18th-century French furniture, bequeathed in memory of his son killed in WWI and family later murdered at Auschwitz.",
+    "name_variations": ["Nissim de Camondo Museum", "Hôtel Camondo", "Musée Camondo"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "63 Rue de Monceau, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "Google Arts & Culture", "Stroum Center for Jewish Studies", "The Parisian Guide", "Paris Je T'aime"],
+      "discovery_notes": "Frozen-in-time hôtel particulier whose family tragedy is one of the most poignant Jewish-Parisian stories; closed for renovation, scheduled to reopen 2026.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Mus%C3%A9e_Nissim_de_Camondo","https://artsandculture.google.com/partner/musee-nissim-de-camondo","https://jewishstudies.washington.edu/arts-culture/ottoman-jew-in-paris-moise-de-camondo/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Musée Jacquemart-André",
+    "short_description": "Second Empire mansion built 1869–1875 by architect Henri Parent for banker Édouard André and painter Nélie Jacquemart, opened as a museum in 1913 with their Italian Renaissance and 18th-century French collection.",
+    "name_variations": ["Jacquemart-André Museum", "Hôtel Jacquemart-André", "Musée Jacquemart André"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "158 Boulevard Haussmann, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "Visit Paris Region", "TripAdvisor", "Paris Je T'aime", "Sortir à Paris"],
+      "discovery_notes": "Combines a lavishly preserved aristocratic interior with a small but exceptional Italian Renaissance gallery — a stronger candidate than larger museums for art-lover off-trail tours.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Mus%C3%A9e_Jacquemart-Andr%C3%A9","https://parisjetaime.com/eng/culture/musee-jacquemart-andre-p3481","https://pro.visitparisregion.com/en/offre-everything-paris-region-has-to-offer/things-to-do/highlights-major-sites/museums-monuments-chateaux/museums/the-jacquemart-andre-museum"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Passage Poncelet",
+    "short_description": "Small 17th-arrondissement passage running between 27 Rue Poncelet and 12 Rue Laugier, named for mathematician Jean-Victor Poncelet and adjacent to the famed Marché Poncelet open-air market.",
+    "name_variations": ["Cité Lamoureux (former name)", "Poncelet Passage"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Passage Poncelet (27 Rue Poncelet to 12 Rue Laugier), 75017 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Bercail", "France Today (Marché Poncelet)", "MyrtiWorld", "Paris Plus Plus"],
+      "discovery_notes": "Quiet pedestrian passage at the heart of the Ternes food-shopping district; pairs naturally with the celebrated Rue Poncelet market for a 17e gastronomy stop.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Passage_Poncelet","https://fr.wikipedia.org/wiki/Rue_Poncelet","https://francetoday.com/culture/shopping-boutiques/rue-poncelet-and-its-fine-open-air-market/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  }
+]

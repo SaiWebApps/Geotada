@@ -7378,7 +7378,8 @@
     "kid_friendly": "yes",
     "name_variations": [
       "Hôtel Lamoignon",
-      "Bibliothèque Historique"
+      "Bibliothèque Historique",
+      "Bibliothèque Historique de la Ville de Paris"
     ],
     "_pipeline": {
       "source": "around-and-about-paris",
@@ -7416,7 +7417,8 @@
     "kid_friendly": "yes",
     "name_variations": [
       "Agoudas Hakehilos Synagogue",
-      "Guimard Synagogue"
+      "Guimard Synagogue",
+      "Synagogue Agoudas Hakehilos"
     ],
     "_pipeline": {
       "source": "around-and-about-paris",
@@ -9151,7 +9153,8 @@
       "Musee Delacroix",
       "Musée Delacroix",
       "Musée national Eugène Delacroix",
-      "Place de Furstenberg"
+      "Place de Furstenberg",
+      "Delacroix Museum"
     ],
     "kid_friendly": "yes",
     "_pipeline": {
@@ -11087,6 +11090,2374 @@
     "trigger_radius": 150,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
+    "city_name": "paris"
+  },
+  {
+    "name": "Parc Monceau",
+    "short_description": "Romantic English-style public park in the 8th arrondissement, created in 1778 and famous for its scattered architectural follies including a Roman colonnade and miniature Egyptian pyramid.",
+    "name_variations": [
+      "Monceau Park",
+      "Jardin de Monceau",
+      "Folie de Chartres"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "35 Boulevard de Courcelles, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris Insiders Guide",
+        "Paris Je T'aime"
+      ],
+      "discovery_notes": "Site of the world's first silk parachute jump in 1797 by Andre-Jacques Garnerin and the first public park created by Haussmann; rich for Hidden History and Nature & Green Spaces lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Parc_Monceau",
+          "https://www.parisinsidersguide.com/parc-monceau-paris.html",
+          "https://parisjetaime.com/eng/culture/parc-monceau-p3553"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Place du Tertre",
+    "short_description": "Historic square at the summit of Montmartre where roughly 140 licensed artists work in one-square-meter pitches assigned by jury.",
+    "name_variations": [
+      "Tertre Square",
+      "Montmartre Artists' Square"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Tertre, 75018 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "TripAdvisor",
+        "Paris Je T'aime",
+        "Paris Insiders Guide"
+      ],
+      "discovery_notes": "Former village square of Montmartre opened in 1635, central to the bohemian art scene from the late 18th century until WWI; high tourist traffic and strong Art & Street Culture lens potential.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Place_du_Tertre",
+          "https://www.parisinsidersguide.com/montmartre-artists-square-place-du-tertre-paris.html",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d190982-Reviews-Place_Du_Tertre-Paris_Ile_de_France.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Palais de Justice",
+    "short_description": "Vast judicial complex on the Ile de la Cite occupying the former medieval royal palace of the kings of France and housing the Court of Cassation, France's highest ordinary court.",
+    "name_variations": [
+      "Palais de Justice de Paris",
+      "Paris Law Courts",
+      "Palais de la Cite"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "4 Boulevard du Palais, 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "History Hit",
+        "Paris Je T'aime"
+      ],
+      "discovery_notes": "Continuous seat of French justice and royal power since the Capetians; shares its complex with Sainte-Chapelle and the Conciergerie, anchoring War & Revolution and Hidden History lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Palais_de_Justice,_Paris",
+          "https://en.wikipedia.org/wiki/Palais_de_la_Cit%C3%A9",
+          "https://www.historyhit.com/locations/palais-de-justice/"
+        ]
+      },
+      "parent_poi": "Ile de la Cite"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Square du Vert-Galant",
+    "short_description": "Triangular pocket-park at the western tip of Ile de la Cite, sitting roughly seven meters below modern street level and pointing downstream beneath the Pont Neuf.",
+    "name_variations": [
+      "Vert-Galant Square",
+      "Vert Galant"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Pont-Neuf, 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Ville de Paris",
+        "Paris Je T'aime",
+        "Urbansider"
+      ],
+      "discovery_notes": "Created in 1884 by joining the former Ile aux Juifs (where Jacques de Molay was burned in 1314) to Ile de la Cite; nicknamed for the amorous reputation of Henri IV, whose equestrian statue stands above. Strong Hidden History and Local Legends lens material.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Square_du_Vert-Galant",
+          "https://www.paris.fr/lieux/square-du-vert-galant-2825",
+          "https://parisjetaime.com/eng/culture/square-du-vert-galant-p1128"
+        ]
+      },
+      "parent_poi": "Ile de la Cite"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Saint-Honoré",
+    "short_description": "Two-kilometer medieval street running west from the Louvre, lined with luxury boutiques and historic addresses including the house at no. 398 where Robespierre lodged before the guillotine.",
+    "name_variations": [
+      "Saint-Honore Street",
+      "rue Saint Honore"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Saint-Honoré, 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "TripAdvisor",
+        "Paris Je T'aime",
+        "Culture Travel"
+      ],
+      "discovery_notes": "Joan of Arc was wounded at the former Porte Saint-Honore in 1429 (plaque at no. 163) and Robespierre lived at no. 398 with the Duplay family; strong Revolution, Literary and Shopping lens density.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_Saint-Honor%C3%A9",
+          "https://parisjetaime.com/eng/transport/rue-saint-honore-p1966",
+          "https://culturetravel.com/rue-saint-honore/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Crédit Municipal de Paris",
+    "short_description": "Paris's oldest financial institution, a municipal pawnbroker re-established by Louis XVI in 1777 and renamed from Mont-de-Piété to Crédit Municipal de Paris by decree on 24 October 1918.",
+    "name_variations": [
+      "Mont-de-Piété",
+      "Mont de Piete",
+      "Mont de Piété",
+      "Chez ma tante",
+      "CMP"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "55 Rue des Francs-Bourgeois, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "creditmunicipal.fr",
+        "Paris ZigZag",
+        "Marais Visites"
+      ],
+      "discovery_notes": "Inaugurated on this Marais site on 9 February 1778 with a Louis XVI-style extension by Charles-Francois Viel; nicknamed 'Chez ma tante' after Prince de Joinville's pawned watch. Distinctive Social Change and Hidden History lens material.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Cr%C3%A9dit_municipal_de_Paris",
+          "https://www.creditmunicipal.fr/en/histoire/",
+          "https://www.pariszigzag.fr/insolite/histoire-insolite-paris/histoire-credit-municipal-paris/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Tour Saint-Jacques",
+    "short_description": "Lone 52-meter Flamboyant Gothic bell tower built 1509-1523, the only surviving fragment of the church of Saint-Jacques-de-la-Boucherie demolished in 1797.",
+    "name_variations": [
+      "Saint-Jacques Tower",
+      "Saint James' Tower",
+      "Tour Saint-Jacques-de-la-Boucherie"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Square de la Tour Saint-Jacques, 39 Rue de Rivoli, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris Je T'aime",
+        "France-Voyage",
+        "Paris Unlocked"
+      ],
+      "discovery_notes": "Spared in 1793 as a condition of the church's sale, restored in the Second Empire and reputed starting point of the medieval Camino de Santiago pilgrimage from Paris; strong Religious & Spiritual and Historic Architecture lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Tour_Saint-Jacques",
+          "https://parisjetaime.com/eng/culture/tour-saint-jacques-p993",
+          "https://www.travelfranceonline.com/tour-saint-jacques-in-rue-de-rivoli/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue de la Ferronnerie",
+    "short_description": "Narrow former ironmongers' street where King Henri IV was assassinated by Francois Ravaillac on 14 May 1610, marked today by a commemorative stone in the pavement at no. 11.",
+    "name_variations": [
+      "Ferronnerie Street"
+    ],
+    "kid_friendly": "no",
+    "_pipeline": {
+      "address": "Rue de la Ferronnerie, 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "French Moments",
+        "Un Jour de Plus à Paris",
+        "Sortiraparis"
+      ],
+      "discovery_notes": "Site of one of France's most consequential regicides; the carriage was halted by a wine-cart traffic jam beside the old Saints-Innocents cemetery. Anchor for Dark History and War & Revolution lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_de_la_Ferronnerie",
+          "https://en.wikipedia.org/wiki/Assassination_of_Henry_IV",
+          "https://frenchmoments.eu/assassination-of-henri-iv/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Saint-Antoine",
+    "short_description": "Wide Gallo-Roman-origin artery in the Marais once called the 'most beautiful street in Paris' for its 17th-century hôtels particuliers, including the Hôtel de Sully at no. 62.",
+    "name_variations": [
+      "Saint-Antoine Street",
+      "rue Saint Antoine",
+      "Rue St. Antoine"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Saint-Antoine, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paris Marais",
+        "Paris Evous",
+        "Travel Curious"
+      ],
+      "discovery_notes": "King Henry II was fatally wounded in a tournament on this street in 1559; later the route of royal entries and an axis from the Bastille to the Hotel de Ville. Rich for Historic Architecture and War & Revolution lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Rue_Saint-Antoine_(Paris)",
+          "https://www.parismarais.com/en/discover-the-marais/history-of-the-marais/historical-marais.html",
+          "https://paris.evous.fr/rue-saint-antoine-a-paris"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Quai d'Anjou",
+    "short_description": "Northern quay of Ile Saint-Louis lined with 17th-century hôtels particuliers, several designed by Louis Le Vau before his work at Vaux-le-Vicomte and Versailles.",
+    "name_variations": [
+      "Anjou Quay"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Quai d'Anjou, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris La Douce",
+        "Ville de Paris",
+        "Paris Historique"
+      ],
+      "discovery_notes": "The Hotel de Lauzun at no. 17 hosted the Club des Hashischins (Baudelaire, Gautier, Delacroix) in the 1840s; one of the best-preserved 17th-century streetscapes in Paris. Strong Literary & Film and Historic Architecture lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/H%C3%B4tel_de_Lauzun",
+          "https://www.parisladouce.com/2022/02/quai-danjou-ile-saint-louis.html",
+          "https://www.paris.fr/pages/l-hotel-de-lauzun-tresor-cache-de-l-ile-saint-louis-15679"
+        ]
+      },
+      "parent_poi": "Ile Saint-Louis"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Place des Abbesses",
+    "short_description": "Lively Montmartre square fronted by one of only two surviving glass-canopied 'dragonfly' Metro entrances designed by Hector Guimard, salvaged in 1974 from the Hotel de Ville station.",
+    "name_variations": [
+      "Abbesses Square"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place des Abbesses, 75018 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "TripAdvisor",
+        "French Moments",
+        "Travel France Online"
+      ],
+      "discovery_notes": "Named for the abbesses of the medieval Montmartre Abbey; the adjoining station entry is the deepest in the Paris network at 36 m below street level. Anchors Modern & Contemporary Design and Historic Architecture lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Abbesses_station",
+          "https://en.wikipedia.org/wiki/Paris_M%C3%A9tro_entrances_by_Hector_Guimard",
+          "https://frenchmoments.eu/abbesses-metro-station-montmartre/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Musée Cernuschi",
+    "short_description": "City of Paris museum of Asian arts opened in 1898 in the former mansion of banker Henri Cernuschi, holding nearly 15,000 Chinese, Korean, Japanese, and Vietnamese objects.",
+    "name_variations": [
+      "Musée des Arts de l'Asie de la Ville de Paris",
+      "Cernuschi Museum",
+      "Asian Arts Museum of the City of Paris"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "7 Avenue Vélasquez, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "cernuschi.paris.fr",
+        "Paris Je T'aime",
+        "Sortiraparis"
+      ],
+      "discovery_notes": "Second-largest Asian art collection in Paris after the Musee Guimet; permanent collections free to enter and the building sits at the eastern edge of Parc Monceau. Strong Hidden History and Religious & Spiritual lens potential.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Mus%C3%A9e_Cernuschi",
+          "https://www.cernuschi.paris.fr/en/",
+          "https://www.paris.fr/lieux/musee-cernuschi-musee-des-arts-de-l-asie-de-la-ville-de-paris-1521"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Cathédrale Saint-Alexandre-Nevsky",
+    "short_description": "Russian Orthodox cathedral consecrated in 1861, the first permanent Russian Orthodox place of worship in Paris, built in a Byzantine-Muscovite style with five gilded onion domes.",
+    "name_variations": [
+      "Alexander Nevsky Cathedral",
+      "Cathédrale Saint-Alexandre-Nevsky de Paris",
+      "Cathédrale orthodoxe russe Saint-Alexandre-Nevsky"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "12 Rue Daru, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "cathedrale-orthodoxe.com",
+        "Archeveche.eu",
+        "POP Merimee"
+      ],
+      "discovery_notes": "Designed by Roman Kouzmine and Ivan Strohm of the St. Petersburg Academy and a long-time anchor of Paris's 'Little Russia' quarter near Parc Monceau; Pablo Picasso married Olga Khokhlova here in 1918. Distinctive Religious & Spiritual and Hidden History lens material.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Alexander_Nevsky_Cathedral,_Paris",
+          "https://fr.wikipedia.org/wiki/Cath%C3%A9drale_Saint-Alexandre-Nevsky_de_Paris",
+          "https://cathedrale-orthodoxe.com/cathedrale/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-25T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Voltaire Statue (Square Honoré-Champion)",
+    "short_description": "Stone replacement statue of the philosopher Voltaire by Léon-Ernest Drivier, installed in 1962 to replace the original 1885 bronze on Quai Malaquais that was melted down by the Nazis in 1941.",
+    "name_variations": [
+      "Statue de Voltaire",
+      "Voltaire Quai Malaquais",
+      "Voltaire Statue (Quai Malaquais)",
+      "Monument à Voltaire",
+      "Voltaire Square Honoré-Champion"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Square Honoré-Champion, 1 rue de Seine, 75006 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paristoric",
+        "Le Curieux des Arts",
+        "Ministère de la Culture"
+      ],
+      "discovery_notes": "Commemorates Voltaire near Quai Voltaire where he died in 1778; the original 1885 bronze was a Third Republic monument and the current Drivier statue was reinstalled in June 2024 after restoration.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.paristoric.com/index.php/paris-d-hier/statues/autres-statues/2371-la-statue-de-voltaire",
+          "https://www.lecurieuxdesarts.fr/2024/06/en-catimini-la-statue-de-voltaire-reinstallee-a-paris.html",
+          "https://www.culture.gouv.fr/presse/deplacement-ministre/deplacement-de-mme-rachida-dati-ministre-de-la-culture-au-square-honore-champion-a-paris-a-l-occasion-de-la-reinstallation-du-voltaire-de-leon"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue de Rivoli",
+    "short_description": "Long arcaded thoroughfare decreed by Napoleon in 1801 and named for his 1797 victory at the Battle of Rivoli, running along the Louvre and Tuileries.",
+    "name_variations": [
+      "Rivoli Street",
+      "rue de Rivoli"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue de Rivoli, 75001/75004 Paris (1st and 4th arrondissements)",
+      "discovery_sources": [
+        "Wikipedia",
+        "Napoleon.org",
+        "Paris Je T'aime",
+        "Bonjour Paris"
+      ],
+      "discovery_notes": "One of Paris's most famous shopping and ceremonial streets, running from Place de la Concorde to the Marais and lined with Percier-and-Fontaine arcades.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_de_Rivoli",
+          "https://www.napoleon.org/en/magazine/places/rue-rivoli-paris/",
+          "https://parisjetaime.com/eng/transport/rue-de-rivoli-paris-p4672"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Place des Pyramides",
+    "short_description": "Square at Rue de Rivoli holding Emmanuel Frémiet's 1874 gilded equestrian statue of Joan of Arc, near the spot where she was wounded in her 1429 attempt to take Paris.",
+    "name_variations": [
+      "Joan of Arc Square",
+      "Pyramides Square"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place des Pyramides, Rue de Rivoli, 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "TripAdvisor",
+        "Un Jour de Plus à Paris",
+        "The Parisian Guide"
+      ],
+      "discovery_notes": "Royalist and Catholic pilgrimage point centred on the gilded Joan of Arc statue; popular Instagram spot just off Rue de Rivoli at the Tuileries.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Jeanne_d'Arc_(Fr%C3%A9miet)",
+          "https://www.unjourdeplusaparis.com/en/paris-insolite/statue-jeanne-darc-place-pyramides",
+          "https://www.theparisianguide.com/s/statue-of-joan-of-arc/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Quartier de l'Horloge",
+    "short_description": "Modernist 1970s redevelopment north of the Pompidou Centre, named for Jacques Monestier's 1979 bronze automaton clock 'Le Défenseur du Temps' on Rue Bernard de Clairvaux.",
+    "name_variations": [
+      "Horloge Quarter",
+      "Clock Quarter",
+      "Le Défenseur du Temps neighbourhood"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "8 Rue Bernard de Clairvaux, 75003 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Bonjour Paris",
+        "Secrets of Paris",
+        "Sortir à Paris",
+        "Travel France Online"
+      ],
+      "discovery_notes": "The four-metre brass automaton clock fights a rooster, crab and dragon hourly — a quirky kinetic sculpture restored in 2022–23 after years of silence.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Le_D%C3%A9fenseur_du_Temps",
+          "https://secretsofparis.com/art-artists/defenseur-du-temps/",
+          "https://bonjourparis.com/archives/quartier-horloge-clockwatching-paris-third/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Charles V",
+    "short_description": "Quiet Marais street named for Charles V, who in the 14th century moved his royal residence to the nearby Hôtel Saint-Pol and triggered the district's transformation from marsh to noble quarter.",
+    "name_variations": [
+      "Charles V Street"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Charles V, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia (The Marais)",
+        "MIJE",
+        "Evendo",
+        "Paris Marais"
+      ],
+      "discovery_notes": "Backstreet of the southern Marais lined with discreet 17th-century hôtels particuliers; useful axis between Place des Vosges and the Bastille area.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/The_Marais",
+          "https://www.parismarais.com/en/discover-the-marais/history-of-the-marais/historical-marais.html",
+          "https://www.mije.com/en/youth-hostel-in-paris/marais-district/history-3-4-arrondissements"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue de Lappe",
+    "short_description": "Working-class Bastille street that became the heartland of the bal-musette accordion-dance scene from 1900, home to Balajo and once over a dozen rowdy dance halls.",
+    "name_variations": [
+      "Lappe Street",
+      "Rue de la Bastoche"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue de Lappe, 75011 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Brassaï/Holden Luntz",
+        "INA Fresques",
+        "Paris Best Lodge",
+        "Grokipedia"
+      ],
+      "discovery_notes": "Auvergnat immigrants brought the cabrette and accordion here; Brassaï photographed its smoky bals in the 1930s and Balajo still operates at no. 9.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Rue_de_Lappe",
+          "https://www.holdenluntz.com/magazine/photo-spotlight/brassai-la-bastoche-and-le-bal-des-quatre-saisons/",
+          "https://fresques.ina.fr/danses-sans-visa-en/fiche-media/Dasavi00705/history-of-the-bals-musette-dances-with-accordion-music.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Fouquet's",
+    "short_description": "Red-awninged brasserie founded by Louis Fouquet in 1899, listed as a French historical monument since 1990 and host of the annual post-César Awards dinner.",
+    "name_variations": [
+      "Le Fouquet's",
+      "Brasserie Fouquet's",
+      "Fouquet's Paris"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "99 Avenue des Champs-Élysées, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Hôtels Barrière",
+        "Paris Je T'aime",
+        "TripAdvisor",
+        "Visit Paris Region"
+      ],
+      "discovery_notes": "Long-time hangout of French film and political elites at the corner of Champs-Élysées and Avenue George V; iconic Parisian power-lunch venue.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Fouquet's",
+          "https://www.hotelsbarriere.com/en/collection-fouquet-s/paris/restaurants-and-bars/brasserie-fouquet-s-paris",
+          "https://parisjetaime.com/eng/restaurant/fouquet-s-paris-p3348"
+        ]
+      },
+      "parent_poi": "Champs-Elysees"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rimbaud Statue (Sully Morland)",
+    "short_description": "Bronze 'L'Homme aux semelles devant' by Jean-Robert Ipoustéguy, inaugurated in 1984 at Place du Père-Teilhard-de-Chardin, its title a pun on Rimbaud's nickname 'man with soles of wind'.",
+    "name_variations": [
+      "L'Homme aux semelles devant",
+      "Statue d'Arthur Rimbaud",
+      "Hommage à Rimbaud",
+      "L'Homme aux semelles de vent (nickname source)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Père-Teilhard-de-Chardin, near Boulevard Henri-IV, 75004 Paris (statue relocated in 2018 to the Musée de la Sculpture en Plein Air at Port Saint-Bernard / Square Tino-Rossi, 75005 Paris)",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paristoric",
+        "TripAdvisor",
+        "Paris au fil des rues",
+        "Art@Site"
+      ],
+      "discovery_notes": "One of the few public sculptures of Rimbaud in Paris; the wind-pun pose makes it a literary-tour anchor near Sully-Morland metro.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/L'Homme_aux_semelles_devant",
+          "https://www.paristoric.com/index.php/paris-d-hier/statues/autres-statues/2354-la-statue-de-rimbaud",
+          "https://parisaufildesrues.wordpress.com/2015/09/25/arthur-rimbaud-lhomme-aux-semelles-devant/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Église Saint-Pierre de Montmartre",
+    "short_description": "Romanesque-Gothic church begun in 1133 and consecrated by Pope Eugenius III in 1147, the surviving sanctuary of the destroyed Montmartre Abbey and one of the oldest churches in Paris.",
+    "name_variations": [
+      "Saint Peter of Montmartre",
+      "Église Saint-Pierre",
+      "St-Pierre de Montmartre",
+      "Eglise Saint-Pierre de Montmartre"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 Rue du Mont-Cenis, 75018 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "French Moments",
+        "Travel France Online",
+        "Sortir à Paris",
+        "The Parisian Guide"
+      ],
+      "discovery_notes": "Hidden behind Sacré-Cœur on the western flank of the butte and often missed by tourists despite being effectively the second oldest church in Paris.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Saint-Pierre_de_Montmartre",
+          "https://frenchmoments.eu/eglise-saint-pierre-de-montmartre-paris/",
+          "https://www.travelfranceonline.com/saint-pierre-de-montmartre-church/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Lapin Agile",
+    "short_description": "Surviving Montmartre cabaret on the slope behind Sacré-Cœur, taking its name from André Gill's 1875 painted sign of a rabbit leaping from a saucepan and immortalized by Picasso's 1905 painting.",
+    "name_variations": [
+      "Au Lapin Agile",
+      "Cabaret des Assassins",
+      "Au rendez-vous des voleurs",
+      "Le Lapin à Gill",
+      "Nimble Rabbit Cabaret"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "22 Rue des Saules, 75018 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Met Museum",
+        "Sortir à Paris",
+        "Bonjour Paris",
+        "Montmartre Footsteps"
+      ],
+      "discovery_notes": "Picasso, Modigliani, Apollinaire and Utrillo all drank here during the Bohemian heyday; still operating nightly chanson cabaret.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Au_Lapin_Agile",
+          "https://www.metmuseum.org/art/collection/search/486162",
+          "https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/332828-history-lapin-agile-cabaret-mythique-montmartre-boheme-artistique-paris-18"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Musée Nissim de Camondo",
+    "short_description": "Petit-Trianon-inspired mansion built 1911–14 by Count Moïse de Camondo to display 18th-century French furniture, bequeathed in memory of his son killed in WWI and family later murdered at Auschwitz.",
+    "name_variations": [
+      "Nissim de Camondo Museum",
+      "Hôtel Camondo",
+      "Musée Camondo"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "63 Rue de Monceau, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Google Arts & Culture",
+        "Stroum Center for Jewish Studies",
+        "The Parisian Guide",
+        "Paris Je T'aime"
+      ],
+      "discovery_notes": "Frozen-in-time hôtel particulier whose family tragedy is one of the most poignant Jewish-Parisian stories; closed for renovation, scheduled to reopen 2026.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Mus%C3%A9e_Nissim_de_Camondo",
+          "https://artsandculture.google.com/partner/musee-nissim-de-camondo",
+          "https://jewishstudies.washington.edu/arts-culture/ottoman-jew-in-paris-moise-de-camondo/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Musée Jacquemart-André",
+    "short_description": "Second Empire mansion built 1869–1875 by architect Henri Parent for banker Édouard André and painter Nélie Jacquemart, opened as a museum in 1913 with their Italian Renaissance and 18th-century French collection.",
+    "name_variations": [
+      "Jacquemart-André Museum",
+      "Hôtel Jacquemart-André",
+      "Musée Jacquemart André"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "158 Boulevard Haussmann, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Visit Paris Region",
+        "TripAdvisor",
+        "Paris Je T'aime",
+        "Sortir à Paris"
+      ],
+      "discovery_notes": "Combines a lavishly preserved aristocratic interior with a small but exceptional Italian Renaissance gallery — a stronger candidate than larger museums for art-lover off-trail tours.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Mus%C3%A9e_Jacquemart-Andr%C3%A9",
+          "https://parisjetaime.com/eng/culture/musee-jacquemart-andre-p3481",
+          "https://pro.visitparisregion.com/en/offre-everything-paris-region-has-to-offer/things-to-do/highlights-major-sites/museums-monuments-chateaux/museums/the-jacquemart-andre-museum"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Passage Poncelet",
+    "short_description": "Small 17th-arrondissement passage running between 27 Rue Poncelet and 12 Rue Laugier, named for mathematician Jean-Victor Poncelet and adjacent to the famed Marché Poncelet open-air market.",
+    "name_variations": [
+      "Cité Lamoureux (former name)",
+      "Poncelet Passage"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Passage Poncelet (27 Rue Poncelet to 12 Rue Laugier), 75017 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Bercail",
+        "France Today (Marché Poncelet)",
+        "MyrtiWorld",
+        "Paris Plus Plus"
+      ],
+      "discovery_notes": "Quiet pedestrian passage at the heart of the Ternes food-shopping district; pairs naturally with the celebrated Rue Poncelet market for a 17e gastronomy stop.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Passage_Poncelet",
+          "https://fr.wikipedia.org/wiki/Rue_Poncelet",
+          "https://francetoday.com/culture/shopping-boutiques/rue-poncelet-and-its-fine-open-air-market/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Pont de la Concorde",
+    "short_description": "Late-18th-century Seine arch bridge built partly with masonry from the demolished Bastille, linking Place de la Concorde to the Assemblée Nationale.",
+    "name_variations": [
+      "Pont Louis XVI",
+      "Pont de la Révolution",
+      "Concorde Bridge"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Pont de la Concorde, 75007 / 75008 Paris (between Quai des Tuileries and Quai d'Orsay)",
+      "discovery_sources": [
+        "Wikipedia",
+        "Britannica",
+        "Atlas Obscura",
+        "Sortiraparis"
+      ],
+      "discovery_notes": "Symbolic Revolution-era bridge incorporating Bastille stones; key sightline between Concorde and the National Assembly.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Pont_de_la_Concorde_(Paris)",
+          "https://www.britannica.com/topic/Pont-de-la-Concorde",
+          "https://www.atlasobscura.com/places/pont-de-la-concorde"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Cimetière de Passy",
+    "short_description": "Small aristocratic Right-Bank cemetery opened in 1820 with an Art Deco entrance and burials including Debussy, Manet, Givenchy, and Berthe Morisot.",
+    "name_variations": [
+      "Passy Cemetery",
+      "Cimetiere de Passy"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 rue du Commandant Schloesing, 75116 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris.fr",
+        "TripAdvisor",
+        "Find a Grave"
+      ],
+      "discovery_notes": "Compact cemetery with very high famous-burial density per square metre, near Trocadéro — strong fit for Hidden History and Music Heritage lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Passy_Cemetery",
+          "https://www.paris.fr/lieux/cimetiere-de-passy-4481",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d232108-Reviews-Cimetiere_de_Passy-Paris_Ile_de_France.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Pont d'Iéna",
+    "short_description": "Napoleonic five-arch stone bridge of 1808–1814 linking the Eiffel Tower to the Trocadéro Gardens, pedestrianised since the 2024 Olympics.",
+    "name_variations": [
+      "Pont d'Iena",
+      "Iéna Bridge",
+      "Jena Bridge",
+      "Pont de l'École Militaire"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Pont d'Iéna, 75007 / 75016 Paris (between Quai Branly and Port de la Bourdonnais)",
+      "discovery_sources": [
+        "Wikipedia",
+        "Sortiraparis",
+        "TripAdvisor",
+        "TheParisianGuide"
+      ],
+      "discovery_notes": "Iconic Eiffel Tower–Trocadéro axis bridge; commemorates Napoleon's 1806 victory at Jena and once threatened with demolition by Blücher.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Pont_d'I%C3%A9na",
+          "https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/173592-history-of-the-iena-bridge",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d1991147-Reviews-Pont_d_Iena-Paris_Ile_de_France.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Opéra Bastille",
+    "short_description": "Carlos Ott-designed modern opera house inaugurated on 13 July 1989 with 2,745 seats, the principal stage of the Opéra national de Paris.",
+    "name_variations": [
+      "Opera Bastille",
+      "Opéra national de Paris - Bastille",
+      "Bastille Opera"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "120 rue de Lyon, 75012 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Opéra national de Paris",
+        "Paris je t'aime",
+        "Eutouring"
+      ],
+      "discovery_notes": "Bicentenary commission by Mitterrand on the site of the former Bastille railway station; principal venue of the Paris Opera.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://www.operadeparis.fr/en/visits/opera-bastille",
+          "https://parisjetaime.com/eng/culture/opera-national-de-paris-opera-bastille-p3565",
+          "https://www.eutouring.com/opera_bastille_in_paris.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue du Pas-de-la-Mule",
+    "short_description": "Short Marais street built in 1604 alongside Place des Vosges, named after a mounting block once used by nobles arriving on muleback at the Château des Tournelles.",
+    "name_variations": [
+      "rue du Pas de la Mule",
+      "rue Royale (former)",
+      "petite rue Royale (former)",
+      "rue des Vosges (former)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue du Pas-de-la-Mule, 75003 / 75004 Paris (from 31 boulevard Beaumarchais to 22 Place des Vosges)",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paris Musées (Carnavalet)",
+        "Paristoric",
+        "The Parisienne"
+      ],
+      "discovery_notes": "Hinge street between boulevard Beaumarchais and Place des Vosges; preserved 17th-century fabric of the original Marais grid.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Rue_du_Pas-de-la-Mule",
+          "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/place-des-vosges-intersection-avec-la-rue-du-pas-de-la-mule",
+          "https://www.theparisienne.fr/2016/08/a-la-decouverte-de-la-rue-du-pas-de-la-mule/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Quai de la Mégisserie",
+    "short_description": "Right-bank Seine quay laid out in 1369, long known for the leather tanners and bird-and-pet shops that still cluster between Châtelet and the Pont Neuf.",
+    "name_variations": [
+      "Quai de la Megisserie",
+      "Quai de la Saunerie (former)",
+      "Quai de la Ferraille (former)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Quai de la Mégisserie, 75001 Paris (between Pont au Change and Pont Neuf)",
+      "discovery_sources": [
+        "Paris ZigZag",
+        "Jardins à l'Anglaise",
+        "Yelp",
+        "Pages Jaunes"
+      ],
+      "discovery_notes": "Atmospheric riverside walk lined with garden and pet shops; one of the oldest commercial quays in Paris.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.pariszigzag.fr/sortir-paris/balade-paris/entre-faune-et-flore-sur-le-quai-de-la-megisserie/",
+          "https://jardinsalanglaise.wordpress.com/2013/11/05/quai-de-la-megisserie-paris/",
+          "https://www.yelp.com/biz/oisellerie-du-pont-neuf-paris"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Sauval",
+    "short_description": "Short street near Les Halles whose No. 2 is traditionally identified as the birthplace of Molière in 1622.",
+    "name_variations": [
+      "rue Sauval",
+      "rue des Vieilles-Étuves-Saint-Honoré (former)",
+      "rue de Varennes-Halles-au-Blé (former)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Sauval, 75001 Paris (between rue Saint-Honoré and rue Coquillière)",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paris Musées (Carnavalet)",
+        "Paris Pittoresque",
+        "Archi-blog"
+      ],
+      "discovery_notes": "Reputed birthplace of Molière (No. 2) and a remnant of the medieval street pattern around the old Halles.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Rue_Sauval",
+          "https://www.paris-pittoresque.com/rues/119.htm",
+          "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/halle-au-ble-rue-coquilliere-prise-de-la-rue-sauval-5-aout-1887-1er"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Place du Marché Sainte-Catherine",
+    "short_description": "Quiet rectangular Marais square laid out in 1784 on the site of a demolished 13th-century priory and used as an open-air market until 1939.",
+    "name_variations": [
+      "Place du Marché Ste Catherine",
+      "Place du Marche Ste Catherine",
+      "Place du Marché-Sainte-Catherine",
+      "Place Sainte-Catherine"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Marché Sainte-Catherine, 75004 Paris (off rue Saint-Antoine)",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Lonely Planet",
+        "Urbansider",
+        "Paris la douce"
+      ],
+      "discovery_notes": "Pedestrian café square hidden a few steps off rue Saint-Antoine; classic Marais 'secret place' frequently in walking-tour itineraries.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Place_du_March%C3%A9-Sainte-Catherine",
+          "https://www.lonelyplanet.com/france/paris/marais-and-menilmontant/attractions/place-du-marche-ste-catherine/a/poi-sig/1591387/1322812",
+          "https://www.urbansider.com/sightseeing/place-du-marche-sainte-catherine/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Théâtre de la Ville",
+    "short_description": "Davioud-designed 1862 theatre on Place du Châtelet that Sarah Bernhardt directed for 24 years and which reopened after renovation in 2023 as the Théâtre de la Ville - Sarah Bernhardt.",
+    "name_variations": [
+      "Théâtre de la Ville - Sarah Bernhardt",
+      "Théâtre Sarah-Bernhardt",
+      "Théâtre de la Cité (1940s)",
+      "Théâtre Lyrique (original)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 place du Châtelet, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Théâtre de la Ville official site",
+        "Paris je t'aime",
+        "Visit Paris Region"
+      ],
+      "discovery_notes": "Twin Châtelet theatre indelibly tied to Sarah Bernhardt's late career, with a rich Belle Époque and contemporary-dance programming history.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Th%C3%A9%C3%A2tre_de_la_Ville",
+          "https://www.theatredelaville-paris.com/en/le-theatre-de-la-ville/l-histoire-59a00fac5efee",
+          "https://parisjetaime.com/eng/culture/theatre-de-la-ville-chatelet-p1140"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Passage Saint-Paul",
+    "short_description": "Quiet Marais passageway running from rue Saint-Paul to a side entrance of the Saint-Paul-Saint-Louis church, on land once part of the Hôtel de la Rochepot.",
+    "name_variations": [
+      "Passage Saint Paul"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Passage Saint-Paul, 75004 Paris (from 43 rue Saint-Paul to the side door of Saint-Paul-Saint-Louis)",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paris Musées (Carnavalet)",
+        "Mappy",
+        "Village Saint-Paul"
+      ],
+      "discovery_notes": "Concealed pedestrian shortcut through the Village Saint-Paul antiques district; a hidden Marais tour beat.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Passage_Saint-Paul",
+          "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/passage-saint-paul-49-rue-saint-paul-4eme-arrondissement-paris",
+          "https://levillagesaintpaul.com/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Port de l'Arsenal",
+    "short_description": "Former cargo basin converted in 1983 into a 177-berth pleasure-boat marina linking the Bastille end of the Canal Saint-Martin to the Seine.",
+    "name_variations": [
+      "Port de Plaisance de Paris-Arsenal",
+      "Bassin de l'Arsenal",
+      "Paris-Arsenal Marina"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "11 boulevard de la Bastille, 75012 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris.fr",
+        "Paris je t'aime",
+        "Eutouring"
+      ],
+      "discovery_notes": "Tree-lined leisure marina at the foot of the Bastille — gateway between the Seine and Canal Saint-Martin and a popular waterside walk.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Bassin_de_l'Arsenal",
+          "https://www.paris.fr/lieux/port-de-l-arsenal-19156",
+          "https://parisjetaime.com/eng/transport/port-de-l-arsenal-p1888"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Colonne de Juillet",
+    "short_description": "47-metre bronze column at the centre of Place de la Bastille (1835–1840) commemorating the Trois Glorieuses of July 1830, with a crypt holding the remains of 615 revolution victims.",
+    "name_variations": [
+      "July Column",
+      "Colonne de Juillet",
+      "Génie de la Liberté (figure on top)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place de la Bastille, 75004 / 75011 / 75012 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris je t'aime",
+        "Un jour de plus à Paris",
+        "TripAdvisor"
+      ],
+      "discovery_notes": "Centerpiece of the Place de la Bastille; commemorates the 1830 revolution and serves as a rallying point for political demonstrations.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/July_Column",
+          "https://parisjetaime.com/eng/culture/colonne-de-juillet-p1853",
+          "https://www.unjourdeplusaparis.com/en/paris-insolite/colonne-de-juillet-bastille"
+        ]
+      },
+      "parent_poi": "Place de la Bastille"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Statue de Beaumarchais",
+    "short_description": "1895 bronze statue by Louis Clausade depicting the playwright Pierre-Augustin Caron de Beaumarchais arms-crossed, inaugurated in 1897 near his former Marais residence.",
+    "name_variations": [
+      "Beaumarchais Statue",
+      "Monument à Beaumarchais",
+      "Statue de Pierre-Augustin Caron de Beaumarchais"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Square at the corner of rue Saint-Antoine and rue des Tournelles, 75004 Paris (near 4 boulevard Beaumarchais)",
+      "discovery_sources": [
+        "Paris Musées (Carnavalet)",
+        "e-monumen.net",
+        "Vivre le Marais",
+        "TripAdvisor"
+      ],
+      "discovery_notes": "Discreet bronze tribute to the author of The Marriage of Figaro, sited near his former Marais home; a quiet stop linking literary and revolutionary lenses.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.parismuseescollections.paris.fr/fr/musee-carnavalet/oeuvres/statue-de-pierre-augustin-caron-de-beaumarchais-1732-1799-rue-saint-antoine",
+          "https://e-monumen.net/patrimoine-monumental/monument-a-beaumarchais-paris-4e-arr/",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d11718629-Reviews-Statue_de_Beaumarchais-Paris_Ile_de_France.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Restaurant Bofinger",
+    "short_description": "Belle Epoque Alsatian brasserie founded in 1864, said to be the first establishment in Paris to serve draught beer, crowned by a stained-glass dome.",
+    "name_variations": [
+      "Bofinger",
+      "Brasserie Bofinger"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "5-7 Rue de la Bastille, 75004 Paris",
+      "discovery_sources": [
+        "TripAdvisor",
+        "Yelp",
+        "Sortiraparis",
+        "Paris by Mouth"
+      ],
+      "discovery_notes": "Paris's oldest Alsatian brasserie, famed for its choucroute and Belle Epoque interior — strong Food & Culinary Culture and Historic Architecture candidate.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://www.bofingerparis.com/en/",
+          "https://en.wikipedia.org/wiki/Bofinger",
+          "https://www.sortiraparis.com/en/where-to-eat-in-paris/restaurant/articles/334682-history-restaurant-bofinger-paris-4"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Marché Bastille",
+    "short_description": "Open-air food market stretching along Boulevard Richard-Lenoir on Thursdays and Sundays, one of the largest in Paris with the Colonne de Juillet as its backdrop.",
+    "name_variations": [
+      "Marché Richard Lenoir",
+      "Bastille Market",
+      "Marché Richard-Lenoir",
+      "Marché alimentaire Bastille"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Boulevard Richard-Lenoir (between Rue Amelot and Rue Saint-Sabin), 75011 Paris",
+      "discovery_sources": [
+        "TripAdvisor",
+        "Yelp",
+        "Visit Paris Region",
+        "Paris Je T'aime"
+      ],
+      "discovery_notes": "One of the biggest open-air markets in central Paris, popular with both locals and tourists for produce, seafood and flowers.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://www.visitparisregion.com/en/marche-bastille",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d3249136-Reviews-Bastille_Market-Paris_Ile_de_France.html",
+          "https://parisjetaime.com/eng/shopping/marche-bastille-p2267"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Cour Damoye",
+    "short_description": "Private cobbled passage off the Place de la Bastille, opened in 1780 on the old Saint-Antoine glacis and once filled with wagon repair and faubourg craft workshops.",
+    "name_variations": [
+      "Cour Damoye"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "12 Place de la Bastille to 12 Rue Daval, 75011 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paris ZigZag",
+        "Pariste.Net",
+        "Paris Secret"
+      ],
+      "discovery_notes": "Hidden artisan courtyard moments from the Bastille traffic — strong Hidden History and Art & Street Culture candidate.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Cour_Damoye",
+          "https://www.pariszigzag.fr/insolite/lieux-insolites/cour-damoye-bastille-paris/",
+          "https://www.pariste.net/en/a-secret-passage-in-the-bastille-cour-damoye/"
+        ]
+      },
+      "parent_poi": "Place de la Bastille"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Barrio Latino",
+    "short_description": "Multi-level Cuban-themed bar, restaurant and dance club that opened near Opéra Bastille in 1999 and was rebranded as Pachamama at the same address.",
+    "name_variations": [
+      "Pachamama",
+      "Barrio Latino - Bar Cubain"
+    ],
+    "kid_friendly": "no",
+    "_pipeline": {
+      "address": "46-48 Rue du Faubourg Saint-Antoine, 75012 Paris",
+      "discovery_sources": [
+        "Yelp",
+        "Sortiraparis",
+        "Foursquare",
+        "EuTouring"
+      ],
+      "discovery_notes": "Once a four-floor Latin nightlife landmark by the Bastille, now operating as Pachamama; useful for nightlife and Faubourg Saint-Antoine context.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.yelp.com/biz/barrio-latino-paris",
+          "https://www.sortiraparis.com/en/where-to-eat-in-paris/bars-cafes/articles/154431-barrio-latino-becomes-pachamama-in-paris",
+          "https://www.eutouring.com/barrio_latino_in_paris.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Passage du Chantier",
+    "short_description": "Cobbled passageway off Rue du Faubourg Saint-Antoine that still houses some of the last cabinetmaker and furniture workshops of the historic faubourg.",
+    "name_variations": [
+      "Passage du Chantier"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "66 Rue du Faubourg Saint-Antoine, 75012 Paris",
+      "discovery_sources": [
+        "France Today",
+        "Paris Je T'aime",
+        "Un jour de plus à Paris",
+        "Wikipedia"
+      ],
+      "discovery_notes": "A surviving fragment of the faubourg's 17th-century furniture trade, lined with active ateliers — strong candidate for Hidden History and Shopping & Markets.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://francetoday.com/culture/art_and_design/parisian-walkways-faubourg-saint-antoine-the-heart-of-fine-french-cabinet-making/",
+          "https://parisjetaime.com/eng/transport/faubourg-saint-antoine-p1876",
+          "https://www.unjourdeplusaparis.com/en/paris-reportage/cours-et-passages-du-faubourg-saint-antoine"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Quinze-Vingts National Ophthalmology Hospital",
+    "short_description": "National eye hospital founded in 1260 by Louis IX as a hospice for 300 blind Parisians, relocated in 1779 to the former Black Musketeers barracks on Rue de Charenton.",
+    "name_variations": [
+      "Hôpital des Quinze-Vingts",
+      "Centre Hospitalier National d'Ophtalmologie des Quinze-Vingts",
+      "CHNO des Quinze-Vingts",
+      "15-20 National Eye Hospital"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "28 Rue de Charenton, 75012 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Wikipedia (FR)",
+        "World Association of Eye Hospitals",
+        "University of Antwerp"
+      ],
+      "discovery_notes": "One of the oldest continually operating hospitals in Europe and home to the Vision Institute — bridges Hidden History, Religious & Spiritual Sites and Science & Innovation.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Quinze-Vingts_National_Ophthalmology_Hospital",
+          "https://fr.wikipedia.org/wiki/H%C3%B4pital_des_Quinze-Vingts",
+          "https://www.waeh.org/news/introduction-to-the-15-20-national-eye-hospital-new-full-member-of-the-waeh/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Viaduc des Arts",
+    "short_description": "Mid-19th-century railway viaduct converted in the 1990s into a row of artisan workshops in glass, jewellery and furniture, beneath the elevated Promenade Plantee.",
+    "name_variations": [
+      "Le Viaduc des Arts",
+      "Viaduc de Bastille",
+      "Bastille Viaduct"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "1-129 Avenue Daumesnil, 75012 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Britannica",
+        "Travel France Online",
+        "Le Viaduc des Arts (official)"
+      ],
+      "discovery_notes": "Iconic Paris adaptive-reuse project pairing crafts and a green roof — strong Modern & Contemporary Design and Shopping & Markets candidate.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Viaduc_des_Arts",
+          "https://www.britannica.com/place/Promenade-Plantee",
+          "https://www.leviaducdesarts.com/en/the-viaduc-des-arts"
+        ]
+      },
+      "parent_poi": "Promenade Plantee"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Roger-Viollet Photo Agency",
+    "short_description": "Photographic agency founded in 1938 by Hélène Roger-Viollet that holds more than two million images covering 150 years of Parisian and world history.",
+    "name_variations": [
+      "Agence Roger-Viollet",
+      "Galerie Roger-Viollet",
+      "Documentation Photographique Générale Roger-Viollet"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "6 Rue de Seine, 75006 Paris",
+      "discovery_sources": [
+        "Roger-Viollet (official)",
+        "Galerie Roger-Viollet",
+        "Digital Meets Culture",
+        "L'Oeil de la Photographie"
+      ],
+      "discovery_notes": "A pillar of Paris photographic memory, now an archive and gallery on the Left Bank — fits Art & Street Culture and Literary & Film Locations adjacency.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.roger-viollet.fr/qui-sommes-nous",
+          "https://www.galerie-roger-viollet.fr/en/Roger-Viollet-photo-agency",
+          "https://www.digitalmeetsculture.net/article/roger-viollet/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "George Sand's House (31 Rue de Seine)",
+    "short_description": "Saint-Germain townhouse where novelist George Sand lived in 1831; the same building later hosted Raymond Duncan's Akademia from 1929 to 1966.",
+    "name_variations": [
+      "Maison de George Sand",
+      "31 Rue de Seine",
+      "Akademia Raymond Duncan"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "31 Rue de Seine, 75006 Paris",
+      "discovery_sources": [
+        "Open Plaques",
+        "Historical Marker Database (HMDB)",
+        "Tony Shaw - Literary Île-de-France"
+      ],
+      "discovery_notes": "A façade-only literary stop on Rick Steves' Left Bank walk, marking Sand's bohemian Paris years — Literary & Film Locations.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://openplaques.org/plaques/10801",
+          "https://www.hmdb.org/m.asp?m=199801",
+          "http://tonyshaw3.blogspot.com/2011/12/literary-ile-de-france-49-george-sand.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Café la Palette",
+    "short_description": "Artist-favoured Left Bank café opened in 1902 next to the École des Beaux-Arts, with a Belle Epoque storefront and 1930s ceramic interior listed as a historic monument since 1984.",
+    "name_variations": [
+      "La Palette",
+      "Café La Palette"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "43 Rue de Seine, 75006 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris Je T'aime",
+        "Secrets of Paris",
+        "Petit Futé"
+      ],
+      "discovery_notes": "Cézanne, Picasso and Hemingway-era hangout still drawing artists and tourists — Food & Culinary Culture plus Art & Street Culture.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/La_Palette",
+          "https://parisjetaime.com/eng/restaurant/la-palette-p628",
+          "https://lapalette-paris.com/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Richard Wagner's House (14 Rue Jacob)",
+    "short_description": "Saint-Germain residence where composer Richard Wagner lived from October 1841 to April 1842 and wrote the overture to The Flying Dutchman, marked today by a commemorative plaque.",
+    "name_variations": [
+      "14 Rue Jacob",
+      "Plaque Richard Wagner"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "14 Rue Jacob, 75006 Paris",
+      "discovery_sources": [
+        "Le Musée Virtuel Richard Wagner",
+        "Musicalics",
+        "HMDB",
+        "La Vie Wagnérienne"
+      ],
+      "discovery_notes": "A Music Heritage façade stop tied to the genesis of The Flying Dutchman; plaque unveiled by the Paris Wagner Circle in 2000.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://richard-wagner-web-museum.com/publications/1841-2/",
+          "https://musicalics.com/en/place/14-rue-Jacob",
+          "https://www.hmdb.org/m.asp?m=195775"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Palais Abbatial de Saint-Germain-des-Prés",
+    "short_description": "Brick-and-stone abbatial palace built in 1586 for Cardinal Charles de Bourbon, an early Parisian example of the style that would later define Place Dauphine and Place des Vosges.",
+    "name_variations": [
+      "Abbey Mansion",
+      "Hôtel de Furstemberg",
+      "Palais Abbatial",
+      "Abbots' Palace of Saint-Germain-des-Prés",
+      "Abbey Mansion (Rue de l'Abbaye)"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "3-5 Rue de l'Abbaye, 75006 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "POP Mérimée",
+        "Monumentum",
+        "Paris Promeneurs",
+        "Paris Musées"
+      ],
+      "discovery_notes": "Listed historic monument since 1959 and a precursor to Henri IV's Place Royale brick-and-stone vernacular — Historic Architecture and Religious & Spiritual Sites.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://pop.culture.gouv.fr/notice/merimee/PA00088651",
+          "https://monumentum.fr/monument-historique/pa00088651/paris-6e-arrondissement-palais-abbatial-de-saint-germain-des-pres-dit-hotel-de-furstemberg",
+          "https://paris-promeneurs.com/le-palais-abbatial-de-saint/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Hôtel de Crillon",
+    "short_description": "Five-star Rosewood-managed palace hotel in a 1758 Ange-Jacques Gabriel building where Benjamin Franklin signed the 1778 Franco-American treaty recognising US independence.",
+    "name_variations": [
+      "Hôtel Crillon",
+      "Hotel de Crillon, A Rosewood Hotel",
+      "Crillon"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "10 Place de la Concorde, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Rosewood Hotels",
+        "History Hit",
+        "Michelin Guide"
+      ],
+      "discovery_notes": "One of two Gabriel palaces fronting the Concorde, with a documented role in the Franco-American alliance — Historic Architecture, Hidden History and War & Revolution.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/H%C3%B4tel_de_Crillon",
+          "https://www.rosewoodhotels.com/en/hotel-de-crillon",
+          "https://www.historyhit.com/locations/hotel-de-crillon/"
+        ]
+      },
+      "parent_poi": "Place de la Concorde"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue des Francs-Bourgeois",
+    "short_description": "14th-century Marais shopping street whose name derives from a 1415 alms-house for tax-exempt poor 'francs-bourgeois' donated by the philanthropist Mazurier.",
+    "name_variations": [
+      "Rue des Poulies",
+      "Pulley Street",
+      "Bourgeoisie Franks Street",
+      "rue des Francs-Bourgeois"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue des Francs-Bourgeois, 75003/75004 Paris (runs between Rue des Archives and Place des Vosges)",
+      "discovery_sources": [
+        "Wikipedia",
+        "France Today",
+        "Paris Je t'aime",
+        "TripAdvisor"
+      ],
+      "discovery_notes": "Marais's premier shopping spine and one of the few Paris streets that historically opens on Sundays; lined with hôtels particuliers including Carnavalet and Lamoignon.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_des_Francs-Bourgeois",
+          "https://francetoday.com/travel/paris/read-the-signs-rue-des-francs-bourgeois-in-paris/",
+          "https://parisjetaime.com/eng/transport/rue-des-francs-bourgeois-p2039"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Hôtel de Chenizot",
+    "short_description": "1719 Île Saint-Louis mansion remodeled by Pierre Vigné de Vigny, where Archbishop Affre died in 1848 after being shot at a June Days barricade.",
+    "name_variations": [
+      "Hôtel Chenizot",
+      "Hotel de Chenizot"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "51 rue Saint-Louis-en-l'Île, 75004 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Ministère de la Culture POP",
+        "Monumentum",
+        "Paris Musées"
+      ],
+      "discovery_notes": "Classed historic monument with celebrated rocaille balcony; home to Madame Tallien before the Revolution and to metaphysician René Guénon 1904–1930.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/H%C3%B4tel_de_Chenizot",
+          "https://pop.culture.gouv.fr/notice/merimee/PA00086284",
+          "https://monumentum.fr/monument-historique/pa00086284/paris-4e-arrondissement-hotel-de-chenizot"
+        ]
+      },
+      "parent_poi": "Ile Saint-Louis"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Pont de la Tournelle",
+    "short_description": "1928 stone bridge linking Île Saint-Louis to the Left Bank, crowned by Paul Landowski's 14-metre statue of Saint Geneviève protecting a child Paris.",
+    "name_variations": [
+      "Tournelle Bridge"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Pont de la Tournelle, between Quai d'Orléans (Île Saint-Louis) and Quai de la Tournelle, 75005 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Un Jour de Plus à Paris",
+        "Paris.fr",
+        "Paul Landowski official"
+      ],
+      "discovery_notes": "Named for a tower of the Philippe-Auguste wall; replaced by current span after the 1910 flood. Landowski sulked at the inauguration because the statue did not face Notre-Dame.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Pont_de_la_Tournelle",
+          "https://www.unjourdeplusaparis.com/en/paris-culture/sainte-genevieve-pont-de-la-tournelle",
+          "https://www.paul-landowski.com/en/portfolio/sainte-genevieve/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Lepic",
+    "short_description": "Winding Montmartre street where Vincent and Theo van Gogh shared a third-floor flat at no. 54 from 1886 to 1888 and where Café des Deux Moulins doubled as Amélie's workplace at no. 15.",
+    "name_variations": [
+      "Rue de l'Empereur",
+      "Lepic Street"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Lepic, 75018 Paris (runs from Boulevard de Clichy to Place Jean-Baptiste-Clément)",
+      "discovery_sources": [
+        "Wikipedia",
+        "Van Gogh Route",
+        "Montmartre Footsteps",
+        "GPSmyCity"
+      ],
+      "discovery_notes": "Renamed in 1864 for General Louis Lepic; site of Louis Renault's 1898 Voiturette hill-climb wager and home to two surviving Montmartre windmills.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Rue_Lepic",
+          "https://vangoghroute.com/france/paris/rue-lepic/",
+          "https://montmartrefootsteps.com/theo-and-vincent-van-gogh-54-rue-lepic/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Maison Loo",
+    "short_description": "Ochre-red Chinese pagoda built in 1926 by dealer C.T. Loo from a Haussmann-era townhouse, now Europe's first Asian-art gallery and a private events venue.",
+    "name_variations": [
+      "Maison de Loo",
+      "Pagoda Paris",
+      "C.T. Loo Pagoda",
+      "Red Pagoda",
+      "La Pagode rouge"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "48 rue de Courcelles, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Pagoda Paris official",
+        "Untapped Paris",
+        "Paris la Douce"
+      ],
+      "discovery_notes": "Architect Fernand Bloch transformed the building for collector Ching Tsai Loo in 1925–26; classed monument historique in 2002/2006 for its 18th-century lacquer-panel salons.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Maison_de_Loo",
+          "http://www.pagodaparis.com/french/la_maison_loo.html",
+          "https://www.untappedcities.com/the-pagoda-paris-east-meets-west/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Hôtel Menier",
+    "short_description": "Second-Empire rotunda mansion built 1869–74 by Henri Parent for chocolate magnate Émile-Justin Menier and credited as Zola's model for the private hôtel in La Curée.",
+    "name_variations": [
+      "Hôtel Émile-Justin Menier",
+      "Menier Mansion"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "5 avenue Van-Dyck, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Paris-Promeneurs",
+        "Évous",
+        "Alamy"
+      ],
+      "discovery_notes": "Sculpted façade attributed to Jules Dalou faces Parc Monceau; the Menier 'M' monogram is still visible on the rotunda. Now subdivided into private apartments.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/H%C3%B4tel_Menier",
+          "https://paris-promeneurs.com/l-hotel-menier/",
+          "https://www.evous.fr/Un-Empire-en-Chocolat-la-dynastie-Meunier,1166783.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Église de la Sainte-Trinité",
+    "short_description": "Neo-Renaissance Second-Empire church (1861–67) by Théodore Ballu with a 65-metre belfry, where Olivier Messiaen served as organist for 61 years until 1992.",
+    "name_variations": [
+      "Sainte-Trinité de Paris",
+      "Trinity Church Paris",
+      "Trinite Church",
+      "La Trinité"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "3 rue de la Trinité (Place d'Estienne d'Orves), 75009 Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Wikipedia (FR)",
+        "Napoleon.org",
+        "Patrimoine-Histoire"
+      ],
+      "discovery_notes": "Built as part of Haussmann's Chaussée d'Antin renewal; served as a hospital during the 1870 Siege of Paris.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Sainte-Trinit%C3%A9,_Paris",
+          "https://fr.wikipedia.org/wiki/%C3%89glise_de_la_Sainte-Trinit%C3%A9_de_Paris",
+          "https://www.napoleon.org/magazine/lieux/eglise-de-la-trinite-paris/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "InterContinental Paris Le Grand",
+    "short_description": "Five-star hotel inaugurated by Empress Eugénie in 1862 facing the Palais Garnier, financed by the Pereire brothers ahead of the 1867 Universal Exhibition.",
+    "name_variations": [
+      "Le Grand Hôtel",
+      "Grand Hôtel de Paris",
+      "Le Grand Hotel Paris",
+      "Intercontinental Le Grand Hotel"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 rue Scribe, 75009 Paris",
+      "discovery_sources": [
+        "IHG official",
+        "Historic Hotels Then & Now",
+        "SortirAParis",
+        "Trip Reporter"
+      ],
+      "discovery_notes": "Houses the Salon Opéra ballroom under a 14-metre glass canopy; the rue Scribe entrance has been the main door since 1905.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://parislegrand.intercontinental.com/en/la-verriere/",
+          "http://www.historichotelsthenandnow.com/grandparis.html",
+          "https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/300868-did-you-know-the-intercontinental-paris-le-grand-boasts-a-sublime-ballroom-and-glass-roof"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Impasse Sandrié",
+    "short_description": "Short cul-de-sac opened in 1775 on land leased by the Mathurins to Jérôme Sandrié, today housing a former Calmann-Lévy printing works structured by Gustave Eiffel.",
+    "name_variations": [
+      "Cul-de-sac Cendrier",
+      "Passage Sandrié",
+      "Impasse Sandrie"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Impasse Sandrié, 75009 Paris (between Place Charles-Garnier and Square de l'Opéra-Louis-Jouvet)",
+      "discovery_sources": [
+        "Wikipedia (FR)",
+        "Tellnoo",
+        "Le Shack official",
+        "LinkFang"
+      ],
+      "discovery_notes": "Hidden alley a few steps from the Palais Garnier; preserves a glass-roofed 19th-century printing house with monumental bookcases.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Impasse_Sandri%C3%A9",
+          "https://leshack.fr/",
+          "https://m.tellnoo.com/lieu_impasse-sandrie_T011:Q3149305.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Passerelle Léopold-Sédar-Senghor",
+    "short_description": "106-metre single-arch footbridge in tropical ipê wood by Marc Mimram (1997–99), renamed in 2006 for the Senegalese poet on the centenary of his birth.",
+    "name_variations": [
+      "Passerelle Solférino",
+      "Pont de Solférino",
+      "Solferino Bridge",
+      "Senghor Footbridge",
+      "Passerelle Leopold Sedar Senghor"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Passerelle Léopold-Sédar-Senghor, between Quai des Tuileries (75001) and Quai Anatole-France (75007), Paris",
+      "discovery_sources": [
+        "Wikipedia",
+        "Paris Je t'aime",
+        "EU Touring",
+        "TheParisianGuide"
+      ],
+      "discovery_notes": "Replaces a Napoleon-III cast-iron span (1861) demolished in 1961; won Mimram the 1999 Prix de l'Équerre d'Argent.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Passerelle_L%C3%A9opold-S%C3%A9dar-Senghor",
+          "https://parisjetaime.com/eng/transport/passerelle-leopold-sedard-senghor-p1891",
+          "https://www.travelfranceonline.com/passerelle-leopold-sedar-senghor/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Bourse de Commerce — Pinault Collection",
+    "short_description": "François Pinault's contemporary-art museum opened in 2021 inside a circular former corn exchange, with a concrete cylinder inserted under the cast-iron dome by Tadao Ando.",
+    "name_variations": [
+      "Bourse du Commerce",
+      "La Bourse de Commerce",
+      "Pinault Collection Paris",
+      "Halle aux Blés",
+      "La Bourse du Commerce — Pinault Collection"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 rue de Viarmes, 75001 Paris",
+      "discovery_sources": [
+        "Pinault Collection official",
+        "Paris Je t'aime",
+        "SortirAParis",
+        "Visit Paris Region"
+      ],
+      "discovery_notes": "Houses the Médicis astronomical column at its flank; 6,800 m² of galleries spanning a 16th-century site that became the world's first cast-iron-domed market.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://www.pinaultcollection.com/en/boursedecommerce",
+          "https://parisjetaime.com/eng/culture/bourse-de-commerce-pinault-collection-p3638",
+          "https://www.sortiraparis.com/en/what-to-visit-in-paris/exhibit-museum/articles/114089-bourse-de-commerce-in-paris-discover-this-contemporary-art-center-and-the-pinault-collection"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
+    "city_name": "paris"
+  },
+  {
+    "name": "Arc de Triomphe du Carrousel",
+    "short_description": "Neoclassical triumphal arch built 1806–08 by Percier and Fontaine, originally topped by the Horses of Saint Mark looted from Venice and returned in 1815.",
+    "name_variations": [
+      "Carrousel Arch",
+      "Arc du Carrousel"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Carrousel, 75001 Paris (between the Louvre and the Tuileries)",
+      "discovery_sources": [
+        "Wikipedia",
+        "Louvre official",
+        "French Moments",
+        "Paris Insiders Guide"
+      ],
+      "discovery_notes": "Modeled on the Arch of Septimius Severus; its eight Corinthian marble columns were salvaged from the demolished Château de Meudon.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel",
+          "https://www.louvre.fr/en/explore/life-at-the-museum/conservation-treatment-on-the-arc-de-triomphe-du-carrousel",
+          "https://frenchmoments.eu/arc-de-triomphe-du-carrousel-paris/"
+        ]
+      },
+      "parent_poi": "Jardin des Tuileries"
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1_targeted",
+      "generated_at": "2026-04-26T00:00:00Z",
+      "city": "Paris"
+    },
     "city_name": "paris"
   }
 ]

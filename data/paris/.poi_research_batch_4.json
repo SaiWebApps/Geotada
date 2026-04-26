@@ -1,0 +1,314 @@
+[
+  {
+    "name": "Restaurant Bofinger",
+    "short_description": "Belle Epoque Alsatian brasserie founded in 1864, said to be the first establishment in Paris to serve draught beer, crowned by a stained-glass dome.",
+    "name_variations": ["Bofinger", "Brasserie Bofinger"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "5-7 Rue de la Bastille, 75004 Paris",
+      "discovery_sources": ["TripAdvisor", "Yelp", "Sortiraparis", "Paris by Mouth"],
+      "discovery_notes": "Paris's oldest Alsatian brasserie, famed for its choucroute and Belle Epoque interior — strong Food & Culinary Culture and Historic Architecture candidate.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://www.bofingerparis.com/en/",
+          "https://en.wikipedia.org/wiki/Bofinger",
+          "https://www.sortiraparis.com/en/where-to-eat-in-paris/restaurant/articles/334682-history-restaurant-bofinger-paris-4"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Marché Bastille",
+    "short_description": "Open-air food market stretching along Boulevard Richard-Lenoir on Thursdays and Sundays, one of the largest in Paris with the Colonne de Juillet as its backdrop.",
+    "name_variations": ["Marché Richard Lenoir", "Bastille Market", "Marché Richard-Lenoir", "Marché alimentaire Bastille"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Boulevard Richard-Lenoir (between Rue Amelot and Rue Saint-Sabin), 75011 Paris",
+      "discovery_sources": ["TripAdvisor", "Yelp", "Visit Paris Region", "Paris Je T'aime"],
+      "discovery_notes": "One of the biggest open-air markets in central Paris, popular with both locals and tourists for produce, seafood and flowers.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://www.visitparisregion.com/en/marche-bastille",
+          "https://www.tripadvisor.com/Attraction_Review-g187147-d3249136-Reviews-Bastille_Market-Paris_Ile_de_France.html",
+          "https://parisjetaime.com/eng/shopping/marche-bastille-p2267"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Cour Damoye",
+    "short_description": "Private cobbled passage off the Place de la Bastille, opened in 1780 on the old Saint-Antoine glacis and once filled with wagon repair and faubourg craft workshops.",
+    "name_variations": ["Cour Damoye"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "12 Place de la Bastille to 12 Rue Daval, 75011 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Paris ZigZag", "Pariste.Net", "Paris Secret"],
+      "discovery_notes": "Hidden artisan courtyard moments from the Bastille traffic — strong Hidden History and Art & Street Culture candidate.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://fr.wikipedia.org/wiki/Cour_Damoye",
+          "https://www.pariszigzag.fr/insolite/lieux-insolites/cour-damoye-bastille-paris/",
+          "https://www.pariste.net/en/a-secret-passage-in-the-bastille-cour-damoye/"
+        ]
+      },
+      "parent_poi": "Place de la Bastille"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Barrio Latino",
+    "short_description": "Multi-level Cuban-themed bar, restaurant and dance club that opened near Opéra Bastille in 1999 and was rebranded as Pachamama at the same address.",
+    "name_variations": ["Pachamama", "Barrio Latino - Bar Cubain"],
+    "kid_friendly": "no",
+    "_pipeline": {
+      "address": "46-48 Rue du Faubourg Saint-Antoine, 75012 Paris",
+      "discovery_sources": ["Yelp", "Sortiraparis", "Foursquare", "EuTouring"],
+      "discovery_notes": "Once a four-floor Latin nightlife landmark by the Bastille, now operating as Pachamama; useful for nightlife and Faubourg Saint-Antoine context.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.yelp.com/biz/barrio-latino-paris",
+          "https://www.sortiraparis.com/en/where-to-eat-in-paris/bars-cafes/articles/154431-barrio-latino-becomes-pachamama-in-paris",
+          "https://www.eutouring.com/barrio_latino_in_paris.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Passage du Chantier",
+    "short_description": "Cobbled passageway off Rue du Faubourg Saint-Antoine that still houses some of the last cabinetmaker and furniture workshops of the historic faubourg.",
+    "name_variations": ["Passage du Chantier"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "66 Rue du Faubourg Saint-Antoine, 75012 Paris",
+      "discovery_sources": ["France Today", "Paris Je T'aime", "Un jour de plus à Paris", "Wikipedia"],
+      "discovery_notes": "A surviving fragment of the faubourg's 17th-century furniture trade, lined with active ateliers — strong candidate for Hidden History and Shopping & Markets.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://francetoday.com/culture/art_and_design/parisian-walkways-faubourg-saint-antoine-the-heart-of-fine-french-cabinet-making/",
+          "https://parisjetaime.com/eng/transport/faubourg-saint-antoine-p1876",
+          "https://www.unjourdeplusaparis.com/en/paris-reportage/cours-et-passages-du-faubourg-saint-antoine"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Quinze-Vingts National Ophthalmology Hospital",
+    "short_description": "National eye hospital founded in 1260 by Louis IX as a hospice for 300 blind Parisians, relocated in 1779 to the former Black Musketeers barracks on Rue de Charenton.",
+    "name_variations": ["Hôpital des Quinze-Vingts", "Centre Hospitalier National d'Ophtalmologie des Quinze-Vingts", "CHNO des Quinze-Vingts", "15-20 National Eye Hospital"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "28 Rue de Charenton, 75012 Paris",
+      "discovery_sources": ["Wikipedia", "Wikipedia (FR)", "World Association of Eye Hospitals", "University of Antwerp"],
+      "discovery_notes": "One of the oldest continually operating hospitals in Europe and home to the Vision Institute — bridges Hidden History, Religious & Spiritual Sites and Science & Innovation.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Quinze-Vingts_National_Ophthalmology_Hospital",
+          "https://fr.wikipedia.org/wiki/H%C3%B4pital_des_Quinze-Vingts",
+          "https://www.waeh.org/news/introduction-to-the-15-20-national-eye-hospital-new-full-member-of-the-waeh/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Viaduc des Arts",
+    "short_description": "Mid-19th-century railway viaduct converted in the 1990s into a row of artisan workshops in glass, jewellery and furniture, beneath the elevated Promenade Plantee.",
+    "name_variations": ["Le Viaduc des Arts", "Viaduc de Bastille", "Bastille Viaduct"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "1-129 Avenue Daumesnil, 75012 Paris",
+      "discovery_sources": ["Wikipedia", "Britannica", "Travel France Online", "Le Viaduc des Arts (official)"],
+      "discovery_notes": "Iconic Paris adaptive-reuse project pairing crafts and a green roof — strong Modern & Contemporary Design and Shopping & Markets candidate.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Viaduc_des_Arts",
+          "https://www.britannica.com/place/Promenade-Plantee",
+          "https://www.leviaducdesarts.com/en/the-viaduc-des-arts"
+        ]
+      },
+      "parent_poi": "Promenade Plantee"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Roger-Viollet Photo Agency",
+    "short_description": "Photographic agency founded in 1938 by Hélène Roger-Viollet that holds more than two million images covering 150 years of Parisian and world history.",
+    "name_variations": ["Agence Roger-Viollet", "Galerie Roger-Viollet", "Documentation Photographique Générale Roger-Viollet"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "6 Rue de Seine, 75006 Paris",
+      "discovery_sources": ["Roger-Viollet (official)", "Galerie Roger-Viollet", "Digital Meets Culture", "L'Oeil de la Photographie"],
+      "discovery_notes": "A pillar of Paris photographic memory, now an archive and gallery on the Left Bank — fits Art & Street Culture and Literary & Film Locations adjacency.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://www.roger-viollet.fr/qui-sommes-nous",
+          "https://www.galerie-roger-viollet.fr/en/Roger-Viollet-photo-agency",
+          "https://www.digitalmeetsculture.net/article/roger-viollet/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "George Sand's House (31 Rue de Seine)",
+    "short_description": "Saint-Germain townhouse where novelist George Sand lived in 1831; the same building later hosted Raymond Duncan's Akademia from 1929 to 1966.",
+    "name_variations": ["Maison de George Sand", "31 Rue de Seine", "Akademia Raymond Duncan"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "31 Rue de Seine, 75006 Paris",
+      "discovery_sources": ["Open Plaques", "Historical Marker Database (HMDB)", "Tony Shaw - Literary Île-de-France"],
+      "discovery_notes": "A façade-only literary stop on Rick Steves' Left Bank walk, marking Sand's bohemian Paris years — Literary & Film Locations.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://openplaques.org/plaques/10801",
+          "https://www.hmdb.org/m.asp?m=199801",
+          "http://tonyshaw3.blogspot.com/2011/12/literary-ile-de-france-49-george-sand.html"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Café la Palette",
+    "short_description": "Artist-favoured Left Bank café opened in 1902 next to the École des Beaux-Arts, with a Belle Epoque storefront and 1930s ceramic interior listed as a historic monument since 1984.",
+    "name_variations": ["La Palette", "Café La Palette"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "43 Rue de Seine, 75006 Paris",
+      "discovery_sources": ["Wikipedia", "Paris Je T'aime", "Secrets of Paris", "Petit Futé"],
+      "discovery_notes": "Cézanne, Picasso and Hemingway-era hangout still drawing artists and tourists — Food & Culinary Culture plus Art & Street Culture.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/La_Palette",
+          "https://parisjetaime.com/eng/restaurant/la-palette-p628",
+          "https://lapalette-paris.com/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Richard Wagner's House (14 Rue Jacob)",
+    "short_description": "Saint-Germain residence where composer Richard Wagner lived from October 1841 to April 1842 and wrote the overture to The Flying Dutchman, marked today by a commemorative plaque.",
+    "name_variations": ["14 Rue Jacob", "Plaque Richard Wagner"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "14 Rue Jacob, 75006 Paris",
+      "discovery_sources": ["Le Musée Virtuel Richard Wagner", "Musicalics", "HMDB", "La Vie Wagnérienne"],
+      "discovery_notes": "A Music Heritage façade stop tied to the genesis of The Flying Dutchman; plaque unveiled by the Paris Wagner Circle in 2000.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://richard-wagner-web-museum.com/publications/1841-2/",
+          "https://musicalics.com/en/place/14-rue-Jacob",
+          "https://www.hmdb.org/m.asp?m=195775"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Palais Abbatial de Saint-Germain-des-Prés",
+    "short_description": "Brick-and-stone abbatial palace built in 1586 for Cardinal Charles de Bourbon, an early Parisian example of the style that would later define Place Dauphine and Place des Vosges.",
+    "name_variations": ["Abbey Mansion", "Hôtel de Furstemberg", "Palais Abbatial", "Abbots' Palace of Saint-Germain-des-Prés", "Abbey Mansion (Rue de l'Abbaye)"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "3-5 Rue de l'Abbaye, 75006 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "POP Mérimée", "Monumentum", "Paris Promeneurs", "Paris Musées"],
+      "discovery_notes": "Listed historic monument since 1959 and a precursor to Henri IV's Place Royale brick-and-stone vernacular — Historic Architecture and Religious & Spiritual Sites.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://pop.culture.gouv.fr/notice/merimee/PA00088651",
+          "https://monumentum.fr/monument-historique/pa00088651/paris-6e-arrondissement-palais-abbatial-de-saint-germain-des-pres-dit-hotel-de-furstemberg",
+          "https://paris-promeneurs.com/le-palais-abbatial-de-saint/"
+        ]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Hôtel de Crillon",
+    "short_description": "Five-star Rosewood-managed palace hotel in a 1758 Ange-Jacques Gabriel building where Benjamin Franklin signed the 1778 Franco-American treaty recognising US independence.",
+    "name_variations": ["Hôtel Crillon", "Hotel de Crillon, A Rosewood Hotel", "Crillon"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "10 Place de la Concorde, 75008 Paris",
+      "discovery_sources": ["Wikipedia", "Rosewood Hotels", "History Hit", "Michelin Guide"],
+      "discovery_notes": "One of two Gabriel palaces fronting the Concorde, with a documented role in the Franco-American alliance — Historic Architecture, Hidden History and War & Revolution.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/H%C3%B4tel_de_Crillon",
+          "https://www.rosewoodhotels.com/en/hotel-de-crillon",
+          "https://www.historyhit.com/locations/hotel-de-crillon/"
+        ]
+      },
+      "parent_poi": "Place de la Concorde"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  }
+]

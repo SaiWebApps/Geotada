@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "type": "POI_TAGGING_AMBIGUOUS",
+      "added_at": "2026-04-26T04:03:35.584181Z",
+      "beat_id": "paris_marais_hidden_history_frommers_24_great_walks_marsh_etymology_settlers",
+      "current_poi_name": "Marais",
+      "issue": "Beat tagged with poi_name='Marais', but Marais is a neighborhood/Area, not a POI. Per Schema v3 the Marais should be modelled as an Area node with WITHIN containment, not as a POI.",
+      "recommended_action": "Re-tag to a more specific POI within the Marais (e.g., place des Vosges, Hôtel de Sully, rue des Rosiers) based on beat content, OR attach to a Marais Area node when Area infrastructure is in scope. Until resolved, this beat will not route to any POI.",
+      "topic_slug": "marsh_etymology_settlers",
+      "lens": "hidden_history",
+      "source_chunk_slug": "chunk-05-knights-and-mansions",
+      "added_by": "phase-1b-poi-generate-2026-04-26"
+    },
+    {
+      "type": "POI_TAGGING_AMBIGUOUS",
+      "added_at": "2026-04-26T04:03:35.584336Z",
+      "beat_id": "paris_marais_historic_arch_frommers_24_great_walks_hotel_particulier_typology",
+      "current_poi_name": "Marais",
+      "issue": "Beat tagged with poi_name='Marais', but Marais is a neighborhood/Area, not a POI. Per Schema v3 the Marais should be modelled as an Area node with WITHIN containment, not as a POI.",
+      "recommended_action": "Re-tag to a more specific POI within the Marais (e.g., place des Vosges, Hôtel de Sully, rue des Rosiers) based on beat content, OR attach to a Marais Area node when Area infrastructure is in scope. Until resolved, this beat will not route to any POI.",
+      "topic_slug": "hotel_particulier_typology",
+      "lens": "historic_arch",
+      "source_chunk_slug": "chunk-05-knights-and-mansions",
+      "added_by": "phase-1b-poi-generate-2026-04-26"
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+[
+  {
+    "name": "Rue des Francs-Bourgeois",
+    "short_description": "14th-century Marais shopping street whose name derives from a 1415 alms-house for tax-exempt poor 'francs-bourgeois' donated by the philanthropist Mazurier.",
+    "name_variations": ["Rue des Poulies", "Pulley Street", "Bourgeoisie Franks Street", "rue des Francs-Bourgeois"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue des Francs-Bourgeois, 75003/75004 Paris (runs between Rue des Archives and Place des Vosges)",
+      "discovery_sources": ["Wikipedia", "France Today", "Paris Je t'aime", "TripAdvisor"],
+      "discovery_notes": "Marais's premier shopping spine and one of the few Paris streets that historically opens on Sundays; lined with hôtels particuliers including Carnavalet and Lamoignon.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://en.wikipedia.org/wiki/Rue_des_Francs-Bourgeois","https://francetoday.com/travel/paris/read-the-signs-rue-des-francs-bourgeois-in-paris/","https://parisjetaime.com/eng/transport/rue-des-francs-bourgeois-p2039"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Hôtel de Chenizot",
+    "short_description": "1719 Île Saint-Louis mansion remodeled by Pierre Vigné de Vigny, where Archbishop Affre died in 1848 after being shot at a June Days barricade.",
+    "name_variations": ["Hôtel Chenizot", "Hotel de Chenizot"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "51 rue Saint-Louis-en-l'Île, 75004 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Ministère de la Culture POP", "Monumentum", "Paris Musées"],
+      "discovery_notes": "Classed historic monument with celebrated rocaille balcony; home to Madame Tallien before the Revolution and to metaphysician René Guénon 1904–1930.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/H%C3%B4tel_de_Chenizot","https://pop.culture.gouv.fr/notice/merimee/PA00086284","https://monumentum.fr/monument-historique/pa00086284/paris-4e-arrondissement-hotel-de-chenizot"]
+      },
+      "parent_poi": "Ile Saint-Louis"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Pont de la Tournelle",
+    "short_description": "1928 stone bridge linking Île Saint-Louis to the Left Bank, crowned by Paul Landowski's 14-metre statue of Saint Geneviève protecting a child Paris.",
+    "name_variations": ["Tournelle Bridge"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Pont de la Tournelle, between Quai d'Orléans (Île Saint-Louis) and Quai de la Tournelle, 75005 Paris",
+      "discovery_sources": ["Wikipedia", "Un Jour de Plus à Paris", "Paris.fr", "Paul Landowski official"],
+      "discovery_notes": "Named for a tower of the Philippe-Auguste wall; replaced by current span after the 1910 flood. Landowski sulked at the inauguration because the statue did not face Notre-Dame.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Pont_de_la_Tournelle","https://www.unjourdeplusaparis.com/en/paris-culture/sainte-genevieve-pont-de-la-tournelle","https://www.paul-landowski.com/en/portfolio/sainte-genevieve/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Rue Lepic",
+    "short_description": "Winding Montmartre street where Vincent and Theo van Gogh shared a third-floor flat at no. 54 from 1886 to 1888 and where Café des Deux Moulins doubled as Amélie's workplace at no. 15.",
+    "name_variations": ["Rue de l'Empereur", "Lepic Street"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Rue Lepic, 75018 Paris (runs from Boulevard de Clichy to Place Jean-Baptiste-Clément)",
+      "discovery_sources": ["Wikipedia", "Van Gogh Route", "Montmartre Footsteps", "GPSmyCity"],
+      "discovery_notes": "Renamed in 1864 for General Louis Lepic; site of Louis Renault's 1898 Voiturette hill-climb wager and home to two surviving Montmartre windmills.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://en.wikipedia.org/wiki/Rue_Lepic","https://vangoghroute.com/france/paris/rue-lepic/","https://montmartrefootsteps.com/theo-and-vincent-van-gogh-54-rue-lepic/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Maison Loo",
+    "short_description": "Ochre-red Chinese pagoda built in 1926 by dealer C.T. Loo from a Haussmann-era townhouse, now Europe's first Asian-art gallery and a private events venue.",
+    "name_variations": ["Maison de Loo", "Pagoda Paris", "C.T. Loo Pagoda", "Red Pagoda", "La Pagode rouge"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "48 rue de Courcelles, 75008 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Pagoda Paris official", "Untapped Paris", "Paris la Douce"],
+      "discovery_notes": "Architect Fernand Bloch transformed the building for collector Ching Tsai Loo in 1925–26; classed monument historique in 2002/2006 for its 18th-century lacquer-panel salons.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Maison_de_Loo","http://www.pagodaparis.com/french/la_maison_loo.html","https://www.untappedcities.com/the-pagoda-paris-east-meets-west/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Hôtel Menier",
+    "short_description": "Second-Empire rotunda mansion built 1869–74 by Henri Parent for chocolate magnate Émile-Justin Menier and credited as Zola's model for the private hôtel in La Curée.",
+    "name_variations": ["Hôtel Émile-Justin Menier", "Menier Mansion"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "5 avenue Van-Dyck, 75008 Paris",
+      "discovery_sources": ["Wikipedia (FR)", "Paris-Promeneurs", "Évous", "Alamy"],
+      "discovery_notes": "Sculpted façade attributed to Jules Dalou faces Parc Monceau; the Menier 'M' monogram is still visible on the rotunda. Now subdivided into private apartments.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/H%C3%B4tel_Menier","https://paris-promeneurs.com/l-hotel-menier/","https://www.evous.fr/Un-Empire-en-Chocolat-la-dynastie-Meunier,1166783.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Église de la Sainte-Trinité",
+    "short_description": "Neo-Renaissance Second-Empire church (1861–67) by Théodore Ballu with a 65-metre belfry, where Olivier Messiaen served as organist for 61 years until 1992.",
+    "name_variations": ["Sainte-Trinité de Paris", "Trinity Church Paris", "Trinite Church", "La Trinité"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "3 rue de la Trinité (Place d'Estienne d'Orves), 75009 Paris",
+      "discovery_sources": ["Wikipedia", "Wikipedia (FR)", "Napoleon.org", "Patrimoine-Histoire"],
+      "discovery_notes": "Built as part of Haussmann's Chaussée d'Antin renewal; served as a hospital during the 1870 Siege of Paris.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Sainte-Trinit%C3%A9,_Paris","https://fr.wikipedia.org/wiki/%C3%89glise_de_la_Sainte-Trinit%C3%A9_de_Paris","https://www.napoleon.org/magazine/lieux/eglise-de-la-trinite-paris/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "InterContinental Paris Le Grand",
+    "short_description": "Five-star hotel inaugurated by Empress Eugénie in 1862 facing the Palais Garnier, financed by the Pereire brothers ahead of the 1867 Universal Exhibition.",
+    "name_variations": ["Le Grand Hôtel", "Grand Hôtel de Paris", "Le Grand Hotel Paris", "Intercontinental Le Grand Hotel"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 rue Scribe, 75009 Paris",
+      "discovery_sources": ["IHG official", "Historic Hotels Then & Now", "SortirAParis", "Trip Reporter"],
+      "discovery_notes": "Houses the Salon Opéra ballroom under a 14-metre glass canopy; the rue Scribe entrance has been the main door since 1905.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://parislegrand.intercontinental.com/en/la-verriere/","http://www.historichotelsthenandnow.com/grandparis.html","https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/300868-did-you-know-the-intercontinental-paris-le-grand-boasts-a-sublime-ballroom-and-glass-roof"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Impasse Sandrié",
+    "short_description": "Short cul-de-sac opened in 1775 on land leased by the Mathurins to Jérôme Sandrié, today housing a former Calmann-Lévy printing works structured by Gustave Eiffel.",
+    "name_variations": ["Cul-de-sac Cendrier", "Passage Sandrié", "Impasse Sandrie"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Impasse Sandrié, 75009 Paris (between Place Charles-Garnier and Square de l'Opéra-Louis-Jouvet)",
+      "discovery_sources": ["Wikipedia (FR)", "Tellnoo", "Le Shack official", "LinkFang"],
+      "discovery_notes": "Hidden alley a few steps from the Palais Garnier; preserves a glass-roofed 19th-century printing house with monumental bookcases.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": ["https://fr.wikipedia.org/wiki/Impasse_Sandri%C3%A9","https://leshack.fr/","https://m.tellnoo.com/lieu_impasse-sandrie_T011:Q3149305.html"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Passerelle Léopold-Sédar-Senghor",
+    "short_description": "106-metre single-arch footbridge in tropical ipê wood by Marc Mimram (1997–99), renamed in 2006 for the Senegalese poet on the centenary of his birth.",
+    "name_variations": ["Passerelle Solférino", "Pont de Solférino", "Solferino Bridge", "Senghor Footbridge", "Passerelle Leopold Sedar Senghor"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Passerelle Léopold-Sédar-Senghor, between Quai des Tuileries (75001) and Quai Anatole-France (75007), Paris",
+      "discovery_sources": ["Wikipedia", "Paris Je t'aime", "EU Touring", "TheParisianGuide"],
+      "discovery_notes": "Replaces a Napoleon-III cast-iron span (1861) demolished in 1961; won Mimram the 1999 Prix de l'Équerre d'Argent.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": ["https://en.wikipedia.org/wiki/Passerelle_L%C3%A9opold-S%C3%A9dar-Senghor","https://parisjetaime.com/eng/transport/passerelle-leopold-sedard-senghor-p1891","https://www.travelfranceonline.com/passerelle-leopold-sedar-senghor/"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Bourse de Commerce — Pinault Collection",
+    "short_description": "François Pinault's contemporary-art museum opened in 2021 inside a circular former corn exchange, with a concrete cylinder inserted under the cast-iron dome by Tadao Ando.",
+    "name_variations": ["Bourse du Commerce", "La Bourse de Commerce", "Pinault Collection Paris", "Halle aux Blés", "La Bourse du Commerce — Pinault Collection"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "2 rue de Viarmes, 75001 Paris",
+      "discovery_sources": ["Pinault Collection official", "Paris Je t'aime", "SortirAParis", "Visit Paris Region"],
+      "discovery_notes": "Houses the Médicis astronomical column at its flank; 6,800 m² of galleries spanning a 16th-century site that became the world's first cast-iron-domed market.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://www.pinaultcollection.com/en/boursedecommerce","https://parisjetaime.com/eng/culture/bourse-de-commerce-pinault-collection-p3638","https://www.sortiraparis.com/en/what-to-visit-in-paris/exhibit-museum/articles/114089-bourse-de-commerce-in-paris-discover-this-contemporary-art-center-and-the-pinault-collection"]
+      },
+      "parent_poi": null
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  },
+  {
+    "name": "Arc de Triomphe du Carrousel",
+    "short_description": "Neoclassical triumphal arch built 1806–08 by Percier and Fontaine, originally topped by the Horses of Saint Mark looted from Venice and returned in 1815.",
+    "name_variations": ["Carrousel Arch", "Arc du Carrousel"],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Place du Carrousel, 75001 Paris (between the Louvre and the Tuileries)",
+      "discovery_sources": ["Wikipedia", "Louvre official", "French Moments", "Paris Insiders Guide"],
+      "discovery_notes": "Modeled on the Arch of Septimius Severus; its eight Corinthian marble columns were salvaged from the demolished Château de Meudon.",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "HIGH",
+        "guidebook_presence": "UBIQUITOUS",
+        "source_urls": ["https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel","https://www.louvre.fr/en/explore/life-at-the-museum/conservation-treatment-on-the-arc-de-triomphe-du-carrousel","https://frenchmoments.eu/arc-de-triomphe-du-carrousel-paris/"]
+      },
+      "parent_poi": "Jardin des Tuileries"
+    },
+    "_meta": {"prompt_version": "poi_generate_v1_targeted","generated_at": "2026-04-26T00:00:00Z","city": "Paris"},
+    "city_name": "paris"
+  }
+]
