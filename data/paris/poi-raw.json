@@ -12621,6 +12621,15 @@
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "s1_used_proxy": true,
         "reasoning": "Composite 72.7: 22,454 reviews; trends=high; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 35 Boulevard de Courcelles, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Boulevard de Courcelles, Quartier de l'Europe, Paris 8e Arrondissement, Paris, Île-de-France, France",
+        "trigger_radius_reasoning": "150m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.053426505683985624
       }
     },
     "_meta": {
@@ -12629,7 +12638,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.879339,
+    "longitude": 2.304005,
+    "trigger_radius": 150
   },
   {
     "name": "Place du Tertre",
@@ -12672,6 +12684,15 @@
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "s1_used_proxy": true,
         "reasoning": "Composite 68.4: 17,798 reviews; trends=high; wiki=moderate; gb=UBIQUITOUS"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: Place du Tertre, 75018 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Place du Tertre, Quartier de Clignancourt, Paris 18e Arrondissement, Paris, Île-de-France, France mé",
+        "trigger_radius_reasoning": "40m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.4798572181567083
       }
     },
     "_meta": {
@@ -12680,7 +12701,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.886527,
+    "longitude": 2.340804,
+    "trigger_radius": 40
   },
   {
     "name": "Palais de Justice",
@@ -12936,6 +12960,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Tour Saint-Jacques, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Tour Saint-Jacques, Allée Waslaw Nijinsky, Quartier Saint-Merri, Paris 4e Arrondissement, Paris, Île",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.47442832946514174
       }
     },
     "_meta": {
@@ -12944,7 +12977,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.858003,
+    "longitude": 2.348922,
+    "trigger_radius": 10
   },
   {
     "name": "Rue de la Ferronnerie",
@@ -13040,6 +13076,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: Rue Saint-Antoine, 75004 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Rue Saint-Antoine, Quartier de l'Arsenal, Paris 4e Arrondissement, Paris, Île-de-France, France métr",
+        "trigger_radius_reasoning": "75m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.053426505683985624
       }
     },
     "_meta": {
@@ -13048,7 +13093,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.853571,
+    "longitude": 2.366419,
+    "trigger_radius": 75
   },
   {
     "name": "Quai d'Anjou",
@@ -13142,6 +13190,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 74.8: trends=high; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: Place des Abbesses, 75018 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Place des Abbesses, Quartier de Clignancourt, Paris 18e Arrondissement, Paris, Île-de-France, France",
+        "trigger_radius_reasoning": "40m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.26922332516764147
       }
     },
     "_meta": {
@@ -13150,7 +13207,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.8844,
+    "longitude": 2.338389,
+    "trigger_radius": 40
   },
   {
     "name": "Musée Cernuschi",
@@ -13193,6 +13253,15 @@
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "reasoning": "Composite 30.1: 60,000 visitors; 2,439 reviews; trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 7 Avenue Vélasquez, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Musée Cernuschi, 7, Avenue Vélasquez, Quartier de l'Europe, Paris 8e Arrondissement, Paris, Île-de-F",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.38727847050761693
       }
     },
     "_meta": {
@@ -13201,7 +13270,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 1
+    "importance_tier": 1,
+    "latitude": 48.879432,
+    "longitude": 2.312564,
+    "trigger_radius": 10
   },
   {
     "name": "Cathédrale Saint-Alexandre-Nevsky",
@@ -13246,6 +13318,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 52.7: trends=low; wiki=extensive; gb=RARE"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 12 Rue Daru, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Cathédrale Saint-Alexandre-Nevsky, 12, Rue Daru, Quartier du Faubourg-du-Roule, Paris 8e Arrondissem",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.47057483368927794
       }
     },
     "_meta": {
@@ -13254,7 +13335,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 2
+    "importance_tier": 2,
+    "latitude": 48.877613,
+    "longitude": 2.301992,
+    "trigger_radius": 10
   },
   {
     "name": "Voltaire Statue (Square Honoré-Champion)",
@@ -13459,6 +13543,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 43.5: trends=low; wiki=moderate; gb=RARE"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 8 Rue Bernard de Clairvaux, 75003 Paris",
+        "confidence": "MEDIUM",
+        "placement": "8, Rue Bernard de Clairvaux, Quartier Sainte-Avoye, Paris 3e Arrondissement, Paris, Île-de-France, F",
+        "trigger_radius_reasoning": "100m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -13467,7 +13560,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 2
+    "importance_tier": 2,
+    "latitude": 48.862259,
+    "longitude": 2.352669,
+    "trigger_radius": 100
   },
   {
     "name": "Rue Charles V",
@@ -13563,6 +13659,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: Rue de Lappe, 75011 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Rue de Lappe, Quartier de la Roquette, Paris 11e Arrondissement, Paris, Île-de-France, France métrop",
+        "trigger_radius_reasoning": "75m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.053426505683985624
       }
     },
     "_meta": {
@@ -13571,7 +13676,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.853281,
+    "longitude": 2.373568,
+    "trigger_radius": 75
   },
   {
     "name": "Fouquet's",
@@ -13617,6 +13725,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 74.8: trends=high; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 99 Avenue des Champs-Élysées, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "99, Avenue des Champs-Élysées, Quartier des Champs-Élysées, Paris 8e Arrondissement, Paris, Île-de-F",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -13625,7 +13742,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.871432,
+    "longitude": 2.301308,
+    "trigger_radius": 10
   },
   {
     "name": "Rimbaud Statue (Sully Morland)",
@@ -13727,6 +13847,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 2 Rue du Mont-Cenis, 75018 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Cimetière du Calvaire, 2, Rue du Mont Cenis, Quartier de Clignancourt, Paris 18e Arrondissement, Par",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.33155205287302
       }
     },
     "_meta": {
@@ -13735,7 +13864,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.886825,
+    "longitude": 2.341821,
+    "trigger_radius": 10
   },
   {
     "name": "Lapin Agile",
@@ -13836,6 +13968,15 @@
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "s2_used_proxy": true,
         "reasoning": "Composite 55.2: 90,000 visitors; trends=moderate; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 63 Rue de Monceau, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "63, Rue de Monceau, Quartier de l'Europe, Paris 8e Arrondissement, Paris, Île-de-France, France métr",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -13844,7 +13985,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.878851,
+    "longitude": 2.312881,
+    "trigger_radius": 10
   },
   {
     "name": "Musée Jacquemart-André",
@@ -13889,6 +14033,15 @@
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "s2_used_proxy": true,
         "reasoning": "Composite 67.3: 400,000 visitors; trends=high; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 158 Boulevard Haussmann, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "158, Boulevard Haussmann, Quartier de l'Europe, Paris 8e Arrondissement, Paris, Île-de-France, Franc",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -13897,7 +14050,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.875253,
+    "longitude": 2.310789,
+    "trigger_radius": 10
   },
   {
     "name": "Passage Poncelet",
@@ -13995,6 +14151,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Pont de la Concorde, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Pont de la Concorde, Quai des Tuileries, Quartier des Champs-Élysées, Paris 8e Arrondissement, Paris",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.4591681490368309
       }
     },
     "_meta": {
@@ -14003,7 +14168,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.863378,
+    "longitude": 2.319598,
+    "trigger_radius": 10
   },
   {
     "name": "Cimetière de Passy",
@@ -14047,6 +14215,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 2 rue du Commandant Schloesing, 75116 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Cridel, 2, Rue du Commandant Schloesing, Quartier de la Muette, Paris 16e Arrondissement, Paris, Île",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -14055,7 +14232,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.861904,
+    "longitude": 2.285157,
+    "trigger_radius": 10
   },
   {
     "name": "Pont d'Iéna",
@@ -14101,6 +14281,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 90.9: trends=high; wiki=extensive; gb=UBIQUITOUS"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Pont d'Iéna, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Pont d'Iéna, Port de la Bourdonnais, Quartier du Gros-Caillou, Paris 7e Arrondissement, Paris, Île-d",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.49352556223521465
       }
     },
     "_meta": {
@@ -14109,7 +14298,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 5
+    "importance_tier": 5,
+    "latitude": 48.859833,
+    "longitude": 2.292035,
+    "trigger_radius": 10
   },
   {
     "name": "Opéra Bastille",
@@ -14154,6 +14346,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 90.9: trends=high; wiki=extensive; gb=UBIQUITOUS"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 120 rue de Lyon, 75012 Paris",
+        "confidence": "MEDIUM",
+        "placement": "120, Rue de Lyon, Quartier des Quinze-Vingts, Paris 12e Arrondissement, Paris, Île-de-France, France",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -14162,7 +14363,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 5
+    "importance_tier": 5,
+    "latitude": 48.851517,
+    "longitude": 2.370108,
+    "trigger_radius": 10
   },
   {
     "name": "Rue du Pas-de-la-Mule",
@@ -14526,6 +14730,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 11 boulevard de la Bastille, 75012 Paris",
+        "confidence": "MEDIUM",
+        "placement": "11, Boulevard de la Bastille, Quartier des Quinze-Vingts, Paris 12e Arrondissement, Paris, Île-de-Fr",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -14534,7 +14747,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 4
+    "importance_tier": 4,
+    "latitude": 48.848061,
+    "longitude": 2.367385,
+    "trigger_radius": 10
   },
   {
     "name": "Colonne de Juillet",
@@ -14683,6 +14899,15 @@
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "s1_used_proxy": true,
         "reasoning": "Composite 55.6: 15,263 reviews; trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 5-7 Rue de la Bastille, 75004 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Rue de la Bastille, Quartier de l'Arsenal, Paris 4e Arrondissement, Paris, Île-de-France, France mét",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.053426505683985624
       }
     },
     "_meta": {
@@ -14691,7 +14916,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.853843,
+    "longitude": 2.367778,
+    "trigger_radius": 10
   },
   {
     "name": "Marché Bastille",
@@ -14945,6 +15173,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 43.5: trends=low; wiki=moderate; gb=RARE"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 28 Rue de Charenton, 75012 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Centre Hospitalier National d'Ophtalmologie des Quinze-Vingts, 28, Rue de Charenton, Quartier des Qu",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.3544115905399448
       }
     },
     "_meta": {
@@ -14953,7 +15190,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 2
+    "importance_tier": 2,
+    "latitude": 48.850335,
+    "longitude": 2.372021,
+    "trigger_radius": 10
   },
   {
     "name": "Viaduc des Arts",
@@ -14998,6 +15238,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 1-129 Avenue Daumesnil, 75012 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Avenue Daumesnil, Quartier du Bel-Air, Paris 12e Arrondissement, Paris, Île-de-France, France métrop",
+        "trigger_radius_reasoning": "75m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.053426505683985624
       }
     },
     "_meta": {
@@ -15006,7 +15255,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.836182,
+    "longitude": 2.404853,
+    "trigger_radius": 75
   },
   {
     "name": "Roger-Viollet Photo Agency",
@@ -15314,6 +15566,15 @@
         "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
         "s1_used_proxy": true,
         "reasoning": "Composite 62.7: 2,828 reviews; trends=high; wiki=extensive; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 10 Place de la Concorde, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Hôtel de Crillon, 10, Place de la Concorde, Quartier de la Madeleine, Paris 8e Arrondissement, Paris",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.46747621576595166
       }
     },
     "_meta": {
@@ -15322,7 +15583,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.867622,
+    "longitude": 2.321366,
+    "trigger_radius": 10
   },
   {
     "name": "Rue des Francs-Bourgeois",
@@ -15471,6 +15735,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Pont de la Tournelle, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Pont de la Tournelle, Port de la Tournelle, Quartier Saint-Victor, Paris 5e Arrondissement, Paris, Î",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.4255759689944641
       }
     },
     "_meta": {
@@ -15479,7 +15752,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.850614,
+    "longitude": 2.355444,
+    "trigger_radius": 10
   },
   {
     "name": "Rue Lepic",
@@ -15578,6 +15854,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 34.5: trends=low; wiki=stub; gb=RARE"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 48 rue de Courcelles, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Maison de Loo, 48, Rue de Courcelles, Quartier de l'Europe, Paris 8e Arrondissement, Paris, Île-de-F",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.1679799034751623
       }
     },
     "_meta": {
@@ -15586,7 +15871,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 1
+    "importance_tier": 1,
+    "latitude": 48.876749,
+    "longitude": 2.307738,
+    "trigger_radius": 10
   },
   {
     "name": "Hôtel Menier",
@@ -15630,6 +15918,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 43.5: trends=low; wiki=moderate; gb=RARE"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 5 avenue Van-Dyck, 75008 Paris",
+        "confidence": "MEDIUM",
+        "placement": "5, Avenue Van Dyck, Quartier de l'Europe, Paris 8e Arrondissement, Paris, Île-de-France, France métr",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -15638,7 +15935,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 2
+    "importance_tier": 2,
+    "latitude": 48.878457,
+    "longitude": 2.305936,
+    "trigger_radius": 10
   },
   {
     "name": "Église de la Sainte-Trinité",
@@ -15684,6 +15984,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Église de la Sainte-Trinité, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Église de la Sainte-Trinité, Place d'Estienne d'Orves, Quartier Saint-Georges, Paris 9e Arrondisseme",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.46097369385693177
       }
     },
     "_meta": {
@@ -15692,7 +16001,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.877302,
+    "longitude": 2.331398,
+    "trigger_radius": 10
   },
   {
     "name": "InterContinental Paris Le Grand",
@@ -15738,6 +16050,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 2 rue Scribe, 75009 Paris",
+        "confidence": "MEDIUM",
+        "placement": "2, Rue Scribe, Quartier de la Chaussée-d'Antin, Paris 9e Arrondissement, Paris, Île-de-France, Franc",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 9.317235065227768e-05
       }
     },
     "_meta": {
@@ -15746,7 +16067,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.870738,
+    "longitude": 2.330241,
+    "trigger_radius": 10
   },
   {
     "name": "Impasse Sandrié",
@@ -15846,6 +16170,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Passerelle Léopold-Sédar-Senghor, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Passerelle Léopold-Sédar-Senghor, Promenade Édouard Glissant, Quartier des Invalides, Paris 7e Arron",
+        "trigger_radius_reasoning": "75m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.43293801503914436
       }
     },
     "_meta": {
@@ -15854,7 +16187,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 3
+    "importance_tier": 3,
+    "latitude": 48.861948,
+    "longitude": 2.324802,
+    "trigger_radius": 75
   },
   {
     "name": "Bourse de Commerce — Pinault Collection",
@@ -15901,6 +16237,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 90.9: trends=high; wiki=extensive; gb=UBIQUITOUS"
+      },
+      "geocode_audit": {
+        "source": "Nominatim address: 2 rue de Viarmes, 75001 Paris",
+        "confidence": "MEDIUM",
+        "placement": "Bourse de Commerce, 2, Rue de Viarmes, Quartier Les Halles, Paris 1er Arrondissement, Paris, Île-de-",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.36001248335965585
       }
     },
     "_meta": {
@@ -15909,7 +16254,10 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 5
+    "importance_tier": 5,
+    "latitude": 48.862817,
+    "longitude": 2.342836,
+    "trigger_radius": 10
   },
   {
     "name": "Arc de Triomphe du Carrousel",
@@ -15953,6 +16301,15 @@
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "reasoning": "Composite 90.9: trends=high; wiki=extensive; gb=UBIQUITOUS"
+      },
+      "geocode_audit": {
+        "source": "Nominatim name fallback: Arc de Triomphe du Carrousel, Paris, France",
+        "confidence": "MEDIUM",
+        "placement": "Arc de Triomphe du Carrousel, Jardin du Carrousel, Quartier Saint-Germain-l'Auxerrois, Paris 1er Arr",
+        "trigger_radius_reasoning": "10m by POI-type heuristic from name",
+        "notes": "",
+        "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
+        "nominatim_importance": 0.4853471968552425
       }
     },
     "_meta": {
@@ -15961,6 +16318,9 @@
       "city": "Paris"
     },
     "city_name": "paris",
-    "importance_tier": 5
+    "importance_tier": 5,
+    "latitude": 48.861727,
+    "longitude": 2.332909,
+    "trigger_radius": 10
   }
 ]
