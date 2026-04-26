@@ -4,7 +4,7 @@
     "short_description": "17th-century royal abbey commissioned by Anne of Austria, featuring a Mignard-painted dome, later converted into a military hospital.",
     "latitude": 48.839,
     "longitude": 2.344,
-    "importance_tier": 2,
+    "importance_tier": 4,
     "trigger_radius": 40,
     "typical_duration_min": 10,
     "kid_friendly": "yes",

@@ -4,7 +4,7 @@
     "short_description": "Public garden on the site of the Knights Templar fortress, later the prison of the Royal Family during the Revolution",
     "latitude": 48.8639,
     "longitude": 2.3602,
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 50,
     "typical_duration_min": 20,
     "kid_friendly": "yes",
@@ -385,7 +385,7 @@
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 10,
     "kid_friendly": "yes",
     "latitude": 48.855076,
@@ -495,7 +495,7 @@
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 10,
     "kid_friendly": "yes",
     "latitude": 48.85987,
@@ -565,7 +565,7 @@
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
     },
-    "importance_tier": 3,
+    "importance_tier": 2,
     "trigger_radius": 10,
     "kid_friendly": "yes",
     "latitude": 48.862792,

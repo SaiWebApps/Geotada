@@ -1,5 +1,5 @@
 {
-  "stage": "phase_3_wave_3_complete",
+  "stage": "gravity_rescore_complete",
   "phase_3_wave_3": {
     "model": "sonnet",
     "wave_size_attempted": 7,
@@ -484,5 +484,69 @@
       "Hotel Lamoignon": "added 'Bibliothèque Historique de la Ville de Paris' to name_variations",
       "Synagogue de la rue Pavee": "added 'Synagogue Agoudas Hakehilos' to name_variations"
     }
+  },
+  "phase_2_gravity_rescore": {
+    "stage": "gravity_rescore_complete",
+    "started_at": "2026-04-26T03:00:00Z",
+    "completed_at": "2026-04-26T14:00:50.560585+00:00",
+    "mode": "smart_resume",
+    "rationale": "Reused cached signals from existing 239 POI gravity_audit blocks; backfilled fresh signals for 64 new POIs (Phase 1B) and 80 prior-tier-2+ POIs whose audit blocks lacked numerical signals (zero-composite gap fix).",
+    "agents_dispatched": {
+      "wave_1_new_poi_signals": 5,
+      "wave_2_zerogap_backfill": 5
+    },
+    "formula_version": "poi_gravity_v1_smart_resume_2026_04_26",
+    "tiebreaker": "prior_assigned_gravity (residual signal at composite ties; not composite reuse)",
+    "distribution": {
+      "5": 36,
+      "4": 52,
+      "3": 85,
+      "2": 67,
+      "1": 63
+    },
+    "transitions": {
+      "T4_to_T5": 3,
+      "T5_to_T4": 9,
+      "T4_to_T3": 27,
+      "T4_to_T2": 2,
+      "T2_to_T1": 10,
+      "T3_to_T2": 22,
+      "T3_to_T1": 5,
+      "T3_to_T5": 2,
+      "T3_to_T4": 14,
+      "T1_to_T2": 3,
+      "T2_to_T4": 6,
+      "T2_to_T3": 16,
+      "T2_to_T5": 2,
+      "T1_to_T3": 6,
+      "T5_to_T3": 1
+    },
+    "anchor_check": {
+      "Notre-Dame Cathedral": 5,
+      "Eiffel Tower": 5,
+      "Louvre Museum": 5,
+      "Place des Vosges": 5,
+      "Sacre-Coeur Basilica": 5,
+      "Conciergerie": 5,
+      "Sainte-Chapelle": 5,
+      "Arc de Triomphe": 5,
+      "Pantheon": 4,
+      "all_pass": true
+    },
+    "pytest_gates": {
+      "test_gravity_distribution.py": "PASSED",
+      "test_export_consistency.py": "PASSED"
+    },
+    "export_sync": {
+      "files_changed": 22,
+      "fields_synced": 107
+    },
+    "remaining_zero_composite_pois": 15,
+    "notes": [
+      "15 POIs remain at composite 0 (no signals in cached audit OR fresh research) — all were prior-tier 1, so demotion is null-op.",
+      "Top promotions: Fontaine Saint-Michel and Institut de France T2→T5 (Latin Quarter UBIQUITOUS landmarks under-rated previously).",
+      "Top demotions: 9 POIs T5→T4 reflecting tighter forced distribution after adding 64 new POIs.",
+      "Forced distribution achieved: T5/T4/T3/T2/T1 = 36/52/85/67/63 (12%/17%/28%/22%/21%)."
+    ]
   }
 }

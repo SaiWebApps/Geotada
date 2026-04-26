@@ -60,7 +60,7 @@
     "short_description": "Tree-lined promenade corridor from the Madeleine to the Bastille, laid out by Louis XIV in 1670 to replace the city walls",
     "latitude": 48.87116,
     "longitude": 2.34346,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "yes",
