@@ -38562,7 +38562,7 @@
     "narrative_function": "deepen",
     "beat_type": "architectural_detail",
     "emotional_register": "reverent",
-    "subject_tag": "day of judgement portal",
+    "subject_tag": "day-of-judgement",
     "physical_cues": [
       {
         "cue": "Day of Judgement scene carved above the central portal",
@@ -41902,7 +41902,7 @@
     "narrative_function": "transition",
     "beat_type": "transit",
     "emotional_register": "neutral",
-    "subject_tag": "transit to mont de piete",
+    "subject_tag": "mont-de-piete-transit",
     "physical_cues": [
       {
         "cue": "Rue Vieille du Temple turning into rue des Blancs Manteaux",

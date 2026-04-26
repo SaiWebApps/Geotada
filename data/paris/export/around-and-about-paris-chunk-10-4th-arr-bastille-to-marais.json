@@ -464,8 +464,8 @@
   {
     "name": "Hotel de Sens",
     "short_description": "One of the oldest civilian buildings in Paris, a medieval fortress-mansion with a scandalous royal history.",
-    "latitude": 48.852,
-    "longitude": 2.3555,
+    "latitude": 48.853447,
+    "longitude": 2.359192,
     "importance_tier": 4,
     "trigger_radius": 30,
     "typical_duration_min": 15,
