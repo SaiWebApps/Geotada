@@ -659,5 +659,21 @@
       "stop_orientation gap-fill for tier-5 anchors — defer to post-launch content pass",
       "API pagination bug: /edges/HAS_BEAT returns 500 at skip≥1170. Inspect src/api/routes/edges.py for query timeout or buffer issue."
     ]
+  },
+  "backlog": {
+    "push_divergence": {
+      "status": "deferred",
+      "deferred_at": "2026-04-28",
+      "trigger": "Resolve before Phase 5 (/tour-build skill ships)",
+      "remote_sha_at_defer": "22bb795",
+      "local_head_at_defer": "794f284",
+      "shared_ancestor": "5ea2574",
+      "conflict_files": [
+        "frontend/review.html",
+        "src/api/routes/graph.py",
+        "src/seed/narratives.py"
+      ],
+      "notes": "TTS commit added sort_order independently; local has parallel sort_order work. Reconcile by cherry-picking TTS-specific bits (preview playback) onto local; treat local sort_order as canonical."
+    }
   }
 }
