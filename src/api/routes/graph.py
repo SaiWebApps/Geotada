@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from neo4j import Session
+from pydantic import BaseModel
 
 from src.api.dependencies import get_session
 
@@ -71,12 +72,14 @@ def get_full_graph(session: Session = Depends(get_session)):
 def get_poi_beats(poi_name: str, session: Session = Depends(get_session)):
     """Fetch active beats and their lens tags for a POI by name."""
     result = session.run(
-        "MATCH (p:POI {name: $name})-[:HAS_BEAT]->(b:NarrativeBeat)"
+        "MATCH (p:POI {name: $name})-[r:HAS_BEAT]->(b:NarrativeBeat)"
         "-[:TAGGED_WITH]->(l:Lens) "
         'WHERE b.active_status = "active" '
         "RETURN b.id AS id, b.script_body AS script_body, "
         "b.version AS version, b.active_status AS active_status, "
-        "b.duration_sec AS duration_sec, l.name AS lens_slug",
+        "b.duration_sec AS duration_sec, l.name AS lens_slug, "
+        "r.sort_order AS sort_order "
+        "ORDER BY r.sort_order",
         name=poi_name,
     )
     beats = [
@@ -87,6 +90,7 @@ def get_poi_beats(poi_name: str, session: Session = Depends(get_session)):
             "active_status": r["active_status"],
             "duration_sec": r["duration_sec"],
             "lens_slug": r["lens_slug"],
+            "sort_order": r["sort_order"],
         }
         for r in result
     ]

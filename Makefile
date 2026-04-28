@@ -1,4 +1,4 @@
-.PHONY: help venv env install lint format test test-unit test-integration test-api setup setup-audio verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
+.PHONY: help venv env install lint format test test-unit test-integration test-functional test-api setup setup-audio verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
 
 PYTHON := .venv/bin/python
 PIP    := .venv/bin/pip
@@ -40,7 +40,7 @@ format: ## Auto-format with ruff
 # TESTING
 # ──────────────────────────────────────────────────────────
 
-test: ## Run all tests (unit + integration)
+test: ## Run all tests (unit + integration + functional)
 	$(PYTHON) -m pytest tests/ -v
 
 test-unit: ## Run unit tests only (no Neo4j needed)
@@ -48,6 +48,9 @@ test-unit: ## Run unit tests only (no Neo4j needed)
 
 test-integration: ## Run integration tests (needs Neo4j)
 	$(PYTHON) -m pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
+
+test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
+	$(PYTHON) -m pytest tests/test_audio_functional.py -v -s
 
 # ──────────────────────────────────────────────────────────
 # DATABASE

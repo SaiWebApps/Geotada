@@ -508,6 +508,25 @@
   .beat-card textarea[data-beat-field="script_body"] { min-height: 160px; }
   .beat-card textarea[data-beat-field="source_passage"] { min-height: 60px; }
 
+  /* ── TTS playback ── */
+  .tts-row { display: flex; align-items: center; gap: 0.5rem; margin: 0.25rem 0 0.5rem; }
+  .tts-play-btn {
+    padding: 0.3rem 0.75rem; font-size: 0.8rem; cursor: pointer;
+    border: 1px solid var(--blue); color: var(--blue); background: #fff;
+    border-radius: 4px; white-space: nowrap; min-width: 90px; text-align: center;
+  }
+  .tts-play-btn:hover:not(:disabled) { background: #e8f0fe; }
+  .tts-play-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .tts-play-btn.loading { opacity: 0.7; }
+  .tts-play-btn.error { border-color: var(--red); color: var(--red); }
+  .tts-audio { flex: 1; height: 32px; display: none; }
+  .tts-audio.visible { display: block; }
+  .tts-provider-select {
+    padding: 0.25rem 0.5rem; font-size: 0.75rem; border: 1px solid #ccc;
+    border-radius: 4px; background: #fff; max-width: 120px;
+  }
+  @keyframes tts-spin { to { transform: rotate(360deg); } }
+
   /* ── Error toast ── */
   .error-toast {
     display: none;
@@ -828,6 +847,7 @@
           <button class="btn btn-outline btn-sm" id="nextRowBtn" title="Next">Next &rarr;</button>
         </div>
         <h2 id="detailTitle"></h2>
+        <select id="ttsProviderSelect" class="tts-provider-select" title="TTS Provider"><option value="mock">mock</option></select>
         <button class="btn btn-outline btn-sm" id="deferBtn" style="color:var(--yellow);border-color:var(--yellow);">Defer</button>
         <button class="btn btn-success btn-sm" id="markCompleteBtn">Mark as Complete</button>
       </div>
@@ -879,6 +899,7 @@
   const nextRowBtn = document.getElementById('nextRowBtn');
   const deferBtn = document.getElementById('deferBtn');
   const markCompleteBtn = document.getElementById('markCompleteBtn');
+  const ttsProviderSelect = document.getElementById('ttsProviderSelect');
   const completionBanner = document.getElementById('completionBanner');
   const mainLayout = document.getElementById('mainLayout');
   const errorToast = document.getElementById('errorToast');
@@ -1028,6 +1049,7 @@
       try {
         citySubmitBtn.textContent = 'Connecting to database…';
         await fetchLensesAndPoiList();
+        loadTtsProviders();  // non-blocking — populates provider dropdown
         loadJsonBtn.disabled = false;
       } catch (lensErr) {
         loadJsonBtn.disabled = true;
@@ -1795,6 +1817,10 @@
             <label>Script Body</label>
             <textarea data-beat-field="script_body" placeholder="${scriptEmpty ? 'No content' : ''}">${escHtml(beat.script_body || '')}</textarea>
           </div>
+          <div class="tts-row">
+            <button class="tts-play-btn" data-beat-tts="${bi}" title="Generate and play TTS audio" ${scriptEmpty ? 'disabled' : ''}>&#9654; Listen</button>
+            <audio class="tts-audio" data-beat-audio="${bi}" controls preload="none"></audio>
+          </div>
           <div class="field-group">
             <label>Physical Cue</label>
             <input type="text" data-beat-field="physical_cue" value="${escHtml(beat.physical_cue || '')}" />
@@ -1861,6 +1887,10 @@
 
       // ── Inline conflict resolution handlers ──
       detailBody.addEventListener('click', async (e) => {
+        // TTS Listen button
+        const ttsBtn = e.target.closest('.tts-play-btn');
+        if (ttsBtn) { ttsPlayBeat(parseInt(ttsBtn.dataset.beatTts)); return; }
+
         // Proximity match resolution buttons
         const proxSame = e.target.closest('.proximity-same-btn');
         const proxDiff = e.target.closest('.proximity-diff-btn');
@@ -2156,6 +2186,98 @@
 
   // ── API base URL ──
   const API_BASE = 'http://localhost:8000/api/v1';
+
+  // ── TTS state & helpers ──
+  const ttsAudioCache = new Map();
+  let ttsProvider = 'mock';
+
+  function ttsTextHash(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0;
+    return h.toString(36);
+  }
+
+  async function loadTtsProviders() {
+    try {
+      const resp = await fetch(`${API_BASE}/audio/providers`);
+      if (!resp.ok) return;
+      const data = await resp.json();
+      ttsProviderSelect.innerHTML = '';
+      for (const p of data.providers) {
+        const opt = document.createElement('option');
+        opt.value = p.name;
+        opt.textContent = p.name + (p.available ? '' : ' (unavail)');
+        opt.disabled = !p.available;
+        ttsProviderSelect.appendChild(opt);
+      }
+      const mockOpt = [...ttsProviderSelect.options].find(o => o.value === 'mock');
+      if (mockOpt) mockOpt.selected = true;
+      ttsProvider = ttsProviderSelect.value;
+    } catch (e) { console.warn('TTS providers fetch failed:', e); }
+  }
+
+  ttsProviderSelect.addEventListener('change', () => { ttsProvider = ttsProviderSelect.value; });
+
+  async function ttsPlayBeat(beatIdx) {
+    const poi = poiData[activeIdx];
+    if (!poi || !poi.beats[beatIdx]) return;
+    const card = detailBody.querySelector(`.beat-card[data-beat-index="${beatIdx}"]`);
+    if (!card) return;
+
+    const textarea = card.querySelector('[data-beat-field="script_body"]');
+    const text = textarea ? textarea.value.trim() : '';
+    if (!text) { showError('No script body text to generate audio for.'); return; }
+
+    const btn = card.querySelector('.tts-play-btn');
+    const audioEl = card.querySelector('.tts-audio');
+
+    // Check cache
+    const cacheKey = `${activeIdx}-${beatIdx}-${ttsTextHash(text)}-${ttsProvider}`;
+    if (ttsAudioCache.has(cacheKey)) {
+      audioEl.src = ttsAudioCache.get(cacheKey);
+      audioEl.classList.add('visible');
+      audioEl.play();
+      return;
+    }
+
+    // Evict oldest if cache is large
+    if (ttsAudioCache.size > 100) {
+      const oldest = ttsAudioCache.keys().next().value;
+      URL.revokeObjectURL(ttsAudioCache.get(oldest));
+      ttsAudioCache.delete(oldest);
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+    const origText = btn.innerHTML;
+    btn.textContent = '\u23F3 Generating\u2026';
+
+    try {
+      const resp = await fetch(`${API_BASE}/audio/preview`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, provider: ttsProvider }),
+      });
+      if (!resp.ok) {
+        const errText = await resp.text();
+        throw new Error(`TTS failed (${resp.status}): ${errText}`);
+      }
+      const blob = await resp.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      ttsAudioCache.set(cacheKey, blobUrl);
+      audioEl.src = blobUrl;
+      audioEl.classList.add('visible');
+      audioEl.play();
+    } catch (err) {
+      showError('TTS error: ' + err.message);
+      btn.classList.add('error');
+      setTimeout(() => btn.classList.remove('error'), 2000);
+    } finally {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      btn.innerHTML = origText;
+    }
+  }
 
   // ── Task 4: Jaccard similarity ──
 
