@@ -30086,10 +30086,10 @@
     }
   },
   {
-    "beat_id": "paris_place_des_vosges_commerce_innovation_pariswalks_henri_iv_first_urban_project",
+    "beat_id": "paris_place_des_vosges_historic_arch_pariswalks_henri_iv_first_urban_project",
     "city_name": "paris",
     "poi_name": "Place des Vosges",
-    "lens": "commerce_innovation",
+    "lens": "historic_arch",
     "topic_slug": "henri_iv_first_urban_project",
     "sub_location": null,
     "trigger_address": null,
@@ -30711,10 +30711,10 @@
     }
   },
   {
-    "beat_id": "paris_place_des_vosges_commerce_innovation_pariswalks_no_5_factory_rails",
+    "beat_id": "paris_place_des_vosges_science_tech_pariswalks_no_5_factory_rails",
     "city_name": "paris",
     "poi_name": "Place des Vosges",
-    "lens": "commerce_innovation",
+    "lens": "science_tech",
     "topic_slug": "no_5_factory_rails",
     "sub_location": null,
     "trigger_address": "no. 5 place des Vosges",
@@ -34803,10 +34803,10 @@
     }
   },
   {
-    "beat_id": "paris_la_samaritaine_commerce_innovation_around_and_about_paris_cognacq_draper_kingkong_ad",
+    "beat_id": "paris_la_samaritaine_historic_markets_around_and_about_paris_cognacq_draper_kingkong_ad",
     "city_name": "paris",
     "poi_name": "La Samaritaine",
-    "lens": "commerce_innovation",
+    "lens": "historic_markets",
     "topic_slug": "cognacq_draper_kingkong_ad",
     "sub_location": null,
     "trigger_address": null,
@@ -36150,10 +36150,10 @@
     }
   },
   {
-    "beat_id": "paris_louvre_museum_commerce_innovation_around_and_about_paris_louvre_shopping_arcade_macdonalds_joke",
+    "beat_id": "paris_louvre_museum_historic_markets_around_and_about_paris_louvre_shopping_arcade_macdonalds_joke",
     "city_name": "paris",
     "poi_name": "Louvre Museum",
-    "lens": "commerce_innovation",
+    "lens": "historic_markets",
     "topic_slug": "louvre_shopping_arcade_macdonalds_joke",
     "sub_location": "carrousel-du-louvre",
     "trigger_address": null,
@@ -36199,11 +36199,11 @@
     }
   },
   {
-    "beat_id": "paris_palais_brongniart_commerce_innovation_around_and_about_paris_napoleon_stock_exchange",
+    "beat_id": "paris_palais_brongniart_historic_markets_around_and_about_paris_napoleon_stock_exchange",
     "city_name": "paris",
     "poi_name": "Palais Brongniart",
     "parent_poi": null,
-    "lens": "commerce_innovation",
+    "lens": "historic_markets",
     "topic_slug": "napoleon_stock_exchange",
     "sub_location": null,
     "trigger_address": null,

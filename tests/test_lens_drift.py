@@ -17,12 +17,13 @@ test will pass automatically.
 from __future__ import annotations
 
 import ast
+import json
 import re
 from pathlib import Path
 
 import pytest
 
-from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES
+from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES, TAGGABLE_LENSES
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SRC_ROOT = REPO_ROOT / "src"
@@ -117,3 +118,51 @@ def test_canonical_slug_count() -> None:
     assert len(CANONICAL_SLUGS) == 29, (
         f"Expected 29 unique canonical slugs, got {len(CANONICAL_SLUGS)}"
     )
+
+
+# Cities with a beats.json file we want to enforce taggable-lens-only on.
+# Add new cities here when their corpus reaches upload-readiness.
+PARAMETRIZED_CITIES = ["paris"]
+
+
+@pytest.mark.parametrize("city", PARAMETRIZED_CITIES)
+def test_no_parent_lens_in_city_beats(city: str) -> None:
+    """Every beat in data/{city}/beats.json must use a TAGGABLE (child/leaf)
+    lens slug, never a parent lens.
+
+    Distinct from `test_no_unknown_lens_slugs_in_src`: that one walks src/
+    code for *any* canonical slug (parent or child) — useful for guarding
+    against typos and stale references. This one walks per-city beat data
+    and enforces the stronger invariant that the API enforces at write
+    time: only child/leaf lenses are taggable on beats.
+
+    Catches the failure mode that bit Phase 6 of the Paris closeout: 5
+    beats slipped through with parent slug 'commerce_innovation', causing
+    silent TAGGED_WITH 422s at /upload time. Adding this test as a
+    pre-upload gate ensures the same regression can't recur on Paris or
+    any future city.
+    """
+    beats_path = Path(__file__).resolve().parent.parent / "data" / city / "beats.json"
+    if not beats_path.exists():
+        pytest.skip(f"data/{city}/beats.json does not exist")
+
+    with beats_path.open() as f:
+        beats = json.load(f)
+
+    parent_slugs = {l["name"] for l in MVP_LENSES}
+    offenders: list[tuple[str, str]] = []  # (beat_id, lens)
+    for beat in beats:
+        lens = beat.get("lens", "")
+        if not lens:
+            continue
+        if lens in parent_slugs or lens not in TAGGABLE_LENSES:
+            offenders.append((beat.get("beat_id", "<no-beat-id>"), lens))
+
+    if offenders:
+        sample = "\n".join(f"  {bid}  lens='{lens}'" for bid, lens in offenders[:10])
+        pytest.fail(
+            f"{city}: {len(offenders)} beat(s) use non-taggable (parent) lens slugs.\n"
+            f"Re-tag each to a child lens (TAGGABLE_LENSES list in definitions.py).\n"
+            f"Sample (first 10):\n{sample}"
+            + (f"\n  ... and {len(offenders) - 10} more" if len(offenders) > 10 else "")
+        )
