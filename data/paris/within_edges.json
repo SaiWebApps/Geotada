@@ -4,7 +4,7 @@
     "city_name": "Paris",
     "total_pois": 303,
     "total_areas": 34,
-    "poi_to_area_count": 763,
+    "poi_to_area_count": 761,
     "area_to_area_count": 33,
     "orphans": [
       "Chateau de Vincennes"
@@ -1753,11 +1753,6 @@
     },
     {
       "poi_name": "Memorial des Martyrs de la Deportation",
-      "area_name": "Latin Quarter",
-      "area_type": "neighborhood"
-    },
-    {
-      "poi_name": "Memorial des Martyrs de la Deportation",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -2080,11 +2075,6 @@
       "poi_name": "Notre-Dame Cathedral",
       "area_name": "4th Arrondissement",
       "area_type": "district"
-    },
-    {
-      "poi_name": "Notre-Dame Cathedral",
-      "area_name": "Latin Quarter",
-      "area_type": "neighborhood"
     },
     {
       "poi_name": "Notre-Dame Cathedral",

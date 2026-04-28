@@ -66,9 +66,16 @@ SPINE_RADIUS_M: float = 800.0
 # Areas that are city-scope (excluded from spine choice) or de-prioritised.
 EXCLUDED_AREA_TYPES: frozenset[str] = frozenset({"city"})
 
-# Phase 2 calibration (Q3): when multiple Areas score within this fraction
-# of the top, prefer area_types in this priority order.
-SPINE_TIE_TOLERANCE: float = 0.05
+# Phase 2.6 calibration: a neighborhood/island/corridor Area beats a
+# district Area unless the district has at least SPINE_DISTRICT_DOMINANCE
+# times the (tier-weighted) vote count of the smaller Area. This makes
+# "Île de la Cité" the spine for a Pont Neuf start instead of "1st
+# Arrondissement", because districts naturally accumulate more votes
+# (every district contains everything inside it). The 5%-tolerance rule
+# from Phase 2.5 was too weak to overcome that vote bias.
+SPINE_DISTRICT_DOMINANCE: float = 2.0
+SPECIFIC_AREA_TYPES: frozenset[str] = frozenset({"neighborhood", "island", "corridor"})
+DISTRICT_AREA_TYPES: frozenset[str] = frozenset({"district"})
 SPINE_AREA_TYPE_PRIORITY: tuple[str, ...] = (
     "neighborhood",
     "island",
@@ -522,10 +529,16 @@ def pick_spine_area(
     """Most-populous non-city Area among POIs within SPINE_RADIUS_M.
 
     Tier-weighted: each candidate POI casts `tier` votes for each of its
-    Areas. When several Areas score within SPINE_TIE_TOLERANCE of the
-    leader, break ties by SPINE_AREA_TYPE_PRIORITY (neighborhood > island
-    > corridor > district > city), then by smaller membership (more
-    specific Area), then alphabetically.
+    Areas. **Phase 2.6 rule:** if the top-scoring Area is a district,
+    promote a competing neighborhood/island/corridor whose votes are at
+    least `(top / SPINE_DISTRICT_DOMINANCE)` — i.e., the district must be
+    ≥2× the more-specific area to keep the spine. Districts naturally
+    accumulate more votes (every district contains everything inside
+    it), so without this lift districts always win and the algorithm
+    can never pick "Île de la Cité" near Pont Neuf.
+
+    Among multiple specific Areas the highest score wins; among true
+    score ties, fall back to SPINE_AREA_TYPE_PRIORITY then alphabetical.
 
     Falls back to the closest candidate's most-specific non-city Area
     when no POIs are within SPINE_RADIUS_M.
@@ -556,21 +569,43 @@ def pick_spine_area(
     if not votes:
         return None
 
-    top_score = max(votes.values())
-    cutoff = top_score * (1.0 - SPINE_TIE_TOLERANCE)
-    finalists = [a for a, s in votes.items() if s >= cutoff]
-    return min(finalists, key=lambda a: _spine_tiebreak_key(a, votes, snapshot))
+    leader = max(votes, key=lambda a: (votes[a], -_type_rank(a, snapshot), a))
+    leader_type = snapshot.area_types.get(leader, "")
+
+    # If the leader is a district, see whether a more-specific Area is
+    # close enough (≥ leader / SPINE_DISTRICT_DOMINANCE) to win.
+    if leader_type in DISTRICT_AREA_TYPES:
+        threshold = votes[leader] / SPINE_DISTRICT_DOMINANCE
+        contenders = [
+            a
+            for a in votes
+            if snapshot.area_types.get(a, "") in SPECIFIC_AREA_TYPES
+            and votes[a] >= threshold
+        ]
+        if contenders:
+            return max(contenders, key=lambda a: (votes[a], -_type_rank(a, snapshot), a))
+
+    # Fall through: literal top-scorer. Ties broken by area_type priority
+    # then alphabetically (deterministic).
+    return min(votes.keys(), key=lambda a: _spine_tiebreak_key(a, votes, snapshot))
 
 
-def _spine_tiebreak_key(area: str, votes: Counter[str], snapshot: CorpusSnapshot) -> tuple:
-    """Smaller is better: (-vote_count, type_rank, specificity_rank, name)."""
+def _type_rank(area: str, snapshot: CorpusSnapshot) -> int:
     area_type = snapshot.area_types.get(area, "")
-    type_rank = (
+    return (
         SPINE_AREA_TYPE_PRIORITY.index(area_type)
         if area_type in SPINE_AREA_TYPE_PRIORITY
         else len(SPINE_AREA_TYPE_PRIORITY)
     )
-    return (-votes[area], type_rank, votes[area], area)
+
+
+def _spine_tiebreak_key(area: str, votes: Counter[str], snapshot: CorpusSnapshot) -> tuple:
+    """Smaller is better: (-vote_count, type_rank, vote_count, name).
+
+    Used only when the 2× district lift hasn't already chosen a winner —
+    e.g., among multiple specific Areas with identical scores.
+    """
+    return (-votes[area], _type_rank(area, snapshot), votes[area], area)
 
 
 def _rank_areas_by_specificity(areas: tuple[str, ...], snapshot: CorpusSnapshot) -> list[str]:

@@ -246,7 +246,9 @@ The parked doc's "pre-selection theme clustering via entity co-occurrence" doesn
 
 Alternative: if user provides a `theme_hint`, score POIs by lens/subject_tag overlap and prefer Areas with higher concentration.
 
-**Tie-break (Updated 2026-04-27 (Phase 2 calibration)):** when multiple Areas score within 5% of the leader, prefer in this order: `neighborhood > island > corridor > district > city`. All else equal, prefer the more specific (lower vote-count) Area, then break alphabetically. This makes "Île de la Cité" the spine for a Pont Neuf start instead of "1st Arrondissement".
+**Tie-break (Updated 2026-04-28 (Phase 2.6 calibration)):** if the top-scoring Area is a `district`, promote a competing `neighborhood`/`island`/`corridor` whose tier-weighted vote count is at least half the district's — i.e. the district must be ≥ 2× the more-specific Area to keep the spine. Districts naturally accumulate more votes (every district contains everything inside it), so without this lift districts always win and the algorithm can never pick "Île de la Cité" near Pont Neuf. Among multiple specific Areas the highest-vote one wins; among true score ties, fall back to `neighborhood > island > corridor > district > city` then alphabetical.
+
+The Phase 2.5 5%-tolerance rule was too weak to overcome the district vote bias; replaced by the 2× dominance rule on 2026-04-28 after Smoke B (Pont Neuf) surfaced 1st Arrondissement (63 votes) winning over Île de la Cité (42) at a 33% gap.
 
 **Per-POI score:**
 
@@ -551,8 +553,9 @@ Every assumption in this doc that isn't anchored to evidence:
 9. **`book_slug` empty in live data** — runtime cannot do per-book attribution. Acceptable for MVP; flag if user wants source attribution UX.
 10. **`pronunciation` 1% coverage** — runtime can synthesize "that's pronounced X" only at PdV. Cold-open elsewhere falls short of Pariswalks gold standard.
 11. **`beat_length_class` 51% missing** — runtime falls back to word count. Length budgeting becomes approximate.
-12. **Notre-Dame in Latin Quarter** — known polygon overshoot; tour-builder uses Île de la Cité as the canonical Area for ND.
+12. **Notre-Dame in Latin Quarter** — RESOLVED 2026-04-28 (Phase 2.6). The Latin Quarter manual polygon was tightened (NE step-down from lat 48.8530 to 48.8514 starting at lng 2.348) so the polygon respects the Seine's south bank. ND, Crypte Archéologique de l'Île de la Cité, and Mémorial des Martyrs de la Déportation no longer leak into Latin Quarter; their Île de la Cité memberships are unchanged.
 13. **`stop_orientation` synthesis quality** — unverified. Synthesized opener marked `[SYNTHESIZED_OPENER]`; user can audit and decide whether to defer launch until back-fill ships.
+14. **Spine rule hardened from tolerance-gated to district-dominance** (Phase 2.6, 2026-04-28). The Phase 2.5 5%-tolerance rule never fired in the Pont Neuf case (vote gap 33% > 5%). Replaced with the 2× district dominance rule per §3.2. Smoke B now resolves spine = "Île de la Cité" and reaches Notre-Dame as the closing endpoint.
 
 These are the points where Phase 1 design has knowingly substituted reasoned defaults for measured data. Phase 4–5 calibration is the right place to validate.
 

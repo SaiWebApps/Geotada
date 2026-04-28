@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import math
 
+import pytest
+
 from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.routing import envelope_radius_m, haversine_m
 from src.tour.selection import (
@@ -497,14 +499,13 @@ def test_endpoint_pull_respects_walk_budget():
 # ---------------------------------------------------------------------------
 
 
-def test_spine_tiebreak_prefers_island_over_district_within_tolerance():
-    """When island and district score within 5%, island wins."""
+def test_spine_tiebreak_prefers_island_over_tied_district():
+    """When island and district score identically, island wins."""
     pois = [
         _poi("a", tier=5, lat=48.857, lng=2.341, areas=("Île de la Cité", "1st Arrondissement")),
         _poi("b", tier=5, lat=48.856, lng=2.342, areas=("Île de la Cité", "1st Arrondissement")),
         _poi("c", tier=4, lat=48.855, lng=2.343, areas=("Île de la Cité", "1st Arrondissement")),
     ]
-    # Both Areas accumulate identical vote counts (same POIs).
     snap = _snap(
         pois,
         area_types={
@@ -516,7 +517,7 @@ def test_spine_tiebreak_prefers_island_over_district_within_tolerance():
     assert spine == "Île de la Cité"
 
 
-def test_spine_tiebreak_prefers_neighborhood_over_district():
+def test_spine_tiebreak_prefers_neighborhood_over_tied_district():
     pois = [
         _poi("a", tier=5, lat=48.855, lng=2.366, areas=("Le Marais", "4th Arrondissement")),
         _poi("b", tier=4, lat=48.856, lng=2.366, areas=("Le Marais", "4th Arrondissement")),
@@ -529,19 +530,122 @@ def test_spine_tiebreak_prefers_neighborhood_over_district():
     assert spine == "Le Marais"
 
 
-def test_spine_tiebreak_outside_tolerance_uses_top_count():
-    """A 30% lead is bigger than the 5% tolerance — top count wins regardless."""
-    pois = [
-        _poi(f"d{i}", tier=5, lat=48.86, lng=2.34, areas=("1st Arrondissement",))
-        for i in range(5)
+# Phase 2.6 calibration — 2× district dominance rule (Note 1).
+
+
+def test_spine_prefers_island_over_district_below_2x():
+    """Island B at 1.875× ratio (below 2× threshold) → smaller Area wins."""
+    # 7 POIs in district A, ∑tier = 30 (5+5+5+5+4+3+3).
+    district_pois = [
+        _poi(f"d{i}", tier=t, lat=48.857, lng=2.341, areas=("District A",))
+        for i, t in enumerate([5, 5, 5, 5, 4, 3, 3])
     ]
-    pois.append(_poi("i1", tier=4, lat=48.86, lng=2.34, areas=("Île de la Cité",)))
+    # 4 POIs in island B, ∑tier = 16 (5+5+3+3).
+    island_pois = [
+        _poi(f"i{i}", tier=t, lat=48.857, lng=2.341, areas=("Island B",))
+        for i, t in enumerate([5, 5, 3, 3])
+    ]
     snap = _snap(
-        pois,
+        district_pois + island_pois,
+        area_types={"District A": "district", "Island B": "island"},
+    )
+    spine = pick_spine_area(48.857, 2.341, district_pois + island_pois, snap)
+    assert spine == "Island B", f"ratio 30/16=1.875 < 2× → island should win, got {spine}"
+
+
+def test_spine_picks_district_when_2x_dominant():
+    """District A at 3× ratio (above 2× threshold) → district wins."""
+    # 12 POIs in district A, ∑tier = 60.
+    district_pois = [
+        _poi(f"d{i}", tier=5, lat=48.857, lng=2.341, areas=("District A",))
+        for i in range(12)
+    ]
+    # 4 POIs in island B, ∑tier = 20.
+    island_pois = [
+        _poi(f"i{i}", tier=5, lat=48.857, lng=2.341, areas=("Island B",))
+        for i in range(4)
+    ]
+    snap = _snap(
+        district_pois + island_pois,
+        area_types={"District A": "district", "Island B": "island"},
+    )
+    spine = pick_spine_area(48.857, 2.341, district_pois + island_pois, snap)
+    assert spine == "District A", f"ratio 60/20=3× ≥ 2× → district wins, got {spine}"
+
+
+def test_spine_district_dominance_picks_strongest_specific_when_multiple():
+    """When several specific Areas qualify, take the highest-vote one."""
+    # District big, two contender islands; island B has more votes.
+    district_pois = [
+        _poi(f"d{i}", tier=5, lat=48.857, lng=2.341, areas=("District A",))
+        for i in range(8)  # ∑tier = 40
+    ]
+    weak_island = [
+        _poi(f"w{i}", tier=4, lat=48.857, lng=2.341, areas=("Island weak",))
+        for i in range(3)  # ∑tier = 12
+    ]
+    strong_island = [
+        _poi(f"s{i}", tier=5, lat=48.857, lng=2.341, areas=("Island strong",))
+        for i in range(5)  # ∑tier = 25
+    ]
+    snap = _snap(
+        district_pois + weak_island + strong_island,
         area_types={
-            "1st Arrondissement": "district",
-            "Île de la Cité": "island",
+            "District A": "district",
+            "Island weak": "island",
+            "Island strong": "island",
         },
     )
-    spine = pick_spine_area(48.86, 2.34, pois, snap)
-    assert spine == "1st Arrondissement"
+    pois = district_pois + weak_island + strong_island
+    spine = pick_spine_area(48.857, 2.341, pois, snap)
+    # threshold = 40 / 2 = 20 → Island weak (12) excluded, Island strong (25) qualifies.
+    assert spine == "Island strong"
+
+
+# Phase 2.6 — Latin Quarter polygon regression (Note 2).
+
+
+def test_notre_dame_in_ile_not_latin_quarter():
+    """Live-data regression against the **production** Paris corpus.
+
+    Asserts the §1.8 polygon-overshoot bug has been fixed: Notre-Dame
+    sits in Île de la Cité, not Latin Quarter. Reads the production
+    .env directly because conftest re-points create_driver() at the
+    disposable test DB. Skipped when prod Neo4j is unreachable or the
+    Paris corpus hasn't been loaded.
+    """
+    from pathlib import Path
+
+    from dotenv import dotenv_values
+
+    pytest.importorskip("neo4j")
+    from neo4j import GraphDatabase
+
+    prod_env = Path(__file__).resolve().parent.parent / ".env"
+    if not prod_env.exists():
+        pytest.skip("production .env not present")
+    cfg = dotenv_values(prod_env)
+    uri = cfg.get("NEO4J_URI")
+    user = cfg.get("NEO4J_USER")
+    password = cfg.get("NEO4J_PASSWORD")
+    if not (uri and user and password):
+        pytest.skip("production Neo4j credentials missing")
+
+    try:
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        driver.verify_connectivity()
+    except Exception:
+        pytest.skip("production Neo4j unreachable")
+    try:
+        with driver.session() as s:
+            r = s.run(
+                "MATCH (p:POI {city_name: 'paris', name: 'Notre-Dame Cathedral'})"
+                "-[:WITHIN]->(a:Area) RETURN collect(a.name) AS areas"
+            ).single()
+        areas = set(r["areas"]) if r else set()
+    finally:
+        driver.close()
+    if not areas:
+        pytest.skip("Notre-Dame not present in production corpus")
+    assert "Île de la Cité" in areas, f"ND missing from Île de la Cité: {areas}"
+    assert "Latin Quarter" not in areas, f"ND still leaks into Latin Quarter: {areas}"
