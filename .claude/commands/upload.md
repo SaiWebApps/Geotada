@@ -120,21 +120,64 @@ For each POI in the export file:
 1. **Match by exact name** against DB POIs (case-insensitive)
 2. **Match by name_variations** — check incoming name against DB name_variations, and incoming variations against DB names
 3. **If matched:** Record the DB POI's `id`. Do NOT call the API (avoids MERGE overwriting fields).
-4. **If new:** Call `POST /api/nodes/POI` with all schema fields including `poi_role` (from poi-raw.json: stop/setting/walk_by_only). The MERGE will create it. Record the returned `id`.
+4. **If new:** Call `POST /api/nodes/POI` with the fields below (canonical values from `poi-raw.json` per the rule above). The MERGE creates it. Record the returned `id`.
+
+**FORWARD (tour-essential):**
+- `name` — required
+- `city_name` — required, part of MERGE key
+- `latitude`, `longitude` — required
+- `importance_tier` — required, no default
+- `short_description`
+- `trigger_radius`, `typical_duration_min`
+- `kid_friendly`
+- `name_variations`
+- `poi_role` — stop | setting | walk_by_only
+- `parent_poi` — sub-POI parent name (creates IS_PARENT_OF in Step 5)
+- `establishing_not_applicable` — tour-builder flag
+
+**DO NOT FORWARD (provenance / copyright-sensitive):**
+- `source_passage` — verbatim book quote (the `POICreate` model accepts it,
+  but we deliberately strip it at upload to keep DB free of source text)
+- `_meta`, `_pipeline`, `_poi_role_reasoning`, `source_chunk` — pipeline metadata
 
 ### Step 3 — Create beats + HAS_BEAT relationships
 
-For each beat at each POI:
+For each beat at each POI, call `POST /api/nodes/NarrativeBeat` with the
+**tour-essential** fields below. Read every field from the city's
+`beats.json` (canonical source) — the export file is fine for new beats not
+yet merged in, but `beats.json` wins on conflict.
 
-Call `POST /api/nodes/NarrativeBeat` with:
-- `script_body`
-- `duration_sec` (from export, or calculate: word_count / 2.5)
-- `kid_friendly` (from export, or default "yes")
-- `entities` (from export, list[str])
-- `sensory_anchor` (from export, bool)
-- `narrative_function` (from export, str)
-- `beat_type` (from export, str)
-- `emotional_register` (from export, str)
+**FORWARD (tour-essential):**
+- `script_body` — required
+- `duration_sec` — from export, or calculate: word_count / 2.5
+- `est_spoken_seconds` — pacing
+- `kid_friendly` — default "yes"
+- `entities` — list[str]
+- `sensory_anchor` — bool
+- `narrative_function` — str
+- `beat_type` — str
+- `emotional_register` — str
+- `subject_tag` — theme picker
+- `sub_location` — within-POI spatial tag (façade, crypt, nave, ...)
+- `trigger_address` — address-level GPS trigger
+- `beat_length_class` — anchor | mid | seasoning | micro
+- `physical_cues` — list of `{cue, direction, feature_type}` objects
+- `pronunciation` — phonetic approximation for TTS
+- `inline_foreign_phrases` — list of `{phrase, gloss}` objects
+
+`physical_cues` and `inline_foreign_phrases` arrive as list-of-dict; the API
+JSON-encodes them on write and decodes on read — pass them through verbatim.
+
+**DO NOT FORWARD (provenance / copyright-sensitive — keep in pipeline files only):**
+- `source_passage` — verbatim book quote
+- `source_attribution` — book/author citation
+- `book_slug`, `source_chunk_slug` — beat-to-book linkage
+- `key_claims`, `fact_check`, `source_passage_verified`, `related_beats`, `confidence` — internal QA
+- `script_body_hash` — pipeline dedup only; DB has its own MERGE key on `script_body`
+- `_meta`, `_enrichment`, `_fixup_notes` — internal pipeline metadata
+
+These fields stay in `data/{city_slug}/beats.json` for traceability. They
+must never reach Neo4j.
 
 Record the returned beat `id`.
 
@@ -165,6 +208,29 @@ For each POI with `parent_poi` set:
 - If parent exists AND relationship type exists: create the relationship
 - If parent not found: log warning
 - If relationship type doesn't exist: log warning and skip all parent-child. Tell the user the schema needs updating.
+
+### Step 6 — Areas + WITHIN edges + Area-attached beats
+
+Areas describe the spatial container hierarchy (city → district → neighborhood/island/corridor). They are uploaded once per city and re-uploaded only when boundaries change. Run this step *before* Steps 1–5 on a cold city, or *after* Step 5 on subsequent runs (MERGE-based, idempotent either way).
+
+**6a. Upload Area nodes** — read `data/{city_slug}/areas.json`. For each entry:
+- Build the WKT POLYGON via `src.utils.spatial.simplify_polygon` + `coords_to_wkt`. OSM-sourced areas read their cached boundary from `data/{city_slug}/boundaries/<osm_relation_id>.json`; manual ones use the embedded `manual_boundary`.
+- POST `/api/v1/nodes/Area` with `{name, area_type, city_name, boundary, centroid_lat, centroid_lng, short_description}`. The API MERGEs on `(name, area_type, city_name)` — multi-city safe.
+- The reference orchestrator is `scripts/create_paris_areas.py`; reuse it for any city by switching the `AREAS_FILE` constant.
+
+**6b. Upload WITHIN edges** — read `data/{city_slug}/within_edges.json` (produced by `scripts/generate_within_edges.py`). Two kinds:
+- **POI→Area:** for each `poi_to_area` entry, look up POI by `(name, city_name)` and Area by `(name, area_type, city_name)`, then POST `/api/v1/edges/WITHIN`. The API MERGEs WITHIN edges automatically.
+- **Area→Area:** for each `area_to_area` entry (parent_area chain), POST `/api/v1/edges/WITHIN` from child Area to parent Area. Same MERGE behavior.
+
+**6c. Area-attached beats** — beats whose source content is genuinely district-level (etymology, neighborhood typology) attach to the Area, not a POI. In `data/{city_slug}/beats.json`, these have `poi_name` set to the Area name (e.g. `"Marais"`). Process:
+- Look up the corresponding Area in Neo4j by `(name, area_type, city_name)`. Confirm the canonical Area name matches (e.g. beats reference `"Marais"`, but the Area is `"Le Marais"` — pipeline output may use a non-canonical alias; resolve via your areas.json metadata or a per-city alias map).
+- MERGE the NarrativeBeat (POST `/api/v1/nodes/NarrativeBeat`).
+- POST `/api/v1/edges/HAS_BEAT` from the **Area** to the NarrativeBeat. The HAS_BEAT relationship type accepts any source label per Schema v3.
+- POST `/api/v1/edges/TAGGED_WITH` from the NarrativeBeat to the Lens.
+
+Track Area-attached beats separately in the report so reviewers can confirm they were not orphaned to a phantom POI.
+
+After 6a–6c, audit via Cypher: every Area has ≥1 inbound WITHIN (POI or sub-Area), every POI in the city has ≥1 outbound WITHIN edge, and the Area→Area graph is acyclic with `Paris` (or the launch city) as the only root.
 
 ---
 

@@ -12,7 +12,10 @@
       "source_chunk_slug": "chunk-05-knights-and-mansions",
       "added_by": "phase-1b-poi-generate-2026-04-26",
       "phase_5d_review": "PARKED (district-level content, not re-taggable to a specific POI). Beat 1 is etymology + 14th-c walls; beat 2 is hôtel particulier typology. Both genuinely about the Marais as an Area. Will be re-attached when Marais Area node ships post-launch.",
-      "reviewed_at": "2026-04-26T14:25:25.938847+00:00"
+      "reviewed_at": "2026-04-26T14:25:25.938847+00:00",
+      "status": "resolved",
+      "resolved_at": "2026-04-28T02:20:53.823849+00:00",
+      "resolution": "Attached to Le Marais Area via HAS_BEAT in Phase A-4 closeout (2026-04-27). Beat created in Neo4j with (:Area {name:'Le Marais'})-[:HAS_BEAT]->(:NarrativeBeat) per Schema v3."
     },
     {
       "type": "POI_TAGGING_AMBIGUOUS",
@@ -26,7 +29,10 @@
       "source_chunk_slug": "chunk-05-knights-and-mansions",
       "added_by": "phase-1b-poi-generate-2026-04-26",
       "phase_5d_review": "PARKED (district-level content, not re-taggable to a specific POI). Beat 1 is etymology + 14th-c walls; beat 2 is hôtel particulier typology. Both genuinely about the Marais as an Area. Will be re-attached when Marais Area node ships post-launch.",
-      "reviewed_at": "2026-04-26T14:25:25.938847+00:00"
+      "reviewed_at": "2026-04-26T14:25:25.938847+00:00",
+      "status": "resolved",
+      "resolved_at": "2026-04-28T02:20:53.823849+00:00",
+      "resolution": "Attached to Le Marais Area via HAS_BEAT in Phase A-4 closeout (2026-04-27). Beat created in Neo4j with (:Area {name:'Le Marais'})-[:HAS_BEAT]->(:NarrativeBeat) per Schema v3."
     }
   ]
 }

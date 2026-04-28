@@ -56,23 +56,151 @@
     "parent_area": "Paris"
   },
   {
+    "name": "8th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 20872,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "9th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9537,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "10th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9528,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "11th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9533,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "12th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9525,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "13th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9530,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "14th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9522,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "15th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9520,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "16th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9517,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "17th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9519,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "18th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9531,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "19th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9552,
+    "parent_area": "Paris"
+  },
+  {
+    "name": "20th Arrondissement",
+    "area_type": "district",
+    "city_name": "Paris",
+    "osm_relation_id": 9529,
+    "parent_area": "Paris"
+  },
+  {
     "name": "Île de la Cité",
     "area_type": "island",
     "city_name": "Paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
-      [48.8568, 2.3397],
-      [48.8561, 2.3427],
-      [48.8548, 2.3468],
-      [48.8537, 2.3500],
-      [48.8533, 2.3516],
-      [48.8541, 2.3519],
-      [48.8547, 2.3496],
-      [48.8558, 2.3460],
-      [48.8571, 2.3418],
-      [48.8574, 2.3403],
-      [48.8568, 2.3397]
+      [
+        48.8571,
+        2.3395
+      ],
+      [
+        48.8573,
+        2.3415
+      ],
+      [
+        48.8573,
+        2.3445
+      ],
+      [
+        48.857,
+        2.348
+      ],
+      [
+        48.8565,
+        2.3515
+      ],
+      [
+        48.8535,
+        2.353
+      ],
+      [
+        48.8515,
+        2.3523
+      ],
+      [
+        48.8518,
+        2.35
+      ],
+      [
+        48.853,
+        2.346
+      ],
+      [
+        48.8545,
+        2.3425
+      ],
+      [
+        48.8562,
+        2.34
+      ],
+      [
+        48.8571,
+        2.3395
+      ]
     ],
     "parent_area": "4th Arrondissement"
   },
@@ -83,16 +211,46 @@
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
-      [48.8520, 2.3519],
-      [48.8510, 2.3549],
-      [48.8507, 2.3574],
-      [48.8510, 2.3600],
-      [48.8517, 2.3618],
-      [48.8525, 2.3619],
-      [48.8531, 2.3598],
-      [48.8532, 2.3568],
-      [48.8528, 2.3538],
-      [48.8520, 2.3519]
+      [
+        48.852,
+        2.3519
+      ],
+      [
+        48.851,
+        2.3549
+      ],
+      [
+        48.8507,
+        2.3574
+      ],
+      [
+        48.851,
+        2.36
+      ],
+      [
+        48.8517,
+        2.3618
+      ],
+      [
+        48.8525,
+        2.3619
+      ],
+      [
+        48.8531,
+        2.3598
+      ],
+      [
+        48.8532,
+        2.3568
+      ],
+      [
+        48.8528,
+        2.3538
+      ],
+      [
+        48.852,
+        2.3519
+      ]
     ],
     "parent_area": "4th Arrondissement"
   },
@@ -103,11 +261,26 @@
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
-      [48.8625, 2.3395],
-      [48.8625, 2.3480],
-      [48.8593, 2.3480],
-      [48.8593, 2.3395],
-      [48.8625, 2.3395]
+      [
+        48.8625,
+        2.3395
+      ],
+      [
+        48.8625,
+        2.348
+      ],
+      [
+        48.8593,
+        2.348
+      ],
+      [
+        48.8593,
+        2.3395
+      ],
+      [
+        48.8625,
+        2.3395
+      ]
     ],
     "parent_area": "1st Arrondissement"
   },
@@ -118,13 +291,48 @@
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
-      [48.8600, 2.3500],
-      [48.8600, 2.3650],
-      [48.8540, 2.3650],
-      [48.8540, 2.3500],
-      [48.8600, 2.3500]
+      [
+        48.865,
+        2.35
+      ],
+      [
+        48.865,
+        2.368
+      ],
+      [
+        48.858,
+        2.3695
+      ],
+      [
+        48.8535,
+        2.3695
+      ],
+      [
+        48.852,
+        2.3665
+      ],
+      [
+        48.852,
+        2.3615
+      ],
+      [
+        48.8535,
+        2.357
+      ],
+      [
+        48.855,
+        2.3505
+      ],
+      [
+        48.86,
+        2.3495
+      ],
+      [
+        48.865,
+        2.35
+      ]
     ],
-    "parent_area": "3rd Arrondissement"
+    "parent_area": "4th Arrondissement"
   },
   {
     "name": "Latin Quarter",
@@ -133,11 +341,26 @@
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
-      [48.8530, 2.3400],
-      [48.8530, 2.3530],
-      [48.8460, 2.3530],
-      [48.8460, 2.3400],
-      [48.8530, 2.3400]
+      [
+        48.853,
+        2.34
+      ],
+      [
+        48.853,
+        2.353
+      ],
+      [
+        48.846,
+        2.353
+      ],
+      [
+        48.846,
+        2.34
+      ],
+      [
+        48.853,
+        2.34
+      ]
     ],
     "parent_area": "5th Arrondissement"
   },
@@ -148,12 +371,325 @@
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
-      [48.8560, 2.3260],
-      [48.8560, 2.3380],
-      [48.8510, 2.3380],
-      [48.8510, 2.3260],
-      [48.8560, 2.3260]
+      [
+        48.856,
+        2.326
+      ],
+      [
+        48.856,
+        2.338
+      ],
+      [
+        48.851,
+        2.338
+      ],
+      [
+        48.851,
+        2.326
+      ],
+      [
+        48.856,
+        2.326
+      ]
     ],
     "parent_area": "6th Arrondissement"
+  },
+  {
+    "name": "Champs-Élysées",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.8755,
+        2.293
+      ],
+      [
+        48.8735,
+        2.2985
+      ],
+      [
+        48.872,
+        2.305
+      ],
+      [
+        48.8715,
+        2.314
+      ],
+      [
+        48.866,
+        2.3195
+      ],
+      [
+        48.8635,
+        2.3175
+      ],
+      [
+        48.8635,
+        2.308
+      ],
+      [
+        48.8655,
+        2.2985
+      ],
+      [
+        48.87,
+        2.2925
+      ],
+      [
+        48.8755,
+        2.293
+      ]
+    ],
+    "parent_area": "8th Arrondissement"
+  },
+  {
+    "name": "Madeleine-Concorde",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.872,
+        2.3195
+      ],
+      [
+        48.872,
+        2.328
+      ],
+      [
+        48.8685,
+        2.328
+      ],
+      [
+        48.866,
+        2.325
+      ],
+      [
+        48.8635,
+        2.3225
+      ],
+      [
+        48.8635,
+        2.3195
+      ],
+      [
+        48.8665,
+        2.3175
+      ],
+      [
+        48.8705,
+        2.3185
+      ],
+      [
+        48.872,
+        2.3195
+      ]
+    ],
+    "parent_area": "8th Arrondissement"
+  },
+  {
+    "name": "Plaine Monceau",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.881,
+        2.2995
+      ],
+      [
+        48.881,
+        2.315
+      ],
+      [
+        48.8765,
+        2.3155
+      ],
+      [
+        48.8735,
+        2.3125
+      ],
+      [
+        48.8745,
+        2.305
+      ],
+      [
+        48.876,
+        2.3
+      ],
+      [
+        48.881,
+        2.2995
+      ]
+    ],
+    "parent_area": "8th Arrondissement"
+  },
+  {
+    "name": "Opéra-Garnier",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.8785,
+        2.3285
+      ],
+      [
+        48.8785,
+        2.3335
+      ],
+      [
+        48.8745,
+        2.334
+      ],
+      [
+        48.8705,
+        2.3325
+      ],
+      [
+        48.8695,
+        2.3275
+      ],
+      [
+        48.8725,
+        2.328
+      ],
+      [
+        48.8765,
+        2.3285
+      ],
+      [
+        48.8785,
+        2.3285
+      ]
+    ],
+    "parent_area": "9th Arrondissement"
+  },
+  {
+    "name": "Trocadéro-Passy",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.8725,
+        2.2735
+      ],
+      [
+        48.8725,
+        2.3
+      ],
+      [
+        48.8665,
+        2.301
+      ],
+      [
+        48.8605,
+        2.295
+      ],
+      [
+        48.8595,
+        2.2825
+      ],
+      [
+        48.861,
+        2.275
+      ],
+      [
+        48.8665,
+        2.2725
+      ],
+      [
+        48.8725,
+        2.2735
+      ]
+    ],
+    "parent_area": "16th Arrondissement"
+  },
+  {
+    "name": "Bastille",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.856,
+        2.366
+      ],
+      [
+        48.856,
+        2.3755
+      ],
+      [
+        48.853,
+        2.3755
+      ],
+      [
+        48.846,
+        2.3745
+      ],
+      [
+        48.846,
+        2.3665
+      ],
+      [
+        48.852,
+        2.3655
+      ],
+      [
+        48.856,
+        2.366
+      ]
+    ],
+    "parent_area": "12th Arrondissement"
+  },
+  {
+    "name": "Montmartre",
+    "area_type": "neighborhood",
+    "city_name": "Paris",
+    "osm_relation_id": null,
+    "source": "manual",
+    "manual_boundary": [
+      [
+        48.8905,
+        2.3365
+      ],
+      [
+        48.8905,
+        2.3455
+      ],
+      [
+        48.8865,
+        2.347
+      ],
+      [
+        48.883,
+        2.3455
+      ],
+      [
+        48.8825,
+        2.3365
+      ],
+      [
+        48.884,
+        2.3285
+      ],
+      [
+        48.887,
+        2.3285
+      ],
+      [
+        48.8905,
+        2.3365
+      ]
+    ],
+    "parent_area": "18th Arrondissement"
   }
 ]
