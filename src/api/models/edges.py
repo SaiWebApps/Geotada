@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel
 
 
-class RelType(str, Enum):
+class RelType(StrEnum):
     """Valid relationship types from Schema_v3."""
 
     HAS_PROFILE = "HAS_PROFILE"

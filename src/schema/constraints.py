@@ -7,9 +7,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from src.schema.definitions import INDEXES, UNIQUE_CONSTRAINTS, Index, UniqueConstraint
-
 from src.connection import get_database
+from src.schema.definitions import INDEXES, UNIQUE_CONSTRAINTS, Index, UniqueConstraint
 
 if TYPE_CHECKING:
     from neo4j import Driver

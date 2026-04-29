@@ -33,7 +33,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
-from src.connection import Neo4jConnectionError, create_driver
+from src.connection import Neo4jConnectionError, create_driver, get_database
 from src.schema.constraints import apply_all
 
 
@@ -63,7 +63,7 @@ def driver():
 
 
 def _wipe(driver) -> None:
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         session.run("MATCH (n) DETACH DELETE n")
 
 
@@ -71,7 +71,7 @@ def _wipe(driver) -> None:
 def clean_driver():
     """Create a driver with a clean DB + schema constraints."""
     d = create_driver()
-    with d.session() as s:
+    with d.session(database=get_database()) as s:
         s.run("MATCH (n) DETACH DELETE n")
     apply_all(d)
     yield d

@@ -6,8 +6,6 @@ Requires a running Neo4j instance.
 
 from __future__ import annotations
 
-import pytest
-
 from tests.conftest import needs_neo4j
 
 
@@ -27,9 +25,7 @@ def _create_profile(client, display_name: str) -> dict:
 
 def _create_lens(client, name: str, display_label: str) -> dict:
     """Helper: create a Lens and return the response JSON."""
-    resp = client.post(
-        "/api/v1/nodes/Lens", json={"name": name, "display_label": display_label}
-    )
+    resp = client.post("/api/v1/nodes/Lens", json={"name": name, "display_label": display_label})
     assert resp.status_code == 201
     return resp.json()
 
@@ -55,10 +51,13 @@ class TestCreateEdge:
     def test_returns_201(self, client):
         user = _create_user(client, "edge-create-201@test.com")
         profile = _create_profile(client, "Edge Creator")
-        resp = client.post("/api/v1/edges/HAS_PROFILE", json={
-            "source": {"label": "User", "id": user["id"]},
-            "target": {"label": "Profile", "id": profile["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/HAS_PROFILE",
+            json={
+                "source": {"label": "User", "id": user["id"]},
+                "target": {"label": "Profile", "id": profile["id"]},
+            },
+        )
         assert resp.status_code == 201
 
     def test_response_has_generated_id(self, client):
@@ -84,9 +83,7 @@ class TestCreateEdge:
     def test_edge_properties_are_stored(self, client):
         user = _create_user(client, "edge-props@test.com")
         profile = _create_profile(client, "Props Test")
-        edge = _create_edge(
-            client, "HAS_PROFILE", user, profile, props={"role": "primary"}
-        )
+        edge = _create_edge(client, "HAS_PROFILE", user, profile, props={"role": "primary"})
         assert edge["properties"]["role"] == "primary"
 
     def test_created_at_is_set(self, client):
@@ -97,25 +94,34 @@ class TestCreateEdge:
 
     def test_source_not_found_returns_404(self, client):
         profile = _create_profile(client, "Orphan Target")
-        resp = client.post("/api/v1/edges/HAS_PROFILE", json={
-            "source": {"label": "User", "id": "does-not-exist"},
-            "target": {"label": "Profile", "id": profile["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/HAS_PROFILE",
+            json={
+                "source": {"label": "User", "id": "does-not-exist"},
+                "target": {"label": "Profile", "id": profile["id"]},
+            },
+        )
         assert resp.status_code == 404
 
     def test_target_not_found_returns_404(self, client):
         user = _create_user(client, "edge-no-target@test.com")
-        resp = client.post("/api/v1/edges/HAS_PROFILE", json={
-            "source": {"label": "User", "id": user["id"]},
-            "target": {"label": "Profile", "id": "does-not-exist"},
-        })
+        resp = client.post(
+            "/api/v1/edges/HAS_PROFILE",
+            json={
+                "source": {"label": "User", "id": user["id"]},
+                "target": {"label": "Profile", "id": "does-not-exist"},
+            },
+        )
         assert resp.status_code == 404
 
     def test_invalid_rel_type_returns_422(self, client):
-        resp = client.post("/api/v1/edges/FAKE_REL", json={
-            "source": {"label": "User", "id": "x"},
-            "target": {"label": "Profile", "id": "y"},
-        })
+        resp = client.post(
+            "/api/v1/edges/FAKE_REL",
+            json={
+                "source": {"label": "User", "id": "x"},
+                "target": {"label": "Profile", "id": "y"},
+            },
+        )
         assert resp.status_code == 422
 
 
@@ -211,9 +217,7 @@ class TestUpdateEdge:
     def test_update_preserves_other_fields(self, client):
         user = _create_user(client, "edge-preserve@test.com")
         profile = _create_profile(client, "Preserve Test")
-        edge = _create_edge(
-            client, "HAS_PROFILE", user, profile, props={"role": "primary"}
-        )
+        edge = _create_edge(client, "HAS_PROFILE", user, profile, props={"role": "primary"})
         resp = client.put(
             f"/api/v1/edges/HAS_PROFILE/{edge['id']}",
             json={"properties": {"weight": 0.5}},
@@ -347,20 +351,29 @@ class TestParentLensTaggingGuard:
         beat = _create_beat(client, "Test beat for parent lens guard.")
 
         # Attempt to tag the beat with the parent lens
-        resp = client.post("/api/v1/edges/TAGGED_WITH", json={
-            "source": {"label": "NarrativeBeat", "id": beat["id"]},
-            "target": {"label": "Lens", "id": lens["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/TAGGED_WITH",
+            json={
+                "source": {"label": "NarrativeBeat", "id": beat["id"]},
+                "target": {"label": "Lens", "id": lens["id"]},
+            },
+        )
         assert resp.status_code == 422
-        assert "parent-only" in resp.json()["detail"].lower() or "parent" in resp.json()["detail"].lower()
+        assert (
+            "parent-only" in resp.json()["detail"].lower()
+            or "parent" in resp.json()["detail"].lower()
+        )
 
     def test_tagged_with_non_parent_lens_succeeds(self, client):
         """TAGGED_WITH edge to a non-parent Lens should succeed normally."""
         lens = _create_lens(client, "child_guard_test", "Child Guard Test")
         beat = _create_beat(client, "Test beat for child lens.")
 
-        resp = client.post("/api/v1/edges/TAGGED_WITH", json={
-            "source": {"label": "NarrativeBeat", "id": beat["id"]},
-            "target": {"label": "Lens", "id": lens["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/TAGGED_WITH",
+            json={
+                "source": {"label": "NarrativeBeat", "id": beat["id"]},
+                "target": {"label": "Lens", "id": lens["id"]},
+            },
+        )
         assert resp.status_code == 201

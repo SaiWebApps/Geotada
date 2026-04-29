@@ -1,4 +1,4 @@
-"""Shared utilities for the Travlr Graph API."""
+"""Shared utilities for the Ondoway Graph API."""
 
 from __future__ import annotations
 
@@ -16,9 +16,7 @@ def serialize_neo4j_props(props: dict) -> dict:
     for key, val in props.items():
         if hasattr(val, "latitude"):
             serialized[key] = {"lat": val.latitude, "lng": val.longitude}
-        elif isinstance(val, (str, int, float, bool)):
-            serialized[key] = val
-        elif isinstance(val, list):
+        elif isinstance(val, (str, int, float, bool, list)):
             serialized[key] = val
         else:
             serialized[key] = str(val)

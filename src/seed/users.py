@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from src.schema.definitions import TAGGABLE_LENSES
-
 from src.connection import get_database
+from src.schema.definitions import TAGGABLE_LENSES
 
 if TYPE_CHECKING:
     from neo4j import Driver
@@ -30,7 +29,7 @@ MATCH (l:Lens {name: $lens_name})
 MERGE (p)-[:PREFERS_LENS]->(l)
 """
 
-TEST_USER_EMAIL = "testuser@travlr.app"
+TEST_USER_EMAIL = "testuser@ondoway.app"
 
 PROFILES: list[dict] = [
     {

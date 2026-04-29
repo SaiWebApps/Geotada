@@ -1,7 +1,7 @@
 """Unit tests for API models — no Neo4j required."""
 
-from pydantic import ValidationError
 import pytest
+from pydantic import ValidationError
 
 from src.api.models.nodes import (
     CREATE_MODELS,
@@ -10,7 +10,6 @@ from src.api.models.nodes import (
     NodeResponse,
     POICreate,
 )
-
 
 # ── NodeLabel enum ──
 

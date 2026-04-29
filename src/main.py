@@ -1,4 +1,4 @@
-"""Travlr Neo4j setup — create schema, seed data, verify traversals.
+"""Ondoway Neo4j setup — create schema, seed data, verify traversals.
 
 Usage:
     make setup          # full setup + seed + verify

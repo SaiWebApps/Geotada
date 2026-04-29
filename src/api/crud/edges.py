@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from src.api.models.edges import RelType
 from src.api.models.nodes import NodeLabel
@@ -47,14 +47,10 @@ def _record_to_edge(record) -> dict[str, Any]:
     }
 
 
-def list_edges(
-    session: Session, rel_type: str, skip: int, limit: int
-) -> tuple[list[dict], int]:
+def list_edges(session: Session, rel_type: str, skip: int, limit: int) -> tuple[list[dict], int]:
     """Return paginated edges of a type and total count."""
     _validate_rel_type(rel_type)
-    count_result = session.run(
-        f"MATCH ()-[r:{rel_type}]->() RETURN count(r) AS total"
-    ).single()
+    count_result = session.run(f"MATCH ()-[r:{rel_type}]->() RETURN count(r) AS total").single()
     total = count_result["total"]
 
     result = session.run(
@@ -173,8 +169,7 @@ def delete_edge(session: Session, rel_type: str, edge_id: str) -> bool:
     """Delete a relationship. Returns True if found and deleted."""
     _validate_rel_type(rel_type)
     result = session.run(
-        f"MATCH ()-[r:{rel_type} {{id: $edge_id}}]->() DELETE r "
-        f"RETURN count(*) AS deleted",
+        f"MATCH ()-[r:{rel_type} {{id: $edge_id}}]->() DELETE r RETURN count(*) AS deleted",
         edge_id=edge_id,
     ).single()
     return result["deleted"] > 0

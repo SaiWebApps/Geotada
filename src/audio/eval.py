@@ -58,8 +58,8 @@ def _word_error_rate(reference: list[str], hypothesis: list[str]) -> float:
         for j in range(1, m + 1):
             cost = 0 if r[i - 1] == h[j - 1] else 1
             d[i][j] = min(
-                d[i - 1][j] + 1,      # deletion
-                d[i][j - 1] + 1,      # insertion
+                d[i - 1][j] + 1,  # deletion
+                d[i][j - 1] + 1,  # insertion
                 d[i - 1][j - 1] + cost,  # substitution
             )
 

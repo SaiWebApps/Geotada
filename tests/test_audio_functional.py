@@ -17,7 +17,7 @@ import httpx
 import pytest
 
 from src.audio.eval import evaluate
-from src.audio.provider import get_provider, TTSError
+from src.audio.provider import get_provider
 from src.seed.narratives import BEATS
 
 
@@ -36,7 +36,8 @@ def _openai_reachable() -> bool:
 
 needs_openai = pytest.mark.skipif(
     not _openai_reachable(),
-    reason="OpenAI API not reachable — set OPENAI_API_KEY and ensure no proxy blocks api.openai.com",
+    reason="OpenAI API not reachable - set OPENAI_API_KEY and ensure "
+    "no proxy blocks api.openai.com",
 )
 
 # Extract scripts from seed data
@@ -104,10 +105,13 @@ class TestEvalEndpoint:
 
         client = TestClient(create_app())
 
-        resp = client.post("/api/v1/audio/eval", json={
-            "text": SCRIPTS[0],
-            "provider": "openai",
-        })
+        resp = client.post(
+            "/api/v1/audio/eval",
+            json={
+                "text": SCRIPTS[0],
+                "provider": "openai",
+            },
+        )
 
         assert resp.status_code == 200, f"Expected 200, got {resp.status_code}: {resp.text}"
 

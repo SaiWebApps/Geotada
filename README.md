@@ -1,6 +1,6 @@
-# Travlr — Neo4j Graph API & Editor
+# Ondoway — Neo4j Graph API & Editor
 
-Graph database schema, CRUD API, seed data, and interactive editor for the Travlr audio tour app.
+Graph database schema, CRUD API, seed data, and interactive editor for the Ondoway audio tour app.
 
 Implements **Schema_v3**: 7 node types, 11 relationships, 3 domains (Traveler's Vault, Global Atlas, Execution Bridge).
 
@@ -20,7 +20,7 @@ Follow these steps to go from a fresh clone to a running app:
 ### 1. Clone and enter the repo
 
 ```bash
-git clone <repo-url> && cd geotada
+git clone <repo-url> && cd ondoway
 ```
 
 ### 2. Bootstrap everything

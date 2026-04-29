@@ -1,4 +1,4 @@
-"""Schema definitions for the Travlr Neo4j graph.
+"""Schema definitions for the Ondoway Neo4j graph.
 
 Pure data module — no database calls. Consumed by schema.constraints
 and tests to keep the source of truth in one place.
@@ -134,8 +134,16 @@ DAG_CHILD_LENSES: list[dict] = [
     {"name": "war_revolution", "display_label": "War & Revolution", "parent_name": "history"},
     {"name": "dark_history", "display_label": "Dark History", "parent_name": "history"},
     {"name": "social_change", "display_label": "Social Change", "parent_name": "history"},
-    {"name": "historic_arch", "display_label": "Historic Architecture", "parent_name": "arch_design"},
-    {"name": "modern_design", "display_label": "Modern & Contemporary Design", "parent_name": "arch_design"},
+    {
+        "name": "historic_arch",
+        "display_label": "Historic Architecture",
+        "parent_name": "arch_design",
+    },
+    {
+        "name": "modern_design",
+        "display_label": "Modern & Contemporary Design",
+        "parent_name": "arch_design",
+    },
     {"name": "music_heritage", "display_label": "Music Heritage", "parent_name": "music_nightlife"},
     {"name": "venues_scenes", "display_label": "Venues & Scenes", "parent_name": "music_nightlife"},
 ]
@@ -143,12 +151,23 @@ DAG_CHILD_LENSES: list[dict] = [
 # The 16 taggable lenses: 8 children + 8 leaves. Parents are NOT taggable.
 TAGGABLE_LENSES: list[str] = [
     # Children of history
-    "hidden_history", "war_revolution", "dark_history", "social_change",
+    "hidden_history",
+    "war_revolution",
+    "dark_history",
+    "social_change",
     # Children of arch_design
-    "historic_arch", "modern_design",
+    "historic_arch",
+    "modern_design",
     # Children of music_nightlife
-    "music_heritage", "venues_scenes",
+    "music_heritage",
+    "venues_scenes",
     # Leaves (directly taggable)
-    "local_legends", "food_culinary", "art_street", "literary_film",
-    "religious_spiritual", "nature_green", "shopping_markets", "science_innovation",
+    "local_legends",
+    "food_culinary",
+    "art_street",
+    "literary_film",
+    "religious_spiritual",
+    "nature_green",
+    "shopping_markets",
+    "science_innovation",
 ]

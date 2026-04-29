@@ -8,9 +8,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from src.schema.definitions import TAGGABLE_LENSES
-
 from src.connection import get_database
+from src.schema.definitions import TAGGABLE_LENSES
 
 if TYPE_CHECKING:
     from neo4j import Driver
@@ -92,7 +91,7 @@ def _build_beat_params(beat: dict, sort_order: int) -> dict:
         "lens_names": beat["lens_names"],
         "version": 1,
         "active_status": "active",
-        "audio_url": f"s3://travlr-audio/placeholder/{poi_slug}.mp3",
+        "audio_url": f"s3://ondoway-audio/placeholder/{poi_slug}.mp3",
         "duration_sec": beat["importance_tier"] * 60,
         "kid_friendly": "yes",
         "sort_order": sort_order,

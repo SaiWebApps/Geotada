@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
 
 
-class NodeLabel(str, Enum):
+class NodeLabel(StrEnum):
     """Valid node labels from Schema_v3."""
 
     User = "User"

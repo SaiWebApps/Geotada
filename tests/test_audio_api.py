@@ -6,10 +6,7 @@ mock TTS provider. These tests cover the audio route handlers at the HTTP level.
 
 from __future__ import annotations
 
-import os
-import tempfile
-from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -62,33 +59,45 @@ class TestGetProviders:
 
 class TestPreviewAudio:
     def test_mock_returns_wav(self, client):
-        resp = client.post("/api/v1/audio/preview", json={
-            "text": "Hello, welcome to Paris.",
-            "provider": "mock",
-        })
+        resp = client.post(
+            "/api/v1/audio/preview",
+            json={
+                "text": "Hello, welcome to Paris.",
+                "provider": "mock",
+            },
+        )
         assert resp.status_code == 200
         assert resp.headers["content-type"] == "audio/wav"
         assert len(resp.content) > 100  # Should be a non-trivial WAV
 
     def test_unknown_provider_400(self, client):
-        resp = client.post("/api/v1/audio/preview", json={
-            "text": "Hello",
-            "provider": "nonexistent",
-        })
+        resp = client.post(
+            "/api/v1/audio/preview",
+            json={
+                "text": "Hello",
+                "provider": "nonexistent",
+            },
+        )
         assert resp.status_code == 400
 
     def test_empty_text_422(self, client):
-        resp = client.post("/api/v1/audio/preview", json={
-            "text": "",
-            "provider": "mock",
-        })
+        resp = client.post(
+            "/api/v1/audio/preview",
+            json={
+                "text": "",
+                "provider": "mock",
+            },
+        )
         assert resp.status_code == 422
 
     def test_content_disposition_header(self, client):
-        resp = client.post("/api/v1/audio/preview", json={
-            "text": "Test text",
-            "provider": "mock",
-        })
+        resp = client.post(
+            "/api/v1/audio/preview",
+            json={
+                "text": "Test text",
+                "provider": "mock",
+            },
+        )
         assert resp.status_code == 200
         assert "content-disposition" in resp.headers
         assert "preview-mock.wav" in resp.headers["content-disposition"]
@@ -99,10 +108,13 @@ class TestPreviewAudio:
 
 class TestCompareProviders:
     def test_mock_returns_results(self, client):
-        resp = client.post("/api/v1/audio/compare", json={
-            "text": "Hello, welcome to the Eiffel Tower.",
-            "providers": ["mock"],
-        })
+        resp = client.post(
+            "/api/v1/audio/compare",
+            json={
+                "text": "Hello, welcome to the Eiffel Tower.",
+                "providers": ["mock"],
+            },
+        )
         assert resp.status_code == 200
         data = resp.json()
         assert data["text"] == "Hello, welcome to the Eiffel Tower."
@@ -114,10 +126,13 @@ class TestCompareProviders:
         assert result["download_path"] is not None
 
     def test_unknown_provider_in_compare_reports_error(self, client):
-        resp = client.post("/api/v1/audio/compare", json={
-            "text": "Test",
-            "providers": ["nonexistent"],
-        })
+        resp = client.post(
+            "/api/v1/audio/compare",
+            json={
+                "text": "Test",
+                "providers": ["nonexistent"],
+            },
+        )
         assert resp.status_code == 200  # Partial failures are not HTTP errors
         data = resp.json()
         result = data["results"][0]

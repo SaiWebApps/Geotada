@@ -51,7 +51,7 @@ TRIP_DEF = {
     "name": "Paris Spring 2026",
     "start_date": "2026-04-10",
     "end_date": "2026-04-14",
-    "cover_image_url": "https://images.travlr.app/trips/paris-spring.jpg",
+    "cover_image_url": "https://images.ondoway.app/trips/paris-spring.jpg",
     "status": "planning",
     "captain": "Mom",
     "crew": ["Kid"],

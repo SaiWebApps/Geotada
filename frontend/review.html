@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Travlr — Editorial Review Workbench</title>
+<title>Ondoway — Editorial Review Workbench</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
@@ -810,7 +810,7 @@
 
 <!-- ── Header ── -->
 <div class="header">
-  <h1>Geotada — Editorial Review</h1>
+  <h1>Ondoway — Editorial Review</h1>
   <span id="cityLabel" class="city-label"></span>
 </div>
 
@@ -1031,7 +1031,7 @@
     citySubmitBtn.textContent = 'Geocoding…';
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(name)}`;
-      const res = await fetch(url, { headers: { 'User-Agent': 'Geotada-Workbench/1.0', 'Referer': 'https://geotada.app' } });
+      const res = await fetch(url, { headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' } });
       const data = await res.json();
       if (!data || data.length === 0) {
         cityError.textContent = 'City not found. Try a different name.';
@@ -2137,7 +2137,7 @@
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(poi.address)}`;
       const res = await fetch(url, {
-        headers: { 'User-Agent': 'Geotada-Workbench/1.0', 'Referer': 'https://geotada.app' },
+        headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' },
         signal: geocodeAbortController.signal
       });
       const data = await res.json();

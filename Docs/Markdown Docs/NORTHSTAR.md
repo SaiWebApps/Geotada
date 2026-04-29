@@ -1,4 +1,4 @@
-# TRAVLR — North Star
+# ONDOWAY — North Star
 
 > **Last updated:** March 2026 · **Status:** Pre-launch (Phase 1)
 
@@ -6,7 +6,7 @@
 
 ## Vision
 
-Travlr makes every city feel like you have a local storyteller in your pocket — surfacing the hidden stories, scandals, and secrets that guidebooks leave out, delivered as GPS-triggered narrative audio that finds you as you walk.
+Ondoway makes every city feel like you have a local storyteller in your pocket — surfacing the hidden stories, scandals, and secrets that guidebooks leave out, delivered as GPS-triggered narrative audio that finds you as you walk.
 
 ---
 
@@ -78,9 +78,9 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 | Document | Location | What it contains |
 |----------|----------|------------------|
 | **Schema v3** | `Schema_v3.docx` | Full Neo4j node/relationship specs, traversal patterns, domain architecture |
-| **12-Month Milestones** | `travlr-milestones.docx` | Phase gates, product/marketing/business tasks per phase |
-| **PM Living Doc** | `travlr-pm-living-doc.docx` | Scoreboard, resolved decisions (Section 04), sprint templates, stack snapshot, lens list |
-| **Monetization Strategy** | `travlr-monetization-condensed.docx` | Revenue streams, unit economics, persona WTP, retention plan, runway scenarios |
+| **12-Month Milestones** | `ondoway-milestones.docx` | Phase gates, product/marketing/business tasks per phase |
+| **PM Living Doc** | `ondoway-pm-living-doc.docx` | Scoreboard, resolved decisions (Section 04), sprint templates, stack snapshot, lens list |
+| **Monetization Strategy** | `ondoway-monetization-condensed.docx` | Revenue streams, unit economics, persona WTP, retention plan, runway scenarios |
 | **Original North Star PRD** | `Northstar.pdf` | Problem definition, dual-mode discovery, Narrative Matrix, Director, feedback loops |
 | **Data Miner Prompt V1** | *(in editorial workbench repo)* | Gemini extraction prompt — orientation blocks, sensory anchors, gravity scoring |
 | **Fact Check Prompt V1** | *(in editorial workbench repo)* | Audit prompt — two-signal gravity matrix, structured audit_notes |

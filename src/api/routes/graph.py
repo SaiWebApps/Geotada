@@ -2,9 +2,8 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from neo4j import Session
-from pydantic import BaseModel
 
 from src.api.dependencies import get_session
 from src.api.utils import serialize_neo4j_props

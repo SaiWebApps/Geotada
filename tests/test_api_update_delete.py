@@ -7,8 +7,6 @@ Requires a running Neo4j instance.
 
 from __future__ import annotations
 
-import pytest
-
 from tests.conftest import needs_neo4j
 
 
@@ -64,11 +62,14 @@ class TestUpdateNode:
         assert resp.json()["properties"]["email"] == "noop@test.com"
 
     def test_update_poi_coordinates(self, client):
-        poi = client.post("/api/v1/nodes/POI", json={
-            "name": "Movable Place",
-            "latitude": 40.0,
-            "longitude": -74.0,
-        }).json()
+        poi = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Movable Place",
+                "latitude": 40.0,
+                "longitude": -74.0,
+            },
+        ).json()
 
         resp = client.put(
             f"/api/v1/nodes/POI/{poi['id']}",
@@ -148,23 +149,29 @@ class TestFullNodeLifecycle:
     def test_poi_lifecycle(self, client):
         """Create POI with geo → Update coords → Delete."""
         # Create
-        created = client.post("/api/v1/nodes/POI", json={
-            "name": "Lifecycle POI",
-            "latitude": 48.8584,
-            "longitude": 2.2945,
-        }).json()
+        created = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Lifecycle POI",
+                "latitude": 48.8584,
+                "longitude": 2.2945,
+            },
+        ).json()
         poi_id = created["id"]
         assert created["properties"]["name"] == "Lifecycle POI"
         assert abs(created["properties"]["location"]["lat"] - 48.8584) < 0.001
 
         # Update name + coordinates
-        updated = client.put(f"/api/v1/nodes/POI/{poi_id}", json={
-            "properties": {
-                "name": "Renamed POI",
-                "latitude": 51.5074,
-                "longitude": -0.1278,
+        updated = client.put(
+            f"/api/v1/nodes/POI/{poi_id}",
+            json={
+                "properties": {
+                    "name": "Renamed POI",
+                    "latitude": 51.5074,
+                    "longitude": -0.1278,
+                },
             },
-        }).json()
+        ).json()
         assert updated["properties"]["name"] == "Renamed POI"
         assert abs(updated["properties"]["location"]["lat"] - 51.5074) < 0.001
 

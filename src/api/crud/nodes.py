@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from src.api.models.nodes import NodeLabel
 from src.api.utils import serialize_neo4j_props
@@ -39,14 +39,10 @@ def _record_to_node(record) -> dict[str, Any]:
     }
 
 
-def list_nodes(
-    session: Session, label: str, skip: int, limit: int
-) -> tuple[list[dict], int]:
+def list_nodes(session: Session, label: str, skip: int, limit: int) -> tuple[list[dict], int]:
     """Return paginated nodes of a label and total count."""
     _validate_label(label)
-    count_result = session.run(
-        f"MATCH (n:{label}) RETURN count(n) AS total"
-    ).single()
+    count_result = session.run(f"MATCH (n:{label}) RETURN count(n) AS total").single()
     total = count_result["total"]
 
     result = session.run(
@@ -73,9 +69,7 @@ def get_node(session: Session, label: str, node_id: str) -> dict | None:
     return _record_to_node(result)
 
 
-def create_node(
-    session: Session, label: str, properties: dict[str, Any]
-) -> dict:
+def create_node(session: Session, label: str, properties: dict[str, Any]) -> dict:
     """Create a node with a generated UUID id. Returns the created node.
 
     For POI and NarrativeBeat, uses MERGE for idempotent upserts.
@@ -167,9 +161,7 @@ def update_node(
         lat = properties.pop("latitude", None)
         lng = properties.pop("longitude", None)
         if lat is not None and lng is not None:
-            set_parts.append(
-                "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})"
-            )
+            set_parts.append("n.location = point({latitude: $lat, longitude: $lng, srid: 4326})")
             params["lat"] = lat
             params["lng"] = lng
 
@@ -192,8 +184,7 @@ def delete_node(session: Session, label: str, node_id: str) -> bool:
     """DETACH DELETE a node. Returns True if found and deleted."""
     _validate_label(label)
     result = session.run(
-        f"MATCH (n:{label} {{id: $node_id}}) DETACH DELETE n "
-        f"RETURN count(*) AS deleted",
+        f"MATCH (n:{label} {{id: $node_id}}) DETACH DELETE n RETURN count(*) AS deleted",
         node_id=node_id,
     ).single()
     return result["deleted"] > 0

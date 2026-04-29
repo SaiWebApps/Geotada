@@ -79,17 +79,11 @@ class EvalResponse(BaseModel):
     provider: str
     original_text: str
     transcribed_text: str
-    similarity_score: float = Field(
-        ..., description="0.0–1.0 Jaccard set similarity of words"
-    )
-    word_error_rate: float = Field(
-        ..., description="0.0 = perfect, higher = worse"
-    )
+    similarity_score: float = Field(..., description="0.0-1.0 Jaccard set similarity of words")
+    word_error_rate: float = Field(..., description="0.0 = perfect, higher = worse")
     missing_words: list[str]
     extra_words: list[str]
-    verdict: str = Field(
-        ..., description="PASS / REVIEW / FAIL based on WER thresholds"
-    )
+    verdict: str = Field(..., description="PASS / REVIEW / FAIL based on WER thresholds")
 
 
 class GenerateRequest(BaseModel):
@@ -97,9 +91,7 @@ class GenerateRequest(BaseModel):
 
     provider: str = "mock"
     voice_id: str | None = None
-    force: bool = Field(
-        False, description="Force regeneration even if audio already exists"
-    )
+    force: bool = Field(False, description="Force regeneration even if audio already exists")
 
 
 class GenerateResponse(BaseModel):

@@ -1,6 +1,6 @@
 # Graph Editor — User Guide
 
-Interactive canvas-based editor for viewing and modifying the Travlr knowledge graph.
+Interactive canvas-based editor for viewing and modifying the Ondoway knowledge graph.
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ The editor loads the full graph from `/api/v1/graph` on startup. The connection 
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  Travlr Graph Editor         [connected] 12 nodes 15 edges │
+│  Ondoway Graph Editor         [connected] 12 nodes 15 edges │
 ├──────────────────────────────────────────────────────┤
 │  [+ Node] [+ Edge] [Refresh]                         │
 │                                                      │

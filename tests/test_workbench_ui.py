@@ -14,13 +14,12 @@ Stack must be running: docker compose up -d && make api-up
 from __future__ import annotations
 
 import json
-from datetime import datetime
-from pathlib import Path
-from typing import Any
-
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import datetime
+from pathlib import Path
+from typing import Any
 
 import pytest
 from playwright.sync_api import Page, sync_playwright
@@ -131,6 +130,8 @@ SEED_BEATS = [
 ]
 
 # Taggable lenses — derived from definitions.py (single source of truth)
+import contextlib
+
 from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES, TAGGABLE_LENSES
 
 LENS_SLUGS = list(TAGGABLE_LENSES)
@@ -146,6 +147,7 @@ for _c in DAG_CHILD_LENSES:
 # ---------------------------------------------------------------------------
 # Bug Reporter
 # ---------------------------------------------------------------------------
+
 
 class BugReporter:
     """Accumulates UI issues and generates a markdown bug report."""
@@ -226,6 +228,7 @@ class BugReporter:
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _api_request(method: str, path: str, json_data: dict | None = None) -> dict | list | None:
     """Make an API request and return parsed JSON (or None on error)."""
     url = f"{API_BASE}{path}"
@@ -240,7 +243,11 @@ def _api_request(method: str, path: str, json_data: dict | None = None) -> dict 
             raw = resp.read().decode("utf-8")
             return json.loads(raw) if raw.strip() else None
     except urllib.error.HTTPError as exc:
-        return {"_error": True, "_status": exc.code, "_body": exc.read().decode("utf-8", errors="replace")}
+        return {
+            "_error": True,
+            "_status": exc.code,
+            "_body": exc.read().decode("utf-8", errors="replace"),
+        }
     except Exception:
         return None
 
@@ -297,6 +304,7 @@ def _load_fixture() -> list[dict]:
 # Fixtures — Seed Data Setup / Teardown (Task 3)
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture(scope="module")
 def reporter():
     """Module-scoped bug reporter shared across all tests."""
@@ -337,9 +345,7 @@ def seed_data():
     def _is_ok(resp: dict | list | None) -> bool:
         if resp is None:
             return False
-        if isinstance(resp, dict) and resp.get("_error"):
-            return False
-        return True
+        return not (isinstance(resp, dict) and resp.get("_error"))
 
     def _get_id(data: dict) -> str:
         return data.get("id", data.get("_id", ""))
@@ -464,10 +470,8 @@ def seed_data():
     # Delete lenses we seeded (if any)
     if lenses_seeded_by_us:
         for lid in created_ids["lens"]:
-            try:
+            with contextlib.suppress(Exception):
                 _api_delete(f"/nodes/Lens/{lid}")
-            except Exception:
-                pass
 
 
 @pytest.fixture(scope="module")
@@ -488,12 +492,13 @@ def browser_page(seed_data, reporter):
 # Test: City Prompt + JSON Load + Duplicate Resolver (ACs #1-2) — Task 4
 # ---------------------------------------------------------------------------
 
+
 class TestWorkbenchLoadFlow:
     """Tests for initial load: city prompt, JSON load, duplicate resolver, worklist."""
 
     def test_city_prompt_and_json_load(self, browser_page):
-        page, seed_data, reporter = browser_page
-        fixture = _load_fixture()
+        page, _seed_data, reporter = browser_page
+        _load_fixture()
 
         # --- City Prompt Flow ---
         page.goto(WORKBENCH_URL)
@@ -503,12 +508,16 @@ class TestWorkbenchLoadFlow:
         overlay = page.locator(CITY_OVERLAY)
         overlay_visible = overlay.is_visible()
         _safe_assert(
-            reporter, overlay_visible,
-            "Critical", "City overlay not visible on load",
-            "City Prompt", ["Navigate to workbench URL"],
+            reporter,
+            overlay_visible,
+            "Critical",
+            "City overlay not visible on load",
+            "City Prompt",
+            ["Navigate to workbench URL"],
             "City overlay (#cityOverlay) is visible",
             f"Overlay visible: {overlay_visible}",
-            page, "ac1-city-overlay-missing",
+            page,
+            "ac1-city-overlay-missing",
         )
 
         # Type "Boston" and submit
@@ -522,41 +531,52 @@ class TestWorkbenchLoadFlow:
         except Exception:
             city_accepted = False
             _safe_assert(
-                reporter, False,
-                "Critical", "City overlay did not close after submitting 'Boston'",
-                "City Prompt", [
+                reporter,
+                False,
+                "Critical",
+                "City overlay did not close after submitting 'Boston'",
+                "City Prompt",
+                [
                     "Navigate to workbench URL",
                     "Type 'Boston' into #cityInput",
                     "Click #citySubmitBtn",
                 ],
                 "Overlay closes within 10s",
                 "Overlay still visible after 15s (Nominatim may be slow/down)",
-                page, "ac1-city-timeout",
+                page,
+                "ac1-city-timeout",
             )
 
         if city_accepted:
             # Verify city label
             label_text = page.locator(CITY_LABEL).text_content() or ""
             _safe_assert(
-                reporter, "Boston" in label_text,
-                "Major", "City label does not contain 'Boston'",
-                "City Prompt", ["Submit 'Boston' city"],
+                reporter,
+                "Boston" in label_text,
+                "Major",
+                "City label does not contain 'Boston'",
+                "City Prompt",
+                ["Submit 'Boston' city"],
                 "'Boston' appears in #cityLabel",
                 f"Label text: '{label_text}'",
-                page, "ac1-city-label",
+                page,
+                "ac1-city-label",
             )
 
         # --- JSON Load Flow ---
         # Capture console errors for debugging
         console_errors: list[str] = []
-        page.on("console", lambda msg: console_errors.append(f"[{msg.type}] {msg.text}") if msg.type == "error" else None)
+        page.on(
+            "console",
+            lambda msg: (
+                console_errors.append(f"[{msg.type}] {msg.text}") if msg.type == "error" else None
+            ),
+        )
 
         # Wait for Load JSON button to be enabled (city geocoding must complete first)
         load_btn = page.locator(LOAD_JSON_BTN)
-        try:
+        with contextlib.suppress(Exception):
             load_btn.wait_for(state="visible", timeout=5000)
-        except Exception:
-            pass
 
         # Use Playwright's file chooser API to properly trigger the file input
         with page.expect_file_chooser() as fc_info:
@@ -570,12 +590,16 @@ class TestWorkbenchLoadFlow:
         # Check for errors
         if console_errors:
             _safe_assert(
-                reporter, False,
-                "Critical", f"Console errors during JSON load: {'; '.join(console_errors[:3])}",
-                "JSON Load", ["Load fixture via file chooser"],
+                reporter,
+                False,
+                "Critical",
+                f"Console errors during JSON load: {'; '.join(console_errors[:3])}",
+                "JSON Load",
+                ["Load fixture via file chooser"],
                 "No console errors",
                 f"{len(console_errors)} error(s): {'; '.join(console_errors[:3])}",
-                page, "ac1-console-errors",
+                page,
+                "ac1-console-errors",
             )
 
         # Check if error toast appeared (JSON validation failure)
@@ -583,12 +607,16 @@ class TestWorkbenchLoadFlow:
         if error_toast.count() > 0 and error_toast.first.is_visible():
             toast_text = error_toast.first.text_content() or ""
             _safe_assert(
-                reporter, False,
-                "Critical", f"Error toast appeared during JSON load: {toast_text[:200]}",
-                "JSON Load", ["Load fixture via file chooser"],
+                reporter,
+                False,
+                "Critical",
+                f"Error toast appeared during JSON load: {toast_text[:200]}",
+                "JSON Load",
+                ["Load fixture via file chooser"],
                 "No error toast",
                 f"Toast: {toast_text[:200]}",
-                page, "ac1-json-error-toast",
+                page,
+                "ac1-json-error-toast",
             )
 
         # --- Duplicate Resolver (AC #2) ---
@@ -600,14 +628,18 @@ class TestWorkbenchLoadFlow:
             dup_visible = False
 
         _safe_assert(
-            reporter, dup_visible,
-            "Major", "Duplicate resolver overlay did not appear",
-            "Duplicate Resolver", [
+            reporter,
+            dup_visible,
+            "Major",
+            "Duplicate resolver overlay did not appear",
+            "Duplicate Resolver",
+            [
                 "Load fixture with entries #6/#7 sharing name 'UI Test — Duplicate Harbor Walk'",
             ],
             "#dupOverlay becomes visible",
             f"Overlay visible: {dup_visible}",
-            page, "ac2-dup-overlay-missing",
+            page,
+            "ac2-dup-overlay-missing",
         )
 
         if dup_visible:
@@ -634,15 +666,19 @@ class TestWorkbenchLoadFlow:
                 dup_resolved = False
 
             _safe_assert(
-                reporter, dup_resolved,
-                "Critical", "Duplicate resolver overlay did not close after resolve",
-                "Duplicate Resolver", [
+                reporter,
+                dup_resolved,
+                "Critical",
+                "Duplicate resolver overlay did not close after resolve",
+                "Duplicate Resolver",
+                [
                     "Rename duplicate entry",
                     "Click #dupResolveBtn",
                 ],
                 "Overlay closes after resolution",
                 "Overlay still visible",
-                page, "ac2-dup-not-resolved",
+                page,
+                "ac2-dup-not-resolved",
             )
 
         # --- Worklist Rendering (AC #1) ---
@@ -650,23 +686,25 @@ class TestWorkbenchLoadFlow:
         page.wait_for_timeout(2000)
         rows = page.locator(WORKLIST_ROW)
 
-        try:
+        with contextlib.suppress(Exception):
             rows.first.wait_for(state="visible", timeout=5000)
-        except Exception:
-            pass
 
         row_count = rows.count()
         _safe_assert(
-            reporter, row_count == 12,
-            "Critical", f"Worklist shows {row_count} POIs instead of 12",
-            "Worklist Rendering", [
+            reporter,
+            row_count == 12,
+            "Critical",
+            f"Worklist shows {row_count} POIs instead of 12",
+            "Worklist Rendering",
+            [
                 "Load 12-entry fixture",
                 "Resolve duplicate names",
                 "Check worklist row count",
             ],
             "12 .worklist-row elements visible",
             f"Found {row_count} rows",
-            page, "ac1-worklist-count",
+            page,
+            "ac1-worklist-count",
         )
 
         _take_screenshot(page, "ac1-worklist-loaded")
@@ -676,12 +714,13 @@ class TestWorkbenchLoadFlow:
 # Test: Detail View, Editing, Badges, Beats (ACs #3-7, #9-12) — Task 5
 # ---------------------------------------------------------------------------
 
+
 class TestDetailViewAndEditing:
     """Tests for POI detail rendering, editing, badges, and beat cards."""
 
     def test_detail_view_rendering(self, browser_page):
         """AC #3: Click each POI and verify detail view renders correct field values."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
         fixture = _load_fixture()
 
         rows = page.locator(WORKLIST_ROW)
@@ -709,15 +748,19 @@ class TestDetailViewAndEditing:
                 actual_name = name_field.first.input_value()
                 expected_name = expected_poi["poi_name"]
                 _safe_assert(
-                    reporter, actual_name == expected_name,
-                    "Major", f"POI name mismatch for entry #{idx + 1}",
-                    "Detail View", [
+                    reporter,
+                    actual_name == expected_name,
+                    "Major",
+                    f"POI name mismatch for entry #{idx + 1}",
+                    "Detail View",
+                    [
                         f"Click worklist row #{i + 1} (poi_idx={idx})",
                         "Check [data-field='poi_name'] value",
                     ],
                     f"Name: '{expected_name}'",
                     f"Name: '{actual_name}'",
-                    page, f"ac3-name-mismatch-{idx}",
+                    page,
+                    f"ac3-name-mismatch-{idx}",
                 )
 
             # Check latitude
@@ -726,12 +769,16 @@ class TestDetailViewAndEditing:
                 actual_lat = lat_field.first.input_value()
                 expected_lat = str(expected_poi["latitude"])
                 _safe_assert(
-                    reporter, actual_lat == expected_lat,
-                    "Major", f"Latitude mismatch for entry #{idx + 1}",
-                    "Detail View", [f"Check latitude for '{expected_poi['poi_name']}'"],
+                    reporter,
+                    actual_lat == expected_lat,
+                    "Major",
+                    f"Latitude mismatch for entry #{idx + 1}",
+                    "Detail View",
+                    [f"Check latitude for '{expected_poi['poi_name']}'"],
                     f"Lat: {expected_lat}",
                     f"Lat: {actual_lat}",
-                    page, f"ac3-lat-mismatch-{idx}",
+                    page,
+                    f"ac3-lat-mismatch-{idx}",
                 )
 
             # Check longitude
@@ -740,19 +787,23 @@ class TestDetailViewAndEditing:
                 actual_lng = lng_field.first.input_value()
                 expected_lng = str(expected_poi["longitude"])
                 _safe_assert(
-                    reporter, actual_lng == expected_lng,
-                    "Major", f"Longitude mismatch for entry #{idx + 1}",
-                    "Detail View", [f"Check longitude for '{expected_poi['poi_name']}'"],
+                    reporter,
+                    actual_lng == expected_lng,
+                    "Major",
+                    f"Longitude mismatch for entry #{idx + 1}",
+                    "Detail View",
+                    [f"Check longitude for '{expected_poi['poi_name']}'"],
                     f"Lng: {expected_lng}",
                     f"Lng: {actual_lng}",
-                    page, f"ac3-lng-mismatch-{idx}",
+                    page,
+                    f"ac3-lng-mismatch-{idx}",
                 )
 
         reporter.increment_tests()
 
     def test_geofence_flag(self, browser_page):
         """AC #4: Outside-geofence POI shows flagged badge and yellow warning."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         # Find entry #4 (Times Square — outside geofence)
         # It has poi_name "UI Test — Times Square Billboard"
@@ -767,15 +818,19 @@ class TestDetailViewAndEditing:
                 flagged_badge = row.locator(BADGE_FLAGGED)
                 has_flagged = flagged_badge.count() > 0 and flagged_badge.first.is_visible()
                 _safe_assert(
-                    reporter, has_flagged,
-                    "Major", "Outside-geofence POI missing flagged badge",
-                    "Geofence Detection", [
+                    reporter,
+                    has_flagged,
+                    "Major",
+                    "Outside-geofence POI missing flagged badge",
+                    "Geofence Detection",
+                    [
                         "Load fixture with entry #4 (New York coords)",
                         "Check worklist row for .badge-flagged",
                     ],
                     ".badge-flagged visible on worklist row",
                     f"Badge visible: {has_flagged}",
-                    page, "ac4-no-flagged-badge",
+                    page,
+                    "ac4-no-flagged-badge",
                 )
 
                 # Click to open detail
@@ -786,15 +841,19 @@ class TestDetailViewAndEditing:
                 geofence_warn = page.locator(MAP_WARN_GEOFENCE)
                 warn_visible = geofence_warn.count() > 0 and geofence_warn.first.is_visible()
                 _safe_assert(
-                    reporter, warn_visible,
-                    "Minor", "No geofence warning in detail view for outside-geofence POI",
-                    "Geofence Detection", [
+                    reporter,
+                    warn_visible,
+                    "Minor",
+                    "No geofence warning in detail view for outside-geofence POI",
+                    "Geofence Detection",
+                    [
                         "Click outside-geofence POI",
                         "Check for .map-warn-geofence element",
                     ],
                     "Yellow geofence warning visible in map area",
                     f"Warning visible: {warn_visible}",
-                    page, "ac4-no-geofence-warning",
+                    page,
+                    "ac4-no-geofence-warning",
                 )
 
                 _take_screenshot(page, "ac4-geofence")
@@ -803,17 +862,21 @@ class TestDetailViewAndEditing:
 
         if not found:
             _safe_assert(
-                reporter, False,
-                "Critical", "Could not find Times Square POI in worklist",
-                "Geofence Detection", ["Search worklist for 'Times Square'"],
+                reporter,
+                False,
+                "Critical",
+                "Could not find Times Square POI in worklist",
+                "Geofence Detection",
+                ["Search worklist for 'Times Square'"],
                 "Entry #4 found in worklist",
                 "Not found",
-                page, "ac4-poi-not-found",
+                page,
+                "ac4-poi-not-found",
             )
 
     def test_invalid_coords(self, browser_page):
         """AC #5: Invalid-coords POI shows field warnings and blocks upload."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
         found = False
@@ -829,15 +892,19 @@ class TestDetailViewAndEditing:
                 warnings = page.locator(FIELD_WARNING)
                 warn_count = warnings.count()
                 _safe_assert(
-                    reporter, warn_count >= 1,
-                    "Major", "No field warnings for invalid coordinates (lat 999, lng -999)",
-                    "Coord Validation", [
+                    reporter,
+                    warn_count >= 1,
+                    "Major",
+                    "No field warnings for invalid coordinates (lat 999, lng -999)",
+                    "Coord Validation",
+                    [
                         "Click invalid-coords POI (entry #5)",
                         "Check for .field-warning elements",
                     ],
                     ".field-warning visible near coordinate fields",
                     f"Found {warn_count} warnings",
-                    page, "ac5-no-coord-warnings",
+                    page,
+                    "ac5-no-coord-warnings",
                 )
 
                 # Check map warning
@@ -850,12 +917,16 @@ class TestDetailViewAndEditing:
                         break
 
                 _safe_assert(
-                    reporter, map_warn_visible,
-                    "Minor", "Map does not show 'Invalid coordinates' message",
-                    "Coord Validation", ["Check map area for invalid coords message"],
+                    reporter,
+                    map_warn_visible,
+                    "Minor",
+                    "Map does not show 'Invalid coordinates' message",
+                    "Coord Validation",
+                    ["Check map area for invalid coords message"],
                     "'Invalid coordinates — pin removed' message visible",
                     f"Map warning visible: {map_warn_visible}",
-                    page, "ac5-no-map-warning",
+                    page,
+                    "ac5-no-map-warning",
                 )
 
                 # Try to click Mark as Complete — should be blocked
@@ -869,15 +940,18 @@ class TestDetailViewAndEditing:
                     uploaded = row_after.locator(BADGE_UPLOADED)
                     was_blocked = uploaded.count() == 0 or not uploaded.first.is_visible()
                     _safe_assert(
-                        reporter, was_blocked,
+                        reporter,
+                        was_blocked,
                         "Critical",
                         "Invalid-coords POI was uploaded despite invalid coordinates",
-                        "Coord Validation", [
+                        "Coord Validation",
+                        [
                             "Click Mark as Complete on invalid-coords POI",
                         ],
                         "Upload blocked — POI stays in non-uploaded state",
                         "POI appears to have been uploaded",
-                        page, "ac5-invalid-uploaded",
+                        page,
+                        "ac5-invalid-uploaded",
                     )
 
                 _take_screenshot(page, "ac5-invalid-coords")
@@ -886,25 +960,33 @@ class TestDetailViewAndEditing:
 
         if not found:
             _safe_assert(
-                reporter, False,
-                "Critical", "Could not find Invalid Location POI in worklist",
-                "Coord Validation", ["Search worklist for 'Invalid Location'"],
+                reporter,
+                False,
+                "Critical",
+                "Could not find Invalid Location POI in worklist",
+                "Coord Validation",
+                ["Search worklist for 'Invalid Location'"],
                 "Entry #5 found in worklist",
                 "Not found",
-                page, "ac5-poi-not-found",
+                page,
+                "ac5-poi-not-found",
             )
 
     def test_edit_persistence(self, browser_page):
         """AC #6: Edits persist when navigating away and back."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
         if rows.count() < 2:
             _safe_assert(
-                reporter, False,
-                "Critical", "Not enough worklist rows for edit persistence test",
-                "Edit Persistence", ["Need at least 2 POIs in worklist"],
-                "2+ POIs available", f"Found {rows.count()}",
+                reporter,
+                False,
+                "Critical",
+                "Not enough worklist rows for edit persistence test",
+                "Edit Persistence",
+                ["Need at least 2 POIs in worklist"],
+                "2+ POIs available",
+                f"Found {rows.count()}",
             )
             return
 
@@ -963,9 +1045,12 @@ class TestDetailViewAndEditing:
         if name_field.count() > 0:
             current_name = name_field.first.input_value()
             _safe_assert(
-                reporter, current_name == edited_name,
-                "Major", "POI name edit did not persist after navigation",
-                "Edit Persistence", [
+                reporter,
+                current_name == edited_name,
+                "Major",
+                "POI name edit did not persist after navigation",
+                "Edit Persistence",
+                [
                     "Edit POI name",
                     "Navigate to different POI",
                     "Navigate back",
@@ -973,23 +1058,28 @@ class TestDetailViewAndEditing:
                 ],
                 f"Name: '{edited_name}'",
                 f"Name: '{current_name}'",
-                page, "ac6-name-not-persisted",
+                page,
+                "ac6-name-not-persisted",
             )
 
         beat_script = page.locator(DATA_BEAT_FIELD.format("script_body"))
         if beat_script.count() > 0 and edited_script:
             current_script = beat_script.first.input_value()
             _safe_assert(
-                reporter, "EDIT_MARKER" in current_script,
-                "Major", "Beat script_body edit did not persist after navigation",
-                "Edit Persistence", [
+                reporter,
+                "EDIT_MARKER" in current_script,
+                "Major",
+                "Beat script_body edit did not persist after navigation",
+                "Edit Persistence",
+                [
                     "Edit beat script_body",
                     "Navigate away and back",
                     "Check script_body",
                 ],
                 "Script contains 'EDIT_MARKER'",
                 f"Script: '{current_script[:80]}...'",
-                page, "ac6-script-not-persisted",
+                page,
+                "ac6-script-not-persisted",
             )
 
         # Restore original values to not pollute later tests
@@ -1006,7 +1096,7 @@ class TestDetailViewAndEditing:
 
     def test_defer_and_reselect(self, browser_page):
         """AC #7: Defer a POI, badge changes to deferred, re-select and complete."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         # Wait for worklist rows to be available
         rows = page.locator(WORKLIST_ROW)
@@ -1014,11 +1104,16 @@ class TestDetailViewAndEditing:
             rows.first.wait_for(state="visible", timeout=5000)
         except Exception:
             _safe_assert(
-                reporter, False,
-                "Critical", "No worklist rows available for defer test",
-                "Defer Flow", ["Wait for .worklist-row elements"],
-                "Worklist rows visible", f"Count: {rows.count()}",
-                page, "ac7-no-rows",
+                reporter,
+                False,
+                "Critical",
+                "No worklist rows available for defer test",
+                "Defer Flow",
+                ["Wait for .worklist-row elements"],
+                "Worklist rows visible",
+                f"Count: {rows.count()}",
+                page,
+                "ac7-no-rows",
             )
             return
 
@@ -1060,16 +1155,20 @@ class TestDetailViewAndEditing:
                         break
 
             _safe_assert(
-                reporter, has_deferred,
-                "Major", "POI badge did not change to 'deferred' after clicking Defer",
-                "Defer Flow", [
+                reporter,
+                has_deferred,
+                "Major",
+                "POI badge did not change to 'deferred' after clicking Defer",
+                "Defer Flow",
+                [
                     "Click entry #3 (Quiet Garden)",
                     "Click #deferBtn",
                     "Check for .badge-deferred",
                 ],
                 ".badge-deferred visible on worklist row",
                 f"Badge found: {has_deferred}",
-                page, "ac7-no-deferred-badge",
+                page,
+                "ac7-no-deferred-badge",
             )
 
             _take_screenshot(page, "ac7-deferred")
@@ -1081,18 +1180,22 @@ class TestDetailViewAndEditing:
             _take_screenshot(page, "ac7-reselected")
         else:
             _safe_assert(
-                reporter, False,
-                "Critical", "Defer button not visible",
-                "Defer Flow", ["Navigate to POI", "Look for #deferBtn"],
+                reporter,
+                False,
+                "Critical",
+                "Defer button not visible",
+                "Defer Flow",
+                ["Navigate to POI", "Look for #deferBtn"],
                 "Defer button visible",
                 "Button not found or not visible",
-                page, "ac7-no-defer-btn",
+                page,
+                "ac7-no-defer-btn",
             )
 
     def test_beat_rendering(self, browser_page):
         """ACs #9, #10, #12: Beat cards render all fields, multi-lens POI renders all beats."""
-        page, seed_data, reporter = browser_page
-        fixture = _load_fixture()
+        page, _seed_data, reporter = browser_page
+        _load_fixture()
 
         # Find multi-lens POI (entry #8 — Quincy Market, 4 beats)
         rows = page.locator(WORKLIST_ROW)
@@ -1106,33 +1209,46 @@ class TestDetailViewAndEditing:
                 beats = page.locator(BEAT_CARD)
                 beat_count = beats.count()
                 _safe_assert(
-                    reporter, beat_count == 4,
-                    "Major", f"Multi-lens POI shows {beat_count} beat cards instead of 4",
-                    "Beat Rendering", [
+                    reporter,
+                    beat_count == 4,
+                    "Major",
+                    f"Multi-lens POI shows {beat_count} beat cards instead of 4",
+                    "Beat Rendering",
+                    [
                         "Click Quincy Market POI (entry #8, 4 beats)",
                         "Count .beat-card elements",
                     ],
                     "4 beat cards rendered",
                     f"{beat_count} beat cards found",
-                    page, "ac10-beat-count",
+                    page,
+                    "ac10-beat-count",
                 )
 
                 # AC #9: Check each beat card has all 5 fields
                 for bi in range(beat_count):
                     beat = beats.nth(bi)
-                    for field in ["script_body", "physical_cue", "lens", "gravity", "source_passage"]:
+                    for field in [
+                        "script_body",
+                        "physical_cue",
+                        "lens",
+                        "gravity",
+                        "source_passage",
+                    ]:
                         field_el = beat.locator(DATA_BEAT_FIELD.format(field))
                         has_field = field_el.count() > 0
                         _safe_assert(
-                            reporter, has_field,
+                            reporter,
+                            has_field,
                             "Major",
                             f"Beat #{bi + 1} missing field: {field}",
-                            "Beat Rendering", [
+                            "Beat Rendering",
+                            [
                                 f"Check beat card #{bi + 1} for [data-beat-field='{field}']",
                             ],
                             f"Field '{field}' present in beat card",
-                            f"Field not found",
-                            page, f"ac9-missing-field-{field}-beat{bi}",
+                            "Field not found",
+                            page,
+                            f"ac9-missing-field-{field}-beat{bi}",
                         )
 
                 # Check lens dropdown has 16 taggable options
@@ -1142,12 +1258,16 @@ class TestDetailViewAndEditing:
                     option_count = options.count()
                     # Expect 16 taggable lens options + 1 "Select lens..." placeholder = 17
                     _safe_assert(
-                        reporter, option_count >= 16,
-                        "Major", f"Lens dropdown has {option_count} options instead of 16+",
-                        "Beat Rendering", ["Check lens select option count"],
+                        reporter,
+                        option_count >= 16,
+                        "Major",
+                        f"Lens dropdown has {option_count} options instead of 16+",
+                        "Beat Rendering",
+                        ["Check lens select option count"],
                         "16+ options in lens dropdown",
                         f"{option_count} options found",
-                        page, "ac9-lens-count",
+                        page,
+                        "ac9-lens-count",
                     )
 
                 # AC #12: Check beat count header
@@ -1155,12 +1275,16 @@ class TestDetailViewAndEditing:
                 if beats_header.count() > 0:
                     header_text = beats_header.first.text_content() or ""
                     _safe_assert(
-                        reporter, "(4)" in header_text,
-                        "Minor", f"Beat count header says '{header_text}' instead of containing '(4)'",
-                        "Beat Rendering", ["Check h3 text for beat count"],
+                        reporter,
+                        "(4)" in header_text,
+                        "Minor",
+                        f"Beat count header says '{header_text}' instead of containing '(4)'",
+                        "Beat Rendering",
+                        ["Check h3 text for beat count"],
                         "'Narrative Beats (4)' in header",
                         f"Header: '{header_text}'",
-                        page, "ac12-beat-header",
+                        page,
+                        "ac12-beat-header",
                     )
 
                 _take_screenshot(page, "ac9-10-12-beats")
@@ -1168,7 +1292,7 @@ class TestDetailViewAndEditing:
 
     def test_beat_editing(self, browser_page):
         """AC #11: Beat lens and gravity edits persist after navigation."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
 
@@ -1212,16 +1336,20 @@ class TestDetailViewAndEditing:
             if gravity_fields.count() > 0:
                 current_gravity = gravity_fields.first.input_value()
                 _safe_assert(
-                    reporter, current_gravity == new_gravity,
-                    "Major", "Beat gravity edit did not persist after navigation",
-                    "Beat Editing", [
+                    reporter,
+                    current_gravity == new_gravity,
+                    "Major",
+                    "Beat gravity edit did not persist after navigation",
+                    "Beat Editing",
+                    [
                         f"Change gravity from {original_gravity} to {new_gravity}",
                         "Navigate away and back",
                         "Check gravity value",
                     ],
                     f"Gravity: {new_gravity}",
                     f"Gravity: {current_gravity}",
-                    page, "ac11-gravity-not-persisted",
+                    page,
+                    "ac11-gravity-not-persisted",
                 )
 
                 # Restore
@@ -1233,7 +1361,7 @@ class TestDetailViewAndEditing:
 
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
         for i in range(rows.count()):
@@ -1245,15 +1373,19 @@ class TestDetailViewAndEditing:
                 # Empty beats should have been stripped during processJson
                 beat_cards = page.locator(BEAT_CARD)
                 _safe_assert(
-                    reporter, beat_cards.count() == 0,
-                    "Major", f"Empty-beat POI still has {beat_cards.count()} beat cards after load",
-                    "Edge Cases", [
+                    reporter,
+                    beat_cards.count() == 0,
+                    "Major",
+                    f"Empty-beat POI still has {beat_cards.count()} beat cards after load",
+                    "Edge Cases",
+                    [
                         "Click entry #9 (originally had empty script_body)",
                         "Check beat card count — empty beats should be stripped",
                     ],
                     "0 beat cards (empty beat stripped during load)",
                     f"{beat_cards.count()} beat cards found",
-                    page, "ec1-empty-not-stripped",
+                    page,
+                    "ec1-empty-not-stripped",
                 )
 
                 _take_screenshot(page, "ec1-empty-beat-stripped")
@@ -1261,7 +1393,7 @@ class TestDetailViewAndEditing:
 
     def test_long_text_no_overflow(self, browser_page):
         """Edge case: Long POI name and description don't overflow containers."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
         for i in range(rows.count()):
@@ -1276,14 +1408,18 @@ class TestDetailViewAndEditing:
                 if box and parent_box:
                     overflow = box["x"] + box["width"] > parent_box["x"] + parent_box["width"] + 5
                     _safe_assert(
-                        reporter, not overflow,
-                        "Minor", "Long POI name overflows worklist row container",
-                        "Edge Cases", [
+                        reporter,
+                        not overflow,
+                        "Minor",
+                        "Long POI name overflows worklist row container",
+                        "Edge Cases",
+                        [
                             "Check bounding box of long-name POI row vs parent",
                         ],
                         "Row fits within .left-panel width",
                         f"Row extends {box['x'] + box['width'] - parent_box['x'] - parent_box['width']:.0f}px beyond parent",
-                        page, "ec3-overflow",
+                        page,
+                        "ec3-overflow",
                     )
 
                 rows.nth(i).click()
@@ -1293,7 +1429,7 @@ class TestDetailViewAndEditing:
 
     def test_audit_notes_rendering(self, browser_page):
         """Edge case: Audit notes render in correct containers (object + array)."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
         for i in range(rows.count()):
@@ -1305,28 +1441,36 @@ class TestDetailViewAndEditing:
                 # Check POI-level audit notes
                 poi_notes = page.locator(POI_AUDIT_NOTES_BOX)
                 _safe_assert(
-                    reporter, poi_notes.count() > 0,
-                    "Major", "POI-level audit notes not rendered",
-                    "Audit Notes", [
+                    reporter,
+                    poi_notes.count() > 0,
+                    "Major",
+                    "POI-level audit notes not rendered",
+                    "Audit Notes",
+                    [
                         "Click entry #12 (Audited Beacon Hill)",
                         "Check for .poi-audit-notes-box",
                     ],
                     ".poi-audit-notes-box present",
                     f"Found {poi_notes.count()} elements",
-                    page, "ec4-no-poi-audit",
+                    page,
+                    "ec4-no-poi-audit",
                 )
 
                 # Check beat-level audit notes
                 beat_notes = page.locator(AUDIT_NOTES_BOX)
                 _safe_assert(
-                    reporter, beat_notes.count() > 0,
-                    "Major", "Beat-level audit notes not rendered",
-                    "Audit Notes", [
+                    reporter,
+                    beat_notes.count() > 0,
+                    "Major",
+                    "Beat-level audit notes not rendered",
+                    "Audit Notes",
+                    [
                         "Check for .audit-notes-box in beat cards",
                     ],
                     ".audit-notes-box present in beat cards",
                     f"Found {beat_notes.count()} elements",
-                    page, "ec4-no-beat-audit",
+                    page,
+                    "ec4-no-beat-audit",
                 )
 
                 _take_screenshot(page, "ec4-audit-notes")
@@ -1334,7 +1478,7 @@ class TestDetailViewAndEditing:
 
     def test_gravity_boundaries(self, browser_page):
         """Edge case: Gravity 1 and 5 render without validation warnings."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
 
@@ -1353,15 +1497,19 @@ class TestDetailViewAndEditing:
                         gravity_warn_texts.append(text)
 
                 _safe_assert(
-                    reporter, len(gravity_warn_texts) == 0,
-                    "Minor", "Gravity 5 shows validation warning when it shouldn't",
-                    "Edge Cases", [
+                    reporter,
+                    len(gravity_warn_texts) == 0,
+                    "Minor",
+                    "Gravity 5 shows validation warning when it shouldn't",
+                    "Edge Cases",
+                    [
                         "Click high-gravity POI (gravity 5)",
                         "Check for gravity-related .beat-warning",
                     ],
                     "No gravity warnings for valid gravity 5",
                     f"Found warnings: {gravity_warn_texts}",
-                    page, "ec2-gravity5-warning",
+                    page,
+                    "ec2-gravity5-warning",
                 )
                 break
 
@@ -1380,15 +1528,19 @@ class TestDetailViewAndEditing:
                         gravity_warn_texts.append(text)
 
                 _safe_assert(
-                    reporter, len(gravity_warn_texts) == 0,
-                    "Minor", "Gravity 1 shows validation warning when it shouldn't",
-                    "Edge Cases", [
+                    reporter,
+                    len(gravity_warn_texts) == 0,
+                    "Minor",
+                    "Gravity 1 shows validation warning when it shouldn't",
+                    "Edge Cases",
+                    [
                         "Click low-gravity POI (gravity 1)",
                         "Check for gravity-related .beat-warning",
                     ],
                     "No gravity warnings for valid gravity 1",
                     f"Found warnings: {gravity_warn_texts}",
-                    page, "ec2-gravity1-warning",
+                    page,
+                    "ec2-gravity1-warning",
                 )
                 break
 
@@ -1397,12 +1549,13 @@ class TestDetailViewAndEditing:
 # Test: Upload Flow + Error Handling (ACs #8, #12a) — Task 6
 # ---------------------------------------------------------------------------
 
+
 class TestUploadFlow:
     """Tests for single-POI upload via Mark as Complete and error handling."""
 
     def test_single_poi_upload(self, browser_page):
         """AC #8: Mark a valid POI as complete, verify progressive upload."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
 
@@ -1416,11 +1569,16 @@ class TestUploadFlow:
 
         if target is None:
             _safe_assert(
-                reporter, False,
-                "Critical", "Could not find Harbor Lighthouse POI for upload test",
-                "Upload Flow", ["Search worklist"],
-                "Entry #1 in worklist", "Not found",
-                page, "ac8-poi-not-found",
+                reporter,
+                False,
+                "Critical",
+                "Could not find Harbor Lighthouse POI for upload test",
+                "Upload Flow",
+                ["Search worklist"],
+                "Entry #1 in worklist",
+                "Not found",
+                page,
+                "ac8-poi-not-found",
             )
             return
 
@@ -1431,11 +1589,16 @@ class TestUploadFlow:
         mc_btn = page.locator(MARK_COMPLETE_BTN)
         if mc_btn.count() == 0 or not mc_btn.first.is_visible():
             _safe_assert(
-                reporter, False,
-                "Critical", "Mark as Complete button not visible",
-                "Upload Flow", ["Navigate to valid POI", "Check #markCompleteBtn"],
-                "Button visible", "Not visible",
-                page, "ac8-no-mc-btn",
+                reporter,
+                False,
+                "Critical",
+                "Mark as Complete button not visible",
+                "Upload Flow",
+                ["Navigate to valid POI", "Check #markCompleteBtn"],
+                "Button visible",
+                "Not visible",
+                page,
+                "ac8-no-mc-btn",
             )
             return
 
@@ -1461,9 +1624,12 @@ class TestUploadFlow:
         toast_appeared = success.count() > 0 and success.first.is_visible()
 
         _safe_assert(
-            reporter, uploaded_found or toast_appeared,
-            "Critical", "POI upload did not complete — no uploaded badge or success toast",
-            "Upload Flow", [
+            reporter,
+            uploaded_found or toast_appeared,
+            "Critical",
+            "POI upload did not complete — no uploaded badge or success toast",
+            "Upload Flow",
+            [
                 "Navigate to valid POI (Harbor Lighthouse)",
                 "Click Mark as Complete",
                 "Wait 3s for upload",
@@ -1471,7 +1637,8 @@ class TestUploadFlow:
             ],
             "POI shows uploaded badge or success toast appears",
             f"Uploaded badge: {uploaded_found}, Toast: {toast_appeared}",
-            page, "ac8-upload-failed",
+            page,
+            "ac8-upload-failed",
         )
 
         # Verify via API
@@ -1484,63 +1651,85 @@ class TestUploadFlow:
                 if isinstance(api_resp, dict) and "beats" in api_resp:
                     beat_count = len(api_resp["beats"])
                     _safe_assert(
-                        reporter, beat_count >= 1,
-                        "Major", "Uploaded POI has no beats in database",
-                        "Upload Flow", [
+                        reporter,
+                        beat_count >= 1,
+                        "Major",
+                        "Uploaded POI has no beats in database",
+                        "Upload Flow",
+                        [
                             "GET /api/v1/graph/poi/{name}/beats",
                             "Check response",
                         ],
                         "At least 1 beat returned",
                         f"{beat_count} beats returned",
-                        page, "ac8-no-api-beats",
+                        page,
+                        "ac8-no-api-beats",
                     )
                 elif isinstance(api_resp, list):
                     beat_count = len(api_resp)
                     _safe_assert(
-                        reporter, beat_count >= 1,
-                        "Major", "Uploaded POI has no beats in database",
-                        "Upload Flow", [
+                        reporter,
+                        beat_count >= 1,
+                        "Major",
+                        "Uploaded POI has no beats in database",
+                        "Upload Flow",
+                        [
                             "GET /api/v1/graph/poi/{name}/beats",
                             "Check response",
                         ],
                         "At least 1 beat returned",
                         f"{beat_count} beats returned",
-                        page, "ac8-no-api-beats",
+                        page,
+                        "ac8-no-api-beats",
                     )
                 else:
-                    status = api_resp.get("_status", "unknown") if isinstance(api_resp, dict) else "null"
+                    status = (
+                        api_resp.get("_status", "unknown") if isinstance(api_resp, dict) else "null"
+                    )
                     _safe_assert(
-                        reporter, False,
-                        "Major", f"API verification returned error: {status}",
-                        "Upload Flow", ["GET /api/v1/graph/poi/{name}/beats"],
+                        reporter,
+                        False,
+                        "Major",
+                        f"API verification returned error: {status}",
+                        "Upload Flow",
+                        ["GET /api/v1/graph/poi/{name}/beats"],
                         "200 OK with beat data",
                         f"Response: {api_resp}",
-                        page, "ac8-api-error",
+                        page,
+                        "ac8-api-error",
                     )
             except Exception as exc:
                 _safe_assert(
-                    reporter, False,
-                    "Minor", f"API verification failed: {exc}",
-                    "Upload Flow", ["API call to verify upload"],
-                    "Successful API response", str(exc),
+                    reporter,
+                    False,
+                    "Minor",
+                    f"API verification failed: {exc}",
+                    "Upload Flow",
+                    ["API call to verify upload"],
+                    "Successful API response",
+                    str(exc),
                 )
 
         _take_screenshot(page, "ac8-uploaded")
 
     def test_error_toast_structure(self, browser_page):
         """AC #12a: Error toast exists in DOM with correct structure."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         error_toast = page.locator(ERROR_TOAST)
         _safe_assert(
-            reporter, error_toast.count() > 0,
-            "Major", "Error toast element (#errorToast) not found in DOM",
-            "Error Handling", [
+            reporter,
+            error_toast.count() > 0,
+            "Major",
+            "Error toast element (#errorToast) not found in DOM",
+            "Error Handling",
+            [
                 "Check DOM for #errorToast element",
             ],
             "#errorToast exists in DOM",
             f"Count: {error_toast.count()}",
-            page, "ac12a-no-toast",
+            page,
+            "ac12a-no-toast",
         )
 
         _take_screenshot(page, "ac12a-error-toast")
@@ -1550,12 +1739,13 @@ class TestUploadFlow:
 # Test: Conflict Detection and Resolution (ACs #13-18) — Task 7
 # ---------------------------------------------------------------------------
 
+
 class TestConflictDetection:
     """Tests for conflict detection across all Jaccard bands and resolution actions."""
 
     def test_conflict_detection_and_resolution(self, browser_page):
         """ACs #13-18: Trigger conflict detection on entry #11, verify all bands and actions."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
 
@@ -1569,11 +1759,16 @@ class TestConflictDetection:
 
         if target is None:
             _safe_assert(
-                reporter, False,
-                "Critical", "Could not find conflict-target POI (Old North Church)",
-                "Conflict Detection", ["Search worklist for 'Old North Church'"],
-                "Entry #11 in worklist", "Not found",
-                page, "ac13-poi-not-found",
+                reporter,
+                False,
+                "Critical",
+                "Could not find conflict-target POI (Old North Church)",
+                "Conflict Detection",
+                ["Search worklist for 'Old North Church'"],
+                "Entry #11 in worklist",
+                "Not found",
+                page,
+                "ac13-poi-not-found",
             )
             return
 
@@ -1584,11 +1779,16 @@ class TestConflictDetection:
         mc_btn = page.locator(MARK_COMPLETE_BTN)
         if mc_btn.count() == 0 or not mc_btn.first.is_visible():
             _safe_assert(
-                reporter, False,
-                "Critical", "Mark as Complete button not visible for conflict POI",
-                "Conflict Detection", ["Navigate to conflict-target POI"],
-                "Button visible", "Not visible",
-                page, "ac13-no-mc-btn",
+                reporter,
+                False,
+                "Critical",
+                "Mark as Complete button not visible for conflict POI",
+                "Conflict Detection",
+                ["Navigate to conflict-target POI"],
+                "Button visible",
+                "Not visible",
+                page,
+                "ac13-no-mc-btn",
             )
             return
 
@@ -1601,42 +1801,54 @@ class TestConflictDetection:
         hard_badges = page.locator(BEAT_CONFLICT_BADGE_HARD)
         has_hard = hard_badges.count() > 0
         _safe_assert(
-            reporter, has_hard,
-            "Critical", "No hard conflict badge found after triggering Mark as Complete",
-            "Conflict Detection — Hard Match", [
+            reporter,
+            has_hard,
+            "Critical",
+            "No hard conflict badge found after triggering Mark as Complete",
+            "Conflict Detection — Hard Match",
+            [
                 "Click Mark as Complete on conflict-target POI",
                 "Beat A shares lens 'hidden_history' with seeded beat",
                 "Check for .beat-conflict-badge-hard",
             ],
             "Red hard conflict badge visible on beat A",
             f"Hard badges found: {hard_badges.count()}",
-            page, "ac13-no-hard-badge",
+            page,
+            "ac13-no-hard-badge",
         )
 
         if has_hard:
             badge_text = hard_badges.first.text_content() or ""
             _safe_assert(
-                reporter, "same lens" in badge_text.lower() or "conflict" in badge_text.lower(),
-                "Minor", f"Hard conflict badge text unexpected: '{badge_text}'",
-                "Conflict Detection — Hard Match", [
+                reporter,
+                "same lens" in badge_text.lower() or "conflict" in badge_text.lower(),
+                "Minor",
+                f"Hard conflict badge text unexpected: '{badge_text}'",
+                "Conflict Detection — Hard Match",
+                [
                     "Check badge text content",
                 ],
                 "Text contains 'Conflict (same lens)' or similar",
                 f"Text: '{badge_text}'",
-                page, "ac13-badge-text",
+                page,
+                "ac13-badge-text",
             )
 
         # Check side-by-side panel
         conflict_sides = page.locator(CONFLICT_SIDE)
         _safe_assert(
-            reporter, conflict_sides.count() > 0,
-            "Major", "No side-by-side comparison panel for hard conflict",
-            "Conflict Detection — Hard Match", [
+            reporter,
+            conflict_sides.count() > 0,
+            "Major",
+            "No side-by-side comparison panel for hard conflict",
+            "Conflict Detection — Hard Match",
+            [
                 "Check for .conflict-side panel",
             ],
             "Side-by-side panel visible",
             f"Found {conflict_sides.count()} panels",
-            page, "ac13-no-side-by-side",
+            page,
+            "ac13-no-side-by-side",
         )
 
         _take_screenshot(page, "ac13-hard-conflict")
@@ -1653,7 +1865,7 @@ class TestConflictDetection:
             b_review = beat_b.locator(BEAT_CONFLICT_BADGE_REVIEW)
 
             # Net-new should have no conflict badges at all
-            no_conflict = (b_hard.count() == 0 and b_review.count() == 0)
+            no_conflict = b_hard.count() == 0 and b_review.count() == 0
             # Note: soft conflict badge uses the same base class, check if any are visible
             if b_soft.count() > 0:
                 # Check if any visible soft badges
@@ -1666,14 +1878,18 @@ class TestConflictDetection:
                     no_conflict = False
 
             _safe_assert(
-                reporter, no_conflict,
-                "Major", "Net-new beat B has unexpected conflict badge",
-                "Conflict Detection — Net-New", [
+                reporter,
+                no_conflict,
+                "Major",
+                "Net-new beat B has unexpected conflict badge",
+                "Conflict Detection — Net-New",
+                [
                     "Check beat B (music_nightlife) for conflict badges",
                 ],
                 "No conflict badge on net-new beat",
                 f"Hard: {b_hard.count()}, Review: {b_review.count()}, Soft: {b_soft.count()}",
-                page, "ac14-unexpected-conflict",
+                page,
+                "ac14-unexpected-conflict",
             )
 
         _take_screenshot(page, "ac14-net-new")
@@ -1695,28 +1911,36 @@ class TestConflictDetection:
                     break
 
             _safe_assert(
-                reporter, has_soft,
-                "Major", "Soft conflict beat C missing amber conflict badge",
-                "Conflict Detection — Soft ≥70%", [
+                reporter,
+                has_soft,
+                "Major",
+                "Soft conflict beat C missing amber conflict badge",
+                "Conflict Detection — Soft ≥70%",
+                [
                     "Check beat C (food_culinary, 84% Jaccard vs seed 2)",
                     "Look for amber badge with similarity percentage",
                 ],
                 "Amber badge with 'Conflict (XX% similar)'",
                 f"Badge found: {has_soft}, text: '{soft_text}'",
-                page, "ac15-no-soft-badge",
+                page,
+                "ac15-no-soft-badge",
             )
 
             # Check side-by-side panel for soft conflict
             c_sides = beat_c.locator(CONFLICT_SIDE)
             _safe_assert(
-                reporter, c_sides.count() > 0,
-                "Major", "No side-by-side panel for soft conflict beat C",
-                "Conflict Detection — Soft ≥70%", [
+                reporter,
+                c_sides.count() > 0,
+                "Major",
+                "No side-by-side panel for soft conflict beat C",
+                "Conflict Detection — Soft ≥70%",
+                [
                     "Check for .conflict-side in beat C card",
                 ],
                 "Side-by-side panel visible",
                 f"Found {c_sides.count()} panels",
-                page, "ac15-no-side-by-side",
+                page,
+                "ac15-no-side-by-side",
             )
 
         _take_screenshot(page, "ac15-soft-conflict")
@@ -1729,26 +1953,34 @@ class TestConflictDetection:
             has_review = d_review.count() > 0
 
             _safe_assert(
-                reporter, has_review,
-                "Major", "Review-band beat D missing review badge",
-                "Conflict Detection — Review 30-69%", [
+                reporter,
+                has_review,
+                "Major",
+                "Review-band beat D missing review badge",
+                "Conflict Detection — Review 30-69%",
+                [
                     "Check beat D (art_street, 56% Jaccard vs seed 3)",
                     "Look for .beat-conflict-badge-review",
                 ],
                 "Yellow review badge with 'Review (XX% similar)'",
                 f"Review badges found: {d_review.count()}",
-                page, "ac16-no-review-badge",
+                page,
+                "ac16-no-review-badge",
             )
 
             if has_review:
                 review_text = d_review.first.text_content() or ""
                 _safe_assert(
-                    reporter, "review" in review_text.lower() or "similar" in review_text.lower(),
-                    "Minor", f"Review badge text unexpected: '{review_text}'",
-                    "Conflict Detection — Review 30-69%", ["Check badge text"],
+                    reporter,
+                    "review" in review_text.lower() or "similar" in review_text.lower(),
+                    "Minor",
+                    f"Review badge text unexpected: '{review_text}'",
+                    "Conflict Detection — Review 30-69%",
+                    ["Check badge text"],
                     "Text contains 'Review' and similarity percentage",
                     f"Text: '{review_text}'",
-                    page, "ac16-badge-text",
+                    page,
+                    "ac16-badge-text",
                 )
 
         _take_screenshot(page, "ac16-review-band")
@@ -1761,7 +1993,7 @@ class TestConflictDetection:
             e_review = beat_e.locator(BEAT_CONFLICT_BADGE_REVIEW)
             e_soft = beat_e.locator(BEAT_CONFLICT_BADGE)
 
-            no_conflict_e = (e_hard.count() == 0 and e_review.count() == 0)
+            no_conflict_e = e_hard.count() == 0 and e_review.count() == 0
             if e_soft.count() > 0:
                 visible_soft_e = False
                 for j in range(e_soft.count()):
@@ -1772,15 +2004,19 @@ class TestConflictDetection:
                     no_conflict_e = False
 
             _safe_assert(
-                reporter, no_conflict_e,
-                "Major", "Pass-through beat E has unexpected conflict badge",
-                "Conflict Detection — Pass-through <30%", [
+                reporter,
+                no_conflict_e,
+                "Major",
+                "Pass-through beat E has unexpected conflict badge",
+                "Conflict Detection — Pass-through <30%",
+                [
                     "Check beat E (nature_green, <2% Jaccard)",
                     "Should have no conflict badge",
                 ],
                 "No conflict badge on pass-through beat",
                 f"Hard: {e_hard.count()}, Review: {e_review.count()}, Soft: {e_soft.count()}",
-                page, "ac17-unexpected-conflict",
+                page,
+                "ac17-unexpected-conflict",
             )
 
         _take_screenshot(page, "ac17-pass-through")
@@ -1788,14 +2024,24 @@ class TestConflictDetection:
         # --- AC #18: Conflict Resolution Actions ---
         # Test Replace action on hard-conflict beat (beat 0)
         self._test_resolution_action(
-            page, reporter, beat_cards, 0,
-            "replace", "Will replace", "ac18-replace",
+            page,
+            reporter,
+            beat_cards,
+            0,
+            "replace",
+            "Will replace",
+            "ac18-replace",
         )
 
         # Test Skip action on soft-conflict beat (beat 2)
         self._test_resolution_action(
-            page, reporter, beat_cards, 2,
-            "skip", "Will skip", "ac18-skip",
+            page,
+            reporter,
+            beat_cards,
+            2,
+            "skip",
+            "Will skip",
+            "ac18-skip",
         )
 
         # Test Merge action on hard-conflict beat (beat 0) — click resolved label to re-open,
@@ -1862,27 +2108,34 @@ class TestConflictDetection:
             beat_text = beat.text_content() or ""
             has_label = expected_label.lower() in beat_text.lower()
             _safe_assert(
-                reporter, has_label,
+                reporter,
+                has_label,
                 "Major",
                 f"'{action.capitalize()}' resolution missing '{expected_label}' label",
-                f"Conflict Resolution — {action.capitalize()}", [
+                f"Conflict Resolution — {action.capitalize()}",
+                [
                     f"Click '{action}' on beat #{beat_idx + 1}",
                     f"Check for '{expected_label}' label",
                 ],
                 f"Label '{expected_label}' visible",
                 f"Beat text excerpt: '{beat_text[:200]}'",
-                page, screenshot_name,
+                page,
+                screenshot_name,
             )
         else:
             _safe_assert(
-                reporter, False,
-                "Major", f"Could not find '{action}' resolution action on beat #{beat_idx + 1}",
-                f"Conflict Resolution — {action.capitalize()}", [
+                reporter,
+                False,
+                "Major",
+                f"Could not find '{action}' resolution action on beat #{beat_idx + 1}",
+                f"Conflict Resolution — {action.capitalize()}",
+                [
                     f"Look for '{action}' button/option on beat card",
                 ],
                 f"'{action.capitalize()}' action available",
                 "Action not found",
-                page, f"{screenshot_name}-not-found",
+                page,
+                f"{screenshot_name}-not-found",
             )
 
         _take_screenshot(page, screenshot_name)
@@ -1929,15 +2182,19 @@ class TestConflictDetection:
             has_overlay = overlay.count() > 0
 
             _safe_assert(
-                reporter, has_overlay,
-                "Major", "Merge overlay did not open after clicking Merge",
-                "Conflict Resolution — Merge", [
+                reporter,
+                has_overlay,
+                "Major",
+                "Merge overlay did not open after clicking Merge",
+                "Conflict Resolution — Merge",
+                [
                     f"Click 'Merge' on beat #{beat_idx + 1}",
                     "Check for .merge-overlay",
                 ],
                 "Merge overlay opens",
                 f"Overlay found: {has_overlay}",
-                page, f"{screenshot_name}-no-overlay",
+                page,
+                f"{screenshot_name}-no-overlay",
             )
 
             _take_screenshot(page, screenshot_name)
@@ -1952,14 +2209,18 @@ class TestConflictDetection:
                 page.wait_for_timeout(300)
         else:
             _safe_assert(
-                reporter, False,
-                "Major", f"Could not find 'Merge' action on beat #{beat_idx + 1}",
-                "Conflict Resolution — Merge", [
+                reporter,
+                False,
+                "Major",
+                f"Could not find 'Merge' action on beat #{beat_idx + 1}",
+                "Conflict Resolution — Merge",
+                [
                     "Look for 'Merge' button on review-band beat",
                 ],
                 "'Merge' action available",
                 "Not found",
-                page, f"{screenshot_name}-not-found",
+                page,
+                f"{screenshot_name}-not-found",
             )
 
 
@@ -1977,7 +2238,7 @@ class TestProximityMatching:
 
     def test_find_proximity_matches_empty_for_distant_poi(self, browser_page):
         """AC 1: POI >50m from all existing → empty array (auto-new)."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             // POI far from any existing (200m+ away)
             const testPoi = { latitude: 42.40, longitude: -71.20 };
@@ -1988,7 +2249,7 @@ class TestProximityMatching:
 
     def test_find_proximity_matches_returns_nearby(self, browser_page):
         """AC 2: POI within 50m of one existing → single match returned."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             // Find first cached POI with location and create a nearby point
             const existing = cachedPoiList.find(p => p.properties.location && p.properties.location.lat);
@@ -2008,7 +2269,7 @@ class TestProximityMatching:
 
     def test_find_proximity_matches_sorted_by_distance(self, browser_page):
         """AC 3: Multiple matches sorted ascending by distance."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             // Create two fake cached POIs close together, test a point near both
             const fakeCached = [
@@ -2024,7 +2285,7 @@ class TestProximityMatching:
 
     def test_same_name_distant_poi_is_new(self, browser_page):
         """AC 8: Identical names 200m apart → both auto-new (no proximity match)."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             const fakeCached = [
                 { properties: { name: 'Old City Hall', location: { lat: 42.3580, lng: -71.0589 } } },
@@ -2037,7 +2298,7 @@ class TestProximityMatching:
 
     def test_detect_conflicts_missing_coords(self, browser_page):
         """AC 7: POI without coordinates → missingCoords: true."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             const testPoi = { poi_name: 'No Coords POI', beats: [] };
             return detectConflictsForPoi(testPoi);
@@ -2047,7 +2308,7 @@ class TestProximityMatching:
 
     def test_detect_conflicts_auto_new_no_match(self, browser_page):
         """AC 1: POI with no nearby existing → isNew: true."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             const testPoi = { poi_name: 'Distant POI', latitude: 42.40, longitude: -71.20, beats: [] };
             return detectConflictsForPoi(testPoi);
@@ -2057,7 +2318,7 @@ class TestProximityMatching:
 
     def test_map_poi_for_api_with_existing_name(self, browser_page):
         """AC 6: useExistingName sends the existing name in payload."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             const poi = { poi_name: 'Incoming Name', latitude: 42.36, longitude: -71.06 };
             return mapPoiForApi(poi, { useExistingName: 'Existing Name' });
@@ -2066,7 +2327,7 @@ class TestProximityMatching:
 
     def test_map_poi_for_api_with_force_create(self, browser_page):
         """AC 5: forceCreate sends force_create: true."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             const poi = { poi_name: 'Test POI', latitude: 42.36, longitude: -71.06 };
             return mapPoiForApi(poi, { forceCreate: true });
@@ -2075,7 +2336,7 @@ class TestProximityMatching:
 
     def test_name_similarity_function(self, browser_page):
         """Name similarity is computed correctly for display."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             return {
                 identical: nameSimilarity('Old City Hall', 'Old City Hall'),
@@ -2089,7 +2350,7 @@ class TestProximityMatching:
 
     def test_boundary_50m_excluded(self, browser_page):
         """Edge: POI at exactly >50m is excluded from proximity matches."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             // Place existing POI and incoming ~51m apart (about 0.00046 degrees lat)
             const fakeCached = [
@@ -2105,12 +2366,13 @@ class TestProximityMatching:
 # Test: Bug Report Generation (Task 8)
 # ---------------------------------------------------------------------------
 
+
 class TestBugReport:
     """Verify bug report is generated at the end of the suite."""
 
     def test_report_generated(self, browser_page):
         """Final test: save the bug report and verify its structure."""
-        page, seed_data, reporter = browser_page
+        page, _seed_data, reporter = browser_page
 
         report_path = reporter.save_report()
 

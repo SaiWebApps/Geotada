@@ -1,7 +1,33 @@
 [project]
-name = "travlr-neo4j"
+name = "ondoway-neo4j"
 version = "0.1.0"
 requires-python = ">=3.11"
+dependencies = [
+    "neo4j>=5.0,<6.0",
+    "python-dotenv>=1.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "playwright>=1.40",
+]
+aws = [
+    "boto3>=1.34",
+]
+dev = [
+    "ruff>=0.4",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
 
 [tool.ruff]
 target-version = "py311"
@@ -9,6 +35,14 @@ line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "RUF"]
+ignore = [
+    "B008",    # Depends() in FastAPI defaults is the correct pattern
+    "E402",    # conftest.py must load .env.test before imports
+    "E741",    # `l` for Lens in Cypher queries is clear in context
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/test_workbench_ui.py" = ["E501"]  # Inline JS strings exceed 100 chars
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

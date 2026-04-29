@@ -1,4 +1,4 @@
-"""Lightweight HTTP API for the Travlr Neo4j dashboard.
+"""Lightweight HTTP API for the Ondoway Neo4j dashboard.
 
 Serves graph data as JSON and hosts the static frontend.
 No framework dependencies — uses stdlib http.server + json.

@@ -68,16 +68,22 @@ class TestMergeIdempotency:
     def test_has_beat_edge_merge_idempotent(self, client):
         """POST same HAS_BEAT edge twice → same ID returned."""
         # Create a POI and a beat first
-        poi_resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Edge Merge POI",
-            "latitude": 42.36,
-            "longitude": -71.06,
-        })
+        poi_resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Edge Merge POI",
+                "latitude": 42.36,
+                "longitude": -71.06,
+            },
+        )
         poi_id = poi_resp.json()["id"]
 
-        beat_resp = client.post("/api/v1/nodes/NarrativeBeat", json={
-            "script_body": "Edge merge test beat.",
-        })
+        beat_resp = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "Edge merge test beat.",
+            },
+        )
         beat_id = beat_resp.json()["id"]
 
         edge_payload = {
@@ -104,26 +110,35 @@ class TestBeatTraversal:
 
     def test_returns_beats_for_seeded_poi(self, client):
         # Create POI
-        client.post("/api/v1/nodes/POI", json={
-            "name": "Traversal Test POI",
-            "latitude": 42.36,
-            "longitude": -71.06,
-        })
+        client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Traversal Test POI",
+                "latitude": 42.36,
+                "longitude": -71.06,
+            },
+        )
 
         # Create 2 beats with different lenses
-        beat1 = client.post("/api/v1/nodes/NarrativeBeat", json={
-            "script_body": "Traversal beat one about history.",
-            "version": 1,
-            "active_status": "active",
-            "duration_sec": 60,
-        }).json()
+        beat1 = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "Traversal beat one about history.",
+                "version": 1,
+                "active_status": "active",
+                "duration_sec": 60,
+            },
+        ).json()
 
-        beat2 = client.post("/api/v1/nodes/NarrativeBeat", json={
-            "script_body": "Traversal beat two about food.",
-            "version": 1,
-            "active_status": "active",
-            "duration_sec": 180,
-        }).json()
+        beat2 = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "Traversal beat two about food.",
+                "version": 1,
+                "active_status": "active",
+                "duration_sec": 180,
+            },
+        ).json()
 
         # Get POI ID
         poi_list = client.get("/api/v1/nodes/POI?limit=200").json()
@@ -135,24 +150,36 @@ class TestBeatTraversal:
         fc_lens = next(l for l in lens_list["items"] if l["properties"]["name"] == "food_culinary")
 
         # Create HAS_BEAT edges
-        client.post("/api/v1/edges/HAS_BEAT", json={
-            "source": {"label": "POI", "id": poi["id"]},
-            "target": {"label": "NarrativeBeat", "id": beat1["id"]},
-        })
-        client.post("/api/v1/edges/HAS_BEAT", json={
-            "source": {"label": "POI", "id": poi["id"]},
-            "target": {"label": "NarrativeBeat", "id": beat2["id"]},
-        })
+        client.post(
+            "/api/v1/edges/HAS_BEAT",
+            json={
+                "source": {"label": "POI", "id": poi["id"]},
+                "target": {"label": "NarrativeBeat", "id": beat1["id"]},
+            },
+        )
+        client.post(
+            "/api/v1/edges/HAS_BEAT",
+            json={
+                "source": {"label": "POI", "id": poi["id"]},
+                "target": {"label": "NarrativeBeat", "id": beat2["id"]},
+            },
+        )
 
         # Create TAGGED_WITH edges
-        client.post("/api/v1/edges/TAGGED_WITH", json={
-            "source": {"label": "NarrativeBeat", "id": beat1["id"]},
-            "target": {"label": "Lens", "id": hh_lens["id"]},
-        })
-        client.post("/api/v1/edges/TAGGED_WITH", json={
-            "source": {"label": "NarrativeBeat", "id": beat2["id"]},
-            "target": {"label": "Lens", "id": fc_lens["id"]},
-        })
+        client.post(
+            "/api/v1/edges/TAGGED_WITH",
+            json={
+                "source": {"label": "NarrativeBeat", "id": beat1["id"]},
+                "target": {"label": "Lens", "id": hh_lens["id"]},
+            },
+        )
+        client.post(
+            "/api/v1/edges/TAGGED_WITH",
+            json={
+                "source": {"label": "NarrativeBeat", "id": beat2["id"]},
+                "target": {"label": "Lens", "id": fc_lens["id"]},
+            },
+        )
 
         # Now test the traversal endpoint
         resp = client.get("/api/v1/graph/poi/Traversal Test POI/beats")
@@ -194,7 +221,12 @@ class TestForceCreate:
         assert resp1.status_code == 201
         id1 = resp1.json()["id"]
 
-        force_payload = {**base_payload, "latitude": 42.3605, "longitude": -71.0592, "force_create": True}
+        force_payload = {
+            **base_payload,
+            "latitude": 42.3605,
+            "longitude": -71.0592,
+            "force_create": True,
+        }
         resp2 = client.post("/api/v1/nodes/POI", json=force_payload)
         assert resp2.status_code == 201
         id2 = resp2.json()["id"]
@@ -226,35 +258,47 @@ class TestCoordinateValidation:
     """AC 7: Backend rejects invalid coordinates."""
 
     def test_rejects_latitude_out_of_range(self, client):
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Bad Lat POI",
-            "latitude": 999,
-            "longitude": -71.06,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Bad Lat POI",
+                "latitude": 999,
+                "longitude": -71.06,
+            },
+        )
         assert resp.status_code == 422
 
     def test_rejects_longitude_out_of_range(self, client):
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Bad Lng POI",
-            "latitude": 42.36,
-            "longitude": -999,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Bad Lng POI",
+                "latitude": 42.36,
+                "longitude": -999,
+            },
+        )
         assert resp.status_code == 422
 
     def test_accepts_valid_coordinates(self, client):
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Valid Coords POI",
-            "latitude": 42.3601,
-            "longitude": -71.0589,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Valid Coords POI",
+                "latitude": 42.3601,
+                "longitude": -71.0589,
+            },
+        )
         assert resp.status_code == 201
 
     def test_rejects_latitude_missing_via_model(self, client):
         """POI without latitude should fail validation."""
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "No Lat POI",
-            "longitude": -71.06,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "No Lat POI",
+                "longitude": -71.06,
+            },
+        )
         assert resp.status_code == 422
 
 
@@ -279,10 +323,7 @@ class TestNameVariations:
 
         # Confirm persistence via GET
         poi_list = client.get("/api/v1/nodes/POI?limit=200").json()
-        match = next(
-            p for p in poi_list["items"]
-            if p["properties"]["name"] == "Name Var Test POI"
-        )
+        match = next(p for p in poi_list["items"] if p["properties"]["name"] == "Name Var Test POI")
         assert match["properties"]["name_variations"] == ["Alt Name 1", "Alt Name 2"]
 
     def test_poi_without_name_variations(self, client):
@@ -315,18 +356,24 @@ class TestBeatTraversalDeprecated:
 
     def test_excludes_deprecated_beats(self, client):
         # Create a POI with a deprecated beat
-        client.post("/api/v1/nodes/POI", json={
-            "name": "Deprecated Test POI",
-            "latitude": 42.37,
-            "longitude": -71.07,
-        })
+        client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Deprecated Test POI",
+                "latitude": 42.37,
+                "longitude": -71.07,
+            },
+        )
 
-        beat = client.post("/api/v1/nodes/NarrativeBeat", json={
-            "script_body": "This beat is deprecated.",
-            "version": 1,
-            "active_status": "deprecated",
-            "duration_sec": 60,
-        }).json()
+        beat = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "This beat is deprecated.",
+                "version": 1,
+                "active_status": "deprecated",
+                "duration_sec": 60,
+            },
+        ).json()
 
         poi_list = client.get("/api/v1/nodes/POI?limit=200").json()
         poi = next(p for p in poi_list["items"] if p["properties"]["name"] == "Deprecated Test POI")
@@ -334,14 +381,20 @@ class TestBeatTraversalDeprecated:
         lens_list = client.get("/api/v1/nodes/Lens?limit=20").json()
         lens = lens_list["items"][0]
 
-        client.post("/api/v1/edges/HAS_BEAT", json={
-            "source": {"label": "POI", "id": poi["id"]},
-            "target": {"label": "NarrativeBeat", "id": beat["id"]},
-        })
-        client.post("/api/v1/edges/TAGGED_WITH", json={
-            "source": {"label": "NarrativeBeat", "id": beat["id"]},
-            "target": {"label": "Lens", "id": lens["id"]},
-        })
+        client.post(
+            "/api/v1/edges/HAS_BEAT",
+            json={
+                "source": {"label": "POI", "id": poi["id"]},
+                "target": {"label": "NarrativeBeat", "id": beat["id"]},
+            },
+        )
+        client.post(
+            "/api/v1/edges/TAGGED_WITH",
+            json={
+                "source": {"label": "NarrativeBeat", "id": beat["id"]},
+                "target": {"label": "Lens", "id": lens["id"]},
+            },
+        )
 
         resp = client.get("/api/v1/graph/poi/Deprecated Test POI/beats")
         assert resp.status_code == 200

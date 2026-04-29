@@ -259,3 +259,6 @@ temp/
 .env.cloud
 # Generated audio files (local TTS output)
 audio_store/
+
+# uv.lock is committed (reproducible dependency resolution)
+# Do NOT add uv.lock to this file.

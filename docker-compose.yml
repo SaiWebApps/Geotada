@@ -1,7 +1,7 @@
 services:
   neo4j:
     image: neo4j:5
-    container_name: travlr-neo4j
+    container_name: ondoway-neo4j
     ports:
       - "7474:7474"  # HTTP browser
       - "7687:7687"  # Bolt protocol
@@ -18,7 +18,7 @@ services:
 
   neo4j-test:
     image: neo4j:5
-    container_name: travlr-neo4j-test
+    container_name: ondoway-neo4j-test
     ports:
       - "7475:7474"  # HTTP browser (test)
       - "7688:7687"  # Bolt protocol (test)

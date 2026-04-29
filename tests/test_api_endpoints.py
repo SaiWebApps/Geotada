@@ -111,7 +111,7 @@ class TestListNodes:
 
     def test_user_has_email_property(self, client):
         item = client.get("/api/v1/nodes/User").json()["items"][0]
-        assert item["properties"]["email"] == "testuser@travlr.app"
+        assert item["properties"]["email"] == "testuser@ondoway.app"
 
     def test_poi_has_location_as_lat_lng(self, client):
         items = client.get("/api/v1/nodes/POI").json()["items"]

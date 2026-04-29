@@ -1,8 +1,8 @@
-# TTS Audio Pipeline for Travlr — Options & Cost Analysis
+# TTS Audio Pipeline for Ondoway — Options & Cost Analysis
 
 ## Context
 
-Travlr needs to convert `NarrativeBeat.script_body` text into audio files for GPS-triggered playback. The data model already has `audio_url` and `duration_sec` fields — the generation pipeline is the missing piece. The NORTHSTAR locks ElevenLabs as the audio engine, but this analysis explores the full landscape so we can make an informed commitment (or confirm the existing one).
+Ondoway needs to convert `NarrativeBeat.script_body` text into audio files for GPS-triggered playback. The data model already has `audio_url` and `duration_sec` fields — the generation pipeline is the missing piece. The NORTHSTAR locks ElevenLabs as the audio engine, but this analysis explores the full landscape so we can make an informed commitment (or confirm the existing one).
 
 **Key constraint:** This is a **pre-generation** workflow, not real-time TTS. Scripts are authored in the Editorial Workbench, audio is generated once, stored in S3, and served to many users. This fundamentally changes the cost equation — per-character costs are one-time, not per-listen.
 
@@ -36,7 +36,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
   - Pay-as-you-go also available.
 - **Boston launch cost (one-time generation):** $20–110 depending on plan & volume.
 - **Ongoing cost:** Minimal — only re-gen on edits. S3 serving is pennies.
-- **Voice cloning:** Yes — could create a consistent "Travlr narrator" voice.
+- **Voice cloning:** Yes — could create a consistent "Ondoway narrator" voice.
 - **SSML:** Limited — uses their own markup for pauses/emphasis.
 - **Latency:** ~2–5s per beat (fine for pre-gen).
 - **Dev effort:** Simple REST API. Python SDK available. Straightforward integration.
@@ -114,7 +114,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 
 ## Key Insight: Pre-Generation Makes This Cheap
 
-At Travlr's scale (hundreds of beats, not millions), **every option is affordable.** The Boston launch is a one-time batch of ~200K characters. Even ElevenLabs at its most expensive is under $100 for the entire city. The real cost driver is:
+At Ondoway's scale (hundreds of beats, not millions), **every option is affordable.** The Boston launch is a one-time batch of ~200K characters. Even ElevenLabs at its most expensive is under $100 for the entire city. The real cost driver is:
 
 1. **Re-generation frequency** — How often do scripts get edited/versioned?
 2. **City expansion rate** — Each new city is another batch.
@@ -177,7 +177,7 @@ The NORTHSTAR choice is well-justified. For an entertainment product where audio
 - `OPENAI_API_KEY` (dev)
 - `ELEVENLABS_API_KEY` (prod)
 - `ELEVENLABS_VOICE_ID` (prod)
-- `AWS_S3_BUCKET` (e.g., `travlr-audio`)
+- `AWS_S3_BUCKET` (e.g., `ondoway-audio`)
 - `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` (or use IAM roles)
 
 **Dependencies to add:**

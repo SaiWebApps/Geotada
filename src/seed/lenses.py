@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES
-
 from src.connection import get_database
+from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES
 
 if TYPE_CHECKING:
     from neo4j import Driver

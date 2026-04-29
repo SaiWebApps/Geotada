@@ -5,7 +5,6 @@ All Neo4j interactions are mocked. No running database required.
 
 from __future__ import annotations
 
-import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -17,7 +16,6 @@ from src.connection import (
     create_driver,
     get_driver,
 )
-
 
 # ── _read_env ──
 
@@ -84,9 +82,11 @@ class TestCreateDriver:
 
         mock_driver = MagicMock()
         mock_driver.verify_connectivity.side_effect = ServiceUnavailable("connection refused")
-        with patch("src.connection.GraphDatabase.driver", return_value=mock_driver):
-            with pytest.raises(Neo4jConnectionError, match="Cannot reach Neo4j"):
-                create_driver()
+        with (
+            patch("src.connection.GraphDatabase.driver", return_value=mock_driver),
+            pytest.raises(Neo4jConnectionError, match="Cannot reach Neo4j"),
+        ):
+            create_driver()
 
     def test_auth_error(self, monkeypatch):
         """AuthError is caught and re-raised as Neo4jConnectionError."""
@@ -98,9 +98,11 @@ class TestCreateDriver:
 
         mock_driver = MagicMock()
         mock_driver.verify_connectivity.side_effect = AuthError("bad credentials")
-        with patch("src.connection.GraphDatabase.driver", return_value=mock_driver):
-            with pytest.raises(Neo4jConnectionError, match="Authentication failed"):
-                create_driver()
+        with (
+            patch("src.connection.GraphDatabase.driver", return_value=mock_driver),
+            pytest.raises(Neo4jConnectionError, match="Authentication failed"),
+        ):
+            create_driver()
 
 
 # ── get_driver ──
@@ -125,9 +127,8 @@ class TestGetDriver:
 
         mock_driver = MagicMock()
         with patch("src.connection.GraphDatabase.driver", return_value=mock_driver):
-            with pytest.raises(ValueError, match="boom"):
-                with get_driver() as d:
-                    raise ValueError("boom")
+            with pytest.raises(ValueError, match="boom"), get_driver():
+                raise ValueError("boom")
             mock_driver.close.assert_called_once()
 
 

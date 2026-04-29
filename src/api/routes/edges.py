@@ -54,11 +54,11 @@ def create_edge(
     try:
         NodeLabel(body.source.label)
     except ValueError:
-        raise HTTPException(422, f"Invalid source label: '{body.source.label}'")
+        raise HTTPException(422, f"Invalid source label: '{body.source.label}'") from None
     try:
         NodeLabel(body.target.label)
     except ValueError:
-        raise HTTPException(422, f"Invalid target label: '{body.target.label}'")
+        raise HTTPException(422, f"Invalid target label: '{body.target.label}'") from None
 
     # Prevent tagging beats with parent-only lenses
     if rel_type.value == "TAGGED_WITH" and body.target.label == "Lens":

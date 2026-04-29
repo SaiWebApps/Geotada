@@ -107,9 +107,7 @@ class OpenAITTSProvider:
         )
 
         if resp.status_code != 200:
-            raise TTSError(
-                f"OpenAI TTS failed ({resp.status_code}): {resp.text[:200]}"
-            )
+            raise TTSError(f"OpenAI TTS failed ({resp.status_code}): {resp.text[:200]}")
 
         return resp.content
 
@@ -161,9 +159,7 @@ class ElevenLabsTTSProvider:
         )
 
         if resp.status_code != 200:
-            raise TTSError(
-                f"ElevenLabs TTS failed ({resp.status_code}): {resp.text[:200]}"
-            )
+            raise TTSError(f"ElevenLabs TTS failed ({resp.status_code}): {resp.text[:200]}")
 
         return resp.content
 
