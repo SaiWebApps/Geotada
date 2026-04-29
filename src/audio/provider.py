@@ -5,7 +5,7 @@ for HTTP calls (no SDK dependencies required).
 
 Usage:
     provider = get_provider("openai")   # or "elevenlabs", "mock"
-    audio_bytes = provider.generate("Hello, welcome to Boston.")
+    audio_bytes = provider.generate("Hello, welcome to Paris.")
 """
 
 from __future__ import annotations
@@ -94,17 +94,19 @@ class OpenAITTSProvider:
 
         voice = voice_id or os.getenv("OPENAI_VOICE", self.DEFAULT_VOICE)
 
-        resp = httpx.post(
-            self.API_URL,
-            headers={"Authorization": f"Bearer {api_key}"},
-            json={
-                "model": self.DEFAULT_MODEL,
-                "input": text,
-                "voice": voice,
-                "response_format": "mp3",
-            },
-            timeout=60.0,
-        )
+        with httpx.Client(
+            transport=httpx.HTTPTransport(proxy=None), timeout=60.0
+        ) as client:
+            resp = client.post(
+                self.API_URL,
+                headers={"Authorization": f"Bearer {api_key}"},
+                json={
+                    "model": self.DEFAULT_MODEL,
+                    "input": text,
+                    "voice": voice,
+                    "response_format": "mp3",
+                },
+            )
 
         if resp.status_code != 200:
             raise TTSError(f"OpenAI TTS failed ({resp.status_code}): {resp.text[:200]}")
@@ -140,23 +142,25 @@ class ElevenLabsTTSProvider:
 
         url = f"{self.API_BASE}/text-to-speech/{vid}"
 
-        resp = httpx.post(
-            url,
-            headers={
-                "xi-api-key": api_key,
-                "Content-Type": "application/json",
-                "Accept": "audio/mpeg",
-            },
-            json={
-                "text": text,
-                "model_id": self.DEFAULT_MODEL,
-                "voice_settings": {
-                    "stability": 0.5,
-                    "similarity_boost": 0.75,
+        with httpx.Client(
+            transport=httpx.HTTPTransport(proxy=None), timeout=60.0
+        ) as client:
+            resp = client.post(
+                url,
+                headers={
+                    "xi-api-key": api_key,
+                    "Content-Type": "application/json",
+                    "Accept": "audio/mpeg",
                 },
-            },
-            timeout=60.0,
-        )
+                json={
+                    "text": text,
+                    "model_id": self.DEFAULT_MODEL,
+                    "voice_settings": {
+                        "stability": 0.5,
+                        "similarity_boost": 0.75,
+                    },
+                },
+            )
 
         if resp.status_code != 200:
             raise TTSError(f"ElevenLabs TTS failed ({resp.status_code}): {resp.text[:200]}")
