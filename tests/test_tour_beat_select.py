@@ -79,8 +79,12 @@ def test_strategy_narrative_when_neither_dense():
     assert choose_ordering_strategy(beats) == "narrative_function"
 
 
-def test_strategy_sub_location_wins_over_trigger_address():
-    # 3 sub_locs + 5 trigger_addrs → sub_location (building-walk wins).
+def test_strategy_dominant_primitive_wins():
+    """Phase 4 calibration: when both primitives meet threshold, the one
+    with more distinct values wins. With 3 sub_locs vs 5 trigger_addrs,
+    triggers dominate so trigger_address strategy fires (matches the
+    empirical PdV walk where 23 trigger_addresses outweigh 6 sub_locs).
+    """
     beats = [
         _beat("a", sub_location="parvis", trigger_address="x1"),
         _beat("b", sub_location="nave", trigger_address="x2"),
@@ -88,6 +92,35 @@ def test_strategy_sub_location_wins_over_trigger_address():
         _beat("d", trigger_address="x4"),
         _beat("e", trigger_address="x5"),
     ]
+    assert choose_ordering_strategy(beats) == "trigger_address"
+
+
+def test_strategy_sub_location_wins_when_dominant():
+    """Sub_location wins when it has at least as many distinct values
+    as trigger_address (Notre-Dame / Conciergerie shape).
+    """
+    beats = [
+        _beat("a", sub_location="parvis"),
+        _beat("b", sub_location="nave"),
+        _beat("c", sub_location="choir"),
+        _beat("d", sub_location="towers"),
+        _beat("e", sub_location="treasury"),
+    ]
+    assert choose_ordering_strategy(beats) == "sub_location"
+
+
+def test_strategy_sub_location_when_triggers_below_threshold():
+    """Sub_location still wins if trigger_address fails its threshold,
+    even if sub_locs < trig_n by a small amount (4 sub_locs, 4 triggers
+    where trigger threshold is 5).
+    """
+    beats = [
+        _beat("a", sub_location="parvis", trigger_address="x1"),
+        _beat("b", sub_location="nave", trigger_address="x2"),
+        _beat("c", sub_location="choir", trigger_address="x3"),
+        _beat("d", sub_location="towers", trigger_address="x4"),
+    ]
+    # 4 sub_locs ≥ 3, 4 triggers < 5 → sub_location.
     assert choose_ordering_strategy(beats) == "sub_location"
 
 
@@ -218,18 +251,24 @@ def test_narrative_function_ordering_when_no_spatial_primitive():
     assert fns[: len(expected)] == expected
 
 
-def test_narrative_function_caps_at_six_for_anchor():
+def test_narrative_function_caps_at_default_flat_max_for_anchor():
+    """Phase 4 calibration: DEFAULT_FLAT_MAX bumped 6→8 to recover empirical
+    Sainte-Chapelle / Île de la Cité deepens that lost the prior 6-beat trim.
+    """
     poi = _poi("Sainte-Chapelle")  # tier 5
     beats = [_beat(f"b{i}", narrative_function="deepen") for i in range(10)]
     plan = select_poi_beats(poi, beats)
-    assert len(plan.beats) == 6
+    assert len(plan.beats) == 8
 
 
-def test_narrative_function_pause_tier3_caps_at_two():
+def test_narrative_function_pause_tier3_caps_at_pause_max():
+    """Phase 4 calibration: PAUSE_BEATS_MAX bumped 2→3 to match the empirical
+    Vert-Galant pause carrying establishing + view + tarnished beats.
+    """
     poi = _poi("Some Pause", tier=3)
     beats = [_beat(f"b{i}", narrative_function="deepen") for i in range(5)]
     plan = select_poi_beats(poi, beats)
-    assert len(plan.beats) == 2
+    assert len(plan.beats) == 3
 
 
 def test_narrative_function_walkby_tier1_caps_at_one():

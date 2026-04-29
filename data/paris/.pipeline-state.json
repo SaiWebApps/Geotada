@@ -674,6 +674,18 @@
         "src/seed/narratives.py"
       ],
       "notes": "TTS commit added sort_order independently; local has parallel sort_order work. Reconcile by cherry-picking TTS-specific bits (preview playback) onto local; treat local sort_order as canonical."
+    },
+    "conftest_test_isolation": {
+      "status": "deferred",
+      "filed_at": "2026-04-29",
+      "trigger": "Before Phase 5 ships",
+      "incident": "Phase 4 golden test load_dotenv(override=True) mutated NEO4J_URI to dev port; conftest's session-scoped driver fixture called _wipe() against the dev DB instead of test DB. Recovered via /upload but should not recur.",
+      "fix_options": [
+        "Option A: conftest hard-asserts NEO4J_URI ends in :7688 (test port) before any wipe; aborts with explicit error otherwise.",
+        "Option B: conftest reads NEO4J_TEST_URI separately rather than NEO4J_URI; wipes only the test URI it explicitly knows.",
+        "Option C: golden tests use a read-only client that physically cannot wipe even if env-confused."
+      ],
+      "recommendation": "Option A is smallest. Add as a Phase 5 prerequisite."
     }
   }
 }

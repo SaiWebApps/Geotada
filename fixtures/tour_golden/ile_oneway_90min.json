@@ -1,0 +1,254 @@
+{
+  "_doc": "Golden fixture from Docs/tour-builder/empirical-tours/02-ile-de-la-cite-notre-dame.md (composed 2026-04-26). Resolved against live Paris Neo4j 2026-04-29.",
+  "_resolution_method": "Each [F:...]/[V:...]/[RG:...]/[LEG:...] tag in the empirical doc was matched by script_body prefix to an active beat at the relevant POI.",
+  "input": {
+    "start": [
+      48.8568,
+      2.3414
+    ],
+    "duration_min": 90,
+    "city_slug": "paris",
+    "round_trip": false,
+    "lenses": null,
+    "theme_hint": null,
+    "start_label": "Pont Neuf metro"
+  },
+  "expected_pois": [
+    "Pont Neuf",
+    "Ile de la Cite",
+    "Square du Vert-Galant",
+    "Conciergerie",
+    "Sainte-Chapelle",
+    "Hotel-Dieu",
+    "Crypte Archeologique de l'Ile de la Cite",
+    "Notre-Dame Cathedral"
+  ],
+  "expected_spine_area": "Île de la Cité",
+  "expected_beat_ids": [
+    "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+    "11811369-ed24-416b-a25c-cdc5a4ddfbcf",
+    "d38306de-2bf6-4cda-bcd8-2e428de68465",
+    "46afa2ed-1792-4a6a-ac90-2aeefa2705a3",
+    "a0b6bc71-68c0-476c-a11b-fd4c0eea04b5",
+    "2645c2b4-62b2-4e81-bb36-8a9e3200df67",
+    "0bc44896-5ac8-4314-85ab-bad506246656",
+    "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+    "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+    "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+    "d1afba2f-62f6-4807-83ec-da961e310c67",
+    "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+    "d2c91706-78c8-4e7a-a36b-705e4229599e",
+    "8a85780f-5c34-4954-914f-d69f314197ff",
+    "0a62096c-61ad-422b-99e6-47951b52f18e",
+    "91765c42-70f0-4b31-ac37-26f24774246a",
+    "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+    "0095f842-c349-4409-ad1b-6b7b2c0f1e4d",
+    "ba7be408-5674-4a4b-8b40-c607d7588752",
+    "028d603e-f754-4eb1-9040-4685045c8510",
+    "a1effe65-bc1e-4903-8a78-49020f737ff4",
+    "6a57935f-303f-4b3f-9aa5-aa6f1e451e7a",
+    "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+    "a220c5ce-314d-4eae-9bdc-719ad4fe2428",
+    "2387f0d7-5700-4a71-a8fb-a9f271cc1616",
+    "cdaf1ac8-69c2-4ba5-9bdd-448ecf1015e8",
+    "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+    "d99ac2aa-cf24-42b6-9452-d13c14ed1b27",
+    "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+    "18858085-ead6-425f-8e48-997713ebeae7",
+    "a0d269cf-86dc-47af-96a1-fa7f61044711",
+    "1c0742e4-5cad-46e4-9fa4-a4365eca2c49",
+    "a6f46909-757f-4ea1-b298-8cf940f70894",
+    "3afcf4d0-6983-47cb-9710-b0e85b4181f6",
+    "ae1f69b1-e2d0-4c1f-8ffa-f7d059df0e7a",
+    "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+    "280f6636-b7a1-4eab-ba12-8e169a3c5bdd",
+    "dfac7baa-9742-4464-bfa9-61582cb4432f",
+    "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+    "b5bddc70-58ed-42f4-a2d2-674254300c01",
+    "60d90359-9b41-48c3-aa33-f80ab2db4167"
+  ],
+  "expected_beat_count": 41,
+  "expected_tag_resolution": {
+    "RG:pont_neuf_henri_iv_flying_leap": "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+    "F:pont_neuf_history": "11811369-ed24-416b-a25c-cdc5a4ddfbcf",
+    "F:statue_napoleon_hidden": "d38306de-2bf6-4cda-bcd8-2e428de68465",
+    "V:bouquinistes_seasoning": "46afa2ed-1792-4a6a-ac90-2aeefa2705a3",
+    "F:parisii_settlement": "a0b6bc71-68c0-476c-a11b-fd4c0eea04b5",
+    "F:fluctuat_nec_mergitur": "2645c2b4-62b2-4e81-bb36-8a9e3200df67",
+    "V:palais_de_justice_marcel_revolt": "0bc44896-5ac8-4314-85ab-bad506246656",
+    "RG:haussmann_erasure": "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+    "F:vert_galant_molay_curse": "90d4f667-bae7-47f1-8a1f-d45614ade605",
+    "V:vert_galant_view": "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+    "V:vert_galant_tarnished": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+    "V:place_dauphine_henri_iv": "795b4bfc-c8f6-4252-a8b3-491afcd1e3ab",
+    "V:dauphine_signoret_montand": "5e9fa87f-bed2-4f9d-a4d4-517299220482",
+    "F:transit_pont_neuf_to_palais": "3e6b5e68-2a4d-4f1e-a99b-daf72c3b83d1",
+    "RG:conciergerie_pailleux": "d1afba2f-62f6-4807-83ec-da961e310c67",
+    "V:conciergerie_origin_concierge": "3a38d4cb-e3ff-4fad-8d21-d3ce72fd021e",
+    "F:tour_bonbec_screams": "ceed98a4-7969-48c3-9ad0-f38aead62f1c",
+    "V:tour_bonbec_oubliettes": "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+    "V:notorious_prisoners_cartouche": "d2c91706-78c8-4e7a-a36b-705e4229599e",
+    "RG:salle_de_toilette": "8a85780f-5c34-4954-914f-d69f314197ff",
+    "V:revolution_prisoners": "0a62096c-61ad-422b-99e6-47951b52f18e",
+    "RG:marie_antoinette_cell_mockup": "91765c42-70f0-4b31-ac37-26f24774246a",
+    "V:sanson_dynasty": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+    "V:renoir_executioner_friendship": "c7e11128-9388-4312-9f07-43f4293a778b",
+    "RG:sainte_chapelle_lopped_choir": "0095f842-c349-4409-ad1b-6b7b2c0f1e4d",
+    "V:sainte_chapelle_full_history": "ba7be408-5674-4a4b-8b40-c607d7588752",
+    "RG:upper_chapel_butterflies": "028d603e-f754-4eb1-9040-4685045c8510",
+    "RG:upper_chapel_glass_panels": "a1effe65-bc1e-4903-8a78-49020f737ff4",
+    "V:sainte_chapelle_communards_petrol": "6a57935f-303f-4b3f-9aa5-aa6f1e451e7a",
+    "F:transit_lutece_to_parvis": "0e6b0bf2-ebbe-4087-82b1-acc7faeeba22",
+    "F:hotel_dieu": "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+    "LEG:hotel_dieu_founding": "a220c5ce-314d-4eae-9bdc-719ad4fe2428",
+    "LEG:wards_three_per_bed": "2387f0d7-5700-4a71-a8fb-a9f271cc1616",
+    "LEG:pont_au_double_gallery": "cdaf1ac8-69c2-4ba5-9bdd-448ecf1015e8",
+    "F:crypte": "7601aa0e-bae2-43c3-8232-19ebccee8633",
+    "RG:crypte_archeologique": "250807da-fc61-43b3-b21b-dd1ec373ea2d",
+    "RG:kilometre_zero_parvis": "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+    "F:wishing_stone": "d99ac2aa-cf24-42b6-9452-d13c14ed1b27",
+    "RG:great_ship_construction": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+    "F:sixty_year_construction": "cd649e03-d41b-476c-b89d-04881ae36a8f",
+    "RG:facade_lightness_grace": "18858085-ead6-425f-8e48-997713ebeae7",
+    "F:kings_of_judah_destroyed": "a0d269cf-86dc-47af-96a1-fa7f61044711",
+    "RG:central_portal_day_of_judgement": "1c0742e4-5cad-46e4-9fa4-a4365eca2c49",
+    "F:judgement_day_central_portal": "2ecce93e-41ad-4d38-bf0b-6bd1db61ef39",
+    "RG:side_portals_mary_st_anne": "a6f46909-757f-4ea1-b298-8cf940f70894",
+    "F:enter_right_portal": "3afcf4d0-6983-47cb-9710-b0e85b4181f6",
+    "F:bell_trapdoor_pillars": "ae1f69b1-e2d0-4c1f-8ffa-f7d059df0e7a",
+    "RG:interior_nave_rose_windows": "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+    "F:capacity_rose_windows_organ": "15bab9c7-b454-476b-a417-8b6723dbfd6f",
+    "RG:cavaille_coll_organ": "8ea9d384-856c-4b53-bd4e-6e0752417ff4",
+    "LEG:polyphony_leonin_perotin": "fdb268ea-3e0e-41e1-a1fb-74555a3acd43",
+    "F:choir_screen_pieta": "280f6636-b7a1-4eab-ba12-8e169a3c5bdd",
+    "F:treasury_crown_of_thorns": "dfac7baa-9742-4464-bfa9-61582cb4432f",
+    "LEG:coronations": "03d7613c-f809-4889-9449-66b11222634f",
+    "LEG:vandalism": "05ad2e70-57a9-4929-a082-3038c7a46da7",
+    "LEG:nearly_sold": "e205eb52-aa11-4e0f-9aaa-2a421450b1e4",
+    "LEG:commune_fire": "1548158e-2a05-4f14-91d6-1e37b122719b",
+    "RG:hugo_petition_viollet_le_duc": "4073ccb3-bb03-4b71-9495-d11157f67ed9",
+    "RG:emmanuel_bell_towers": "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+    "LEG:emmanuel_bell_jewellery": "05338668-bada-48de-9412-5f85835d3951",
+    "F:emmanuel_silent_since_liberation": "b5bddc70-58ed-42f4-a2d2-674254300c01",
+    "F:hugo_quasimodo_gargoyles": "ac6e9854-0e8d-4441-950d-3296c4861aeb",
+    "F:transit_chanoinesse_to_garden": "f8c9790d-3fcb-47d1-b1ca-844e9afc2353",
+    "F:flying_buttresses_great_height": "60d90359-9b41-48c3-aa33-f80ab2db4167",
+    "RG:abelard_heloise": "29481a3d-1d4a-4bff-a347-7b34d44d74f8",
+    "F:transit_garden_to_memorial": "2c2e6ffb-c876-40ca-99a6-8c49be4f2925",
+    "RG:memorial_pardonne_noublie_pas": "4f3fe6ea-a2f7-470b-b4de-6ca66dff9c99",
+    "LEG:desnos_theresienstadt": "04bc76dd-bfff-4e0a-8f32-039e4b18235a"
+  },
+  "structurally_unreachable": {
+    "Place Dauphine (POI walk_by_only)": {
+      "tags": [
+        "V:place_dauphine_henri_iv",
+        "V:dauphine_signoret_montand"
+      ],
+      "reason": "POI poi_role='walk_by_only'; selection.py filters these out at envelope step. Re-tag to 'stop' in Phase 5/6 if Place Dauphine should re-enter the routing layer."
+    },
+    "Memorial des Martyrs (POI walk_by_only)": {
+      "tags": [
+        "F:transit_garden_to_memorial",
+        "RG:memorial_pardonne_noublie_pas",
+        "LEG:desnos_theresienstadt",
+        "F:transit_chanoinesse_to_garden"
+      ],
+      "reason": "POI poi_role='walk_by_only'; would surface via endpoint-pull if upgraded to 'stop'. Polygon hygiene + role re-tagging is in the deferred backlog."
+    },
+    "Tour de l'Horloge (separate walk_by_only POI)": {
+      "tags": [
+        "RG:tour_horloge"
+      ],
+      "reason": "RG:tour_horloge content lives on a separate POI 'Tour de l'Horloge' (poi_role='walk_by_only'). Excluded from fixture."
+    },
+    "Transits (narrative_function='transition')": {
+      "tags": [
+        "F:transit_pont_neuf_to_palais",
+        "F:transit_lutece_to_parvis"
+      ],
+      "reason": "beat_select narrative_function strategy puts transitions in the 'leftover' bucket; trimmed at DEFAULT_FLAT_MAX=6. Generation will fall back to GLUE_NAV. Algorithm-shape gap (transit branch in beat_select), not a Phase 4 calibration knob."
+    },
+    "Notre-Dame no_loc beats (sub_location strategy emits 1 closing)": {
+      "tags": [
+        "LEG:vandalism",
+        "RG:abelard_heloise",
+        "LEG:coronations",
+        "RG:hugo_petition_viollet_le_duc",
+        "LEG:polyphony_leonin_perotin",
+        "LEG:emmanuel_bell_jewellery",
+        "LEG:commune_fire",
+        "LEG:nearly_sold"
+      ],
+      "reason": "Notre-Dame's 28 no-sub_location beats compete for ONE closing slot under sub_location strategy. Algorithm-shape gap (multi-beat closing pool), not a calibration knob."
+    },
+    "Notre-Dame sub_loc duplicates (one beat per sub_loc)": {
+      "tags": [
+        "F:sixty_year_construction",
+        "RG:cavaille_coll_organ",
+        "F:capacity_rose_windows_organ",
+        "F:hugo_quasimodo_gargoyles",
+        "F:judgement_day_central_portal"
+      ],
+      "reason": "_order_by_sub_location picks the highest-scoring beat per sub_loc bucket. Empirical walks include 2-3 beats at facade, central-portal, interior-nave, exterior-east-end. Algorithm-shape gap."
+    },
+    "Conciergerie sub_loc duplicates": {
+      "tags": [
+        "F:tour_bonbec_screams",
+        "V:renoir_executioner_friendship"
+      ],
+      "reason": "Same as Notre-Dame: tour-bonbec has 2 beats, rue-de-paris-cells has 2 (climax + callback). One per sub_loc."
+    },
+    "Conciergerie no_loc closing": {
+      "tags": [
+        "V:conciergerie_origin_concierge"
+      ],
+      "reason": "Conciergerie has ~8 no_loc beats competing for the single closing slot under sub_location strategy. Longest wins; this beat loses."
+    },
+    "Sainte-Chapelle narrative_function (Phase 4 recovered)": {
+      "tags": [
+        "RG:upper_chapel_glass_panels",
+        "V:sainte_chapelle_communards_petrol"
+      ],
+      "reason": "Recovered by Phase 4 DEFAULT_FLAT_MAX bump 6→8. No longer unreachable.",
+      "_status": "RECOVERED"
+    },
+    "Île de la Cité narrative_function (Phase 4 recovered)": {
+      "tags": [
+        "F:fluctuat_nec_mergitur",
+        "V:palais_de_justice_marcel_revolt"
+      ],
+      "reason": "Recovered by Phase 4 DEFAULT_FLAT_MAX bump 6→8. No longer unreachable.",
+      "_status": "RECOVERED"
+    },
+    "Vert-Galant pause-tier (Phase 4 recovered)": {
+      "tags": [
+        "V:vert_galant_tarnished"
+      ],
+      "reason": "Recovered by Phase 4 PAUSE_BEATS_MAX bump 2→3. No longer unreachable.",
+      "_status": "RECOVERED"
+    },
+    "Pont Neuf vert-galant climax (narrative_function top-6)": {
+      "tags": [
+        "F:vert_galant_molay_curse"
+      ],
+      "reason": "d104d4a8 is at Pont Neuf POI with sub=square-du-vert-galant. Pont Neuf has 1 sub_loc → narrative_function. 3 hooks + 3 establishings fill the top 6; the climax beat falls outside."
+    },
+    "Crypte vs Palais de Justice (selection scoring)": {
+      "tags": [
+        "F:crypte",
+        "RG:crypte_archeologique"
+      ],
+      "reason": "Crypte (t3, 4 beats) loses to Palais de Justice (t4, 3 beats) under tier × log(1+n) scoring (4.83 vs 5.55). Tried (1+n)^1.3 — flips Crypte/Palais but pulls Notre-Dame too early in greedy and drops Conciergerie/Hôtel-Dieu/Vert-Galant. Tier weighting needs to soften (or richness exponent paired with route-cost rebalance) — out of Phase 4 strict tunables. Phase 5 calibration target."
+    }
+  },
+  "expected_validation": {
+    "untraceable_sentences_count": 0,
+    "forbidden_phrase_hits_count": 0
+  },
+  "notes": [
+    "One-way 90min from Pont Neuf metro; spine Area is Île de la Cité (Phase 2.6 district-dominance rule).",
+    "max_anchors=9; algorithm picks 8 stops + endpoint-pull: Pont Neuf → Vert-Galant → Sainte-Chapelle → Conciergerie → Île de la Cité → Crypte → Hôtel-Dieu → Notre-Dame, with 9th slot from endpoint-pull (typically Hôtel de Ville).",
+    "Place Dauphine and Mémorial are excluded — both poi_role='walk_by_only'. Polygon/role fixes scheduled before Phase 5.",
+    "Conciergerie is the dense building walk; sub_location strategy emits ~7 beats. Notre-Dame is the deepest building walk; sub_location strategy emits ~17 beats."
+  ]
+}

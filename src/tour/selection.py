@@ -35,7 +35,7 @@ from .routing import (
     walk_budget_seconds,
 )
 
-# §3.2 score weights / caps. Calibration deferred to Phase 4.
+# §3.2 score weights / caps. Calibrated against golden tests on 2026-04-29.
 INTEREST_BIAS_MAX: float = 2.0
 INTEREST_BIAS_BASE: float = 1.0
 INTEREST_BIAS_SCALE: float = 0.5

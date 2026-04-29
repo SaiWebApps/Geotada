@@ -38,8 +38,25 @@ NARRATIVE_FUNCTION_ORDER: tuple[str, ...] = (
 SUB_LOCATION_THRESHOLD: int = 3  # ≥3 distinct values → building walk
 TRIGGER_ADDRESS_THRESHOLD: int = 5  # ≥5 distinct values → square circumnav
 DEFAULT_FLAT_MIN: int = 4
-DEFAULT_FLAT_MAX: int = 6
-PAUSE_BEATS_MAX: int = 2  # tier-3 stop
+# Phase 4 calibration (2026-04-29): bumped from 6 to 8. The empirical Île
+# walk's Sainte-Chapelle (5 beats) + Île de la Cité (4 beats) lost
+# fixture deepens to the 6-beat trim. 8 keeps all empirical anchor-flat
+# beats while staying under the audio budget for 90-min tours
+# (Île 8 anchors × ~4 extra-beat seconds is well within the 44-min budget).
+DEFAULT_FLAT_MAX: int = 8
+# Phase 4 calibration (2026-04-29): bumped from 2 to 3. The empirical
+# Vert-Galant pause stop carries 3 beats (establishing + view + tarnished);
+# the prior cap dropped the 'tarnished' deepen.
+PAUSE_BEATS_MAX: int = 3  # tier-3 stop
+
+# Phase 4 calibration (2026-04-29): when both sub_location and
+# trigger_address meet their thresholds, pick the dominant primitive.
+# §3.3 spec defined the two threshold tests but didn't prescribe a
+# tie-break; the empirical Place des Vosges walk (6 sub_locs, 23
+# trigger_addresses) demonstrated trigger should win when the address
+# pool is much richer. Without this rule, sub_loc fires first and PdV
+# emits ~8 beats instead of ~25. Conciergerie (6 sub_locs, 0 triggers)
+# still uses sub_location because triggers don't meet threshold.
 
 # B8-lite (Phase 3.5) — claim-level dedup. Runs after the per-strategy
 # ordering and before tone-variety. Only beats that share at least one
@@ -60,13 +77,25 @@ _NARRATIVE_FUNCTION_PRIORITY: dict[str, int] = {
 
 
 def choose_ordering_strategy(beats: Iterable[BeatRef]) -> OrderingStrategy:
-    """Pick the spatial primitive to sequence by, per §3.3."""
-    sub_locs = {b.sub_location for b in beats if b.sub_location}
-    triggers = {b.trigger_address for b in beats if b.trigger_address}
-    if len(sub_locs) >= SUB_LOCATION_THRESHOLD:
+    """Pick the spatial primitive to sequence by, per §3.3.
+
+    Phase 4 calibration: when both primitives meet threshold, the one
+    with more distinct values wins. PdV (6 sub_locs, 23 trigger_addrs)
+    requires trigger_address to reproduce the empirical address-by-address
+    circumnavigation; Conciergerie (6 sub_locs, 0 triggers) keeps
+    sub_location because triggers fail the threshold gate.
+    """
+    sub_n = len({b.sub_location for b in beats if b.sub_location})
+    trig_n = len({b.trigger_address for b in beats if b.trigger_address})
+    if (
+        sub_n >= SUB_LOCATION_THRESHOLD
+        and (trig_n < TRIGGER_ADDRESS_THRESHOLD or sub_n >= trig_n)
+    ):
         return "sub_location"
-    if len(triggers) >= TRIGGER_ADDRESS_THRESHOLD:
+    if trig_n >= TRIGGER_ADDRESS_THRESHOLD:
         return "trigger_address"
+    if sub_n >= SUB_LOCATION_THRESHOLD:
+        return "sub_location"
     return "narrative_function"
 
 

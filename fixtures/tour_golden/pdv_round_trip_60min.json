@@ -1,0 +1,95 @@
+{
+  "_doc": "Golden fixture from Docs/tour-builder/empirical-tours/01-place-des-vosges.md (composed 2026-04-26). Resolved against live Paris Neo4j 2026-04-29.",
+  "_resolution_method": "Each [PW:...] tag in the empirical doc was matched by script_body prefix to an active beat at Place des Vosges.",
+  "input": {
+    "start": [
+      48.8556,
+      2.3656
+    ],
+    "duration_min": 60,
+    "city_slug": "paris",
+    "round_trip": true,
+    "lenses": null,
+    "theme_hint": null,
+    "start_label": "Place des Vosges (centroid)"
+  },
+  "expected_pois": [
+    "Place des Vosges"
+  ],
+  "expected_spine_area": "Le Marais",
+  "expected_beat_ids": [
+    "ebeab682-e591-4ee8-b1a6-e6de953cf52c",
+    "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+    "e4201b27-29f9-42ef-a0ac-13263257fedd",
+    "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+    "6991a47b-9038-4026-bcca-16806a656f55",
+    "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+    "a41b36f0-b3de-4ced-b72f-7dd7e0db30b9",
+    "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+    "3ab94c91-c3c1-4a89-bc8e-5d4d503fb4f3",
+    "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+    "02b07751-b066-4007-a444-ae773e1a2bb5",
+    "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+    "2143d0b0-5d9c-4fc6-8c4e-fbe77a1b5f68",
+    "e605c4b3-0b27-449a-be4f-97232eb3c628",
+    "87e82317-4908-4ad2-80be-30166158a0f1",
+    "724e084d-7d62-4c7d-9a23-587bdca28c13",
+    "09dc9d07-7b34-4116-9f09-fa17de43becf",
+    "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+    "cb6ac729-9426-4056-8e27-d525cf21b70a",
+    "ab3d4484-7369-4a35-882d-6bd5422bea8f",
+    "f9b9e36f-59b1-4a77-900e-f1f7b18a3cc5",
+    "54dd7004-91fe-4b8d-b041-03cc0d8261c3"
+  ],
+  "expected_beat_count": 22,
+  "expected_tag_resolution": {
+    "PW:sit_in_the_garden": "ebeab682-e591-4ee8-b1a6-e6de953cf52c",
+    "PW:1612_inaugural_tournament": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+    "PW:richelieu_ban_six_man_duel": "69374305-e50c-46b9-87d1-2881299a9076",
+    "PW:pavillon_du_roi_no_1": "e4201b27-29f9-42ef-a0ac-13263257fedd",
+    "PW:no_1_bis": "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+    "PW:no_2_coconnas": "6991a47b-9038-4026-bcca-16806a656f55",
+    "PW:no_3_trompe_l_oeil": "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+    "PW:no_5": "a41b36f0-b3de-4ced-b72f-7dd7e0db30b9",
+    "PW:no_6_hugo_residence": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+    "PW:no_6_marion_delorme_sidebar": "49709446-3716-4931-a9ce-f025151872dc",
+    "PW:no_8_gautier": "3ab94c91-c3c1-4a89-bc8e-5d4d503fb4f3",
+    "PW:no_9_chaulnes": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+    "PW:no_9_ambroisie": "e71d72d8-a55b-4633-9fb1-6bf08821e260",
+    "PW:no_13_mirror_salon": "02b07751-b066-4007-a444-ae773e1a2bb5",
+    "PW:no_14_synagogue": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+    "PW:pavillon_de_la_reine": "2143d0b0-5d9c-4fc6-8c4e-fbe77a1b5f68",
+    "PW:no_16": "e605c4b3-0b27-449a-be4f-97232eb3c628",
+    "PW:no_18_bronze_gypsy": "87e82317-4908-4ad2-80be-30166158a0f1",
+    "PW:no_19_ma_bourgogne": "724e084d-7d62-4c7d-9a23-587bdca28c13",
+    "PW:no_20_colombage": "09dc9d07-7b34-4116-9f09-fa17de43becf",
+    "PW:no_21_richelieu_pied_a_terre": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+    "PW:no_23_marie_charlotte": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+    "PW:no_24_boufflers_wife": "ab3d4484-7369-4a35-882d-6bd5422bea8f",
+    "PW:no_25_guirlande_de_julie": "f9b9e36f-59b1-4a77-900e-f1f7b18a3cc5",
+    "PW:no_26_charlotte_vieux_pont": "54dd7004-91fe-4b8d-b041-03cc0d8261c3"
+  },
+  "structurally_unreachable": {
+    "PW:richelieu_ban_six_man_duel": {
+      "beat_id": "69374305-e50c-46b9-87d1-2881299a9076",
+      "reason": "Second anchor essay. trigger_address strategy emits exactly one closing no_addr beat; the longer 1612 essay wins by word_count."
+    },
+    "PW:no_6_marion_delorme_sidebar": {
+      "beat_id": "49709446-3716-4931-a9ce-f025151872dc",
+      "reason": "Sidebar at no. 6. trigger_address strategy emits one beat per address; longer Hugo essay wins."
+    },
+    "PW:no_9_ambroisie": {
+      "beat_id": "e71d72d8-a55b-4633-9fb1-6bf08821e260",
+      "reason": "Secondary at no. 9. One beat per address; longer Chaulnes essay wins."
+    }
+  },
+  "expected_validation": {
+    "untraceable_sentences_count": 0,
+    "forbidden_phrase_hits_count": 0
+  },
+  "notes": [
+    "Round-trip 60min from PdV centroid; spine_area is Le Marais (the surrounding neighborhood Area).",
+    "Strategy at PdV must be trigger_address (23 distinct addresses dominate 6 sub_locations).",
+    "Algorithm naturally pulls neighboring Marais POIs under the spine; their beats are not in expected_beat_ids — overlap is computed as |fixture ∩ generated| / |fixture|, so extras don't penalize."
+  ]
+}
