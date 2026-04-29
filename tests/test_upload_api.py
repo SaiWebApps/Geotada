@@ -7,9 +7,8 @@ Test 14: Beat traversal endpoint GET /graph/poi/{name}/beats.
 from __future__ import annotations
 
 import pytest
-from fastapi.testclient import TestClient
 
-from src.api.app import create_app
+from src.connection import create_driver
 from src.schema.constraints import apply_all
 from src.seed.lenses import seed_lenses
 from tests.conftest import needs_neo4j
@@ -17,9 +16,11 @@ from tests.conftest import needs_neo4j
 
 @pytest.fixture(scope="module")
 def clean_driver():
-    """Create a driver with a clean DB + schema constraints + lenses."""
-    from src.connection import create_driver
+    """Create a driver with a clean DB + schema constraints + lenses.
 
+    Overrides the conftest clean_driver to also seed lens data,
+    which is required by beat traversal tests.
+    """
     d = create_driver()
     with d.session() as s:
         s.run("MATCH (n) DETACH DELETE n")
@@ -27,14 +28,6 @@ def clean_driver():
     seed_lenses(d)
     yield d
     d.close()
-
-
-@pytest.fixture(scope="module")
-def client(clean_driver):
-    """TestClient backed by a clean Neo4j database with lenses seeded."""
-    app = create_app()
-    with TestClient(app) as c:
-        yield c
 
 
 # ── Test 13: MERGE idempotency ──

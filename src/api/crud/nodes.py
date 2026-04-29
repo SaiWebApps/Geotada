@@ -2,30 +2,36 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, TYPE_CHECKING
+
+from src.api.models.nodes import NodeLabel
+from src.api.utils import serialize_neo4j_props
 
 if TYPE_CHECKING:
     from neo4j import Session
 
+_VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
-def _serialize_props(props: dict) -> dict:
-    """Convert Neo4j spatial points and temporal types to JSON-safe values."""
-    serialized = {}
-    for key, val in props.items():
-        if hasattr(val, "latitude"):
-            serialized[key] = {"lat": val.latitude, "lng": val.longitude}
-        elif isinstance(val, (str, int, float, bool)):
-            serialized[key] = val
-        elif isinstance(val, list):
-            serialized[key] = val
-        else:
-            serialized[key] = str(val)
-    return serialized
+
+def _validate_label(label: str) -> None:
+    """Validate that label is a known NodeLabel. Raises ValueError if not."""
+    NodeLabel(label)
+
+
+def _validate_property_keys(properties: dict) -> None:
+    """Validate that all property keys are safe identifiers."""
+    for key in properties:
+        if not _VALID_PROPERTY_NAME.match(key):
+            raise ValueError(
+                f"Invalid property name: {key!r}. "
+                "Property names must match ^[a-zA-Z_][a-zA-Z0-9_]*$"
+            )
 
 
 def _record_to_node(record) -> dict[str, Any]:
     """Convert a Neo4j record to a node dict."""
-    props = _serialize_props(dict(record["props"]))
+    props = serialize_neo4j_props(dict(record["props"]))
     return {
         "id": record["id"],
         "labels": record["labels"],
@@ -37,6 +43,7 @@ def list_nodes(
     session: Session, label: str, skip: int, limit: int
 ) -> tuple[list[dict], int]:
     """Return paginated nodes of a label and total count."""
+    _validate_label(label)
     count_result = session.run(
         f"MATCH (n:{label}) RETURN count(n) AS total"
     ).single()
@@ -55,6 +62,7 @@ def list_nodes(
 
 def get_node(session: Session, label: str, node_id: str) -> dict | None:
     """Return a single node by label and id property, or None."""
+    _validate_label(label)
     result = session.run(
         f"MATCH (n:{label} {{id: $node_id}}) "
         f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props",
@@ -72,6 +80,8 @@ def create_node(
 
     For POI and NarrativeBeat, uses MERGE for idempotent upserts.
     """
+    _validate_label(label)
+    _validate_property_keys(properties)
     params = dict(properties)
 
     if label == "POI" and "latitude" in params and "longitude" in params:
@@ -142,8 +152,12 @@ def update_node(
     session: Session, label: str, node_id: str, properties: dict[str, Any]
 ) -> dict | None:
     """Update node properties. Returns updated node or None if not found."""
+    _validate_label(label)
     if not properties:
         return get_node(session, label, node_id)
+
+    _validate_property_keys(properties)
+    properties = dict(properties)  # Don't mutate caller's dict
 
     params: dict[str, Any] = {"node_id": node_id}
     set_parts: list[str] = []
@@ -176,6 +190,7 @@ def update_node(
 
 def delete_node(session: Session, label: str, node_id: str) -> bool:
     """DETACH DELETE a node. Returns True if found and deleted."""
+    _validate_label(label)
     result = session.run(
         f"MATCH (n:{label} {{id: $node_id}}) DETACH DELETE n "
         f"RETURN count(*) AS deleted",

@@ -314,3 +314,108 @@ class TestScriptChangeDetection:
 
         assert status.has_audio is False
         assert status.is_stale is False
+
+
+# ── Error wrapping ──
+
+
+class TestPipelineErrorWrapping:
+    def test_tts_error_wrapped_in_pipeline_error(self):
+        """TTSError during TTS generation should be wrapped in PipelineError."""
+        from src.audio.provider import TTSError
+
+        session = _mock_session_with_poi("Test POI")
+        mock_provider = MagicMock()
+        mock_provider.generate.side_effect = TTSError("TTS service down")
+
+        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
+             patch("src.audio.pipeline.get_provider", return_value=mock_provider):
+            with pytest.raises(PipelineError, match="TTS failed"):
+                generate_beat_audio(session, "beat-001")
+
+    def test_storage_error_wrapped_in_pipeline_error(self):
+        """StorageError during upload should be wrapped in PipelineError."""
+        from src.audio.storage import StorageError
+
+        session = _mock_session_with_poi("Test POI")
+        mock_storage = MagicMock()
+        mock_storage.upload.side_effect = StorageError("disk full")
+
+        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
+             patch("src.audio.pipeline.get_storage", return_value=mock_storage):
+            with pytest.raises(PipelineError, match="Storage failed"):
+                generate_beat_audio(session, "beat-001", provider_name="mock")
+
+
+# ── Batch mixed results ──
+
+
+class TestBatchMixedResults:
+    def test_batch_mixed_success_failure(self):
+        """Batch with one succeeding beat and one failing beat."""
+        class FakeRecord:
+            def __init__(self, bid, url, hash_val=None, script=None):
+                self._data = {
+                    "id": bid, "audio_url": url,
+                    "hash": hash_val, "script_body": script,
+                }
+            def __getitem__(self, key):
+                return self._data[key]
+
+        session = MagicMock()
+        call_count = [0]
+
+        def smart_run(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return [
+                    FakeRecord("b1", ""),   # will succeed
+                    FakeRecord("b2", ""),   # will fail
+                ]
+            result = MagicMock()
+            poi = MagicMock()
+            poi.__getitem__ = lambda self, k: "Test POI"
+            result.single.return_value = poi
+            return result
+
+        session.run = smart_run
+
+        # b1 exists with a script, b2 has no script_body (triggers PipelineError)
+        with patch("src.audio.pipeline.get_node", side_effect=[
+            _mock_beat(beat_id="b1", audio_url=""),
+            _mock_beat(beat_id="b2", audio_url="", script_body=""),
+        ]), patch("src.audio.pipeline.update_node"):
+            summary = generate_batch(session, provider_name="mock")
+
+        assert summary.succeeded == 1
+        assert summary.failed == 1
+        assert summary.total_found == 2
+        # Results should contain one GenerationResult and one PipelineError
+        successes = [r for r in summary.results if isinstance(r, GenerationResult)]
+        failures = [r for r in summary.results if isinstance(r, PipelineError)]
+        assert len(successes) == 1
+        assert len(failures) == 1
+
+
+# ── Script hash determinism ──
+
+
+class TestScriptHashDeterminism:
+    def test_same_input_same_hash(self):
+        """_script_hash should be deterministic — same text always gives the same hash."""
+        text = "The Eiffel Tower was completed in 1889."
+        h1 = _script_hash(text)
+        h2 = _script_hash(text)
+        assert h1 == h2
+
+    def test_different_input_different_hash(self):
+        """Different texts should produce different hashes."""
+        h1 = _script_hash("Hello world")
+        h2 = _script_hash("Goodbye world")
+        assert h1 != h2
+
+    def test_hash_is_hex_string(self):
+        """Script hash should be a valid hex SHA-256 string."""
+        h = _script_hash("test")
+        assert len(h) == 64  # SHA-256 = 64 hex chars
+        assert all(c in "0123456789abcdef" for c in h)

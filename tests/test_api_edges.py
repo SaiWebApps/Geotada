@@ -7,32 +7,8 @@ Requires a running Neo4j instance.
 from __future__ import annotations
 
 import pytest
-from fastapi.testclient import TestClient
 
-from src.api.app import create_app
-from src.schema.constraints import apply_all
 from tests.conftest import needs_neo4j
-
-
-@pytest.fixture(scope="module")
-def clean_driver():
-    """Create a driver with a clean DB + schema constraints."""
-    from src.connection import create_driver
-
-    d = create_driver()
-    with d.session() as s:
-        s.run("MATCH (n) DETACH DELETE n")
-    apply_all(d)
-    yield d
-    d.close()
-
-
-@pytest.fixture(scope="module")
-def client(clean_driver):
-    """TestClient backed by a clean Neo4j database (no seed data)."""
-    app = create_app()
-    with TestClient(app) as c:
-        yield c
 
 
 def _create_user(client, email: str) -> dict:
@@ -342,3 +318,49 @@ class TestFullEdgeLifecycle:
 
         # Read again — confirm gone
         assert client.get(f"/api/v1/edges/HAS_PROFILE/{edge_id}").status_code == 404
+
+
+# ── Parent-lens tagging guard ──
+
+
+def _create_beat(client, script_body: str) -> dict:
+    """Helper: create a NarrativeBeat and return the response JSON."""
+    resp = client.post("/api/v1/nodes/NarrativeBeat", json={"script_body": script_body})
+    assert resp.status_code == 201
+    return resp.json()
+
+
+@needs_neo4j
+class TestParentLensTaggingGuard:
+    def test_tagged_with_parent_lens_returns_422(self, client):
+        """TAGGED_WITH edge from NarrativeBeat to a parent-only Lens should be rejected."""
+        # Create a Lens and mark it as a parent
+        lens = _create_lens(client, "parent_guard_test", "Parent Guard Test")
+        # Set is_parent=True via update
+        resp = client.put(
+            f"/api/v1/nodes/Lens/{lens['id']}",
+            json={"properties": {"is_parent": True}},
+        )
+        assert resp.status_code == 200
+
+        # Create a NarrativeBeat
+        beat = _create_beat(client, "Test beat for parent lens guard.")
+
+        # Attempt to tag the beat with the parent lens
+        resp = client.post("/api/v1/edges/TAGGED_WITH", json={
+            "source": {"label": "NarrativeBeat", "id": beat["id"]},
+            "target": {"label": "Lens", "id": lens["id"]},
+        })
+        assert resp.status_code == 422
+        assert "parent-only" in resp.json()["detail"].lower() or "parent" in resp.json()["detail"].lower()
+
+    def test_tagged_with_non_parent_lens_succeeds(self, client):
+        """TAGGED_WITH edge to a non-parent Lens should succeed normally."""
+        lens = _create_lens(client, "child_guard_test", "Child Guard Test")
+        beat = _create_beat(client, "Test beat for child lens.")
+
+        resp = client.post("/api/v1/edges/TAGGED_WITH", json={
+            "source": {"label": "NarrativeBeat", "id": beat["id"]},
+            "target": {"label": "Lens", "id": lens["id"]},
+        })
+        assert resp.status_code == 201

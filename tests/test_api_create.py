@@ -7,32 +7,8 @@ Requires a running Neo4j instance.
 from __future__ import annotations
 
 import pytest
-from fastapi.testclient import TestClient
 
-from src.api.app import create_app
-from src.schema.constraints import apply_all
 from tests.conftest import needs_neo4j
-
-
-@pytest.fixture(scope="module")
-def clean_driver():
-    """Create a driver with a clean DB + schema constraints."""
-    from src.connection import create_driver
-
-    d = create_driver()
-    with d.session() as s:
-        s.run("MATCH (n) DETACH DELETE n")
-    apply_all(d)
-    yield d
-    d.close()
-
-
-@pytest.fixture(scope="module")
-def client(clean_driver):
-    """TestClient backed by a clean Neo4j database (no seed data)."""
-    app = create_app()
-    with TestClient(app) as c:
-        yield c
 
 
 # ── Create User ──

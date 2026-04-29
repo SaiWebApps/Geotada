@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 
 from src.schema.definitions import TAGGABLE_LENSES
 
+from src.connection import get_database
+
 if TYPE_CHECKING:
     from neo4j import Driver
 
@@ -61,7 +63,7 @@ def _link_lens(tx, profile_name: str, lens_name: str) -> None:
 
 def seed_users(driver: Driver) -> dict[str, int]:
     """Seed test user, profiles, and lens preferences. Returns counts."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         session.execute_write(_create_user, TEST_USER_EMAIL)
 
         for profile in PROFILES:

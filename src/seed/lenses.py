@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 
 from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES
 
+from src.connection import get_database
+
 if TYPE_CHECKING:
     from neo4j import Driver
 
@@ -46,7 +48,7 @@ def _create_child_lens(tx, child: dict) -> None:
 
 def seed_lenses(driver: Driver) -> int:
     """Seed all MVP lenses + DAG children. Returns total lens count."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         for lens in MVP_LENSES:
             session.execute_write(_create_lens, lens)
         for child in DAG_CHILD_LENSES:

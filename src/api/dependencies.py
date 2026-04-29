@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import TYPE_CHECKING
 
-from src.connection import create_driver
+from src.connection import create_driver, get_database
 
 if TYPE_CHECKING:
     from neo4j import Driver, Session
@@ -30,7 +30,7 @@ def close_driver() -> None:
 def get_session() -> Generator[Session]:
     """Yield a Neo4j session for the duration of one request."""
     assert _driver is not None, "Driver not initialized — is the app running?"
-    session = _driver.session()
+    session = _driver.session(database=get_database())
     try:
         yield session
     finally:

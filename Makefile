@@ -1,4 +1,4 @@
-.PHONY: help venv env install lint format test test-unit test-integration test-functional test-api setup setup-audio verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
+.PHONY: help venv env use-local use-cloud which-db install lint format test test-unit test-integration test-functional test-api setup setup-audio verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
 
 PYTHON := .venv/bin/python
 PIP    := .venv/bin/pip
@@ -21,6 +21,15 @@ install: venv env ## Install Python dependencies
 
 env: ## Create .env from template (won't overwrite)
 	@test -f .env || (cp .env.example .env && echo "✓ .env created from template.") || echo "• .env already exists."
+
+use-local: ## Switch to local Neo4j (Docker)
+	@cp .env.local .env && echo "✓ Switched to LOCAL Neo4j (bolt://localhost:7687)"
+
+use-cloud: ## Switch to Neo4j Aura (cloud)
+	@cp .env.cloud .env && echo "✓ Switched to CLOUD Neo4j (Aura)"
+
+which-db: ## Show which Neo4j instance is active
+	@grep '^NEO4J_URI=' .env | sed 's/NEO4J_URI=/  /'
 
 venv: ## Create Python virtual environment
 	@if [ ! -d .venv ]; then python3 -m venv .venv && echo "✓ Virtual environment created."; fi
@@ -70,9 +79,7 @@ db-status: ## Check Neo4j container status
 	@docker compose ps
 
 db-reset: ## Stop dev Neo4j and wipe all data (DESTRUCTIVE)
-	docker compose stop neo4j
-	docker compose rm -f neo4j
-	docker volume rm -f geotada_neo4j_data
+	docker compose down -v --remove-orphans
 	@echo "✓ Dev Neo4j stopped and data wiped."
 
 db-test-up: ## Start test Neo4j in Docker (disposable data)
@@ -88,7 +95,7 @@ db-test-down: ## Stop test Neo4j (data preserved)
 db-test-reset: ## Stop test Neo4j and wipe test data
 	docker compose stop neo4j-test
 	docker compose rm -f neo4j-test
-	docker volume rm -f geotada_neo4j_test_data
+	docker volume rm -f ondoway_neo4j_test_data
 	@echo "✓ Test Neo4j stopped and data wiped."
 
 # ──────────────────────────────────────────────────────────
@@ -108,13 +115,16 @@ dashboard: ## Start the web dashboard (port 8080)
 	$(PYTHON) -m src.server
 
 api: ## Start the FastAPI graph API (port 8000)
-	$(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+	$(PYTHON) -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 api-test: ## Start API against test database (port 8000)
-	set -a && . .env.test && set +a && $(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+	set -a && . .env.test && set +a && $(PYTHON) -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 	$(PYTHON) scripts/check_audio_setup.py
+
+upload-paris: ## Upload full Paris dataset to active Neo4j instance
+	$(PYTHON) -m scripts.upload_paris
 
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS

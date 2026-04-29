@@ -6,6 +6,7 @@ from environment variables and fails loudly with human-readable errors.
 
 from __future__ import annotations
 
+import functools
 import sys
 from contextlib import contextmanager
 from typing import TYPE_CHECKING
@@ -19,10 +20,10 @@ if TYPE_CHECKING:
 
     from neo4j import Driver
 
-load_dotenv()
+load_dotenv(override=True)
 
 
-class ConnectionError(RuntimeError):
+class Neo4jConnectionError(RuntimeError):
     """Raised when Neo4j is unreachable or credentials are wrong."""
 
 
@@ -40,28 +41,35 @@ def _read_env() -> tuple[str, str, str]:
         if not v
     ]
     if missing:
-        raise ConnectionError(
+        raise Neo4jConnectionError(
             f"Missing environment variables: {', '.join(missing)}. "
             "Copy .env.example to .env and fill in your credentials."
         )
     return uri, user, password
 
 
+def get_database() -> str | None:
+    """Return the configured database name, or None for server default."""
+    import os
+
+    return os.getenv("NEO4J_DATABASE") or None
+
+
 def create_driver() -> Driver:
-    """Create and verify a Neo4j driver. Raises ConnectionError on failure."""
+    """Create and verify a Neo4j driver. Raises Neo4jConnectionError on failure."""
     uri, user, password = _read_env()
     try:
         driver = GraphDatabase.driver(uri, auth=(user, password))
         driver.verify_connectivity()
         return driver
     except ServiceUnavailable as exc:
-        raise ConnectionError(
+        raise Neo4jConnectionError(
             f"Cannot reach Neo4j at {uri}. Is the server running?\n"
             "  Start it with: make db-up\n"
             f"  Original error: {exc}"
         ) from exc
     except AuthError as exc:
-        raise ConnectionError(
+        raise Neo4jConnectionError(
             f"Authentication failed for user '{user}' at {uri}.\n"
             "  Check NEO4J_USER and NEO4J_PASSWORD in your .env file.\n"
             f"  Original error: {exc}"
@@ -79,12 +87,13 @@ def get_driver() -> Generator[Driver]:
 
 
 def abort_on_connection_error(func):
-    """Decorator for CLI entry points — converts ConnectionError to sys.exit(1)."""
+    """Decorator for CLI entry points — converts Neo4jConnectionError to sys.exit(1)."""
 
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except ConnectionError as exc:
+        except Neo4jConnectionError as exc:
             print(f"\n✗ CONNECTION FAILED\n  {exc}", file=sys.stderr)
             sys.exit(1)
 

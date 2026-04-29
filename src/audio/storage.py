@@ -62,7 +62,17 @@ class LocalStorageProvider:
         return self._base
 
     def upload(self, data: bytes, key: str) -> str:
+        # Reject null bytes (could bypass path checks on some OSes)
+        if "\x00" in key:
+            raise StorageError("Invalid storage key: null bytes not allowed")
+
         filepath = self._base / key
+        # Prevent path traversal — resolved path must stay under base
+        resolved_base = self._base.resolve()
+        resolved_path = filepath.resolve()
+        if not str(resolved_path).startswith(str(resolved_base) + os.sep) and resolved_path != resolved_base:
+            raise StorageError("Invalid storage key: path traversal detected")
+
         filepath.parent.mkdir(parents=True, exist_ok=True)
         filepath.write_bytes(data)
         return f"/api/v1/audio/files/{key}"

@@ -21,17 +21,20 @@ _test_env = Path(__file__).resolve().parent.parent / ".env.test"
 if _test_env.exists():
     load_dotenv(dotenv_path=_test_env, override=True)
 else:
-    import warnings
+    import pytest as _pytest
 
-    warnings.warn(
-        f"Test env file not found: {_test_env}. "
-        "Tests will use production .env! Copy .env.test.example to .env.test.",
-        stacklevel=1,
+    _pytest.exit(
+        f"FATAL: {_test_env} not found. "
+        "Tests would fall back to production .env and could destroy data. "
+        "Copy .env.test.example to .env.test first."
     )
 
 import pytest
+from fastapi.testclient import TestClient
 
-from src.connection import ConnectionError, create_driver
+from src.api.app import create_app
+from src.connection import Neo4jConnectionError, create_driver
+from src.schema.constraints import apply_all
 
 
 def _neo4j_available() -> bool:
@@ -39,7 +42,7 @@ def _neo4j_available() -> bool:
         driver = create_driver()
         driver.close()
         return True
-    except (ConnectionError, Exception):
+    except (Neo4jConnectionError, Exception):
         return False
 
 
@@ -62,3 +65,22 @@ def driver():
 def _wipe(driver) -> None:
     with driver.session() as session:
         session.run("MATCH (n) DETACH DELETE n")
+
+
+@pytest.fixture(scope="module")
+def clean_driver():
+    """Create a driver with a clean DB + schema constraints."""
+    d = create_driver()
+    with d.session() as s:
+        s.run("MATCH (n) DETACH DELETE n")
+    apply_all(d)
+    yield d
+    d.close()
+
+
+@pytest.fixture(scope="module")
+def client(clean_driver):
+    """TestClient backed by a clean Neo4j database (no seed data)."""
+    app = create_app()
+    with TestClient(app) as c:
+        yield c

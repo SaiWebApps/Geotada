@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import os
 import tempfile
+import time
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -40,6 +41,25 @@ router = APIRouter(tags=["audio"])
 # Directory for storing comparison audio files (survives across requests)
 _COMPARE_DIR = Path(tempfile.gettempdir()) / "travlr-audio-compare"
 _COMPARE_DIR.mkdir(exist_ok=True)
+
+# Maximum age (in seconds) for comparison files before cleanup
+_COMPARE_MAX_AGE_SEC = 3600  # 1 hour
+
+
+def _cleanup_old_comparisons() -> None:
+    """Remove comparison files older than _COMPARE_MAX_AGE_SEC."""
+    try:
+        now = time.time()
+        for entry in _COMPARE_DIR.iterdir():
+            if entry.is_file():
+                try:
+                    age = now - os.path.getmtime(entry)
+                    if age > _COMPARE_MAX_AGE_SEC:
+                        entry.unlink()
+                except OSError:
+                    pass  # File may have been removed concurrently
+    except OSError:
+        pass  # Directory may not exist yet
 
 
 @router.get("/audio/providers", response_model=ProviderListResponse)
@@ -89,6 +109,9 @@ def compare_providers(body: CompareRequest):
     Returns metadata and download paths for each provider's output.
     Use GET /audio/compare/download/{filename} to fetch individual files.
     """
+    # Clean up stale comparison files (older than 1 hour)
+    _cleanup_old_comparisons()
+
     # Create a hash for this comparison batch
     text_hash = hashlib.sha256(body.text.encode()).hexdigest()[:12]
     results: list[CompareResultItem] = []

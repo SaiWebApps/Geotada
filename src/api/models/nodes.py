@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 
 class NodeLabel(str, Enum):
@@ -41,42 +41,42 @@ class NodeListResponse(BaseModel):
 
 
 class UserCreate(BaseModel):
-    email: str
+    email: str = Field(max_length=320)
 
 
 class ProfileCreate(BaseModel):
-    display_name: str
+    display_name: str = Field(max_length=500)
 
 
 class LensCreate(BaseModel):
-    name: str
-    display_label: str
+    name: str = Field(max_length=500)
+    display_label: str = Field(max_length=500)
 
 
 class TripCreate(BaseModel):
-    name: str
-    start_date: str
-    end_date: str
-    cover_image_url: str = ""
-    status: str = "planning"
+    name: str = Field(max_length=500)
+    start_date: str = Field(max_length=50)
+    end_date: str = Field(max_length=50)
+    cover_image_url: str = Field(default="", max_length=2000)
+    status: str = Field(default="planning", max_length=50)
 
 
 class ItineraryItemCreate(BaseModel):
     sort_order: int
-    scheduled_date: str
-    start_time: str
+    scheduled_date: str = Field(max_length=50)
+    start_time: str = Field(max_length=50)
     duration_min: int
 
 
 class POICreate(BaseModel):
-    name: str
-    short_description: str = ""
+    name: str = Field(max_length=500)
+    short_description: str = Field(default="", max_length=2000)
     latitude: float
     longitude: float
     importance_tier: int = 1
     trigger_radius: int = 10
     typical_duration_min: int = 30
-    kid_friendly: str = "yes"
+    kid_friendly: str = Field(default="yes", max_length=50)
     name_variations: list[str] = []
     force_create: bool = False
 
@@ -96,12 +96,12 @@ class POICreate(BaseModel):
 
 
 class NarrativeBeatCreate(BaseModel):
-    script_body: str
+    script_body: str = Field(max_length=10000)
     version: int = 1
-    active_status: str = "active"
-    audio_url: str = ""
+    active_status: str = Field(default="active", max_length=50)
+    audio_url: str = Field(default="", max_length=2000)
     duration_sec: int = 60
-    kid_friendly: str = "yes"
+    kid_friendly: str = Field(default="yes", max_length=50)
 
 
 CREATE_MODELS: dict[NodeLabel, type[BaseModel]] = {

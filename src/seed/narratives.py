@@ -10,6 +10,8 @@ from typing import TYPE_CHECKING
 
 from src.schema.definitions import TAGGABLE_LENSES
 
+from src.connection import get_database
+
 if TYPE_CHECKING:
     from neo4j import Driver
 
@@ -104,7 +106,7 @@ def _create_beat(tx, params: dict) -> None:
 def seed_beats(driver: Driver) -> int:
     """Seed all narrative beats. Returns count created."""
     poi_counters: dict[str, int] = {}
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         for beat in BEATS:
             poi = beat["poi_name"]
             sort_order = poi_counters.get(poi, 0)

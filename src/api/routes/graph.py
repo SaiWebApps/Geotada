@@ -7,19 +7,9 @@ from neo4j import Session
 from pydantic import BaseModel
 
 from src.api.dependencies import get_session
+from src.api.utils import serialize_neo4j_props
 
 router = APIRouter(tags=["graph"])
-
-
-def _serialize_props(props: dict) -> dict:
-    """Convert Neo4j spatial points and temporal types to JSON-safe values."""
-    serialized = {}
-    for key, val in props.items():
-        if hasattr(val, "latitude"):
-            serialized[key] = {"lat": val.latitude, "lng": val.longitude}
-        else:
-            serialized[key] = str(val) if not isinstance(val, (str, int, float, bool, list)) else val
-    return serialized
 
 
 @router.get("/graph")
@@ -30,7 +20,7 @@ def get_full_graph(session: Session = Depends(get_session)):
     )
     nodes = []
     for record in nodes_result:
-        props = _serialize_props(dict(record["props"]))
+        props = serialize_neo4j_props(dict(record["props"]))
         primary_label = record["labels"][0] if record["labels"] else "Unknown"
         display = (
             props.get("display_name")
@@ -60,7 +50,7 @@ def get_full_graph(session: Session = Depends(get_session)):
             "from": r["source_id"],
             "to": r["target_id"],
             "label": r["type"],
-            "properties": _serialize_props(dict(r["props"])) if r["props"] else {},
+            "properties": serialize_neo4j_props(dict(r["props"])) if r["props"] else {},
         }
         for r in rels_result
     ]

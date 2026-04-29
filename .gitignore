@@ -255,5 +255,7 @@ temp/
 !.env.example
 .env.test
 !.env.test.example
+.env.local
+.env.cloud
 # Generated audio files (local TTS output)
 audio_store/
