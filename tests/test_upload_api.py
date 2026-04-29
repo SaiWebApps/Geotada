@@ -40,8 +40,8 @@ class TestMergeIdempotency:
     def test_poi_merge_returns_same_id(self, client):
         payload = {
             "name": "Merge Test POI",
-            "latitude": 42.3601,
-            "longitude": -71.0589,
+            "latitude": 48.8530,
+            "longitude": 2.3499,
             "short_description": "Test",
             "importance_tier": 1,
             "trigger_radius": 10,
@@ -72,8 +72,8 @@ class TestMergeIdempotency:
             "/api/v1/nodes/POI",
             json={
                 "name": "Edge Merge POI",
-                "latitude": 42.36,
-                "longitude": -71.06,
+                "latitude": 48.85,
+                "longitude": 2.35,
             },
         )
         poi_id = poi_resp.json()["id"]
@@ -114,8 +114,8 @@ class TestBeatTraversal:
             "/api/v1/nodes/POI",
             json={
                 "name": "Traversal Test POI",
-                "latitude": 42.36,
-                "longitude": -71.06,
+                "latitude": 48.85,
+                "longitude": 2.35,
             },
         )
 
@@ -209,8 +209,8 @@ class TestForceCreate:
         """Two POIs with same name but force_create=true → two distinct nodes."""
         base_payload = {
             "name": "Force Create Test POI",
-            "latitude": 42.3601,
-            "longitude": -71.0589,
+            "latitude": 48.8530,
+            "longitude": 2.3499,
             "short_description": "Original",
             "importance_tier": 1,
             "trigger_radius": 10,
@@ -223,8 +223,8 @@ class TestForceCreate:
 
         force_payload = {
             **base_payload,
-            "latitude": 42.3605,
-            "longitude": -71.0592,
+            "latitude": 48.8534,
+            "longitude": 2.3502,
             "force_create": True,
         }
         resp2 = client.post("/api/v1/nodes/POI", json=force_payload)
@@ -237,8 +237,8 @@ class TestForceCreate:
         """force_create=false (default) still MERGEs on name."""
         payload = {
             "name": "Default Merge POI",
-            "latitude": 42.36,
-            "longitude": -71.06,
+            "latitude": 48.85,
+            "longitude": 2.35,
         }
         resp1 = client.post("/api/v1/nodes/POI", json=payload)
         id1 = resp1.json()["id"]
@@ -263,7 +263,7 @@ class TestCoordinateValidation:
             json={
                 "name": "Bad Lat POI",
                 "latitude": 999,
-                "longitude": -71.06,
+                "longitude": 2.35,
             },
         )
         assert resp.status_code == 422
@@ -273,7 +273,7 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "Bad Lng POI",
-                "latitude": 42.36,
+                "latitude": 48.85,
                 "longitude": -999,
             },
         )
@@ -284,8 +284,8 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "Valid Coords POI",
-                "latitude": 42.3601,
-                "longitude": -71.0589,
+                "latitude": 48.8530,
+                "longitude": 2.3499,
             },
         )
         assert resp.status_code == 201
@@ -296,7 +296,7 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "No Lat POI",
-                "longitude": -71.06,
+                "longitude": 2.35,
             },
         )
         assert resp.status_code == 422
@@ -312,8 +312,8 @@ class TestNameVariations:
     def test_poi_with_name_variations(self, client):
         payload = {
             "name": "Name Var Test POI",
-            "latitude": 42.361,
-            "longitude": -71.059,
+            "latitude": 48.861,
+            "longitude": 2.341,
             "name_variations": ["Alt Name 1", "Alt Name 2"],
         }
         resp = client.post("/api/v1/nodes/POI", json=payload)
@@ -329,8 +329,8 @@ class TestNameVariations:
     def test_poi_without_name_variations(self, client):
         payload = {
             "name": "No Var Test POI",
-            "latitude": 42.362,
-            "longitude": -71.058,
+            "latitude": 48.862,
+            "longitude": 2.342,
         }
         resp = client.post("/api/v1/nodes/POI", json=payload)
         assert resp.status_code == 201
@@ -339,8 +339,8 @@ class TestNameVariations:
     def test_poi_with_invalid_name_variations(self, client):
         payload = {
             "name": "Invalid Var Test POI",
-            "latitude": 42.363,
-            "longitude": -71.057,
+            "latitude": 48.863,
+            "longitude": 2.343,
             "name_variations": [123, "valid"],
         }
         resp = client.post("/api/v1/nodes/POI", json=payload)
@@ -360,8 +360,8 @@ class TestBeatTraversalDeprecated:
             "/api/v1/nodes/POI",
             json={
                 "name": "Deprecated Test POI",
-                "latitude": 42.37,
-                "longitude": -71.07,
+                "latitude": 48.87,
+                "longitude": 2.37,
             },
         )
 

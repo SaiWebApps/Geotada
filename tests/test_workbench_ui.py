@@ -89,42 +89,42 @@ REPORT_DIR = Path(__file__).parent / "reports"
 SCREENSHOT_DIR = REPORT_DIR / "screenshots"
 
 # Seed data constants
-SEED_POI_NAME = "UI Test Seed \u2014 Old North Church"
+SEED_POI_NAME = "UI Test Seed \u2014 Sacr\u00e9-C\u0153ur Basilica"
 SEED_BEATS = [
     {
         "lens_slug": "hidden_history",
         "gravity": 4,
         "script_body": (
-            "The Old North Church steeple held two lanterns on that fateful "
-            "April night in 1775. Robert Newman climbed the dark narrow stairs "
-            "while Paul Revere waited across the harbor. The signal one if by "
-            "land two if by sea changed the course of American history. Those "
-            "lanterns became the most famous signal lights in the revolution "
-            "sparking the midnight ride that warned every Middlesex village "
-            "and farm."
+            "The Sacr\u00e9-C\u0153ur Basilica dome held a beacon of white stone on that fateful "
+            "autumn day in 1914. Workers climbed the dark narrow stairs "
+            "while Parisians gathered on the hill below. The basilica one if by "
+            "land two if by river changed the spirit of Montmartre forever. Those "
+            "bells became the most famous chimes in the arrondissement "
+            "calling every neighborhood along the Seine and "
+            "its banks."
         ),
     },
     {
         "lens_slug": "revolutionary_moments",
         "gravity": 3,
         "script_body": (
-            "Paul Revere galloped through the Massachusetts countryside warning "
-            "colonial militia that British regulars were marching toward Lexington "
-            "and Concord. His midnight ride covered roughly twelve miles of dark "
-            "roads and sleeping villages. At every farmhouse he pounded on doors "
-            "shouting the regulars are coming. Samuel Prescott and William Dawes "
-            "joined the ride but only Prescott made it all the way to Concord."
+            "Camille Desmoulins rallied through the Paris boulevards warning "
+            "citizens that royal troops were massing toward the Bastille "
+            "and the Tuileries. His impassioned call covered roughly twelve blocks of narrow "
+            "streets and crowded quarters. At every caf\u00e9 he pounded on tables "
+            "shouting aux armes citoyens. Danton and Marat "
+            "joined the uprising but only Danton made it all the way to the Convention."
         ),
     },
     {
         "lens_slug": "dark_history",
         "gravity": 2,
         "script_body": (
-            "British soldiers occupied Boston for years before the Revolution "
-            "turning churches into stables and homes into barracks. The redcoats "
-            "patrolled cobblestone streets enforcing harsh laws on colonial citizens. "
-            "Tensions boiled over at the Boston Massacre when soldiers fired into "
-            "a crowd killing five men."
+            "Prussian soldiers besieged Paris for months during the Franco-Prussian War "
+            "turning parks into camps and homes into barracks. The occupiers "
+            "patrolled cobblestone streets enforcing harsh laws on Parisian citizens. "
+            "Tensions boiled over at the Commune uprising when soldiers fired into "
+            "a crowd killing scores of communards."
         ),
     },
 ]
@@ -386,8 +386,8 @@ def seed_data():
         "/nodes/POI",
         {
             "name": SEED_POI_NAME,
-            "latitude": 42.3663,
-            "longitude": -71.0544,
+            "latitude": 48.8867,
+            "longitude": 2.3431,
             "short_description": "Seed POI for UI conflict detection tests",
             "importance_tier": 1,
             "trigger_radius": 10,
@@ -520,8 +520,8 @@ class TestWorkbenchLoadFlow:
             "ac1-city-overlay-missing",
         )
 
-        # Type "Boston" and submit
-        page.locator(CITY_INPUT).fill("Boston")
+        # Type "Paris" and submit
+        page.locator(CITY_INPUT).fill("Paris")
         page.locator(CITY_SUBMIT).click()
 
         # Wait for overlay to close (10s timeout for Nominatim — Risk R2)
@@ -534,11 +534,11 @@ class TestWorkbenchLoadFlow:
                 reporter,
                 False,
                 "Critical",
-                "City overlay did not close after submitting 'Boston'",
+                "City overlay did not close after submitting 'Paris'",
                 "City Prompt",
                 [
                     "Navigate to workbench URL",
-                    "Type 'Boston' into #cityInput",
+                    "Type 'Paris' into #cityInput",
                     "Click #citySubmitBtn",
                 ],
                 "Overlay closes within 10s",
@@ -552,12 +552,12 @@ class TestWorkbenchLoadFlow:
             label_text = page.locator(CITY_LABEL).text_content() or ""
             _safe_assert(
                 reporter,
-                "Boston" in label_text,
+                "Paris" in label_text,
                 "Major",
-                "City label does not contain 'Boston'",
+                "City label does not contain 'Paris'",
                 "City Prompt",
-                ["Submit 'Boston' city"],
-                "'Boston' appears in #cityLabel",
+                ["Submit 'Paris' city"],
+                "'Paris' appears in #cityLabel",
                 f"Label text: '{label_text}'",
                 page,
                 "ac1-city-label",
@@ -634,7 +634,7 @@ class TestWorkbenchLoadFlow:
             "Duplicate resolver overlay did not appear",
             "Duplicate Resolver",
             [
-                "Load fixture with entries #6/#7 sharing name 'UI Test — Duplicate Harbor Walk'",
+                "Load fixture with entries #6/#7 sharing name 'UI Test — Duplicate Seine Promenade'",
             ],
             "#dupOverlay becomes visible",
             f"Overlay visible: {dup_visible}",
@@ -653,7 +653,7 @@ class TestWorkbenchLoadFlow:
                 # Rename the second entry
                 second_input = dup_inputs.nth(1)
                 second_input.clear()
-                second_input.fill("UI Test \u2014 Duplicate Harbor Walk (2)")
+                second_input.fill("UI Test \u2014 Duplicate Seine Promenade (2)")
 
             # Click resolve
             page.locator(DUP_RESOLVE_BTN).click()
@@ -990,12 +990,12 @@ class TestDetailViewAndEditing:
             )
             return
 
-        # Click first valid POI (entry #1 — "Boston Harbor Lighthouse")
+        # Click first valid POI (entry #1 — "Seine River Lighthouse")
         first_row = None
         second_row = None
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Harbor Lighthouse" in row_text and first_row is None:
+            if "Seine Lighthouse" in row_text and first_row is None:
                 first_row = i
             elif first_row is not None and second_row is None:
                 second_row = i
@@ -1197,11 +1197,11 @@ class TestDetailViewAndEditing:
         page, _seed_data, reporter = browser_page
         _load_fixture()
 
-        # Find multi-lens POI (entry #8 — Quincy Market, 4 beats)
+        # Find multi-lens POI (entry #8 — Marché des Enfants Rouges, 4 beats)
         rows = page.locator(WORKLIST_ROW)
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Quincy Market" in row_text:
+            if "Marché des Enfants" in row_text:
                 rows.nth(i).click()
                 page.wait_for_timeout(500)
 
@@ -1215,7 +1215,7 @@ class TestDetailViewAndEditing:
                     f"Multi-lens POI shows {beat_count} beat cards instead of 4",
                     "Beat Rendering",
                     [
-                        "Click Quincy Market POI (entry #8, 4 beats)",
+                        "Click Marché des Enfants Rouges POI (entry #8, 4 beats)",
                         "Count .beat-card elements",
                     ],
                     "4 beat cards rendered",
@@ -1296,12 +1296,12 @@ class TestDetailViewAndEditing:
 
         rows = page.locator(WORKLIST_ROW)
 
-        # Navigate to multi-lens POI (Quincy Market)
+        # Navigate to multi-lens POI (Marché des Enfants Rouges)
         target = None
         other = None
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Quincy Market" in row_text:
+            if "Marché des Enfants" in row_text:
                 target = i
             elif target is not None and other is None:
                 other = i
@@ -1482,10 +1482,10 @@ class TestDetailViewAndEditing:
 
         rows = page.locator(WORKLIST_ROW)
 
-        # Check high-gravity POI (entry #2 — Faneuil Hall Anchor, gravity 5)
+        # Check high-gravity POI (entry #2 — Les Halles Anchor, gravity 5)
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Faneuil Hall Anchor" in row_text:
+            if "Les Halles Anchor" in row_text:
                 rows.nth(i).click()
                 page.wait_for_timeout(500)
 
@@ -1559,11 +1559,11 @@ class TestUploadFlow:
 
         rows = page.locator(WORKLIST_ROW)
 
-        # Find entry #1 (Boston Harbor Lighthouse — valid, standard)
+        # Find entry #1 (Seine River Lighthouse — valid, standard)
         target = None
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Harbor Lighthouse" in row_text:
+            if "Seine Lighthouse" in row_text:
                 target = i
                 break
 
@@ -1572,7 +1572,7 @@ class TestUploadFlow:
                 reporter,
                 False,
                 "Critical",
-                "Could not find Harbor Lighthouse POI for upload test",
+                "Could not find Seine Lighthouse POI for upload test",
                 "Upload Flow",
                 ["Search worklist"],
                 "Entry #1 in worklist",
@@ -1613,7 +1613,7 @@ class TestUploadFlow:
 
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Harbor Lighthouse" in row_text:
+            if "Seine Lighthouse" in row_text:
                 uploaded_badge = rows.nth(i).locator(BADGE_UPLOADED)
                 if uploaded_badge.count() > 0:
                     uploaded_found = True
@@ -1630,7 +1630,7 @@ class TestUploadFlow:
             "POI upload did not complete — no uploaded badge or success toast",
             "Upload Flow",
             [
-                "Navigate to valid POI (Harbor Lighthouse)",
+                "Navigate to valid POI (Seine Lighthouse)",
                 "Click Mark as Complete",
                 "Wait 3s for upload",
                 "Check for .badge-uploaded or #successToast",
@@ -1644,7 +1644,7 @@ class TestUploadFlow:
         # Verify via API
         if uploaded_found or toast_appeared:
             try:
-                poi_name = "UI Test \u2014 Boston Harbor Lighthouse"
+                poi_name = "UI Test \u2014 Seine River Lighthouse"
                 encoded = urllib.parse.quote(poi_name, safe="")
                 api_resp = _api_get(f"/graph/poi/{encoded}/beats")
                 # API returns {"poi_name": "...", "beats": [...]} — extract beats list
@@ -1749,11 +1749,11 @@ class TestConflictDetection:
 
         rows = page.locator(WORKLIST_ROW)
 
-        # Find entry #11 (UI Test Seed — Old North Church)
+        # Find entry #11 (UI Test Seed — Sacré-Cœur Basilica)
         target = None
         for i in range(rows.count()):
             row_text = rows.nth(i).text_content() or ""
-            if "Old North Church" in row_text:
+            if "Sacré-Cœur" in row_text or "Sacre-Coeur" in row_text:
                 target = i
                 break
 
@@ -1762,9 +1762,9 @@ class TestConflictDetection:
                 reporter,
                 False,
                 "Critical",
-                "Could not find conflict-target POI (Old North Church)",
+                "Could not find conflict-target POI (Sacré-Cœur Basilica)",
                 "Conflict Detection",
-                ["Search worklist for 'Old North Church'"],
+                ["Search worklist for 'Sacré-Cœur Basilica'"],
                 "Entry #11 in worklist",
                 "Not found",
                 page,
@@ -2241,7 +2241,7 @@ class TestProximityMatching:
         page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             // POI far from any existing (200m+ away)
-            const testPoi = { latitude: 42.40, longitude: -71.20 };
+            const testPoi = { latitude: 48.90, longitude: 2.50 };
             return findProximityMatches(testPoi, cachedPoiList);
         }""")
         assert isinstance(result, list)
@@ -2273,10 +2273,10 @@ class TestProximityMatching:
         result = page.evaluate("""() => {
             // Create two fake cached POIs close together, test a point near both
             const fakeCached = [
-                { properties: { name: 'A', location: { lat: 42.3601, lng: -71.0589 } } },
-                { properties: { name: 'B', location: { lat: 42.3603, lng: -71.0589 } } },
+                { properties: { name: 'A', location: { lat: 48.8530, lng: 2.3499 } } },
+                { properties: { name: 'B', location: { lat: 48.8532, lng: 2.3499 } } },
             ];
-            const testPoi = { latitude: 42.3602, longitude: -71.0589 };
+            const testPoi = { latitude: 48.8531, longitude: 2.3499 };
             const matches = findProximityMatches(testPoi, fakeCached);
             return matches.map(m => ({ name: m.existingPoi.properties.name, dist: m.distanceM }));
         }""")
@@ -2288,10 +2288,10 @@ class TestProximityMatching:
         page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             const fakeCached = [
-                { properties: { name: 'Old City Hall', location: { lat: 42.3580, lng: -71.0589 } } },
+                { properties: { name: 'Hôtel de Ville', location: { lat: 48.8530, lng: 2.3499 } } },
             ];
             // Same name, 200m away
-            const testPoi = { latitude: 42.3600, longitude: -71.0589 };
+            const testPoi = { latitude: 48.8550, longitude: 2.3499 };
             return findProximityMatches(testPoi, fakeCached);
         }""")
         assert len(result) == 0, "Same-name POI 200m away should have no proximity match"
@@ -2310,7 +2310,7 @@ class TestProximityMatching:
         """AC 1: POI with no nearby existing → isNew: true."""
         page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
-            const testPoi = { poi_name: 'Distant POI', latitude: 42.40, longitude: -71.20, beats: [] };
+            const testPoi = { poi_name: 'Distant POI', latitude: 48.90, longitude: 2.50, beats: [] };
             return detectConflictsForPoi(testPoi);
         }""")
         assert result["isNew"] is True
@@ -2320,7 +2320,7 @@ class TestProximityMatching:
         """AC 6: useExistingName sends the existing name in payload."""
         page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
-            const poi = { poi_name: 'Incoming Name', latitude: 42.36, longitude: -71.06 };
+            const poi = { poi_name: 'Incoming Name', latitude: 48.85, longitude: 2.35 };
             return mapPoiForApi(poi, { useExistingName: 'Existing Name' });
         }""")
         assert result["name"] == "Existing Name"
@@ -2329,7 +2329,7 @@ class TestProximityMatching:
         """AC 5: forceCreate sends force_create: true."""
         page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
-            const poi = { poi_name: 'Test POI', latitude: 42.36, longitude: -71.06 };
+            const poi = { poi_name: 'Test POI', latitude: 48.85, longitude: 2.35 };
             return mapPoiForApi(poi, { forceCreate: true });
         }""")
         assert result["force_create"] is True
@@ -2339,9 +2339,9 @@ class TestProximityMatching:
         page, _seed_data, _reporter = browser_page
         result = page.evaluate("""() => {
             return {
-                identical: nameSimilarity('Old City Hall', 'Old City Hall'),
-                similar: nameSimilarity('Old City Hall', 'The Old City Hall'),
-                different: nameSimilarity('Old City Hall', 'Boston Common'),
+                identical: nameSimilarity('Hôtel de Ville', 'Hôtel de Ville'),
+                similar: nameSimilarity('Hôtel de Ville', 'The Hôtel de Ville'),
+                different: nameSimilarity('Hôtel de Ville', 'Jardin du Luxembourg'),
             };
         }""")
         assert result["identical"] == 1.0
@@ -2354,9 +2354,9 @@ class TestProximityMatching:
         result = page.evaluate("""() => {
             // Place existing POI and incoming ~51m apart (about 0.00046 degrees lat)
             const fakeCached = [
-                { properties: { name: 'Boundary POI', location: { lat: 42.3600, lng: -71.0589 } } },
+                { properties: { name: 'Boundary POI', location: { lat: 48.8530, lng: 2.3499 } } },
             ];
-            const testPoi = { latitude: 42.36046, longitude: -71.0589 };
+            const testPoi = { latitude: 48.85346, longitude: 2.3499 };
             return findProximityMatches(testPoi, fakeCached);
         }""")
         assert len(result) == 0, "POI at ~51m should NOT match"
