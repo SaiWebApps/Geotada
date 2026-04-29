@@ -2,7 +2,7 @@
 
 INPUT: TourInput — the user-supplied request (§3.1 of phase-1-design).
 INTERMEDIATE: POI, BeatRef, TransitSegment, Route, POIBeats, BeatSequence.
-The final OUTPUT (Script) is Phase 3.
+OUTPUT: Script + Sentence + ValidationReport (§3.6 of phase-1-design).
 """
 
 from __future__ import annotations
@@ -61,7 +61,12 @@ class POI(BaseModel):
 
 
 class BeatRef(BaseModel):
-    """A NarrativeBeat reference carrying just what selection/ordering needs."""
+    """A NarrativeBeat reference carrying just what selection/ordering needs.
+
+    Phase 3 added the optional ``script_body`` so generation can emit
+    sentence-level traceable records without re-querying Neo4j. Phase 2
+    selection/ordering ignores it; tests construct BeatRef without it.
+    """
 
     model_config = ConfigDict(frozen=True, extra="ignore")
 
@@ -70,6 +75,7 @@ class BeatRef(BaseModel):
     sub_location: str | None = None
     trigger_address: str | None = None
     narrative_function: str | None = None
+    beat_type: str | None = None
     emotional_register: str | None = None
     beat_length_class: str | None = None
     est_spoken_seconds: int = 0
@@ -78,6 +84,7 @@ class BeatRef(BaseModel):
     subject_tag: str | None = None
     lenses: tuple[str, ...] = ()
     active_status: str = "active"
+    script_body: str | None = None
 
 
 class TransitSegment(BaseModel):
@@ -126,3 +133,72 @@ class BeatSequence(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     poi_beats: tuple[POIBeats, ...]
+
+
+# ---------------------------------------------------------------------------
+# Phase 3 — Script (final output) + validation
+# ---------------------------------------------------------------------------
+
+
+SourceType = Literal["beat", "glue", "arith"]
+
+
+class Sentence(BaseModel):
+    """A single audio sentence with full source attribution.
+
+    ``source_id`` is either a NarrativeBeat UUID (when source_type=='beat')
+    or a whitelisted glue/arith label (when source_type in {'glue','arith'}).
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    text: str
+    source_id: str
+    source_type: SourceType
+    stop_idx: int = Field(..., ge=0)
+
+
+class ScriptPOI(BaseModel):
+    """A flattened POI record for the Script's selected_pois roster."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    id: str
+    name: str
+    tier: int = Field(..., ge=1, le=5)
+    lat: float
+    lng: float
+    area: str | None = None
+    dwell_seconds: int = 0
+    beat_ids: tuple[str, ...] = ()
+
+
+class ValidationReport(BaseModel):
+    """Source-traceability + forbidden-phrase scan result for a Script."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    untraceable_sentences: tuple[Sentence, ...] = ()
+    forbidden_phrase_hits: tuple[tuple[Sentence, str], ...] = ()
+
+    @property
+    def passed(self) -> bool:
+        return not self.untraceable_sentences and not self.forbidden_phrase_hits
+
+
+class Script(BaseModel):
+    """Final tour-builder output. §3.6 of phase-1-design."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    city_slug: str
+    generated_at: str
+    inputs: TourInput
+    total_audio_seconds: int = Field(..., ge=0)
+    total_walking_seconds: int = Field(..., ge=0)
+    total_walk_distance_m: int = Field(..., ge=0)
+    total_planned_seconds: int = Field(..., ge=0)
+    selected_pois: tuple[ScriptPOI, ...]
+    lens_coverage: dict[str, int]
+    script: tuple[Sentence, ...]
+    validation: ValidationReport

@@ -1,10 +1,14 @@
-"""Phase 2 — beat_select.py: ordering + length-class fallback."""
+"""Phase 2 — beat_select.py: ordering + length-class fallback.
+
+Phase 3.5 (2026-04-29) added B8-lite claim-dedup tests at the end.
+"""
 
 from __future__ import annotations
 
 import pytest
 
 from src.tour.beat_select import (
+    B8_JACCARD_THRESHOLD,
     NARRATIVE_FUNCTION_ORDER,
     choose_ordering_strategy,
     select_poi_beats,
@@ -27,6 +31,9 @@ def _beat(
     beat_length_class: str | None = None,
     word_count: int = 100,
     lenses: tuple[str, ...] = (),
+    entities: tuple[str, ...] = (),
+    subject_tag: str | None = None,
+    script_body: str | None = None,
     poi_id: str = "poi",
 ) -> BeatRef:
     return BeatRef(
@@ -39,6 +46,9 @@ def _beat(
         beat_length_class=beat_length_class,
         word_count=word_count,
         lenses=lenses,
+        entities=entities,
+        subject_tag=subject_tag,
+        script_body=script_body,
     )
 
 
@@ -290,3 +300,220 @@ def test_tone_variety_breaks_three_somber_run():
             and registers[i - 1] in {"somber", "reverent"}
             and registers[i] in {"somber", "reverent"}
         )
+
+
+# ---------------------------------------------------------------------------
+# B8-lite claim dedup (Phase 3.5)
+# ---------------------------------------------------------------------------
+
+
+def test_b8_lite_drops_overlapping_entities():
+    # Two beats sharing 4-of-5 entities (Jaccard 0.8) at the same lens →
+    # the longer body wins, the shorter is dropped.
+    poi = _poi("Hotel de Sully")
+    long_body = "Voltaire was beaten by the Prince de Rohan's lackeys here. " * 6
+    short_body = "Voltaire was beaten by Rohan's lackeys."
+    long_beat = _beat(
+        "long-voltaire",
+        sub_location="courtyard",
+        narrative_function="deepen",
+        lenses=("literary_heritage",),
+        entities=("Bastille", "Letters", "Prince de Rohan", "Upon", "Voltaire"),
+        script_body=long_body,
+        word_count=80,
+    )
+    short_beat = _beat(
+        "short-voltaire",
+        sub_location="courtyard",
+        narrative_function="deepen",
+        lenses=("literary_heritage",),
+        entities=("Bastille", "Prince de Rohan", "Upon", "Voltaire"),
+        script_body=short_body,
+        word_count=8,
+    )
+    other = _beat(
+        "other",
+        sub_location="garden",
+        narrative_function="establishing",
+        lenses=("famous_residents",),
+        entities=("Sully",),
+        script_body="Independent fact.",
+        word_count=3,
+    )
+    plan = select_poi_beats(poi, [long_beat, short_beat, other])
+    ids = [b.id for b in plan.beats]
+    assert "long-voltaire" in ids
+    assert "short-voltaire" not in ids
+    assert "other" in ids
+
+
+def test_b8_lite_keeps_complementary_when_overlap_below_threshold():
+    # Two beats sharing only 1-of-3 entities (Jaccard 0.33) at the same
+    # lens are NOT collapsed — complementary detail is preserved.
+    poi = _poi("Notre-Dame Cathedral")
+    a = _beat(
+        "a",
+        sub_location="parvis",
+        narrative_function="establishing",
+        lenses=("hidden_history",),
+        entities=("Notre-Dame", "Hugo", "Quasimodo"),
+        script_body="Hugo wrote about Quasimodo at Notre-Dame.",
+        word_count=10,
+    )
+    b = _beat(
+        "b",
+        sub_location="nave",
+        narrative_function="establishing",
+        lenses=("hidden_history",),
+        entities=("Notre-Dame", "Pilier des Nautes", "Pillars"),
+        script_body="The Pilier des Nautes was found beneath Notre-Dame.",
+        word_count=10,
+    )
+    plan = select_poi_beats(poi, [a, b])
+    ids = {beat.id for beat in plan.beats}
+    assert ids == {"a", "b"}
+
+
+def test_b8_lite_skips_pairs_with_no_lens_overlap():
+    # Same entities, but disjoint lenses → no collision.
+    poi = _poi("Place des Vosges")
+    a = _beat(
+        "a",
+        trigger_address="no. 6 place des Vosges",
+        narrative_function="establishing",
+        lenses=("famous_residents",),
+        entities=("Hugo", "Place des Vosges"),
+        script_body="Hugo lived at no. 6.",
+        word_count=5,
+    )
+    b = _beat(
+        "b",
+        trigger_address="no. 8 place des Vosges",
+        narrative_function="establishing",
+        lenses=("literary_heritage",),
+        entities=("Hugo", "Place des Vosges"),
+        script_body="Hugo's writings name the square repeatedly.",
+        word_count=6,
+    )
+    # Add 3 more addresses so we hit the trigger_address strategy.
+    fillers = [
+        _beat(
+            f"f{i}",
+            trigger_address=f"no. {i} place des Vosges",
+            narrative_function="establishing",
+            lenses=("famous_residents",),
+            entities=("Filler",),
+            script_body=f"Filler {i}.",
+            word_count=2,
+        )
+        for i in (1, 2, 3)
+    ]
+    plan = select_poi_beats(poi, [a, b, *fillers])
+    ids = {beat.id for beat in plan.beats}
+    assert {"a", "b"}.issubset(ids)
+
+
+def test_b8_lite_subject_tag_overlap_triggers_dedup():
+    # Empty entities, but identical subject_tag → collide.
+    poi = _poi("Conciergerie")
+    a = _beat(
+        "long",
+        sub_location="salle-des-gens-darmes",
+        narrative_function="deepen",
+        lenses=("dark_history",),
+        entities=(),
+        subject_tag="marie antoinette cell mockup",
+        script_body="A long account of the cell mockup, " * 10,
+        word_count=80,
+    )
+    b = _beat(
+        "short",
+        sub_location="salle-des-gens-darmes",
+        narrative_function="deepen",
+        lenses=("dark_history",),
+        entities=(),
+        subject_tag="marie antoinette cell mockup",
+        script_body="Short version.",
+        word_count=2,
+    )
+    other = _beat(
+        "other",
+        sub_location="tour-bonbec",
+        narrative_function="establishing",
+        lenses=("dark_history",),
+        entities=("Tour Bonbec",),
+        subject_tag="tower torture screams",
+        script_body="The tower's name comes from screams.",
+        word_count=7,
+    )
+    one_more = _beat(
+        "more",
+        sub_location="rue-de-paris-cells",
+        narrative_function="establishing",
+        lenses=("dark_history",),
+        entities=("Sansons",),
+        subject_tag="executioner dynasty",
+        script_body="The Sanson family held the post for generations.",
+        word_count=8,
+    )
+    plan = select_poi_beats(poi, [a, b, other, one_more])
+    ids = {beat.id for beat in plan.beats}
+    assert "long" in ids
+    assert "short" not in ids
+
+
+def test_b8_lite_threshold_constant_matches_design_doc():
+    # Phase-1-design.md §3.3 specifies 0.8 — guard against silent drift.
+    assert B8_JACCARD_THRESHOLD == 0.8
+
+
+# ---------------------------------------------------------------------------
+# Phase 3.5 — stop_orientation hoist (so cold-open can find it)
+# ---------------------------------------------------------------------------
+
+
+def test_orientation_beat_hoisted_to_head_under_sub_location_strategy():
+    poi = _poi("Notre-Dame Cathedral")
+    orient = BeatRef(
+        id="orient",
+        poi_id="poi",
+        sub_location=None,           # orientation beats lack sub_location
+        beat_type="stop_orientation",
+        narrative_function="establishing",
+        word_count=20,
+    )
+    parvis = _beat("parvis", sub_location="parvis", narrative_function="hook")
+    nave = _beat("nave", sub_location="nave", narrative_function="deepen")
+    choir = _beat("choir", sub_location="choir", narrative_function="climax")
+    plan = select_poi_beats(poi, [parvis, nave, choir, orient])
+    assert plan.beats[0].id == "orient"
+    # Head + 3 sub_locations; orientation isn't double-counted as a closer.
+    assert len(plan.beats) == 4
+
+
+def test_orientation_beat_hoisted_under_trigger_address_strategy():
+    poi = _poi("Place des Vosges")
+    orient = BeatRef(
+        id="orient",
+        poi_id="poi",
+        trigger_address=None,
+        beat_type="stop_orientation",
+        narrative_function="establishing",
+        word_count=20,
+    )
+    addrs = [
+        _beat(f"a{i}", trigger_address=f"no. {i} place des Vosges")
+        for i in range(1, 6)
+    ]
+    plan = select_poi_beats(poi, [*addrs, orient])
+    assert plan.beats[0].id == "orient"
+    assert plan.ordering_strategy == "trigger_address"
+
+
+def test_no_orientation_beat_means_no_change():
+    poi = _poi("Notre-Dame Cathedral")
+    parvis = _beat("parvis", sub_location="parvis")
+    nave = _beat("nave", sub_location="nave")
+    choir = _beat("choir", sub_location="choir")
+    plan = select_poi_beats(poi, [parvis, nave, choir])
+    assert {b.id for b in plan.beats} == {"parvis", "nave", "choir"}

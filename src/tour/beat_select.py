@@ -41,6 +41,23 @@ DEFAULT_FLAT_MIN: int = 4
 DEFAULT_FLAT_MAX: int = 6
 PAUSE_BEATS_MAX: int = 2  # tier-3 stop
 
+# B8-lite (Phase 3.5) — claim-level dedup. Runs after the per-strategy
+# ordering and before tone-variety. Only beats that share at least one
+# lens are eligible to collide; ``J`` is Jaccard on the tokenised set.
+B8_JACCARD_THRESHOLD: float = 0.8
+
+# Tie-breaker priority when two beats collide and beat-score is equal.
+# Higher index wins (climax beats deepen, etc.).
+_NARRATIVE_FUNCTION_PRIORITY: dict[str, int] = {
+    "transition": 1,
+    "callback": 2,
+    "scene_setter": 3,
+    "hook": 4,
+    "establishing": 5,
+    "deepen": 6,
+    "climax": 7,
+}
+
 
 def choose_ordering_strategy(beats: Iterable[BeatRef]) -> OrderingStrategy:
     """Pick the spatial primitive to sequence by, per §3.3."""
@@ -79,6 +96,15 @@ def select_poi_beats(
     else:
         ordered = _order_by_narrative_function(poi, active, interest)
 
+    # Phase 3.5: orientation is a cold-open primitive that competes
+    # with anchor-class beats in the no_loc / no_addr slot under the
+    # spatial strategies. When an orientation beat exists at the POI,
+    # prepend the highest-scoring one so the cold-open lookup can find
+    # it. Generation's consumed_in_cold_open set keeps it from being
+    # double-emitted at stop 0.
+    ordered = _hoist_orientation(ordered, active, interest)
+
+    ordered = _apply_b8_lite_dedup(ordered, interest)
     ordered = _enforce_tone_variety(ordered)
 
     return POIBeats(
@@ -225,6 +251,168 @@ def _address_sort_key(addr: str) -> tuple:
             continue
     n = int("".join(head_digits)) if head_digits else 10**9
     return (n, addr.lower())
+
+
+def _hoist_orientation(
+    ordered: list[BeatRef],
+    active: list[BeatRef],
+    interest: frozenset[str],
+) -> list[BeatRef]:
+    """Surface a stop_orientation beat at the head when one exists.
+
+    The cold-open in generation.py looks for a beat with
+    ``beat_type='stop_orientation'``. Under the sub_location and
+    trigger_address strategies, those beats land in the no-spatial-key
+    bucket and lose the single closing slot to anchor-class beats.
+    This hoist preserves the orientation beat as a head primitive so
+    the cold-open lookup actually finds it. If the orientation beat is
+    already in ``ordered``, it's moved (not duplicated) to position 0.
+    """
+    orientations = [
+        b for b in active if (b.beat_type or "").lower() == "stop_orientation"
+    ]
+    if not orientations:
+        return ordered
+    chosen = _pick_best(orientations, interest)
+    rest = [b for b in ordered if b.id != chosen.id]
+    return [chosen, *rest]
+
+
+def _apply_b8_lite_dedup(
+    beats: list[BeatRef], interest: frozenset[str]
+) -> list[BeatRef]:
+    """Drop near-duplicate beats per phase-1-design §3.3.
+
+    Two beats collide when they share at least one lens (or are both
+    lensless) AND either entities Jaccard ≥ B8_JACCARD_THRESHOLD or
+    subject_tag-token Jaccard ≥ threshold. On collision the loser is:
+
+    1. lower beat-select score (the existing tuple);
+    2. then shorter ``script_body``;
+    3. then lower narrative_function priority
+       (climax > deepen > establishing > hook > scene_setter
+        > callback > transition).
+
+    Survives in original order; this is paraphrase removal, not
+    re-ordering.
+
+    Logs a debug line via ``_DEDUP_TRACE`` when a drop fires so the
+    smoke harness can audit which beats lost.
+    """
+    if len(beats) < 2:
+        return beats
+
+    drop_ids: set[str] = set()
+    for i, a in enumerate(beats):
+        if a.id in drop_ids:
+            continue
+        for b in beats[i + 1 :]:
+            if b.id in drop_ids:
+                continue
+            if not _share_lens(a, b):
+                continue
+            if not _claims_collide(a, b):
+                continue
+            loser = _pick_dedup_loser(a, b, interest)
+            drop_ids.add(loser.id)
+            _DEDUP_TRACE.append(
+                {
+                    "kept": (a.id if loser is b else b.id),
+                    "dropped": loser.id,
+                    "entities_jaccard": _entities_jaccard(a, b),
+                    "subject_tag_jaccard": _subject_tag_jaccard(a, b),
+                }
+            )
+
+    return [b for b in beats if b.id not in drop_ids]
+
+
+# Optional debug trace (per-process, cleared by ``reset_dedup_trace``).
+# The smoke harness reads this so the user can see which paraphrase
+# pairs collapsed without parsing logs.
+_DEDUP_TRACE: list[dict] = []
+
+
+def reset_dedup_trace() -> None:
+    _DEDUP_TRACE.clear()
+
+
+def get_dedup_trace() -> list[dict]:
+    return list(_DEDUP_TRACE)
+
+
+def _share_lens(a: BeatRef, b: BeatRef) -> bool:
+    """Beats with no lens collide with each other; otherwise need an overlap."""
+    set_a = {x.lower() for x in a.lenses if x}
+    set_b = {x.lower() for x in b.lenses if x}
+    if not set_a and not set_b:
+        return True
+    return bool(set_a & set_b)
+
+
+def _claims_collide(a: BeatRef, b: BeatRef) -> bool:
+    if _entities_jaccard(a, b) >= B8_JACCARD_THRESHOLD:
+        return True
+    if _subject_tag_jaccard(a, b) >= B8_JACCARD_THRESHOLD:
+        return True
+    return False
+
+
+def _entities_jaccard(a: BeatRef, b: BeatRef) -> float:
+    set_a = {e.strip().lower() for e in a.entities if e and e.strip()}
+    set_b = {e.strip().lower() for e in b.entities if e and e.strip()}
+    return _jaccard(set_a, set_b)
+
+
+def _subject_tag_jaccard(a: BeatRef, b: BeatRef) -> float:
+    tokens_a = _tokenise(a.subject_tag)
+    tokens_b = _tokenise(b.subject_tag)
+    return _jaccard(tokens_a, tokens_b)
+
+
+def _tokenise(s: str | None) -> set[str]:
+    if not s:
+        return set()
+    return {t for t in (chunk.strip().lower() for chunk in s.split()) if t}
+
+
+def _jaccard(a: set[str], b: set[str]) -> float:
+    if not a and not b:
+        return 0.0  # neither has data → not a collision
+    union = a | b
+    if not union:
+        return 0.0
+    return len(a & b) / len(union)
+
+
+def _pick_dedup_loser(
+    a: BeatRef, b: BeatRef, interest: frozenset[str]
+) -> BeatRef:
+    """Return the beat to drop. Tie-breakers per §3.3 docstring above."""
+    score_a = _beat_score(a, interest)
+    score_b = _beat_score(b, interest)
+    if score_a > score_b:
+        return b
+    if score_b > score_a:
+        return a
+
+    len_a = len(a.script_body or "")
+    len_b = len(b.script_body or "")
+    if len_a > len_b:
+        return b
+    if len_b > len_a:
+        return a
+
+    nf_a = _NARRATIVE_FUNCTION_PRIORITY.get((a.narrative_function or "").lower(), 0)
+    nf_b = _NARRATIVE_FUNCTION_PRIORITY.get((b.narrative_function or "").lower(), 0)
+    if nf_a > nf_b:
+        return b
+    if nf_b > nf_a:
+        return a
+
+    # Final stable fallback: drop the lexicographically-greater id so the
+    # outcome is deterministic for tests.
+    return b if a.id < b.id else a
 
 
 def _enforce_tone_variety(beats: list[BeatRef]) -> list[BeatRef]:

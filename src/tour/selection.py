@@ -153,6 +153,7 @@ RETURN
   b.sub_location        AS sub_location,
   b.trigger_address     AS trigger_address,
   b.narrative_function  AS narrative_function,
+  b.beat_type           AS beat_type,
   b.emotional_register  AS emotional_register,
   b.beat_length_class   AS beat_length_class,
   b.est_spoken_seconds  AS est_spoken_seconds,
@@ -200,20 +201,23 @@ def _snapshot_from_records(
     beats_by_poi_acc: dict[str, list[BeatRef]] = {}
 
     for r in beat_records:
+        body = r.get("script_body")
         ref = BeatRef(
             id=r["id"],
             poi_id=r["poi_id"],
             sub_location=_clean(r.get("sub_location")),
             trigger_address=_clean(r.get("trigger_address")),
             narrative_function=_clean(r.get("narrative_function")),
+            beat_type=_clean(r.get("beat_type")),
             emotional_register=_clean(r.get("emotional_register")),
             beat_length_class=_clean(r.get("beat_length_class")),
             est_spoken_seconds=int(r.get("est_spoken_seconds") or 0),
-            word_count=_count_words(r.get("script_body")),
+            word_count=_count_words(body),
             entities=tuple(r.get("entities") or ()),
             subject_tag=_clean(r.get("subject_tag")),
             lenses=tuple(s for s in (r.get("lenses") or ()) if s),
             active_status=r.get("active_status") or "active",
+            script_body=body if isinstance(body, str) and body.strip() else None,
         )
         beats_by_poi_acc.setdefault(ref.poi_id, []).append(ref)
 
