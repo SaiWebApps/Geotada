@@ -24,7 +24,7 @@ RETURN b, l.name AS lens_slug
 ### Response shape
 ```json
 {
-  "poi_name": "Old North Church",
+  "poi_name": "Sacré-Cœur",
   "beats": [
     {
       "id": "uuid",

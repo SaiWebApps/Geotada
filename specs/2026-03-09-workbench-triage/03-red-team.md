@@ -73,7 +73,7 @@ If two editors open the same POI simultaneously, both see no conflicts, and the 
 ## 5. North Star Check
 
 **Aligned:**
-- Progressive upload directly supports Phase 1 gate (100+ Boston POIs live) — right work, right time.
+- Progressive upload directly supports Phase 1 gate (100+ Paris POIs live) — right work, right time.
 - Dynamic lens dropdown moves source of truth from frontend JS to database Lens nodes — better architecture.
 - Removing tags aligns with "Lenses are the only classification system."
 

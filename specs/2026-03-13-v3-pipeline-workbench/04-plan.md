@@ -90,7 +90,7 @@
 **What NOT to touch:** The existing exact-name duplicate logic. The `showDuplicateResolver()` UI.
 
 **Success check:**
-- File with POI "Christ Church" having `name_variations: ["Old North Church"]` and POI "Old North Church" → flagged as duplicate
+- File with POI "Basilique du Sacré-Cœur" having `name_variations: ["Sacré-Cœur"]` and POI "Sacré-Cœur" → flagged as duplicate
 - POI with its own name in `name_variations` → silently removed, no self-conflict
 
 ---
@@ -110,7 +110,7 @@
 
 **What NOT to touch:** The beat-level conflict detection logic (lines 2108-2143). The coordinate mismatch check.
 
-**Success check:** Upload a POI named "Old North Church" when the DB has a POI "Christ Church in the City of Boston" with `name_variations: ["Old North Church"]`. The per-POI detector finds the match, calls the API with "Christ Church in the City of Boston", and returns conflict/review results.
+**Success check:** Upload a POI named "Eiffel Tower" when the DB has a POI "Tour Eiffel" with `name_variations: ["Eiffel Tower"]`. The per-POI detector finds the match, calls the API with "Tour Eiffel", and returns conflict/review results.
 
 ---
 
@@ -141,7 +141,7 @@
 - When a POI was matched via alt name (data stored in Tasks 6/7), display a visible indicator in the detail panel, e.g.:
   ```html
   <div class="alt-name-match-note" aria-label="This POI was matched to an existing POI via an alternative name">
-    Matched via alt name "Old North Church" → existing POI "Christ Church in the City of Boston"
+    Matched via alt name "Eiffel Tower" → existing POI "Tour Eiffel"
   </div>
   ```
 - Include `aria-label` for screen reader accessibility (red team checklist item #8)
@@ -217,16 +217,16 @@
 | | |
 |---|---|
 | **Test type** | Manual verification (browser with seeded DB) |
-| **Input** | DB has POI "Christ Church" with `name_variations: ["Old North Church"]`. Upload POI named "Old North Church". |
-| **Expected** | `detectConflictsForPoi()` returns `isNew: false`, uses "Christ Church" for beat comparison. |
+| **Input** | DB has POI "Basilique du Sacré-Cœur" with `name_variations: ["Sacré-Cœur"]`. Upload POI named "Sacré-Cœur". |
+| **Expected** | `detectConflictsForPoi()` returns `isNew: false`, uses "Basilique du Sacré-Cœur" for beat comparison. |
 | **Edge cases** | EC3: incoming name matches `name_variations` on 2 different existing POIs → error, POI skipped |
 
 ### AC5 — Bulk alt-name conflict detection
 | | |
 |---|---|
 | **Test type** | Manual verification (browser with seeded DB) |
-| **Input** | Same DB setup as AC4. Bulk upload 3 POIs: "Old North Church", "New POI", "Another New". |
-| **Expected** | "Old North Church" classified as matched (not new). Other two classified as new. |
+| **Input** | Same DB setup as AC4. Bulk upload 3 POIs: "Sacré-Cœur", "New POI", "Another New". |
+| **Expected** | "Sacré-Cœur" classified as matched (not new). Other two classified as new. |
 | **Edge cases** | Same as AC4 |
 
 ### AC6 — Alt-name match UI indicator
@@ -234,7 +234,7 @@
 |---|---|
 | **Test type** | Manual verification (browser) |
 | **Input** | POI matched via alt name (from AC4/AC5) |
-| **Expected** | Detail panel shows: `Matched via alt name "Old North Church" → existing POI "Christ Church"`. Element has `aria-label`. |
+| **Expected** | Detail panel shows: `Matched via alt name "Sacré-Cœur" → existing POI "Basilique du Sacré-Cœur"`. Element has `aria-label`. |
 
 ### AC7 — `alternative_names` → `name_variations` normalization
 | | |
@@ -387,7 +387,7 @@ the existing codebase or assumptions you are making.
 |---|----------|---------|---------------|
 | 1 | XSS prevention via `escHtml()` on all new rendered fields | Tasks 3, 4, 8 | Paste `<script>alert(1)</script>` in address, name_variations, gravity_audit, _meta, and audit_notes array. Verify literal text rendered, no script execution. |
 | 2 | `Array.isArray()` before `typeof` check | Task 3 | Pass `audit_notes: [{issue:"test"}]` — renders as card. Pass `audit_notes: {issue:"test"}` — still renders as card (object branch). |
-| 3 | Case-insensitive name matching | Tasks 5, 6, 7 | Upload "old north church" when DB has "Old North Church" in name_variations. Verify match found. |
+| 3 | Case-insensitive name matching | Tasks 5, 6, 7 | Upload "old north church" when DB has "Sacré-Cœur" in name_variations. Verify match found. |
 | 4 | Default `name_variations` to `[]` | Tasks 5, 6, 7 | Upload against DB with POIs that have no `name_variations` property. No errors thrown. |
 | 5 | Accessibility: `aria-label` on alt-name indicator | Task 8 | Inspect DOM element — `aria-label` present with descriptive text. |
 | 6 | Pydantic `list[str]` type validation | Task 9 | POST with `name_variations: [123]` → 422. POST with `name_variations: ["valid"]` → 200. |
@@ -399,7 +399,7 @@ the existing codebase or assumptions you are making.
 
 ## North Star Final Check
 
-- **Phase 1 alignment:** Directly supports 100+ Boston POIs gate by preventing duplicates from multi-source ingestion. ✓
+- **Phase 1 alignment:** Directly supports 100+ Paris POIs gate by preventing duplicates from multi-source ingestion. ✓
 - **Editorial Workbench commitment:** All changes are browser-side JS + one Pydantic field. No new endpoints, no pipeline automation. ✓
 - **Extraction philosophy:** Matching at the workbench layer (UI/matching concern), not extraction constraint. ✓
 - **Schema addition:** `name_variations` is a new graph property. After implementation, update the Schema v3 doc pointer and the Active Build Target section in NORTHSTAR.md.

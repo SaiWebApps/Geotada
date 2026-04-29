@@ -21,7 +21,7 @@
 
 ## Why
 
-Phase 1 gate requires 100+ Boston POIs live. Content is being ingested from multiple source texts (books, articles). Different sources use different names for the same POI. Without alt-name matching, the workbench will create duplicate POIs or fail silently on conflict detection. The V3 prompts also produce richer audit metadata that the workbench needs to surface for editorial review.
+Phase 1 gate requires 100+ Paris POIs live. Content is being ingested from multiple source texts (books, articles). Different sources use different names for the same POI. Without alt-name matching, the workbench will create duplicate POIs or fail silently on conflict detection. The V3 prompts also produce richer audit metadata that the workbench needs to surface for editorial review.
 
 ---
 
@@ -52,7 +52,7 @@ Phase 1 gate requires 100+ Boston POIs live. Content is being ingested from mult
 
 ## Dependencies or risks
 
-- **Cached POI list size** — Currently fetched with `?limit=200`. As Boston grows past 200 POIs, name_variations matching will miss POIs beyond the limit. Not a blocker now (Phase 1 target is 100+ POIs), but needs pagination or increased limit before Phase 2 city expansion.
+- **Cached POI list size** — Currently fetched with `?limit=200`. As Paris grows past 200 POIs, name_variations matching will miss POIs beyond the limit. Not a blocker now (Phase 1 target is 100+ POIs), but needs pagination or increased limit before Phase 2 city expansion.
 - **Neo4j list property indexing** — `WHERE $name IN p.name_variations` works but isn't indexed. At 100-200 POIs this is negligible. At scale, we'd need a full-text index or the separate-node approach. Acceptable for MVP.
 - **Field naming mismatch** — V3 prompts output `alternative_names`, workbench/DB will use `name_variations`. The JSON upload should accept either key (normalize on ingest). The prompt quick-fix to align naming is deferred.
 

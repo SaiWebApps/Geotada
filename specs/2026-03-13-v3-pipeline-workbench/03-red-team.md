@@ -81,7 +81,7 @@ The validation function (`review.html:991-994`) uses an explicit `allowedPoiKeys
 
 ## 5. North Star Check
 
-**Alignment is strong.** This work directly supports the Phase 1 gate (100+ Boston POIs) and addresses a real problem (duplicate POIs from multiple source texts).
+**Alignment is strong.** This work directly supports the Phase 1 gate (100+ Paris POIs) and addresses a real problem (duplicate POIs from multiple source texts).
 
 - **Editorial Workbench commitment** (browser-based HTML/JS, manual JSON upload) — stays within boundary. No new endpoints, no pipeline automation.
 - **Extraction philosophy** ("constraints at the database layer, not extraction") — `name_variations` matching at the workbench layer is consistent; it's a UI/matching concern, not an extraction constraint.

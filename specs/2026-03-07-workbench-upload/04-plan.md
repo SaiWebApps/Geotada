@@ -264,7 +264,7 @@
 ### Test 2: Matched POI attaches beats without duplication (AC #2)
 
 **Test type:** Integration
-**Setup:** Seed one POI ("Old North Church") with 1 beat. Load workbench with "Old North Church" + 2 new beats (different lenses from existing).
+**Setup:** Seed one POI ("Sacré-Cœur") with 1 beat. Load workbench with "Sacré-Cœur" + 2 new beats (different lenses from existing).
 **Steps:** Upload
 **Expected:** Summary shows 0 POIs created, 1 POI matched, 2 beats created. No duplicate POI node in Neo4j.
 
@@ -313,7 +313,7 @@
 ### Test 9: Coordinate mismatch warning (Edge case #1)
 
 **Test type:** Manual
-**Setup:** Seed POI "Test Place" at (42.36, -71.06). Load workbench with "Test Place" at (42.37, -71.07) — >500m apart.
+**Setup:** Seed POI "Test Place" at (48.86, 2.35). Load workbench with "Test Place" at (48.87, 2.36) — >500m apart.
 **Steps:** Upload
 **Expected:** Warning dialog asks editor to confirm it's the same POI.
 

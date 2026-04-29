@@ -8,7 +8,7 @@ Ondoway needs to convert `NarrativeBeat.script_body` text into audio files for G
 
 ---
 
-## Volume Estimate (Boston Launch)
+## Volume Estimate (Paris Launch)
 
 | Metric | Conservative | Aggressive |
 |--------|-------------|------------|
@@ -34,7 +34,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
   - Pro ($99/mo): 500K chars/mo included, then overage.
   - Scale ($330/mo): 2M chars/mo included.
   - Pay-as-you-go also available.
-- **Boston launch cost (one-time generation):** $20–110 depending on plan & volume.
+- **Paris launch cost (one-time generation):** $20–110 depending on plan & volume.
 - **Ongoing cost:** Minimal — only re-gen on edits. S3 serving is pennies.
 - **Voice cloning:** Yes — could create a consistent "Ondoway narrator" voice.
 - **SSML:** Limited — uses their own markup for pauses/emphasis.
@@ -45,7 +45,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 #### 2. PlayHT
 - **Quality:** Very close to ElevenLabs. Good for long-form narration.
 - **Pricing:** ~$0.05–0.15/1K characters. Cheaper than ElevenLabs.
-- **Boston launch cost:** $5–55.
+- **Paris launch cost:** $5–55.
 - **Voice cloning:** Yes.
 - **Dev effort:** REST API, Python SDK.
 - **Risk:** Smaller company, less battle-tested at scale.
@@ -53,7 +53,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 #### 3. OpenAI TTS
 - **Quality:** Good, natural. Limited voice selection (6 voices).
 - **Pricing:** tts-1: ~$15/1M chars. tts-1-hd: ~$30/1M chars.
-- **Boston launch cost:** $1.50–11.
+- **Paris launch cost:** $1.50–11.
 - **Voice cloning:** No.
 - **SSML:** No.
 - **Dev effort:** Very simple API (already familiar if using OpenAI elsewhere).
@@ -64,7 +64,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 #### 4. Google Cloud TTS
 - **Quality:** Good. WaveNet/Neural2 voices are solid. Journey voices are newer, designed for long-form.
 - **Pricing:** WaveNet/Neural2: $16/1M chars. Standard: $4/1M chars.
-- **Boston launch cost:** $0.40–6.
+- **Paris launch cost:** $0.40–6.
 - **SSML:** Full support — pauses, emphasis, pronunciation, speed control.
 - **Dev effort:** Python SDK (`google-cloud-texttospeech`). Well-documented.
 - **Risk:** Sounds more "synthetic" than Tier 1 for storytelling. Acceptable for utility, not for emotional engagement.
@@ -72,7 +72,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 #### 5. Amazon Polly
 - **Quality:** Good. Neural voices decent. "Long-form" engine designed for narration.
 - **Pricing:** Neural: $16/1M chars. Long-form: $100/1M chars. Standard: $4/1M chars.
-- **Boston launch cost:** $0.40–37 (depending on engine choice).
+- **Paris launch cost:** $0.40–37 (depending on engine choice).
 - **SSML:** Full support + Polly-specific tags (whispering, breathing).
 - **Dev effort:** `boto3` — already in AWS ecosystem for S3. Tightest integration path.
 - **Risk:** Long-form engine is expensive. Neural voices less expressive than Tier 1.
@@ -80,7 +80,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 #### 6. Microsoft Azure TTS
 - **Quality:** Very good neural voices. Emotion/style controls (cheerful, sad, narration style).
 - **Pricing:** Neural: $15/1M chars. Custom Neural Voice: $24/1M chars.
-- **Boston launch cost:** $1.50–9.
+- **Paris launch cost:** $1.50–9.
 - **SSML:** Best-in-class SSML with emotion tags (`<mstts:express-as style="narration-professional">`).
 - **Dev effort:** Python SDK. More complex setup than others.
 - **Risk:** Adds Azure dependency when already on AWS.
@@ -90,14 +90,14 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 #### 7. Coqui XTTS / Piper / Bark
 - **Quality:** Varies. XTTS is best for cloned voices. Bark is most expressive. Piper is fastest.
 - **Pricing:** $0 per character. GPU hosting cost: ~$50–200/mo for a small GPU instance.
-- **Boston launch cost:** $0 generation + GPU hosting.
+- **Paris launch cost:** $0 generation + GPU hosting.
 - **Voice cloning:** XTTS supports it with ~6 seconds of reference audio.
 - **Dev effort:** HIGH. Model hosting, GPU provisioning, output quality tuning, format conversion. Significant ops burden.
 - **Risk:** Quality gap is real for storytelling. Maintenance burden. GPU costs can exceed API costs at low volume.
 
 ---
 
-## Cost Summary Table (Boston Launch, One-Time Generation)
+## Cost Summary Table (Paris Launch, One-Time Generation)
 
 | Provider | Engine | ~Cost for 200K chars | Quality (storytelling) | Dev Effort |
 |----------|--------|---------------------|----------------------|------------|
@@ -114,7 +114,7 @@ Re-generation (edits, new versions) adds ~20–30% over the initial batch.
 
 ## Key Insight: Pre-Generation Makes This Cheap
 
-At Ondoway's scale (hundreds of beats, not millions), **every option is affordable.** The Boston launch is a one-time batch of ~200K characters. Even ElevenLabs at its most expensive is under $100 for the entire city. The real cost driver is:
+At Ondoway's scale (hundreds of beats, not millions), **every option is affordable.** The Paris launch is a one-time batch of ~200K characters. Even ElevenLabs at its most expensive is under $100 for the entire city. The real cost driver is:
 
 1. **Re-generation frequency** — How often do scripts get edited/versioned?
 2. **City expansion rate** — Each new city is another batch.

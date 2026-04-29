@@ -18,17 +18,17 @@
 Create a JSON array with 12 POI entries matching the fixture design table in the spec (`02-spec.md`, "Fixture design" section). Each entry must use the established schema format (see `tests/fixtures/stress_test_valid.json` for reference).
 
 Key requirements per entry:
-1. **Valid standard POI** — Boston coords (42.36xx, -71.05xx), 2 beats, gravity 3–4, lenses `Hidden History` and `Local Legends & Folklore`
+1. **Valid standard POI** — Paris coords (48.85xx, 2.34xx), 2 beats, gravity 3–4, lenses `Hidden History` and `Local Legends & Folklore`
 2. **High-gravity anchor POI** — gravity 5 on all beats, `script_body` > 500 chars each
 3. **Low-gravity POI** — gravity 1, minimal `script_body` (~20 words)
 4. **Outside-geofence POI** — New York coords (40.7128, -74.0060)
 5. **Invalid-coords POI** — latitude 999, longitude -999
-6. **Duplicate-name POI A** — `poi_name: "UI Test — Duplicate Harbor Walk"`, Boston coords
-7. **Duplicate-name POI B** — `poi_name: "UI Test — Duplicate Harbor Walk"`, different coords/beats
+6. **Duplicate-name POI A** — `poi_name: "UI Test — Duplicate Promenade des Berges"`, Paris coords
+7. **Duplicate-name POI B** — `poi_name: "UI Test — Duplicate Promenade des Berges"`, different coords/beats
 8. **Multi-lens POI** — 4+ beats across different lenses, distinct gravity values (1, 2, 4, 5)
 9. **Empty-beat-text POI** — one beat with `script_body: ""`
 10. **Long-text POI** — `poi_name` 80+ chars, `short_description` 300+ chars, `orientation` 200+ chars
-11. **Conflict-target POI** — `poi_name: "UI Test Seed — Old North Church"` (matches seed data). 5 beats crafted for specific Jaccard bands:
+11. **Conflict-target POI** — `poi_name: "UI Test Seed — Sacré-Cœur"` (matches seed data). 5 beats crafted for specific Jaccard bands:
     - Beat A: lens `hidden_history` (hard match with seeded beat 1)
     - Beat B: lens `music_nightlife` (net-new, no conflict)
     - Beat C: lens `food_culinary`, `script_body` crafted for ≥70% post-stop-word Jaccard vs seeded beat 2 (soft conflict)
@@ -130,9 +130,9 @@ Add a pytest fixture (module-scoped) that:
    ```
    POST /api/v1/nodes/POI
    {
-     "name": "UI Test Seed — Old North Church",
-     "latitude": 42.3663,
-     "longitude": -71.0544,
+     "name": "UI Test Seed — Sacré-Cœur",
+     "latitude": 48.8867,
+     "longitude": 2.3431,
      "short_description": "Seed POI for UI conflict detection tests",
      "importance_tier": 1,
      "trigger_radius": 10,
@@ -171,10 +171,10 @@ Add a pytest fixture (module-scoped) that:
 1. **City prompt flow:**
    - Navigate to workbench URL
    - Assert `#cityOverlay` is visible
-   - Type "Boston" into `#cityInput`
+   - Type "Paris" into `#cityInput`
    - Click `#citySubmitBtn`
    - Wait for overlay to be hidden (timeout 10s for Nominatim)
-   - Assert `#cityLabel` contains "Boston"
+   - Assert `#cityLabel` contains "Paris"
    - If overlay doesn't close, log as bug and attempt to proceed
 
 2. **JSON load flow:**
@@ -307,7 +307,7 @@ Add a pytest fixture (module-scoped) that:
 **What to do:**
 
 1. **Trigger conflict detection (AC #13):**
-   - Navigate to conflict-target POI (entry #11, name `"UI Test Seed — Old North Church"`)
+   - Navigate to conflict-target POI (entry #11, name `"UI Test Seed — Sacré-Cœur"`)
    - Click `#markCompleteBtn` to trigger conflict detection
    - Wait for conflict overlay/panel to appear
 

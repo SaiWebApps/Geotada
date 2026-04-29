@@ -19,7 +19,7 @@
 ## Change 1: Alternative Name Conflict Detection (HIGH PRIORITY)
 
 ### Problem
-Current conflict detection (`detectConflictsForPoi` at line 2071 and `detectConflicts` at line 1968) matches POIs by exact `poi_name` string only. "Old North Church" and "Christ Church in the City of Boston" are treated as completely separate POIs.
+Current conflict detection (`detectConflictsForPoi` at line 2071 and `detectConflicts` at line 1968) matches POIs by exact `poi_name` string only. "Sacré-Cœur" and "Basilique du Sacré-Cœur de Montmartre" are treated as completely separate POIs.
 
 ### Solution
 When checking for conflicts, also search the database for any POI whose name matches any entry in the incoming POI's `alternative_names` array, and vice versa.
@@ -27,7 +27,7 @@ When checking for conflicts, also search the database for any POI whose name mat
 **In `detectConflictsForPoi()`:**
 1. After the primary fetch by `poi.poi_name`, also check `cachedPoiList` for any POI whose `name` appears in `poi.alternative_names`.
 2. If a match is found, treat it as a matched POI (not new) and run beat-level conflict detection against those existing beats.
-3. Show a UI indicator: "Matched via alternative name: Christ Church in the City of Boston → Old North Church"
+3. Show a UI indicator: "Matched via alternative name: Basilique du Sacré-Cœur de Montmartre → Sacré-Cœur"
 
 **In the duplicate resolver overlay:**
 1. After checking for duplicate `poi_name` values within the uploaded file, also check whether any POI's `alternative_names` array contains another POI's `poi_name` (cross-reference within the batch).
@@ -87,7 +87,7 @@ Add a small collapsible metadata footer at the bottom of each POI's detail panel
 ```
 ▸ Pipeline Metadata
   Prompt: data_miner_v3  |  Mined: 2026-03-12T14:30:00Z
-  Source: "Walking Boston — Ch.3 North End"
+  Source: "Walking Paris — Ch.5 Montmartre"
   Audited: 2026-03-12T15:45:00Z
 ```
 
@@ -101,11 +101,11 @@ Collapsed by default. Styled in `--text-muted` color. Not editable.
 V3 miner outputs an `address` field that the fact-checker uses for geocoding. The workbench doesn't display it.
 
 ### Solution
-Add a read-only `address` field above the lat/lng inputs in the POI detail panel. This gives the human reviewer context for whether the map pin is correct — they can see "193 Salem Street, Boston" and visually confirm against the Leaflet map.
+Add a read-only `address` field above the lat/lng inputs in the POI detail panel. This gives the human reviewer context for whether the map pin is correct — they can see "35 Rue du Chevalier de la Barre, Paris" and visually confirm against the Leaflet map.
 
 ```
 ┌─ Location ──────────────────────────┐
-│ Address: 193 Salem Street, Boston   │  (read-only)
+│ Address: 35 Rue du Chevalier de la Barre, Paris   │  (read-only)
 │ Lat: [42.366389]  Lng: [-71.05444] │  (editable + draggable pin)
 └─────────────────────────────────────┘
 ```
@@ -121,8 +121,8 @@ The workbench doesn't show or store alternative names.
 Add a read-only tag list below the POI name field:
 
 ```
-POI Name: [Old North Church                    ]
-Also known as: Christ Church in the City of Boston · Christ Church
+POI Name: [Sacré-Cœur                    ]
+Also known as: Basilique du Sacré-Cœur de Montmartre · Basilique du Sacré-Cœur
 ```
 
 Styled as small pill badges in `--text-muted`. Not directly editable in the workbench — these come from the pipeline and are used for conflict detection.

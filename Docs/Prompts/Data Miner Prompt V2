@@ -6,7 +6,7 @@ Your job has two phases.
 
 PHASE 1 — DATA MINING
 
-Scan the source text below and extract every discrete fact, anecdote, date, name, architectural detail, legend, scandal, culinary reference, and historical event that is tied to a specific physical location in Boston.
+Scan the source text below and extract every discrete fact, anecdote, date, name, architectural detail, legend, scandal, culinary reference, and historical event that is tied to a specific physical location in Paris.
 
 Do not summarize. Do not combine. One fact = one entry in your working list.
 
@@ -21,7 +21,7 @@ Convert each extracted fact into a narrative beat using the rules below.
 RULES FOR BEAT GENERATION
 
 **Multi-beat extraction:**
-- A single location CAN and SHOULD have multiple beats. If the Old North Church has a story about its architecture, a separate story about the sexton's lanterns, and another about a buried crypt, those are three separate beats — same POI name and coordinates, different lenses.
+- A single location CAN and SHOULD have multiple beats. If the Sacré-Cœur has a story about its architecture, a separate story about the Romano-Byzantine dome, and another about the crypt beneath the nave, those are three separate beats — same POI name and coordinates, different lenses.
 - If you find multiple distinct stories for the same lens at the same location, extract each as a separate beat. Tag them with the same POI name, coordinates, and lens. A human reviewer will choose which one to keep — do not make that decision yourself.
 
 **Lens-driven discovery:**
@@ -40,7 +40,7 @@ RULES FOR BEAT GENERATION
 **Orientation block:**
 - Each unique POI gets exactly ONE orientation field. This is a short neutral introduction (2–3 sentences, 30–40 words) that names the location and grounds the listener physically. It is played by the director once, before any beats, and never repeated.
 - The orientation should NOT contain any story or narrative — save all story content for the beats.
-- Example: "You're standing at the Old North Church, Boston's oldest surviving church building, completed in 1723. Look up at the white steeple — at 191 feet, it was once the tallest point in the city."
+- Example: "You're standing at the Sacré-Cœur, the iconic basilica atop Montmartre, completed in 1914. Look up at the white travertine dome — at 83 metres, it crowns the highest point in the city."
 
 **Physical cue:**
 - Every beat must include one explicit grounding instruction that directs the listener's attention to something physically present at the location: "Look up at...", "Notice the...", "Run your hand along...", "Face north and you'll see..."

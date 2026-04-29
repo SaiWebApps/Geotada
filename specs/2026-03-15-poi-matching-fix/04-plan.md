@@ -187,7 +187,7 @@
 |---|---|
 | **Test description** | Incoming POI with no existing POI within 50m is auto-classified as new |
 | **Test type** | Frontend unit (JS) + integration |
-| **Expected behavior** | `findProximityMatches({lat: 42.36, lng: -71.06}, cachedPoiList)` returns `[]` when nearest existing POI is 200m away → `detectConflictsForPoi()` returns `isNew: true` |
+| **Expected behavior** | `findProximityMatches({lat: 48.86, lng: 2.35}, cachedPoiList)` returns `[]` when nearest existing POI is 200m away → `detectConflictsForPoi()` returns `isNew: true` |
 | **Edge case** | POI with identical name to existing POI but 200m away still returns `isNew: true` (AC 8) |
 
 ### AC 2: Single proximity match → editor review

@@ -28,7 +28,7 @@ The workbench uses progressive single-POI upload (lines 2350–2431). "Mark as C
 
 ### B4 — Fixture entries #11–14 shared `poi_name`, triggering the batch duplicate resolver (RESOLVED)
 
-Original entries #11–14 all used `poi_name: "UI Test Seed — Old North Church"`. Having 4 entries with the same name in the fixture would trigger the duplicate name resolver at load time — before conflict detection could even run.
+Original entries #11–14 all used `poi_name: "UI Test Seed — Sacré-Cœur"`. Having 4 entries with the same name in the fixture would trigger the duplicate name resolver at load time — before conflict detection could even run.
 
 **Resolution applied:** Consolidated entries #11–14 into a single POI (entry #11) with 5 beats, each targeting a different conflict band. Fixture reduced from 15 to 12 entries. AC #1 updated to reflect correct POI count (12).
 
@@ -46,7 +46,7 @@ The workbench uses `data-field`, `data-beat-field`, and `data-beat-index` attrib
 
 The city prompt triggers a Nominatim geocoding call. If Nominatim is slow or down, the test stalls at step 1.
 
-**Mitigation:** The test should type "Boston" and verify the overlay closes. If flaky, consider whether the workbench can accept a pre-set city via URL param or localStorage.
+**Mitigation:** The test should type "Paris" and verify the overlay closes. If flaky, consider whether the workbench can accept a pre-set city via URL param or localStorage.
 
 ### R3 — Upload teardown must cascade-delete (Low likelihood, Medium impact)
 

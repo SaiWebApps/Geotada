@@ -24,7 +24,7 @@ Convert each extracted fact into a narrative beat using the rules below.
 RULES FOR BEAT GENERATION
 
 **Multi-beat extraction:**
-- A single location CAN and SHOULD have multiple beats. If the Old North Church has a story about its architecture, a separate story about the sexton's lanterns, and another about a buried crypt, those are three separate beats — same POI name and coordinates, different lenses.
+- A single location CAN and SHOULD have multiple beats. If the Sacré-Cœur has a story about its architecture, a separate story about the Romano-Byzantine dome, and another about the crypt beneath the nave, those are three separate beats — same POI name and coordinates, different lenses.
 - If you find multiple distinct stories for the same lens at the same location, extract each as a separate beat. Tag them with the same POI name, coordinates, and lens. A human reviewer will choose which one to keep — do not make that decision yourself.
 
 **Lens-driven discovery:**
@@ -43,7 +43,7 @@ RULES FOR BEAT GENERATION
 **Orientation block:**
 - Each unique POI gets exactly ONE orientation field. This is a short neutral introduction (2–3 sentences, 30–40 words) that names the location and grounds the listener physically. It is played by the director once, before any beats, and never repeated.
 - The orientation must contain ONLY directly observable physical description — what the building looks like, where it sits, what is visible. Do NOT include any historical claims, dates, superlatives ("oldest," "first," "tallest"), or narrative content. Those belong in beats where they can be fact-checked.
-- Example: "You're standing at the Old North Church, a brick colonial church on Salem Street in the North End. Look up at the white steeple rising above the surrounding brownstones."
+- Example: "You're standing at the Sacré-Cœur, the white-domed basilica on rue du Chevalier de la Barre in Montmartre. Look up at the white steeple rising above the Montmartre rooftops."
 
 **Physical cue:**
 - Every beat must include one explicit grounding instruction that directs the listener's attention to something physically present at the location: "Look up at...", "Notice the...", "Run your hand along...", "Face north and you'll see..."
@@ -57,7 +57,7 @@ RULES FOR BEAT GENERATION
 **Alternative names:**
 - For each POI, list any alternative names, former names, or colloquial names mentioned in the source text or that you are confident are commonly used for this location.
 - This enables downstream deduplication across multiple source texts.
-- Example: Old North Church → ["Christ Church in the City of Boston", "Christ Church"]
+- Example: Sacré-Cœur → ["Basilique du Sacré-Cœur de Montmartre", "Basilique du Sacré-Cœur"]
 
 **Sub-locations:**
 - If the source text mentions a distinct site within or adjacent to a larger landmark (e.g. the Tombs beneath a church, a specific statue in a park, a hidden courtyard behind a building), treat it as its own POI with its own address ONLY if a visitor would physically walk to a different spot to experience it. If it is inside the same building or within 20 metres, keep the parent POI address.

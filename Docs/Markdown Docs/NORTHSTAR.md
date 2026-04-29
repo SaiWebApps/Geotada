@@ -14,7 +14,7 @@ Ondoway makes every city feel like you have a local storyteller in your pocket �
 
 | Phase | Window | Gate (must pass to advance) |
 |-------|--------|-----------------------------|
-| **1 — Build the Machine** | Months 1–3 | 12 lenses covered, 100+ Boston POIs live, Boredom Test passing internally |
+| **1 — Build the Machine** | Months 1–3 | 12 lenses covered, 100+ Paris POIs live, Boredom Test passing internally |
 | **2 — First Real Walk** | Months 3–4 | 5–10 testers complete a full tour, 8/10 triggers fire, 3/10 recommend unprompted |
 | **3 — Public Launch** | Months 4–7 | App Store live, credits active, 200 completed tours, one organic breakthrough |
 | **4 — Prove It Scales** | Months 7–12 | City two live in <6 weeks pipeline work, first B2B conversation started |
@@ -46,7 +46,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - **Dual-mode product:** Structured Discovery (Planner) and Spontaneous Exploration (Wanderer). Both powered by graph traversals.
 - **Golden Ratio:** 20% Anchors (Gravity 5) + 80% Flavour (Gravity 1–4).
 - **Monetization:** B2C subscription ($4.99/mo, $39.99/yr) + per-city pass ($3.99–$4.99). Price-to-raise model.
-- **Launch city:** Boston.
+- **Launch city:** Paris.
 
 ---
 

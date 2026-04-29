@@ -265,7 +265,7 @@
 ```
 ## Slice Goal
 
-An editor can load fact-checked JSON, triage POIs by audit priority, review each POI and its beats with live conflict detection, and upload individually on completion — so that 100+ Boston POIs reach the database continuously instead of in a single batch.
+An editor can load fact-checked JSON, triage POIs by audit priority, review each POI and its beats with live conflict detection, and upload individually on completion — so that 100+ Paris POIs reach the database continuously instead of in a single batch.
 
 ## Context
 
