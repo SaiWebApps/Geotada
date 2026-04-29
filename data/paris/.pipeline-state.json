@@ -676,16 +676,12 @@
       "notes": "TTS commit added sort_order independently; local has parallel sort_order work. Reconcile by cherry-picking TTS-specific bits (preview playback) onto local; treat local sort_order as canonical."
     },
     "conftest_test_isolation": {
-      "status": "deferred",
+      "status": "resolved",
       "filed_at": "2026-04-29",
-      "trigger": "Before Phase 5 ships",
+      "resolved_at": "2026-04-29",
+      "resolved_in_commit": "PHASE_4_5_COMMIT_SHA",
       "incident": "Phase 4 golden test load_dotenv(override=True) mutated NEO4J_URI to dev port; conftest's session-scoped driver fixture called _wipe() against the dev DB instead of test DB. Recovered via /upload but should not recur.",
-      "fix_options": [
-        "Option A: conftest hard-asserts NEO4J_URI ends in :7688 (test port) before any wipe; aborts with explicit error otherwise.",
-        "Option B: conftest reads NEO4J_TEST_URI separately rather than NEO4J_URI; wipes only the test URI it explicitly knows.",
-        "Option C: golden tests use a read-only client that physically cannot wipe even if env-confused."
-      ],
-      "recommendation": "Option A is smallest. Add as a Phase 5 prerequisite."
+      "resolution": "Option A — hard-assert NEO4J_URI port matches _TEST_PORT_ALLOWLIST {7688} before any _wipe() / destructive Cypher. Applied to tests/conftest.py and verified via tests/test_conftest_isolation.py (9 tests). Port is re-read from os.environ at every _wipe() call, not at fixture instantiation, so post-creation env mutation cannot bypass the guard."
     }
   }
 }
