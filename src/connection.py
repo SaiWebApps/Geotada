@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 
     from neo4j import Driver
 
-load_dotenv(override=True)
+load_dotenv()
 
 
 class Neo4jConnectionError(RuntimeError):

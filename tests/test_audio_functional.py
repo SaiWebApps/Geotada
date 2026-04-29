@@ -26,12 +26,21 @@ def _openai_reachable() -> bool:
     if not os.getenv("OPENAI_API_KEY"):
         return False
     try:
-        resp = httpx.get("https://api.openai.com/v1/models", timeout=5.0)
-        # 401 = reachable but unauthorized (expected without Bearer token)
-        # 200 = reachable and authorized
-        return resp.status_code in (200, 401)
-    except (httpx.ProxyError, httpx.ConnectError, httpx.TimeoutException):
-        return False
+        import urllib.error
+        import urllib.request
+
+        handler = urllib.request.ProxyHandler({})
+        opener = urllib.request.build_opener(handler)
+        resp = opener.open("https://api.openai.com/v1/models", timeout=5)
+        return resp.status in (200, 401)
+    except urllib.error.HTTPError as exc:
+        return exc.code == 401
+    except Exception:
+        try:
+            resp = httpx.get("https://api.openai.com/v1/models", timeout=5.0)
+            return resp.status_code in (200, 401)
+        except (httpx.ProxyError, httpx.ConnectError, httpx.TimeoutException):
+            return False
 
 
 needs_openai = pytest.mark.skipif(
