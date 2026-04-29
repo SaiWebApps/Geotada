@@ -1,0 +1,366 @@
+{
+  "city_slug": "paris",
+  "generated_at": "2026-04-29T21:02:37.897346+00:00",
+  "inputs": {
+    "start": [
+      48.886452,
+      2.343121
+    ],
+    "duration_min": 90,
+    "city_slug": "paris",
+    "lenses": [
+      "art_culture",
+      "famous_residents"
+    ],
+    "round_trip": true,
+    "theme_hint": null,
+    "start_label": "Sacre-Coeur Basilica"
+  },
+  "total_audio_seconds": 307,
+  "total_walking_seconds": 1259,
+  "total_walk_distance_m": 777,
+  "total_planned_seconds": 4482,
+  "selected_pois": [
+    {
+      "id": "09129e39-6706-4c59-b5b9-12ec5734c714",
+      "name": "Place du Tertre",
+      "tier": 4,
+      "lat": 48.886527,
+      "lng": 2.340804,
+      "area": "Montmartre",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "5ebd4c38-fa00-4af7-b98d-fcab788201d9",
+        "ec42ec79-9518-4cb0-9796-c53464862014",
+        "16848038-7bd7-454c-8a05-4d1370e16dfc",
+        "9d9fd2e1-e3b5-487c-8146-30a43c5cf41c"
+      ]
+    },
+    {
+      "id": "07314457-4699-4d6c-bc9c-9ccf21daa0d2",
+      "name": "Lapin Agile",
+      "tier": 4,
+      "lat": 48.888731,
+      "lng": 2.339975,
+      "area": "Montmartre",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+        "ce779332-3217-4e89-8de0-82eeea03f9a0"
+      ]
+    },
+    {
+      "id": "5c6a0089-1564-4543-aacb-10083633e8d7",
+      "name": "\u00c9glise Saint-Pierre de Montmartre",
+      "tier": 4,
+      "lat": 48.886825,
+      "lng": 2.341821,
+      "area": "Montmartre",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "5f080735-d2ab-4fbb-9eee-6270e267af18",
+        "f7d2fa42-baa7-486d-b480-34ba1f642341"
+      ]
+    },
+    {
+      "id": "c1bf8d2c-1cf5-4f8f-9f87-7f2a2985c82f",
+      "name": "Sacre-Coeur Basilica",
+      "tier": 5,
+      "lat": 48.886452,
+      "lng": 2.343121,
+      "area": "Montmartre",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "8563d1ad-d914-40f1-a55d-1c533827a6cd",
+        "3319b8f1-523c-469b-88d2-afc423f7d873",
+        "7ee56278-d77c-4ad4-940a-daaf84123902",
+        "193270d2-04e7-4e2e-aa9b-3b2ba3820a82",
+        "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a"
+      ]
+    }
+  ],
+  "lens_coverage": {
+    "local_legends": 2,
+    "historic_arch": 5,
+    "waterways_views": 2,
+    "famous_residents": 2,
+    "historic_worship": 1,
+    "hidden_history": 1
+  },
+  "script": [
+    {
+      "text": "Settle in.",
+      "source_id": "GLUE_PACING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "You're standing at Place du Tertre.",
+      "source_id": "SYNTHESIZED_OPENER",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Look around. Take it in.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Among the picturesque restaurants on the square is La M\u00e8re Catherine, where the word bistro was coined.",
+      "source_id": "5ebd4c38-fa00-4af7-b98d-fcab788201d9",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "After the Napoleonic Wars, Russian soldiers came here and called for service, crying 'bistro!', meaning 'quick' in Russian.",
+      "source_id": "5ebd4c38-fa00-4af7-b98d-fcab788201d9",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Tertre means summit, and this hilltop area was once the old village square.",
+      "source_id": "ec42ec79-9518-4cb0-9796-c53464862014",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "It buzzes with activity as hundreds of street artists attempt to sell their paintings.",
+      "source_id": "ec42ec79-9518-4cb0-9796-c53464862014",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The silhouettes made here are named after Frenchman Etienne de Silhouette, who invented the technique in the 18th century.",
+      "source_id": "ec42ec79-9518-4cb0-9796-c53464862014",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "From the steps near the water tower, enjoy the view northwards to the town of St-Denis.",
+      "source_id": "16848038-7bd7-454c-8a05-4d1370e16dfc",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "In the distance you can see the long green roof and single tower of the basilica of St-Denis, where the kings of France are buried.",
+      "source_id": "16848038-7bd7-454c-8a05-4d1370e16dfc",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "This was the first Gothic church in France.",
+      "source_id": "16848038-7bd7-454c-8a05-4d1370e16dfc",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "To the right is the Stade de France, a modern stadium that can accommodate 80,000 and is used for football, athletics and rock concerts.",
+      "source_id": "16848038-7bd7-454c-8a05-4d1370e16dfc",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "From the church, go straight ahead to the place du Tertre, famous for its artists and restaurants.",
+      "source_id": "9d9fd2e1-e3b5-487c-8146-30a43c5cf41c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Exit the square at the point you came in, turn left and walk past the water tower of Montmartre.",
+      "source_id": "ce779332-3217-4e89-8de0-82eeea03f9a0",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Go to the steps and enjoy the view northwards.",
+      "source_id": "ce779332-3217-4e89-8de0-82eeea03f9a0",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Turn right into rue des Saules and continue until you reach the vineyard on your right, and the Lapin Agile cabaret ahead.",
+      "source_id": "ce779332-3217-4e89-8de0-82eeea03f9a0",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Just below the vineyard stands the picturesque little cabaret bar, the Agile Rabbit \u2014 Lapin Agile \u2014 with its sign showing a rabbit running away from the cooking pot.",
+      "source_id": "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The name is a pun, as the artist who painted the sign was called A.",
+      "source_id": "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Gill.",
+      "source_id": "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Many impoverished artists, including Picasso, Modigliani and Utrillo, used to enjoy the show here and pay for their seat with their paintings.",
+      "source_id": "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Unfortunately the owner sold them before the artists became famous.",
+      "source_id": "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "This is the oldest surviving cabaret in Paris and, although small scale, it is very French and still open to this day.",
+      "source_id": "5d99aca6-4ef5-4493-8e35-c1ca478cec69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Leave the Sacr\u00e9-C\u0153ur, turn right into rue Aza\u00efs, and then second right, and you will see the small church of St-Pierre on your right.",
+      "source_id": "f7d2fa42-baa7-486d-b480-34ba1f642341",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The plain fa\u00e7ade with its modern bronze doors hides an ancient church that once belonged to the Benedictine order of nuns, whose convent stood at the top of the hill.",
+      "source_id": "5f080735-d2ab-4fbb-9eee-6270e267af18",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The church was consecrated in 1147 and is one of the oldest in Paris, started 16 years before Notre-Dame.",
+      "source_id": "5f080735-d2ab-4fbb-9eee-6270e267af18",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The walls splay outwards under the weight of the roof, showing how necessary the system of buttresses was.",
+      "source_id": "5f080735-d2ab-4fbb-9eee-6270e267af18",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The colourful windows are modern, replaced after bomb damage during World War II.",
+      "source_id": "5f080735-d2ab-4fbb-9eee-6270e267af18",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The window and the bronze doors tell the story of St Peter, patron of the church.",
+      "source_id": "5f080735-d2ab-4fbb-9eee-6270e267af18",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 3
+    },
+    {
+      "text": "Spend extra time at the top of the hill from where the view over Paris is astounding.",
+      "source_id": "8563d1ad-d914-40f1-a55d-1c533827a6cd",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The bell tower houses the largest bell in France \u2014 big enough for 36 people to stand underneath.",
+      "source_id": "3319b8f1-523c-469b-88d2-afc423f7d873",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Built by subscription after the French defeat by Prussia in 1870, this massive basilica was designed by architect Paul Abadie and largely inspired by the Romanesque basilica of St Front de P\u00e9rigueux.",
+      "source_id": "7ee56278-d77c-4ad4-940a-daaf84123902",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "It is made from unusually white stone, said to self-clean in the rain.",
+      "source_id": "7ee56278-d77c-4ad4-940a-daaf84123902",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Two statues of the saint protectors of France stand guard on horseback outside: St Louis holding the Crown of Thorns and St Joan of Arc.",
+      "source_id": "7ee56278-d77c-4ad4-940a-daaf84123902",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The bell tower houses the largest bell in France, big enough for 36 people to stand underneath.",
+      "source_id": "7ee56278-d77c-4ad4-940a-daaf84123902",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "When building the church, massive pylons had to be sunk into the nearby hill to support it.",
+      "source_id": "7ee56278-d77c-4ad4-940a-daaf84123902",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "American bombs nearly destroyed the church at the end of World War II.",
+      "source_id": "7ee56278-d77c-4ad4-940a-daaf84123902",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Inside the basilica, a huge mosaic depicts all the saints of France \u2014 the purpose to which the church is dedicated.",
+      "source_id": "193270d2-04e7-4e2e-aa9b-3b2ba3820a82",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Montmartre grew on a natural hill made of gypsum rock, which was quarried for centuries to make plaster of Paris.",
+      "source_id": "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Until the 19th century, it was a rural area with farms and windmills.",
+      "source_id": "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "In the 1860s, the outlying villages were urbanized by the ever-growing capital.",
+      "source_id": "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "As the centre of the city became increasingly bourgeois, the poor were pushed out and began to turn their hands to any trade in order to survive.",
+      "source_id": "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Montmartre had its fair share of washerwomen, rag pickers, labourers and, of course, prostitutes.",
+      "source_id": "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Many consoled themselves with alcohol, and cafes and bars, where cheap and strong absinthe could be drunk, proliferated.",
+      "source_id": "7bdbb9ca-eac1-48d9-8152-a8a8ec49a44a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "You've now completed the loop and are back where you started.",
+      "source_id": "GLUE_CLOSING",
+      "source_type": "glue",
+      "stop_idx": 3
+    }
+  ],
+  "validation": {
+    "untraceable_sentences": [],
+    "forbidden_phrase_hits": []
+  }
+}

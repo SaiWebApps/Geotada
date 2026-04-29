@@ -138,21 +138,41 @@ def generate(
     sentences: list[Sentence] = []
 
     poi_beats = beat_sequence.poi_beats
-    consumed_in_cold_open: set[str] = set()
+    # consumed_beat_ids tracks every beat already emitted across the
+    # whole script, so transit + anchor stages never emit the same
+    # beat twice. Without this, a transit beat picked from `current`'s
+    # pool (or a transit beat shared by adjacent POIs) re-appeared in
+    # `_build_anchor_block` after the transit stage.
+    consumed_beat_ids: set[str] = set()
     if poi_beats:
         cold_open_sents, consumed_in_cold_open = _build_cold_open(
             poi_beats[0], client, stop_idx=0
         )
         sentences.extend(cold_open_sents)
+        consumed_beat_ids |= consumed_in_cold_open
 
     for stop_idx, current in enumerate(poi_beats):
         if stop_idx > 0:
             previous = poi_beats[stop_idx - 1]
-            sentences.extend(
-                _build_transit(previous, current, route, client, stop_idx=stop_idx)
+            transit_sents = _build_transit(
+                previous,
+                current,
+                route,
+                client,
+                stop_idx=stop_idx,
+                consumed_beat_ids=consumed_beat_ids,
             )
-        skip = consumed_in_cold_open if stop_idx == 0 else set()
-        sentences.extend(_build_anchor_block(current, stop_idx, skip_beat_ids=skip))
+            sentences.extend(transit_sents)
+            for s in transit_sents:
+                if s.source_type == "beat":
+                    consumed_beat_ids.add(s.source_id)
+        anchor_sents = _build_anchor_block(
+            current, stop_idx, skip_beat_ids=consumed_beat_ids
+        )
+        sentences.extend(anchor_sents)
+        for s in anchor_sents:
+            if s.source_type == "beat":
+                consumed_beat_ids.add(s.source_id)
 
     if poi_beats:
         sentences.extend(
@@ -297,9 +317,17 @@ def _build_transit(
     client: GlueClient,
     *,
     stop_idx: int,
+    consumed_beat_ids: set[str] | None = None,
 ) -> list[Sentence]:
-    """Insert a corpus transit beat when present; otherwise a single glue nav."""
-    transit_beat = _find_transit_beat(previous) or _find_transit_beat(current)
+    """Insert a corpus transit beat when present; otherwise a single glue nav.
+
+    ``consumed_beat_ids`` filters transit candidates so a beat already
+    emitted earlier in the script (e.g. by `current`'s prior anchor
+    block, or by a previous transit) isn't picked again. Without this,
+    multi-anchor tours emitted the same transit beat 2-3 times.
+    """
+    consumed = consumed_beat_ids or set()
+    transit_beat = _find_transit_beat(previous, consumed) or _find_transit_beat(current, consumed)
     if transit_beat is not None and transit_beat.script_body:
         return _beat_to_sentences(transit_beat, stop_idx)
 
@@ -320,9 +348,14 @@ def _build_transit(
     ]
 
 
-def _find_transit_beat(stop: POIBeats) -> BeatRef | None:
-    """Return the first beat whose narrative_function marks it as a transit."""
+def _find_transit_beat(
+    stop: POIBeats, consumed: set[str] | None = None
+) -> BeatRef | None:
+    """Return the first transit-class beat that hasn't been emitted yet."""
+    skip = consumed or set()
     for beat in stop.beats:
+        if beat.id in skip:
+            continue
         nf = (beat.narrative_function or "").lower()
         if nf in {"transition", "transit", "navigation"}:
             return beat

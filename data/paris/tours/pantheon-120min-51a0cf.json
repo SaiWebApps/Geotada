@@ -1,0 +1,633 @@
+{
+  "city_slug": "paris",
+  "generated_at": "2026-04-29T21:02:38.295727+00:00",
+  "inputs": {
+    "start": [
+      48.846217,
+      2.34604
+    ],
+    "duration_min": 120,
+    "city_slug": "paris",
+    "lenses": [
+      "literary_heritage",
+      "dark_history"
+    ],
+    "round_trip": true,
+    "theme_hint": null,
+    "start_label": "Pantheon"
+  },
+  "total_audio_seconds": 798,
+  "total_walking_seconds": 1841,
+  "total_walk_distance_m": 1136,
+  "total_planned_seconds": 5976,
+  "selected_pois": [
+    {
+      "id": "1f9289d8-8e80-41fe-9efd-6f4047986381",
+      "name": "Musee de Cluny",
+      "tier": 3,
+      "lat": 48.850474,
+      "lng": 2.343391,
+      "area": "Latin Quarter",
+      "dwell_seconds": 150,
+      "beat_ids": [
+        "283f8902-93f5-4db1-ac0b-37259bf217ec",
+        "900faf06-51d2-43c6-a579-9afb2e72fa56"
+      ]
+    },
+    {
+      "id": "da9912a4-80b4-4112-8528-ab95da977076",
+      "name": "The Sorbonne",
+      "tier": 5,
+      "lat": 48.848643,
+      "lng": 2.342038,
+      "area": "Latin Quarter",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+        "9cdb89a7-757d-4ebd-85f7-2605e8d06eef",
+        "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+        "428ff75b-29a6-4619-af1d-80313d6c3d08",
+        "b00decd0-087e-4786-976e-fa20425cdca8",
+        "d44d2e6c-e85b-405f-aedf-79fdc0cb8306",
+        "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+        "dbfa4cdd-bde7-48ca-b72b-8af214ac0445"
+      ]
+    },
+    {
+      "id": "9bc3fcb6-e3d7-4eb9-928a-706ae5ad03bc",
+      "name": "Pantheon",
+      "tier": 4,
+      "lat": 48.846217,
+      "lng": 2.34604,
+      "area": "Latin Quarter",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "b64ce38d-fb51-4f84-9136-80d816d3e002",
+        "98ea4d7a-afbe-4f9d-b7fe-ed67f1000c85",
+        "0b7888cb-c894-4ed3-97b6-4bb5a8721686",
+        "2dd178e3-658a-4a7c-8dc2-654318f62bc9",
+        "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+        "142060a7-9e31-44b7-a2af-beb223b2d885",
+        "ca9c8bc4-4c48-4239-ad54-ed00301c39a7",
+        "f4e7d0fd-72af-4359-b7a0-7cb1a52572ba"
+      ]
+    }
+  ],
+  "lens_coverage": {
+    "visual_art": 2,
+    "historic_arch": 3,
+    "hidden_history": 5,
+    "literary_heritage": 1,
+    "social_change": 3,
+    "science_tech": 1,
+    "dark_history": 1,
+    "sacred_traditions": 1,
+    "famous_residents": 1
+  },
+  "script": [
+    {
+      "text": "Settle in.",
+      "source_id": "GLUE_PACING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "You're standing at Musee de Cluny.",
+      "source_id": "SYNTHESIZED_OPENER",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Look around. Take it in.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "The star of the Cluny is the exquisite series of six Lady and the Unicorn tapestries \u2014 as medieval-as-can-be in their delicate rendering of a noble lady introducing a delighted unicorn to the five senses: taste, hearing, sight, smell, and touch.",
+      "source_id": "283f8902-93f5-4db1-ac0b-37259bf217ec",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Each tapestry is a world complete in itself, woven with extraordinary care, the figures set against a red mille-fleurs background thick with symbolic plants and animals.",
+      "source_id": "283f8902-93f5-4db1-ac0b-37259bf217ec",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "They are among the finest medieval tapestries in existence, and seeing them in person \u2014 in the dim, intimate gallery the Cluny has built for them \u2014 is one of the quiet revelations of Paris.",
+      "source_id": "283f8902-93f5-4db1-ac0b-37259bf217ec",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The Cluny Museum is a treasure trove of Middle Ages art filling old Roman baths \u2014 one of the most striking pairings in Paris, where medieval goldsmithing, stained glass, and Notre-Dame carvings sit inside walls that once steamed with Roman heat.",
+      "source_id": "900faf06-51d2-43c6-a579-9afb2e72fa56",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The building itself is a layered monument: Roman thermal baths at the base, a medieval mansion above, and inside, close-up looks at artifacts that span the centuries between.",
+      "source_id": "900faf06-51d2-43c6-a579-9afb2e72fa56",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "This is not a place of distant display cases \u2014 the Cluny brings you face to face with the craftsmanship of an era that built Notre-Dame.",
+      "source_id": "900faf06-51d2-43c6-a579-9afb2e72fa56",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 1
+    },
+    {
+      "text": "In the 13th century, the Latin Quarter became the centre of learning for all of Western Europe.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The first official reference to the Universitas Magistrorum et Scolarium Parisiensium dates from 1221.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Initially it had no permanent home \u2014 teaching took place in the open air, on Place Maubert and mainly on rue de Fouarre nearby.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Teachers stood on wooden trestles while students sat on their own fodder \u2014 'fouarre' in old French \u2014 hence the street's name.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Brawls and political agitation were so bad that in 1358 the Regent and future Charles V had the street barred with chains on both sides.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Among the greatest thinkers who came to teach: Albert the Great, Thomas Aquinas, and Brunetto Latini, master of Dante.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Dante himself came to study on rue de Fouarre in the early 14th century.",
+      "source_id": "178f8f4d-69ee-47f8-944f-7d7e7292c3c5",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "In 1253, a college was founded by Robert, the chaplain and confessor of Saint Louis.",
+      "source_id": "9cdb89a7-757d-4ebd-85f7-2605e8d06eef",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Born to a humble family in the village of Sorbon in the Ardennes, he became so great a scholar that the King had him dine at his table.",
+      "source_id": "9cdb89a7-757d-4ebd-85f7-2605e8d06eef",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The college became the seat of the faculty of theology and was known as La Sorbonne, after the native village of its founder.",
+      "source_id": "9cdb89a7-757d-4ebd-85f7-2605e8d06eef",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Its expansion was so spectacular that it soon overshadowed other institutions and many foreigners still mistake it for the entire University of Paris.",
+      "source_id": "9cdb89a7-757d-4ebd-85f7-2605e8d06eef",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The 5th arrondissement has the longest history of any district in mainland Paris, stretching back to the Roman occupation of Gaul.",
+      "source_id": "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "When the growing population of the Ile de la Cite spilled onto the left bank, Roman villas appeared on the slopes of Mount Leucotitius \u2014 now the Montagne Sainte-Genevieve.",
+      "source_id": "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "A north-south road, the cardo, ran along what is now rue Saint-Jacques, while a secondary cardo followed today's Boulevard Saint-Michel.",
+      "source_id": "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "By the end of the second century, this was a desirable neighbourhood of luxury \u2014 archaeological finds including marble and polychrome mosaics from rue de la Harpe attest to this.",
+      "source_id": "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The Romans built three bath complexes: the northern ones at Cluny, the eastern ones at what is now the College de France, and the southern ones near rue Gay-Lussac.",
+      "source_id": "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "An aqueduct ran all the way from the Rungis basin near present-day Orly airport to supply them with water.",
+      "source_id": "f8d79b25-d745-4e9a-8aab-186b939b4b69",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The enterprising Richelieu, who had been a student and later became dean of the Sorbonne, undertook its renovation.",
+      "source_id": "428ff75b-29a6-4619-af1d-80313d6c3d08",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "He laid the cornerstone of its chapel in 1635, designed by architect Jacques Lemercier.",
+      "source_id": "428ff75b-29a6-4619-af1d-80313d6c3d08",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "However, Richelieu's project was purely architectural \u2014 little was done to reform the curriculum, which until the Revolution remained restricted to theology.",
+      "source_id": "428ff75b-29a6-4619-af1d-80313d6c3d08",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The beautiful compound, the work of Lemercier and Le Brun, was given rough treatment by the anti-clerical Revolutionaries.",
+      "source_id": "428ff75b-29a6-4619-af1d-80313d6c3d08",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "It was entirely reconstructed and expanded in the 19th century, including faculties of science and letters, inaugurated in 1901 with murals by Puvis de Chavannes.",
+      "source_id": "428ff75b-29a6-4619-af1d-80313d6c3d08",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The medieval Latin Quarter was a world of scholarly mischief.",
+      "source_id": "b00decd0-087e-4786-976e-fa20425cdca8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Neighbourhood taverns and brothels supplied the rowdy student population with cheap wines fit to 'boil the potted heads of wolves.' This was the Quarter that Francois Villon roamed in the 15th century, and of which Rabelais gave a saucy account.",
+      "source_id": "b00decd0-087e-4786-976e-fa20425cdca8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Favourite pranks included placing fried turds in graduates' hoods, pinning fox-tails or hare's ears to students' buttocks, making dogs run about with pots tied to their tails, and harassing maidservants.",
+      "source_id": "b00decd0-087e-4786-976e-fa20425cdca8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The church was a special target among these roguish, anticlerical youths.",
+      "source_id": "b00decd0-087e-4786-976e-fa20425cdca8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "In Rabelais' story, the hero Pantagruel comes to study in Paris and visits the world-renowned library of the Abbey of Saint-Victor, which on the eve of the Revolution contained nearly 40,000 volumes and over 20,000 manuscripts.",
+      "source_id": "b00decd0-087e-4786-976e-fa20425cdca8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Place Maubert \u2014 'la Maube' \u2014 had been home to rowdy students and ruffians since the Middle Ages, a place of crime, vice, and public executions.",
+      "source_id": "d44d2e6c-e85b-405f-aedf-79fdc0cb8306",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Erasmus called it 'the cesspit of la Maube.' In the early 20th century it was frequented by terrifying 'Apaches' and hoodlums.",
+      "source_id": "d44d2e6c-e85b-405f-aedf-79fdc0cb8306",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "In Down and Out in Paris and London, published in 1933, George Orwell described the neighbouring rue du Pot-de-Fer \u2014 where he lived at number 6 \u2014 as 'a ravine of tall, leprous houses, lurching towards one another in queer attitudes, as though they had all been frozen in the act of collapse.' Amidst destitute Arabs, Poles, and Italians, respectable French shopkeepers quietly piled up small fortunes.",
+      "source_id": "d44d2e6c-e85b-405f-aedf-79fdc0cb8306",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "In May 1968, a wind of revolt blew across the planet.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Students transformed the Latin Quarter into a battlefield \u2014 not from premeditated political motivation but from a vague discontent with capitalism, imperialism, consumerism, and bourgeois rigidity.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "'L'imagination au pouvoir' was scribbled on many a wall.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Barricades were erected on all main arteries, cobblestones were dug from ancient streets and hurled at riot police, trees along the boulevards were felled.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "By autumn, the riots had died out.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "But the State proceeded to dismantle and decentralize the University, scattering students across the Paris area into numbered compounds \u2014 Paris I through XIII.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The Latin Quarter lost its old cobbled streets, replaced with dull asphalt, and the arrondissement was forever changed.",
+      "source_id": "2ce3a94e-bdf6-4fff-a7b4-a887ae2a30fe",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Napoleon restructured French higher education by founding the celebrated Grandes Ecoles \u2014 elite engineering schools outside the university framework.",
+      "source_id": "dbfa4cdd-bde7-48ca-b72b-8af214ac0445",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The most prestigious, the Ecole Polytechnique, trains France's top mathematicians and remains a military school.",
+      "source_id": "dbfa4cdd-bde7-48ca-b72b-8af214ac0445",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Its cadets, the celebrated 'X', take part in the 14 July parade down the Champs-Elysees.",
+      "source_id": "dbfa4cdd-bde7-48ca-b72b-8af214ac0445",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Until 1976, it was located in the heart of the Latin Quarter in the premises of the medieval College de Navarre on rue de la Montagne-Sainte-Genevieve.",
+      "source_id": "dbfa4cdd-bde7-48ca-b72b-8af214ac0445",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Its transfer to Palaiseau deprived the Quarter of some festive pomp \u2014 previously, on ceremonial occasions, cadets could be seen passing in their Napoleonic uniforms bearing slender swords.",
+      "source_id": "dbfa4cdd-bde7-48ca-b72b-8af214ac0445",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 2
+    },
+    {
+      "text": "This state-capitol-style Neoclassical monument celebrates France's illustrious history and people, balances a Foucault pendulum, and is the final resting place of many French VIPs.",
+      "source_id": "b64ce38d-fb51-4f84-9136-80d816d3e002",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The vast interior \u2014 360 feet long, 280 feet wide, and 270 feet high \u2014 is evenly lit and dominated by a 15,000-ton dome made of a core of iron ribs covered with stone.",
+      "source_id": "b64ce38d-fb51-4f84-9136-80d816d3e002",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Inside that dome are actually three nested domes, supported by flying buttresses, which you can appreciate in a cross-section model displayed near the altar.",
+      "source_id": "b64ce38d-fb51-4f84-9136-80d816d3e002",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "A Foucault pendulum swings gracefully at the end of a cable suspended from the towering dome.",
+      "source_id": "98ea4d7a-afbe-4f9d-b7fe-ed67f1000c85",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "It was here in 1851 that the scientist L\u00e9on Foucault first demonstrated the rotation of the earth.",
+      "source_id": "98ea4d7a-afbe-4f9d-b7fe-ed67f1000c85",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The great length of the cable \u2014 220 feet \u2014 produces a slow enough oscillation to make the rotation more obvious.",
+      "source_id": "98ea4d7a-afbe-4f9d-b7fe-ed67f1000c85",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Stand a few minutes and watch the pendulum's arc appear to shift as you and the earth rotate beneath it.",
+      "source_id": "98ea4d7a-afbe-4f9d-b7fe-ed67f1000c85",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The pendulum can also be used to tell time: check your watch against the 24-hour dial that surrounds it.",
+      "source_id": "98ea4d7a-afbe-4f9d-b7fe-ed67f1000c85",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The Pantheon's tenants were shuffled with grim political theater.",
+      "source_id": "0b7888cb-c894-4ed3-97b6-4bb5a8721686",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "When revolutionary orator Mirabeau fell into disgrace in 1794 \u2014 his secret dealings with the king exposed \u2014 his body was exhumed and thrown into a common grave.",
+      "source_id": "0b7888cb-c894-4ed3-97b6-4bb5a8721686",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "His vacant spot was given to Marat, who met the same fate in 1795.",
+      "source_id": "0b7888cb-c894-4ed3-97b6-4bb5a8721686",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Voltaire and Rousseau were likewise ejected by the Royalists in 1815, only to regain their places when the Bourbon dynasty fell.",
+      "source_id": "0b7888cb-c894-4ed3-97b6-4bb5a8721686",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "They have since been joined by dozens of luminaries: Emile Zola, Bergson, Saint-Exupery, and Jean Jaures, all occupying the sizable crypt originally built for the monks of the abbey.",
+      "source_id": "0b7888cb-c894-4ed3-97b6-4bb5a8721686",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "On the left wall of the nave, find the mural of St. Genevi\u00e8ve dressed in white, saving the fledgling city from Attila the Hun \u2014 the event that marks the birth of an independent Paris.",
+      "source_id": "2dd178e3-658a-4a7c-8dc2-654318f62bc9",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "When Genevi\u00e8ve died in AD 512, she was buried here atop what was then the city's highest hill, at 200 feet elevation.",
+      "source_id": "2dd178e3-658a-4a7c-8dc2-654318f62bc9",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Even when Revolutionaries stripped the church of its Christian elements and publicly burned Genevi\u00e8ve's relics, the French still honored her as their champion.",
+      "source_id": "2dd178e3-658a-4a7c-8dc2-654318f62bc9",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "You can see her immortalized in the frescoed dome and in the mosaic over the altar wall \u2014 always depicted as the lady in white.",
+      "source_id": "2dd178e3-658a-4a7c-8dc2-654318f62bc9",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "In 1744, Louis XV fell gravely ill and vowed to build a new church for Saint Genevieve if he recovered, recalling how in the 5th century she had healed her countrymen.",
+      "source_id": "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The clergy, seeing divine punishment for his debauchery, urged him to also end his affair with the Duchesse de Chateauroux, the last of four sisters he had seduced.",
+      "source_id": "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The king recovered, promptly resumed his liaison, and would have forgotten the church entirely, but the monks of the Abbey of Sainte-Genevieve held him to his word.",
+      "source_id": "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Architect Soufflot was commissioned to build the colossal edifice \u2014 110 metres long, 84 metres wide, and 83 metres tall \u2014 crowning the levelled hilltop.",
+      "source_id": "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "But the venture ended in tragedy: ancient potters had riddled the subsoil with clay pits, making foundations treacherous.",
+      "source_id": "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Soufflot was showered with accusations and died a broken man before his monument was completed.",
+      "source_id": "ee115ca8-b362-42ba-8a5f-512ebb592a08",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "In 1744, an ailing King Louis XV was miraculously healed by St. Genevi\u00e8ve, the city's patron saint, and he thanked her by replacing her ruined church with a more fitting tribute.",
+      "source_id": "142060a7-9e31-44b7-a2af-beb223b2d885",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "By the time the church was completed in 1791, however, the secular-minded Revolution was in full swing, and the church was converted into a nonreligious mausoleum honoring the 'Champions of French liberty': Voltaire, Rousseau, and others.",
+      "source_id": "142060a7-9e31-44b7-a2af-beb223b2d885",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "On the entrance pediment \u2014 inspired by the ancient Pantheon in Rome \u2014 the Revolutionaries carved the inscription: 'To the great men of the Fatherland.'",
+      "source_id": "142060a7-9e31-44b7-a2af-beb223b2d885",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "In the crypt below, a panoply of greats is buried.",
+      "source_id": "ca9c8bc4-4c48-4239-ad54-ed00301c39a7",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Rousseau is along the right wall as you enter, while Voltaire faces him impishly from across the hall.",
+      "source_id": "ca9c8bc4-4c48-4239-ad54-ed00301c39a7",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Behind Voltaire is Soufflot, the architect who built the Panth\u00e9on.",
+      "source_id": "ca9c8bc4-4c48-4239-ad54-ed00301c39a7",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Straight ahead are Victor Hugo (Les Mis\u00e9rables, The Hunchback of Notre-Dame), Alexandre Dumas (The Three Musketeers, The Count of Monte Cristo), and Louis Braille, who invented the script for the blind.",
+      "source_id": "ca9c8bc4-4c48-4239-ad54-ed00301c39a7",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Double back and turn left to find scientist Marie Curie \u2014 follow the glow \u2014 and various World War II dead, including Holocaust victims and Jean Moulin, the hero of the Resistance.",
+      "source_id": "ca9c8bc4-4c48-4239-ad54-ed00301c39a7",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Under the dome stand four statue groups marking the Revolution phase of French history.",
+      "source_id": "f4e7d0fd-72af-4359-b7a0-7cb1a52572ba",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Denis Diderot created the Encyclop\u00e9die that championed secular knowledge.",
+      "source_id": "f4e7d0fd-72af-4359-b7a0-7cb1a52572ba",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Jean-Jacques Rousseau promoted the idea of a social contract between government and the people.",
+      "source_id": "f4e7d0fd-72af-4359-b7a0-7cb1a52572ba",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Napoleon on horseback is surrounded by his generals.",
+      "source_id": "f4e7d0fd-72af-4359-b7a0-7cb1a52572ba",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "And the Restoration group shows orators and bureaucrats who served the state as it sorted through the tumult of the Revolution and Napoleonic era and finally restored the monarchy \u2014 but this time kings were somewhat limited by a constitution.",
+      "source_id": "f4e7d0fd-72af-4359-b7a0-7cb1a52572ba",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "You've now completed the loop and are back where you started.",
+      "source_id": "GLUE_CLOSING",
+      "source_type": "glue",
+      "stop_idx": 2
+    }
+  ],
+  "validation": {
+    "untraceable_sentences": [],
+    "forbidden_phrase_hits": []
+  }
+}
