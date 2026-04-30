@@ -31,6 +31,7 @@ from .routing import (
     envelope_radius_m,
     haversine_m,
     insertion_cost_seconds,
+    pace_corrected_walk_seconds,
     summarise_route,
     target_audio_seconds,
     walk_budget_seconds,
@@ -84,6 +85,19 @@ SPINE_AREA_TYPE_PRIORITY: tuple[str, ...] = (
     "district",
     "city",
 )
+
+# Phase 7 (2026-04-29) fill pass — target_audio is a floor, not a soft stop.
+# After the main greedy + endpoint-pull, if delivered audio is still well
+# below target, run a relaxed-cost-efficiency second pass that adds
+# anchors until the audio floor is met or walk budget is nearly spent.
+# Concorde 180-min one-way Phase 6 case: 5 anchors selected, 25-min audio
+# proxy, 89-min target, 41/60-min walk used. Greedy stalls because
+# `score / extra_cost` no longer favours additions. Phase 7 fill pass
+# adds higher-walk-cost candidates because being below the audio floor
+# matters more than route efficiency at that point.
+FILL_PASS_AUDIO_FLOOR_FRAC: float = 0.8
+FILL_PASS_WALK_BUDGET_FRAC: float = 0.95
+
 
 # Endpoint-pull (Q1, one-way only): after greedy completes, force-include
 # the highest-scoring un-selected POI in the far half of the reachable
@@ -421,6 +435,25 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
                     selected = pulled
                     break
 
+    # Phase 7 fill pass — target_audio is a floor. Greedy +
+    # endpoint-pull may emit a route well below the audio target when
+    # cost-efficient additions run out. Add anchors with a relaxed
+    # cost-efficiency threshold until target is met or walk budget is
+    # nearly spent. See FILL_PASS_* constants for thresholds.
+    selected = _apply_fill_pass(
+        selected,
+        candidates,
+        spine=spine,
+        interest=interest,
+        snapshot=snapshot,
+        start_lat=start_lat,
+        start_lng=start_lng,
+        round_trip=input.round_trip,
+        walk_budget=walk_budget,
+        audio_budget=audio_budget,
+        hard_anchor_cap=HARD_ANCHOR_CAP,
+    )
+
     route = summarise_route(
         selected,
         start_lat=start_lat,
@@ -430,6 +463,130 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
         spine_area=spine,
     )
     return _attach_tourability_if_yellow(route, assessment)
+
+
+def _apply_fill_pass(
+    selected: list[POI],
+    candidates: list[POI],
+    *,
+    spine: str | None,
+    interest: frozenset[str],
+    snapshot: CorpusSnapshot,
+    start_lat: float,
+    start_lng: float,
+    round_trip: bool,
+    walk_budget: int,
+    audio_budget: int,
+    hard_anchor_cap: int,
+) -> list[POI]:
+    """Phase 7: fill until audio floor is met or walk budget hits 95%.
+
+    Score-first ranking (not score / cost) so we keep adding genuinely
+    rich anchors at the price of a higher walk cost. Stops when:
+      - delivered audio (sum of dwell-seconds proxy) ≥ ``FILL_PASS_AUDIO_FLOOR_FRAC × audio_budget``;
+      - cumulative walk would exceed ``FILL_PASS_WALK_BUDGET_FRAC × walk_budget``;
+      - route hits ``hard_anchor_cap``;
+      - no remaining candidate fits.
+
+    Insertions go through ``insertion_cost_seconds`` so the route stays
+    geometrically sane. The post-endpoint-pull last-anchor (one-way
+    routes) is preserved by clamping insertion idx to interior positions
+    when the route already has ≥2 stops on a one-way path.
+    """
+    if not selected or not candidates:
+        return selected
+
+    floor_audio = audio_budget * FILL_PASS_AUDIO_FLOOR_FRAC
+    walk_cap = int(walk_budget * FILL_PASS_WALK_BUDGET_FRAC)
+
+    consumed_audio = sum(compute_dwell_seconds(p.tier) for p in selected)
+    if consumed_audio >= floor_audio:
+        return selected  # already met; no fill needed
+
+    consumed_walk = _full_route_walk_seconds(
+        selected, start_lat=start_lat, start_lng=start_lng, round_trip=round_trip
+    )
+    if consumed_walk >= walk_cap:
+        return selected  # walk already saturated; no slack to fill
+
+    selected_ids = {p.id for p in selected}
+    pool = [c for c in candidates if c.id not in selected_ids]
+    pool.sort(key=lambda c: (-poi_score(c, spine, interest, snapshot), c.id))
+
+    # On a one-way path with ≥2 stops, treat the last anchor as the
+    # endpoint (placed by endpoint-pull) and never insert after it.
+    preserve_endpoint = (not round_trip) and len(selected) >= 2
+
+    for cand in pool:
+        if len(selected) >= hard_anchor_cap:
+            break
+        if consumed_audio >= floor_audio:
+            break
+        extra, idx = insertion_cost_seconds(
+            cand,
+            selected,
+            start_lat=start_lat,
+            start_lng=start_lng,
+            round_trip=round_trip,
+        )
+        if preserve_endpoint and idx >= len(selected):
+            # Best position was after the endpoint; clamp to just before it
+            # and recompute extra for that constrained position.
+            idx = len(selected) - 1
+            extra = _insertion_extra_at_index(
+                cand,
+                selected,
+                idx,
+                start_lat=start_lat,
+                start_lng=start_lng,
+                round_trip=round_trip,
+            )
+        if consumed_walk + extra > walk_cap:
+            continue
+        selected = selected[:idx] + [cand] + selected[idx:]
+        consumed_walk += extra
+        consumed_audio += compute_dwell_seconds(cand.tier)
+
+    return selected
+
+
+def _insertion_extra_at_index(
+    cand: POI,
+    selected: list[POI],
+    idx: int,
+    *,
+    start_lat: float,
+    start_lng: float,
+    round_trip: bool,
+) -> int:
+    """Walk-time delta from inserting `cand` at exactly position `idx`."""
+    base_coords: list[tuple[float, float]] = [(start_lat, start_lng), *((p.lat, p.lng) for p in selected)]
+    if round_trip:
+        base_coords.append((start_lat, start_lng))
+    base = 0
+    for (lat1, lng1), (lat2, lng2) in zip(base_coords, base_coords[1:]):
+        base += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+    new_pois = selected[:idx] + [cand] + selected[idx:]
+    new_coords: list[tuple[float, float]] = [(start_lat, start_lng), *((p.lat, p.lng) for p in new_pois)]
+    if round_trip:
+        new_coords.append((start_lat, start_lng))
+    new_total = 0
+    for (lat1, lng1), (lat2, lng2) in zip(new_coords, new_coords[1:]):
+        new_total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+    return new_total - base
+
+
+def _full_route_walk_seconds(
+    pois: list[POI], *, start_lat: float, start_lng: float, round_trip: bool
+) -> int:
+    coords: list[tuple[float, float]] = [(start_lat, start_lng)]
+    coords.extend((p.lat, p.lng) for p in pois)
+    if round_trip:
+        coords.append((start_lat, start_lng))
+    total = 0
+    for (lat1, lng1), (lat2, lng2) in zip(coords, coords[1:]):
+        total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+    return total
 
 
 # Endpoint-pull will drop at most this many incumbents to make room for

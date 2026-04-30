@@ -134,9 +134,14 @@ def generate(
     """
     from .validation import validate_script  # avoid import cycle
 
+    from .beat_select import reorder_final_stop_for_closing  # avoid cycles
+
     client = glue_client or MockGlueClient()
     sentences: list[Sentence] = []
 
+    # Phase 7 Fix 5: ensure the final stop's last beat is closing-friendly
+    # (callback > climax > longest body). Closing glue lands after this.
+    beat_sequence = reorder_final_stop_for_closing(beat_sequence)
     poi_beats = beat_sequence.poi_beats
     # consumed_beat_ids tracks every beat already emitted across the
     # whole script, so transit + anchor stages never emit the same
@@ -146,7 +151,7 @@ def generate(
     consumed_beat_ids: set[str] = set()
     if poi_beats:
         cold_open_sents, consumed_in_cold_open = _build_cold_open(
-            poi_beats[0], client, stop_idx=0
+            beat_sequence, route, client, stop_idx=0
         )
         sentences.extend(cold_open_sents)
         consumed_beat_ids |= consumed_in_cold_open
@@ -215,15 +220,35 @@ def generate(
 
 
 def _build_cold_open(
-    first_stop: POIBeats, client: GlueClient, *, stop_idx: int
+    beat_sequence: BeatSequence,
+    route: Route,
+    client: GlueClient,
+    *,
+    stop_idx: int,
 ) -> tuple[list[Sentence], set[str]]:
     """Cold open: prefer a stop_orientation beat; otherwise synthesize.
+
+    Phase 7 (2026-04-29) added Area-level fallback: when the start POI
+    has no stop_orientation beat, search the rest of the Route for a
+    sibling POI that shares an Area with the start POI and carries one.
+    The found beat is hoisted to the cold-open and added to
+    ``consumed_beat_ids`` so it doesn't double-fire at its original
+    stop. Falls through to SYNTHESIZED_OPENER only when no Area-mate
+    carries an orientation beat either.
 
     Returns ``(sentences, consumed_beat_ids)``. The anchor-block stage
     skips any beat in ``consumed_beat_ids`` so cold-open content isn't
     emitted twice.
     """
+    from .beat_select import find_area_orientation_beat  # avoid cycles
+
+    poi_beats = beat_sequence.poi_beats
+    first_stop = poi_beats[stop_idx]
     orientation = _find_orientation_beat(first_stop)
+    if orientation is None:
+        orientation = find_area_orientation_beat(
+            beat_sequence, route, start_idx=stop_idx
+        )
     sentences: list[Sentence] = []
     consumed: set[str] = set()
 
@@ -289,17 +314,32 @@ def _find_orientation_beat(stop: POIBeats) -> BeatRef | None:
 # ---------------------------------------------------------------------------
 
 
+_TRANSIT_NARRATIVE_FUNCTIONS: frozenset[str] = frozenset(
+    {"transition", "transit", "navigation"}
+)
+
+
 def _build_anchor_block(
     stop: POIBeats,
     stop_idx: int,
     *,
     skip_beat_ids: set[str] | None = None,
 ) -> list[Sentence]:
-    """Stream the pre-ordered beats; skip ones already emitted by cold-open."""
+    """Stream the pre-ordered beats; skip cold-open and transit-class beats.
+
+    Phase 7: transit-class beats are routed only through ``_build_transit``
+    after a direction check. When the check rejects a beat, it must NOT
+    leak back into the anchor block (where the listener would hear an
+    out-of-place navigation sentence). Always filter transit-class beats
+    at the anchor stage; the transit stage is the only legitimate place
+    for them.
+    """
     skip = skip_beat_ids or set()
     out: list[Sentence] = []
     for beat in stop.beats:
         if beat.id in skip:
+            continue
+        if (beat.narrative_function or "").lower() in _TRANSIT_NARRATIVE_FUNCTIONS:
             continue
         out.extend(_beat_to_sentences(beat, stop_idx))
     return out
@@ -321,18 +361,49 @@ def _build_transit(
 ) -> list[Sentence]:
     """Insert a corpus transit beat when present; otherwise a single glue nav.
 
+    Phase 7 (2026-04-29) adds direction-awareness. Pre-existing transit
+    beats encode an origin → destination direction inferred from their
+    ``trigger_address`` + opening prose. Reusing them on routes that run
+    the opposite direction (or start at unrelated POIs) produced
+    geographically-broken openings in phase-6-rerun:
+
+    - Tour 4 stop 3 opened "Starting at Invalides Metro station…" when
+      the user was arriving from Pont de la Concorde.
+    - Tour 3 stop 3 opened "Leave the Sacré-Cœur…" before the user had
+      visited Sacré-Cœur.
+
+    Phase 7 only accepts a corpus transit beat when the previous stop
+    appears in its trigger_address or body (the beat "knows" we're
+    coming from there). When no directional match exists, falls through
+    to GLUE_NAV with explicit ``from X, walk to Y, distance approx Nm``
+    context so the runtime can synthesize a coherent navigation
+    instruction without inventing facts.
+
     ``consumed_beat_ids`` filters transit candidates so a beat already
     emitted earlier in the script (e.g. by `current`'s prior anchor
     block, or by a previous transit) isn't picked again. Without this,
     multi-anchor tours emitted the same transit beat 2-3 times.
     """
     consumed = consumed_beat_ids or set()
-    transit_beat = _find_transit_beat(previous, consumed) or _find_transit_beat(current, consumed)
+    # Prefer a transit beat at `current` whose origin matches `previous`
+    # (the most common shape — transit beats describe arriving at their
+    # POI from a named origin). Fall back to one at `previous` whose
+    # destination matches `current` (less common; some guidebooks
+    # attach the transit at the leaving POI).
+    transit_beat = _find_directional_transit_beat(
+        current, prev_name=previous.poi_name, consumed=consumed
+    )
+    if transit_beat is None:
+        transit_beat = _find_directional_transit_beat(
+            previous, dest_name=current.poi_name, consumed=consumed
+        )
     if transit_beat is not None and transit_beat.script_body:
         return _beat_to_sentences(transit_beat, stop_idx)
 
+    distance_m = _segment_distance_m(route, stop_idx)
+    distance_clause = f", distance approx {int(round(distance_m))}m" if distance_m else ""
     request = (
-        f"Connect from {previous.poi_name} to {current.poi_name}. "
+        f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
         f"Use only navigation language — no facts, no names, no dates."
     )
     context = _format_glue_context(previous, current)
@@ -348,18 +419,56 @@ def _build_transit(
     ]
 
 
-def _find_transit_beat(
-    stop: POIBeats, consumed: set[str] | None = None
+def _segment_distance_m(route: Route, stop_idx: int) -> float:
+    """Walking-segment distance (m) for the transit into stop ``stop_idx``.
+
+    The Route carries a TransitSegment for every leg; the segment
+    arriving at stop ``stop_idx`` is at index ``stop_idx`` because the
+    first transit (idx 0) is start → first stop.
+    """
+    if 0 <= stop_idx < len(route.transits):
+        return float(route.transits[stop_idx].distance_m)
+    return 0.0
+
+
+def _find_directional_transit_beat(
+    stop: POIBeats,
+    *,
+    prev_name: str | None = None,
+    dest_name: str | None = None,
+    consumed: set[str] | None = None,
 ) -> BeatRef | None:
-    """Return the first transit-class beat that hasn't been emitted yet."""
+    """Return the first transit-class beat whose direction matches the segment.
+
+    A transit beat at ``stop`` is acceptable iff at least one of
+    ``prev_name`` / ``dest_name`` appears in its ``trigger_address`` or
+    ``script_body`` (case-insensitive substring). Otherwise the beat's
+    encoded direction does not match the actual route segment and
+    using it would produce a geographically wrong opener.
+    """
     skip = consumed or set()
+    needles = [s for s in (prev_name, dest_name) if s]
     for beat in stop.beats:
         if beat.id in skip:
             continue
         nf = (beat.narrative_function or "").lower()
-        if nf in {"transition", "transit", "navigation"}:
+        if nf not in {"transition", "transit", "navigation"}:
+            continue
+        if not needles:
+            return beat  # caller didn't ask for direction-awareness
+        haystack = (
+            f"{beat.trigger_address or ''} {beat.script_body or ''}"
+        ).lower()
+        if any(n.lower() in haystack for n in needles):
             return beat
     return None
+
+
+def _find_transit_beat(
+    stop: POIBeats, consumed: set[str] | None = None
+) -> BeatRef | None:
+    """Phase 7 deprecated alias — kept for backward import compat."""
+    return _find_directional_transit_beat(stop, consumed=consumed)
 
 
 # ---------------------------------------------------------------------------
@@ -375,15 +484,17 @@ def _build_closing(
     *,
     stop_idx: int,
 ) -> list[Sentence]:
-    """Physical-closure phrase + optional callback beat. No thematic summary."""
+    """Physical-closure phrase. No thematic summary.
+
+    Phase 7 (2026-04-29) removed the post-closing callback re-emission.
+    ``reorder_final_stop_for_closing`` now lifts the closing-friendly
+    beat to be the LAST beat at the final stop (preference order:
+    callback > climax > longest body), and the anchor block emits it
+    naturally at that position. The closing glue follows. Re-emitting
+    the callback beat *after* the closing glue duplicated content.
+    """
     out: list[Sentence] = []
     last = beat_sequence.poi_beats[-1] if beat_sequence.poi_beats else None
-    callback_beat: BeatRef | None = None
-    if last is not None:
-        for beat in last.beats:
-            if (beat.narrative_function or "").lower() == "callback":
-                callback_beat = beat
-                break
 
     if tour_input.round_trip and len(beat_sequence.poi_beats) == 1:
         # PdV-style square circumnavigation: the canonical Pariswalks closing.
@@ -401,8 +512,6 @@ def _build_closing(
             stop_idx=stop_idx,
         )
     )
-    if callback_beat is not None and callback_beat.script_body:
-        out.extend(_beat_to_sentences(callback_beat, stop_idx))
     return out
 
 

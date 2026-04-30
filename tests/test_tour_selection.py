@@ -766,3 +766,143 @@ def test_notre_dame_in_ile_not_latin_quarter():
         pytest.skip("Notre-Dame not present in production corpus")
     assert "Île de la Cité" in areas, f"ND missing from Île de la Cité: {areas}"
     assert "Latin Quarter" not in areas, f"ND still leaks into Latin Quarter: {areas}"
+
+
+# ---------------------------------------------------------------------------
+# Phase 7 — fill pass (Fix 3): target_audio is a floor, not a soft stop
+# ---------------------------------------------------------------------------
+
+
+def test_phase7_fill_pass_adds_anchors_when_below_floor():
+    """Greedy stalls below the audio floor with walk slack remaining → fill pass adds.
+
+    Synthetic 180-min one-way scenario: 3 anchors clustered near start
+    (greedy fills these cheaply but only consumes ~15 min walk and ~15
+    min dwell) plus 6 additional reachable tier-3 candidates whose
+    individual walk costs are all small. Greedy picks the cheap cluster,
+    stops because score-per-cost flattens, leaving walk slack and dwell
+    well below the audio floor. Fill pass should add at least one of
+    the residual candidates.
+    """
+    start = (48.85675, 2.341033)
+    main = [
+        _poi(f"main-{i}", tier=5, lat=start[0] + 0.0001 * i,
+             lng=start[1] + 0.0002 * i, areas=("Le Marais",), beat_count=8)
+        for i in range(3)
+    ]
+    fill_candidates = [
+        _poi(f"fill-{i}", tier=3, lat=start[0] + 0.0008 * (i + 1),
+             lng=start[1] + 0.0010 * (i + 1), areas=("Le Marais",), beat_count=4)
+        for i in range(6)
+    ]
+    snap = _snap(main + fill_candidates, area_types={"Le Marais": "neighborhood"})
+
+    inp = TourInput(start=start, duration_min=180, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+
+    assert any(i.startswith("fill-") for i in ids), (
+        f"Fill pass should have pulled in at least one tier-3 candidate; "
+        f"got POIs: {ids}"
+    )
+
+
+def test_phase7_fill_pass_does_not_run_when_already_above_floor():
+    """When greedy already meets the audio floor, fill pass is a no-op."""
+    start = (48.85675, 2.341033)
+    # 9 dense tier-5 anchors with rich beats — greedy will satisfy audio floor.
+    pois = [
+        _poi(f"rich-{i}", tier=5, lat=start[0] + 0.0001 * i,
+             lng=start[1] + 0.0001 * i, areas=("Le Marais",), beat_count=12)
+        for i in range(9)
+    ]
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    # 60-min audio target is ~30 min. 6 tier-5 anchors at 5 min dwell = 30 min.
+    # The greedy/anchor-cap gates terminate well before the fill pass needs to fire.
+    # The assertion is "no spurious additions beyond the natural greedy result".
+    assert len(route.pois) <= 6  # max_anchors = 60 // 10 = 6
+
+
+def test_phase7_fill_pass_respects_hard_anchor_cap():
+    """Fill pass must not exceed HARD_ANCHOR_CAP (= 12)."""
+    start = (48.85675, 2.341033)
+    # A long ladder of 30 cheap-to-insert near-start tier-3 candidates.
+    pois = [
+        _poi(f"l-{i}", tier=3, lat=start[0] + 0.00005 * i,
+             lng=start[1] + 0.00010 * i, areas=("Le Marais",), beat_count=4)
+        for i in range(30)
+    ]
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=start, duration_min=180, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    assert len(route.pois) <= HARD_ANCHOR_CAP
+
+
+def test_phase7_fill_pass_respects_walk_budget_cap():
+    """Fill pass clips at FILL_PASS_WALK_BUDGET_FRAC × walk_budget."""
+    from src.tour.routing import walk_budget_seconds
+    from src.tour.selection import FILL_PASS_WALK_BUDGET_FRAC
+
+    start = (48.85675, 2.341033)
+    # Three near anchors + several far candidates the fill pass can't fit.
+    near = [
+        _poi(f"n-{i}", tier=5, lat=start[0] + 0.0001 * i,
+             lng=start[1] + 0.0001 * i, areas=("Le Marais",), beat_count=8)
+        for i in range(3)
+    ]
+    # Each "far" candidate is ~1km from origin, so any insertion costs ≥ 14 min.
+    far = [
+        _poi(f"f-{i}", tier=3, lat=start[0] + 0.005 + 0.0005 * i,
+             lng=start[1] + 0.010 + 0.0005 * i, areas=("Le Marais",), beat_count=2)
+        for i in range(8)
+    ]
+    snap = _snap(near + far, area_types={"Le Marais": "neighborhood"})
+    inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    walk_cap = int(walk_budget_seconds(60) * FILL_PASS_WALK_BUDGET_FRAC)
+    assert route.total_walk_seconds <= walk_cap
+
+
+def test_phase7_fill_pass_concorde_smoke_real_corpus():
+    """Live-corpus smoke: Concorde 180min one-way improves over phase-6-rerun.
+
+    Pre-Phase-7 baseline: 5 anchors emitted (Place de la Concorde →
+    Pont de la Concorde → Pont Alexandre III → Grand Palais →
+    Champs-Elysees), 41-min walk, 9-min audio. Phase 7 fill pass must
+    add at least one anchor when the route is below the audio floor.
+    """
+    from pathlib import Path
+    from dotenv import dotenv_values
+
+    pytest.importorskip("neo4j")
+    from neo4j import GraphDatabase
+
+    prod_env = Path(__file__).resolve().parent.parent / ".env"
+    if not prod_env.exists():
+        pytest.skip("production .env not present")
+    cfg = dotenv_values(prod_env)
+    uri = cfg.get("NEO4J_URI")
+    user = cfg.get("NEO4J_USER")
+    password = cfg.get("NEO4J_PASSWORD")
+    if not (uri and user and password):
+        pytest.skip("production Neo4j credentials missing")
+    try:
+        driver = GraphDatabase.driver(uri, auth=(user, password))
+        driver.verify_connectivity()
+    except Exception:
+        pytest.skip("production Neo4j unreachable")
+    try:
+        from src.tour.selection import load_paris_corpus, select_route as live_select_route
+        snapshot = load_paris_corpus(driver, city_slug="paris")
+    finally:
+        driver.close()
+
+    inp = TourInput(start=(48.8656, 2.3210), duration_min=180, city_slug="paris", round_trip=False)
+    route = live_select_route(inp, snapshot)
+    # Phase 6 rerun had 5 anchors; Phase 7 fill pass must add at least one.
+    assert len(route.pois) >= 6, (
+        f"Phase 7 fill pass should add ≥1 anchor on Concorde 180min "
+        f"(baseline was 5). Got {len(route.pois)}: {[p.name for p in route.pois]}"
+    )

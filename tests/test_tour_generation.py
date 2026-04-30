@@ -231,10 +231,12 @@ def test_transit_uses_corpus_beat_when_present():
     p2 = _poi("p2", "Conciergerie")
     orient = _beat("orient-1", p1.id, body="Stand on the bridge.", nf="stop_orientation")
     p1_body = _beat("p1-body", p1.id, body="The Pont Neuf is the oldest stone bridge.")
+    # Phase 7: transit beat must reference the previous stop (Pont Neuf)
+    # so the direction-awareness check accepts it.
     p2_transit = _beat(
         "p2-transit",
         p2.id,
-        body="Cross the road into place Dauphine. Walk around the Conciergerie.",
+        body="From the Pont Neuf, cross the road into place Dauphine and walk around the Conciergerie.",
         nf="transition",
     )
     p2_body = _beat("p2-body", p2.id, body="The Conciergerie is Paris's oldest prison.")
@@ -256,6 +258,107 @@ def test_transit_uses_corpus_beat_when_present():
     # The corpus transit beat got cited; Haiku was NOT called for nav glue.
     assert p2_transit.id in sources
     assert not any(c[0] == GLUE_NAV for c in client.calls)
+
+
+def test_phase7_transit_rejects_wrong_direction_beat():
+    """Transit beat at `current` whose origin doesn't match `previous` must be rejected.
+
+    Mirrors the phase-6-rerun Tour 4 stop 3 failure: the corpus transit
+    beat at Pont Alexandre III says "Starting at Invalides Metro
+    station…" but the user is arriving from Pont de la Concorde. The
+    Phase 7 direction check must reject it and fall through to GLUE_NAV
+    with explicit ``from previous, walk to current`` context.
+    """
+    p1 = _poi("p1", "Pont de la Concorde")
+    p2 = _poi("p2", "Pont Alexandre III")
+    orient = _beat("orient-1", p1.id, body="Stand at the parapet.", nf="stop_orientation")
+    p1_body = _beat("p1-body", p1.id, body="The bridge dates to 1791.")
+    # Wrong-direction transit: origin is Invalides Metro, not Pont de la Concorde.
+    p2_transit = _beat(
+        "p2-transit",
+        p2.id,
+        body="Starting at Invalides Metro station, walk to Pont Alexandre III.",
+        nf="transition",
+    )
+    p2_body = _beat("p2-body", p2.id, body="The Beaux-Arts span opened in 1900.")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
+                     beats=(orient, p1_body)),
+            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
+                     beats=(p2_transit, p2_body)),
+        )
+    )
+    client = MockGlueClient(responses={"GLUE_NAV": "Walk along the embankment."})
+    script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=client)
+    sources = [s.source_id for s in script.script]
+    # The wrong-direction transit beat must NOT be cited — Haiku glue replaces it.
+    assert p2_transit.id not in sources
+    nav_sentences = [s for s in script.script if s.source_id == GLUE_NAV]
+    assert len(nav_sentences) == 1
+    # The nav request to Haiku carried the explicit "from previous, walk to current" context.
+    assert client.calls and client.calls[0][0] == GLUE_NAV
+    nav_request = client.calls[0][2].lower()
+    assert "pont de la concorde" in nav_request
+    assert "pont alexandre iii" in nav_request
+
+
+def test_phase7_transit_accepts_directionally_consistent_beat():
+    """Transit beat whose origin substring matches `previous` is accepted."""
+    p1 = _poi("p1", "Place du Tertre")
+    p2 = _poi("p2", "Saint-Pierre")
+    orient = _beat("orient-1", p1.id, body="Stand by the easels.", nf="stop_orientation")
+    # Direction-consistent: body explicitly mentions Place du Tertre.
+    p2_transit = _beat(
+        "p2-transit",
+        p2.id,
+        body="Leave Place du Tertre by the southwest corner and step into Saint-Pierre.",
+        nf="transition",
+    )
+    p2_body = _beat("p2-body", p2.id, body="The little church is older than Sacré-Cœur.")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
+                     beats=(orient,)),
+            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
+                     beats=(p2_transit, p2_body)),
+        )
+    )
+    client = MockGlueClient()
+    script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=client)
+    sources = [s.source_id for s in script.script]
+    assert p2_transit.id in sources
+    assert not any(c[0] == GLUE_NAV for c in client.calls)
+
+
+def test_phase7_transit_falls_back_when_origin_mismatch():
+    """Even when the previous-POI side has a transit beat, mismatched
+    direction → fall through to GLUE_NAV. Both sides must satisfy the
+    direction check before a corpus transit beat is reused.
+    """
+    p1 = _poi("p1", "A Random Start")
+    p2 = _poi("p2", "Saint-Pierre")
+    p1_body = _beat("p1-body", p1.id, body="Some setup.", nf="establishing")
+    p2_transit = _beat(
+        "p2-transit",
+        p2.id,
+        body="From the Sacré-Cœur, walk down rue du Mont-Cenis to Saint-Pierre.",
+        nf="transition",
+    )
+    p2_body = _beat("p2-body", p2.id, body="The little church.")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
+                     beats=(p1_body,)),
+            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
+                     beats=(p2_transit, p2_body)),
+        )
+    )
+    client = MockGlueClient(responses={"GLUE_NAV": "Walk down the street."})
+    script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=client)
+    sources = [s.source_id for s in script.script]
+    assert p2_transit.id not in sources  # rejected — origin doesn't match prev
+    assert any(s == GLUE_NAV for s in sources)
 
 
 def test_transit_falls_back_to_glue_when_no_corpus_beat():

@@ -11,9 +11,11 @@ from src.tour.beat_select import (
     B8_JACCARD_THRESHOLD,
     NARRATIVE_FUNCTION_ORDER,
     choose_ordering_strategy,
+    find_area_orientation_beat,
+    reorder_final_stop_for_closing,
     select_poi_beats,
 )
-from src.tour.contract import POI, BeatRef
+from src.tour.contract import POI, BeatRef, BeatSequence, POIBeats, Route
 from src.tour.fixtures import NOTRE_DAME_SUB_LOCATION_ORDER
 
 
@@ -504,6 +506,391 @@ def test_b8_lite_subject_tag_overlap_triggers_dedup():
 def test_b8_lite_threshold_constant_matches_design_doc():
     # Phase-1-design.md §3.3 specifies 0.8 — guard against silent drift.
     assert B8_JACCARD_THRESHOLD == 0.8
+
+
+# ---------------------------------------------------------------------------
+# Phase 7 — B8-lite recalibration: catch the 3 known phase-6-rerun dups
+# ---------------------------------------------------------------------------
+
+
+# Real script bodies pulled from the live Paris corpus 2026-04-29 — these
+# are the exact pairs the phase-6-rerun outputs failed to dedup.
+
+_MESME_DE = (
+    "The Hotel de Sully was built in 1624 for Mesme Gallet, a notorious "
+    "gambler who squandered his fortune on a single night's losses and had "
+    "to sell up. The aged Duc de Sully bought it next, but his young wife's "
+    "infidelities were legendary. The pragmatic duke installed a separate "
+    "staircase so her lovers could come and go without crossing his path."
+)
+_MESME_BF = (
+    "Built in 1624 for gambler Mesme Gallet who lost his fortune in one "
+    "night. The aged Duc de Sully installed a separate staircase so his "
+    "wife's lovers could come and go."
+)
+_HUGO_B41 = (
+    "Adele carried on an affair with Sainte-Beuve. Hugo began a liaison "
+    "with Juliette Drouet. A secret back staircase allowed discreet "
+    "comings and goings for fifty years."
+)
+_HUGO_A18 = (
+    "Hugo's domestic life at Place des Vosges was turbulent. His wife "
+    "Adele carried on an affair with their close friend, the critic "
+    "Sainte-Beuve. Hugo himself began a passionate liaison with the "
+    "actress Juliette Drouet, who lived nearby. A secret back staircase "
+    "allowed discreet comings and goings — the arrangement lasted for "
+    "fifty years until Drouet's death."
+)
+_PANTHEON_EE = (
+    "In 1744, Louis XV fell gravely ill and vowed to build a new church "
+    "for Saint Genevieve if he recovered, recalling how in the 5th century "
+    "she had healed her countrymen. The clergy, seeing divine punishment "
+    "for his debauchery, urged him to also end his affair with the "
+    "Duchesse de Chateauroux, the last of four sisters he had seduced. "
+    "The king recovered, promptly resumed his liaison, and would have "
+    "forgotten the church entirely, but the monks of the Abbey of "
+    "Sainte-Genevieve held him to his word. Architect Soufflot was "
+    "commissioned to build the colossal edifice — 110 metres long, 84 "
+    "metres wide, and 83 metres tall — crowning the levelled hilltop."
+)
+_PANTHEON_142 = (
+    "In 1744, an ailing King Louis XV was miraculously healed by St. "
+    "Geneviève, the city's patron saint, and he thanked her by replacing "
+    "her ruined church with a more fitting tribute. By the time the "
+    "church was completed in 1791, however, the secular-minded Revolution "
+    "was in full swing, and the church was converted into a nonreligious "
+    "mausoleum honoring the 'Champions of French liberty': Voltaire, "
+    "Rousseau, and others."
+)
+
+
+def test_phase7_b8_lite_catches_mesme_gallet_paraphrase():
+    """phase-6-rerun Tour 1 Stop 1 emitted both beats; Phase 7 must collapse."""
+    poi = _poi("Hotel de Sully")
+    de = _beat(
+        "de1377b4",
+        sub_location="hotel-de-sully",
+        narrative_function="establishing",
+        lenses=("hidden_history",),
+        entities=("Mesme Gallet",),
+        script_body=_MESME_DE,
+        word_count=60,
+    )
+    bf = _beat(
+        "bf668074",
+        sub_location="hotel-de-sully",
+        narrative_function="establishing",
+        lenses=("hidden_history",),
+        entities=("Built", "Mesme Gallet"),
+        script_body=_MESME_BF,
+        word_count=33,
+    )
+    plan = select_poi_beats(poi, [de, bf])
+    ids = {b.id for b in plan.beats}
+    assert len(ids) == 1, f"Expected dedup; got both {ids}"
+
+
+def test_phase7_b8_lite_catches_hugo_affair_paraphrase():
+    """phase-6-rerun Tour 1 Stop 4 emitted both beats; Phase 7 must collapse."""
+    poi = _poi("Musee Victor Hugo", tier=4)
+    b41 = _beat(
+        "b41d4c77",
+        narrative_function="deepen",
+        lenses=("famous_residents",),
+        entities=("Adele", "Juliette Drouet"),
+        script_body=_HUGO_B41,
+        word_count=29,
+    )
+    a18 = _beat(
+        "a1833622",
+        narrative_function="climax",
+        lenses=("famous_residents",),
+        entities=("Adele", "Juliette Drouet", "Place des Vosges"),
+        script_body=_HUGO_A18,
+        word_count=60,
+    )
+    plan = select_poi_beats(poi, [b41, a18])
+    ids = {b.id for b in plan.beats}
+    assert len(ids) == 1, f"Expected dedup; got both {ids}"
+
+
+def test_phase7_b8_lite_catches_pantheon_geneviève_pair():
+    """phase-6-rerun Tour 5 Stop 3 emitted both Pantheon-vow beats.
+
+    Entities-Jaccard = 0.125 because supporting cast diverges
+    (Soufflot/Chateauroux vs Voltaire/Rousseau) and "Saint Genevieve" /
+    "St. Geneviève" don't string-match. Phase 7 catches via
+    canonical-entity-overlap ≥ 2 + shared 1744 year token.
+    """
+    poi = _poi("Pantheon")
+    ee = _beat(
+        "ee115ca8",
+        narrative_function="establishing",
+        lenses=("hidden_history",),
+        entities=(
+            "Abbey",
+            "Architect Soufflot",
+            "Duchesse de Chateauroux",
+            "Louis XV",
+            "Saint Genevieve",
+        ),
+        script_body=_PANTHEON_EE,
+        word_count=130,
+    )
+    one_four = _beat(
+        "142060a7",
+        narrative_function="hook",
+        lenses=("hidden_history",),
+        entities=("Louis XV", "St. Geneviève", "Voltaire", "Rousseau"),
+        subject_tag="vow conversion mausoleum",
+        script_body=_PANTHEON_142,
+        word_count=70,
+    )
+    plan = select_poi_beats(poi, [ee, one_four])
+    ids = {b.id for b in plan.beats}
+    assert len(ids) == 1, f"Expected dedup; got both {ids}"
+
+
+# ---------------------------------------------------------------------------
+# Phase 7 — Area-level orientation hoist (Fix 2)
+# ---------------------------------------------------------------------------
+
+
+def _route_for(pois: list[POI]) -> Route:
+    """Synthetic Route shell — distance/budget fields are irrelevant for hoist tests."""
+    return Route(
+        pois=tuple(pois),
+        transits=(),
+        total_walk_distance_m=0.0,
+        total_walk_seconds=0,
+        audio_budget_seconds=0,
+        spine_area=None,
+        target_audio_seconds=0,
+        err_short_total_seconds=0,
+    )
+
+
+def test_area_level_orientation_hoist_picks_up_sibling_orientation():
+    """Start POI has no stop_orientation beat; sibling in same Area does → hoist.
+
+    Mirrors the Tour 1 PdV scenario: Hotel de Sully (start) has none,
+    Place des Vosges (5th stop, same Le Marais) carries the canonical
+    Pariswalks "find a bench" opener.
+    """
+    start_poi = POI(
+        id="hotel-de-sully",
+        name="Hotel de Sully",
+        tier=4,
+        poi_role="stop",
+        lat=48.8538,
+        lng=2.3651,
+        areas=("Le Marais",),
+    )
+    sibling_poi = POI(
+        id="place-des-vosges",
+        name="Place des Vosges",
+        tier=5,
+        poi_role="stop",
+        lat=48.8553,
+        lng=2.3656,
+        areas=("Le Marais",),
+    )
+    other_poi = POI(
+        id="restaurant-bofinger",
+        name="Restaurant Bofinger",
+        tier=3,
+        poi_role="stop",
+        lat=48.8530,
+        lng=2.3686,
+        areas=("Le Marais",),
+    )
+    orient = BeatRef(
+        id="ebeab682",
+        poi_id=sibling_poi.id,
+        beat_type="stop_orientation",
+        narrative_function="establishing",
+        word_count=40,
+        active_status="active",
+    )
+    start_beats = POIBeats(
+        poi_id=start_poi.id,
+        poi_name=start_poi.name,
+        ordering_strategy="narrative_function",
+        beats=(
+            BeatRef(id="hds-est", poi_id=start_poi.id, narrative_function="establishing"),
+        ),
+    )
+    sibling_beats = POIBeats(
+        poi_id=sibling_poi.id,
+        poi_name=sibling_poi.name,
+        ordering_strategy="trigger_address",
+        beats=(orient, BeatRef(id="pdv-no1", poi_id=sibling_poi.id)),
+    )
+    other_beats = POIBeats(
+        poi_id=other_poi.id,
+        poi_name=other_poi.name,
+        ordering_strategy="narrative_function",
+        beats=(BeatRef(id="bof-1", poi_id=other_poi.id),),
+    )
+    seq = BeatSequence(poi_beats=(start_beats, other_beats, sibling_beats))
+    route = _route_for([start_poi, other_poi, sibling_poi])
+
+    found = find_area_orientation_beat(seq, route, start_idx=0)
+    assert found is not None
+    assert found.id == "ebeab682"
+
+
+def test_area_level_orientation_returns_none_when_no_shared_area():
+    """Sibling POI in a DIFFERENT Area → no hoist."""
+    start_poi = POI(
+        id="hotel-de-sully", name="Hotel de Sully", tier=4, poi_role="stop",
+        lat=48.8538, lng=2.3651, areas=("Le Marais",),
+    )
+    other_area_poi = POI(
+        id="pantheon", name="Pantheon", tier=5, poi_role="stop",
+        lat=48.8462, lng=2.3464, areas=("Latin Quarter",),
+    )
+    orient = BeatRef(
+        id="some-orient", poi_id=other_area_poi.id,
+        beat_type="stop_orientation", word_count=40,
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=start_poi.id, poi_name=start_poi.name, ordering_strategy="narrative_function", beats=(BeatRef(id="x", poi_id=start_poi.id),)),
+            POIBeats(poi_id=other_area_poi.id, poi_name=other_area_poi.name, ordering_strategy="narrative_function", beats=(orient,)),
+        )
+    )
+    route = _route_for([start_poi, other_area_poi])
+    assert find_area_orientation_beat(seq, route, start_idx=0) is None
+
+
+def test_area_level_orientation_returns_none_when_no_orientation_beat_exists():
+    """Sibling shares Area but has no orientation beat → no hoist."""
+    start = POI(id="a", name="A", tier=4, poi_role="stop", lat=48.85, lng=2.36, areas=("Le Marais",))
+    sibling = POI(id="b", name="B", tier=4, poi_role="stop", lat=48.852, lng=2.366, areas=("Le Marais",))
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=start.id, poi_name=start.name, ordering_strategy="narrative_function", beats=(BeatRef(id="x", poi_id=start.id),)),
+            POIBeats(poi_id=sibling.id, poi_name=sibling.name, ordering_strategy="narrative_function", beats=(BeatRef(id="y", poi_id=sibling.id, narrative_function="establishing"),)),
+        )
+    )
+    route = _route_for([start, sibling])
+    assert find_area_orientation_beat(seq, route, start_idx=0) is None
+
+
+# ---------------------------------------------------------------------------
+# Phase 7 — closing-friendly beat reservation (Fix 5)
+# ---------------------------------------------------------------------------
+
+
+def _seq_with_final_beats(beats: tuple[BeatRef, ...]) -> BeatSequence:
+    return BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id="final",
+                poi_name="Final",
+                ordering_strategy="narrative_function",
+                beats=beats,
+            ),
+        )
+    )
+
+
+def test_phase7_closing_reorder_promotes_callback_to_last():
+    """Callback beat at any position → moves to last; spec preference order top tier."""
+    beats = (
+        _beat("c", narrative_function="callback", script_body="A wrap-up sentence."),
+        _beat("a", narrative_function="establishing", script_body="A factoid."),
+        _beat("b", narrative_function="deepen", script_body="Another factoid."),
+    )
+    seq = _seq_with_final_beats(beats)
+    out = reorder_final_stop_for_closing(seq)
+    assert tuple(b.id for b in out.poi_beats[-1].beats) == ("a", "b", "c")
+
+
+def test_phase7_closing_reorder_falls_back_to_climax_when_no_callback():
+    beats = (
+        _beat("a", narrative_function="establishing", script_body="X."),
+        _beat("c", narrative_function="climax", script_body="Climactic sentence."),
+        _beat("b", narrative_function="deepen", script_body="Y."),
+    )
+    seq = _seq_with_final_beats(beats)
+    out = reorder_final_stop_for_closing(seq)
+    assert out.poi_beats[-1].beats[-1].id == "c"
+
+
+def test_phase7_closing_reorder_falls_back_to_longest_when_no_callback_or_climax():
+    """No callback, no climax → longest body wins. Avoids closing on factoids."""
+    beats = (
+        _beat("short", narrative_function="establishing", script_body="A."),
+        _beat("long", narrative_function="deepen",
+              script_body="A much longer wrap-up paragraph that gives the close some narrative weight " * 3),
+        _beat("med", narrative_function="hook", script_body="A medium one."),
+    )
+    seq = _seq_with_final_beats(beats)
+    out = reorder_final_stop_for_closing(seq)
+    assert out.poi_beats[-1].beats[-1].id == "long"
+
+
+def test_phase7_closing_reorder_no_op_when_already_closing_friendly():
+    beats = (
+        _beat("a", narrative_function="establishing", script_body="X."),
+        _beat("b", narrative_function="deepen", script_body="Y."),
+        _beat("c", narrative_function="callback", script_body="Z."),
+    )
+    seq = _seq_with_final_beats(beats)
+    out = reorder_final_stop_for_closing(seq)
+    assert tuple(b.id for b in out.poi_beats[-1].beats) == ("a", "b", "c")
+
+
+def test_phase7_closing_reorder_no_op_for_short_stops():
+    """Stops with <2 beats are untouched."""
+    beats = (_beat("only", narrative_function="establishing", script_body="X."),)
+    seq = _seq_with_final_beats(beats)
+    out = reorder_final_stop_for_closing(seq)
+    assert tuple(b.id for b in out.poi_beats[-1].beats) == ("only",)
+
+
+def test_phase7_b8_lite_does_not_overcollapse_complementary_pdv_addresses():
+    """Two PdV addresses with the same lens but distinct content must NOT merge.
+
+    Pinning behaviour for the golden corpus: the empirical PdV walk has
+    22+ distinct address vignettes, many sharing 'famous_residents' or
+    'hidden_history' lens tags. Char-5-gram Jaccard between distinct
+    vignettes runs well below 0.30 in the corpus; this test guards
+    against accidental over-collapse from threshold drift.
+    """
+    poi = _poi("Place des Vosges")
+    a = _beat(
+        "no6-hugo",
+        trigger_address="no. 6 place des Vosges",
+        narrative_function="establishing",
+        lenses=("famous_residents",),
+        entities=("Hugo",),
+        script_body=(
+            "Victor Hugo moved to this apartment at 6 Place des Vosges in "
+            "1832 and lived here for sixteen years. In these rooms he wrote "
+            "the drama Ruy Blas and sketched out the early plans for his "
+            "masterwork Les Miserables."
+        ),
+        word_count=40,
+    )
+    b = _beat(
+        "no21-richelieu",
+        trigger_address="no. 21 place des Vosges",
+        narrative_function="establishing",
+        lenses=("famous_residents",),
+        entities=("Richelieu",),
+        script_body=(
+            "Cardinal Richelieu lived at no. 21 from 1615, before his rise "
+            "to power. The arcaded façade and slate-blue mansard date from "
+            "the original construction completed under Henri IV."
+        ),
+        word_count=37,
+    )
+    plan = select_poi_beats(poi, [a, b])
+    ids = {b.id for b in plan.beats}
+    assert ids == {"no6-hugo", "no21-richelieu"}
 
 
 # ---------------------------------------------------------------------------
