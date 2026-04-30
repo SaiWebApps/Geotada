@@ -2,7 +2,7 @@
 
 ## Overview
 
-152 tests covering the Travlr Neo4j graph backend — schema definitions, data seeding, graph traversals, and the full CRUD API.
+152 tests covering the Ondoway Neo4j graph backend — schema definitions, data seeding, graph traversals, and the full CRUD API.
 
 All tests run with pytest. No Selenium or browser tests; the editor UI is a static HTML file served by FastAPI.
 

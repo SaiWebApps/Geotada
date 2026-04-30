@@ -1,4 +1,4 @@
-# TRAVLR — North Star
+# ONDOWAY — North Star
 
 > **Last updated:** March 2026 · **Status:** Pre-launch (Phase 1)
 
@@ -6,7 +6,7 @@
 
 ## Vision
 
-Travlr makes every city feel like you have a local storyteller in your pocket — surfacing the hidden stories, scandals, and secrets that guidebooks leave out, delivered as GPS-triggered narrative audio that finds you as you walk.
+Ondoway makes every city feel like you have a local storyteller in your pocket — surfacing the hidden stories, scandals, and secrets that guidebooks leave out, delivered as GPS-triggered narrative audio that finds you as you walk.
 
 ---
 
@@ -14,7 +14,7 @@ Travlr makes every city feel like you have a local storyteller in your pocket �
 
 | Phase | Window | Gate (must pass to advance) |
 |-------|--------|-----------------------------|
-| **1 — Build the Machine** | Months 1–3 | 12 lenses covered, 100+ Boston POIs live, Boredom Test passing internally |
+| **1 — Build the Machine** | Months 1–3 | 12 lenses covered, 100+ Paris POIs live, Boredom Test passing internally |
 | **2 — First Real Walk** | Months 3–4 | 5–10 testers complete a full tour, 8/10 triggers fire, 3/10 recommend unprompted |
 | **3 — Public Launch** | Months 4–7 | App Store live, credits active, 200 completed tours, one organic breakthrough |
 | **4 — Prove It Scales** | Months 7–12 | City two live in <6 weeks pipeline work, first B2B conversation started |
@@ -31,7 +31,7 @@ Can we generate compelling, personalized narrative tours cost-effectively — an
 These are locked. Do not re-open without a sprint decision entry in the PM Living Doc (Section 04).
 
 - **Database:** Neo4j graph database (Schema v3). Three domains: Traveler's Vault, Global Atlas, Execution Bridge.
-- **Data model framing:** Travlr is a **knowledge graph**, not just a graph database. The NarrativeBeat is an *event* (CIDOC-CRM-aligned, event-centric spine); POIs, entities, and times are actors around it. We adopt KG hygiene where it pays off: controlled vocabularies for classification fields, canonical IDs for cross-city-shared concepts, provenance on every fact (source beat ID traceability at runtime), and reified edges when a relationship carries its own properties. We explicitly skip: RDF/SPARQL, OWL reasoning, formal ontology layers (SHACL), and graph embeddings — until a concrete product need outweighs the tax. Revisit the skip list when a proposed feature can't be expressed cleanly with the LPG + Pydantic constraints we already have.
+- **Data model framing:** Ondoway is a **knowledge graph**, not just a graph database. The NarrativeBeat is an *event* (CIDOC-CRM-aligned, event-centric spine); POIs, entities, and times are actors around it. We adopt KG hygiene where it pays off: controlled vocabularies for classification fields, canonical IDs for cross-city-shared concepts, provenance on every fact (source beat ID traceability at runtime), and reified edges when a relationship carries its own properties. We explicitly skip: RDF/SPARQL, OWL reasoning, formal ontology layers (SHACL), and graph embeddings — until a concrete product need outweighs the tax. Revisit the skip list when a proposed feature can't be expressed cleanly with the LPG + Pydantic constraints we already have.
 - **Graph spine:** User → Profile → Trip → ItineraryItem → POI → NarrativeBeat → Lens. Post-MVP nodes attach as branches, never insertions.
 - **Content primitive:** NarrativeBeat — versioned, lensed, gravity-scored (1–5). Multiple beats per lens per POI allowed — the tour builder selects the best fit at runtime based on tour theme, time budget, and user preferences.
 - **Gravity scoring:** POI-level via importance_tier (1–5). Relative to city, not absolute.
@@ -80,9 +80,9 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 | Document | Location | What it contains |
 |----------|----------|------------------|
 | **Schema v3** | `Schema_v3.docx` | Full Neo4j node/relationship specs, traversal patterns, domain architecture |
-| **12-Month Milestones** | `travlr-milestones.docx` | Phase gates, product/marketing/business tasks per phase |
-| **PM Living Doc** | `travlr-pm-living-doc.docx` | Scoreboard, resolved decisions (Section 04), sprint templates, stack snapshot, lens list |
-| **Monetization Strategy** | `travlr-monetization-condensed.docx` | Revenue streams, unit economics, persona WTP, retention plan, runway scenarios |
+| **12-Month Milestones** | `ondoway-milestones.docx` | Phase gates, product/marketing/business tasks per phase |
+| **PM Living Doc** | `ondoway-pm-living-doc.docx` | Scoreboard, resolved decisions (Section 04), sprint templates, stack snapshot, lens list |
+| **Monetization Strategy** | `ondoway-monetization-condensed.docx` | Revenue streams, unit economics, persona WTP, retention plan, runway scenarios |
 | **Original North Star PRD** | `Northstar.pdf` | Problem definition, dual-mode discovery, Narrative Matrix, Director, feedback loops |
 | **Data Miner Prompt V1** | *(in editorial workbench repo)* | Gemini extraction prompt — orientation blocks, sensory anchors, gravity scoring |
 | **Fact Check Prompt V1** | *(in editorial workbench repo)* | Audit prompt — two-signal gravity matrix, structured audit_notes |

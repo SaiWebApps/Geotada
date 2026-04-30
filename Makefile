@@ -1,7 +1,4 @@
-.PHONY: help venv env install lint format test test-unit test-integration test-api setup setup-audio verify clean db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
-
-PYTHON := .venv/bin/python
-PIP    := .venv/bin/pip
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -15,39 +12,55 @@ help: ## Show this help
 # SETUP
 # ──────────────────────────────────────────────────────────
 
-install: venv env ## Install Python dependencies
-	$(PIP) install -r requirements.txt
+sync: ## Install/update Python dependencies via uv
+	uv sync --extra test --extra dev
 	@echo "✓ Dependencies installed."
 
 env: ## Create .env from template (won't overwrite)
 	@test -f .env || (cp .env.example .env && echo "✓ .env created from template.") || echo "• .env already exists."
 
-venv: ## Create Python virtual environment
-	@if [ ! -d .venv ]; then python3 -m venv .venv && echo "✓ Virtual environment created."; fi
+use-local: ## Switch to local Neo4j (Docker)
+	@cp .env.local .env && echo "✓ Switched to LOCAL Neo4j (bolt://localhost:7687)"
+
+use-cloud: ## Switch to Neo4j Aura (cloud)
+	@cp .env.cloud .env && echo "✓ Switched to CLOUD Neo4j (Aura)"
+
+which-db: ## Show which Neo4j instance is active
+	@grep '^NEO4J_URI=' .env | sed 's/NEO4J_URI=/  /'
 
 # ──────────────────────────────────────────────────────────
 # CODE QUALITY
 # ──────────────────────────────────────────────────────────
 
 lint: ## Run ruff linter
-	$(PYTHON) -m ruff check src/ tests/
+	uv run ruff check src/ tests/
 
 format: ## Auto-format with ruff
-	$(PYTHON) -m ruff format src/ tests/
-	$(PYTHON) -m ruff check --fix src/ tests/
+	uv run ruff format src/ tests/
+	uv run ruff check --fix src/ tests/
 
 # ──────────────────────────────────────────────────────────
 # TESTING
 # ──────────────────────────────────────────────────────────
 
-test: ## Run all tests (unit + integration)
-	$(PYTHON) -m pytest tests/ -v
+test: test-local test-cloud ## Run all tests against local then cloud Neo4j
 
 test-unit: ## Run unit tests only (no Neo4j needed)
-	$(PYTHON) -m pytest tests/test_definitions.py -v
+	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py -v
+
+test-local: ## Run tests against local Neo4j (Docker)
+	@cp .env.local .env.test && echo "  → Testing against LOCAL Neo4j"
+	uv run pytest tests/ -v
+
+test-cloud: ## Run tests against Neo4j Aura (cloud)
+	@cp .env.cloud .env.test && echo "  → Testing against CLOUD Neo4j (Aura)"
+	uv run pytest tests/ -v
 
 test-integration: ## Run integration tests (needs Neo4j)
-	$(PYTHON) -m pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
+	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
+
+test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
+	uv run pytest tests/test_audio_functional.py -v -s
 
 # ──────────────────────────────────────────────────────────
 # DATABASE
@@ -67,9 +80,7 @@ db-status: ## Check Neo4j container status
 	@docker compose ps
 
 db-reset: ## Stop dev Neo4j and wipe all data (DESTRUCTIVE)
-	docker compose stop neo4j
-	docker compose rm -f neo4j
-	docker volume rm -f geotada_neo4j_data
+	docker compose down -v --remove-orphans
 	@echo "✓ Dev Neo4j stopped and data wiped."
 
 db-test-up: ## Start test Neo4j in Docker (disposable data)
@@ -85,7 +96,7 @@ db-test-down: ## Stop test Neo4j (data preserved)
 db-test-reset: ## Stop test Neo4j and wipe test data
 	docker compose stop neo4j-test
 	docker compose rm -f neo4j-test
-	docker volume rm -f geotada_neo4j_test_data
+	docker volume rm -f ondoway_neo4j_test_data
 	@echo "✓ Test Neo4j stopped and data wiped."
 
 # ──────────────────────────────────────────────────────────
@@ -93,30 +104,33 @@ db-test-reset: ## Stop test Neo4j and wipe test data
 # ──────────────────────────────────────────────────────────
 
 setup: ## Apply schema + seed data + verify (full pipeline)
-	$(PYTHON) -m src.main
+	uv run python -m src.main
 
 verify: ## Run verification only (no schema changes)
-	$(PYTHON) -c "from src.main import verify_only; verify_only()"
+	uv run python -c "from src.main import verify_only; verify_only()"
 
 clean-db: ## Wipe all nodes and relationships
-	$(PYTHON) -c "from src.main import clean; clean()"
+	uv run python -c "from src.main import clean; clean()"
 
 dashboard: ## Start the web dashboard (port 8080)
-	$(PYTHON) -m src.server
+	uv run python -m src.server
 
 api: ## Start the FastAPI graph API (port 8000)
-	$(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+	uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 api-test: ## Start API against test database (port 8000)
-	set -a && . .env.test && set +a && $(PYTHON) -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
+	set -a && . .env.test && set +a && uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
-	$(PYTHON) scripts/check_audio_setup.py
+	uv run python scripts/check_audio_setup.py
+
+upload-paris: ## Upload full Paris dataset to active Neo4j instance
+	uv run python -m scripts.upload_paris
 
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS
 # ──────────────────────────────────────────────────────────
 
-all: install db-up db-test-up setup test ## Full bootstrap: install → db → setup → test
+all: env db-up db-test-up setup test ## Full bootstrap: env → db → setup → test
 	@echo ""
 	@echo "✓ All done. Run 'make dashboard' for read-only view, 'make api' for CRUD editor."

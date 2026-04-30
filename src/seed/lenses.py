@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.connection import get_database
 from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES
 
 if TYPE_CHECKING:
@@ -55,7 +56,7 @@ def seed_lenses(driver: Driver) -> int:
     """
     canonical = {lens["name"] for lens in MVP_LENSES} | {c["name"] for c in DAG_CHILD_LENSES}
 
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         for lens in MVP_LENSES:
             session.execute_write(_create_lens, lens)
         for child in DAG_CHILD_LENSES:

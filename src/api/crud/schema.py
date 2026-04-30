@@ -44,30 +44,28 @@ def get_node_type_schema(label: str) -> dict:
     ]
 
     for field_name, field_info in model_cls.model_fields.items():
-        properties.append({
-            "name": field_name,
-            "type": _pydantic_type_name(field_info.annotation),
-            "required": field_info.is_required(),
-            "default": None if field_info.is_required() else field_info.default,
-        })
+        properties.append(
+            {
+                "name": field_name,
+                "type": _pydantic_type_name(field_info.annotation),
+                "required": field_info.is_required(),
+                "default": None if field_info.is_required() else field_info.default,
+            }
+        )
 
-    properties.append({
-        "name": "created_at",
-        "type": "str",
-        "required": False,
-        "default": "(auto-generated datetime)",
-    })
+    properties.append(
+        {
+            "name": "created_at",
+            "type": "str",
+            "required": False,
+            "default": "(auto-generated datetime)",
+        }
+    )
 
-    constraints = [
-        f"unique:{c.property}"
-        for c in UNIQUE_CONSTRAINTS
-        if c.label == label
-    ]
+    constraints = [f"unique:{c.property}" for c in UNIQUE_CONSTRAINTS if c.label == label]
 
     indexes = [
-        f"{idx.index_type}:{','.join(idx.properties)}"
-        for idx in INDEXES
-        if idx.label == label
+        f"{idx.index_type}:{','.join(idx.properties)}" for idx in INDEXES if idx.label == label
     ]
 
     return {
@@ -103,12 +101,14 @@ def get_rel_type_schema(rel_type: str) -> dict:
     ]
 
     for prop_def in prop_defs:
-        properties.append({
-            "name": prop_def.name,
-            "type": prop_def.type,
-            "required": prop_def.required,
-            "default": prop_def.default,
-        })
+        properties.append(
+            {
+                "name": prop_def.name,
+                "type": prop_def.type,
+                "required": prop_def.required,
+                "default": prop_def.default,
+            }
+        )
 
     return {
         "type": rel_type,

@@ -5,14 +5,11 @@ Uses mocked Neo4j sessions — does NOT require a running database.
 
 from __future__ import annotations
 
-import os
-import tempfile
 from unittest.mock import MagicMock, patch
 
 import pytest
 
 from src.audio.pipeline import (
-    AudioStatus,
     BatchSummary,
     GenerationResult,
     PipelineError,
@@ -31,7 +28,9 @@ def _temp_storage(monkeypatch, tmp_path):
     monkeypatch.setenv("AUDIO_STORAGE_PATH", str(tmp_path))
 
 
-def _mock_beat(beat_id="beat-001", script_body="Test script.", audio_url="s3://placeholder/test.mp3"):
+def _mock_beat(
+    beat_id="beat-001", script_body="Test script.", audio_url="s3://placeholder/test.mp3"
+):
     return {
         "id": beat_id,
         "labels": ["NarrativeBeat"],
@@ -65,8 +64,10 @@ class TestBuildStorageKey:
 class TestGenerateBeatAudio:
     def test_generates_and_stores(self):
         session = _mock_session_with_poi("Eiffel Tower")
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
-             patch("src.audio.pipeline.update_node") as mock_update:
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat()),
+            patch("src.audio.pipeline.update_node") as mock_update,
+        ):
             result = generate_beat_audio(session, "beat-001", provider_name="mock")
 
         assert isinstance(result, GenerationResult)
@@ -78,35 +79,47 @@ class TestGenerateBeatAudio:
         mock_update.assert_called_once()
 
     def test_skips_existing_audio(self):
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat(
-            audio_url="/api/v1/audio/files/real.mp3"
-        )):
-            with pytest.raises(PipelineError, match="already has audio"):
-                generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
+        with patch(
+            "src.audio.pipeline.get_node",
+            return_value=_mock_beat(audio_url="/api/v1/audio/files/real.mp3"),
+        ), pytest.raises(PipelineError, match="already has audio"):
+            generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
 
     def test_force_regenerates(self):
         session = _mock_session_with_poi()
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat(
-            audio_url="/api/v1/audio/files/real.mp3"
-        )), patch("src.audio.pipeline.update_node"):
+        with (
+            patch(
+                "src.audio.pipeline.get_node",
+                return_value=_mock_beat(audio_url="/api/v1/audio/files/real.mp3"),
+            ),
+            patch("src.audio.pipeline.update_node"),
+        ):
             result = generate_beat_audio(session, "beat-001", provider_name="mock", force=True)
         assert result.size_bytes > 0
 
     def test_missing_beat_raises(self):
-        with patch("src.audio.pipeline.get_node", return_value=None):
-            with pytest.raises(PipelineError, match="not found"):
-                generate_beat_audio(MagicMock(), "nonexistent")
+        with (
+            patch("src.audio.pipeline.get_node", return_value=None),
+            pytest.raises(PipelineError, match="not found"),
+        ):
+            generate_beat_audio(MagicMock(), "nonexistent")
 
     def test_empty_script_body_raises(self):
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat(script_body="")):
-            with pytest.raises(PipelineError, match="no script_body"):
-                generate_beat_audio(MagicMock(), "beat-001")
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat(script_body="")),
+            pytest.raises(PipelineError, match="no script_body"),
+        ):
+            generate_beat_audio(MagicMock(), "beat-001")
 
     def test_placeholder_url_is_regenerated(self):
         session = _mock_session_with_poi()
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat(
-            audio_url="s3://travlr-audio/placeholder/test.mp3"
-        )), patch("src.audio.pipeline.update_node"):
+        with (
+            patch(
+                "src.audio.pipeline.get_node",
+                return_value=_mock_beat(audio_url="s3://ondoway-audio/placeholder/test.mp3"),
+            ),
+            patch("src.audio.pipeline.update_node"),
+        ):
             result = generate_beat_audio(session, "beat-001", provider_name="mock")
         assert result.size_bytes > 0
 
@@ -116,9 +129,12 @@ class TestGenerateBatch:
         class FakeRecord:
             def __init__(self, bid, url, hash_val=None, script=None):
                 self._data = {
-                    "id": bid, "audio_url": url,
-                    "hash": hash_val, "script_body": script,
+                    "id": bid,
+                    "audio_url": url,
+                    "hash": hash_val,
+                    "script_body": script,
                 }
+
             def __getitem__(self, key):
                 return self._data[key]
 
@@ -137,8 +153,10 @@ class TestGenerateBatch:
 
         session.run = smart_run
 
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat(beat_id="b1")), \
-             patch("src.audio.pipeline.update_node"):
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat(beat_id="b1")),
+            patch("src.audio.pipeline.update_node"),
+        ):
             summary = generate_batch(session, provider_name="mock")
 
         assert isinstance(summary, BatchSummary)
@@ -153,9 +171,12 @@ class TestGenerateBatch:
         class FakeRecord:
             def __init__(self, bid, url, hash_val=None, script=None):
                 self._data = {
-                    "id": bid, "audio_url": url,
-                    "hash": hash_val, "script_body": script,
+                    "id": bid,
+                    "audio_url": url,
+                    "hash": hash_val,
+                    "script_body": script,
                 }
+
             def __getitem__(self, key):
                 return self._data[key]
 
@@ -181,12 +202,20 @@ class TestGenerateBatch:
         def on_progress(current, total, beat_id):
             progress_log.append((current, total, beat_id))
 
-        with patch("src.audio.pipeline.get_node", side_effect=[
-            _mock_beat(beat_id="b1", audio_url=""),
-            _mock_beat(beat_id="b2", audio_url=""),
-        ]), patch("src.audio.pipeline.update_node"):
+        with (
+            patch(
+                "src.audio.pipeline.get_node",
+                side_effect=[
+                    _mock_beat(beat_id="b1", audio_url=""),
+                    _mock_beat(beat_id="b2", audio_url=""),
+                ],
+            ),
+            patch("src.audio.pipeline.update_node"),
+        ):
             summary = generate_batch(
-                session, provider_name="mock", progress_callback=on_progress,
+                session,
+                provider_name="mock",
+                progress_callback=on_progress,
             )
 
         assert len(progress_log) == 2
@@ -225,8 +254,10 @@ class TestGetDuration:
     def test_result_includes_duration(self):
         """generate_beat_audio should populate duration_sec in the result."""
         session = _mock_session_with_poi("Test POI")
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
-             patch("src.audio.pipeline.update_node") as mock_update:
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat()),
+            patch("src.audio.pipeline.update_node") as mock_update,
+        ):
             result = generate_beat_audio(session, "beat-001", provider_name="mock")
 
         assert result.duration_sec > 0
@@ -241,8 +272,10 @@ class TestScriptChangeDetection:
     def test_hash_persisted_on_generate(self):
         """generate_beat_audio should store audio_script_hash in Neo4j."""
         session = _mock_session_with_poi("Test POI")
-        with patch("src.audio.pipeline.get_node", return_value=_mock_beat()), \
-             patch("src.audio.pipeline.update_node") as mock_update:
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat()),
+            patch("src.audio.pipeline.update_node") as mock_update,
+        ):
             generate_beat_audio(session, "beat-001", provider_name="mock")
 
         props = mock_update.call_args[0][3]
@@ -256,8 +289,10 @@ class TestScriptChangeDetection:
         beat["properties"]["audio_script_hash"] = _script_hash("old text that changed")
         session = _mock_session_with_poi()
 
-        with patch("src.audio.pipeline.get_node", return_value=beat), \
-             patch("src.audio.pipeline.update_node"):
+        with (
+            patch("src.audio.pipeline.get_node", return_value=beat),
+            patch("src.audio.pipeline.update_node"),
+        ):
             result = generate_beat_audio(session, "beat-001", provider_name="mock")
 
         assert result.size_bytes > 0
@@ -267,9 +302,11 @@ class TestScriptChangeDetection:
         beat = _mock_beat(audio_url="/api/v1/audio/files/existing.mp3")
         beat["properties"]["audio_script_hash"] = _script_hash("Test script.")
 
-        with patch("src.audio.pipeline.get_node", return_value=beat):
-            with pytest.raises(PipelineError, match="already has audio"):
-                generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
+        with (
+            patch("src.audio.pipeline.get_node", return_value=beat),
+            pytest.raises(PipelineError, match="already has audio"),
+        ):
+            generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
 
     def test_check_status_not_stale(self):
         """Status should show is_stale=False when hash matches."""
@@ -314,3 +351,122 @@ class TestScriptChangeDetection:
 
         assert status.has_audio is False
         assert status.is_stale is False
+
+
+# ── Error wrapping ──
+
+
+class TestPipelineErrorWrapping:
+    def test_tts_error_wrapped_in_pipeline_error(self):
+        """TTSError during TTS generation should be wrapped in PipelineError."""
+        from src.audio.provider import TTSError
+
+        session = _mock_session_with_poi("Test POI")
+        mock_provider = MagicMock()
+        mock_provider.generate.side_effect = TTSError("TTS service down")
+
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat()),
+            patch("src.audio.pipeline.get_provider", return_value=mock_provider),
+            pytest.raises(PipelineError, match="TTS failed"),
+        ):
+            generate_beat_audio(session, "beat-001")
+
+    def test_storage_error_wrapped_in_pipeline_error(self):
+        """StorageError during upload should be wrapped in PipelineError."""
+        from src.audio.storage import StorageError
+
+        session = _mock_session_with_poi("Test POI")
+        mock_storage = MagicMock()
+        mock_storage.upload.side_effect = StorageError("disk full")
+
+        with (
+            patch("src.audio.pipeline.get_node", return_value=_mock_beat()),
+            patch("src.audio.pipeline.get_storage", return_value=mock_storage),
+            pytest.raises(PipelineError, match="Storage failed"),
+        ):
+            generate_beat_audio(session, "beat-001", provider_name="mock")
+
+
+# ── Batch mixed results ──
+
+
+class TestBatchMixedResults:
+    def test_batch_mixed_success_failure(self):
+        """Batch with one succeeding beat and one failing beat."""
+
+        class FakeRecord:
+            def __init__(self, bid, url, hash_val=None, script=None):
+                self._data = {
+                    "id": bid,
+                    "audio_url": url,
+                    "hash": hash_val,
+                    "script_body": script,
+                }
+
+            def __getitem__(self, key):
+                return self._data[key]
+
+        session = MagicMock()
+        call_count = [0]
+
+        def smart_run(*args, **kwargs):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                return [
+                    FakeRecord("b1", ""),  # will succeed
+                    FakeRecord("b2", ""),  # will fail
+                ]
+            result = MagicMock()
+            poi = MagicMock()
+            poi.__getitem__ = lambda self, k: "Test POI"
+            result.single.return_value = poi
+            return result
+
+        session.run = smart_run
+
+        # b1 exists with a script, b2 has no script_body (triggers PipelineError)
+        with (
+            patch(
+                "src.audio.pipeline.get_node",
+                side_effect=[
+                    _mock_beat(beat_id="b1", audio_url=""),
+                    _mock_beat(beat_id="b2", audio_url="", script_body=""),
+                ],
+            ),
+            patch("src.audio.pipeline.update_node"),
+        ):
+            summary = generate_batch(session, provider_name="mock")
+
+        assert summary.succeeded == 1
+        assert summary.failed == 1
+        assert summary.total_found == 2
+        # Results should contain one GenerationResult and one PipelineError
+        successes = [r for r in summary.results if isinstance(r, GenerationResult)]
+        failures = [r for r in summary.results if isinstance(r, PipelineError)]
+        assert len(successes) == 1
+        assert len(failures) == 1
+
+
+# ── Script hash determinism ──
+
+
+class TestScriptHashDeterminism:
+    def test_same_input_same_hash(self):
+        """_script_hash should be deterministic — same text always gives the same hash."""
+        text = "The Eiffel Tower was completed in 1889."
+        h1 = _script_hash(text)
+        h2 = _script_hash(text)
+        assert h1 == h2
+
+    def test_different_input_different_hash(self):
+        """Different texts should produce different hashes."""
+        h1 = _script_hash("Hello world")
+        h2 = _script_hash("Goodbye world")
+        assert h1 != h2
+
+    def test_hash_is_hex_string(self):
+        """Script hash should be a valid hex SHA-256 string."""
+        h = _script_hash("test")
+        assert len(h) == 64  # SHA-256 = 64 hex chars
+        assert all(c in "0123456789abcdef" for c in h)

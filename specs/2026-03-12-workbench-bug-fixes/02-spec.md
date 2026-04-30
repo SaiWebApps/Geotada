@@ -74,7 +74,7 @@ Fix 10 bugs in `frontend/review.html` that block the editorial conflict detectio
 
 ## Downstream Dependencies
 
-- Passing test suite validates that the Editorial Workbench is ready for real content triage against the Boston POI dataset
+- Passing test suite validates that the Editorial Workbench is ready for real content triage against the Paris POI dataset
 - Conflict resolution workflow is a prerequisite for the "Database Upload & Conflict Resolution slice" noted in the north star's Active Build Target
 - Fixed workbench becomes the baseline for future regression tests
 

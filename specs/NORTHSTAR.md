@@ -1,4 +1,4 @@
-# TRAVLR — North Star
+# ONDOWAY — North Star
 
 > **Last updated:** April 2026 · **Status:** Pre-launch (Phase 1)
 
@@ -6,7 +6,7 @@
 
 ## Vision
 
-Travlr makes every city feel like you have a local storyteller in your pocket — surfacing the hidden stories, scandals, and secrets that guidebooks leave out, delivered as GPS-triggered narrative audio that finds you as you walk.
+Ondoway makes every city feel like you have a local storyteller in your pocket — surfacing the hidden stories, scandals, and secrets that guidebooks leave out, delivered as GPS-triggered narrative audio that finds you as you walk.
 
 ---
 
@@ -14,7 +14,7 @@ Travlr makes every city feel like you have a local storyteller in your pocket �
 
 | Phase | Window | Gate (must pass to advance) |
 |-------|--------|-----------------------------|
-| **1 — Build the Machine** | Months 1–3 | 16 taggable lenses covered, 100+ Boston POIs live, Boredom Test passing internally |
+| **1 — Build the Machine** | Months 1–3 | 16 taggable lenses covered, 100+ Paris POIs live, Boredom Test passing internally |
 | **2 — First Real Walk** | Months 3–4 | 5–10 testers complete a full tour, 8/10 triggers fire, 3/10 recommend unprompted |
 | **3 — Public Launch** | Months 4–7 | App Store live, credits active, 200 completed tours, one organic breakthrough |
 | **4 — Prove It Scales** | Months 7–12 | City two live in <6 weeks pipeline work, first B2B conversation started |

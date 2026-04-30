@@ -48,9 +48,7 @@ class LocalStorageProvider:
     """
 
     def __init__(self) -> None:
-        self._base = Path(
-            os.getenv("AUDIO_STORAGE_PATH", "audio_store")
-        ).resolve()
+        self._base = Path(os.getenv("AUDIO_STORAGE_PATH", "audio_store")).resolve()
         self._base.mkdir(parents=True, exist_ok=True)
 
     @property
@@ -62,7 +60,20 @@ class LocalStorageProvider:
         return self._base
 
     def upload(self, data: bytes, key: str) -> str:
+        # Reject null bytes (could bypass path checks on some OSes)
+        if "\x00" in key:
+            raise StorageError("Invalid storage key: null bytes not allowed")
+
         filepath = self._base / key
+        # Prevent path traversal — resolved path must stay under base
+        resolved_base = self._base.resolve()
+        resolved_path = filepath.resolve()
+        if (
+            not str(resolved_path).startswith(str(resolved_base) + os.sep)
+            and resolved_path != resolved_base
+        ):
+            raise StorageError("Invalid storage key: path traversal detected")
+
         filepath.parent.mkdir(parents=True, exist_ok=True)
         filepath.write_bytes(data)
         return f"/api/v1/audio/files/{key}"
@@ -91,9 +102,10 @@ class S3StorageProvider:
             raise StorageError("AWS_S3_BUCKET not set")
         try:
             import boto3
+
             self._s3 = boto3.client("s3")
-        except ImportError:
-            raise StorageError("boto3 not installed — run: pip install boto3")
+        except ImportError as exc:
+            raise StorageError("boto3 not installed — run: pip install boto3") from exc
 
     @property
     def name(self) -> str:

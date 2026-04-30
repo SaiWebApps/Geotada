@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.connection import get_database
 from src.schema.definitions import TAGGABLE_LENSES
 
 if TYPE_CHECKING:
@@ -15,13 +16,14 @@ if TYPE_CHECKING:
 
 _MERGE_BEAT = """
 MATCH (p:POI {name: $poi_name, city_name: $city_name})
-MERGE (p)-[:HAS_BEAT]->(b:NarrativeBeat {script_body: $script_body})
+MERGE (p)-[r:HAS_BEAT]->(b:NarrativeBeat {script_body: $script_body})
 SET b.id            = coalesce(b.id, randomUUID()),
     b.version       = $version,
     b.active_status = $active_status,
     b.audio_url     = $audio_url,
     b.duration_sec  = $duration_sec,
-    b.kid_friendly  = $kid_friendly
+    b.kid_friendly  = $kid_friendly,
+    r.sort_order    = $sort_order
 WITH b
 UNWIND $lens_names AS lens_name
 MATCH (l:Lens {name: lens_name})
@@ -80,7 +82,7 @@ for _beat in BEATS:
         assert _ln in TAGGABLE_LENSES, f"Beat lens '{_ln}' is not a taggable lens"
 
 
-def _build_beat_params(beat: dict) -> dict:
+def _build_beat_params(beat: dict, sort_order: int) -> dict:
     """Transform a beat definition into Cypher parameters."""
     poi_slug = beat["poi_name"].lower().replace(" ", "_")
     return {
@@ -90,9 +92,10 @@ def _build_beat_params(beat: dict) -> dict:
         "lens_names": beat["lens_names"],
         "version": 1,
         "active_status": "active",
-        "audio_url": f"s3://travlr-audio/placeholder/{poi_slug}.mp3",
+        "audio_url": f"s3://ondoway-audio/placeholder/{poi_slug}.mp3",
         "duration_sec": beat["importance_tier"] * 60,
         "kid_friendly": "yes",
+        "sort_order": sort_order,
     }
 
 
@@ -102,7 +105,11 @@ def _create_beat(tx, params: dict) -> None:
 
 def seed_beats(driver: Driver) -> int:
     """Seed all narrative beats. Returns count created."""
-    with driver.session() as session:
+    poi_counters: dict[str, int] = {}
+    with driver.session(database=get_database()) as session:
         for beat in BEATS:
-            session.execute_write(_create_beat, _build_beat_params(beat))
+            poi = beat["poi_name"]
+            sort_order = poi_counters.get(poi, 0)
+            poi_counters[poi] = sort_order + 1
+            session.execute_write(_create_beat, _build_beat_params(beat, sort_order))
     return len(BEATS)

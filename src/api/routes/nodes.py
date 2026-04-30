@@ -55,12 +55,12 @@ def create_node(
     try:
         validated = model_cls(**body)
     except ValidationError as e:
-        raise HTTPException(422, detail=str(e))
+        raise HTTPException(422, detail=str(e)) from None
     try:
         return crud.create_node(session, label.value, validated.model_dump())
     except Exception as e:
         if "Constraint" in type(e).__name__ or "ConstraintValidation" in str(e):
-            raise HTTPException(409, f"Constraint violation: {e}")
+            raise HTTPException(409, f"Constraint violation: {e}") from None
         raise
 
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Travlr — Neo4j Schema Dashboard</title>
+<title>Ondoway — Neo4j Schema Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -260,7 +260,7 @@
 </head>
 <body>
   <div class="header">
-    <h1><span>Travlr</span> Schema Dashboard</h1>
+    <h1><span>Ondoway</span> Schema Dashboard</h1>
     <span id="status-badge" class="badge badge-loading">loading…</span>
   </div>
 
@@ -272,6 +272,10 @@
   </div>
 
 <script>
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;');
+}
+
 const COLORS = {
   User: '#3b82f6', Profile: '#60a5fa', Trip: '#93c5fd',
   POI: '#22c55e', NarrativeBeat: '#4ade80', Lens: '#86efac',
@@ -309,13 +313,13 @@ function renderDashboard(data) {
       <div class="card">
         <div class="card-title">Nodes by Label</div>
         ${Object.entries(data.node_counts).sort().map(([l,c]) =>
-          `<div class="count-row"><span class="count-label label-${l}">${l}</span><span class="count-value">${c}</span></div>`
+          `<div class="count-row"><span class="count-label label-${escHtml(l)}">${escHtml(l)}</span><span class="count-value">${escHtml(c)}</span></div>`
         ).join('')}
       </div>
       <div class="card">
         <div class="card-title">Relationships by Type</div>
         ${Object.entries(data.rel_counts).sort().map(([t,c]) =>
-          `<div class="count-row"><span class="count-label">${t}</span><span class="count-value">${c}</span></div>`
+          `<div class="count-row"><span class="count-label">${escHtml(t)}</span><span class="count-value">${escHtml(c)}</span></div>`
         ).join('')}
       </div>
     </div>
@@ -326,11 +330,11 @@ function renderDashboard(data) {
         ${data.traversals.map(t => `
           <div class="traversal ${t.passed ? 'traversal-pass' : 'traversal-fail'}">
             <div class="traversal-header">
-              <span class="traversal-name">${t.passed ? '✓' : '✗'} ${t.name}</span>
-              <span class="traversal-meta">${t.row_count} rows (need ≥${t.min_expected})</span>
+              <span class="traversal-name">${t.passed ? '✓' : '✗'} ${escHtml(t.name)}</span>
+              <span class="traversal-meta">${escHtml(t.row_count)} rows (need ≥${escHtml(t.min_expected)})</span>
             </div>
             <div class="traversal-rows">${t.sample_rows.slice(0,3).map(r =>
-              '→ ' + Object.entries(r).map(([k,v]) => `${k}=${v}`).join(', ')
+              '→ ' + Object.entries(r).map(([k,v]) => `${escHtml(k)}=${escHtml(v)}`).join(', ')
             ).join('<br>')}</div>
           </div>
         `).join('')}
@@ -499,9 +503,9 @@ function drawGraph(graph) {
         .slice(0, 6)
         .map(([k, v]) => {
           const val = typeof v === 'object' ? JSON.stringify(v) : String(v);
-          return `<b>${k}:</b> ${val.length > 30 ? val.slice(0,30)+'…' : val}`;
+          return `<b>${escHtml(k)}:</b> ${escHtml(val.length > 30 ? val.slice(0,30)+'…' : val)}`;
         }).join('<br>');
-      tooltip.innerHTML = `<b style="color:${hit.color}">${hit.label}</b><br>${props}`;
+      tooltip.innerHTML = `<b style="color:${escHtml(hit.color)}">${escHtml(hit.label)}</b><br>${props}`;
       tooltip.style.display = 'block';
       tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
       tooltip.style.top = (e.clientY - rect.top - 10) + 'px';
@@ -535,7 +539,7 @@ fetchData().then(renderDashboard).catch(err => {
   document.getElementById('app').innerHTML = `
     <div class="error-msg">
       Failed to connect to the API server.<br><br>
-      ${err.message}<br><br>
+      ${escHtml(err.message)}<br><br>
       Make sure the server is running: <b>make dashboard</b>
     </div>
   `;

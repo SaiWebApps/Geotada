@@ -1,60 +1,60 @@
 [
   {
-    "poi_name": "UI Test — Boston Harbor Lighthouse",
-    "latitude": 42.3616,
-    "longitude": -71.0517,
-    "short_description": "Historic lighthouse guiding ships into Boston Harbor since the colonial era.",
-    "orientation": "Face the waterfront and look east toward the harbor islands.",
+    "poi_name": "UI Test — Sacre-Coeur Basilica",
+    "latitude": 48.8867,
+    "longitude": 2.3431,
+    "short_description": "White-domed basilica crowning the highest point of Montmartre with sweeping views over Paris.",
+    "orientation": "Face south from the parvis for a panoramic view across the city rooftops.",
     "beats": [
       {
-        "script_body": "Boston Harbor Lighthouse has guided mariners since 1716, making it the first lighthouse established in what would become the United States. The original tower was destroyed during the Revolutionary War and rebuilt in 1783. Standing at the edge of the harbor, you can still see its beam sweeping across the water on foggy nights.",
-        "physical_cue": "Look east toward the harbor — the lighthouse stands on Little Brewster Island.",
+        "script_body": "The Basilica of the Sacred Heart was built between 1875 and 1914 as a national penance after France's defeat in the Franco-Prussian War. Architect Paul Abadie designed it in a Romano-Byzantine style inspired by the Cathedral of Saint-Front in Perigueux. The travertine stone from Chateau-Landon was chosen because it secretes calcite when wet, keeping the facade perpetually white even after a century of Parisian rain and pollution.",
+        "physical_cue": "Look up at the gleaming white dome — the stone self-cleans with every rainfall.",
         "lens": "Hidden History",
         "gravity": 3,
-        "source_passage": "Boston Harbor historical records, National Park Service archives."
+        "source_passage": "Archives of the Archdiocese of Paris; Abadie architectural records."
       },
       {
-        "script_body": "Local fishermen swear they see the ghost of keeper Worthylake walking the rocks at low tide. He drowned in 1718 along with his wife and daughter when their boat capsized returning to the lighthouse. A young Benjamin Franklin wrote a ballad about the tragedy — his first published work.",
-        "physical_cue": "The rocky shoreline where Worthylake's boat capsized is just south of the lighthouse pier.",
+        "script_body": "Local artists in Montmartre whisper that the basilica was built over the exact spot where Saint Denis, the first Bishop of Paris, was beheaded by Roman soldiers around 250 AD. According to legend, Denis picked up his severed head and walked ten kilometers north while preaching a sermon. The hill's name — Mons Martyrum, the Martyrs' Hill — preserves this grisly tale.",
+        "physical_cue": "The crypt beneath the basilica marks the legendary site of Denis's martyrdom.",
         "lens": "Local Legends & Folklore",
         "gravity": 4,
-        "source_passage": "Benjamin Franklin autobiography; Boston maritime folklore collection."
+        "source_passage": "Gregory of Tours, History of the Franks; Montmartre parish records."
       }
     ]
   },
   {
-    "poi_name": "UI Test — Faneuil Hall Anchor",
-    "latitude": 42.3601,
-    "longitude": -71.0568,
-    "short_description": "The Cradle of Liberty where revolutionary speeches shaped a nation.",
-    "orientation": "Stand in the main hall facing the stage where Samuel Adams once spoke.",
+    "poi_name": "UI Test — Pantheon Anchor",
+    "latitude": 48.8462,
+    "longitude": 2.3464,
+    "short_description": "Neoclassical mausoleum in the Latin Quarter honoring France's greatest citizens.",
+    "orientation": "Stand in the nave beneath the dome where Foucault's pendulum once demonstrated the Earth's rotation.",
     "beats": [
       {
-        "script_body": "Samuel Adams stood on this very floor and rallied Bostonians against British taxation without representation. The debates held in this hall planted the seeds of the American Revolution and earned it the nickname the Cradle of Liberty. Every word echoed off these walls carried the weight of a colony straining against the crown. Adams was no ordinary agitator — he was a master propagandist who understood that public opinion could be shaped by spectacle as much as argument. He packed the hall with sympathizers, planted questions in the crowd, and made sure every debate ended with a thunderous call to action. The British knew what was brewing here but couldn't stop it — suppressing the debates would only prove the colonists' point about tyranny.",
-        "physical_cue": "The stage at the front of the hall where speakers addressed crowds of hundreds.",
+        "script_body": "Mirabeau was the first person interred in the Pantheon after the National Assembly repurposed it as a secular temple during the Revolution in 1791. But his body was removed just two years later when his secret correspondence with Louis XVI was discovered. The Pantheon has always been political — bodies are moved in and out depending on who holds power. Voltaire and Rousseau were placed here as symbols of Enlightenment triumph over monarchy. Victor Hugo's funeral in 1885 drew two million mourners through the streets of Paris, the largest public gathering the city had ever seen. The building's inscription — Aux grands hommes, la patrie reconnaissante — was itself contested, since no woman was admitted until Marie Curie in 1995, two centuries after it opened.",
+        "physical_cue": "The inscription above the portico reads 'Aux grands hommes, la patrie reconnaissante.'",
         "lens": "Hidden History",
         "gravity": 5,
-        "source_passage": "Historical Society of Boston archives; Adams family correspondence."
+        "source_passage": "Archives nationales de France; Pantheon administrative records."
       },
       {
-        "script_body": "Faneuil Hall's architecture tells a story of reinvention. Built in 1742 as a market and meeting hall, it was designed by painter John Smibert in the Georgian style. The original building was just two stories with an open ground floor market. After a devastating fire in 1761, it was rebuilt and later expanded by Charles Bulfinch in 1805, who added a third floor and doubled its width. Bulfinch's signature Federal style cupola still crowns the building today. The grasshopper weathervane atop the cupola was crafted by Shem Drowne in 1742 and has become one of Boston's most iconic symbols. During the Revolution, it was used as a test of loyalty — anyone who couldn't identify the grasshopper was suspected of being a British spy.",
-        "physical_cue": "Look up at the cupola — the copper grasshopper weathervane has been there since 1742.",
+        "script_body": "The Pantheon's architecture tells a story of competing visions. Louis XV commissioned Jacques-Germain Soufflot in 1758 to build a church dedicated to Sainte Genevieve, the patron saint of Paris. Soufflot envisioned a fusion of Gothic structural lightness with classical grandeur — a daring experiment that nearly killed the project. The massive dome, inspired by St. Peter's in Rome and St. Paul's in London, required innovative iron reinforcements that were controversial among his peers. Soufflot died in 1780 before completion, and his student Jean-Baptiste Rondelet finished the work. During the Revolution, Quatremere de Quincy sealed the lower windows to create the somber, tomb-like atmosphere that persists today. The original church was flooded with natural light — a vision now lost beneath layers of revolutionary ideology.",
+        "physical_cue": "Look up at the dome — the sealed lower windows are visible from inside as blank stone panels.",
         "lens": "Architecture & Design",
         "gravity": 5,
-        "source_passage": "Bulfinch architectural records; Boston Landmarks Commission."
+        "source_passage": "Soufflot architectural drawings; Bibliotheque nationale de France."
       }
     ]
   },
   {
     "poi_name": "UI Test — Quiet Garden Corner",
-    "latitude": 42.3555,
-    "longitude": -71.062,
-    "short_description": "A hidden garden tucked behind Beacon Hill brownstones.",
-    "orientation": "Look for the wrought-iron gate between the two brick buildings.",
+    "latitude": 48.8530,
+    "longitude": 2.3380,
+    "short_description": "A hidden courtyard garden tucked behind Saint-Germain-des-Pres apartments.",
+    "orientation": "Look for the wooden carriage door between the two stone buildings on Rue de Furstemberg.",
     "beats": [
       {
-        "script_body": "A tiny garden hides behind the brownstones. Locals call it the secret green.",
-        "physical_cue": "The wrought-iron gate on the left.",
+        "script_body": "A tiny garden hides behind the apartment facades. Locals call it the secret square.",
+        "physical_cue": "The wooden carriage door on the left.",
         "lens": "Nature & Green Spaces",
         "gravity": 1,
         "source_passage": "Local resident interviews."
@@ -62,18 +62,18 @@
     ]
   },
   {
-    "poi_name": "UI Test — Times Square Billboard",
-    "latitude": 40.758,
-    "longitude": -73.9855,
-    "short_description": "The crossroads of the world — far outside Boston's geofence.",
-    "orientation": "Face north on Broadway between 42nd and 47th streets.",
+    "poi_name": "UI Test — Tower of London Gate",
+    "latitude": 51.5081,
+    "longitude": -0.0759,
+    "short_description": "The ancient royal fortress on the Thames — far outside Paris's geofence.",
+    "orientation": "Face the main entrance on Tower Hill approaching from the Underground station.",
     "beats": [
       {
-        "script_body": "Times Square was originally called Longacre Square until the New York Times moved its headquarters there in 1904. The newspaper's publisher convinced the city to rename the intersection and build a subway station — one of the most successful branding exercises in urban history.",
-        "physical_cue": "The original Times building still stands at the triangle where Broadway crosses Seventh Avenue.",
+        "script_body": "The Tower of London was founded by William the Conqueror in 1066 as a symbol of Norman power over the conquered Anglo-Saxons. The White Tower at its center was the tallest building in London for centuries. It has served as a royal palace, prison, armory, treasury, and menagerie — at one point housing lions, an elephant, and a polar bear that fished in the Thames on a long chain.",
+        "physical_cue": "The White Tower stands at the center of the complex, its pale Caen stone still visible.",
         "lens": "Hidden History",
         "gravity": 3,
-        "source_passage": "New York Times company archives; NYC historical records."
+        "source_passage": "Historic Royal Palaces archives; Tower of London records."
       }
     ]
   },
@@ -94,84 +94,84 @@
     ]
   },
   {
-    "poi_name": "UI Test — Duplicate Harbor Walk",
-    "latitude": 42.357,
-    "longitude": -71.0495,
+    "poi_name": "UI Test — Duplicate Seine Promenade",
+    "latitude": 48.8566,
+    "longitude": 2.3472,
     "short_description": "First of two entries sharing a name — tests duplicate resolver.",
-    "orientation": "Start at the waterfront near the aquarium.",
+    "orientation": "Start at the riverside near the Pont Neuf.",
     "beats": [
       {
-        "script_body": "The Harbor Walk stretches 47 miles along Boston's waterfront connecting neighborhoods that were once isolated by highway overpasses. The Big Dig buried the elevated expressway and opened this continuous path from East Boston to Dorchester.",
-        "physical_cue": "Blue markers embedded in the pavement guide you along the walk.",
+        "script_body": "The banks of the Seine were classified as a UNESCO World Heritage Site in 1991, recognizing the river's role as the spine of Paris for over two thousand years. The quays were built progressively from the 16th to 19th centuries, transforming muddy flood-prone banks into the elegant stone promenades we walk today. The bouquinistes — second-hand booksellers whose green stalls line the parapets — have been here since the 16th century and are considered the world's largest open-air bookshop.",
+        "physical_cue": "Green wooden bookstall boxes line the stone parapet along the river.",
         "lens": "Architecture & Design",
         "gravity": 3,
-        "source_passage": "Boston Redevelopment Authority; Harbor Walk planning documents."
+        "source_passage": "UNESCO World Heritage nomination dossier; Paris municipal archives."
       }
     ]
   },
   {
-    "poi_name": "UI Test — Duplicate Harbor Walk",
-    "latitude": 42.3545,
-    "longitude": -71.047,
+    "poi_name": "UI Test — Duplicate Seine Promenade",
+    "latitude": 48.8530,
+    "longitude": 2.3510,
     "short_description": "Second of two entries sharing a name — tests duplicate resolver.",
-    "orientation": "Continue south along the waterfront past the Moakley Courthouse.",
+    "orientation": "Continue east along the left bank past the Pont de la Tournelle toward Notre-Dame.",
     "beats": [
       {
-        "script_body": "The southern stretch of Harbor Walk passes the Moakley Federal Courthouse where you can see planes landing at Logan Airport across the water. At sunset the entire harbor turns gold and the courthouse glass reflects the skyline like a mirror.",
-        "physical_cue": "The curved glass facade of the Moakley Courthouse reflects the harbor at sunset.",
+        "script_body": "The eastern stretch of the Seine promenade passes beneath Notre-Dame where you can see the flying buttresses from below. At sunset the limestone facades of the Ile Saint-Louis turn golden and the cathedral's silhouette darkens against the sky like a paper cutout. Barges glide past carrying tourists who crane their necks upward at the same view that Impressionist painters captured a century ago.",
+        "physical_cue": "The flying buttresses of Notre-Dame are visible above the tree line from the left bank.",
         "lens": "Nature & Green Spaces",
         "gravity": 2,
-        "source_passage": "Boston Harbor Association walking guide."
+        "source_passage": "Paris riverfront walking guide; Ile Saint-Louis historical society."
       }
     ]
   },
   {
-    "poi_name": "UI Test — Quincy Market Multi-Lens",
-    "latitude": 42.3601,
-    "longitude": -71.0545,
+    "poi_name": "UI Test — Les Halles Multi-Lens",
+    "latitude": 48.8621,
+    "longitude": 2.3468,
     "short_description": "Historic marketplace testing multi-lens beat rendering and editing.",
-    "orientation": "Enter through the main colonnade facing Faneuil Hall.",
+    "orientation": "Enter the Canopee from Rue Rambuteau facing the curved glass roof.",
     "beats": [
       {
-        "script_body": "Quincy Market was built in 1826 to ease overcrowding at Faneuil Hall. Architect Alexander Parris designed the granite building in the Greek Revival style with a massive central dome. The market stretches 535 feet along a single axis — one of the longest uninterrupted commercial spaces in America.",
-        "physical_cue": "The granite colonnade entrance with Doric columns framing the central dome.",
+        "script_body": "Les Halles served as the central food market of Paris for over eight centuries, from the reign of Louis VI in 1137 until its demolition in 1971. The iron-and-glass pavilions designed by Victor Baltard in the 1850s were engineering marvels — twelve vast halls inspired by railway station architecture, each devoted to a different category of food. Emile Zola called Les Halles 'the belly of Paris' in his 1873 novel. The demolition to make way for a shopping center remains one of the most controversial urban planning decisions in French history.",
+        "physical_cue": "The modern Canopee roof echoes the curved lines of Baltard's vanished iron pavilions.",
         "lens": "Architecture & Design",
         "gravity": 5,
-        "source_passage": "Boston Landmarks Commission; Alexander Parris architectural records."
+        "source_passage": "Baltard architectural records; Archives de Paris; Zola, Le Ventre de Paris."
       },
       {
-        "script_body": "Underground tunnels connect Quincy Market to the old customs house. Smugglers used these passages to move goods past tax collectors in the early 1800s.",
-        "physical_cue": "A sealed iron grate near the south entrance marks one tunnel opening.",
+        "script_body": "Beneath the modern Forum des Halles lies an older Paris. Workers digging the underground shopping complex in the 1970s uncovered medieval cellars and ossuary passages connected to the nearby Cimetiere des Innocents, which had been the city's main burial ground for six centuries before its closure in 1786. Bones were transferred to the Catacombs, but rumors persist that some passages remain sealed and unexplored.",
+        "physical_cue": "A sealed stone archway near the lower parking levels marks one rumored passage entrance.",
         "lens": "Hidden History",
         "gravity": 4,
-        "source_passage": "Boston underground survey; customs house records."
+        "source_passage": "Paris underground survey; Cimetiere des Innocents excavation reports."
       },
       {
-        "script_body": "The food stalls inside Quincy Market have served everything from clam chowder to lobster rolls since the 1970s restoration. Before that the building sat nearly abandoned for decades.",
-        "physical_cue": "The central rotunda food court under the copper dome.",
+        "script_body": "The food stalls of the original Les Halles operated through the night, feeding a city that never truly slept. Porters, butchers, and fishmongers worked from midnight to dawn. After the market closed, the tradition survived in the surrounding bistros that still serve French onion soup — soupe a l'oignon gratinee — in the early morning hours, a dish born from the need to feed exhausted market workers cheaply and quickly.",
+        "physical_cue": "The narrow streets around Rue Montorgueil still host food vendors continuing the market tradition.",
         "lens": "Food & Culinary Culture",
         "gravity": 2,
-        "source_passage": "Rouse Company restoration documents; Boston food history."
+        "source_passage": "Paris culinary history archives; Rue Montorgueil merchant records."
       },
       {
-        "script_body": "Street performers outside Quincy Market carry on a tradition stretching back to colonial peddlers who hawked wares with songs and tricks.",
-        "physical_cue": "The cobblestone plaza between Quincy Market and Faneuil Hall where performers gather.",
+        "script_body": "Street musicians at Les Halles carry on a tradition stretching back to medieval jongleurs who performed for market crowds. The underground corridors of the Forum des Halles and the adjacent RER station Chatelet-Les Halles have become one of Paris's most vibrant stages for buskers, with the city issuing official permits to performers since 1997.",
+        "physical_cue": "The underground corridors between the RER platforms where musicians set up with amplifiers.",
         "lens": "Music & Nightlife History",
         "gravity": 1,
-        "source_passage": "Boston busking history; colonial marketplace records."
+        "source_passage": "Paris busking history; RATP performance permit archives."
       }
     ]
   },
   {
     "poi_name": "UI Test — Empty Script Beat",
-    "latitude": 42.358,
-    "longitude": -71.061,
+    "latitude": 48.8560,
+    "longitude": 2.3522,
     "short_description": "Tests the empty script_body warning and Mark as Complete blocking.",
-    "orientation": "Near the intersection of Tremont and Boylston.",
+    "orientation": "Near the intersection of Boulevard Saint-Michel and Rue Soufflot.",
     "beats": [
       {
         "script_body": "   ",
-        "physical_cue": "A faded sign on the corner building.",
+        "physical_cue": "A faded plaque on the corner building.",
         "lens": "Hidden History",
         "gravity": 3,
         "source_passage": "No source — empty beat for testing."
@@ -179,71 +179,71 @@
     ]
   },
   {
-    "poi_name": "UI Test — The Extraordinarily Long-Named Historical Marker at the Corner of Tremont and Winter Streets",
-    "latitude": 42.3557,
-    "longitude": -71.0615,
-    "short_description": "This is a deliberately long description designed to test how the workbench handles text overflow in the worklist row and detail view. It describes a historical marker at the intersection of Tremont and Winter Streets in downtown Boston where a revolutionary-era printing press once operated, producing pamphlets that circulated throughout the colonies and helped shape public opinion in the years leading up to American independence from British colonial rule. The marker was installed in 1976 during the bicentennial celebrations.",
-    "orientation": "Stand at the southwest corner of the intersection facing the brick building with the commemorative bronze plaque mounted approximately six feet above street level on the facade between the first and second floor windows. You may need to look carefully as the plaque has weathered significantly since its installation during the 1976 bicentennial celebrations.",
+    "poi_name": "UI Test — The Extraordinarily Long-Named Historical Marker at the Corner of Boulevard Saint-Germain and Rue de l'Ancienne-Comedie",
+    "latitude": 48.8531,
+    "longitude": 2.3390,
+    "short_description": "This is a deliberately long description designed to test how the workbench handles text overflow in the worklist row and detail view. It describes a historical marker at the intersection of Boulevard Saint-Germain and Rue de l'Ancienne-Comedie in the sixth arrondissement of Paris where the first permanent public coffeehouse in France, Le Procope, opened in 1686. The cafe became a gathering place for Enlightenment philosophers including Voltaire, Rousseau, and Diderot, and later served as a meeting point for revolutionary leaders Danton, Marat, and Robespierre. The commemorative plaque was installed in 1986 during the tricentennial celebrations of the cafe's founding.",
+    "orientation": "Stand at the northwest corner of the intersection facing the stone building with the commemorative bronze plaque mounted approximately two meters above street level on the facade between the ground floor windows and the first floor balcony. You may need to look carefully as the plaque has weathered significantly since its installation during the 1986 tricentennial celebrations of Le Procope.",
     "beats": [
       {
-        "script_body": "A revolutionary-era printing press once operated in the basement of this building, producing pamphlets that circulated throughout the thirteen colonies. The printer worked in secret at night by candlelight to avoid British patrols who were actively hunting seditious publishers.",
-        "physical_cue": "The bronze plaque on the brick facade between the first and second floor windows.",
+        "script_body": "Le Procope, opened in 1686 by Sicilian Francesco Procopio dei Coltelli, was the first coffeehouse in Paris and became the intellectual nerve center of the Enlightenment. Voltaire allegedly drank forty cups of coffee a day here while writing. During the Revolution, Danton and Marat plotted in its back rooms while Napoleon left his hat as collateral when he couldn't pay his bill — it hung on the wall for years.",
+        "physical_cue": "The bronze plaque on the stone facade between the ground floor and first floor balcony.",
         "lens": "Hidden History",
         "gravity": 3,
-        "source_passage": "Colonial printing records; Massachusetts Historical Society."
+        "source_passage": "Le Procope historical archives; Paris cafe culture records."
       }
     ]
   },
   {
-    "poi_name": "UI Test Seed — Old North Church",
-    "latitude": 42.3663,
-    "longitude": -71.0544,
-    "short_description": "Conflict test POI — matches seeded Old North Church for conflict detection testing.",
-    "orientation": "Face the steeple from Salem Street.",
+    "poi_name": "UI Test Seed — Eiffel Tower",
+    "latitude": 48.8584,
+    "longitude": 2.2945,
+    "short_description": "Conflict test POI — matches seeded Eiffel Tower for conflict detection testing.",
+    "orientation": "Face the tower from the Champ de Mars looking northwest.",
     "beats": [
       {
-        "script_body": "The secret lantern signal from Old North Church steeple warned patriots across Boston harbor that British troops were advancing by sea toward Lexington. Robert Newman risked his life climbing those stairs while sentries patrolled below. Two lanterns blazed briefly then vanished into the April darkness changing American history forever.",
-        "physical_cue": "The steeple visible above the roofline of Salem Street.",
+        "script_body": "Gustave Eiffel's iron tower was never meant to last. Built as a temporary entrance arch for the 1889 World's Fair celebrating the centennial of the French Revolution, the 300-meter tower was scheduled for demolition after twenty years. Eiffel saved it by installing a radio transmitter at its summit, making it indispensable for military communications. During World War I it intercepted a coded German message that led to the arrest of spy Mata Hari.",
+        "physical_cue": "The iron lattice tower rising above the Champ de Mars.",
         "lens": "Hidden History",
         "gravity": 4,
-        "source_passage": "Paul Revere's account; Old North Church archives."
+        "source_passage": "Eiffel company archives; 1889 World's Fair records."
       },
       {
-        "script_body": "Jazz clubs once lined these cobblestone lanes drawing musicians from Harlem and Chicago. The smoky basement venues hosted late night jam sessions where unknown artists played alongside legends. Neon signs flickered above doorways beckoning sailors and students into underground speakeasies.",
-        "physical_cue": "The basement entrance with the faded neon sign on Hull Street.",
+        "script_body": "Jazz clubs once lined the streets around the Champ de Mars drawing musicians from New Orleans and Harlem. After World War I, Black American musicians found a freedom in Paris that Jim Crow denied them at home. Sidney Bechet, Josephine Baker, and Django Reinhardt turned Montparnasse and Saint-Germain into the jazz capital of Europe. Smoky basement clubs along Rue de Rennes hosted late night jam sessions where unknown artists sat in with legends.",
+        "physical_cue": "The narrow side streets off Avenue de la Bourdonnais where basement club entrances still have their iron railings.",
         "lens": "Music & Nightlife History",
         "gravity": 2,
-        "source_passage": "Boston jazz scene oral history project."
+        "source_passage": "Paris jazz history oral archives; Josephine Baker biography."
       },
       {
-        "script_body": "Paul Revere galloped through the Massachusetts countryside warning colonial militia that British regulars were marching toward Lexington and Concord. His midnight ride covered roughly twelve miles of dark roads and sleeping villages. At every farmhouse he pounded on doors shouting the regulars are coming. Samuel Prescott and William Dawes joined the ride but only Prescott reached Concord alerting the minutemen.",
-        "physical_cue": "The North End streets Revere rode through on his way out of Boston.",
+        "script_body": "Gustave Eiffel himself maintained a private apartment at the summit of the tower where he entertained distinguished guests including Thomas Edison. The apartment was furnished with velvet settees, a grand piano, and scientific instruments. Parisians who had mocked the tower as a metal monstrosity begged for invitations. Eiffel refused nearly all of them, preferring to use the space for meteorological and aerodynamic experiments that contributed to early aviation research.",
+        "physical_cue": "The small windows at the very top of the tower mark Eiffel's private apartment.",
         "lens": "Food & Culinary Culture",
         "gravity": 3,
-        "source_passage": "Longfellow poem; Revere historical society."
+        "source_passage": "Eiffel personal papers; Societe des Ingenieurs Civils de France."
       },
       {
-        "script_body": "British soldiers occupied Boston years before Revolution turning churches stables homes barracks. Redcoats patrolled cobblestone streets enforcing harsh laws colonial citizens. Tensions boiled over. Street artists captured scenes depicting crowd gathered near massacre site painting vivid murals watercolors.",
-        "physical_cue": "The alley wall where faded murals depict colonial-era scenes.",
+        "script_body": "When the tower was first unveiled, Parisian artists erupted in fury. A petition signed by Guy de Maupassant, Alexandre Dumas fils, and Charles Garnier called it a disgrace — a factory chimney disfiguring the city's skyline. Maupassant famously ate lunch at the tower's restaurant every day, claiming it was the only place in Paris where he didn't have to look at it. Street artists responded by sketching the tower obsessively, turning protest into a new visual vocabulary that influenced Art Nouveau.",
+        "physical_cue": "The esplanade beneath the tower where caricaturists still sketch visitors, continuing a tradition from opening day.",
         "lens": "Art & Street Culture",
         "gravity": 3,
-        "source_passage": "Colonial art history; Boston Massacre site records."
+        "source_passage": "1887 Artists' Petition; Paris art history archives."
       },
       {
-        "script_body": "Ancient oak trees along the harbor walk shelter migratory songbirds every spring. The salt marsh ecosystem supports dozens of native plant species rarely found elsewhere in urban New England. Volunteers restored these wetlands after decades of industrial pollution nearly destroyed the natural habitat.",
-        "physical_cue": "The grove of old oak trees near the waterfront path.",
+        "script_body": "The Champ de Mars beneath the tower was originally a military drill ground — its name means Field of Mars, the Roman god of war. Before that, the site was farmland and vineyards. Today the long rectangular garden stretching from the tower to the Ecole Militaire supports over 80 species of trees and provides nesting habitat for kestrels, which hunt pigeons from the tower's upper platforms. The falcons have become so established that ornithologists study them as an example of urban raptor adaptation.",
+        "physical_cue": "The rows of chestnut and plane trees lining the Champ de Mars beneath the tower.",
         "lens": "Nature & Green Spaces",
         "gravity": 2,
-        "source_passage": "Boston harbor ecology survey; urban wildlife reports."
+        "source_passage": "Paris urban ecology survey; Museum national d'Histoire naturelle raptor studies."
       }
     ]
   },
   {
-    "poi_name": "UI Test — Audited Beacon Hill",
-    "latitude": 42.3588,
-    "longitude": -71.0707,
+    "poi_name": "UI Test — Audited Montmartre",
+    "latitude": 48.8867,
+    "longitude": 2.3400,
     "short_description": "Tests audit notes rendering in both object and array formats.",
-    "orientation": "Walk up the cobblestone slope of Acorn Street.",
+    "orientation": "Walk up the cobblestone slope of Rue Lepic past the Moulin de la Galette.",
     "poi_audit_notes": [
       {
         "issue": "POI coordinates may be slightly off — verify against satellite imagery.",
@@ -251,38 +251,38 @@
         "source": "Manual review during data audit."
       },
       {
-        "issue": "Short description could be more specific about which part of Beacon Hill.",
+        "issue": "Short description could be more specific about which part of Montmartre.",
         "confidence": "LOW",
         "source": "Editorial style guide review."
       }
     ],
     "beats": [
       {
-        "script_body": "Beacon Hill's gas-lit streets and brick sidewalks make it one of the most photographed neighborhoods in America. The purple windowpanes on several Beacon Street mansions are the result of a chemical reaction in 19th-century glass — they were never intentionally tinted.",
-        "physical_cue": "Look for the purple-tinted windowpanes on the Beacon Street side.",
+        "script_body": "Montmartre's winding lanes and steep staircases make it one of the most painted neighborhoods in the world. The violet-tinged windowpanes on several Rue Lepic buildings are the result of manganese dioxide in 19th-century glass reacting with decades of sunlight — they were never intentionally tinted. Renoir, Toulouse-Lautrec, and later Picasso worked within steps of these windows.",
+        "physical_cue": "Look for the violet-tinged windowpanes on the upper floors along Rue Lepic.",
         "lens": "Architecture & Design",
         "gravity": 4,
-        "source_passage": "Beacon Hill architectural survey; glass chemistry records.",
+        "source_passage": "Montmartre architectural survey; 19th-century glass chemistry records.",
         "audit_notes": {
-          "issue": "Purple windowpane claim needs primary source verification.",
+          "issue": "Violet windowpane claim needs primary source verification.",
           "current_text": "they were never intentionally tinted",
-          "suggested_fix": "Add citation to the manganese oxide chemical analysis from 1960s restoration reports.",
+          "suggested_fix": "Add citation to the manganese dioxide chemical analysis from 1990s restoration reports.",
           "confidence": "HIGH",
-          "source": "https://www.beaconhillhistory.org/glass-analysis"
+          "source": "https://www.montmartre-histoire.org/glass-analysis"
         }
       },
       {
-        "script_body": "The African Meeting House on Joy Street is the oldest surviving Black church building in the United States, built in 1806. William Lloyd Garrison founded the New England Anti-Slavery Society here in 1832.",
-        "physical_cue": "The brick facade of the African Meeting House at 46 Joy Street.",
+        "script_body": "The Bateau-Lavoir studio on Rue Ravignan is where Pablo Picasso painted Les Demoiselles d'Avignon in 1907, the work that shattered Western art's perspective conventions and launched Cubism. The building was a ramshackle former piano factory with no heating and a single water tap. Picasso, Juan Gris, Amedeo Modigliani, and Kees van Dongen worked here in freezing conditions, burning their drawings for warmth. The original building was destroyed by fire in 1970 and rebuilt.",
+        "physical_cue": "The reconstructed facade of the Bateau-Lavoir at 13 Rue Ravignan.",
         "lens": "Hidden History",
         "gravity": 5,
-        "source_passage": "Museum of African American History; National Park Service documentation.",
+        "source_passage": "Musee de Montmartre archives; Picasso biographical records.",
         "audit_notes": {
-          "issue": "Date verification needed — some sources say 1805 for construction start.",
-          "current_text": "built in 1806",
-          "suggested_fix": "Clarify: 'construction began in 1805, completed and dedicated in 1806.'",
+          "issue": "Date verification needed — some sources say the painting was started in late 1906.",
+          "current_text": "painted Les Demoiselles d'Avignon in 1907",
+          "suggested_fix": "Clarify: 'began in late 1906 and completed in July 1907.'",
           "confidence": "MEDIUM",
-          "source": "Museum of African American History records."
+          "source": "Museum of Modern Art curatorial notes."
         }
       }
     ]

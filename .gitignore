@@ -255,6 +255,8 @@ temp/
 !.env.example
 .env.test
 !.env.test.example
+.env.local
+.env.cloud
 # Generated audio files (local TTS output)
 audio_store/
 
@@ -268,3 +270,6 @@ data/*/_dedup_review/*.md
 # extracts under Books/{city}/{book-slug}/ are the canonical
 # pipeline input and remain tracked.
 Books/**/*.pdf
+
+# uv.lock is committed (reproducible dependency resolution)
+# Do NOT add uv.lock to this file.

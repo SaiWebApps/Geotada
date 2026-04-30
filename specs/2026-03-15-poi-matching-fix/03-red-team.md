@@ -11,7 +11,7 @@
 
 ### B1 — `cachedPoiList` is capped at 200 POIs
 
-**Problem:** `frontend/review.html:2105` fetches `cachedPoiList` with `?limit=200`. The Phase 1 gate is 100+ Boston POIs, and this will grow. Once the cache exceeds 200, proximity matches against uncached POIs will be missed silently — the most dangerous failure mode the spec is designed to prevent.
+**Problem:** `frontend/review.html:2105` fetches `cachedPoiList` with `?limit=200`. The Phase 1 gate is 100+ Paris POIs, and this will grow. Once the cache exceeds 200, proximity matches against uncached POIs will be missed silently — the most dangerous failure mode the spec is designed to prevent.
 
 **Resolution:** Paginate the fetch to load all POIs, or increase the limit to a safe ceiling (e.g., 2000). Since this is an internal editorial tool with a small dataset, loading all POIs is acceptable.
 
@@ -39,7 +39,7 @@ The spec's Section 3 says "the frontend pre-resolves POI identity and passes an 
 
 ### R1 — 50m threshold in dense urban areas (Medium likelihood)
 
-**Risk:** The scope acknowledges this: in dense European old towns, distinct buildings can be <20m apart. Boston is less dense but has clusters (e.g., multiple buildings on Boston Common, adjacent buildings on Freedom Trail). False proximity matches will create editor friction.
+**Risk:** The scope acknowledges this: in dense European old towns, distinct buildings can be <20m apart. Paris is less dense but has clusters (e.g., multiple buildings on Jardin du Luxembourg, adjacent buildings on Champs-Élysées). False proximity matches will create editor friction.
 
 **Mitigation:** The editor-in-the-loop design handles this. Make the 50m threshold a named constant as the spec requires, so it can be tuned per-city later. Consider logging proximity match decisions to calibrate the threshold over time.
 
@@ -97,7 +97,7 @@ Some existing POIs in the database may lack coordinates (seeded manually or from
 
 **Alignment: Strong.** This spec directly protects the graph spine (`POI → NarrativeBeat → Lens`) which is the core architectural commitment. Specific checks:
 
-- **Graph spine integrity:** The spec's primary purpose. POI is the anchor node — false merges/splits corrupt everything downstream. This is prerequisite work for the Phase 1 gate (100+ Boston POIs live).
+- **Graph spine integrity:** The spec's primary purpose. POI is the anchor node — false merges/splits corrupt everything downstream. This is prerequisite work for the Phase 1 gate (100+ Paris POIs live).
 - **Extraction philosophy:** "Constraints belong at the database layer, not the extraction layer." The spec respects this — the miner can still extract whatever it finds; deduplication happens at the editorial/database layer.
 - **Editorial Workbench commitment:** "Browser-based HTML/JS, Leaflet maps, manual JSON upload." The spec stays within this boundary.
 - **No scope creep toward boundaries:** No automated merging, no fuzzy geocoding, no batch operations — all explicitly excluded.

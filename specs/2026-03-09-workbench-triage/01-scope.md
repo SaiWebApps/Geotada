@@ -17,7 +17,7 @@
 
 ## Why
 
-Phase 1 gate requires 100+ Boston POIs live. The current batch-review-then-upload flow forces the editor to review everything before discovering conflicts or uploading anything. Progressive triage lets the team consume fact-checked data rapidly and get content into the database continuously.
+Phase 1 gate requires 100+ Paris POIs live. The current batch-review-then-upload flow forces the editor to review everything before discovering conflicts or uploading anything. Progressive triage lets the team consume fact-checked data rapidly and get content into the database continuously.
 
 ## What we're NOT building
 

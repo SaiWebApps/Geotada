@@ -6,19 +6,9 @@ from fastapi import APIRouter, Depends
 from neo4j import Session
 
 from src.api.dependencies import get_session
+from src.api.utils import serialize_neo4j_props
 
 router = APIRouter(tags=["graph"])
-
-
-def _serialize_props(props: dict) -> dict:
-    """Convert Neo4j spatial points and temporal types to JSON-safe values."""
-    serialized = {}
-    for key, val in props.items():
-        if hasattr(val, "latitude"):
-            serialized[key] = {"lat": val.latitude, "lng": val.longitude}
-        else:
-            serialized[key] = str(val) if not isinstance(val, (str, int, float, bool, list)) else val
-    return serialized
 
 
 @router.get("/graph")
@@ -29,7 +19,7 @@ def get_full_graph(session: Session = Depends(get_session)):
     )
     nodes = []
     for record in nodes_result:
-        props = _serialize_props(dict(record["props"]))
+        props = serialize_neo4j_props(dict(record["props"]))
         primary_label = record["labels"][0] if record["labels"] else "Unknown"
         display = (
             props.get("display_name")
@@ -59,7 +49,7 @@ def get_full_graph(session: Session = Depends(get_session)):
             "from": r["source_id"],
             "to": r["target_id"],
             "label": r["type"],
-            "properties": _serialize_props(dict(r["props"])) if r["props"] else {},
+            "properties": serialize_neo4j_props(dict(r["props"])) if r["props"] else {},
         }
         for r in rels_result
     ]
@@ -75,12 +65,14 @@ def get_poi_beats(
 ):
     """Fetch active beats and their lens tags for a POI by (name, city_name)."""
     result = session.run(
-        "MATCH (p:POI {name: $name, city_name: $city_name})-[:HAS_BEAT]->(b:NarrativeBeat)"
+        "MATCH (p:POI {name: $name, city_name: $city_name})-[r:HAS_BEAT]->(b:NarrativeBeat)"
         "-[:TAGGED_WITH]->(l:Lens) "
         'WHERE b.active_status = "active" '
         "RETURN b.id AS id, b.script_body AS script_body, "
         "b.version AS version, b.active_status AS active_status, "
-        "b.duration_sec AS duration_sec, l.name AS lens_slug",
+        "b.duration_sec AS duration_sec, l.name AS lens_slug, "
+        "r.sort_order AS sort_order "
+        "ORDER BY r.sort_order",
         name=poi_name,
         city_name=city_name,
     )
@@ -92,6 +84,7 @@ def get_poi_beats(
             "active_status": r["active_status"],
             "duration_sec": r["duration_sec"],
             "lens_slug": r["lens_slug"],
+            "sort_order": r["sort_order"],
         }
         for r in result
     ]

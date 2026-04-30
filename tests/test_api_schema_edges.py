@@ -5,6 +5,8 @@ No Neo4j required — these endpoints read from schema definitions.
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -12,9 +14,15 @@ from src.api.app import create_app
 from src.schema.definitions import RELATIONSHIP_TYPES
 
 
+@asynccontextmanager
+async def _noop_lifespan(app):
+    yield
+
+
 @pytest.fixture(scope="module")
 def client():
     app = create_app()
+    app.router.lifespan_context = _noop_lifespan
     with TestClient(app) as c:
         yield c
 

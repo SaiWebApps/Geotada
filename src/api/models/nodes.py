@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import re
-from enum import Enum
+from enum import StrEnum
 from typing import Any, Literal
 
-from pydantic import BaseModel, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 def _normalized_script_body_hash(script_body: str) -> str:
@@ -22,7 +22,7 @@ def _normalized_script_body_hash(script_body: str) -> str:
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
-class NodeLabel(str, Enum):
+class NodeLabel(StrEnum):
     """Valid node labels from Schema_v3."""
 
     User = "User"
@@ -56,30 +56,30 @@ class NodeListResponse(BaseModel):
 
 
 class UserCreate(BaseModel):
-    email: str
+    email: str = Field(max_length=320)
 
 
 class ProfileCreate(BaseModel):
-    display_name: str
+    display_name: str = Field(max_length=500)
 
 
 class LensCreate(BaseModel):
-    name: str
-    display_label: str
+    name: str = Field(max_length=500)
+    display_label: str = Field(max_length=500)
 
 
 class TripCreate(BaseModel):
-    name: str
-    start_date: str
-    end_date: str
-    cover_image_url: str = ""
-    status: str = "planning"
+    name: str = Field(max_length=500)
+    start_date: str = Field(max_length=50)
+    end_date: str = Field(max_length=50)
+    cover_image_url: str = Field(default="", max_length=2000)
+    status: str = Field(default="planning", max_length=50)
 
 
 class ItineraryItemCreate(BaseModel):
     sort_order: int
-    scheduled_date: str
-    start_time: str
+    scheduled_date: str = Field(max_length=50)
+    start_time: str = Field(max_length=50)
     duration_min: int
 
 
@@ -87,10 +87,10 @@ POIRole = Literal["stop", "setting", "walk_by_only"]
 
 
 class POICreate(BaseModel):
-    name: str
+    name: str = Field(max_length=500)
     city_name: str  # REQUIRED — matches AreaCreate.city_name convention.
                     # Part of the (name, city_name) MERGE key for multi-city safety.
-    short_description: str = ""
+    short_description: str = Field(default="", max_length=2000)
     latitude: float
     longitude: float
     importance_tier: int  # REQUIRED — no default. Silent default of 1 caused
@@ -98,7 +98,7 @@ class POICreate(BaseModel):
                            # See tests/test_export_consistency.py for the regression guard.
     trigger_radius: int = 10
     typical_duration_min: int = 30
-    kid_friendly: str = "yes"
+    kid_friendly: str = Field(default="yes", max_length=50)
     name_variations: list[str] = []
     poi_role: POIRole = "stop"
     parent_poi: str | None = None  # Set on sub-POIs; names the parent POI
@@ -184,12 +184,12 @@ class InlineForeignPhrase(BaseModel):
 
 
 class NarrativeBeatCreate(BaseModel):
-    script_body: str
+    script_body: str = Field(max_length=10000)
     version: int = 1
-    active_status: str = "active"
-    audio_url: str = ""
+    active_status: str = Field(default="active", max_length=50)
+    audio_url: str = Field(default="", max_length=2000)
     duration_sec: int = 60
-    kid_friendly: str = "yes"
+    kid_friendly: str = Field(default="yes", max_length=50)
     entities: list[str] = []
     sensory_anchor: bool | None = None
     narrative_function: str = ""

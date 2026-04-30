@@ -1,17 +1,17 @@
 [
   {
-    "poi_name": "Old North Church",
-    "latitude": 42.3663,
-    "longitude": -71.0544,
-    "short_description": "Historic church where the 'One if by land, two if by sea' lanterns were hung.",
+    "poi_name": "Sacré-Cœur Basilica",
+    "latitude": 48.8867,
+    "longitude": 2.3431,
+    "short_description": "Romano-Byzantine basilica atop Montmartre where candles have burned in perpetual prayer since 1885.",
     "beats": [
       {
-        "script_body": "On the night of April 18, 1775, sexton Robert Newman climbed the steeple and hung two lanterns to signal that the British were coming by sea. Paul Revere saw the signal from across the harbor and began his midnight ride to warn the colonial militia.",
+        "script_body": "On the night of October 5, 1914, a German bomb fell just meters from Sacré-Cœur but failed to explode. Parisians took it as a miracle — the basilica's perpetual adoration of the Blessed Sacrament had been unbroken since 1885, and the congregation vowed it would never stop. It continues to this day.",
         "lens": "Hidden History",
         "gravity": 5
       },
       {
-        "script_body": "On the evening of April 18, 1775, Robert Newman ascended the steeple and displayed two lanterns, signaling the British approach by sea. Paul Revere spotted the lanterns from across the harbor and launched his famous midnight ride to alert the colonial militia.",
+        "script_body": "On the evening of October 5, 1914, a German aerial bomb landed mere meters from Sacré-Cœur without detonating. The faithful saw divine protection — the basilica's perpetual prayer vigil, unbroken since 1885, had seemingly shielded it. That vigil of adoration continues around the clock even now.",
         "lens": "Revolutionary Moments",
         "gravity": 4
       }
@@ -19,23 +19,23 @@
   },
 
   {
-    "poi_name": "Faneuil Hall",
-    "latitude": 42.3601,
-    "longitude": -71.0568,
-    "short_description": "The Cradle of Liberty — where revolutionary speeches shaped a nation.",
+    "poi_name": "Panthéon",
+    "latitude": 48.8462,
+    "longitude": 2.3464,
+    "short_description": "The temple of the Republic — where France honors its greatest citizens.",
     "beats": [
       {
-        "script_body": "Samuel Adams stood on this floor and rallied Bostonians against British taxation without representation. The debates held in this hall planted the seeds of the American Revolution and earned it the nickname Cradle of Liberty.",
+        "script_body": "Voltaire was interred here in 1791, the first great man honored by the new Republic. The debates over who deserved burial in this secular temple reflected the ideals of the French Revolution and earned it the role of France's most sacred civic shrine.",
         "lens": "Revolutionary Moments",
         "gravity": 5
       },
       {
-        "script_body": "It was Samuel Adams who stood right here on this very floor, rallying the people of Boston against British taxation without representation. The fiery debates in this hall planted the seeds of revolution and gave it the nickname the Cradle of Liberty.",
+        "script_body": "It was Voltaire who was first laid to rest here in 1791, honored by the young Republic as a champion of reason and liberty. The fierce debates over who merited a place in this secular temple mirrored the revolutionary ideals of the age and established it as France's most hallowed civic monument.",
         "lens": "Hidden History",
         "gravity": 4
       },
       {
-        "script_body": "Samuel Adams rallied Bostonians against taxation without representation on this floor. The revolutionary debates held here planted seeds of the American Revolution. The hall earned the nickname Cradle of Liberty for its role in sparking independence.",
+        "script_body": "Voltaire was interred in the Panthéon in 1791, the first citizen honored by the Republic. Revolutionary debates over who deserved burial here reflected France's deepest civic values. The building earned its role as the nation's most sacred secular shrine through those fierce arguments over merit and legacy.",
         "lens": "Dark History",
         "gravity": 3
       }
@@ -43,26 +43,26 @@
   },
 
   {
-    "poi_name": "Paul Revere House",
-    "latitude": 42.3637,
-    "longitude": -71.0537,
-    "short_description": "Oldest remaining structure in downtown Boston, home of Paul Revere.",
+    "poi_name": "Maison de Victor Hugo",
+    "latitude": 48.8535,
+    "longitude": 2.3654,
+    "short_description": "The apartment where Victor Hugo wrote much of Les Misérables, on the Place des Vosges.",
     "beats": [
       {
-        "script_body": "Paul Revere lived in this house from 1770 to 1800. Built around 1680, it's the oldest remaining structure in downtown Boston. From this doorstep, Revere left on his midnight ride.",
+        "script_body": "Victor Hugo lived in this apartment on the Place des Vosges from 1832 to 1848. Built in the early 17th century, the Place des Vosges is the oldest planned square in Paris. From this writing desk, Hugo drafted large sections of Les Misérables.",
         "lens": "Hidden History",
         "gravity": 4
       }
     ]
   },
   {
-    "poi_name": "Paul Revere House",
-    "latitude": 42.3637,
-    "longitude": -71.0537,
-    "short_description": "Paul Revere's historic 17th-century home in the North End.",
+    "poi_name": "Maison de Victor Hugo",
+    "latitude": 48.8535,
+    "longitude": 2.3654,
+    "short_description": "Victor Hugo's historic 17th-century residence on the Place des Vosges.",
     "beats": [
       {
-        "script_body": "Revere was more than a rider — he was a silversmith, engraver, and industrialist. His copper sheeting covered the hull of the USS Constitution and the dome of the Massachusetts State House.",
+        "script_body": "Hugo was more than a novelist — he was a poet, dramatist, and political activist. His funeral in 1885 drew two million mourners through Paris, and his body lay in state beneath the Arc de Triomphe before burial in the Panthéon.",
         "lens": "Architecture & Design",
         "gravity": 3
       }
@@ -70,26 +70,26 @@
   },
 
   {
-    "poi_name": "Boston Common",
-    "latitude": 42.3551,
-    "longitude": -71.0656,
-    "short_description": "America's oldest public park, established in 1634.",
+    "poi_name": "Jardin du Luxembourg",
+    "latitude": 48.8462,
+    "longitude": 2.3372,
+    "short_description": "Paris's most beloved public garden, created in 1612 for Marie de Médicis.",
     "beats": [
       {
-        "script_body": "Established in 1634, Boston Common is the oldest public park in the United States. It served as a cow pasture, a military camp during the Revolution, and even a public execution ground.",
+        "script_body": "Created in 1612 for Marie de Médicis, the Jardin du Luxembourg is the most cherished park in Paris. It served as a royal garden, a revolutionary assembly ground during the Terror, and even a Luftwaffe headquarters during the Nazi occupation.",
         "lens": "Hidden History",
         "gravity": 5
       }
     ]
   },
   {
-    "poi_name": "Boston Common",
-    "latitude": 42.3610,
-    "longitude": -71.0580,
-    "short_description": "Historic public park — entered from the northeast corner.",
+    "poi_name": "Jardin du Luxembourg",
+    "latitude": 48.8490,
+    "longitude": 2.3370,
+    "short_description": "Historic public garden — entered from the northeast corner near the Panthéon.",
     "beats": [
       {
-        "script_body": "The Frog Pond at the center of Boston Common has been a beloved gathering spot for centuries. In winter it becomes an ice skating rink; in summer, a splash pad for children.",
+        "script_body": "The Grand Bassin at the center of the Jardin du Luxembourg has been a beloved gathering spot for centuries. Children push miniature sailboats across its waters with long sticks — a Parisian tradition dating back to the 1920s that continues every weekend.",
         "lens": "Nature & Green Spaces",
         "gravity": 2
       }
@@ -97,39 +97,39 @@
   },
 
   {
-    "poi_name": "Plymouth Rock",
-    "latitude": 41.9584,
-    "longitude": -70.6620,
-    "short_description": "Traditional site of the Pilgrims' landing in 1620 — outside Boston geofence.",
+    "poi_name": "Château de Versailles",
+    "latitude": 48.8049,
+    "longitude": 2.1204,
+    "short_description": "The Sun King's palace — outside Paris geofence.",
     "beats": [
       {
-        "script_body": "Plymouth Rock marks the traditional site where the Pilgrims first set foot in the New World in 1620. The rock has been moved, dropped, and split over the centuries — what you see today is roughly a third of the original.",
+        "script_body": "Versailles began as a modest hunting lodge for Louis XIII in 1623. His son Louis XIV transformed it into the largest palace in Europe, housing 10,000 courtiers. On October 6, 1789, a Parisian mob marched here and forced the royal family back to Paris — they never returned.",
         "lens": "Hidden History",
         "gravity": 4
       }
     ]
   },
   {
-    "poi_name": "Providence State House",
-    "latitude": 41.8310,
-    "longitude": -71.4140,
-    "short_description": "Rhode Island's State House — outside Boston geofence.",
+    "poi_name": "Grand-Place, Brussels",
+    "latitude": 50.8467,
+    "longitude": 4.3525,
+    "short_description": "Brussels' central square — outside Paris geofence.",
     "beats": [
       {
-        "script_body": "Rhode Island's State House dome is the fourth-largest self-supporting marble dome in the world. The Independent Man statue atop it was modeled after Roger Williams.",
+        "script_body": "The Grand-Place was nearly destroyed by French bombardment in 1695, when Marshal de Villeroy's artillery flattened a third of Brussels. The guilds rebuilt their ornate facades within four years, creating the baroque masterpiece visible today.",
         "lens": "Architecture & Design",
         "gravity": 3
       }
     ]
   },
   {
-    "poi_name": "Cape Cod Lighthouse",
-    "latitude": 42.0621,
-    "longitude": -70.0631,
-    "short_description": "Highland Light — outside Boston geofence.",
+    "poi_name": "Tower of London",
+    "latitude": 51.5081,
+    "longitude": -0.0759,
+    "short_description": "William the Conqueror's fortress — outside Paris geofence.",
     "beats": [
       {
-        "script_body": "Highland Light has warned mariners of the treacherous Outer Cape shoals since 1797. In 1996 the entire lighthouse was moved back 450 feet from the eroding cliff edge.",
+        "script_body": "The Tower of London has served as a royal palace, prison, and execution site since 1066. The Crown Jewels have been guarded here since 1303, after a thief nearly stole them from Westminster Abbey.",
         "lens": "Hidden History",
         "gravity": 3
       }
@@ -137,39 +137,39 @@
   },
 
   {
-    "poi_name": "Mike's Pastry \"The Original\"",
-    "latitude": 42.3641,
-    "longitude": -71.0535,
-    "short_description": "Famous North End bakery — home of the cannoli wars.",
+    "poi_name": "Du Pain et des Idées",
+    "latitude": 48.8713,
+    "longitude": 2.3619,
+    "short_description": "Legendary Canal Saint-Martin bakery — home of the pain des amis.",
     "beats": [
       {
-        "script_body": "Mike's Pastry has been serving Boston's best cannoli since 1946. The rivalry with Modern Pastry next door is legendary — locals call it the \"Cannoli Wars.\" Pro tip: try the lobster tail pastry. It's Mike's secret weapon.\n\nAs Mike Mercogliano once said: \"We don't compete — we just bake better.\"",
+        "script_body": "Du Pain et des Idées has been baking in this 19th-century shop since Christophe Vasseur left his advertising career in 2002. The rivalry with Poilâne across the river is legendary — Parisians call it the \"Bread Wars.\" Pro tip: try the pain des amis. It's Vasseur's secret weapon.\n\nAs Christophe Vasseur once said: \"Bread is not a product — it's a living thing.\"",
         "lens": "Food & Culinary Culture",
         "gravity": 3
       }
     ]
   },
   {
-    "poi_name": "L'Espalier — Boston's Crème de la Crème",
-    "latitude": 42.3502,
-    "longitude": -71.0771,
+    "poi_name": "Le Comptoir du Panthéon — Paris's Crème de la Crème",
+    "latitude": 48.8468,
+    "longitude": 2.3450,
     "short_description": "Fine dining with accented characters: café, naïve, résumé, jalapeño.",
     "beats": [
       {
-        "script_body": "L'Espalier brought haute cuisine to Back Bay in 1978. Chef Frank McClelland's philosophy: «la cuisine est un art» — cooking is an art. The restaurant's pièce de résistance was always the dégustation menu.\n\tTabbed indent here.\r\nCarriage return here.",
+        "script_body": "Le Comptoir du Panthéon brought modern bistronomy to the Latin Quarter in 2005. Chef Yves Cambeborde's philosophy: «la cuisine est un art» — cooking is an art. The restaurant's pièce de résistance was always the dégustation menu.\n\tTabbed indent here.\r\nCarriage return here.",
         "lens": "Food & Culinary Culture",
         "gravity": 4
       }
     ]
   },
   {
-    "poi_name": "O'Brien's Pub & Grill",
-    "latitude": 42.3489,
-    "longitude": -71.0818,
+    "poi_name": "O'Sullivan's Pub & Café",
+    "latitude": 48.8650,
+    "longitude": 2.3460,
     "short_description": "A pub with apostrophes, <b>HTML tags</b>, and &amp; entities.",
     "beats": [
       {
-        "script_body": "<script>alert('XSS test')</script> This beat contains HTML injection attempts. <img src=x onerror=alert(1)> and special chars: & < > \" ' / \\ and emoji: \ud83c\udf40\ud83c\uddee\ud83c\uddea",
+        "script_body": "<script>alert('XSS test')</script> This beat contains HTML injection attempts. <img src=x onerror=alert(1)> and special chars: & < > \" ' / \\ and emoji: 🍀🇮🇪",
         "lens": "Local Legends & Folklore",
         "gravity": 2
       }
@@ -177,12 +177,12 @@
   },
   {
     "poi_name": "Back\\Slash & Forward/Slash Alley",
-    "latitude": 42.3560,
-    "longitude": -71.0630,
-    "short_description": "Testing path separators and unicode: \u65e5\u672c\u8a9e\u30c6\u30b9\u30c8 \u0395\u03bb\u03bb\u03b7\u03bd\u03b9\u03ba\u03ac \u0627\u0644\u0639\u0631\u0628\u064a\u0629",
+    "latitude": 48.8560,
+    "longitude": 2.3530,
+    "short_description": "Testing path separators and unicode: 日本語テスト Ελληνικά العربية",
     "beats": [
       {
-        "script_body": "Special characters test: curly quotes \u201cleft\u201d \u201cright\u201d, em dash \u2014, en dash \u2013, ellipsis \u2026, bullet \u2022, degree 72\u00b0F, copyright \u00a9 2026, trademark \u2122, registered \u00ae, section \u00a7, pilcrow \u00b6, zero-width space [\u200b].",
+        "script_body": "Special characters test: curly quotes “left” “right”, em dash —, en dash –, ellipsis …, bullet •, degree 72°F, copyright © 2026, trademark ™, registered ®, section §, pilcrow ¶, zero-width space [​].",
         "lens": "Art & Street Culture",
         "gravity": 1
       }
@@ -190,18 +190,18 @@
   },
 
   {
-    "poi_name": "Boston Harbor Islands",
-    "latitude": 42.3199,
-    "longitude": -70.9619,
-    "short_description": "34 islands in Boston Harbor — testing invalid lens values.",
+    "poi_name": "Île de la Cité",
+    "latitude": 48.8534,
+    "longitude": 2.3488,
+    "short_description": "The island birthplace of Paris — testing invalid lens values.",
     "beats": [
       {
-        "script_body": "Spectacle Island was once a garbage dump so toxic it spontaneously caught fire. Today it's a pristine park with hiking trails and a swimming beach — one of the greatest urban reclamation stories in America.",
+        "script_body": "The Île de la Cité was once home to a medieval labyrinth of streets so cramped and disease-ridden that Baron Haussmann demolished nearly everything in the 1860s. Today only Notre-Dame, the Conciergerie, and Sainte-Chapelle survive from that ancient city within a city.",
         "lens": "Underwater Archaeology",
         "gravity": 3
       },
       {
-        "script_body": "George's Island is home to Fort Warren, a Civil War-era fortress. Legend says the Lady in Black haunts the fort.",
+        "script_body": "The Conciergerie on the Île de la Cité served as the chief prison during the Reign of Terror. Marie Antoinette spent her final days in a tiny cell here before her execution in 1793.",
         "lens": "dark_history",
         "gravity": 4
       }
@@ -255,68 +255,68 @@
   },
 
   {
-    "poi_name": "Freedom Trail Start",
-    "latitude": 42.3551,
-    "longitude": -71.0656,
-    "short_description": "The start of the 2.5-mile Freedom Trail — testing 12-beat max.",
+    "poi_name": "Champs-Élysées Start",
+    "latitude": 48.8656,
+    "longitude": 2.3212,
+    "short_description": "The start of the 1.9-kilometer Champs-Élysées — testing 12-beat max.",
     "beats": [
       {
-        "script_body": "Hidden history beat for Freedom Trail. The red-painted line guiding you through Boston was originally a promotional gimmick by the Chamber of Commerce in 1958.",
+        "script_body": "Hidden history beat for the Champs-Élysées. The tree-lined promenade was originally open fields and market gardens until Marie de Médicis extended the Tuileries vista in 1616.",
         "lens": "Hidden History",
         "gravity": 3
       },
       {
-        "script_body": "Architecture beat for Freedom Trail. The trail passes 16 historically significant sites, each with distinct architectural styles spanning three centuries.",
+        "script_body": "Architecture beat for the Champs-Élysées. The avenue passes grand Haussmann-era buildings, each with distinct facades spanning Second Empire to Art Nouveau styles.",
         "lens": "Architecture & Design",
         "gravity": 2
       },
       {
-        "script_body": "Local legends beat for Freedom Trail. Legend has it a ghost of a revolutionary soldier walks the trail at midnight.",
+        "script_body": "Local legends beat for the Champs-Élysées. Legend has it the ghost of a Napoleonic cavalry officer rides down the avenue at midnight on the anniversary of Austerlitz.",
         "lens": "Local Legends & Folklore",
         "gravity": 2
       },
       {
-        "script_body": "Food beat for Freedom Trail. The North End section is lined with Italian restaurants and bakeries since the 1920s.",
+        "script_body": "Food beat for the Champs-Élysées. The avenue's side streets hide classic bistros and pâtisseries dating back to the Belle Époque of the 1890s.",
         "lens": "Food & Culinary Culture",
         "gravity": 1
       },
       {
-        "script_body": "Art beat for Freedom Trail. Street artists create chalk portraits of revolutionary figures.",
+        "script_body": "Art beat for the Champs-Élysées. Street artists sketch caricatures of passersby near the Grand Palais, continuing a tradition from the 19th-century Salons.",
         "lens": "Art & Street Culture",
         "gravity": 2
       },
       {
-        "script_body": "Dark history beat for Freedom Trail. Several stops were sites of public hangings — pirates, witches, and Quakers.",
+        "script_body": "Dark history beat for the Champs-Élysées. During the Occupation, Nazi soldiers paraded down this avenue daily — and after Liberation in 1944, suspected collaborators were marched here in shame.",
         "lens": "Dark History",
         "gravity": 3
       },
       {
-        "script_body": "Literary beat for Freedom Trail. Hawthorne, Melville, and Emerson all wrote about these buildings.",
+        "script_body": "Literary beat for the Champs-Élysées. Proust, Hemingway, and Baudelaire all wrote about these boulevards and the café life that thrived along them.",
         "lens": "Literary & Film Locations",
         "gravity": 1
       },
       {
-        "script_body": "Religious beat for Freedom Trail. Three of America's most important churches: Old North, King's Chapel, Park Street.",
+        "script_body": "Religious beat for the Champs-Élysées. Three of Paris's most important churches lie nearby: La Madeleine, Saint-Philippe-du-Roule, and the American Cathedral.",
         "lens": "Religious & Spiritual Sites",
         "gravity": 2
       },
       {
-        "script_body": "Music beat for Freedom Trail. 'My Country, 'Tis of Thee' was first performed at Park Street Church in 1831.",
+        "script_body": "Music beat for the Champs-Élysées. 'Les Champs-Élysées' by Joe Dassin became an international hit in 1969 and is still the avenue's unofficial anthem.",
         "lens": "Music & Nightlife History",
         "gravity": 1
       },
       {
-        "script_body": "Revolutionary beat for Freedom Trail. Every stop played a role in the birth of American independence.",
+        "script_body": "Revolutionary beat for the Champs-Élysées. Every Bastille Day, the avenue hosts the largest military parade in Europe, commemorating the storming of the Bastille in 1789.",
         "lens": "Revolutionary Moments",
         "gravity": 4
       },
       {
-        "script_body": "Nature beat for Freedom Trail. Green bookends: Boston Common and Charlestown waterfront.",
+        "script_body": "Nature beat for the Champs-Élysées. Green bookends: the Jardin des Tuileries on one end and the Bois de Boulogne beyond the Arc de Triomphe.",
         "lens": "Nature & Green Spaces",
         "gravity": 1
       },
       {
-        "script_body": "Shopping beat for Freedom Trail. Faneuil Hall has been a commercial hub since 1742.",
+        "script_body": "Shopping beat for the Champs-Élysées. The avenue has been a commercial hub since the mid-19th century, home to Louis Vuitton, Cartier, and Guérlain.",
         "lens": "Shopping & Markets",
         "gravity": 1
       },
@@ -329,10 +329,10 @@
   },
 
   {
-    "poi_name": "Longfellow Bridge",
-    "latitude": 42.3611,
-    "longitude": -71.0713,
-    "short_description": "Salt-and-Pepper Bridge — testing content length extremes.",
+    "poi_name": "Pont Alexandre III",
+    "latitude": 48.8637,
+    "longitude": 2.3136,
+    "short_description": "Paris's most ornate bridge — testing content length extremes.",
     "beats": [
       {
         "script_body": "Short.",
@@ -340,7 +340,7 @@
         "gravity": 1
       },
       {
-        "script_body": "The Longfellow Bridge, spanning the Charles River between Boston and Cambridge, is affectionately known as the Salt-and-Pepper Bridge because its central towers resemble salt and pepper shakers. Designed by Edmund March Wheelwright and built between 1900 and 1906, it replaced an earlier bridge that had stood since 1793. The bridge underwent a massive $300 million renovation from 2013 to 2018, during which engineers discovered that the original builders had used recycled cobblestones from Boston's streets as fill material inside the towers. The renovation preserved the bridge's distinctive Beaux-Arts style while upgrading it for modern traffic, adding dedicated bicycle lanes, and improving the MBTA Red Line tracks that run across it. During construction, workers found a time capsule from 1906 containing newspapers, coins, and photographs of the original construction crew. The bridge offers some of the best views of the Boston skyline and the MIT campus, making it a favorite spot for photographers and tourists alike. Henry Wadsworth Longfellow, the poet for whom the bridge is named, lived nearby and wrote about the Charles River in several of his most famous poems.",
+        "script_body": "The Pont Alexandre III, spanning the Seine between the Grand Palais and Les Invalides, is widely considered the most ornate bridge in Paris. Designed by Joseph Cassien-Bernard and Gaston Cousin and built between 1896 and 1900 for the Universal Exposition, it was named after Tsar Alexander III to celebrate the Franco-Russian Alliance of 1892. The bridge was an engineering marvel — a single steel arch spanning 107 meters, kept intentionally low so as not to obstruct the view of the Champs-Élysées or Les Invalides. During construction, workers discovered remnants of an older wooden footbridge from the 17th century buried in the riverbed. The bridge's four gilded bronze Fames statues on towering pylons represent the Sciences, the Arts, Commerce, and Industry. A time capsule sealed by Tsar Nicholas II during the foundation ceremony in 1896 is believed to still be embedded in the right-bank abutment. The bridge offers some of the most spectacular views in Paris, framing the dome of Les Invalides on one side and the glass roof of the Grand Palais on the other, making it a perennial favorite of photographers and filmmakers. Guy de Maupassant, who despised the Eiffel Tower, reportedly said this bridge was the only structure in Paris worthy of the new century.",
         "lens": "Hidden History",
         "gravity": 5
       }
@@ -349,8 +349,8 @@
 
   {
     "poi_name": "  Trimmed Name  ",
-    "latitude": 42.3500,
-    "longitude": -71.0600,
+    "latitude": 48.8500,
+    "longitude": 2.3500,
     "short_description": "POI name with leading and trailing whitespace.",
     "beats": [
       {
@@ -362,13 +362,13 @@
   },
 
   {
-    "poi_name": "Newbury\nStreet",
-    "latitude": 42.3502,
-    "longitude": -71.0818,
+    "poi_name": "Rue\nde Rivoli",
+    "latitude": 48.8602,
+    "longitude": 2.3376,
     "short_description": "POI name containing a newline character.",
     "beats": [
       {
-        "script_body": "Newbury Street is Boston's premier shopping destination.",
+        "script_body": "Rue de Rivoli is Paris's premier shopping arcade, built by Napoleon to celebrate his victory at Rivoli in 1797.",
         "lens": "Shopping & Markets",
         "gravity": 2
       }
@@ -376,18 +376,18 @@
   },
 
   {
-    "poi_name": "Trinity Church",
-    "latitude": 42.3498,
-    "longitude": -71.0769,
-    "short_description": "Masterpiece of H.H. Richardson — testing review band (30-69% Jaccard).",
+    "poi_name": "Opéra Garnier",
+    "latitude": 48.8720,
+    "longitude": 2.3316,
+    "short_description": "Masterpiece of Charles Garnier — testing review band (30-69% Jaccard).",
     "beats": [
       {
-        "script_body": "Trinity Church was designed by Henry Hobson Richardson and completed in 1877. The Romanesque Revival style was so influential it became known as Richardsonian Romanesque. The church sits on 4,500 wooden pilings driven into Back Bay's filled land.",
+        "script_body": "The Opéra Garnier was designed by Charles Garnier and completed in 1875. The Beaux-Arts style was so influential it defined an entire era of Parisian architecture. The building sits on an underground lake that inspired Gaston Leroux's Phantom of the Opera.",
         "lens": "Architecture & Design",
         "gravity": 5
       },
       {
-        "script_body": "Henry Hobson Richardson's Trinity Church, finished in 1877, pioneered the Romanesque Revival style in America. The massive stone structure rests on thousands of wooden pilings because Back Bay was originally tidal flats filled with gravel. La Farge's interior murals took years to complete and are considered masterworks of American decorative painting.",
+        "script_body": "Charles Garnier's Opéra, finished in 1875, defined the Beaux-Arts style that would dominate French architecture for decades. The massive structure rests above a subterranean reservoir because the water table was too high to drain during construction. Marc Chagall's ceiling mural, painted in 1964, caused an uproar — critics called it a modernist insult to a classical masterpiece, but it is now considered one of Paris's great treasures.",
         "lens": "Art & Street Culture",
         "gravity": 4
       }
@@ -395,36 +395,36 @@
   },
 
   {
-    "poi_name": "Boston Public Library",
-    "latitude": 42.3493,
-    "longitude": -71.0783,
-    "short_description": "First large free municipal library in the United States.",
+    "poi_name": "Bibliothèque Sainte-Geneviève",
+    "latitude": 48.8465,
+    "longitude": 2.3462,
+    "short_description": "One of the oldest public libraries in France, with roots in a 6th-century abbey.",
     "beats": [
       {
-        "script_body": "The Boston Public Library was the first large free municipal library in the United States, established in 1848. The McKim Building's Bates Hall reading room stretches 218 feet — one of the most magnificent rooms in America.",
+        "script_body": "The Bibliothèque Sainte-Geneviève traces its origins to the Abbey of Sainte-Geneviève, founded in the 6th century. Henri Labrouste's 1851 iron-and-glass reading room stretches 84 meters — one of the most magnificent library interiors in the world.",
         "lens": "Architecture & Design",
         "gravity": 4
       },
       {
-        "script_body": "The library's courtyard is modeled after the Palazzo della Cancelleria in Rome. John Singer Sargent spent 29 years painting murals for the third floor — it became his obsession.",
+        "script_body": "The library's facade is inscribed with 810 names of great authors and scientists, carved into the stone by Labrouste himself. The collection holds manuscripts dating back to the Carolingian era — some over a thousand years old.",
         "lens": "Art & Street Culture",
         "gravity": 3
       }
     ]
   },
   {
-    "poi_name": "Boston Public Library",
-    "latitude": 42.3493,
-    "longitude": -71.0783,
-    "short_description": "First large free municipal library — idempotency duplicate.",
+    "poi_name": "Bibliothèque Sainte-Geneviève",
+    "latitude": 48.8465,
+    "longitude": 2.3462,
+    "short_description": "One of the oldest public libraries in France — idempotency duplicate.",
     "beats": [
       {
-        "script_body": "The Boston Public Library was the first large free municipal library in the United States, established in 1848. The McKim Building's Bates Hall reading room stretches 218 feet — one of the most magnificent rooms in America.",
+        "script_body": "The Bibliothèque Sainte-Geneviève traces its origins to the Abbey of Sainte-Geneviève, founded in the 6th century. Henri Labrouste's 1851 iron-and-glass reading room stretches 84 meters — one of the most magnificent library interiors in the world.",
         "lens": "Architecture & Design",
         "gravity": 4
       },
       {
-        "script_body": "The library's courtyard is modeled after the Palazzo della Cancelleria in Rome. John Singer Sargent spent 29 years painting murals for the third floor — it became his obsession.",
+        "script_body": "The library's facade is inscribed with 810 names of great authors and scientists, carved into the stone by Labrouste himself. The collection holds manuscripts dating back to the Carolingian era — some over a thousand years old.",
         "lens": "Art & Street Culture",
         "gravity": 3
       }
@@ -432,18 +432,18 @@
   },
 
   {
-    "poi_name": "New England Aquarium",
-    "latitude": 42.3592,
-    "longitude": -71.0497,
-    "short_description": "Major aquarium on Boston's Central Wharf.",
+    "poi_name": "Musée d'Orsay",
+    "latitude": 48.8600,
+    "longitude": 2.3266,
+    "short_description": "A former railway station transformed into the world's greatest Impressionist museum.",
     "beats": [
       {
-        "script_body": "The Giant Ocean Tank at the center of the aquarium holds 200,000 gallons of salt water and is home to over 1,000 animals including sea turtles, sharks, and stingrays.",
+        "script_body": "The Musée d'Orsay was originally the Gare d'Orsay, a Beaux-Arts railway station built for the 1900 Universal Exhibition. By 1939 its platforms were too short for modern trains and it fell into disuse. President Giscard d'Estaing saved it from demolition in 1977 and converted it into a museum.",
         "lens": "Nature & Green Spaces",
         "gravity": 4
       },
       {
-        "script_body": "The aquarium sits on Central Wharf, which was once the busiest commercial wharf in Boston. Ships from around the world unloaded exotic goods here.",
+        "script_body": "The museum sits on the Left Bank of the Seine, on the site of the old Palais d'Orsay, which was burned down during the Paris Commune of 1871. The giant station clocks on the facade have become iconic — from behind, they frame perfect views of Montmartre.",
         "lens": "Hidden History",
         "gravity": 3
       }
@@ -451,13 +451,13 @@
   },
 
   {
-    "poi_name": "Fenway Park",
-    "latitude": 42.3467,
-    "longitude": -71.0972,
-    "short_description": "America's most beloved ballpark, opened in 1912.",
+    "poi_name": "Stade Roland-Garros",
+    "latitude": 48.8469,
+    "longitude": 2.2527,
+    "short_description": "The cathedral of clay-court tennis, opened in 1928.",
     "beats": [
       {
-        "script_body": "Fenway Park is the oldest ballpark in Major League Baseball, opening on April 20, 1912 — the same week the Titanic sank. The Green Monster in left field is 37 feet tall.",
+        "script_body": "Roland-Garros was built in 1928 specifically to host France's defense of the Davis Cup after the \"Four Musketeers\" won it in 1927. It is the only Grand Slam played on red clay — the terre battue made from crushed brick quarried in the suburbs of Paris.",
         "lens": "Hidden History",
         "gravity": 5
       }
@@ -465,13 +465,13 @@
   },
 
   {
-    "poi_name": "Massachusetts State House",
-    "latitude": 42.3588,
-    "longitude": -71.0638,
-    "short_description": "Golden-domed seat of Massachusetts government.",
+    "poi_name": "Palais du Luxembourg",
+    "latitude": 48.8490,
+    "longitude": 2.3365,
+    "short_description": "Home of the French Senate beneath a gilded dome.",
     "beats": [
       {
-        "script_body": "The golden dome was originally wooden shingles, then covered in copper by Paul Revere's company in 1802. It was gilded in 23-karat gold leaf in 1874.",
+        "script_body": "The Palais du Luxembourg was built for Marie de Médicis between 1615 and 1631, modeled after the Palazzo Pitti in Florence. During the Revolution it became a prison — Danton and Desmoulins were held here before their execution. It has housed the French Senate since 1799.",
         "lens": "Architecture & Design",
         "gravity": 3
       }

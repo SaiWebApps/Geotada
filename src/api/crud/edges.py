@@ -2,30 +2,42 @@
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING
+import re
+from typing import TYPE_CHECKING, Any
+
+from src.api.models.edges import RelType
+from src.api.models.nodes import NodeLabel
+from src.api.utils import serialize_neo4j_props
 
 if TYPE_CHECKING:
     from neo4j import Session
 
+_VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
-def _serialize_props(props: dict) -> dict:
-    """Convert Neo4j spatial points and temporal types to JSON-safe values."""
-    serialized = {}
-    for key, val in props.items():
-        if hasattr(val, "latitude"):
-            serialized[key] = {"lat": val.latitude, "lng": val.longitude}
-        elif isinstance(val, (str, int, float, bool)):
-            serialized[key] = val
-        elif isinstance(val, list):
-            serialized[key] = val
-        else:
-            serialized[key] = str(val)
-    return serialized
+
+def _validate_rel_type(rel_type: str) -> None:
+    """Validate that rel_type is a known RelType. Raises ValueError if not."""
+    RelType(rel_type)
+
+
+def _validate_label(label: str) -> None:
+    """Validate that label is a known NodeLabel. Raises ValueError if not."""
+    NodeLabel(label)
+
+
+def _validate_property_keys(properties: dict) -> None:
+    """Validate that all property keys are safe identifiers."""
+    for key in properties:
+        if not _VALID_PROPERTY_NAME.match(key):
+            raise ValueError(
+                f"Invalid property name: {key!r}. "
+                "Property names must match ^[a-zA-Z_][a-zA-Z0-9_]*$"
+            )
 
 
 def _record_to_edge(record) -> dict[str, Any]:
     """Convert a Neo4j record to an edge dict."""
-    props = _serialize_props(dict(record["props"])) if record["props"] else {}
+    props = serialize_neo4j_props(dict(record["props"])) if record["props"] else {}
     return {
         "id": record["id"],
         "type": record["type"],
@@ -35,13 +47,10 @@ def _record_to_edge(record) -> dict[str, Any]:
     }
 
 
-def list_edges(
-    session: Session, rel_type: str, skip: int, limit: int
-) -> tuple[list[dict], int]:
+def list_edges(session: Session, rel_type: str, skip: int, limit: int) -> tuple[list[dict], int]:
     """Return paginated edges of a type and total count."""
-    count_result = session.run(
-        f"MATCH ()-[r:{rel_type}]->() RETURN count(r) AS total"
-    ).single()
+    _validate_rel_type(rel_type)
+    count_result = session.run(f"MATCH ()-[r:{rel_type}]->() RETURN count(r) AS total").single()
     total = count_result["total"]
 
     result = session.run(
@@ -58,6 +67,7 @@ def list_edges(
 
 def get_edge(session: Session, rel_type: str, edge_id: str) -> dict | None:
     """Return a single edge by type and id property, or None."""
+    _validate_rel_type(rel_type)
     result = session.run(
         f"MATCH (a)-[r:{rel_type} {{id: $edge_id}}]->(b) "
         f"RETURN r.id AS id, type(r) AS type, "
@@ -82,6 +92,11 @@ def create_edge(
 
     Returns the created edge, or None if source/target not found.
     """
+    _validate_rel_type(rel_type)
+    _validate_label(source_label)
+    _validate_label(target_label)
+    _validate_property_keys(properties)
+
     params: dict[str, Any] = {
         "source_id": source_id,
         "target_id": target_id,
@@ -125,8 +140,11 @@ def update_edge(
     session: Session, rel_type: str, edge_id: str, properties: dict[str, Any]
 ) -> dict | None:
     """Update edge properties. Returns updated edge or None if not found."""
+    _validate_rel_type(rel_type)
     if not properties:
         return get_edge(session, rel_type, edge_id)
+
+    _validate_property_keys(properties)
 
     params: dict[str, Any] = {"edge_id": edge_id}
     set_parts: list[str] = []
@@ -149,9 +167,9 @@ def update_edge(
 
 def delete_edge(session: Session, rel_type: str, edge_id: str) -> bool:
     """Delete a relationship. Returns True if found and deleted."""
+    _validate_rel_type(rel_type)
     result = session.run(
-        f"MATCH ()-[r:{rel_type} {{id: $edge_id}}]->() DELETE r "
-        f"RETURN count(*) AS deleted",
+        f"MATCH ()-[r:{rel_type} {{id: $edge_id}}]->() DELETE r RETURN count(*) AS deleted",
         edge_id=edge_id,
     ).single()
     return result["deleted"] > 0

@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Common issues and fixes for the Travlr Neo4j development environment.
+Common issues and fixes for the Ondoway Neo4j development environment.
 
 ---
 
@@ -29,7 +29,7 @@ docker context use desktop-linux
 
 ```bash
 make db-status          # Check container state
-docker logs travlr-neo4j  # View Neo4j logs
+docker logs ondoway-neo4j  # View Neo4j logs
 ```
 
 Common causes:

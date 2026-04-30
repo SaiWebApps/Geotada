@@ -41,24 +41,24 @@ class TestNormalize:
 
 class TestWordErrorRate:
     def test_exact_match(self):
-        words = "hello world this is a test".split()
+        words = ["hello", "world", "this", "is", "a", "test"]
         assert _word_error_rate(words, words) == 0.0
 
     def test_one_substitution(self):
-        ref = "hello world this is a test".split()
-        hyp = "hello world this is a toast".split()
+        ref = ["hello", "world", "this", "is", "a", "test"]
+        hyp = ["hello", "world", "this", "is", "a", "toast"]
         wer = _word_error_rate(ref, hyp)
         assert abs(wer - 1 / 6) < 0.01
 
     def test_deletions(self):
-        ref = "hello world this is a test".split()
-        hyp = "hello world".split()
+        ref = ["hello", "world", "this", "is", "a", "test"]
+        hyp = ["hello", "world"]
         wer = _word_error_rate(ref, hyp)
         assert abs(wer - 4 / 6) < 0.01
 
     def test_insertions(self):
-        ref = "hello world".split()
-        hyp = "hello beautiful world today".split()
+        ref = ["hello", "world"]
+        hyp = ["hello", "beautiful", "world", "today"]
         wer = _word_error_rate(ref, hyp)
         assert wer == 1.0  # 2 insertions / 2 reference words
 
@@ -69,7 +69,7 @@ class TestWordErrorRate:
 
 class TestSetSimilarity:
     def test_exact_match(self):
-        words = "hello world".split()
+        words = ["hello", "world"]
         assert _set_similarity(words, words) == 1.0
 
     def test_no_overlap(self):

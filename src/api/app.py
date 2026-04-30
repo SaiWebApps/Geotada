@@ -1,4 +1,4 @@
-"""FastAPI application factory for the Travlr Graph API."""
+"""FastAPI application factory for the Ondoway Graph API."""
 
 from __future__ import annotations
 
@@ -23,15 +23,17 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="Travlr Graph API",
+        title="Ondoway Graph API",
         version="0.1.0",
-        description="CRUD API for the Travlr Neo4j graph database",
+        description="CRUD API for the Ondoway Neo4j graph database",
         lifespan=lifespan,
     )
 
+    origins = os.getenv("CORS_ORIGINS", "*").split(",")
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=origins,
         allow_methods=["*"],
         allow_headers=["*"],
     )

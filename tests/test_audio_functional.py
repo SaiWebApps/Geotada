@@ -17,7 +17,7 @@ import httpx
 import pytest
 
 from src.audio.eval import evaluate
-from src.audio.provider import get_provider, TTSError
+from src.audio.provider import get_provider
 from src.seed.narratives import BEATS
 
 
@@ -26,17 +26,27 @@ def _openai_reachable() -> bool:
     if not os.getenv("OPENAI_API_KEY"):
         return False
     try:
-        resp = httpx.get("https://api.openai.com/v1/models", timeout=5.0)
-        # 401 = reachable but unauthorized (expected without Bearer token)
-        # 200 = reachable and authorized
-        return resp.status_code in (200, 401)
-    except (httpx.ProxyError, httpx.ConnectError, httpx.TimeoutException):
-        return False
+        import urllib.error
+        import urllib.request
+
+        handler = urllib.request.ProxyHandler({})
+        opener = urllib.request.build_opener(handler)
+        resp = opener.open("https://api.openai.com/v1/models", timeout=5)
+        return resp.status in (200, 401)
+    except urllib.error.HTTPError as exc:
+        return exc.code == 401
+    except Exception:
+        try:
+            resp = httpx.get("https://api.openai.com/v1/models", timeout=5.0)
+            return resp.status_code in (200, 401)
+        except (httpx.ProxyError, httpx.ConnectError, httpx.TimeoutException):
+            return False
 
 
 needs_openai = pytest.mark.skipif(
     not _openai_reachable(),
-    reason="OpenAI API not reachable — set OPENAI_API_KEY and ensure no proxy blocks api.openai.com",
+    reason="OpenAI API not reachable - set OPENAI_API_KEY and ensure "
+    "no proxy blocks api.openai.com",
 )
 
 # Extract scripts from seed data
@@ -104,10 +114,13 @@ class TestEvalEndpoint:
 
         client = TestClient(create_app())
 
-        resp = client.post("/api/v1/audio/eval", json={
-            "text": SCRIPTS[0],
-            "provider": "openai",
-        })
+        resp = client.post(
+            "/api/v1/audio/eval",
+            json={
+                "text": SCRIPTS[0],
+                "provider": "openai",
+            },
+        )
 
         assert resp.status_code == 200, f"Expected 200, got {resp.status_code}: {resp.text}"
 

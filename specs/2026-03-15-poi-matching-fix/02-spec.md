@@ -70,4 +70,4 @@ The frontend pre-resolves POI identity and passes an explicit instruction to the
 
 ## North Star Alignment
 
-The graph spine is `User → Profile → Trip → ItineraryItem → POI → NarrativeBeat → Lens`. POI is the anchor. This spec directly protects graph integrity, prerequisite for the Phase 1 gate (100+ Boston POIs live). No conflicts with architectural commitments or explicit boundaries.
+The graph spine is `User → Profile → Trip → ItineraryItem → POI → NarrativeBeat → Lens`. POI is the anchor. This spec directly protects graph integrity, prerequisite for the Phase 1 gate (100+ Paris POIs live). No conflicts with architectural commitments or explicit boundaries.

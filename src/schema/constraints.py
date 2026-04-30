@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.connection import get_database
 from src.schema.definitions import INDEXES, UNIQUE_CONSTRAINTS, Index, UniqueConstraint
 
 if TYPE_CHECKING:
@@ -30,7 +31,7 @@ def _create_index(tx, index: Index) -> None:
 
 def apply_constraints(driver: Driver) -> int:
     """Create all unique constraints. Returns count created."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         for constraint in UNIQUE_CONSTRAINTS:
             session.execute_write(_create_unique_constraint, constraint)
     return len(UNIQUE_CONSTRAINTS)
@@ -38,7 +39,7 @@ def apply_constraints(driver: Driver) -> int:
 
 def apply_indexes(driver: Driver) -> int:
     """Create all indexes. Returns count created."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         for index in INDEXES:
             session.execute_write(_create_index, index)
     return len(INDEXES)

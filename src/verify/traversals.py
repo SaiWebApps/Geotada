@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from neo4j import Driver
 
+from src.connection import get_database
+
 
 @dataclass(frozen=True)
 class TraversalResult:
@@ -36,7 +38,7 @@ ORDER BY i.sort_order
 
 def run_planner_traversal(driver: Driver) -> TraversalResult:
     """Schema_v3 §5.1 — Structured Discovery."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         records = list(session.run(_PLANNER_QUERY))
     rows = [dict(r) for r in records]
     return TraversalResult(name="Planner", row_count=len(rows), min_expected=3, sample_rows=rows)
@@ -58,7 +60,7 @@ RETURN pr.display_name AS profile, l.display_label AS lens,
 
 def run_wanderer_traversal(driver: Driver) -> TraversalResult:
     """Schema_v3 §5.2 — Spontaneous Exploration."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         records = list(session.run(_WANDERER_QUERY))
     rows = [dict(r) for r in records]
     return TraversalResult(name="Wanderer", row_count=len(rows), min_expected=1, sample_rows=rows)
@@ -76,7 +78,7 @@ RETURN parent.display_label AS parent, child.display_label AS child
 
 def run_dag_traversal(driver: Driver) -> TraversalResult:
     """Verify IS_PARENT_OF hierarchy works."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         records = list(session.run(_DAG_QUERY))
     rows = [dict(r) for r in records]
     return TraversalResult(name="DAG", row_count=len(rows), min_expected=1, sample_rows=rows)

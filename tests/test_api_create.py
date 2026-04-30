@@ -6,34 +6,7 @@ Requires a running Neo4j instance.
 
 from __future__ import annotations
 
-import pytest
-from fastapi.testclient import TestClient
-
-from src.api.app import create_app
-from src.schema.constraints import apply_all
 from tests.conftest import needs_neo4j
-
-
-@pytest.fixture(scope="module")
-def clean_driver():
-    """Create a driver with a clean DB + schema constraints."""
-    from src.connection import create_driver
-
-    d = create_driver()
-    with d.session() as s:
-        s.run("MATCH (n) DETACH DELETE n")
-    apply_all(d)
-    yield d
-    d.close()
-
-
-@pytest.fixture(scope="module")
-def client(clean_driver):
-    """TestClient backed by a clean Neo4j database (no seed data)."""
-    app = create_app()
-    with TestClient(app) as c:
-        yield c
-
 
 # ── Create User ──
 
@@ -76,31 +49,40 @@ class TestCreateUser:
 @needs_neo4j
 class TestCreatePOI:
     def test_create_poi_with_lat_lng(self, client):
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Test Place",
-            "latitude": 40.7128,
-            "longitude": -74.0060,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Test Place",
+                "latitude": 40.7128,
+                "longitude": -74.0060,
+            },
+        )
         assert resp.status_code == 201
         props = resp.json()["properties"]
         assert props["name"] == "Test Place"
 
     def test_poi_location_is_serialized(self, client):
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Geo Test",
-            "latitude": 51.5074,
-            "longitude": -0.1278,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Geo Test",
+                "latitude": 51.5074,
+                "longitude": -0.1278,
+            },
+        )
         loc = resp.json()["properties"]["location"]
         assert abs(loc["lat"] - 51.5074) < 0.001
         assert abs(loc["lng"] - (-0.1278)) < 0.001
 
     def test_poi_defaults_are_applied(self, client):
-        resp = client.post("/api/v1/nodes/POI", json={
-            "name": "Default Test",
-            "latitude": 0.0,
-            "longitude": 0.0,
-        })
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Default Test",
+                "latitude": 0.0,
+                "longitude": 0.0,
+            },
+        )
         props = resp.json()["properties"]
         assert props["kid_friendly"] == "yes"
         assert props["importance_tier"] == 1
@@ -117,25 +99,34 @@ class TestCreateOtherTypes:
         assert resp.json()["properties"]["display_name"] == "Dad"
 
     def test_create_lens(self, client):
-        resp = client.post("/api/v1/nodes/Lens", json={
-            "name": "test_lens",
-            "display_label": "Test Lens",
-        })
+        resp = client.post(
+            "/api/v1/nodes/Lens",
+            json={
+                "name": "test_lens",
+                "display_label": "Test Lens",
+            },
+        )
         assert resp.status_code == 201
 
     def test_create_trip(self, client):
-        resp = client.post("/api/v1/nodes/Trip", json={
-            "name": "Rome 2026",
-            "start_date": "2026-06-01",
-            "end_date": "2026-06-07",
-        })
+        resp = client.post(
+            "/api/v1/nodes/Trip",
+            json={
+                "name": "Rome 2026",
+                "start_date": "2026-06-01",
+                "end_date": "2026-06-07",
+            },
+        )
         assert resp.status_code == 201
         assert resp.json()["properties"]["status"] == "planning"
 
     def test_create_narrative_beat(self, client):
-        resp = client.post("/api/v1/nodes/NarrativeBeat", json={
-            "script_body": "Once upon a time...",
-        })
+        resp = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "Once upon a time...",
+            },
+        )
         assert resp.status_code == 201
         assert resp.json()["properties"]["version"] == 1
 

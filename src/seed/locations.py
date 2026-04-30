@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from neo4j import Driver
 
+from src.connection import get_database
+
 _MERGE_POI = """
 MERGE (p:POI {name: $name, city_name: $city_name})
 SET p.id             = coalesce(p.id, randomUUID()),
@@ -61,7 +63,7 @@ def _create_poi(tx, poi: dict) -> None:
 
 def seed_pois(driver: Driver) -> int:
     """Seed all Paris POIs. Returns count created."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         for poi in PARIS_POIS:
             session.execute_write(_create_poi, poi)
     return len(PARIS_POIS)

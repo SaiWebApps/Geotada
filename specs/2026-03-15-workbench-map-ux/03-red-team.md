@@ -20,7 +20,7 @@ The existing code uses `/search` (forward geocoding by city name). The spec need
 
 ## 2. Risks
 
-**R1 — Nominatim accuracy for historical Boston addresses (Likelihood: High)**
+**R1 — Nominatim accuracy for historical Paris addresses (Likelihood: High)**
 Many POIs will have historical or informal addresses. Nominatim may return wrong locations or no results. The no-result case is handled (AC3), but editors may misinterpret a confidently wrong geocode.
 **Mitigation:** Add a subtle "approximate" label or tooltip on the orange marker to reinforce that this is an approximation, not ground truth.
 
@@ -69,7 +69,7 @@ Google Maps URL construction needs `encodeURIComponent()` for POI name and addre
 - Uses Nominatim (OSM) per commitment: "OpenStreetMap (free) for MVP"
 - Editorial Workbench is browser-based HTML/JS per commitment
 - No API keys or paid services introduced
-- Supports Phase 1 gate (100+ Boston POIs) by speeding editorial review
+- Supports Phase 1 gate (100+ Paris POIs) by speeding editorial review
 
 **No conflicts found.** The spec stays within "Build the Machine" phase scope.
 

@@ -1,4 +1,4 @@
-"""Lightweight HTTP API for the Travlr Neo4j dashboard.
+"""Lightweight HTTP API for the Ondoway Neo4j dashboard.
 
 Serves graph data as JSON and hosts the static frontend.
 No framework dependencies — uses stdlib http.server + json.
@@ -11,7 +11,7 @@ import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from typing import Any
 
-from src.connection import create_driver
+from src.connection import create_driver, get_database
 from src.verify.counts import count_nodes_by_label, count_relationships_by_type, total_counts
 from src.verify.traversals import run_all_traversals
 
@@ -21,7 +21,7 @@ PORT = int(os.getenv("DASHBOARD_PORT", "8080"))
 
 def _graph_data(driver) -> dict[str, Any]:
     """Fetch all nodes and relationships for visualization."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         nodes_result = session.run(
             "MATCH (n) RETURN id(n) AS id, labels(n) AS labels, properties(n) AS props"
         )
@@ -110,7 +110,7 @@ def serve() -> None:
     driver = create_driver()
     DashboardHandler.driver = driver
 
-    server = HTTPServer(("0.0.0.0", PORT), DashboardHandler)
+    server = HTTPServer(("127.0.0.1", PORT), DashboardHandler)
     print(f"\n  🌐 Dashboard running at http://localhost:{PORT}")
     print("  Press Ctrl+C to stop.\n")
     try:

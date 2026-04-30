@@ -1,5 +1,8 @@
 """Unit tests for API models — no Neo4j required."""
 
+import pytest
+from pydantic import ValidationError
+
 from src.api.models.nodes import (
     CREATE_MODELS,
     NarrativeBeatCreate,
@@ -8,7 +11,6 @@ from src.api.models.nodes import (
     NodeResponse,
     POICreate,
 )
-
 
 # ── NodeLabel enum ──
 
@@ -152,3 +154,51 @@ class TestPOIRoleField:
             importance_tier=3,
         )
         assert poi.model_dump()["poi_role"] == "stop"
+
+
+# ── POI coordinate validation ──
+
+
+class TestPOICoordinateValidation:
+    """Test POICreate field_validators for latitude and longitude ranges."""
+
+    def _make_poi(self, *, latitude: float = 48.8, longitude: float = 2.3) -> POICreate:
+        return POICreate(
+            name="Test",
+            city_name="paris",
+            latitude=latitude,
+            longitude=longitude,
+            importance_tier=3,
+        )
+
+    def test_latitude_above_90_rejected(self):
+        with pytest.raises(ValidationError, match="latitude must be between"):
+            self._make_poi(latitude=90.1)
+
+    def test_latitude_below_neg90_rejected(self):
+        with pytest.raises(ValidationError, match="latitude must be between"):
+            self._make_poi(latitude=-90.1)
+
+    def test_longitude_above_180_rejected(self):
+        with pytest.raises(ValidationError, match="longitude must be between"):
+            self._make_poi(longitude=180.1)
+
+    def test_longitude_below_neg180_rejected(self):
+        with pytest.raises(ValidationError, match="longitude must be between"):
+            self._make_poi(longitude=-180.1)
+
+    def test_boundary_latitude_90_accepted(self):
+        poi = self._make_poi(latitude=90.0)
+        assert poi.latitude == 90.0
+
+    def test_boundary_latitude_neg90_accepted(self):
+        poi = self._make_poi(latitude=-90.0)
+        assert poi.latitude == -90.0
+
+    def test_boundary_longitude_180_accepted(self):
+        poi = self._make_poi(longitude=180.0)
+        assert poi.longitude == 180.0
+
+    def test_boundary_longitude_neg180_accepted(self):
+        poi = self._make_poi(longitude=-180.0)
+        assert poi.longitude == -180.0

@@ -1,4 +1,4 @@
-"""Schema definitions for the Travlr Neo4j graph.
+"""Schema definitions for the Ondoway Neo4j graph.
 
 Pure data module — no database calls. Consumed by schema.constraints
 and tests to keep the source of truth in one place.

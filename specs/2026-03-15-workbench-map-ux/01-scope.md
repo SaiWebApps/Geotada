@@ -13,7 +13,7 @@
 
 ## Why
 
-Supports Phase 1 gate (100+ Boston POIs live) by reducing time spent manually cross-referencing coordinates against addresses during editorial review.
+Supports Phase 1 gate (100+ Paris POIs live) by reducing time spent manually cross-referencing coordinates against addresses during editorial review.
 
 ## What we're NOT building
 
@@ -34,7 +34,7 @@ Supports Phase 1 gate (100+ Boston POIs live) by reducing time spent manually cr
 ## Dependencies or risks
 
 - **Nominatim rate limit:** 1 request/second, no API key needed. Fine for single-POI editorial review. Must not fire on every keystroke or panel render — only on explicit action or initial detail load.
-- **Geocode accuracy:** Nominatim may return imprecise results for historical Boston addresses. The second marker is an approximation — the editor decides, not the tool.
+- **Geocode accuracy:** Nominatim may return imprecise results for historical Paris addresses. The second marker is an approximation — the editor decides, not the tool.
 
 ## Best practices flagged for Stage 3
 

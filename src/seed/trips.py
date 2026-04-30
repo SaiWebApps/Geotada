@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from neo4j import Driver
 
+from src.connection import get_database
+
 _MERGE_TRIP = """
 MERGE (t:Trip {name: $name})
 SET t.id              = coalesce(t.id, randomUUID()),
@@ -49,7 +51,7 @@ TRIP_DEF = {
     "name": "Paris Spring 2026",
     "start_date": "2026-04-10",
     "end_date": "2026-04-14",
-    "cover_image_url": "https://images.travlr.app/trips/paris-spring.jpg",
+    "cover_image_url": "https://images.ondoway.app/trips/paris-spring.jpg",
     "status": "planning",
     "captain": "Mom",
     "crew": ["Kid"],
@@ -92,7 +94,7 @@ def _create_stop(tx, trip_name: str, profile_name: str, stop: dict) -> None:
 
 def seed_trip(driver: Driver) -> dict[str, int]:
     """Seed the test trip with captain, crew, and itinerary items."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         session.execute_write(_create_trip, TRIP_DEF)
         session.execute_write(_assign_captain, TRIP_DEF["name"], TRIP_DEF["captain"])
         for crew_name in TRIP_DEF["crew"]:

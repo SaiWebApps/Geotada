@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 
 from src.api.crud import schema as schema_crud
 from src.api.models.edges import RelType

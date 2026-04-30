@@ -31,7 +31,7 @@ An **editor** can upload V3 pipeline JSON (with `address`, `alternative_names`, 
 3. **Works when** the detail panel displays `address` as a read-only text field, `name_variations` as a comma-separated read-only list, `gravity_audit` showing the two-signal reasoning text, and `_meta` in a collapsible section — all HTML-escaped via `escHtml()`.
 4. **Works when** `detectConflictsForPoi()` finds an existing POI whose `name_variations` array contains the incoming `poi_name`, and returns it as a match (not "new") with conflict/review results using the existing POI's canonical name.
 5. **Works when** `detectConflicts()` (bulk) also matches incoming POIs against cached POIs' `name_variations`, following the same logic as per-POI detection.
-6. **Works when** the conflict detection UI shows a visible indicator explaining that the match was found via an alternative name (e.g., *"Matched via alt name 'Old North Church' → 'Christ Church in the City of Boston'"*).
+6. **Works when** the conflict detection UI shows a visible indicator explaining that the match was found via an alternative name (e.g., *"Matched via alt name 'Eiffel Tower' → 'Tour Eiffel'"*).
 7. **Works when** V3 JSON using the key `alternative_names` is normalized to `name_variations` during `processJson()`, so downstream code only deals with one key name.
 8. **Works when** the `POICreate` Pydantic model accepts an optional `name_variations: list[str]` field, and the `create_node()` Cypher writes it as a Neo4j list property on the POI node.
 

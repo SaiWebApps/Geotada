@@ -19,7 +19,7 @@ A Playwright (Python) test script + purpose-built JSON fixture that systematical
 | **Test fixture** | JSON array of POI objects (V2 schema) | New file: `tests/fixtures/ui_test_fixture.json` |
 | **Seed data** | 1 POI with 3 beats, seeded into Neo4j via API before test run | Test setup step (cleaned up in teardown) |
 | **Running stack** | Docker + Neo4j + FastAPI on `localhost:8000` | Developer starts manually before running tests |
-| **City name** | `"Boston"` hardcoded in test | Matches launch city in north star |
+| **City name** | `"Paris"` hardcoded in test | Matches launch city in north star |
 
 ### Fixture design
 
@@ -27,10 +27,10 @@ The JSON must include entries that trigger these specific UI states:
 
 | # | Entry | Purpose | Key properties |
 |---|-------|---------|---------------|
-| 1 | Valid standard POI | Happy path baseline | Valid Boston coords, 2 beats, gravity 3–4, known lenses |
+| 1 | Valid standard POI | Happy path baseline | Valid Paris coords, 2 beats, gravity 3–4, known lenses |
 | 2 | High-gravity anchor POI | Gravity boundary (5) | Gravity 5 on all beats, long `script_body` (>500 chars) |
 | 3 | Low-gravity POI | Gravity boundary (1) | Gravity 1, minimal `script_body` |
-| 4 | Outside-geofence POI | Geofence flag flow | Coords in New York (~340km from Boston) |
+| 4 | Outside-geofence POI | Geofence flag flow | Coords in New York (~340km from Paris) |
 | 5 | Invalid-coords POI | Coord validation | Latitude 999, longitude -999 |
 | 6 | Duplicate-name POI A | Duplicate resolver (pair 1/2) | Same `poi_name` as entry #7 |
 | 7 | Duplicate-name POI B | Duplicate resolver (pair 2/2) | Same `poi_name` as entry #6 |
@@ -44,13 +44,13 @@ The JSON must include entries that trigger these specific UI states:
 
 Before the test suite runs, seed one POI into Neo4j via the API:
 
-- **POI name:** `"UI Test Seed — Old North Church"` (unique prefix avoids collision with real data)
+- **POI name:** `"UI Test Seed — Sacré-Cœur"` (unique prefix avoids collision with real data)
 - **Beats (3):**
   - Beat 1: lens `hidden_history`, gravity 4, 100-word `script_body` about lantern signals
   - Beat 2: lens `revolutionary_moments`, gravity 3, 80-word `script_body` about Paul Revere
   - Beat 3: lens `dark_history`, gravity 2, 60-word `script_body` about British occupation
 
-Fixture entry #11 uses `poi_name: "UI Test Seed — Old North Church"` and its 5 beats are crafted to hit specific Jaccard similarity bands against the seeded beats. **Critical:** Jaccard scores must be computed using the same stop-word–filtered algorithm as `review.html` (lines 1878–1888) to ensure beats land in the correct conflict bands. Include the expected post-filtering Jaccard score as a comment in the fixture (e.g., `"_expected_jaccard": 0.74`).
+Fixture entry #11 uses `poi_name: "UI Test Seed — Sacré-Cœur"` and its 5 beats are crafted to hit specific Jaccard similarity bands against the seeded beats. **Critical:** Jaccard scores must be computed using the same stop-word–filtered algorithm as `review.html` (lines 1878–1888) to ensure beats land in the correct conflict bands. Include the expected post-filtering Jaccard score as a comment in the fixture (e.g., `"_expected_jaccard": 0.74`).
 
 ---
 

@@ -1,4 +1,4 @@
-"""Travlr Neo4j setup — create schema, seed data, verify traversals.
+"""Ondoway Neo4j setup — create schema, seed data, verify traversals.
 
 Usage:
     make setup          # full setup + seed + verify
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import sys
 
-from src.connection import abort_on_connection_error, get_driver
+from src.connection import abort_on_connection_error, get_database, get_driver
 from src.schema.constraints import apply_all
 from src.seed.runner import seed_all
 from src.verify.counts import count_nodes_by_label, count_relationships_by_type, total_counts
@@ -61,7 +61,7 @@ def _run_verification(driver) -> None:
 def clean() -> None:
     """Wipe all nodes and relationships (for testing)."""
     with get_driver() as driver:
-        with driver.session() as session:
+        with driver.session(database=get_database()) as session:
             session.run("MATCH (n) DETACH DELETE n")
         print("  ✓ Database wiped.")
 

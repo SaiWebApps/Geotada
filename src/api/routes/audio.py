@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import os
 import tempfile
+import time
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -30,16 +31,39 @@ from src.api.models.audio import (
 )
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
-from src.audio.pipeline import PipelineError, check_audio_status, generate_batch, generate_beat_audio
-from src.audio.pipeline import GenerationResult as PipelineResult
+from src.audio.pipeline import (
+    PipelineError,
+    check_audio_status,
+    generate_batch,
+    generate_beat_audio,
+)
 from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
 
 router = APIRouter(tags=["audio"])
 
 # Directory for storing comparison audio files (survives across requests)
-_COMPARE_DIR = Path(tempfile.gettempdir()) / "travlr-audio-compare"
+_COMPARE_DIR = Path(tempfile.gettempdir()) / "ondoway-audio-compare"
 _COMPARE_DIR.mkdir(exist_ok=True)
+
+# Maximum age (in seconds) for comparison files before cleanup
+_COMPARE_MAX_AGE_SEC = 3600  # 1 hour
+
+
+def _cleanup_old_comparisons() -> None:
+    """Remove comparison files older than _COMPARE_MAX_AGE_SEC."""
+    try:
+        now = time.time()
+        for entry in _COMPARE_DIR.iterdir():
+            if entry.is_file():
+                try:
+                    age = now - os.path.getmtime(entry)
+                    if age > _COMPARE_MAX_AGE_SEC:
+                        entry.unlink()
+                except OSError:
+                    pass  # File may have been removed concurrently
+    except OSError:
+        pass  # Directory may not exist yet
 
 
 @router.get("/audio/providers", response_model=ProviderListResponse)
@@ -64,12 +88,12 @@ def preview_audio(body: AudioPreviewRequest):
     try:
         provider = get_provider(body.provider)
     except ValueError as e:
-        raise HTTPException(400, str(e))
+        raise HTTPException(400, str(e)) from None
 
     try:
         audio_bytes = provider.generate(body.text, voice_id=body.voice_id)
     except TTSError as e:
-        raise HTTPException(502, f"TTS generation failed ({provider.name}): {e}")
+        raise HTTPException(502, f"TTS generation failed ({provider.name}): {e}") from None
 
     # Mock returns WAV, real providers return MP3
     media_type = "audio/wav" if provider.name == "mock" else "audio/mpeg"
@@ -89,6 +113,9 @@ def compare_providers(body: CompareRequest):
     Returns metadata and download paths for each provider's output.
     Use GET /audio/compare/download/{filename} to fetch individual files.
     """
+    # Clean up stale comparison files (older than 1 hour)
+    _cleanup_old_comparisons()
+
     # Create a hash for this comparison batch
     text_hash = hashlib.sha256(body.text.encode()).hexdigest()[:12]
     results: list[CompareResultItem] = []
@@ -97,18 +124,26 @@ def compare_providers(body: CompareRequest):
         try:
             provider = get_provider(provider_name)
         except ValueError as e:
-            results.append(CompareResultItem(
-                provider=provider_name, success=False, error=str(e),
-            ))
+            results.append(
+                CompareResultItem(
+                    provider=provider_name,
+                    success=False,
+                    error=str(e),
+                )
+            )
             continue
 
         try:
             voice_id = body.voice_ids.get(provider_name)
             audio_bytes = provider.generate(body.text, voice_id=voice_id)
         except TTSError as e:
-            results.append(CompareResultItem(
-                provider=provider_name, success=False, error=str(e),
-            ))
+            results.append(
+                CompareResultItem(
+                    provider=provider_name,
+                    success=False,
+                    error=str(e),
+                )
+            )
             continue
 
         ext = "wav" if provider_name == "mock" else "mp3"
@@ -120,13 +155,15 @@ def compare_providers(body: CompareRequest):
         word_count = len(body.text.split())
         duration_est = word_count / 2.5
 
-        results.append(CompareResultItem(
-            provider=provider_name,
-            success=True,
-            size_bytes=len(audio_bytes),
-            duration_estimate_sec=round(duration_est, 1),
-            download_path=f"/api/v1/audio/compare/download/{filename}",
-        ))
+        results.append(
+            CompareResultItem(
+                provider=provider_name,
+                success=True,
+                size_bytes=len(audio_bytes),
+                duration_estimate_sec=round(duration_est, 1),
+                download_path=f"/api/v1/audio/compare/download/{filename}",
+            )
+        )
 
     return CompareResponse(text=body.text, results=results)
 
@@ -153,26 +190,26 @@ def eval_audio(body: EvalRequest):
 
     Verdict thresholds:
     - PASS: WER < 0.10 (less than 10% word errors)
-    - REVIEW: WER 0.10–0.25
+    - REVIEW: WER 0.10-0.25
     - FAIL: WER > 0.25
     """
     try:
         provider = get_provider(body.provider)
     except ValueError as e:
-        raise HTTPException(400, str(e))
+        raise HTTPException(400, str(e)) from None
 
     # Step 1: Generate audio
     try:
         audio_bytes = provider.generate(body.text, voice_id=body.voice_id)
     except TTSError as e:
-        raise HTTPException(502, f"TTS generation failed ({provider.name}): {e}")
+        raise HTTPException(502, f"TTS generation failed ({provider.name}): {e}") from None
 
     # Step 2: Transcribe + evaluate
     ext = "wav" if provider.name == "mock" else "mp3"
     try:
         result = evaluate(body.text, audio_bytes, filename=f"eval.{ext}")
     except AudioEvalError as e:
-        raise HTTPException(502, f"Transcription failed: {e}")
+        raise HTTPException(502, f"Transcription failed: {e}") from None
 
     # Step 3: Assign verdict
     if result.word_error_rate < 0.10:
@@ -210,7 +247,7 @@ def serve_audio_file(key: str):
     try:
         filepath.resolve().relative_to(storage.base_path.resolve())
     except ValueError:
-        raise HTTPException(400, "Invalid file path")
+        raise HTTPException(400, "Invalid file path") from None
 
     if not filepath.exists():
         raise HTTPException(404, f"Audio file '{key}' not found")
@@ -232,7 +269,7 @@ def get_audio_status(beat_id: str, session: Session = Depends(get_session)):
     try:
         status = check_audio_status(session, beat_id)
     except PipelineError as e:
-        raise HTTPException(404, str(e))
+        raise HTTPException(404, str(e)) from None
 
     return AudioStatusResponse(
         beat_id=status.beat_id,
@@ -263,7 +300,7 @@ def generate_audio(
             force=body.force,
         )
     except PipelineError as e:
-        raise HTTPException(400, str(e))
+        raise HTTPException(400, str(e)) from None
 
     return GenerateResponse(
         beat_id=result.beat_id,
@@ -294,16 +331,22 @@ def generate_audio_batch(
     items: list[BatchResultItem] = []
     for r in summary.results:
         if isinstance(r, PipelineError):
-            items.append(BatchResultItem(
-                beat_id="unknown", success=False, error=str(r),
-            ))
+            items.append(
+                BatchResultItem(
+                    beat_id="unknown",
+                    success=False,
+                    error=str(r),
+                )
+            )
         else:
-            items.append(BatchResultItem(
-                beat_id=r.beat_id,
-                success=True,
-                audio_url=r.audio_url,
-                size_bytes=r.size_bytes,
-            ))
+            items.append(
+                BatchResultItem(
+                    beat_id=r.beat_id,
+                    success=True,
+                    audio_url=r.audio_url,
+                    size_bytes=r.size_bytes,
+                )
+            )
 
     return BatchGenerateResponse(
         total_found=summary.total_found,

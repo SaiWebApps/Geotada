@@ -13,9 +13,10 @@ import hashlib
 import struct
 import time
 import wave
-from dataclasses import dataclass, field
+from collections.abc import Callable
+from dataclasses import dataclass
 from io import BytesIO
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING
 
 from src.api.crud.nodes import get_node, update_node
 from src.audio.provider import TTSError, get_provider
@@ -199,14 +200,12 @@ def generate_beat_audio(
 
     if existing_url and "placeholder" not in existing_url and not force and not is_stale:
         raise PipelineError(
-            f"Beat '{beat_id}' already has audio at '{existing_url}'. "
-            "Use force=True to regenerate."
+            f"Beat '{beat_id}' already has audio at '{existing_url}'. Use force=True to regenerate."
         )
 
     # Fetch POI name for the storage key
     poi_result = session.run(
-        "MATCH (p:POI)-[:HAS_BEAT]->(b:NarrativeBeat {id: $beat_id}) "
-        "RETURN p.name AS poi_name",
+        "MATCH (p:POI)-[:HAS_BEAT]->(b:NarrativeBeat {id: $beat_id}) RETURN p.name AS poi_name",
         beat_id=beat_id,
     ).single()
     poi_name = poi_result["poi_name"] if poi_result else None
@@ -216,7 +215,7 @@ def generate_beat_audio(
     try:
         audio_bytes = provider.generate(script_body, voice_id=voice_id)
     except TTSError as e:
-        raise PipelineError(f"TTS failed for beat '{beat_id}': {e}")
+        raise PipelineError(f"TTS failed for beat '{beat_id}': {e}") from e
 
     # Step 4: Upload to storage
     storage = get_storage(storage_name)
@@ -224,15 +223,20 @@ def generate_beat_audio(
     try:
         audio_url = storage.upload(audio_bytes, key)
     except StorageError as e:
-        raise PipelineError(f"Storage failed for beat '{beat_id}': {e}")
+        raise PipelineError(f"Storage failed for beat '{beat_id}': {e}") from e
 
     # Step 5: Update Neo4j
     duration = round(_get_duration(audio_bytes), 2)
-    update_node(session, "NarrativeBeat", beat_id, {
-        "audio_url": audio_url,
-        "duration_sec": duration,
-        "audio_script_hash": current_hash,
-    })
+    update_node(
+        session,
+        "NarrativeBeat",
+        beat_id,
+        {
+            "audio_url": audio_url,
+            "duration_sec": duration,
+            "audio_script_hash": current_hash,
+        },
+    )
 
     return GenerationResult(
         beat_id=beat_id,
@@ -292,10 +296,13 @@ def generate_batch(
         url = record["audio_url"] or ""
         if force or not url or "placeholder" in url:
             beat_ids.append(record["id"])
-        elif record["script_body"] and record["hash"]:
+        elif (
+            record["script_body"]
+            and record["hash"]
+            and record["hash"] != _script_hash(record["script_body"])
+        ):
             # Also include stale beats
-            if record["hash"] != _script_hash(record["script_body"]):
-                beat_ids.append(record["id"])
+            beat_ids.append(record["id"])
 
     skipped = total_found - len(beat_ids)
 

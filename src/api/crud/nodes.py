@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 import json
-from typing import Any, TYPE_CHECKING
+import re
+from typing import TYPE_CHECKING, Any
+
+from src.api.models.nodes import NodeLabel
+from src.api.utils import serialize_neo4j_props
 
 if TYPE_CHECKING:
     from neo4j import Session
 
+_VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
 def _encode_complex_props(props: dict) -> dict:
     """JSON-encode list-of-dict values so Neo4j can store them as strings.
@@ -15,7 +20,8 @@ def _encode_complex_props(props: dict) -> dict:
     Neo4j refuses `SET n.x = $x` when $x is a list of maps. Pydantic models
     such as `physical_cues: list[PhysicalCue]` and
     `inline_foreign_phrases: list[InlineForeignPhrase]` arrive as list[dict]
-    after model_dump(). Encode them here; `_serialize_props` decodes on read.
+    after model_dump(). Encode them here; ``serialize_neo4j_props`` in
+    src/api/utils.py decodes them on read.
     """
     encoded = {}
     for key, val in props.items():
@@ -26,34 +32,24 @@ def _encode_complex_props(props: dict) -> dict:
     return encoded
 
 
-def _serialize_props(props: dict) -> dict:
-    """Convert Neo4j spatial points and temporal types to JSON-safe values.
+def _validate_label(label: str) -> None:
+    """Validate that label is a known NodeLabel. Raises ValueError if not."""
+    NodeLabel(label)
 
-    Strings that round-trip from `_encode_complex_props` (JSON arrays of
-    objects) are decoded back to list[dict] for the API response.
-    """
-    serialized = {}
-    for key, val in props.items():
-        if hasattr(val, "latitude"):
-            serialized[key] = {"lat": val.latitude, "lng": val.longitude}
-        elif isinstance(val, str) and val.startswith("[") and val.endswith("]"):
-            try:
-                decoded = json.loads(val)
-                serialized[key] = decoded if isinstance(decoded, list) else val
-            except json.JSONDecodeError:
-                serialized[key] = val
-        elif isinstance(val, (str, int, float, bool)):
-            serialized[key] = val
-        elif isinstance(val, list):
-            serialized[key] = val
-        else:
-            serialized[key] = str(val)
-    return serialized
+
+def _validate_property_keys(properties: dict) -> None:
+    """Validate that all property keys are safe identifiers."""
+    for key in properties:
+        if not _VALID_PROPERTY_NAME.match(key):
+            raise ValueError(
+                f"Invalid property name: {key!r}. "
+                "Property names must match ^[a-zA-Z_][a-zA-Z0-9_]*$"
+            )
 
 
 def _record_to_node(record) -> dict[str, Any]:
     """Convert a Neo4j record to a node dict."""
-    props = _serialize_props(dict(record["props"]))
+    props = serialize_neo4j_props(dict(record["props"]))
     return {
         "id": record["id"],
         "labels": record["labels"],
@@ -61,13 +57,10 @@ def _record_to_node(record) -> dict[str, Any]:
     }
 
 
-def list_nodes(
-    session: Session, label: str, skip: int, limit: int
-) -> tuple[list[dict], int]:
+def list_nodes(session: Session, label: str, skip: int, limit: int) -> tuple[list[dict], int]:
     """Return paginated nodes of a label and total count."""
-    count_result = session.run(
-        f"MATCH (n:{label}) RETURN count(n) AS total"
-    ).single()
+    _validate_label(label)
+    count_result = session.run(f"MATCH (n:{label}) RETURN count(n) AS total").single()
     total = count_result["total"]
 
     result = session.run(
@@ -83,6 +76,7 @@ def list_nodes(
 
 def get_node(session: Session, label: str, node_id: str) -> dict | None:
     """Return a single node by label and id property, or None."""
+    _validate_label(label)
     result = session.run(
         f"MATCH (n:{label} {{id: $node_id}}) "
         f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props",
@@ -93,13 +87,13 @@ def get_node(session: Session, label: str, node_id: str) -> dict | None:
     return _record_to_node(result)
 
 
-def create_node(
-    session: Session, label: str, properties: dict[str, Any]
-) -> dict:
+def create_node(session: Session, label: str, properties: dict[str, Any]) -> dict:
     """Create a node with a generated UUID id. Returns the created node.
 
     For POI and NarrativeBeat, uses MERGE for idempotent upserts.
     """
+    _validate_label(label)
+    _validate_property_keys(properties)
     params = _encode_complex_props(dict(properties))
 
     if label == "POI" and "latitude" in params and "longitude" in params:
@@ -192,10 +186,14 @@ def update_node(
     session: Session, label: str, node_id: str, properties: dict[str, Any]
 ) -> dict | None:
     """Update node properties. Returns updated node or None if not found."""
+    _validate_label(label)
     if not properties:
         return get_node(session, label, node_id)
 
-    properties = _encode_complex_props(dict(properties))
+    _validate_property_keys(properties)
+    properties = _encode_complex_props(dict(properties))  # Don't mutate caller's dict + JSON-encode list[dict]
+
+
     params: dict[str, Any] = {"node_id": node_id}
     set_parts: list[str] = []
 
@@ -204,9 +202,7 @@ def update_node(
         lat = properties.pop("latitude", None)
         lng = properties.pop("longitude", None)
         if lat is not None and lng is not None:
-            set_parts.append(
-                "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})"
-            )
+            set_parts.append("n.location = point({latitude: $lat, longitude: $lng, srid: 4326})")
             params["lat"] = lat
             params["lng"] = lng
 
@@ -238,9 +234,9 @@ def update_node(
 
 def delete_node(session: Session, label: str, node_id: str) -> bool:
     """DETACH DELETE a node. Returns True if found and deleted."""
+    _validate_label(label)
     result = session.run(
-        f"MATCH (n:{label} {{id: $node_id}}) DETACH DELETE n "
-        f"RETURN count(*) AS deleted",
+        f"MATCH (n:{label} {{id: $node_id}}) DETACH DELETE n RETURN count(*) AS deleted",
         node_id=node_id,
     ).single()
     return result["deleted"] > 0

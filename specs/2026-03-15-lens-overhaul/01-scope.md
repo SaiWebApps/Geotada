@@ -10,7 +10,7 @@
 
 - **Replace the 12 MVP lenses with a hybrid parent/child + leaf lens architecture.** 11 top-level lenses (3 with children, 8 as directly-taggable leaves). Collapse three history-adjacent lenses (`hidden_history`, `dark_history`, `revolutionary`) into a single `history` parent. Add one new lens (`science_innovation`).
 - **Establish the tagging rule: beats tag the most specific lens available.** If a lens has children, beats tag a child — never the parent. If a lens is a leaf (no children), beats tag it directly. Parents with children exist only as category groupings.
-- **Define Boston child lenses** for 3 parent lenses (`history`, `arch_design`, `music_nightlife`). Child lenses grow over time as we expand to new cities.
+- **Define Paris child lenses** for 3 parent lenses (`history`, `arch_design`, `music_nightlife`). Child lenses grow over time as we expand to new cities.
 - **Update the hardcoded lens definitions** in `src/schema/definitions.py` (`MVP_LENSES` and `DAG_CHILD_LENSES`).
 - **Update seed data** in `src/seed/lenses.py` and all downstream seed files that reference lens slugs (`src/seed/narratives.py`, `src/seed/users.py`).
 - **Update all tests and fixtures** that reference the old lens slugs or expect 12/13 lens counts.
@@ -59,7 +59,7 @@
 
 ## Why
 
-The current lens set has three history-flavored lenses that are Boston-specific and don't scale to other cities. This conflicts with the Phase 4 gate ("City two live in <6 weeks pipeline work"). The hybrid parent/child + leaf architecture enables rich, categorized beats for the narrative engine while keeping the taxonomy lean. Too many lenses = sparse content per lens. Too few = limited story diversity.
+The current lens set has three history-flavored lenses that are Paris-specific and don't scale to other cities. This conflicts with the Phase 4 gate ("City two live in <6 weeks pipeline work"). The hybrid parent/child + leaf architecture enables rich, categorized beats for the narrative engine while keeping the taxonomy lean. Too many lenses = sparse content per lens. Too few = limited story diversity.
 
 ## What we're NOT building
 

@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from neo4j import Driver
 
+from src.connection import get_database
+
 
 def count_nodes_by_label(driver: Driver) -> dict[str, int]:
     """Return {label: count} for every node label in the database."""
@@ -19,7 +21,7 @@ def count_nodes_by_label(driver: Driver) -> dict[str, int]:
     }
     RETURN label, cnt ORDER BY label
     """
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         result = session.run(query)
         return {record["label"]: record["cnt"] for record in result}
 
@@ -35,14 +37,14 @@ def count_relationships_by_type(driver: Driver) -> dict[str, int]:
     }
     RETURN type, cnt ORDER BY type
     """
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         result = session.run(query)
         return {record["type"]: record["cnt"] for record in result}
 
 
 def total_counts(driver: Driver) -> dict[str, int]:
     """Return total node and relationship counts."""
-    with driver.session() as session:
+    with driver.session(database=get_database()) as session:
         nodes = session.run("MATCH (n) RETURN count(n) AS c").single()["c"]
         rels = session.run("MATCH ()-[r]->() RETURN count(r) AS c").single()["c"]
     return {"total_nodes": nodes, "total_relationships": rels}
