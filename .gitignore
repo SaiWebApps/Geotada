@@ -260,5 +260,8 @@ temp/
 # Generated audio files (local TTS output)
 audio_store/
 
+# Playwright test screenshots and reports
+tests/reports/
+
 # uv.lock is committed (reproducible dependency resolution)
 # Do NOT add uv.lock to this file.

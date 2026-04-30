@@ -320,6 +320,84 @@ Returns the schema for one relationship type.
 
 ---
 
+## Trip Generation — `/api/v1/trips`
+
+### Generate Trip
+
+```
+POST /trips/generate
+Content-Type: application/json
+```
+
+Generates an optimized trip itinerary based on a profile's lens preferences. Finds POIs within the specified radius, matches narrative beats to the profile's preferred lenses, applies golden-ratio selection (~20% anchors at gravity 5, ~80% flavour at gravity 1–4), schedules sequential stops, and persists the Trip + ItineraryItem graph structure.
+
+**Request body:**
+
+```json
+{
+  "profile_id": "prof-123",
+  "center_lat": 48.858,
+  "center_lng": 2.294,
+  "radius_m": 3000,
+  "max_stops": 10,
+  "duration_min": 120,
+  "start_date": "2026-06-01",
+  "end_date": "2026-06-03",
+  "start_time": "09:00",
+  "kid_friendly_only": false,
+  "trip_name": "My Paris Trip"
+}
+```
+
+| Field             | Type   | Required | Default | Description                                     |
+|-------------------|--------|----------|---------|-------------------------------------------------|
+| profile_id        | string | Yes      | —       | Profile node whose PREFERS_LENS edges select beats |
+| center_lat        | float  | Yes      | —       | Latitude of search center (-90 to 90)           |
+| center_lng        | float  | Yes      | —       | Longitude of search center (-180 to 180)        |
+| radius_m          | int    | No       | 3000    | Search radius in meters (max 10000)             |
+| max_stops         | int    | No       | 10      | Cap on itinerary items (max 30)                 |
+| duration_min      | int    | No       | null    | Total trip budget in minutes                    |
+| start_date        | string | Yes      | —       | ISO date for the trip start                     |
+| end_date          | string | Yes      | —       | ISO date for the trip end                       |
+| start_time        | string | No       | "09:00" | Daily start time (HH:MM)                        |
+| kid_friendly_only | bool   | No       | false   | Filter for kid-friendly POIs only               |
+| trip_name         | string | No       | null    | Optional name; auto-generated if omitted        |
+
+**Response 201:**
+
+```json
+{
+  "trip_id": "a1b2c3d4-...",
+  "trip_name": "My Paris Trip",
+  "profile_id": "prof-123",
+  "total_stops": 5,
+  "total_duration_min": 75,
+  "anchor_count": 1,
+  "flavour_count": 4,
+  "stops": [
+    {
+      "sort_order": 1,
+      "poi_id": "poi-abc",
+      "poi_name": "Louvre Museum",
+      "lat": 48.8606,
+      "lng": 2.3376,
+      "beat_id": "beat-xyz",
+      "lens_name": "hidden_history",
+      "lens_display": "Hidden History",
+      "duration_min": 30,
+      "importance_tier": 5,
+      "start_time": "09:00"
+    }
+  ]
+}
+```
+
+**Response 404:** Profile not found.
+
+**Response 422:** No POIs found within radius, or no narrative beats match the profile's lens preferences for POIs in the area.
+
+---
+
 ## Graph Visualization — `/api/v1/graph`
 
 ### Get Full Graph
