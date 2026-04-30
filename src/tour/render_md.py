@@ -23,13 +23,22 @@ def render_markdown(
     haiku_output_tokens: int | None = None,
     wall_clock_seconds: float | None = None,
     beat_sequence: BeatSequence | None = None,
+    tourability=None,
 ) -> str:
-    """Render a Script + telemetry into the empirical-walks markdown format."""
+    """Render a Script + telemetry into the empirical-walks markdown format.
+
+    Phase 6 added the optional ``tourability`` arg: when a YELLOW
+    assessment is passed, a warning banner is prepended at the top so
+    the user sees the thin-tour caveat before the script.
+    """
     inp = script.inputs
     sub_lookup = _build_sub_lookup(beat_sequence)
 
     out: list[str] = []
     out.append(_header(script, cost_usd, haiku_input_tokens, haiku_output_tokens, wall_clock_seconds))
+    if tourability is not None and tourability.status == "YELLOW":
+        out.append("")
+        out.append(_yellow_banner(tourability))
     out.append("")
     out.append("---")
     out.append("")
@@ -176,6 +185,27 @@ def _build_sub_lookup(
         for beat in plan.beats:
             out[beat.id] = (beat.sub_location, beat.trigger_address)
     return out
+
+
+def _yellow_banner(tourability) -> str:
+    """Top-of-tour warning when density.assess returned YELLOW."""
+    fill_pct = int(round(tourability.fill_ratio * 100))
+    lines = [
+        f"> **⚠ THIN TOUR (YELLOW) — {fill_pct}% audio fill.**",
+        "> This tour ran below the empirical 70–80% audio-fill bar; expect "
+        "long stretches of silence between stops.",
+    ]
+    if tourability.max_supportable_duration_min:
+        lines.append(
+            f"> Consider {tourability.max_supportable_duration_min}-min instead "
+            "for richer content at this start point."
+        )
+    if tourability.round_trip and tourability.one_way_alternative_destination:
+        lines.append(
+            f"> Or try a one-way ending at "
+            f"{tourability.one_way_alternative_destination!r}."
+        )
+    return "\n".join(lines)
 
 
 def _footer(

@@ -22,7 +22,8 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import Iterable
 
-from .contract import POI, BeatRef, Route, TourInput
+from .contract import POI, BeatRef, Route, TourabilityAssessment, TourInput
+from .density import TourabilityRefused, assess as assess_tourability
 from .routing import (
     HAVERSINE_CORRECTION,
     PACE_KMH,
@@ -281,11 +282,28 @@ def _count_words(s) -> int:
 
 
 def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
-    """Compute the spine, score POIs, run greedy selection. Returns a Route."""
+    """Compute the spine, score POIs, run greedy selection. Returns a Route.
+
+    Phase 6 added two guards before the greedy:
+
+    1. **Density gate** (§3.7) — call ``density.assess(input)``. RED
+       raises ``TourabilityRefused``; YELLOW attaches the assessment to
+       ``Route.tourability`` for the harness to surface.
+    2. **Zero-beat-POI exclusion** — POIs with no active beats are
+       removed from the candidate pool before scoring. This was the
+       Phase 5 Petit Palais bug: a tier-4 POI with 0 beats was selected
+       as an anchor purely because it sat on the route corridor.
+    """
     start_lat, start_lng = input.start
     interest = frozenset((input.lenses or []))
 
-    # Step 1: envelope filter.
+    # Phase 6 density gate. RED → refuse; YELLOW → continue but
+    # attach the assessment so the harness can warn.
+    assessment = assess_tourability(input, snapshot.pois, snapshot.beats_by_poi)
+    if assessment.status == "RED":
+        raise TourabilityRefused(assessment)
+
+    # Step 1: envelope filter. Phase 6 also drops 0-active-beat POIs.
     radius_m = envelope_radius_m(input.duration_min, round_trip=input.round_trip)
     candidates: list[POI] = []
     for poi in snapshot.pois:
@@ -295,10 +313,12 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
             continue
         if haversine_m(start_lat, start_lng, poi.lat, poi.lng) > radius_m:
             continue
+        if not _has_active_beats(poi, snapshot):
+            continue  # Phase 6: zero-beat POIs are excluded as anchors.
         candidates.append(_with_interest_count(poi, snapshot, interest))
 
     if not candidates:
-        return summarise_route(
+        empty = summarise_route(
             (),
             start_lat=start_lat,
             start_lng=start_lng,
@@ -306,6 +326,7 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
             duration_min=input.duration_min,
             spine_area=None,
         )
+        return _attach_tourability_if_yellow(empty, assessment)
 
     # Step 2: spine.
     spine = pick_spine_area(start_lat, start_lng, candidates, snapshot)
@@ -400,7 +421,7 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
                     selected = pulled
                     break
 
-    return summarise_route(
+    route = summarise_route(
         selected,
         start_lat=start_lat,
         start_lng=start_lng,
@@ -408,6 +429,7 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
         duration_min=input.duration_min,
         spine_area=spine,
     )
+    return _attach_tourability_if_yellow(route, assessment)
 
 
 # Endpoint-pull will drop at most this many incumbents to make room for
@@ -684,6 +706,34 @@ def _with_interest_count(
         if any(lens.lower() in interest_low for lens in beat.lenses):
             matching += 1
     return poi.model_copy(update={"matching_lens_beat_count": matching})
+
+
+def _has_active_beats(poi: POI, snapshot: CorpusSnapshot) -> bool:
+    """True iff the POI has at least one active beat in the snapshot.
+
+    Phase 5 Tour 4 selected Petit Palais (tier 4) as a stop with zero
+    beats because routing-aware scoring liked the corridor geometry.
+    The fix: filter the candidate pool by beat count before scoring.
+    """
+    for beat in snapshot.beats_for(poi.id):
+        if (beat.active_status or "active") == "active":
+            return True
+    return False
+
+
+def _attach_tourability_if_yellow(
+    route: Route, assessment: TourabilityAssessment
+) -> Route:
+    """Attach the YELLOW assessment to the Route for skill-side surfacing.
+
+    GREEN tours don't need to carry the assessment — the absence of a
+    ``tourability`` field on the Route signals "fully GREEN, no
+    warning needed". RED tours never reach this code path (we raised
+    earlier).
+    """
+    if assessment.status == "YELLOW":
+        return route.model_copy(update={"tourability": assessment})
+    return route
 
 
 __all__ = [

@@ -58,7 +58,28 @@ def _snap(
 ) -> CorpusSnapshot:
     types = {**{"Paris": "city"}, **(area_types or {})}
     adj = {k: frozenset(v) for k, v in (adjacent or {}).items()}
-    beats = {k: tuple(v) for k, v in (beats_by_poi or {}).items()}
+    # Phase 6 density gate runs at the top of select_route(), so test
+    # fixtures need at least one beat per POI to clear it. Auto-inject
+    # synthetic beats based on poi.beat_count when no explicit beats are
+    # provided — keeps the existing selection-logic tests focused on
+    # what they're testing without forcing each test to repeat fake-beat
+    # boilerplate.
+    raw = beats_by_poi or {}
+    beats: dict[str, tuple[BeatRef, ...]] = {}
+    for p in pois:
+        if p.id in raw:
+            beats[p.id] = tuple(raw[p.id])
+            continue
+        n = max(0, p.beat_count or 0)
+        beats[p.id] = tuple(
+            BeatRef(
+                id=f"{p.id}-b{i}",
+                poi_id=p.id,
+                est_spoken_seconds=240,  # rich enough to clear fill_ratio
+                active_status="active",
+            )
+            for i in range(n)
+        )
     return CorpusSnapshot(
         pois=tuple(pois),
         beats_by_poi=beats,
@@ -69,6 +90,33 @@ def _snap(
 
 PDV = (48.8555, 2.3656)
 PONT_NEUF = (48.85675, 2.341033)
+
+
+def _density_fillers(
+    start: tuple[float, float], *, n: int = 4, prefix: str = "filler"
+) -> list[POI]:
+    """4 tier-5 anchor candidates clustered near `start`.
+
+    Phase 6 density gate requires ≥4 anchor candidates with rich beats
+    inside a tight cluster for GREEN. Some pre-Phase-6 selection tests
+    used 1–3 POIs in their fixtures and now trip the gate. Adding these
+    fillers keeps each test's assertion intact (they cluster colocated
+    near start, so they don't affect spine, envelope, or distance
+    behaviour) while letting the gate clear.
+    """
+    return [
+        POI(
+            id=f"{prefix}-{i}",
+            name=f"{prefix}-{i}",
+            tier=5,
+            poi_role="stop",
+            lat=start[0] + 0.00005 * i,
+            lng=start[1] + 0.00005 * i,
+            areas=("Le Marais",),
+            beat_count=8,
+        )
+        for i in range(n)
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -93,7 +141,8 @@ def test_envelope_round_trip_uses_half_radius():
     # POI sits at ~500m, between round-trip envelope (369m) and one-way (738m).
     near = _poi("near", lat=48.8556, lng=2.3658, areas=("Le Marais",))
     medium = _poi("medium", lat=48.8590, lng=2.3720, areas=("Le Marais",))
-    snap = _snap([near, medium], area_types={"Le Marais": "neighborhood"})
+    fillers = _density_fillers(PDV)
+    snap = _snap([near, medium, *fillers], area_types={"Le Marais": "neighborhood"})
 
     one_way = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False), snap
@@ -120,7 +169,7 @@ def test_envelope_excludes_tier_1_2_anchors():
     # Tier 1/2 are walk-by candidates handled in the Phase 3 enrichment pass.
     t1 = _poi("t1", tier=1, lat=48.8556, lng=2.3658)
     t5 = _poi("t5", tier=5, lat=48.8556, lng=2.3660)
-    snap = _snap([t1, t5])
+    snap = _snap([t1, t5, *_density_fillers(PDV)])
     route = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
     )
@@ -344,22 +393,19 @@ def test_select_route_prefers_spine_area():
         areas=("Other Hood",),
         beat_count=5,
     )
-    snap = _snap(
-        [in_marais, out_other],
-        area_types={"Le Marais": "neighborhood", "Other Hood": "neighborhood"},
-    )
     # Force spine to be Le Marais by sheer count: add filler in Marais near
-    # start so spine vote wins.
+    # start so spine vote wins. Bumped to 4 tier-5 fillers (was 3 tier-4)
+    # to also satisfy the Phase 6 density gate — the assertion is unchanged.
     fillers = [
         _poi(
             f"f{i}",
-            tier=4,
+            tier=5,
             lat=48.8556 + i * 0.00002,
             lng=2.3658,
             areas=("Le Marais",),
-            beat_count=2,
+            beat_count=8,
         )
-        for i in range(3)
+        for i in range(4)
     ]
     snap = _snap(
         [in_marais, out_other, *fillers],
@@ -375,14 +421,84 @@ def test_select_route_prefers_spine_area():
     assert "marais" in ids
 
 
-def test_select_route_empty_when_no_candidates_in_envelope():
-    far = _poi("far", lat=49.5, lng=3.0)  # well outside Paris
-    snap = _snap([far])
+def test_yellow_density_attaches_assessment_to_route():
+    """Phase 6: a YELLOW assessment must surface as route.tourability."""
+    # 5 colocated tier-5 anchors with thin per-beat audio so fill lands
+    # in the YELLOW band (0.5–1.0). 5 beats × 5 POIs × 80s = 2000s;
+    # target 60min = 1793s; fill ≈ 1.12 — too high for YELLOW. Drop to
+    # 60s per beat: 5 × 5 × 60 = 1500s; fill ≈ 0.84 → YELLOW by-fill.
+    pois = [
+        _poi(
+            f"y{i}",
+            tier=5,
+            lat=PDV[0] + 0.00005 * i,
+            lng=PDV[1],
+            areas=("Le Marais",),
+            beat_count=5,
+        )
+        for i in range(5)
+    ]
+    beats: dict[str, list[BeatRef]] = {
+        p.id: [
+            BeatRef(
+                id=f"{p.id}-b{j}",
+                poi_id=p.id,
+                est_spoken_seconds=60,
+                active_status="active",
+            )
+            for j in range(5)
+        ]
+        for p in pois
+    }
+    snap = _snap(
+        pois,
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi=beats,
+    )
+    route = select_route(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False),
+        snap,
+    )
+    assert route.tourability is not None
+    assert route.tourability.status == "YELLOW"
+    assert 0.5 <= route.tourability.fill_ratio < 1.0
+
+
+def test_zero_beat_poi_excluded_from_anchor_pool():
+    """Phase 6 selection guard: tier-3+ POIs with 0 active beats are dropped."""
+    rich = _poi("rich", tier=5, lat=PDV[0], lng=PDV[1], beat_count=8)
+    empty = _poi("empty", tier=4, lat=PDV[0], lng=PDV[1] + 0.00005, beat_count=0)
+    snap = _snap(
+        [rich, empty, *_density_fillers(PDV)],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={"empty": []},  # explicit zero
+    )
     route = select_route(
         TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
     )
-    assert route.pois == ()
-    assert route.total_walk_seconds == 0
+    ids = {p.id for p in route.pois}
+    assert "rich" in ids
+    assert "empty" not in ids, (
+        "Zero-beat POI must be excluded from the candidate pool — "
+        "this was the Phase 5 Petit Palais bug"
+    )
+
+
+def test_select_route_empty_when_no_candidates_in_envelope():
+    """Phase 6: an empty reachable envelope now raises TourabilityRefused.
+
+    Pre-Phase-6 this returned an empty Route. The density gate runs
+    before the envelope filter and refuses (RED) when there's no corpus
+    to support a tour at all.
+    """
+    from src.tour.density import TourabilityRefused
+
+    far = _poi("far", lat=49.5, lng=3.0)  # well outside Paris
+    snap = _snap([far])
+    with pytest.raises(TourabilityRefused) as excinfo:
+        select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
+    assert excinfo.value.assessment.status == "RED"
+    assert excinfo.value.assessment.reachable_poi_count == 0
 
 
 # ---------------------------------------------------------------------------
@@ -462,7 +578,8 @@ def test_endpoint_pull_does_not_apply_to_round_trip():
         "far", tier=5, lat=start[0], lng=start[1] + 0.0050,
         areas=("Île de la Cité",), beat_count=5,
     )
-    snap = _snap([near, far], area_types={"Île de la Cité": "island"})
+    fillers = _density_fillers(start)
+    snap = _snap([near, far, *fillers], area_types={"Île de la Cité": "island"})
     rt = select_route(
         TourInput(start=start, duration_min=60, city_slug="paris", round_trip=True),
         snap,

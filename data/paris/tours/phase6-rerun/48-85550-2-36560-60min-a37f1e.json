@@ -1,0 +1,1051 @@
+{
+  "city_slug": "paris",
+  "generated_at": "2026-04-30T00:34:19.775582+00:00",
+  "inputs": {
+    "start": [
+      48.8555,
+      2.3656
+    ],
+    "duration_min": 60,
+    "city_slug": "paris",
+    "lenses": null,
+    "round_trip": true,
+    "theme_hint": null,
+    "start_label": "48.85550,2.36560"
+  },
+  "total_audio_seconds": 1445,
+  "total_walking_seconds": 1043,
+  "total_walk_distance_m": 644,
+  "total_planned_seconds": 2988,
+  "selected_pois": [
+    {
+      "id": "c7cf8ac7-cdae-4971-972c-021a50cab11c",
+      "name": "Hotel de Sully",
+      "tier": 4,
+      "lat": 48.8545,
+      "lng": 2.3647,
+      "area": "Le Marais",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "6a0b70b8-d0df-44f1-a046-953723e7de23",
+        "de1377b4-526d-4e60-8a75-7c3b2fc92aa2",
+        "bf668074-fcff-4d8a-a2f5-b476673c75ba",
+        "fea9a78d-c3a1-4cb4-b8c5-b4396b48f3d6",
+        "3603b58c-cc25-49fc-824d-6ea5539429eb"
+      ]
+    },
+    {
+      "id": "97071e5d-7b84-44db-88d6-64678dd5b24f",
+      "name": "Rue Saint-Antoine",
+      "tier": 3,
+      "lat": 48.853571,
+      "lng": 2.366419,
+      "area": "Le Marais",
+      "dwell_seconds": 150,
+      "beat_ids": [
+        "6efd7aeb-659f-44d3-ae45-c8c1ac4ba27e",
+        "8a9d3770-123b-42e4-9ce3-dc49757bd377",
+        "fcb197b2-1cc6-493f-bcfe-6c9824ff2cf7"
+      ]
+    },
+    {
+      "id": "3a812ac8-4dfd-4e83-b1d2-8eff068d781f",
+      "name": "Restaurant Bofinger",
+      "tier": 3,
+      "lat": 48.853843,
+      "lng": 2.367778,
+      "area": "Le Marais",
+      "dwell_seconds": 150,
+      "beat_ids": [
+        "d6acf587-824c-4b71-b14e-624edae19156"
+      ]
+    },
+    {
+      "id": "fca8de28-d36e-4bbb-8db1-3bdbeff240b8",
+      "name": "Musee Victor Hugo",
+      "tier": 4,
+      "lat": 48.8548,
+      "lng": 2.3661,
+      "area": "Le Marais",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "84ec9be0-f451-431d-96df-c98250871efa",
+        "b41d4c77-30d3-4e4e-9096-beab908eabbc",
+        "a1833622-35e7-4051-80cb-71efb9193439"
+      ]
+    },
+    {
+      "id": "52e8d945-e65e-4e7f-90aa-b9d0842b7998",
+      "name": "Place des Vosges",
+      "tier": 5,
+      "lat": 48.8555,
+      "lng": 2.3656,
+      "area": "Le Marais",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "ebeab682-e591-4ee8-b1a6-e6de953cf52c",
+        "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+        "e4201b27-29f9-42ef-a0ac-13263257fedd",
+        "6991a47b-9038-4026-bcca-16806a656f55",
+        "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+        "a41b36f0-b3de-4ced-b72f-7dd7e0db30b9",
+        "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+        "3ab94c91-c3c1-4a89-bc8e-5d4d503fb4f3",
+        "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+        "02b07751-b066-4007-a444-ae773e1a2bb5",
+        "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+        "e605c4b3-0b27-449a-be4f-97232eb3c628",
+        "87e82317-4908-4ad2-80be-30166158a0f1",
+        "724e084d-7d62-4c7d-9a23-587bdca28c13",
+        "09dc9d07-7b34-4116-9f09-fa17de43becf",
+        "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+        "cb6ac729-9426-4056-8e27-d525cf21b70a",
+        "ab3d4484-7369-4a35-882d-6bd5422bea8f",
+        "f9b9e36f-59b1-4a77-900e-f1f7b18a3cc5",
+        "54dd7004-91fe-4b8d-b041-03cc0d8261c3",
+        "6d1cc36b-e594-4914-aab9-6a195bed11df",
+        "2143d0b0-5d9c-4fc6-8c4e-fbe77a1b5f68",
+        "0a320177-c22f-47fb-a256-652a6ef44eb9",
+        "a8a0e5bd-5fca-47b1-b69f-20535c0a7c86",
+        "43885a1b-fdef-4a7e-ba6f-aab158698aa6"
+      ]
+    }
+  ],
+  "lens_coverage": {
+    "historic_arch": 7,
+    "hidden_history": 7,
+    "literary_heritage": 7,
+    "parks_gardens": 2,
+    "historic_cuisine": 3,
+    "famous_residents": 6,
+    "science_tech": 1,
+    "visual_art": 1,
+    "historic_worship": 1,
+    "local_legends": 1,
+    "war_conflict": 1
+  },
+  "script": [
+    {
+      "text": "Settle in.",
+      "source_id": "GLUE_PACING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "You're standing at Hotel de Sully.",
+      "source_id": "SYNTHESIZED_OPENER",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Look around. Take it in.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "During the reign of Henry IV (1589\u20131610), this area \u2014 originally a swamp (marais) \u2014 became the hometown of the French aristocracy.",
+      "source_id": "6a0b70b8-d0df-44f1-a046-953723e7de23",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Big shots built their private mansions, called h\u00f4tels, like this one, close to Henry's stylish Place des Vosges.",
+      "source_id": "6a0b70b8-d0df-44f1-a046-953723e7de23",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "H\u00f4tels that survived the Revolution now house museums, libraries, and national institutions.",
+      "source_id": "6a0b70b8-d0df-44f1-a046-953723e7de23",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Nobles entered the courtyard by horse-drawn carriage, then parked under the four arches to the right.",
+      "source_id": "6a0b70b8-d0df-44f1-a046-953723e7de23",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The elegant courtyard separated the mansion from the noisy and very public street.",
+      "source_id": "6a0b70b8-d0df-44f1-a046-953723e7de23",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Look up at statues of Autumn \u2014 carrying grapes from the harvest \u2014 Winter, a feeble old man, and the four elements.",
+      "source_id": "6a0b70b8-d0df-44f1-a046-953723e7de23",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The Hotel de Sully was built in 1624 for Mesme Gallet, a notorious gambler who squandered his fortune on a single night's losses and had to sell up.",
+      "source_id": "de1377b4-526d-4e60-8a75-7c3b2fc92aa2",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The aged Duc de Sully bought it next, but his young wife's infidelities were legendary.",
+      "source_id": "de1377b4-526d-4e60-8a75-7c3b2fc92aa2",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The pragmatic duke installed a separate staircase so her lovers could come and go without crossing his path.",
+      "source_id": "de1377b4-526d-4e60-8a75-7c3b2fc92aa2",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Built in 1624 for gambler Mesme Gallet who lost his fortune in one night.",
+      "source_id": "bf668074-fcff-4d8a-a2f5-b476673c75ba",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The aged Duc de Sully installed a separate staircase so his wife's lovers could come and go.",
+      "source_id": "bf668074-fcff-4d8a-a2f5-b476673c75ba",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "In the early 18th century, Voltaire was beaten up by the lackeys of the Prince de Rohan near the Hotel de Sully.",
+      "source_id": "fea9a78d-c3a1-4cb4-b8c5-b4396b48f3d6",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The young writer challenged the prince to a duel, but Rohan's aristocratic family had Voltaire thrown into the Bastille instead.",
+      "source_id": "fea9a78d-c3a1-4cb4-b8c5-b4396b48f3d6",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Upon his release, Voltaire left for England \u2014 an exile that would profoundly shape his political philosophy and produce his influential Letters on the English.",
+      "source_id": "fea9a78d-c3a1-4cb4-b8c5-b4396b48f3d6",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "In the back courtyard, noisy Paris takes a back seat.",
+      "source_id": "3603b58c-cc25-49fc-824d-6ea5539429eb",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Enjoy the oak tree, manicured hedges, vine-covered walls, and the warm stone and statues of the back side of the mansion.",
+      "source_id": "3603b58c-cc25-49fc-824d-6ea5539429eb",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "At the far end, the French doors are part of a former orangerie \u2014 a greenhouse for homegrown fruits and vegetables throughout winter.",
+      "source_id": "3603b58c-cc25-49fc-824d-6ea5539429eb",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "These days it warms office workers.",
+      "source_id": "3603b58c-cc25-49fc-824d-6ea5539429eb",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "As ostentatious as mansions like this might seem, they were often the second residences of fabulously wealthy nobles whose primary residences were much grander ch\u00e2teaux in the countryside.",
+      "source_id": "3603b58c-cc25-49fc-824d-6ea5539429eb",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Turn your back on Place de la Bastille and head west down Rue St. Antoine about four blocks into the Marais.",
+      "source_id": "fcb197b2-1cc6-493f-bcfe-6c9824ff2cf7",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Just past the first block, a statue of Beaumarchais (1732\u20131799) introduces you to the aristocratic-but-bohemian spirit of the Marais.",
+      "source_id": "6efd7aeb-659f-44d3-ae45-c8c1ac4ba27e",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Beaumarchais, who lived near here, made watches for Louis XV, wrote the bawdy Marriage of Figaro \u2014 which Mozart turned into an opera \u2014 and smuggled guns to freedom fighters in both the American and French Revolutions.",
+      "source_id": "6efd7aeb-659f-44d3-ae45-c8c1ac4ba27e",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "From Paris' earliest days, this has been one of its grandest boulevards, part of the east-west axis from Place de la Concorde to the eastern gate, Porte St. Antoine.",
+      "source_id": "8a9d3770-123b-42e4-9ce3-dc49757bd377",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The street was broadened in the mid-1800s as part of the civic renovation plan by Baron Georges-Eug\u00e8ne Haussmann.",
+      "source_id": "8a9d3770-123b-42e4-9ce3-dc49757bd377",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Today it's an ordinary street with a typical mix of workaday shops \u2014 banks, clothing stores, produce stands, restaurants.",
+      "source_id": "8a9d3770-123b-42e4-9ce3-dc49757bd377",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Look ahead along the roofline: one chimney for each fireplace, because back then any room that had heat had its own hearth.",
+      "source_id": "8a9d3770-123b-42e4-9ce3-dc49757bd377",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 2
+    },
+    {
+      "text": "Turn right into rue de la Bastille, walking past Restaurant Bofinger at No. 3.",
+      "source_id": "d6acf587-824c-4b71-b14e-624edae19156",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "This restaurant has a stunning art nouveau interior and also serves good traditional French brasserie food.",
+      "source_id": "d6acf587-824c-4b71-b14e-624edae19156",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 3
+    },
+    {
+      "text": "Victor Hugo moved to this apartment at 6 Place des Vosges in 1832 and lived here for sixteen years.",
+      "source_id": "84ec9be0-f451-431d-96df-c98250871efa",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "In these rooms he wrote the drama Ruy Blas and sketched out the early plans for his masterwork Les Miserables.",
+      "source_id": "84ec9be0-f451-431d-96df-c98250871efa",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The apartment preserves his furniture and many of his own drawings and decorative pieces.",
+      "source_id": "84ec9be0-f451-431d-96df-c98250871efa",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Adele carried on an affair with Sainte-Beuve.",
+      "source_id": "b41d4c77-30d3-4e4e-9096-beab908eabbc",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Hugo began a liaison with Juliette Drouet.",
+      "source_id": "b41d4c77-30d3-4e4e-9096-beab908eabbc",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "A secret back staircase allowed discreet comings and goings for fifty years.",
+      "source_id": "b41d4c77-30d3-4e4e-9096-beab908eabbc",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Hugo's domestic life at Place des Vosges was turbulent.",
+      "source_id": "a1833622-35e7-4051-80cb-71efb9193439",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "His wife Adele carried on an affair with their close friend, the critic Sainte-Beuve.",
+      "source_id": "a1833622-35e7-4051-80cb-71efb9193439",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Hugo himself began a passionate liaison with the actress Juliette Drouet, who lived nearby.",
+      "source_id": "a1833622-35e7-4051-80cb-71efb9193439",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "A secret back staircase allowed discreet comings and goings \u2014 the arrangement lasted for fifty years until Drouet's death.",
+      "source_id": "a1833622-35e7-4051-80cb-71efb9193439",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Continue through the small door at the far-right corner of the H\u00f4tel de Sully's back courtyard, and pop out into one of Paris' finest squares \u2014 Place des Vosges.",
+      "source_id": "6d1cc36b-e594-4914-aab9-6a195bed11df",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Find a bench in the garden, near the children's play area, so you can watch the children play \u00e0 la fran\u00e7aise \u2014 and despite the mix of Hebrew, Yiddish, and Arabic you'll hear, you're standing in what was for nearly two centuries the single most fashionable square in Paris.",
+      "source_id": "ebeab682-e591-4ee8-b1a6-e6de953cf52c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "If it's cold, step into Caf\u00e9 Ma Bourgogne at the northwest corner; the view of the square is nearly as good from the window.",
+      "source_id": "ebeab682-e591-4ee8-b1a6-e6de953cf52c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The H\u00f4tel de Coulanges at no. 1 bis is famous as the birthplace, in 1626, of the Marquise de S\u00e9vign\u00e9 \u2014 Marie de Rabutin-Chantal \u2014 whose letters to her daughter remain one of the great collections in French literature.",
+      "source_id": "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "This was her grandfather Philippe de Coulanges's house.",
+      "source_id": "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Orphaned at two, Marie lived here for ten years, was married off at seventeen to the Marquis de S\u00e9vign\u00e9, was widowed young when he was killed in a duel in 1651, and spent the rest of her life in the Marais, turning proposals of marriage into friendships.",
+      "source_id": "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Her daughter married the Comte de Grignan and moved to Provence; the separation was painful, and the letters are the record of it.",
+      "source_id": "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Look up \u2014 this is one of the oldest wrought-iron balconies in Paris, built in 1655, its straight, plain support poles marking its authenticity.",
+      "source_id": "b3d36e40-e4d4-481a-a0c2-22d439ac9844",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The Pavillon du Roi at no. 1 \u2014 the central pavilion on the south side \u2014 was never occupied by the king himself.",
+      "source_id": "e4201b27-29f9-42ef-a0ac-13263257fedd",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "It was too small for him and his retinue; his concierge, the gatekeeper, was the first resident.",
+      "source_id": "e4201b27-29f9-42ef-a0ac-13263257fedd",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Since 1666 it has been rented to different tenants, and today it is divided into apartments served by ugly stairs and an elevator crammed into the right-hand side of the central arcade \u2014 an eighteenth-century intrusion that still rankles, because it blocks part of the vista from the rue de Birague.",
+      "source_id": "e4201b27-29f9-42ef-a0ac-13263257fedd",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "As early as 1752 the writer Germain Brice argued that the three arcades of the pavilion should be torn down to leave the Louis XIII statue visible all the way from the rue Saint-Antoine: \"It has to hurt,\" he wrote, \"to see one of the three arcades blocked to make a nasty stairway\u2026 we have such little care for public embellishments in Paris.\" Look up, though: the balcony here is stone rather than wrought iron, and a bust of Henri IV watches the square from above.",
+      "source_id": "e4201b27-29f9-42ef-a0ac-13263257fedd",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Walk through the arcade and, on the rue de Birague side, you'll see the king's arms and initials above the arches, still there from the original construction.",
+      "source_id": "e4201b27-29f9-42ef-a0ac-13263257fedd",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Restaurant Coconnas at no. 2 (its front door actually opens on the rue de Birague around the corner) is owned by Claude Terrail of the Tour d'Argent.",
+      "source_id": "6991a47b-9038-4026-bcca-16806a656f55",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Both of Terrail's places appear in the film Who Is Killing the Great Chefs of Europe?",
+      "source_id": "6991a47b-9038-4026-bcca-16806a656f55",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The specialty here is poule-au-pot \u2014 stewed chicken \u2014 a menu that quietly commemorates Henri IV's famous promise of \"a chicken in every pot.\"",
+      "source_id": "6991a47b-9038-4026-bcca-16806a656f55",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Press the button marked porte at no. 3 and step into the charming courtyard behind \u2014 the first in the square to have been restored, and the only one with \"brick\" walls inside.",
+      "source_id": "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Look closely: the brick is painted, trompe l'oeil, even down to the pipes in the corners.",
+      "source_id": "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The pipes are painted pink where they run against the red \"brick,\" and ivory against the stone trim.",
+      "source_id": "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The building went up in 1613 on the remains of the stables of the H\u00f4tel des Tournelles, and two huge bronze urns stand against the back wall.",
+      "source_id": "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The ground-floor shop today is Issey Miyake.",
+      "source_id": "766cefb6-b67c-4e44-8071-3a37f26db1d5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Look at the pavement in front of no. 5: rails still set into the stones, installed to run heavy loads to the factory inside.",
+      "source_id": "a41b36f0-b3de-4ced-b72f-7dd7e0db30b9",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "If you want to see what the factory-filled place des Vosges was like, open the door here and look.",
+      "source_id": "a41b36f0-b3de-4ced-b72f-7dd7e0db30b9",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The Mus\u00e9e Victor Hugo at no. 6 was Hugo's residence from 1832 to 1848 \u2014 until his disagreements with Louis Napol\u00e9on sent him into political exile on Guernsey.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The museum is free; the top floor gives you Hugo's life, the second his drawings and mementos, the first a re-creation of his apartment, with each room dedicated to a period of his life.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Don't miss the restored bedroom with his Louis-XIII deathbed and his death mask, or the striking Chinese-style dining room with its bright red chimney, which he built himself during his Guernsey exile.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Before Hugo's time this was the h\u00f4tel of the Princesse de Gu\u00e9m\u00e9n\u00e9e \u2014 Anne de Montbazon \u2014 the most famous pr\u00e9cieuse of the place.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "She was married at twelve, and like other premature wives of the day never settled into monogamy.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Her lovers read like a guillotine list: the Comte de Montmorency-Bouteville, beheaded 1627 for his famous duel; Henri II of Montmorency, beheaded 1632; the Comte de Soissons, dead 1641; Auguste de Thou, beheaded 1642.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "She brought no luck to her lovers, but she herself lived to be eighty-one.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The property stretched back to no. 17 rue des Tournelles with a discreet rear alley for quick exits \u2014 a feature Hugo himself often used when visiting his own mistresses.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Before you leave the museum, look out of a second-floor window: from that height, above the trees, you can see the whole square.",
+      "source_id": "8064951e-81f5-4a7c-98c5-0c6d36c8e2b1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 8, as the plaque on the wall will tell you, was the home of the poet Th\u00e9ophile Gautier \u2014 who lent his name to the technical high school right next door.",
+      "source_id": "3ab94c91-c3c1-4a89-bc8e-5d4d503fb4f3",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The H\u00f4tel de Chaulnes at no. 9 was one of the most luxurious houses of the place Royale when it was built in 1607.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Louis XIII stayed here during the 1612 inaugural tournament.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "In 1644 the house was bought by Honor\u00e9 d'Albret, mar\u00e9chal de France, Duc de Chaulnes.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "His wealthy widow remodelled; their third son, who liked living well, later hired Mansart to extend the right wing back to the rue de Turenne \u2014 Mansart gave it a large triangular fronton in the roofline and a monumental staircase whose wrought-iron rail was sold to an Englishman in the nineteenth century.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "In 1695 the Nicolai family took over.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "A Revolutionary legend says Aymard Charles de Nicolai hid in his wife's boudoir when the sans-culottes came looking; he was found and led straight to the guillotine.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The actress Mlle Rachel lived here in the mid-nineteenth century.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Today the whole first floor belongs to the Architecture Society.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Step into the courtyard and look at the painted pink-and-green beams just visible through the last second-floor window on the left \u2014 the oratory of the duchess, decorated in 1654, among the last such ceilings in Paris.",
+      "source_id": "8bc4ff9a-1782-4ff1-a764-c4b706d5adad",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 13, once the H\u00f4tel d'Antoine de Rochebaron, was one of the most elegant houses on the square.",
+      "source_id": "02b07751-b066-4007-a444-ae773e1a2bb5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "According to an old description it was a gem: stucco ornaments by Van Obstal painted by Vouet, an alcove by the wood-sculptor Buirette who had \u00e9puis\u00e9 tout son savoir \u2014 exhausted all his skill \u2014 in making it.",
+      "source_id": "02b07751-b066-4007-a444-ae773e1a2bb5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "There was a salon \u00e0 l'italienne two storeys high, its ceiling shaped like a lantern, its walls lined with mirrors \u2014 a rare commodity in the seventeenth century.",
+      "source_id": "02b07751-b066-4007-a444-ae773e1a2bb5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "A chronicler wrote: \"When reclining in this salon, if we look to the right, we see, through the two glass doors, opening on to the place, carriages, people on foot or on horseback, and all that is happening in the place Royale.",
+      "source_id": "02b07751-b066-4007-a444-ae773e1a2bb5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "If we turn to the left, the same thing reflected in the mirrors is presented to our sight, so that, without getting out of bed, in summer as in winter, in sickness or health, we can enjoy the diversion.\" After Villequier the house passed to M. des Hameaux, ambassador to Venice, who brought back still more mirrors from Italy.",
+      "source_id": "02b07751-b066-4007-a444-ae773e1a2bb5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Today the back wings have been re-extended to the rue de Turenne, a Versailles-pattern parquet runs through the apartments, and the first underground parking garage in the square has been dug beneath the courtyard.",
+      "source_id": "02b07751-b066-4007-a444-ae773e1a2bb5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 14 \u2014 the H\u00f4tel de l'Abb\u00e9 de la Rivi\u00e8re \u2014 is now one of the best-restored h\u00f4tels in the square, its six arcades redone in real brick and its wrought-iron balconies cleaned of rust.",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "It's a synagogue today.",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The half facing the place serves the Ashkenazic community (eastern-European, mostly Yiddish-speaking); the half on the rue des Tournelles serves the Sephardic (Jews who settled in Spain and Portugal, now largely from North Africa).",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "When the doors on the place are unlocked, Friday evenings and Saturday mornings, step inside to see wood-panelled walls, stairs carpeted with Oriental rugs, plants in the entry \u2014 the interior of a Victorian home, because that's exactly what it was: the chief rabbi of France once lived here with his wife and five children.",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The h\u00f4tel takes its name from a seventeenth-century owner, the Abb\u00e9 de la Rivi\u00e8re, favourite of the Duc d'Orl\u00e9ans \u2014 a tailor's son who rose to duke and bishop of Langres, though he never quite made cardinal.",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The best painters of the era, Le Brun and Mignard, decorated his ceilings.",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Those ceilings are preserved today in the Mus\u00e9e Carnavalet.",
+      "source_id": "ce9d95dc-715b-4812-9fec-8dac904a4a30",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 16 was owned in the seventeenth century by a royal counsellor named Fran\u00e7ois le Roux, who had the dubious distinction of marrying \"une petite garce qui se donnait pour un quart d'\u00e9cu\" \u2014 a little bitch who gave herself for a quarter of an \u00e9cu.",
+      "source_id": "e605c4b3-0b27-449a-be4f-97232eb3c628",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "That was slightly less than a livre, but in those days a livre was a day's wages for a manual worker, so Mme le Roux was not so cheap after all.",
+      "source_id": "e605c4b3-0b27-449a-be4f-97232eb3c628",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Today the courtyard needs restoration, but step in to see the wrought-iron railing on the left and the mascarons over the portal and entry.",
+      "source_id": "e605c4b3-0b27-449a-be4f-97232eb3c628",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 18 was the h\u00f4tel of Marguerite de B\u00e9thune, Duchesse de Rohan, daughter of Sully, Henri IV's first minister.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "She was married at nine, in 1604, had innumerable lovers \u2014 many of them neighbours on this square \u2014 and of her nine children, only one daughter survived her.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "In the stairwell on the left you can see a bronze statue of a gypsy girl; she's missing the lantern from her left hand and one earring.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The concierge will tell you, proudly, that Victor Hugo put her there, though we've never found that in writing.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "What we do know is that the gypsy was stolen some years ago.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "A resident called the police and got immediate results \u2014 she was found minutes later at a nearby traffic light, her head sticking out of the back of a pickup truck.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "She's now firmly bolted to her red-marble base, which is firmly bolted to the floor.",
+      "source_id": "87e82317-4908-4ad2-80be-30166158a0f1",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The caf\u00e9 at no. 19, Ma Bourgogne, has been here since 1920 and specialises in charcuterie from Auvergne and wines from Burgundy and Bordeaux.",
+      "source_id": "724e084d-7d62-4c7d-9a23-587bdca28c13",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The waiters tease; the coffee with steamed milk \u2014 caf\u00e9 cr\u00e8me \u2014 is good at any hour.",
+      "source_id": "724e084d-7d62-4c7d-9a23-587bdca28c13",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "In the seventeenth century, though, this building belonged to the Conseiller d'\u00c9tat Robert Aubrey and his wife Claude de Pretevel, and the chronicler Tallement des R\u00e9aux recorded that \"she hated him so much that more than once she pissed into the soup she gave him.\" Hardly an appetising legacy for a building that now houses a caf\u00e9 \u2014 fortunately those manners are far behind us.",
+      "source_id": "724e084d-7d62-4c7d-9a23-587bdca28c13",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Press the button above the keypad at no. 20 and step into the courtyard.",
+      "source_id": "09dc9d07-7b34-4116-9f09-fa17de43becf",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The front wall has been paused mid-restoration for twenty-five years.",
+      "source_id": "09dc9d07-7b34-4116-9f09-fa17de43becf",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "An architect who specialised in prefabricated building wanted to recase the fa\u00e7ade in hollow brick; the authorities objected that the original was plaster painted to resemble brick.",
+      "source_id": "09dc9d07-7b34-4116-9f09-fa17de43becf",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The decision: status quo.",
+      "source_id": "09dc9d07-7b34-4116-9f09-fa17de43becf",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "So the ugly glass balcony and the partially-completed seventeenth-century fa\u00e7ade stay exactly as you see them \u2014 and give you the best look anywhere in the square at the colombage technique, where large cornerstones frame the wall and small stones and rubble are bound together with plaster.",
+      "source_id": "09dc9d07-7b34-4116-9f09-fa17de43becf",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 21 was given to Cardinal Richelieu by Henri IV.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No one knows if he ever lived here, but his grand-nephew's son certainly used this pied-\u00e0-terre to get to know almost every woman in the square.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Look closely at the sides of the arcade pillars just above the pediments: you'll see little square stone patches.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "They date from the Revolution, when this stretch of arcade was used as a forge for making arms.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The patches cover the points where metal curtains were hung to close off the forge.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Until about 1930 these arcades were packed with butchers, shoemakers, and small shops that walled themselves in by setting beams into cuts in the stone; the very last was a shoemaker, still working here in the 1950s.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Restoration in 1978 sent the owners back to the Versailles brickworks \u2014 the same kilns that had supplied the originals in the seventeenth century \u2014 to match the missing bricks, and their example inspired other owners to restore with real brick rather than paint.",
+      "source_id": "7e9484a1-2629-4b1f-ad17-b17fb7b2f26c",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Look at the heavy wooden door of no. 23, decorated with thick wooden plaques attached by metal bolts.",
+      "source_id": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Inside, the small garden and vaulted brick entry belong to the H\u00f4tel de Marie-Charlotte de Balzac d'Entragues \u2014 a woman whose career more than matched her name.",
+      "source_id": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "She lived here with her mother, who had been the mistress of Charles IX; her sister Henriette had been the mistress of Henri IV.",
+      "source_id": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Decidedly these ladies did not bring good luck to their lovers.",
+      "source_id": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Marie-Charlotte was the mistress of the mar\u00e9chal de Bassompierre and bore him a son, Louis, in 1610.",
+      "source_id": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "When he refused to marry her despite a written promise, she consoled herself with a string of distinguished replacements: the archbishop of Paris Jean-Fran\u00e7ois de Gondi, and the financier Le Plessis-Gu\u00e9n\u00e9gaud among them.",
+      "source_id": "cb6ac729-9426-4056-8e27-d525cf21b70a",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 24, the H\u00f4tel du Mar\u00e9chal de G\u00e9ran, is less illustrious than its neighbours, but it did have one notorious resident: the wife of Duc de Boufflers, mar\u00e9chal of France.",
+      "source_id": "ab3d4484-7369-4a35-882d-6bd5422bea8f",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "She was fourteen when she married, and quickly became famous for her beauty, caustic wit, and number of lovers.",
+      "source_id": "ab3d4484-7369-4a35-882d-6bd5422bea8f",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "A contemporary verse caught her reputation: \"Quand Boufflers parut \u00e0 cour, / On crut voir la m\u00e8re d'amour, / Chacun s'empressait \u00e0 lui plaire / Et chacun l'avait \u00e0 son tour.\" (When Boufflers appeared at court, / You would have thought you were looking at Venus; / Everyone tried to please her / And everyone had her in turn.)",
+      "source_id": "ab3d4484-7369-4a35-882d-6bd5422bea8f",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The restaurant Guirlande de Julie at no. 25 is named for a small seventeenth-century book of madrigals \u2014 each poem surrounded by a different flower \u2014 that the Duc de Montausier offered his wife on May 22, 1641.",
+      "source_id": "f9b9e36f-59b1-4a77-900e-f1f7b18a3cc5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "It's owned, like Coconnas at no. 2, by Claude Terrail of the Tour d'Argent.",
+      "source_id": "f9b9e36f-59b1-4a77-900e-f1f7b18a3cc5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Look up at the right side of no. 25: the large hemisphere of glass on the ground floor usually marks a shop, but this is a private home, and the owners let the window serve as their view of the square.",
+      "source_id": "f9b9e36f-59b1-4a77-900e-f1f7b18a3cc5",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "No. 26 belonged to Charlotte de Vieux-Pont, the first pr\u00e9cieuse of the place des Vosges.",
+      "source_id": "54dd7004-91fe-4b8d-b041-03cc0d8261c3",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "You're now standing opposite Henri's pavilion, in front of the Pavillon de la Reine \u2014 the north-centre pavilion.",
+      "source_id": "2143d0b0-5d9c-4fc6-8c4e-fbe77a1b5f68",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "It's an identical twin of the Pavillon du Roi except for two details: the M\u00e9dicis sun emblem on its fa\u00e7ade, and an unusually long iron balcony.",
+      "source_id": "2143d0b0-5d9c-4fc6-8c4e-fbe77a1b5f68",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The small street at the back, the rue de B\u00e9arn, was the exit route for every parade that passed through the place Royale.",
+      "source_id": "2143d0b0-5d9c-4fc6-8c4e-fbe77a1b5f68",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Cross the square and leave by rue Caron, turning right into rue de Jarente, then left into rue de Turenne.",
+      "source_id": "0a320177-c22f-47fb-a256-652a6ef44eb9",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Turn right into rue des Francs-Bourgeois and follow it all the way to place des Vosges.",
+      "source_id": "0a320177-c22f-47fb-a256-652a6ef44eb9",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Walk up rue de Birague \u2014 stop and look at the shops \u2014 and continue into the place des Vosges.",
+      "source_id": "a8a0e5bd-5fca-47b1-b69f-20535c0a7c86",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Henri IV himself planned that visiting dignitaries would enter the square exactly this way, through the rue de Birague gate.",
+      "source_id": "a8a0e5bd-5fca-47b1-b69f-20535c0a7c86",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Henri IV was assassinated shortly before the square was finished, and so it was inaugurated by his son, the young Louis XIII \u2014 which is why the equestrian statue in the center of the square is of Louis XIII, not of Henri IV.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The inauguration, on April 5, 6, and 7 of 1612, was a three-day spectacle.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Jousting was forbidden now, but five equestrian ballets were staged for the cavaliers, each in different exotic costumes \u2014 one group dressed as American Indians.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "One quadrille alone involved the Duc de Longueville and his retainers in gray-violet satin with silver embroidery, their pages and horses in red velvet, four winged horses pulling a chariot with two rhinoceroses harnessed behind, and two blue-satin giants preceding the duke himself on a horse draped in repouss\u00e9 silver and gold.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "There were one hundred and fifty musicians, continuous parades, fireworks at night, and ten thousand spectators.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Members of the royal entourage had been assigned specific houses and balconies \u2014 and for the first time, Paris houses had been built with real balconies instead of the thin stone ledges Parisians had leaned on before.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Once the place Royale had shown the way, balconies became de rigueur.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The common people had to hang from chimneys or squeeze into the arcades.",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Of one delegation of ambassadors Mme de Motteville wrote: \"In general they are so fat that they give you heartburn, and concerning their bodies, they are dirty.\"",
+      "source_id": "43885a1b-fdef-4a7e-ba6f-aab158698aa6",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "You've now completed the loop and are back where you started.",
+      "source_id": "GLUE_CLOSING",
+      "source_type": "glue",
+      "stop_idx": 4
+    }
+  ],
+  "validation": {
+    "untraceable_sentences": [],
+    "forbidden_phrase_hits": []
+  }
+}

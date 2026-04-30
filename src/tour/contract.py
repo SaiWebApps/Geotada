@@ -98,8 +98,37 @@ class TransitSegment(BaseModel):
     walk_seconds: int = Field(..., ge=0)
 
 
+class TourabilityAssessment(BaseModel):
+    """Phase 6 density-gate result — §3.7 of phase-1-design.
+
+    Lives on this contract module (not in ``density.py``) so ``Route``
+    can carry it as an optional field without an import cycle. The
+    formula and thresholds remain in ``src/tour/density.py``.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    status: str  # "GREEN" | "YELLOW" | "RED"
+    walk_radius_m: float
+    fill_ratio: float
+    audio_capacity_seconds: int
+    target_audio_seconds: int
+    reachable_poi_count: int
+    reachable_beat_count: int
+    anchor_candidate_count: int
+    cluster_compactness: float
+    duration_min: int
+    round_trip: bool
+    max_supportable_duration_min: int | None = None
+    one_way_alternative_destination: str | None = None
+
+
 class Route(BaseModel):
-    """Selected POIs in walking order, with transit segments and budgets."""
+    """Selected POIs in walking order, with transit segments and budgets.
+
+    Phase 6 added the optional ``tourability`` slot so selection can
+    surface a YELLOW density assessment to the skill without raising.
+    """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -111,6 +140,7 @@ class Route(BaseModel):
     spine_area: str | None = None
     target_audio_seconds: int = 0
     err_short_total_seconds: int = 0
+    tourability: TourabilityAssessment | None = None
 
 
 OrderingStrategy = Literal["sub_location", "trigger_address", "narrative_function"]

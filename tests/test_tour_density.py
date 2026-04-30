@@ -1,0 +1,456 @@
+"""Phase 6 — density.py: tourability assessment. Pure-function tests.
+
+The §3.7 formula is canonical; these tests pin the math, the status
+table, and the round-trip-vs-one-way differential against
+hand-computed expected values.
+"""
+
+from __future__ import annotations
+
+import math
+
+import pytest
+
+from src.tour.contract import BeatRef, POI, TourInput
+from src.tour.density import (
+    ANCHOR_CANDIDATE_BEAT_COUNT_MIN,
+    ANCHOR_CANDIDATE_TIER_MIN,
+    GREEN_FILL_RATIO_MIN,
+    TourabilityAssessment,
+    TourabilityRefused,
+    YELLOW_FILL_RATIO_MIN,
+    assess,
+)
+from src.tour.routing import envelope_radius_m, haversine_m
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+
+def _poi(
+    pid: str,
+    *,
+    tier: int = 5,
+    role: str = "stop",
+    lat: float,
+    lng: float,
+    beat_count: int = 5,
+) -> POI:
+    return POI(
+        id=pid,
+        name=pid,
+        tier=tier,
+        poi_role=role,
+        lat=lat,
+        lng=lng,
+        areas=("Le Marais",),
+        beat_count=beat_count,
+    )
+
+
+def _beat(
+    bid: str,
+    poi_id: str,
+    *,
+    est_spoken_seconds: int = 60,
+    word_count: int = 0,
+    active: bool = True,
+) -> BeatRef:
+    return BeatRef(
+        id=bid,
+        poi_id=poi_id,
+        est_spoken_seconds=est_spoken_seconds,
+        word_count=word_count,
+        active_status="active" if active else "deprecated",
+    )
+
+
+def _input(start, duration_min, *, round_trip=False) -> TourInput:
+    return TourInput(
+        start=start,
+        duration_min=duration_min,
+        city_slug="paris",
+        round_trip=round_trip,
+    )
+
+
+PDV = (48.8555, 2.3656)
+SACRE_COEUR = (48.88645, 2.34312)
+PANTHEON = (48.84622, 2.34604)
+
+
+# ---------------------------------------------------------------------------
+# Pin the canonical formula values
+# ---------------------------------------------------------------------------
+
+
+def test_walk_radius_matches_canonical_formula():
+    """walk_radius = (duration × 0.83 × 0.4 × 3000 / 1.35) / 60, halved if round-trip."""
+    # 60-min one-way: 60 × 0.83 × 0.4 × 3000 / 1.35 / 60 = 738.5m
+    expected_one_way = (60 * 0.83 * 0.4 * 3000 / 1.35) / 60
+    assert math.isclose(envelope_radius_m(60, round_trip=False), expected_one_way, rel_tol=1e-6)
+    assert math.isclose(envelope_radius_m(60, round_trip=True), expected_one_way / 2, rel_tol=1e-6)
+
+
+def test_target_audio_matches_canonical_formula():
+    """target_audio_s = duration × 0.83 × 0.6 × 60."""
+    pois = [_poi("p", lat=PDV[0], lng=PDV[1])]
+    beats = {"p": (_beat("b1", "p"),)}
+    a = assess(_input(PDV, 60), pois, beats)
+    expected = int(round(60 * 0.83 * 0.6 * 60))
+    assert a.target_audio_seconds == expected
+
+
+# ---------------------------------------------------------------------------
+# Hand-computed fixture: GREEN
+# ---------------------------------------------------------------------------
+
+
+def test_green_when_capacity_exceeds_target_with_4_anchors_compact():
+    """Synthetic GREEN: 4 colocated tier-5 anchors, capacity > target."""
+    pois = [
+        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=10)
+        for i in range(4)
+    ]
+    beats = {
+        f"p{i}": tuple(_beat(f"b{i}_{j}", f"p{i}", est_spoken_seconds=200) for j in range(10))
+        for i in range(4)
+    }
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    # 40 beats × 200s = 8000s. target = 1793s. fill = 4.46.
+    assert a.fill_ratio >= GREEN_FILL_RATIO_MIN
+    assert a.anchor_candidate_count >= 4
+    assert a.cluster_compactness < 0.6
+    assert a.status == "GREEN"
+
+
+# ---------------------------------------------------------------------------
+# Hand-computed fixture: RED — empty radius
+# ---------------------------------------------------------------------------
+
+
+def test_red_when_zero_beats_in_radius():
+    """Le Marais centroid 60-min round-trip with 0 beats in radius → RED."""
+    a = assess(_input(PDV, 60, round_trip=True), [], {})
+    assert a.status == "RED"
+    assert a.fill_ratio == 0.0
+    assert a.anchor_candidate_count == 0
+
+
+def test_red_excludes_zero_beat_pois_from_anchor_count():
+    """Anchor candidate count must NOT include POIs with 0 active beats."""
+    pois = [
+        _poi("zero_beats", tier=4, lat=PDV[0], lng=PDV[1], beat_count=0),
+    ]
+    beats = {"zero_beats": ()}
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    assert a.anchor_candidate_count == 0
+    assert a.fill_ratio == 0.0
+    assert a.status == "RED"
+
+
+def test_red_excludes_zero_active_beat_pois():
+    """A POI with only deprecated beats counts as zero for the anchor pool."""
+    pois = [_poi("p", tier=5, lat=PDV[0], lng=PDV[1], beat_count=2)]
+    beats = {
+        "p": (
+            _beat("b1", "p", active=False),
+            _beat("b2", "p", active=False),
+        )
+    }
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    assert a.reachable_poi_count == 0
+    assert a.anchor_candidate_count == 0
+
+
+# ---------------------------------------------------------------------------
+# Hand-computed fixture: YELLOW
+# ---------------------------------------------------------------------------
+
+
+def test_yellow_when_fill_in_yellow_band():
+    """0.5 ≤ fill < 1.0 → YELLOW even if anchor count is fine."""
+    # 5 colocated anchors, but each beat is short so capacity falls into [0.5, 1.0) target band.
+    # target for 60min = 1793s. Aim for ~1200s capacity → fill = 0.67.
+    pois = [
+        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.00005 * i, lng=PDV[1], beat_count=3)
+        for i in range(5)
+    ]
+    beats = {
+        f"p{i}": tuple(_beat(f"b{i}_{j}", f"p{i}", est_spoken_seconds=80) for j in range(3))
+        for i in range(5)
+    }
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    # 15 beats × 80s = 1200s; target = 1793s; fill = 0.67.
+    assert YELLOW_FILL_RATIO_MIN <= a.fill_ratio < GREEN_FILL_RATIO_MIN
+    assert a.status == "YELLOW"
+
+
+def test_yellow_attaches_max_supportable_duration():
+    """When capacity is tight, max_supportable_duration is reported."""
+    pois = [_poi("p", tier=5, lat=PDV[0], lng=PDV[1], beat_count=5)]
+    beats = {"p": tuple(_beat(f"b{j}", "p", est_spoken_seconds=80) for j in range(5))}
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    # capacity = 400s; max_supportable = 400 / (0.83×0.6×60) = 400/29.88 ≈ 13 min
+    assert a.max_supportable_duration_min is not None
+    assert a.max_supportable_duration_min == int(400 / (0.83 * 0.6 * 60))
+
+
+# ---------------------------------------------------------------------------
+# Round-trip vs one-way differential
+# ---------------------------------------------------------------------------
+
+
+def test_round_trip_radius_smaller_than_one_way():
+    """Same start, same duration: round-trip envelope is half the one-way."""
+    one_way = envelope_radius_m(60, round_trip=False)
+    round_trip = envelope_radius_m(60, round_trip=True)
+    assert math.isclose(round_trip, one_way / 2.0, rel_tol=1e-9)
+
+
+def test_round_trip_pulls_in_fewer_beats_than_one_way():
+    """Same corpus, round-trip envelope reaches fewer POIs → lower fill."""
+    # Place POIs at increasing distance from start so the envelope cut bites.
+    pois = [
+        _poi("near", tier=5, lat=PDV[0], lng=PDV[1] + 0.001, beat_count=5),  # ~73m
+        _poi("mid", tier=5, lat=PDV[0], lng=PDV[1] + 0.005, beat_count=5),  # ~365m
+        _poi("far", tier=5, lat=PDV[0], lng=PDV[1] + 0.009, beat_count=5),  # ~659m
+    ]
+    beats = {
+        pid: tuple(_beat(f"{pid}_{j}", pid, est_spoken_seconds=120) for j in range(5))
+        for pid in ("near", "mid", "far")
+    }
+    rt = assess(_input(PDV, 60, round_trip=True), pois, beats)
+    ow = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    # round-trip radius = 369m; one-way = 738m. round-trip cuts mid + far.
+    assert rt.reachable_poi_count <= ow.reachable_poi_count
+    assert rt.fill_ratio < ow.fill_ratio
+
+
+def test_round_trip_yellow_offers_one_way_alternative():
+    """When round-trip is the bottleneck, suggest a tier-5 destination outside its envelope."""
+    # Sparse near, but a tier-5 anchor with rich beats sits beyond the round-trip envelope.
+    near = _poi("near", tier=4, lat=PDV[0], lng=PDV[1], beat_count=2)
+    far_anchor = _poi(
+        "Far Anchor",
+        tier=5,
+        lat=PDV[0],
+        lng=PDV[1] + 0.008,  # ~590m east, between round-trip (369m) and one-way (738m)
+        beat_count=20,
+    )
+    beats = {
+        "near": (
+            _beat("n1", "near", est_spoken_seconds=60),
+            _beat("n2", "near", est_spoken_seconds=60),
+        ),
+        "Far Anchor": tuple(_beat(f"f{i}", "Far Anchor", est_spoken_seconds=200) for i in range(20)),
+    }
+    a = assess(_input(PDV, 60, round_trip=True), [near, far_anchor], beats)
+    # Round-trip envelope of 369m drops "Far Anchor" (590m). near is only 2 beats.
+    # → status RED or YELLOW; the one-way alternative should name "Far Anchor".
+    assert a.status != "GREEN"
+    assert a.one_way_alternative_destination == "Far Anchor"
+
+
+# ---------------------------------------------------------------------------
+# POI role filter
+# ---------------------------------------------------------------------------
+
+
+def test_walk_by_only_pois_excluded_from_density():
+    """walk_by_only POIs aren't anchor candidates, even with rich beats."""
+    pois = [
+        _poi("wb", tier=5, role="walk_by_only", lat=PDV[0], lng=PDV[1], beat_count=10)
+    ]
+    beats = {"wb": tuple(_beat(f"b{i}", "wb", est_spoken_seconds=200) for i in range(10))}
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    assert a.reachable_poi_count == 0
+    assert a.anchor_candidate_count == 0
+
+
+def test_setting_role_pois_count():
+    """Setting-role POIs count toward density (matches selection's filter)."""
+    pois = [
+        _poi(f"s{i}", tier=5, role="setting", lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=5)
+        for i in range(4)
+    ]
+    beats = {
+        f"s{i}": tuple(_beat(f"s{i}_{j}", f"s{i}", est_spoken_seconds=200) for j in range(5))
+        for i in range(4)
+    }
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    assert a.reachable_poi_count == 4
+    assert a.anchor_candidate_count == 4
+
+
+# ---------------------------------------------------------------------------
+# Word-count fallback
+# ---------------------------------------------------------------------------
+
+
+def test_word_count_fallback_when_est_spoken_seconds_missing():
+    """Beats without est_spoken_seconds use word_count / 2.5."""
+    pois = [_poi("p", tier=5, lat=PDV[0], lng=PDV[1], beat_count=4)]
+    beats = {
+        "p": tuple(
+            _beat(f"b{j}", "p", est_spoken_seconds=0, word_count=250) for j in range(4)
+        )
+    }
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    # 250/2.5 = 100s per beat × 4 beats = 400s
+    assert a.audio_capacity_seconds == 400
+
+
+# ---------------------------------------------------------------------------
+# Compactness diagnostic
+# ---------------------------------------------------------------------------
+
+
+def test_compactness_zero_when_one_anchor():
+    """A single anchor → mean pairwise distance is undefined; clamp to 0."""
+    pois = [_poi("solo", tier=5, lat=PDV[0], lng=PDV[1], beat_count=10)]
+    beats = {"solo": tuple(_beat(f"b{i}", "solo", est_spoken_seconds=200) for i in range(10))}
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    assert a.cluster_compactness == 0.0
+    assert a.anchor_candidate_count == 1
+
+
+def test_compactness_close_to_one_when_anchors_at_envelope_edge():
+    """Anchors at opposite envelope edges → high compactness."""
+    radius = envelope_radius_m(60, round_trip=False)
+    # Two anchors on opposite sides of the envelope (~radius apart).
+    # 4 anchor candidates required for evaluation; place 2 east, 2 west.
+    pois = [
+        _poi(
+            f"east{i}",
+            tier=5,
+            lat=PDV[0],
+            lng=PDV[1] + 0.0085,  # ~624m east
+            beat_count=5,
+        )
+        for i in range(2)
+    ] + [
+        _poi(
+            f"west{i}",
+            tier=5,
+            lat=PDV[0],
+            lng=PDV[1] - 0.0085,  # ~624m west
+            beat_count=5,
+        )
+        for i in range(2)
+    ]
+    beats = {
+        p.id: tuple(_beat(f"{p.id}_{j}", p.id, est_spoken_seconds=200) for j in range(5))
+        for p in pois
+    }
+    a = assess(_input(PDV, 60, round_trip=False), pois, beats)
+    assert a.cluster_compactness > 0.5  # spread across most of the envelope
+    # That spread should kick this OUT of GREEN even with rich beats.
+    assert a.status != "GREEN" or a.cluster_compactness <= 0.6
+
+
+# ---------------------------------------------------------------------------
+# Live-ish smoke (synthetic Le Marais)
+# ---------------------------------------------------------------------------
+
+
+def test_le_marais_dense_centroid_green():
+    """Le Marais centroid 60-min round-trip should be GREEN (synthetic stand-in).
+
+    The real Phase 5 finding said Le Marais is dense; this synthetic
+    fixture pins that property in unit tests so a regression in the
+    formula (e.g., a misplaced 0.83 factor) is caught.
+    """
+    # 8 tier-5 anchors clustered in 200m around Marais centroid, 6 beats each.
+    pois = [
+        _poi(
+            f"marais{i}",
+            tier=5,
+            lat=48.857 + (i % 4) * 0.0008,
+            lng=2.362 + (i // 4) * 0.0008,
+            beat_count=6,
+        )
+        for i in range(8)
+    ]
+    beats = {
+        p.id: tuple(_beat(f"{p.id}_{j}", p.id, est_spoken_seconds=240) for j in range(6))
+        for p in pois
+    }
+    marais_centroid = (48.8580, 2.3620)
+    a = assess(_input(marais_centroid, 60, round_trip=True), pois, beats)
+    assert a.status == "GREEN"
+    assert a.fill_ratio > 1.0
+    assert a.anchor_candidate_count >= 4
+
+
+# ---------------------------------------------------------------------------
+# TourabilityRefused
+# ---------------------------------------------------------------------------
+
+
+def test_low_fill_with_tight_anchors_is_red_not_yellow():
+    """Phase 6 floor: fill < 0.5 AND tight anchor cluster must still be RED.
+
+    The literal §3.7 spec allowed the anchor-disjunct to fire alone,
+    which let the Phase 5 Sacré-Cœur 90min RT (fill 0.17, 4 colocated
+    Montmartre anchors) slip through as YELLOW. Adding a fill ≥ 0.5
+    floor on the anchor-disjunct closes the loophole.
+    """
+    pois = [
+        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=3)
+        for i in range(4)
+    ]
+    beats = {
+        f"p{i}": tuple(_beat(f"b{i}_{j}", f"p{i}", est_spoken_seconds=20) for j in range(3))
+        for i in range(4)
+    }
+    a = assess(_input(PDV, 60, round_trip=True), pois, beats)
+    # 12 beats × 20s = 240s; target round-trip 60min = 1793s; fill ≈ 0.13.
+    # 4 colocated tier-5 anchors with ≥3 beats each → compactness near 0 →
+    # would fire yellow_by_anchors without the floor. With floor, fill < 0.5
+    # → RED.
+    assert a.fill_ratio < 0.5
+    assert a.anchor_candidate_count == 4
+    assert a.status == "RED"
+
+
+def test_alternative_finder_picks_richest_far_anchor():
+    """`one_way_alternative_destination` should name the densest tier-5 POI
+    inside the one-way envelope but outside the round-trip envelope."""
+    near = _poi("near", tier=4, lat=PDV[0], lng=PDV[1], beat_count=1)
+    # Two candidates beyond the round-trip envelope.
+    poor_far = _poi(
+        "Poor Far", tier=5, lat=PDV[0], lng=PDV[1] + 0.0060, beat_count=2
+    )
+    rich_far = _poi(
+        "Rich Far", tier=5, lat=PDV[0], lng=PDV[1] + 0.0085, beat_count=20
+    )
+    beats = {
+        "near": (_beat("n", "near", est_spoken_seconds=20),),
+        "Poor Far": tuple(_beat(f"p{i}", "Poor Far", est_spoken_seconds=80) for i in range(2)),
+        "Rich Far": tuple(_beat(f"r{i}", "Rich Far", est_spoken_seconds=200) for i in range(20)),
+    }
+    a = assess(_input(PDV, 60, round_trip=True), [near, poor_far, rich_far], beats)
+    assert a.status != "GREEN"  # round-trip envelope can't reach far anchors
+    assert a.one_way_alternative_destination == "Rich Far"
+
+
+def test_refused_carries_assessment():
+    a = TourabilityAssessment(
+        status="RED",
+        walk_radius_m=369.0,
+        fill_ratio=0.05,
+        audio_capacity_seconds=90,
+        target_audio_seconds=1793,
+        reachable_poi_count=1,
+        reachable_beat_count=2,
+        anchor_candidate_count=0,
+        cluster_compactness=0.0,
+        duration_min=60,
+        round_trip=True,
+    )
+    exc = TourabilityRefused(a)
+    assert exc.assessment is a
+    assert "RED" in str(exc)

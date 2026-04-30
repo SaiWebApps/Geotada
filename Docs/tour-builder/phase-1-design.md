@@ -361,7 +361,136 @@ Runtime LLM may write only structural connectors. No factual claims. Whitelisted
 
 `validation.untraceable_sentences` must be empty before TTS — that's the source-traceability gate (rule 8).
 
-### 3.7 Runtime cost estimate
+### 3.7 Density gating (Phase 6)
+
+Added 2026-04-29 in response to the Phase 5 quality audit
+(`phase-5-quality-audit.md`). Two failures motivated this slice:
+
+1. Tours from sparse starts produced <11% audio fill (Sacré-Cœur 90min
+   round-trip ≈ 5%, Concorde 180min ≈ 5%, Pantheon 120min RT ≈ 11%).
+2. Selection picked tier-3+ POIs with **zero active beats** as anchors
+   (Petit Palais in Tour 4) because routing-aware scoring favoured the
+   corridor geometry without checking beat count.
+
+This subsection codifies a runtime gate that refuses thin tours and
+warns the user about borderline ones. It does **not** change the
+selection or generation algorithm — it adds a guard at the top of
+`select_route` and a diagnostic over the corpus.
+
+**Formula** (canonical; lives in `src/tour/density.py`):
+
+```
+walk_radius_m = (duration_min × 0.83 × 0.4 × 3000 ÷ 1.35) ÷ 60
+if round_trip: walk_radius_m /= 2
+
+reachable_pois = [POI within walk_radius_m AND poi_role IN ['stop','setting']
+                  AND has > 0 active beats]
+audio_capacity_s = SUM(est_spoken_seconds for reachable_active_beats;
+                       fall back to word_count / 2.5 when est_spoken_seconds is missing)
+target_audio_s = duration_min × 0.83 × 0.6 × 60
+fill_ratio     = audio_capacity_s / target_audio_s
+
+anchor_candidates    = reachable POIs with importance_tier ≥ 3 AND beat_count ≥ 3
+cluster_compactness  = mean_pairwise_haversine(anchor_candidates) / walk_radius_m
+                       # 0.0 = colocated, 1.0 = candidates spread to envelope edge
+```
+
+**Status table:**
+
+```
+GREEN  if (fill_ratio ≥ 1.0 AND anchors ≥ 4 AND compactness ≤ 0.6)
+    OR (fill_ratio ≥ 1.5 AND anchors ≥ 6)         # rich-pool escape
+YELLOW if 0.5 ≤ fill_ratio < 1.0
+    OR (anchors ≥ 3 AND compactness ≤ 0.7 AND fill_ratio ≥ 0.5)
+RED    otherwise
+```
+
+Phase 6 calibration notes:
+
+- **Rich-pool escape on GREEN** — the canonical compactness check
+  (≤ 0.6) misfires for long one-way traverses where rich anchor
+  candidates legitimately spread across the envelope. Empirical Île
+  one-way 90min from Pont Neuf scores fill 3.95 / anchors 28 /
+  compactness 0.74 — healthy in practice. The escape (fill ≥ 1.5 AND
+  anchors ≥ 6) keeps such tours GREEN without weakening the
+  protection against thin tours.
+- **fill ≥ 0.5 floor on the YELLOW anchor-disjunct** — the literal
+  spec allowed the anchor-disjunct to fire alone, which let Sacré-Cœur
+  90min round-trip (fill 0.17, 3 colocated Montmartre anchors) pass as
+  YELLOW. The audit explicitly required RED refusal for that case.
+  Adding the same fill floor as the by-fill clause closes the
+  loophole. The disjunct now reads: "many tight anchors AND fill
+  borderline-but-not-catastrophic".
+
+**Capacity vs delivered semantics.** `fill_ratio` measures **corpus
+capacity** (total spoken-seconds of all reachable active beats),
+**not** the audio length the eventual tour delivers. A GREEN start
+guarantees that the corpus *could* support a tour at the requested
+duration; selection may still emit fewer beats than capacity allows,
+producing a thin generated tour even from a GREEN start. Phase 5 Tour
+4 (Concorde 180min one-way) is the canonical example: GREEN at
+fill 1.78 (capacity > target), but the selection algorithm emits 9 min
+of audio over a 180-min walk because per-stop beat budgets are
+conservative. **This is a Phase 7 follow-up**: tighten the per-stop
+budget when capacity vastly exceeds delivered audio, or add a
+post-selection delivered-fill check that downgrades GREEN→YELLOW
+when delivered/target < 0.5. Tracked outside this slice.
+
+**Runtime behaviour:**
+
+- **GREEN** — proceed; no UI change. Skill summary line ends
+  `tourability: GREEN`.
+- **YELLOW** — proceed; the Route carries the assessment in
+  `route.tourability`. Markdown render prepends a banner naming the
+  fill percentage and the recommended alternatives
+  (`max_supportable_duration_min`, `one_way_alternative_destination`).
+  Skill summary surfaces both hints.
+- **RED** — `select_route` raises `TourabilityRefused(assessment)`.
+  The `tour-build` skill exits 3 and prints the structured refusal:
+  fill_ratio, anchor_candidates, walk_radius_m, plus actionable
+  alternatives. No tour is generated. The skill must relay the
+  refusal verbatim — do **not** silently retry with a different
+  start.
+
+**Zero-beat-POI exclusion** is bundled into this slice (separate
+guard from density). Pre-Phase-6 `select_route` filtered candidates
+by tier and envelope only. The Phase 5 Petit Palais bug surfaced when
+a tier-4 POI with zero active beats was selected as a stop because it
+sat geometrically on the route. Post-Phase-6, candidates without at
+least one active beat are dropped before scoring (`_has_active_beats`
+in `selection.py`).
+
+**Tourability map** (`scripts/tourability_map.py`) is a one-shot
+diagnostic over a 100m grid covering the Paris POI bounding box, four
+duration buckets (60/90/120/180 min) × two modes (round-trip /
+one-way). Outputs `data/paris/tourability_map.json` and a
+human-readable `tourability_summary.md` with per-bucket status mix,
+top GREEN starts, thin-tier-5 starts, and a per-Area rollup.
+
+The runtime computes density per request — the map is for
+launch-readiness analysis (what fraction of central Paris is GREEN at
+typical durations?), product UX (heatmaps), and ad-hoc lookups. It is
+**not** a runtime dependency.
+
+**Launch-readiness finding (2026-04-29).** First map run: 96.7% of
+the 11,205-cell grid is RED at 60min round-trip. GREEN coverage
+concentrates in Île de la Cité (24% of cells GREEN) and Le Marais
+(15%). Most other Areas are 0% GREEN at this duration. This is the
+honest read of a single-city corpus dominated by Le Marais / Île de
+la Cité density, with thin coverage in 5th/6th/7th arrondissements
+and effectively no coverage in the outer arrondissements. The 60min
+round-trip envelope (369 m) is small relative to Paris arrondissement
+size; coverage opens up at 90/120/180-min and especially on one-way
+modes. **Implication:** at launch, /tour-build will refuse most
+"random spot in 13th arrondissement, 60-min round-trip" requests and
+recommend either longer durations or one-way endpoints in the dense
+core. Whether that's acceptable depends on whether Paris launch
+expects users to start in the dense core or anywhere in the city.
+Re-evaluate when extraction broadens the corpus.
+
+**Updated 2026-04-29 (Phase 6 — density gates added in response to Phase 5 quality failures).**
+
+### 3.8 Runtime cost estimate
 
 - Selection (Cypher + Python): ~50–200 ms, no LLM.
 - Beat dedup pass (claim-level overlap): ~50 ms, no LLM.

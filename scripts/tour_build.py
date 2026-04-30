@@ -27,6 +27,7 @@ from pathlib import Path
 from src.connection import create_driver
 from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, Script, TourInput
+from src.tour.density import TourabilityRefused
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
@@ -158,6 +159,52 @@ def _project_cost_upper_bound(
     return proj_in, proj_out_max, usd
 
 
+def _print_red_refusal(
+    exc: TourabilityRefused,
+    *,
+    start_label: str,
+    duration_min: int,
+    round_trip: bool,
+) -> None:
+    """Structured stdout for a Phase 6 RED refusal.
+
+    Includes fill_ratio + anchor count, max_supportable_duration, and
+    one_way_alternative_destination when applicable. Prints actionable
+    next steps so the harness's caller (the skill) can relay them.
+    """
+    a = exc.assessment
+    print(f"\u2717 TOURABILITY REFUSED (RED) — {start_label} {duration_min}-min "
+          f"{'round-trip' if round_trip else 'one-way'}")
+    print(f"  fill_ratio:        {a.fill_ratio:.2f} (target ≥ 1.0)")
+    print(f"  anchor_candidates: {a.anchor_candidate_count} (target ≥ 4)")
+    print(f"  cluster_compactness: {a.cluster_compactness:.2f} (target ≤ 0.6)")
+    print(f"  reachable_pois:    {a.reachable_poi_count}")
+    print(f"  reachable_beats:   {a.reachable_beat_count}")
+    print(f"  walk_radius_m:     {a.walk_radius_m:.0f}")
+    print()
+    print("  Recommendations:")
+    if a.max_supportable_duration_min and a.max_supportable_duration_min < duration_min:
+        print(
+            f"    • Try a {a.max_supportable_duration_min}-min "
+            f"{'round-trip' if round_trip else 'one-way'} instead "
+            f"(corpus capacity supports this length)."
+        )
+    if round_trip and a.one_way_alternative_destination:
+        print(
+            f"    • Try one-way ending at {a.one_way_alternative_destination!r} "
+            f"(denser corpus reachable on a one-way path)."
+        )
+    if not (
+        (a.max_supportable_duration_min and a.max_supportable_duration_min < duration_min)
+        or (round_trip and a.one_way_alternative_destination)
+    ):
+        print(
+            "    • Try a different starting area; this start point is too sparse "
+            "for the requested duration. Consult "
+            "`data/{city}/tourability_summary.md` for nearest GREEN starts."
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--start", required=True, help="'lat,lng' or POI/Area name")
@@ -204,7 +251,14 @@ def main() -> int:
         )
 
         t_select = time.perf_counter()
-        route = select_route(tour_input, snapshot)
+        try:
+            route = select_route(tour_input, snapshot)
+        except TourabilityRefused as exc:
+            _print_red_refusal(
+                exc, start_label=start_label, duration_min=args.duration,
+                round_trip=bool(args.round_trip),
+            )
+            return 3
         t_select = time.perf_counter() - t_select
 
         if not route.pois:
@@ -254,6 +308,7 @@ def main() -> int:
                 haiku_output_tokens=out_tok,
                 wall_clock_seconds=wall_clock,
                 beat_sequence=beat_sequence,
+                tourability=route.tourability,
             )
             md_path.write_text(md)
 
@@ -282,6 +337,21 @@ def main() -> int:
             f"(untraceable={len(script.validation.untraceable_sentences)}, "
             f"forbidden={len(script.validation.forbidden_phrase_hits)})"
         )
+        if route.tourability is not None and route.tourability.status == "YELLOW":
+            tb = route.tourability
+            hints: list[str] = []
+            if tb.max_supportable_duration_min:
+                hints.append(f"consider {tb.max_supportable_duration_min}-min")
+            if tb.round_trip and tb.one_way_alternative_destination:
+                hints.append(
+                    f"or one-way ending at {tb.one_way_alternative_destination!r}"
+                )
+            hint_str = "; ".join(hints) if hints else "thin tour"
+            print(
+                f"  tourability: YELLOW — fill_ratio={tb.fill_ratio:.2f} ({hint_str})"
+            )
+        else:
+            print("  tourability: GREEN")
 
         return 0 if passed else 1
     finally:
