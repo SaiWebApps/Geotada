@@ -108,6 +108,16 @@ When writing chunks, clean the extracted text:
 - Preserve all headings and subheadings
 - Do NOT remove any substantive content — only structural noise
 
+### Line-numbering gotcha (read this before splitting)
+
+`pdftotext` emits a form-feed (`U+000C`) at every page break. Tools disagree on whether these count as line breaks:
+- `wc -l`, `awk`, `grep -n`, `sed` → count LF only (form-feeds ignored)
+- Python `str.splitlines()`, many editors → count LF **and** form-feed as line breaks
+
+If you locate chapter boundaries with one tool and slice with another, indices silently drift by the number of page breaks above your cut — producing mid-sentence chunks with no error raised.
+
+**Fix:** before counting lines, either (a) strip all `\x0c` from the extracted text, or (b) split on `\n` only (`text.split("\n")`, not `splitlines()`) and use the same method consistently for boundary detection and slicing.
+
 ---
 
 ## REPORT
@@ -124,8 +134,9 @@ After chunking, report to the user:
 
 Before writing output:
 1. **No content lost** — every line of substantive text from the source appears in exactly one chunk
-2. **No mid-sentence splits** — spot-check the end of each chunk file
-3. **No mid-paragraph splits** — spot-check the end of each chunk file
-4. **Chunks are reasonably sized** — none shorter than 500 lines (unless it's genuinely a short section), none longer than 5,000 lines
-5. **Manifest is accurate** — chunk count, filenames, and line counts match the actual files
-6. **Valid JSON manifest** — proper formatting
+2. **No mid-sentence splits** — programmatically check the last non-blank line of each chunk is **narrative prose** ending in terminal punctuation. Terminal punctuation alone (`.`, `!`, `?`, `."`, `.)`, footnote digit) is not enough: scanned books place image-heavy divider pages between chapters that OCR into short terminal-punctuated gibberish like `"Wa.sette."` or `"Plgedps Aaceig."` — these pass a naive check but aren't real sentence endings. Require the last line to also contain **at least 4 real words** (lowercase runs of 4+ letters) before accepting it; if not, walk back through the OCR debris until you reach real prose. Don't eyeball it — line-numbering bugs (see gotcha above) make visual checks unreliable if you're checking the same offsets you sliced with.
+3. **No mid-paragraph splits** — the last line of each chunk should be followed in the source by a blank line or a new structural header
+4. **First line sanity-check** — each chunk should start with its section/chapter header (or the opening sentence of the section if headers aren't kept). OCR often mangles chapter banners (e.g., `"Les Grandes Trois"` → `"bes orandes Trois:"`); when the original header is garbled, prepend a clean `{SectionType} N: {Title}` line so downstream skills can identify the section.
+5. **Chunks are reasonably sized** — none shorter than 500 lines (unless it's genuinely a short section), none longer than 5,000 lines
+6. **Manifest is accurate** — chunk count, filenames, and line counts match the actual files
+7. **Valid JSON manifest** — proper formatting

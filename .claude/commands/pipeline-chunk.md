@@ -10,6 +10,25 @@ Parse the arguments:
 
 ---
 
+## PIPELINE STATE
+
+Write a state file at `data/{city_slug}/.pipeline-state.json` before starting and update it after each step:
+
+```json
+{
+  "stage": "extracting",
+  "city": "{city_slug}",
+  "chunk": "{chunk_slug}",
+  "started_at": "ISO-8601 timestamp"
+}
+```
+
+Stage values: `"extracting"` → `"matching"` → `"fact_checking"` → `"geocoding"` → `"gravity"` → `"exporting"` → `"tracking"` → `"complete"`
+
+If this file already exists with the same chunk and a non-complete stage, resume from that stage instead of restarting.
+
+When the pipeline finishes, set stage to `"complete"`.
+
 ## PIPELINE SEQUENCE
 
 Run these steps IN ORDER. Do not skip steps. Do not ask the user for confirmation between steps — collect all issues for one final report.
@@ -132,10 +151,21 @@ Wait for the user to resolve any REVIEW QUEUE items, then finalize.
 
 ---
 
-## GUARDRAILS — NON-NEGOTIABLE
+## SELF-VERIFICATION
 
-1. **Two-source minimum for auto-corrections** — no exceptions
-2. **Source passage verification** — every beat checked against source text
-3. **Proximity check for new POIs** — 100m threshold
-4. **Never auto-resolve:** living people claims, superlative disputes, story deletions
-5. **Every auto-correction logged** with source URLs for user spot-checking
+Before delivering the report:
+
+1. **Every beat has a non-empty source_passage** — no beat without textual grounding
+2. **Every beat has a valid lens slug** — cross-check against `src/schema/definitions.py`
+3. **Every new POI has coordinates** — lat/lng present with 6 decimal places
+4. **Export file is valid JSON** — parseable, matches the schema in existing exports
+5. **Export POI count matches extraction** — no POIs lost between steps
+6. **Book log updated** — this chunk recorded in `book-log.json`
+7. **Pipeline state set to "complete"** — `.pipeline-state.json` updated
+8. **No unresolved disputes left silent** — every dispute is either in the review queue or auto-resolved with sources
+
+---
+
+## GUARDRAILS
+
+Apply the 5 pipeline guardrails from CLAUDE.md. They are non-negotiable.
