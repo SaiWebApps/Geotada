@@ -262,3 +262,9 @@ audio_store/
 # Keep _log.jsonl tracked as audit trail; exclude per-run markdown reports.
 data/*/_dedup_review/*.md
 !data/*/_dedup_review/_log.jsonl
+
+# Source-text PDFs under Books/ are large copyrighted third-party
+# materials (50+ MB each, 200+ MB total). The chunked plain-text
+# extracts under Books/{city}/{book-slug}/ are the canonical
+# pipeline input and remain tracked.
+Books/**/*.pdf
