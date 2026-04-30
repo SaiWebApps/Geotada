@@ -1,0 +1,156 @@
+{
+  "book_title": "The Rough Guide to Paris",
+  "author": "Ruth Blackmore, James McConnachie (with Imogen Fortes)",
+  "source_file": "The Rough Guide to Paris (14th ed_ 2014) -- Ruth Blackmore, Rough Guides -- The Rough Guide, 14th edition, 2014 -- Rough Guides -- isbn13 9780241007761 -- 82241f91ec7ad4f18f2ebb3fbfdd8158 -- Anna's Archive.pdf",
+  "edition": "14th Edition, 2014",
+  "publisher": "Rough Guides (Penguin)",
+  "total_pages": null,
+  "total_chunks": 19,
+  "chunked_at": "2026-04-23T03:25:59Z",
+  "skipped_sections": [
+    "Front matter / TOC / Introduction / What to see / Itineraries: lines 1-2039",
+    "BASICS (travel logistics): within front matter",
+    "LISTINGS (accommodation, cafés, bars, shops, festivals, activities, children, gay/lesbian): lines 20761-26033",
+    "CONTEXTS: Books (reading list): lines 26974-27137",
+    "CONTEXTS: French (language section): lines 27138+",
+    "Small Print / Index / City Plan: end of book"
+  ],
+  "extraction_notes": [
+    "Used pdftotext -layout; the book has heavy embedded map text that appears as positional characters in chunk bodies. -raw was worse (merged-word chapter banners) so -layout is preferred despite the map-text noise."
+  ],
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-islands.txt",
+      "section_title": "Chapter 1: The Islands",
+      "line_count": 517,
+      "summary": "Ile de la Cité and Ile St-Louis — Notre-Dame, Sainte-Chapelle, Conciergerie, the flower market, Louis-quai-side tour."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-louvre.txt",
+      "section_title": "Chapter 2: The Louvre",
+      "line_count": 805,
+      "summary": "The Louvre museum and its surrounds — Denon, Sully, Richelieu wings, plus Palais Royal, Tuileries, Place de la Concorde."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-champs-elysees.txt",
+      "section_title": "Chapter 3: The Champs-Elysées and around",
+      "line_count": 977,
+      "summary": "Champs-Elysées, Arc de Triomphe, Grand Palais, Petit Palais, Place Vendôme, Palais de l'Élysée, La Défense."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-grands-boulevards.txt",
+      "section_title": "Chapter 4: The Grands Boulevards and passages",
+      "line_count": 986,
+      "summary": "The Haussmann boulevards, Opéra Garnier, covered passages (Vivienne, Panoramas, Verdeau), Madeleine, department stores."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-beaubourg-les-halles.txt",
+      "section_title": "Chapter 5: Beaubourg and Les Halles",
+      "line_count": 594,
+      "summary": "Pompidou Centre, Saint-Merri, Quartier de l'Horloge, Les Halles (Forum/Canopy), Saint-Eustache, Bourse de Commerce, Tour St-Jacques."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-marais.txt",
+      "section_title": "Chapter 6: The Marais",
+      "line_count": 1242,
+      "summary": "Place des Vosges, Hôtel de Sully, Musée Carnavalet, Musée Picasso, Jewish quarter, rue des Rosiers, Hôtel de Soubise, Place des Vosges."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-bastille-and-around.txt",
+      "section_title": "Chapter 7: Bastille and around",
+      "line_count": 1281,
+      "summary": "Place de la Bastille, Opéra Bastille, Faubourg Saint-Antoine, La Promenade Plantée, Bercy, Aligre market, 12e arrondissement."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-quartier-latin.txt",
+      "section_title": "Chapter 8: The Quartier Latin",
+      "line_count": 1082,
+      "summary": "Latin Quarter — Sorbonne, Panthéon, Saint-Étienne-du-Mont, Cluny Museum, Arènes de Lutèce, rue Mouffetard, Jardin des Plantes, Mosquée."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-st-germain.txt",
+      "section_title": "Chapter 9: St-Germain",
+      "line_count": 1122,
+      "summary": "Saint-Germain-des-Prés — abbey church, Les Deux Magots, Café de Flore, Lipp, Saint-Sulpice, Musée Delacroix, Luxembourg Garden, Musée d'Orsay."
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-eiffel-tower-quarter.txt",
+      "section_title": "Chapter 10: The Eiffel Tower quarter",
+      "line_count": 1181,
+      "summary": "Eiffel Tower, Trocadéro, Quai Branly museum, Musée Rodin, Musée de l'Armée and Napoleon's Tomb, Les Invalides, Rue Cler, Palais de Tokyo."
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-montparnasse-southern.txt",
+      "section_title": "Chapter 11: Montparnasse and southern Paris",
+      "line_count": 2352,
+      "summary": "Montparnasse — the tower, cemetery, Catacombs, Rodin and bohemian-era cafés (Closerie des Lilas, La Coupole, Le Dôme), 13e and 15e neighbourhoods."
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-montmartre-northern.txt",
+      "section_title": "Chapter 12: Montmartre and northern Paris",
+      "line_count": 1665,
+      "summary": "Montmartre — Sacré-Cœur, Place du Tertre, artist studios, Bateau-Lavoir, Moulin Rouge, Pigalle, La Goutte-d'Or, northern 9e and 10e."
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-canal-st-martin-la-villette.txt",
+      "section_title": "Chapter 13: Canal St-Martin and La Villette",
+      "line_count": 972,
+      "summary": "Canal Saint-Martin, Rotonde de la Villette, Parc de la Villette, Cité des Sciences, Cité de la Musique, Philharmonie, 19e arrondissement."
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-belleville-menilmontant.txt",
+      "section_title": "Chapter 14: Belleville and Ménilmontant",
+      "line_count": 705,
+      "summary": "Belleville and Ménilmontant — Parc de Belleville, multi-ethnic quarter, artist studios, Père Lachaise Cemetery, 20e arrondissement."
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-auteuil-passy.txt",
+      "section_title": "Chapter 15: Auteuil and Passy",
+      "line_count": 879,
+      "summary": "Auteuil and Passy — old villages in the 16e, Art Nouveau architecture (Guimard), Maison de Balzac, Musée Marmottan Monet, Bois de Boulogne."
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-16-suburbs.txt",
+      "section_title": "Chapter 16: The suburbs",
+      "line_count": 1099,
+      "summary": "Paris suburbs — Saint-Denis Basilica, Malmaison, Parc des Buttes-Chaumont periphery, Fondation Le Corbusier, La Défense suburbs, Vincennes."
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-17-day-trips.txt",
+      "section_title": "Chapter 17: Day-trips from Paris",
+      "line_count": 716,
+      "summary": "Day trips — Versailles, Chartres, Chantilly, Giverny, Fontainebleau, Vaux-le-Vicomte, Auvers-sur-Oise."
+    },
+    {
+      "chunk_number": 18,
+      "filename": "chunk-18-disneyland.txt",
+      "section_title": "Chapter 18: Disneyland Paris",
+      "line_count": 444,
+      "summary": "Disneyland Paris — the parks, hotels, transport, ticketing."
+    },
+    {
+      "chunk_number": 19,
+      "filename": "chunk-19-history.txt",
+      "section_title": "Contexts: History",
+      "line_count": 936,
+      "summary": "Historical context: Paris from Gaulish Lutetia through Roman, medieval, Revolution, 19th-century Haussmannization, Belle Époque, WWII, contemporary."
+    }
+  ]
+}

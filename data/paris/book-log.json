@@ -636,6 +636,421 @@
           "pois_mentioned_no_content": []
         }
       ]
+    },
+    {
+      "book_title": "The Rough Guide to Paris",
+      "author": "Ruth Blackmore",
+      "chunks_processed": [
+        {
+          "chunk": "chunk-01-islands",
+          "processed_at": "2026-04-25T15:05:31Z",
+          "beats_extracted": 30,
+          "pois_touched": [
+            "Berthillon",
+            "Conciergerie",
+            "Crypte Archeologique de l'Ile de la Cite",
+            "Hotel Lambert",
+            "Hotel de Lauzun",
+            "Ile Saint-Louis",
+            "Ile de la Cite",
+            "Memorial des Martyrs de la Deportation",
+            "Notre-Dame Cathedral",
+            "Place Dauphine",
+            "Place du Châtelet",
+            "Pont Neuf",
+            "Sainte-Chapelle",
+            "Square du Vert-Galant",
+            "Tour de l'Horloge"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        }
+      ]
+    },
+    {
+      "book_title": "Frommer's 24 Great Walks in Paris",
+      "author": "Peter Caine, Oriel Caine",
+      "chunks_processed": [
+        {
+          "chunk": "chunk-01-birthplace-of-the-city",
+          "processed_at": "2026-04-25T15:19:43Z",
+          "beats_extracted": 31,
+          "pois_touched": [
+            "Conciergerie",
+            "Crypte Archeologique de l'Ile de la Cite",
+            "Hotel-Dieu",
+            "Ile de la Cite",
+            "La Samaritaine",
+            "Memorial des Martyrs de la Deportation",
+            "Notre-Dame Cathedral",
+            "Pont Neuf",
+            "Sainte-Chapelle"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "chunk-05-knights-and-mansions",
+          "processed_at": "2026-04-25T15:19:43Z",
+          "beats_extracted": 24,
+          "pois_touched": [
+            "Hotel Amelot de Bisseuil",
+            "Hotel de Soubise",
+            "Marais",
+            "Mont de Piete",
+            "Musee Carnavalet",
+            "Musee Picasso",
+            "Place des Vosges",
+            "Place du Marche Ste Catherine",
+            "Rue des Rosiers",
+            "Square du Temple"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "chunk-02-pyramids-and-palaces",
+          "processed_at": "2026-04-25T18:18:37Z",
+          "model": "sonnet",
+          "beats_extracted": 24,
+          "pois_touched": [
+            "Arc de Triomphe du Carrousel",
+            "Eglise Saint-Roch",
+            "Galerie Vivienne",
+            "Jardin des Tuileries",
+            "Louvre Museum",
+            "Palais-Royal",
+            "Place des Pyramides",
+            "Place des Victoires",
+            "Saint-Germain-l'Auxerrois"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 2,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-04-alchemists-and-artists",
+          "processed_at": "2026-04-25T18:18:37Z",
+          "model": "sonnet",
+          "beats_extracted": 22,
+          "pois_touched": [
+            "Centre Pompidou",
+            "Eglise Saint-Merri",
+            "Fontaine des Innocents",
+            "Musée des Arts et Métiers",
+            "Nicholas Flamel's House",
+            "Place du Châtelet",
+            "Quartier de l'Horloge",
+            "Rue de la Ferronnerie",
+            "Théâtre de la Ville",
+            "Tour Saint-Jacques"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 4,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-06-saints-and-sinners",
+          "processed_at": "2026-04-25T18:18:37Z",
+          "model": "sonnet",
+          "beats_extracted": 24,
+          "pois_touched": [
+            "Eglise Saint-Gervais-Saint-Protais",
+            "Eglise des Billettes",
+            "Hotel de Sens",
+            "Hotel de Ville",
+            "Memorial de la Shoah",
+            "Passage Saint-Paul",
+            "Rue Charles V",
+            "Saint-Paul-Saint-Louis",
+            "Village Saint-Paul"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 2,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-07-backstreets-of-bastille",
+          "processed_at": "2026-04-25T18:18:37Z",
+          "model": "sonnet",
+          "beats_extracted": 20,
+          "pois_touched": [
+            "Barrio Latino",
+            "Beaumarchais Statue",
+            "Colonne de Juillet",
+            "Cour Damoye",
+            "Hôpital des Quinze-Vingts",
+            "Marché Richard Lenoir",
+            "Opéra Bastille",
+            "Passage du Chantier",
+            "Place de la Bastille",
+            "Port de Plaisance de Paris-Arsenal",
+            "Promenade Plantee",
+            "Restaurant Bofinger",
+            "Rue de Lappe",
+            "Viaduc des Arts"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 13,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-08-home-of-the-famous-dead",
+          "processed_at": "2026-04-25T20:30:49Z",
+          "model": "sonnet",
+          "beats_extracted": 24,
+          "pois_touched": [
+            "Pere Lachaise Cemetery"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 0,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-09-romantic-island",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 15,
+          "pois_touched": [
+            "Hotel Lambert",
+            "Hotel de Lauzun",
+            "Hôtel Chenizot",
+            "Ile Saint-Louis",
+            "Pont de la Tournelle",
+            "Pont-Marie",
+            "Quai d'Anjou",
+            "Rimbaud Statue (Sully Morland)",
+            "Saint-Louis-en-l'Ile Church"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 4,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-11-bohemian-montmartre",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 25,
+          "pois_touched": [
+            "Eglise Saint-Pierre de Montmartre",
+            "Lapin Agile",
+            "Le Clos Montmartre",
+            "Moulin Rouge",
+            "Moulin de la Galette",
+            "Place des Abbesses",
+            "Place du Tertre",
+            "Rue Lepic",
+            "Sacre-Coeur Basilica"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 6,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-12-how-the-other-half-live",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 23,
+          "pois_touched": [
+            "C.T. Loo Pagoda",
+            "Cathédrale Saint-Alexandre-Nevsky",
+            "Menier Mansion",
+            "Musée Cernuschi",
+            "Musée Jacquemart-André",
+            "Musée Nissim de Camondo",
+            "Parc Monceau",
+            "Passage Poncelet"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 8,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-13-phantom-of-the-opera",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 18,
+          "pois_touched": [
+            "35 Boulevard des Capucines",
+            "Hotel Le Meurice",
+            "Impasse Sandrie",
+            "Intercontinental Le Grand Hotel",
+            "L'Olympia",
+            "Palais Garnier",
+            "Place Vendome",
+            "Trinite Church"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 3,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-15-bridges-of-paris",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 13,
+          "pois_touched": [
+            "Assemblee Nationale",
+            "Jardin des Tuileries",
+            "Musee d'Orsay",
+            "Musee de la Legion d'Honneur",
+            "Passerelle Leopold Sedar Senghor",
+            "Place du Palais Bourbon",
+            "Pont Alexandre III",
+            "Pont de la Concorde",
+            "Pont des Arts"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 5,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-17-iron-lady-of-paris",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 16,
+          "pois_touched": [
+            "Champ de Mars",
+            "Cimetiere de Passy",
+            "Ecole Militaire",
+            "Eiffel Tower",
+            "Palais de Chaillot",
+            "Pont d'Iena",
+            "Rue Cler",
+            "Trocadero"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 3,
+          "phase_b_fixup": true
+        }
+      ]
+    },
+    {
+      "book_title": "Rick Steves Paris",
+      "author": "Rick Steves",
+      "chunks_processed": [
+        {
+          "chunk": "chunk-11-rue-cler-walk",
+          "processed_at": "2026-04-25T20:30:49Z",
+          "model": "sonnet",
+          "beats_extracted": 37,
+          "pois_touched": [
+            "A la Mère de Famille Rue Cler",
+            "Artisan Boulangerie Rue Cler",
+            "Au Bon Jardinier",
+            "Boucherie Chevaline Storefront",
+            "Café Roussillon",
+            "Café du Marché",
+            "Charcuterie-Traiteur Jeusselin",
+            "City Info Post Rue Cler",
+            "Cler Fleurs",
+            "Fromagerie Rue Cler",
+            "L'Epicerie Fine",
+            "Le Petit Cler",
+            "Mephisto Shoe Store Rue Cler",
+            "Petit Bateau",
+            "Pharmacy Rue Cler",
+            "Poissonnerie Rue Cler",
+            "Rue Cler",
+            "Tabac La Cave à Cigares",
+            "Wine Bacchus"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 18,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-17-left-bank-walk",
+          "processed_at": "2026-04-25T20:30:49Z",
+          "model": "sonnet",
+          "beats_extracted": 33,
+          "pois_touched": [
+            "Abbey Mansion (Rue de l'Abbaye)",
+            "Brasserie Lipp",
+            "Café la Palette",
+            "Delacroix Museum",
+            "George Sand's House (31 Rue de Seine)",
+            "Institut de France",
+            "L'Hotel Paris",
+            "Le Procope",
+            "Les Deux Magots",
+            "Luxembourg Gardens",
+            "Palais du Luxembourg",
+            "Pont des Arts",
+            "Richard Wagner's House (14 Rue Jacob)",
+            "Roger-Viollet Photo Agency",
+            "Rue Férou",
+            "Saint-Germain-des-Pres",
+            "Saint-Sulpice",
+            "Theatre de l'Odeon",
+            "Voltaire Statue (Quai Malaquais)"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 7,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-19-champs-elysees-walk",
+          "processed_at": "2026-04-25T20:30:49Z",
+          "model": "sonnet",
+          "beats_extracted": 22,
+          "pois_touched": [
+            "Arc de Triomphe",
+            "Champs-Elysees",
+            "Fouquet's",
+            "Grand Palais",
+            "Hôtel Crillon",
+            "Place de la Concorde"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 3,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-20-marais-walk",
+          "processed_at": "2026-04-25T20:30:49Z",
+          "model": "sonnet",
+          "beats_extracted": 30,
+          "pois_touched": [
+            "Bibliothèque Historique de la Ville de Paris",
+            "Centre Pompidou",
+            "Hotel de Ville",
+            "Hôtel de Sully",
+            "Musee Carnavalet",
+            "Opéra Bastille",
+            "Place de la Bastille",
+            "Place des Vosges",
+            "Rue St. Antoine",
+            "Rue des Francs-Bourgeois",
+            "Rue des Rosiers",
+            "Stravinsky Fountain",
+            "Synagogue Agoudas Hakehilos"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 4,
+          "phase_b_fixup": true
+        },
+        {
+          "chunk": "chunk-04-sights-left-bank",
+          "processed_at": "2026-04-26T02:45:40Z",
+          "model": "sonnet",
+          "beats_extracted": 26,
+          "pois_touched": [
+            "Delacroix Museum",
+            "Grand Mosque of Paris",
+            "Luxembourg Gardens",
+            "Musee de Cluny",
+            "Pantheon",
+            "Paris Catacombs",
+            "Saint-Germain-des-Pres",
+            "Saint-Sulpice",
+            "Tour Montparnasse"
+          ],
+          "pois_created": [],
+          "new_pois_flagged_count": 1,
+          "phase_b_fixup": true
+        }
+      ]
     }
   ]
 }

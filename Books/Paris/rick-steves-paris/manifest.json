@@ -1,0 +1,212 @@
+{
+  "book_title": "Rick Steves Paris",
+  "author": "Rick Steves, Steve Smith & Gene Openshaw",
+  "source_file": "Rick Steves Paris - Rick Steves.pdf",
+  "total_pages": null,
+  "total_chunks": 28,
+  "chunked_at": "2026-04-23T02:41:13Z",
+  "skipped_sections": [
+    "Front matter (TOC, welcome, Paris-by-Neighborhood intro): lines 1-597",
+    "SIGHTS chapter overview (tickets/Museum Pass logistics): lines 1598-1832",
+    "Sleeping / Eating / Children / Shopping / Entertainment / Winter / Connections: lines 13635-18631",
+    "Practicalities / Appendix / Index / Map Index / Credits / Copyright: lines 22064-end"
+  ],
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-sights-historic-core.txt",
+      "section_title": "Sights: Historic Core of Paris",
+      "line_count": 236,
+      "summary": "POI catalog for Île de la Cité and Île St. Louis — Notre-Dame, Sainte-Chapelle, Conciergerie, Deportation Memorial, riverside promenades."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-sights-major-museums.txt",
+      "section_title": "Sights: Major Museums Neighborhood",
+      "line_count": 173,
+      "summary": "POI catalog around the Louvre, Orsay, Orangerie, Tuileries, Palais Royal courtyards."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-sights-eiffel-tower.txt",
+      "section_title": "Sights: Eiffel Tower and Nearby",
+      "line_count": 308,
+      "summary": "POI catalog around the Eiffel Tower, Trocadéro, Quai Branly, Sewer Museum, Army Museum/Napoleon's Tomb, Rodin, Marmottan."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-sights-left-bank.txt",
+      "section_title": "Sights: Left Bank",
+      "line_count": 355,
+      "summary": "POI catalog for the Latin Quarter, Cluny, St. Sulpice, Luxembourg, Panthéon, Montparnasse."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-sights-champs-elysees.txt",
+      "section_title": "Sights: Champs-Élysées and Nearby",
+      "line_count": 520,
+      "summary": "POI catalog around the Champs-Élysées, Arc de Triomphe, Petit/Grand Palais, Opéra Garnier, Galeries Lafayette, La Défense."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-sights-marais-montmartre.txt",
+      "section_title": "Sights: Marais Neighborhood & Montmartre",
+      "line_count": 262,
+      "summary": "POI catalog for the Marais (Pompidou, Picasso, Place des Vosges, Carnavalet, Père Lachaise) and Montmartre (Sacré-Cœur, Pigalle)."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-historic-paris-walk.txt",
+      "section_title": "Historic Paris Walk",
+      "line_count": 1143,
+      "summary": "Walking tour from Notre-Dame through Île de la Cité to Sainte-Chapelle, Conciergerie, Pont Neuf, with Left Bank detour."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-louvre-tour.txt",
+      "section_title": "Louvre Tour",
+      "line_count": 1050,
+      "summary": "Self-guided tour of the Louvre — Greek antiquities, Italian Renaissance, French paintings, Near Eastern antiquities."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-orsay-museum-tour.txt",
+      "section_title": "Orsay Museum Tour",
+      "line_count": 851,
+      "summary": "Self-guided tour of the Orsay — Realism, Impressionism, Post-Impressionism, Belle Epoque decorative arts."
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-orangerie-museum-tour.txt",
+      "section_title": "Orangerie Museum Tour",
+      "line_count": 348,
+      "summary": "Self-guided tour of the Orangerie — Monet's Water Lilies plus the Walter-Guillaume Collection."
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-rue-cler-walk.txt",
+      "section_title": "Rue Cler Walk",
+      "line_count": 488,
+      "summary": "Walking tour of the Rue Cler market street — Parisian shop life, vendors, cheesemongers, charcuteries."
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-eiffel-tower-tour.txt",
+      "section_title": "Eiffel Tower Tour",
+      "line_count": 449,
+      "summary": "Self-guided tour of the Eiffel Tower — construction history, the three levels, engineering facts, views."
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-rodin-museum-tour.txt",
+      "section_title": "Rodin Museum Tour",
+      "line_count": 414,
+      "summary": "Self-guided tour of the Rodin Museum — The Thinker, Gates of Hell, Burghers of Calais, The Kiss, garden sculptures."
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-army-museum-napoleons-tomb.txt",
+      "section_title": "Army Museum & Napoleon's Tomb Tour",
+      "line_count": 936,
+      "summary": "Self-guided tour of the Musée de l'Armée and Dôme church — Napoleon's tomb, WWI and WWII galleries, Louis XIV to Napoleon exhibits."
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-bus-69-sightseeing-tour.txt",
+      "section_title": "Bus #69 Sightseeing Tour",
+      "line_count": 280,
+      "summary": "Self-guided bus tour along line 69 — Eiffel Tower to Père Lachaise, crossing the Seine twice with commentary on sights along the route."
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-16-marmottan-museum-tour.txt",
+      "section_title": "Marmottan Museum Tour",
+      "line_count": 328,
+      "summary": "Self-guided tour of the Marmottan — Monet's late water-lily paintings, Berthe Morisot, medieval illuminations."
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-17-left-bank-walk.txt",
+      "section_title": "Left Bank Walk",
+      "line_count": 453,
+      "summary": "Walking tour through the Latin Quarter and St-Germain — Sorbonne, St-Séverin, Shakespeare and Company, Café de Flore, Luxembourg Garden."
+    },
+    {
+      "chunk_number": 18,
+      "filename": "chunk-18-cluny-museum-tour.txt",
+      "section_title": "Cluny Museum Tour",
+      "line_count": 203,
+      "summary": "Self-guided tour of the Cluny (Musée National du Moyen Âge) — Lady and the Unicorn tapestries, Roman baths, medieval sculpture."
+    },
+    {
+      "chunk_number": 19,
+      "filename": "chunk-19-champs-elysees-walk.txt",
+      "section_title": "Champs-Élysées Walk",
+      "line_count": 565,
+      "summary": "Walking tour down the Champs-Élysées from Arc de Triomphe to Place de la Concorde — retail history, grand buildings, Tuileries approach."
+    },
+    {
+      "chunk_number": 20,
+      "filename": "chunk-20-marais-walk.txt",
+      "section_title": "Marais Walk",
+      "line_count": 446,
+      "summary": "Walking tour through the Marais — Place des Vosges, Hôtel de Sully, Jewish quarter, Rue des Rosiers, Carnavalet approach."
+    },
+    {
+      "chunk_number": 21,
+      "filename": "chunk-21-pompidou-center-tour.txt",
+      "section_title": "Pompidou Center Tour",
+      "line_count": 588,
+      "summary": "Self-guided tour of the Pompidou Center's modern/contemporary art collection — Matisse, Picasso, Kandinsky, Duchamp, mid-century onward."
+    },
+    {
+      "chunk_number": 22,
+      "filename": "chunk-22-pere-lachaise-cemetery-tour.txt",
+      "section_title": "Père Lachaise Cemetery Tour",
+      "line_count": 512,
+      "summary": "Self-guided tour of Père Lachaise — Rossini, Chopin, Bizet, Proust, Oscar Wilde, Jim Morrison, Edith Piaf, Communards' Wall."
+    },
+    {
+      "chunk_number": 23,
+      "filename": "chunk-23-montmartre-walk.txt",
+      "section_title": "Montmartre Walk",
+      "line_count": 646,
+      "summary": "Walking tour of Montmartre — Sacré-Cœur, Place du Tertre, artist studios, Moulin de la Galette, Bateau-Lavoir, Pigalle."
+    },
+    {
+      "chunk_number": 24,
+      "filename": "chunk-24-versailles.txt",
+      "section_title": "Day Trip: Versailles",
+      "line_count": 1196,
+      "summary": "Guide to Versailles — the Château (State Apartments, Hall of Mirrors), the Gardens, the Trianon palaces, the Queen's Hamlet."
+    },
+    {
+      "chunk_number": 25,
+      "filename": "chunk-25-more-grand-chateaux.txt",
+      "section_title": "Day Trip: More Grand Châteaux (Vaux-le-Vicomte, Fontainebleau, Chantilly)",
+      "line_count": 498,
+      "summary": "Combined guide to three châteaux — Vaux-le-Vicomte (Louis XIV's inspiration for Versailles), Fontainebleau (royal hunting château), Chantilly (Renaissance château and horse museum)."
+    },
+    {
+      "chunk_number": 26,
+      "filename": "chunk-26-chartres.txt",
+      "section_title": "Day Trip: Chartres",
+      "line_count": 790,
+      "summary": "Guide to Chartres — the Gothic cathedral, the self-guided cathedral tour (stained glass, labyrinth, choir screen), the old town walk."
+    },
+    {
+      "chunk_number": 27,
+      "filename": "chunk-27-giverny-auvers-sur-oise.txt",
+      "section_title": "Day Trip: Giverny & Auvers-sur-Oise",
+      "line_count": 532,
+      "summary": "Guide to Monet's Giverny (house, gardens, water-lily pond) and Van Gogh's Auvers-sur-Oise (final days, church, wheat fields, grave)."
+    },
+    {
+      "chunk_number": 28,
+      "filename": "chunk-28-france-past-and-present.txt",
+      "section_title": "France: Past & Present",
+      "line_count": 361,
+      "summary": "Historical overview of France from Celts and Romans through the Revolution, Napoleon, and the 20th century."
+    }
+  ]
+}

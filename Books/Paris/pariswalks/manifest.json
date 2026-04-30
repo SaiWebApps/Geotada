@@ -1,0 +1,60 @@
+{
+  "book_title": "Pariswalks",
+  "author": "Sonia Landes, Alison Landes, Rebecca Landes",
+  "source_file": "Pariswalks (Landes, Sonia, 1925-2013, Landes etc.) (z-library.sk, 1lib.sk, z-lib.sk).pdf",
+  "edition": "Sixth Edition, 2005",
+  "total_pages": null,
+  "total_chunks": 7,
+  "chunked_at": "2026-04-23T01:18:46Z",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-saint-julien-le-pauvre.txt",
+      "section_title": "Walk 1: Saint-Julien-le-Pauvre",
+      "line_count": 1321,
+      "summary": "Walk 1: Saint-Julien-le-Pauvre — starting at the Petit Pont, exploring the oldest Left Bank quarter around Notre-Dame."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-la-huchette.txt",
+      "section_title": "Walk 2: La Huchette",
+      "line_count": 1109,
+      "summary": "Walk 2: La Huchette — medieval streets off Place Saint-Michel, including rue de la Huchette and Saint-Séverin."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-saint-germain-des-pres.txt",
+      "section_title": "Walk 3: Saint-Germain-des-Prés",
+      "line_count": 1522,
+      "summary": "Walk 3: Saint-Germain-des-Prés — the abbey church, rue Bonaparte, Les Deux Magots, Café de Flore, Lipp."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-place-des-vosges.txt",
+      "section_title": "Walk 4: Place des Vosges",
+      "line_count": 1373,
+      "summary": "Walk 4: Place des Vosges — the Marais, the royal square, Hugo's house, Hôtel de Sully."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-rue-des-francs-bourgeois.txt",
+      "section_title": "Walk 5: Rue des Francs-Bourgeois",
+      "line_count": 982,
+      "summary": "Walk 5: Rue des Francs-Bourgeois — Marais mansions, hôtels of Soubise, Carnavalet, Lamoignon, Albret."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-bastille-to-saint-gervais.txt",
+      "section_title": "Walk 6: Bastille to Eglise Saint-Gervais",
+      "line_count": 1665,
+      "summary": "Walk 6: Bastille to Eglise Saint-Gervais — place de la Bastille, rue Saint-Antoine, Saint-Paul, Hôtel de Ville."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-les-grandes-trois.txt",
+      "section_title": "Walk 7: Les Grandes Trois: Concorde, Madeleine, Vendôme",
+      "line_count": 1712,
+      "summary": "Walk 7: Les Grandes Trois — Place de la Concorde, the Madeleine, Place Vendôme, rue Saint-Honoré."
+    }
+  ]
+}

@@ -1,0 +1,227 @@
+{
+  "book_title": "Around and About Paris (Volume III): New Horizons — Haussmann's Annexation — The 13th-20th Arrondissements",
+  "author": "Thirza Vallois",
+  "source_file": "Around and about Paris (Vallois, Thirza) 13 to 20 arrondisment.pdf",
+  "edition": "Iliad Books, 1997",
+  "total_pages": 302,
+  "total_chunks": 27,
+  "chunked_at": "2026-04-23T02:20:20Z",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-13th-arr-overview.txt",
+      "section_title": "13th Arr: Overview",
+      "page_range": "1-11",
+      "line_count": 348,
+      "summary": "Opening essay on the 13th arrondissement — Chinatown's emergence, industrial heritage along the Bièvre, the Gobelins workshops, BnF Tolbiac."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-13th-arr-place-italie-cite-florale.txt",
+      "section_title": "13th Arr: Place d'Italie to Cité Florale",
+      "page_range": "12-23",
+      "line_count": 548,
+      "summary": "Walk from Place d'Italie through Butte-aux-Cailles to Cité Florale — old tanneries, working-class housing, rural remnants."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-13th-arr-chinatown-salpetriere.txt",
+      "section_title": "13th Arr: Chinatown & La Salpétrière",
+      "page_range": "24-28",
+      "line_count": 161,
+      "summary": "Combined short sections: Chinatown (Avenues d'Ivry and Choisy) and the historic Salpêtrière hospital."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-14th-arr-overview.txt",
+      "section_title": "14th Arr: Overview",
+      "page_range": "29-42",
+      "line_count": 617,
+      "summary": "Opening essay on the 14th arrondissement — Montparnasse bohemia, the catacombs, Denfert-Rochereau."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-14th-arr-carrefour-vavin-daguerre.txt",
+      "section_title": "14th Arr: Carrefour Vavin to Rue Daguerre",
+      "page_range": "43-59",
+      "line_count": 688,
+      "summary": "Walk from Place Pablo-Picasso (Carrefour Vavin) through the old artist quarter to the rue Daguerre market."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-14th-arr-denfert-rochereau-north.txt",
+      "section_title": "14th Arr: From Place Denfert-Rochereau North",
+      "page_range": "60-73",
+      "line_count": 565,
+      "summary": "Walk from Place Denfert-Rochereau northward through the Observatoire quarter."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-14th-arr-ferdinand-brunot-montsouris.txt",
+      "section_title": "14th Arr: Ferdinand-Brunot to Parc Montsouris",
+      "page_range": "74-79",
+      "line_count": 231,
+      "summary": "Short walk from Place Ferdinand-Brunot to the Parc de Montsouris."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-15th-arr-overview.txt",
+      "section_title": "15th Arr: Overview",
+      "page_range": "80-93",
+      "line_count": 598,
+      "summary": "Opening essay on the 15th arrondissement — Grenelle, Vaugirard, Front de Seine."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-15th-arr-montparnasse-la-ruche.txt",
+      "section_title": "15th Arr: Montparnasse to La Ruche",
+      "page_range": "94-111",
+      "line_count": 699,
+      "summary": "Walk from Montparnasse to La Ruche artist colony — through the 15th's residential and industrial heritage."
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-16th-arr-overview.txt",
+      "section_title": "16th Arr: Overview",
+      "page_range": "112-119",
+      "line_count": 288,
+      "summary": "Opening essay on the 16th arrondissement — bourgeois Paris, Bois de Boulogne, Passy, Auteuil."
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-16th-arr-around-auteuil.txt",
+      "section_title": "16th Arr: Around Auteuil",
+      "page_range": "120-132",
+      "line_count": 468,
+      "summary": "Walk through the old village of Auteuil — rue d'Auteuil, market on Place Jean-Lorrain, villas."
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-16th-arr-passy-chaillot.txt",
+      "section_title": "16th Arr: Through Passy to Chaillot",
+      "page_range": "133-149",
+      "line_count": 607,
+      "summary": "Walk from Passy to Chaillot in the northern 16th — Maison de Balzac, Palais de Chaillot approach."
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-17th-arr-overview.txt",
+      "section_title": "17th Arr: Overview",
+      "page_range": "150-164",
+      "line_count": 551,
+      "summary": "Opening essay on the 17th arrondissement — Ternes, Monceau, Batignolles."
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-17th-arr-place-ternes-berthier.txt",
+      "section_title": "17th Arr: Place des Ternes to Boulevard Berthier",
+      "page_range": "165-171",
+      "line_count": 322,
+      "summary": "Walk from Place des Ternes to Boulevard Berthier — rue Poncelet market, Avenue de Wagram."
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-17th-arr-plaine-monceau.txt",
+      "section_title": "17th Arr: La Plaine Monceau",
+      "page_range": "172-178",
+      "line_count": 252,
+      "summary": "Walk through La Plaine Monceau — the grand bourgeois quarter around Parc Monceau."
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-16-17th-arr-epinettes-batignolles.txt",
+      "section_title": "17th Arr: Epinettes to Batignolles",
+      "page_range": "179-186",
+      "line_count": 265,
+      "summary": "Walk through Epinettes and Batignolles — the quiet village-like northern edge of the 17th."
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-17-18th-arr-overview.txt",
+      "section_title": "18th Arr: Overview",
+      "page_range": "187-199",
+      "line_count": 568,
+      "summary": "Opening essay on the 18th arrondissement — Montmartre's religious and bohemian history, Pigalle, La Goutte-d'Or."
+    },
+    {
+      "chunk_number": 18,
+      "filename": "chunk-18-18th-arr-montmartre.txt",
+      "section_title": "18th Arr: Montmartre",
+      "page_range": "200-222",
+      "line_count": 946,
+      "summary": "Extended walk through Montmartre — Place du Tertre, Sacré-Coeur, Moulin Rouge, artist studios, the Butte."
+    },
+    {
+      "chunk_number": 19,
+      "filename": "chunk-19-18th-arr-goutte-dor.txt",
+      "section_title": "18th Arr: La Goutte-d'Or",
+      "page_range": "223-228",
+      "line_count": 188,
+      "summary": "Walk through La Goutte-d'Or — immigrant Paris, North African and Sub-Saharan African quarter, rue des Poissonniers market."
+    },
+    {
+      "chunk_number": 20,
+      "filename": "chunk-20-19th-arr-overview.txt",
+      "section_title": "19th Arr: Overview",
+      "page_range": "229-240",
+      "line_count": 543,
+      "summary": "Opening essay on the 19th arrondissement — La Villette's slaughterhouse past, the canals, working-class Paris."
+    },
+    {
+      "chunk_number": 21,
+      "filename": "chunk-21-19th-arr-belleville-pre-saint-gervais.txt",
+      "section_title": "19th Arr: Belleville to Pré-Saint-Gervais",
+      "page_range": "241-248",
+      "line_count": 308,
+      "summary": "Walk from Belleville to Pré-Saint-Gervais — the 19th's hillside village heritage."
+    },
+    {
+      "chunk_number": 22,
+      "filename": "chunk-22-19th-arr-buttes-chaumont.txt",
+      "section_title": "19th Arr: Les Buttes-Chaumont and Thereabouts",
+      "page_range": "249-254",
+      "line_count": 233,
+      "summary": "Walk around Parc des Buttes-Chaumont — Haussmann's dramatic landscaped park built on a former quarry."
+    },
+    {
+      "chunk_number": 23,
+      "filename": "chunk-23-19th-arr-la-villette.txt",
+      "section_title": "19th Arr: La Villette",
+      "page_range": "255-261",
+      "line_count": 208,
+      "summary": "Walk through La Villette — Parc de la Villette, the Cité des Sciences, the old slaughterhouses."
+    },
+    {
+      "chunk_number": 24,
+      "filename": "chunk-24-20th-arr-overview.txt",
+      "section_title": "20th Arr: Overview",
+      "page_range": "262-274",
+      "line_count": 565,
+      "summary": "Opening essay on the 20th arrondissement — Belleville, Ménilmontant, Charonne, Père-Lachaise."
+    },
+    {
+      "chunk_number": 25,
+      "filename": "chunk-25-20th-arr-bagnolet-charonne-pere-lachaise.txt",
+      "section_title": "20th Arr: Bagnolet through Charonne to Père-Lachaise",
+      "page_range": "275-285",
+      "line_count": 412,
+      "summary": "Walk from Place de la Porte de Bagnolet through old Charonne village to the Père-Lachaise cemetery."
+    },
+    {
+      "chunk_number": 26,
+      "filename": "chunk-26-20th-arr-belleville-menilmontant.txt",
+      "section_title": "20th Arr: Belleville and Ménilmontant",
+      "page_range": "286-296",
+      "line_count": 334,
+      "summary": "Walk through Belleville and Ménilmontant — Edith Piaf and Maurice Chevalier's birthplaces, immigrant Paris, Parc de Belleville."
+    },
+    {
+      "chunk_number": 27,
+      "filename": "chunk-27-epilogue.txt",
+      "section_title": "Epilogue: The Seine",
+      "page_range": "297-302",
+      "line_count": 124,
+      "summary": "Closing essay on the Seine and Paris's river-centred identity — ports, bridges, bateaux-mouches, Île aux Cygnes."
+    }
+  ]
+}

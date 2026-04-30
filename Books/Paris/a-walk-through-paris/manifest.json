@@ -1,0 +1,66 @@
+{
+  "book_title": "A Walk Through Paris: A Radical Exploration",
+  "author": "Eric Hazan",
+  "source_file": "A walk through Paris a radical exploration (Eric Hazan).pdf",
+  "total_pages": null,
+  "total_chunks": 8,
+  "chunked_at": "2026-04-23T01:01:28Z",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-ivry-to-barriere-ditalie.txt",
+      "section_title": "Chapter 1: Ivry to Barriere d'Italie",
+      "line_count": 317,
+      "summary": "Walk from Ivry town centre to the Barriere d'Italie via the Porte d'Ivry and Avenue de Choisy."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-place-ditalie-to-denfert-rochereau.txt",
+      "section_title": "Chapter 2: Place d'Italie to the 85 bus terminus",
+      "line_count": 812,
+      "summary": "From the Place d'Italie to the 85 bus terminus via the Place Denfert-Rochereau."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-luxembourg-to-les-halles.txt",
+      "section_title": "Chapter 3: Luxembourg to Les Halles via Pont-Neuf",
+      "line_count": 624,
+      "summary": "From the Luxembourg garden to Les Halles via the Pont-Neuf."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-chatelet-to-beaubourg.txt",
+      "section_title": "Chapter 4: Chatelet to Beaubourg",
+      "line_count": 366,
+      "summary": "From Chatelet to Beaubourg via the battlefield of Saint-Merry."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-quincampoix-to-strasbourg-saint-denis.txt",
+      "section_title": "Chapter 5: Rue Quincampoix to Strasbourg-Saint-Denis",
+      "line_count": 582,
+      "summary": "From the Rue Quincampoix to the Strasbourg-Saint-Denis crossroads via the Rue Saint-Denis."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-porte-saint-denis-to-la-chapelle.txt",
+      "section_title": "Chapter 6: Porte Saint-Denis to Place de la Chapelle",
+      "line_count": 590,
+      "summary": "From the Porte Saint-Denis to the Place de la Chapelle via the Faubourg Saint-Denis and the Gare du Nord."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-la-chapelle-three-itineraries.txt",
+      "section_title": "Chapter 7: La Chapelle-Saint-Denis to Porte de la Chapelle",
+      "line_count": 577,
+      "summary": "From La Chapelle-Saint-Denis to the Porte de la Chapelle via three different itineraries: Rue Marx-Dormoy/Rue de la Chapelle, La Goutte-d'Or, Rue Pajol and Rue de l'Evangile."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-boulevard-ney-to-saint-denis.txt",
+      "section_title": "Chapter 8: Boulevard Ney to Saint-Denis along the A1",
+      "line_count": 309,
+      "summary": "From the Boulevard Ney to Saint-Denis along the A1 autoroute."
+    }
+  ]
+}

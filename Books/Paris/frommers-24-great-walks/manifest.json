@@ -1,0 +1,185 @@
+{
+  "book_title": "Frommer's 24 Great Walks in Paris",
+  "author": "Peter Caine, Oriel Caine",
+  "source_file": "Frommers 24 great walks in Paris (Caine, Peter, Caine, Oriel) (z-library.sk, 1lib.sk, z-lib.sk).pdf",
+  "edition": "2nd Edition, 2010",
+  "extraction_mode": "pdftotext -raw (two-column layout — -raw preserves column reading order better than -layout)",
+  "total_pages": null,
+  "total_chunks": 24,
+  "chunked_at": "2026-04-23T02:57:26Z",
+  "skipped_sections": [
+    "Front matter (title, copyright, TOC, map): before line 259",
+    "Introduction (how-to-use-book logistics): within front matter",
+    "Index and Acknowledgements: lines 9414-end"
+  ],
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-birthplace-of-the-city.txt",
+      "section_title": "Walk 1: The Birthplace of the City",
+      "line_count": 393,
+      "summary": "Walk through Île de la Cité — the Celtic and Roman origins of Paris, Notre-Dame, Sainte-Chapelle, Conciergerie, Memorial to the Deported."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-pyramids-and-palaces.txt",
+      "section_title": "Walk 2: Pyramids and Palaces",
+      "line_count": 417,
+      "summary": "Walk through the Louvre, Tuileries, and Palais Royal — royal Paris and the grand museum complex."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-french-paradox.txt",
+      "section_title": "Walk 3: The French Paradox",
+      "line_count": 557,
+      "summary": "Walk through Les Halles and surroundings — the former central market, Saint-Eustache, Bourse de Commerce, Châtelet."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-alchemists-and-artists.txt",
+      "section_title": "Walk 4: Alchemists and Artists",
+      "line_count": 397,
+      "summary": "Walk through the Beaubourg area — Pompidou Centre, Saint-Merry, Nicolas Flamel's house, Tour Saint-Jacques."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-knights-and-mansions.txt",
+      "section_title": "Walk 5: Knights and Mansions",
+      "line_count": 438,
+      "summary": "Walk through the Marais — Place des Vosges, Hôtel de Sully, Carnavalet, Renaissance hôtels particuliers."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-saints-and-sinners.txt",
+      "section_title": "Walk 6: Saints and Sinners",
+      "line_count": 241,
+      "summary": "Walk through the Marais around Saint-Paul and the Jewish quarter — rue des Rosiers, Hôtel de Sens."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-backstreets-of-bastille.txt",
+      "section_title": "Walk 7: Backstreets of the Bastille",
+      "line_count": 225,
+      "summary": "Walk through the Bastille and Faubourg Saint-Antoine — Opéra Bastille, artisan courtyards, Promenade Plantée."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-home-of-the-famous-dead.txt",
+      "section_title": "Walk 8: Home of the Famous Dead",
+      "line_count": 320,
+      "summary": "Walk through Père Lachaise Cemetery — graves of Chopin, Oscar Wilde, Jim Morrison, Edith Piaf, the Communards' Wall."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-romantic-island.txt",
+      "section_title": "Walk 9: The Romantic Island",
+      "line_count": 373,
+      "summary": "Walk through Île Saint-Louis — the aristocratic 17th-century island, Hôtel Lambert, Church of Saint-Louis-en-l'Île, Berthillon."
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-madeleine-district.txt",
+      "section_title": "Walk 10: The Madeleine District",
+      "line_count": 396,
+      "summary": "Walk through the Madeleine district — the Madeleine church, Fauchon, Hédiard, Place Vendôme, Rue Saint-Honoré."
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-bohemian-montmartre.txt",
+      "section_title": "Walk 11: Bohemian Montmartre",
+      "line_count": 348,
+      "summary": "Walk through Montmartre — Sacré-Cœur, Place du Tertre, Le Bateau-Lavoir, the last remaining vineyard, Moulin de la Galette."
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-how-the-other-half-live.txt",
+      "section_title": "Walk 12: How the Other Half Live",
+      "line_count": 350,
+      "summary": "Walk through the Monceau district and Plaine Monceau — the grand 19th-century mansions of the Parisian haute bourgeoisie."
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-phantom-of-the-opera.txt",
+      "section_title": "Walk 13: The Phantom of the Opera",
+      "line_count": 481,
+      "summary": "Walk around the Opéra Garnier — Haussmann's grands boulevards, Galeries Lafayette, Printemps, covered passages."
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-golden-triangle.txt",
+      "section_title": "Walk 14: The Golden Triangle",
+      "line_count": 248,
+      "summary": "Walk through the 8th arrondissement's luxury district — Avenue Montaigne, Avenue George-V, couture houses, Champs-Élysées, Arc de Triomphe."
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-bridges-of-paris.txt",
+      "section_title": "Walk 15: The Bridges of Paris",
+      "line_count": 467,
+      "summary": "Walk along the Seine bridges — Pont Neuf, Pont des Arts, Pont Royal, Pont Alexandre III, the river's architectural history."
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-16-glorifying-the-military.txt",
+      "section_title": "Walk 16: Glorifying the Military",
+      "line_count": 374,
+      "summary": "Walk through Les Invalides — Napoleon's Tomb, Army Museum, École Militaire, Champ-de-Mars."
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-17-iron-lady-of-paris.txt",
+      "section_title": "Walk 17: The Iron Lady of Paris",
+      "line_count": 492,
+      "summary": "Walk around the Eiffel Tower — construction history, Trocadéro, Pont d'Iéna, Palais de Chaillot."
+    },
+    {
+      "chunk_number": 18,
+      "filename": "chunk-18-art-nouveau-to-art-deco.txt",
+      "section_title": "Walk 18: Art Nouveau to Art Deco",
+      "line_count": 370,
+      "summary": "Walk through the 16th arrondissement — Castel Béranger, Guimard's Art Nouveau buildings, Mallet-Stevens Art Deco street."
+    },
+    {
+      "chunk_number": 19,
+      "filename": "chunk-19-following-the-rose-line.txt",
+      "section_title": "Walk 19: Following the Rose Line",
+      "line_count": 372,
+      "summary": "Walk through Saint-Sulpice and the Luxembourg Garden — the church, the Paris Meridian (rose line), gardens, Odéon theatre."
+    },
+    {
+      "chunk_number": 20,
+      "filename": "chunk-20-romans-to-revolution.txt",
+      "section_title": "Walk 20: From Romans to the Revolution",
+      "line_count": 251,
+      "summary": "Walk through the Latin Quarter — Arènes de Lutèce, Cluny Museum, Sorbonne, Panthéon, Saint-Étienne-du-Mont."
+    },
+    {
+      "chunk_number": 21,
+      "filename": "chunk-21-down-and-out-in-paris.txt",
+      "section_title": "Walk 21: Down and Out in Paris",
+      "line_count": 393,
+      "summary": "Walk through the Mouffetard district — rue Mouffetard market, Place de la Contrescarpe, Hemingway and Orwell territory."
+    },
+    {
+      "chunk_number": 22,
+      "filename": "chunk-22-old-world-forgotten-paris.txt",
+      "section_title": "Walk 22: Old-World Forgotten Paris",
+      "line_count": 339,
+      "summary": "Walk through Saint-Germain-des-Prés and nearby — the abbey church, Café de Flore, Les Deux Magots, Odéon, Institut de France."
+    },
+    {
+      "chunk_number": 23,
+      "filename": "chunk-23-down-among-the-bones.txt",
+      "section_title": "Walk 23: Down Among the Bones",
+      "line_count": 420,
+      "summary": "Walk to the Catacombs and Montparnasse — the underground ossuary, Montparnasse Cemetery, the old artist quarter."
+    },
+    {
+      "chunk_number": 24,
+      "filename": "chunk-24-painters-paris.txt",
+      "section_title": "Walk 24: Painters' Paris",
+      "line_count": 344,
+      "summary": "Walk through the 9th arrondissement artist quarter — Musée Gustave Moreau, Musée de la Vie Romantique, Nouvelle Athènes, Square d'Orléans."
+    }
+  ]
+}
