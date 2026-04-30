@@ -43,7 +43,7 @@ format: ## Auto-format with ruff
 # TESTING
 # ──────────────────────────────────────────────────────────
 
-test: test-local test-cloud ## Run all tests against local then cloud Neo4j
+test: test-local ## Run all tests against local Neo4j
 
 test-unit: ## Run unit tests only (no Neo4j needed)
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py -v

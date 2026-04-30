@@ -36,7 +36,7 @@ This single command runs the full pipeline:
 3. **`make install`** — Installs Python dependencies into the venv
 4. **`make db-up`** — Pulls the Neo4j 5 Docker image and starts it on ports 7474 (browser) and 7687 (Bolt)
 5. **`make setup`** — Applies the graph schema (constraints + indexes), seeds test data, and verifies traversals
-6. **`make test`** — Runs all 152 tests
+6. **`make test`** — Runs all 177 tests
 
 If any step fails, see [Troubleshooting](Docs/Markdown%20Docs/TROUBLESHOOTING.md).
 
@@ -65,8 +65,8 @@ source .venv/bin/activate
 | Document | Description |
 |----------|-------------|
 | [Graph Editor Guide](Docs/Markdown%20Docs/GRAPH_EDITOR.md) | How to use the interactive graph editor — UI layout, creating nodes/edges, keyboard shortcuts, working with test data |
-| [API Reference](Docs/Markdown%20Docs/API_REFERENCE.md) | All 15 REST endpoints with parameters, request/response bodies, status codes, and examples |
-| [Test Strategy](Docs/Markdown%20Docs/TEST_STRATEGY.md) | 152-test breakdown, unit vs integration, fixtures, adding new tests |
+| [API Reference](Docs/Markdown%20Docs/API_REFERENCE.md) | All 16 REST endpoints with parameters, request/response bodies, status codes, and examples |
+| [Test Strategy](Docs/Markdown%20Docs/TEST_STRATEGY.md) | 177-test breakdown, unit vs integration, fixtures, adding new tests |
 | [Troubleshooting](Docs/Markdown%20Docs/TROUBLESHOOTING.md) | Docker, Neo4j, Python venv, API, and editor issues with fixes |
 | [Security & Privacy](Docs/Markdown%20Docs/SECURITY_PRIVACY_PRACTICES.md) | Non-negotiable security and privacy constraints for development |
 
@@ -115,12 +115,12 @@ src/
 └── api/
     ├── app.py                 # FastAPI app factory
     ├── dependencies.py        # Neo4j driver injection
-    ├── models/                # Pydantic models (nodes, edges, schema)
-    ├── crud/                  # Cypher operations + schema introspection
-    └── routes/                # API endpoint handlers
+    ├── models/                # Pydantic models (nodes, edges, schema, trips)
+    ├── crud/                  # Cypher operations + schema introspection + trip generation
+    └── routes/                # API endpoint handlers (nodes, edges, schema, audio, trips)
 frontend/
 ├── index.html                 # Read-only dashboard
 └── editor/
     └── index.html             # Interactive graph editor
-tests/                         # 152 tests — see Test Strategy doc
+tests/                         # 177 tests — see Test Strategy doc
 ```

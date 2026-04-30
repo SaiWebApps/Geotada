@@ -271,5 +271,8 @@ data/*/_dedup_review/*.md
 # pipeline input and remain tracked.
 Books/**/*.pdf
 
+# Playwright test screenshots and reports
+tests/reports/
+
 # uv.lock is committed (reproducible dependency resolution)
 # Do NOT add uv.lock to this file.
