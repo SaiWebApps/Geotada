@@ -2,18 +2,46 @@
 
 from __future__ import annotations
 
+import json
 from typing import Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from neo4j import Session
 
 
+def _encode_complex_props(props: dict) -> dict:
+    """JSON-encode list-of-dict values so Neo4j can store them as strings.
+
+    Neo4j refuses `SET n.x = $x` when $x is a list of maps. Pydantic models
+    such as `physical_cues: list[PhysicalCue]` and
+    `inline_foreign_phrases: list[InlineForeignPhrase]` arrive as list[dict]
+    after model_dump(). Encode them here; `_serialize_props` decodes on read.
+    """
+    encoded = {}
+    for key, val in props.items():
+        if isinstance(val, list) and val and all(isinstance(item, dict) for item in val):
+            encoded[key] = json.dumps(val)
+        else:
+            encoded[key] = val
+    return encoded
+
+
 def _serialize_props(props: dict) -> dict:
-    """Convert Neo4j spatial points and temporal types to JSON-safe values."""
+    """Convert Neo4j spatial points and temporal types to JSON-safe values.
+
+    Strings that round-trip from `_encode_complex_props` (JSON arrays of
+    objects) are decoded back to list[dict] for the API response.
+    """
     serialized = {}
     for key, val in props.items():
         if hasattr(val, "latitude"):
             serialized[key] = {"lat": val.latitude, "lng": val.longitude}
+        elif isinstance(val, str) and val.startswith("[") and val.endswith("]"):
+            try:
+                decoded = json.loads(val)
+                serialized[key] = decoded if isinstance(decoded, list) else val
+            except json.JSONDecodeError:
+                serialized[key] = val
         elif isinstance(val, (str, int, float, bool)):
             serialized[key] = val
         elif isinstance(val, list):
@@ -72,7 +100,7 @@ def create_node(
 
     For POI and NarrativeBeat, uses MERGE for idempotent upserts.
     """
-    params = dict(properties)
+    params = _encode_complex_props(dict(properties))
 
     if label == "POI" and "latitude" in params and "longitude" in params:
         lat = params.pop("latitude")
@@ -167,6 +195,7 @@ def update_node(
     if not properties:
         return get_node(session, label, node_id)
 
+    properties = _encode_complex_props(dict(properties))
     params: dict[str, Any] = {"node_id": node_id}
     set_parts: list[str] = []
 
