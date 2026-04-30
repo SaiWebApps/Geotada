@@ -151,7 +151,7 @@ def generate(
     consumed_beat_ids: set[str] = set()
     if poi_beats:
         cold_open_sents, consumed_in_cold_open = _build_cold_open(
-            beat_sequence, route, client, stop_idx=0
+            beat_sequence, route, client, tour_input=tour_input, stop_idx=0
         )
         sentences.extend(cold_open_sents)
         consumed_beat_ids |= consumed_in_cold_open
@@ -224,6 +224,7 @@ def _build_cold_open(
     route: Route,
     client: GlueClient,
     *,
+    tour_input: TourInput,
     stop_idx: int,
 ) -> tuple[list[Sentence], set[str]]:
     """Cold open: prefer a stop_orientation beat; otherwise synthesize.
@@ -266,31 +267,195 @@ def _build_cold_open(
         sentences.extend(_beat_to_sentences(orientation, stop_idx))
         consumed.add(orientation.id)
     else:
-        # SYNTHESIZED_OPENER fallback per Q7: use the first beat's
-        # physical anchoring without inventing claims. Marked
-        # explicitly so the user can audit gap-fill priority.
+        # SYNTHESIZED_OPENER fallback per Q7. Phase 7.5 (Fix 2)
+        # composes the opener from real corpus data at the start POI:
+        # Area name + pronunciation + a single physical_cue + an
+        # optional sensory invitation if any beat has feature_type='view'.
+        # Every phrase traces to a glue-whitelist token or an extracted
+        # corpus field — no Haiku invention. Marked SYNTHESIZED_OPENER
+        # so audits can prioritise stop_orientation back-fill.
+        sentences.extend(
+            _build_synthesized_opener(first_stop, route, tour_input, stop_idx)
+        )
         first_beat = next((b for b in first_stop.beats if b.script_body), None)
-        sentences.append(
-            Sentence(
-                text=f"You're standing at {first_stop.poi_name}.",
-                source_id=SYNTHESIZED_OPENER,
-                source_type="glue",
-                stop_idx=stop_idx,
-            )
-        )
-        sentences.append(
-            Sentence(
-                text="Look around. Take it in.",
-                source_id=GLUE_STAGING,
-                source_type="glue",
-                stop_idx=stop_idx,
-            )
-        )
         if first_beat is not None:
             sentences.extend(_beat_to_sentences(first_beat, stop_idx))
             consumed.add(first_beat.id)
 
     return sentences, consumed
+
+
+# Feature types whose cues are safe to read aloud as physical staging.
+# 'view' and 'architectural_detail' are the strongest direct anchors;
+# 'plaque' and 'adjacent_landmark' fall back when the stronger types
+# are absent. 'interior' is excluded — it usually requires the listener
+# to already be inside, which the cold-open can't guarantee.
+_SYNTH_PRIMARY_FEATURE_TYPES: tuple[str, ...] = ("view", "architectural_detail")
+_SYNTH_FALLBACK_FEATURE_TYPES: tuple[str, ...] = ("plaque", "adjacent_landmark")
+_SYNTH_VIEW_FEATURE_TYPE: str = "view"
+
+
+def _build_synthesized_opener(
+    first_stop: POIBeats,
+    route: Route,
+    tour_input: TourInput,
+    stop_idx: int,
+) -> list[Sentence]:
+    """Compose the Phase 7.5 SYNTHESIZED_OPENER block.
+
+    Order:
+      1. Area-anchored location line ("You're starting in the Marais.")
+         from `route.spine_area`. Falls back to the POI name when
+         spine_area is missing.
+      2. Pronunciation, if any beat at the start POI carries one
+         ("That's pronounced X.").
+      3. A single physical_cue staging line. Picks the strongest cue
+         (view / architectural_detail; plaque / adjacent_landmark
+         fallback). "Look up at X." for view; "Notice X." otherwise.
+      4. Sensory invitation if any beat has feature_type='view':
+         "Take a moment to take it in."; otherwise the duration
+         primer "We're going to walk for about N minutes."
+
+    All composed sentences are marked with SYNTHESIZED_OPENER for
+    source attribution; staging-style sentences additionally trace to
+    GLUE_STAGING in the glue whitelist.
+    """
+    out: list[Sentence] = []
+    poi_beats = list(first_stop.beats)
+
+    # 1. Location anchor.
+    location_text = _synth_location_anchor(first_stop, route)
+    out.append(
+        Sentence(
+            text=location_text,
+            source_id=SYNTHESIZED_OPENER,
+            source_type="glue",
+            stop_idx=stop_idx,
+        )
+    )
+
+    # 2. Pronunciation if present.
+    pronunciation_text = _synth_pronunciation(poi_beats, first_stop.poi_name)
+    if pronunciation_text:
+        out.append(
+            Sentence(
+                text=pronunciation_text,
+                source_id=SYNTHESIZED_OPENER,
+                source_type="glue",
+                stop_idx=stop_idx,
+            )
+        )
+
+    # 3. Physical staging from the strongest available cue.
+    chosen_cue = _synth_pick_cue(poi_beats)
+    has_view_cue = any(
+        (cue.feature_type or "").lower() == _SYNTH_VIEW_FEATURE_TYPE
+        for beat in poi_beats
+        for cue in beat.physical_cues
+    )
+    if chosen_cue is not None:
+        feature = (chosen_cue.feature_type or "").lower()
+        cue_phrase = chosen_cue.cue.strip()
+        if cue_phrase:
+            staging_verb = "Look up at" if feature == _SYNTH_VIEW_FEATURE_TYPE else "Notice"
+            out.append(
+                Sentence(
+                    text=f"{staging_verb} {cue_phrase}.",
+                    source_id=GLUE_STAGING,
+                    source_type="glue",
+                    stop_idx=stop_idx,
+                )
+            )
+
+    # 4. Sensory invitation OR duration primer.
+    if has_view_cue:
+        out.append(
+            Sentence(
+                text="Take a moment to take it in.",
+                source_id=GLUE_STAGING,
+                source_type="glue",
+                stop_idx=stop_idx,
+            )
+        )
+    else:
+        out.append(
+            Sentence(
+                text=f"We're going to walk for about {tour_input.duration_min} minutes.",
+                source_id=GLUE_PACING,
+                source_type="glue",
+                stop_idx=stop_idx,
+            )
+        )
+
+    return out
+
+
+def _synth_location_anchor(first_stop: POIBeats, route: Route) -> str:
+    """Pick the Area-name line for the synthesized opener.
+
+    Prefers `route.spine_area`. Falls back to the POI name when no
+    spine has been computed (test fixtures without an Area).
+    """
+    spine = (route.spine_area or "").strip()
+    if spine:
+        article = _area_article(spine)
+        return f"You're starting in {article}{spine}."
+    return f"You're standing at {first_stop.poi_name}."
+
+
+def _area_article(spine: str) -> str:
+    """A small, deterministic article-prefix table for Paris Areas.
+
+    "the Marais" / "the Île de la Cité" feel native; arrondissement
+    numbers ("the 4th Arrondissement") want "the" too. Bare proper
+    nouns ("Montmartre", "Saint-Germain-des-Prés") take no article.
+    """
+    s = spine.lower()
+    if s.startswith("île ") or s.startswith("ile "):
+        return "the "
+    if "arrondissement" in s:
+        return "the "
+    if s.startswith("le ") or s.startswith("la ") or s.startswith("les "):
+        return ""  # already carries the article
+    if s in {"marais"}:
+        return "the "
+    return ""
+
+
+def _synth_pronunciation(beats: list[BeatRef], poi_name: str) -> str | None:
+    """Return a pronunciation glue line if any beat carries the field.
+
+    Picks the longest non-empty pronunciation (richer phonetic detail
+    is more useful aloud) and prefixes it with the POI-name target.
+    """
+    pronunciations = [
+        (b.pronunciation or "").strip() for b in beats if (b.pronunciation or "").strip()
+    ]
+    if not pronunciations:
+        return None
+    chosen = max(pronunciations, key=len)
+    # If the pronunciation already names the target, just emit it.
+    if chosen.lower().startswith("that's pronounced"):
+        if not chosen.endswith("."):
+            chosen = chosen + "."
+        return chosen
+    return f"That's pronounced {chosen}."
+
+
+def _synth_pick_cue(beats: list[BeatRef]):
+    """Return the strongest physical_cue from a stop's beats, or None.
+
+    Preference: view ≻ architectural_detail ≻ plaque ≻ adjacent_landmark.
+    Within a category, the first cue encountered wins (stable order
+    follows beat order, which is already deterministic).
+    """
+    for tier in (_SYNTH_PRIMARY_FEATURE_TYPES, _SYNTH_FALLBACK_FEATURE_TYPES):
+        for ftype in tier:
+            for beat in beats:
+                for cue in beat.physical_cues:
+                    if (cue.feature_type or "").lower() == ftype and cue.cue.strip():
+                        return cue
+    return None
 
 
 def _find_orientation_beat(stop: POIBeats) -> BeatRef | None:

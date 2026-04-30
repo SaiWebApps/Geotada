@@ -1,7 +1,15 @@
 """Within-POI beat ordering — §3.3 of phase-1-design.
 
 Given a POI and its active beats, pick an ordering strategy and emit a
-deterministic ordered list:
+deterministic ordered list.
+
+Phase 7.5 (2026-04-29) tightened the Area cold-open hoist
+(`find_area_orientation_beat`): a sibling-POI orientation beat may only
+hoist when (a) it is the start POI's own beat, (b) the beat carries no
+physical_cues at all, or (c) the beat's source POI is within
+`HOIST_PROXIMITY_M` of the start stop. Otherwise the cues describe a
+different physical location and would land geographically dishonest at
+the cold-open. Falls through to SYNTHESIZED_OPENER instead.
 
 - "sub_location": building walk. Use fixtures.SUB_LOCATION_ORDER if
   curated; otherwise fall back to the (alphabetically stable) order of
@@ -364,6 +372,17 @@ def _find_closing_friendly_index(beats: tuple[BeatRef, ...]) -> int | None:
     return best_idx
 
 
+HOIST_PROXIMITY_M: float = 100.0
+"""Phase 7.5 cold-open hoist proximity gate (Fix 1).
+
+A sibling-POI orientation beat may only hoist to the start stop when
+the source POI is within this radius — otherwise the beat's
+physical_cues describe somewhere else (Pariswalks PdV "children's
+play area" landing at Hotel de Sully). 100 m matches the v3 schema's
+geofence trigger radius, which is the natural notion of "same place".
+"""
+
+
 def find_area_orientation_beat(
     beat_sequence: BeatSequence,
     route: Route,
@@ -379,16 +398,23 @@ def find_area_orientation_beat(
     falls back to the SYNTHESIZED_OPENER even when a sibling POI in the
     same Area carries the canonical Pariswalks-format opener.
 
-    The Tour 1 (PdV) case: start POI is Hotel de Sully (no orientation
-    beat); Place des Vosges (5th stop, same Le Marais Area) has the
-    canonical Pariswalks "find a bench" opener (beat ebeab682). With
-    this lookup the cold-open hoists ebeab682; generation marks it
-    consumed so it doesn't double-fire at its original stop.
+    Phase 7.5 (Fix 1, 2026-04-29) added a geographic-honesty guard. The
+    Phase 7 hoist promoted any orientation beat from the same Area as
+    the start stop, which produced Tour 1 stop 1 emitting the Pariswalks
+    "find a bench in the garden, near the children's play area" beat at
+    Hotel de Sully — those features exist at Place des Vosges (the
+    sibling POI), not at the start. The refined rule accepts a
+    candidate only when:
 
-    Returns the highest-scoring orientation beat sourced from a non-start
-    POI in the same Area as the start POI. ``None`` when the start POI
-    has its own orientation beat (caller falls through to the existing
-    per-POI lookup) or when no Area-mate carries one.
+    - (a) the beat's POI matches the start POI (Phase 5 behaviour;
+      preferred), OR
+    - (b) the beat has no physical_cues at all (treat as Area-generic), OR
+    - (c) the beat's source POI is within ``HOIST_PROXIMITY_M`` of the
+      start stop (cues describe nearby features the listener can see).
+
+    When no candidate passes, returns ``None`` — generation falls
+    through to the SYNTHESIZED_OPENER, which is the geographically
+    honest answer.
     """
     poi_beats = beat_sequence.poi_beats
     if not poi_beats or start_idx >= len(poi_beats):
@@ -402,6 +428,8 @@ def find_area_orientation_beat(
         return None
     interest = frozenset(s.lower() for s in (interest_lenses or []))
 
+    from .routing import haversine_m  # local import; no cycle risk
+
     candidates: list[BeatRef] = []
     for idx, plan in enumerate(poi_beats):
         if idx == start_idx:
@@ -411,14 +439,42 @@ def find_area_orientation_beat(
             continue
         if not (start_areas & {a for a in peer.areas if a}):
             continue
+        peer_distance_m = haversine_m(
+            start_poi.lat, start_poi.lng, peer.lat, peer.lng
+        )
         for beat in plan.beats:
-            if (beat.beat_type or "").lower() == "stop_orientation":
-                candidates.append(beat)
-            elif (beat.narrative_function or "").lower() == "stop_orientation":
-                candidates.append(beat)
+            is_orientation = (
+                (beat.beat_type or "").lower() == "stop_orientation"
+                or (beat.narrative_function or "").lower() == "stop_orientation"
+            )
+            if not is_orientation:
+                continue
+            if not _hoist_geographically_honest(
+                beat,
+                beat_poi_id=peer.id,
+                start_poi_id=start_poi.id,
+                peer_distance_m=peer_distance_m,
+            ):
+                continue
+            candidates.append(beat)
     if not candidates:
         return None
     return _pick_best(candidates, interest)
+
+
+def _hoist_geographically_honest(
+    beat: BeatRef,
+    *,
+    beat_poi_id: str,
+    start_poi_id: str,
+    peer_distance_m: float,
+) -> bool:
+    """Phase 7.5 Fix 1 gate. See ``find_area_orientation_beat`` docstring."""
+    if beat_poi_id == start_poi_id:
+        return True  # same POI — original Phase 5 behaviour
+    if not beat.physical_cues:
+        return True  # no cues → Area-generic; safe to hoist
+    return peer_distance_m <= HOIST_PROXIMITY_M
 
 
 def _hoist_orientation(

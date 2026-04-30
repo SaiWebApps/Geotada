@@ -13,6 +13,7 @@ from src.tour.contract import (
     BeatRef,
     BeatSequence,
     POI,
+    PhysicalCue,
     POIBeats,
     Route,
     TourInput,
@@ -191,9 +192,14 @@ def test_cold_open_synthesizes_when_no_orientation():
     script = generate(seq, _route((poi,), duration_min=60), _input(round_trip=False), glue_client=MockGlueClient())
     sources = [s.source_id for s in script.script]
     assert SYNTHESIZED_OPENER in sources
-    # The synthesized opener mentions the POI name (sentence-start, not flagged).
+    # Phase 7.5 (Fix 2): synthesized opener anchors on the spine Area name
+    # when present (corpus-honest "you're starting in the Marais"), and
+    # falls back to the POI name only when no spine_area exists. Either
+    # way the opener fires and writes traceable glue tokens.
     synth = next(s for s in script.script if s.source_id == SYNTHESIZED_OPENER)
-    assert "Notre-Dame Cathedral" in synth.text
+    # The route fixture sets spine_area="Le Marais", so the location
+    # anchor should reference the Marais.
+    assert "Marais" in synth.text or "Notre-Dame Cathedral" in synth.text
 
 
 # ---------------------------------------------------------------------------
@@ -577,3 +583,113 @@ def test_empty_beat_sequence_produces_empty_script():
     assert script.script == ()
     assert script.selected_pois == ()
     assert script.validation.passed
+
+
+# ---------------------------------------------------------------------------
+# Phase 7.5 Fix 2 — improved SYNTHESIZED_OPENER
+# ---------------------------------------------------------------------------
+
+
+def _beat_with_cues(
+    bid: str,
+    poi_id: str,
+    *,
+    cues: tuple[PhysicalCue, ...] = (),
+    pronunciation: str | None = None,
+    body: str = "",
+    nf: str = "establishing",
+) -> BeatRef:
+    return BeatRef(
+        id=bid,
+        poi_id=poi_id,
+        narrative_function=nf,
+        word_count=len(body.split()) or 1,
+        script_body=body or None,
+        physical_cues=cues,
+        pronunciation=pronunciation,
+    )
+
+
+def test_synthesized_opener_uses_physical_cues():
+    """Synthesized opener references the start POI's strongest cue + Area name."""
+    poi = _poi("p1", "Hotel de Sully")
+    body = _beat_with_cues(
+        "body",
+        poi.id,
+        cues=(
+            PhysicalCue(cue="the wrought-iron balconies", direction="up", feature_type="architectural_detail"),
+        ),
+        body="A square fact.",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
+    cold_open = [s for s in script.script if s.stop_idx == 0]
+    texts = [s.text for s in cold_open]
+    # Area-anchored location line.
+    assert any("Marais" in t for t in texts)
+    # Architectural-detail cue surfaces via "Notice X." (not "Look up at" — that's the view feature_type).
+    assert any("the wrought-iron balconies" in t for t in texts)
+
+
+def test_synthesized_opener_uses_pronunciation_when_present():
+    poi = _poi("p1", "Place des Vosges")
+    body = _beat_with_cues(
+        "body",
+        poi.id,
+        pronunciation="plass-day-voge",
+        body="A square fact.",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
+    cold_open = [s for s in script.script if s.stop_idx == 0]
+    texts = [s.text for s in cold_open]
+    assert any("plass-day-voge" in t for t in texts)
+    assert any("That's pronounced" in t for t in texts)
+
+
+def test_synthesized_opener_falls_back_gracefully_with_no_cues():
+    poi = _poi("p1", "Some New Anchor")
+    body = _beat_with_cues("body", poi.id, body="A fact.")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    script = generate(seq, _route((poi,), duration_min=60), _input(round_trip=True, duration=60), glue_client=MockGlueClient())
+    cold_open = [s for s in script.script if s.stop_idx == 0]
+    texts = [s.text for s in cold_open]
+    # Minimal but readable: pacing + location anchor + duration primer.
+    assert any("Settle in" in t for t in texts)
+    assert any("Marais" in t for t in texts)  # spine_area anchor
+    assert any("60 minutes" in t or "about 60" in t for t in texts)
+
+
+def test_synthesized_opener_view_cue_uses_look_up_verb():
+    """A 'view' feature_type cue uses 'Look up at...' staging."""
+    poi = _poi("p1", "Some Square")
+    body = _beat_with_cues(
+        "body",
+        poi.id,
+        cues=(
+            PhysicalCue(cue="the gilded statue", direction="up", feature_type="view"),
+        ),
+        body="A fact.",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
+    cold_open_texts = [s.text for s in script.script if s.stop_idx == 0]
+    assert any("Look up at the gilded statue" in t for t in cold_open_texts)
+    # View cues also unlock the "Take a moment to take it in." invitation.
+    assert any("Take a moment" in t for t in cold_open_texts)

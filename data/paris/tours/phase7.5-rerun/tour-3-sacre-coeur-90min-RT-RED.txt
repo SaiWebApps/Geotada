@@ -1,0 +1,11 @@
+✗ TOURABILITY REFUSED (RED) — 48.886452,2.343121 90-min round-trip
+  fill_ratio:        0.17 (target ≥ 1.0)
+  anchor_candidates: 3 (target ≥ 4)
+  cluster_compactness: 0.53 (target ≤ 0.6)
+  reachable_pois:    6
+  reachable_beats:   22
+  walk_radius_m:     553
+
+  Recommendations:
+    • Try a 14-min round-trip instead (corpus capacity supports this length).
+    • Try one-way ending at 'Moulin Rouge' (denser corpus reachable on a one-way path).

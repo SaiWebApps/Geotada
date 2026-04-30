@@ -9,13 +9,14 @@ import pytest
 
 from src.tour.beat_select import (
     B8_JACCARD_THRESHOLD,
+    HOIST_PROXIMITY_M,
     NARRATIVE_FUNCTION_ORDER,
     choose_ordering_strategy,
     find_area_orientation_beat,
     reorder_final_stop_for_closing,
     select_poi_beats,
 )
-from src.tour.contract import POI, BeatRef, BeatSequence, POIBeats, Route
+from src.tour.contract import POI, BeatRef, BeatSequence, PhysicalCue, POIBeats, Route
 from src.tour.fixtures import NOTRE_DAME_SUB_LOCATION_ORDER
 
 
@@ -943,3 +944,152 @@ def test_no_orientation_beat_means_no_change():
     choir = _beat("choir", sub_location="choir")
     plan = select_poi_beats(poi, [parvis, nave, choir])
     assert {b.id for b in plan.beats} == {"parvis", "nave", "choir"}
+
+
+# ---------------------------------------------------------------------------
+# Phase 7.5 Fix 1 — geographically-honest cold-open hoist
+# ---------------------------------------------------------------------------
+
+
+def _hoist_route(start_poi: POI, sibling_poi: POI) -> Route:
+    """Two-stop synthetic Route with start at index 0, sibling at index 1."""
+    return Route(
+        pois=(start_poi, sibling_poi),
+        transits=(),
+        total_walk_distance_m=0.0,
+        total_walk_seconds=0,
+        audio_budget_seconds=0,
+        spine_area=None,
+        target_audio_seconds=0,
+        err_short_total_seconds=0,
+    )
+
+
+def _hoist_seq(
+    start_poi: POI,
+    sibling_poi: POI,
+    sibling_orient: BeatRef,
+    *,
+    start_orient: BeatRef | None = None,
+) -> BeatSequence:
+    start_beats: tuple[BeatRef, ...]
+    if start_orient is not None:
+        start_beats = (start_orient,)
+    else:
+        start_beats = (BeatRef(id="start-est", poi_id=start_poi.id, narrative_function="establishing"),)
+    sibling_beats = (sibling_orient,)
+    return BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id=start_poi.id, poi_name=start_poi.name, ordering_strategy="narrative_function", beats=start_beats),
+            POIBeats(poi_id=sibling_poi.id, poi_name=sibling_poi.name, ordering_strategy="narrative_function", beats=sibling_beats),
+        )
+    )
+
+
+def test_hoist_rejected_when_beat_describes_distant_features():
+    """Phase 7.5 Fix 1 — Tour 1 PdV scenario.
+
+    Hotel de Sully (start, tier 4) shares Le Marais with Place des Vosges
+    (sibling, tier 5). PdV's orientation beat carries physical_cues
+    referencing the children's play area + Café Ma Bourgogne — features
+    that don't exist at Hotel de Sully. With the cues present and the
+    siblings ~270m apart (well past 100m), the hoist must reject and
+    let the cold-open fall through to SYNTHESIZED_OPENER.
+    """
+    hotel_de_sully = POI(
+        id="hotel-de-sully", name="Hotel de Sully", tier=4, poi_role="stop",
+        lat=48.85389, lng=2.36514, areas=("Le Marais",),
+    )
+    pdv = POI(
+        id="place-des-vosges", name="Place des Vosges", tier=5, poi_role="stop",
+        lat=48.85553, lng=2.36560, areas=("Le Marais",),  # ~190m NE of Hotel de Sully
+    )
+    pdv_orient = BeatRef(
+        id="ebeab682",
+        poi_id=pdv.id,
+        beat_type="stop_orientation",
+        narrative_function="establishing",
+        word_count=40,
+        active_status="active",
+        physical_cues=(
+            PhysicalCue(cue="children's play area", direction="here", feature_type="view"),
+            PhysicalCue(cue="Café Ma Bourgogne at the northwest corner", direction="north", feature_type="adjacent_landmark"),
+        ),
+    )
+    seq = _hoist_seq(hotel_de_sully, pdv, pdv_orient)
+    route = _hoist_route(hotel_de_sully, pdv)
+    assert find_area_orientation_beat(seq, route, start_idx=0) is None
+
+
+def test_hoist_accepted_when_beat_is_area_generic():
+    """No physical_cues → beat is treated as Area-generic; hoist proceeds."""
+    start = POI(id="start", name="Start", tier=4, poi_role="stop",
+                lat=48.85389, lng=2.36514, areas=("Le Marais",))
+    sibling = POI(id="sib", name="Sibling", tier=5, poi_role="stop",
+                  lat=48.85553, lng=2.36560, areas=("Le Marais",))
+    orient = BeatRef(
+        id="orient",
+        poi_id=sibling.id,
+        beat_type="stop_orientation",
+        word_count=30,
+        active_status="active",
+        physical_cues=(),  # no cues — Area-generic
+    )
+    seq = _hoist_seq(start, sibling, orient)
+    route = _hoist_route(start, sibling)
+    out = find_area_orientation_beat(seq, route, start_idx=0)
+    assert out is not None
+    assert out.id == "orient"
+
+
+def test_hoist_accepted_when_beat_has_no_cues():
+    """Empty physical_cues tuple is treated identically to no cues."""
+    start = POI(id="start", name="Start", tier=4, poi_role="stop",
+                lat=48.85389, lng=2.36514, areas=("Le Marais",))
+    sibling = POI(id="sib", name="Sibling", tier=5, poi_role="stop",
+                  lat=48.85553, lng=2.36560, areas=("Le Marais",))
+    orient = BeatRef(
+        id="orient",
+        poi_id=sibling.id,
+        beat_type="stop_orientation",
+        word_count=30,
+        active_status="active",
+        # physical_cues defaults to ()
+    )
+    seq = _hoist_seq(start, sibling, orient)
+    route = _hoist_route(start, sibling)
+    out = find_area_orientation_beat(seq, route, start_idx=0)
+    assert out is not None
+    assert out.id == "orient"
+
+
+def test_hoist_accepted_when_sibling_within_proximity():
+    """Beat carries cues but its source POI sits within HOIST_PROXIMITY_M.
+
+    100m is the v3 schema's geofence radius; sibling POIs that close are
+    treated as part of the same physical place and the cues describe
+    features the listener can actually see from the start.
+    """
+    start = POI(id="start", name="Start", tier=4, poi_role="stop",
+                lat=48.85553, lng=2.36560, areas=("Le Marais",))
+    # ~30m offset — well inside the proximity gate
+    sibling = POI(id="sib", name="Sibling", tier=5, poi_role="stop",
+                  lat=48.85580, lng=2.36560, areas=("Le Marais",))
+    orient = BeatRef(
+        id="orient",
+        poi_id=sibling.id,
+        beat_type="stop_orientation",
+        word_count=30,
+        active_status="active",
+        physical_cues=(PhysicalCue(cue="the arcades", direction="here", feature_type="view"),),
+    )
+    seq = _hoist_seq(start, sibling, orient)
+    route = _hoist_route(start, sibling)
+    out = find_area_orientation_beat(seq, route, start_idx=0)
+    assert out is not None
+    assert out.id == "orient"
+
+
+def test_hoist_rejected_when_beat_describes_distant_features_constant_check():
+    """Pin the proximity constant so threshold drift fails loudly."""
+    assert HOIST_PROXIMITY_M == 100.0

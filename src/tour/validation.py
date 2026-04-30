@@ -127,6 +127,20 @@ def _cited_beat_corpus_text(script: Script, beat_sequence: BeatSequence) -> str:
         for beat in plan.beats:
             if beat.id in cited_ids and beat.script_body:
                 chunks.append(beat.script_body)
+            # Phase 7.5: physical_cues + pronunciation are corpus-derived
+            # facts that can surface in the synthesized cold-open. Include
+            # them in canonical context so glue-validation doesn't flag
+            # cue proper nouns ("Café Ma Bourgogne") as runtime invention.
+            for cue in beat.physical_cues:
+                if cue.cue:
+                    chunks.append(cue.cue)
+            if beat.pronunciation:
+                chunks.append(beat.pronunciation)
+    # Phase 7.5: Area names that surface in the synthesized opener
+    # ("the Marais", "the Île de la Cité") are canonical context too.
+    for poi in script.selected_pois:
+        if poi.area:
+            chunks.append(poi.area)
     return "\n".join(chunks)
 
 

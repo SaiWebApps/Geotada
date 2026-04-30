@@ -109,7 +109,13 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
 def _build_beat_sequence(route, snapshot, lenses) -> BeatSequence:
     plans = []
     for poi in route.pois:
-        beats = snapshot.beats_for(poi.id)
+        beats = list(snapshot.beats_for(poi.id))
+        # Phase 7.5 Fix 3: when a sibling POI has been demoted into this
+        # one, append its beats so select_poi_beats orders them in the
+        # host's spatial bucket (existing trigger_address keeps them at
+        # the right address; sub_location collisions handled by the
+        # ordering strategy).
+        beats.extend(route.demoted_beats.get(poi.id, ()))
         plan = select_poi_beats(poi, beats, interest_lenses=lenses)
         plans.append(plan)
     return BeatSequence(poi_beats=tuple(plans))

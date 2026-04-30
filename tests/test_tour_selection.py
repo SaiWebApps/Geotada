@@ -906,3 +906,227 @@ def test_phase7_fill_pass_concorde_smoke_real_corpus():
         f"Phase 7 fill pass should add ≥1 anchor on Concorde 180min "
         f"(baseline was 5). Got {len(route.pois)}: {[p.name for p in route.pois]}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Phase 7.5 Fix 3 — co-located POI demotion
+# ---------------------------------------------------------------------------
+
+
+def test_demote_co_located_pois():
+    """Two POIs within 15m + a beat at one referencing the other's name → demote.
+
+    Mirrors the Tour 1 case: Place des Vosges (tier 5) carries a beat at
+    sub_location 'hugo-museum-no-6'; Musée Victor Hugo (tier 4) sits at
+    the same address. The smaller-tier (Hugo museum) demotes; its beats
+    merge into PdV's pool via Route.demoted_beats.
+    """
+    from src.tour.selection import apply_co_located_demotion
+
+    pdv = _poi(
+        "place-des-vosges",
+        tier=5,
+        lat=48.85553,
+        lng=2.36560,
+        areas=("Le Marais",),
+        beat_count=25,
+    )
+    hugo = _poi(
+        "musee-victor-hugo",
+        tier=4,
+        lat=48.85556,  # ~3-4m offset — well within 15m
+        lng=2.36563,
+        areas=("Le Marais",),
+        beat_count=2,
+    )
+    pdv_beat = BeatRef(
+        id="pdv-no6",
+        poi_id=pdv.id,
+        sub_location="hugo-museum-no-6",
+        trigger_address="no. 6 place des Vosges",
+        narrative_function="establishing",
+        active_status="active",
+    )
+    hugo_beat_a = BeatRef(
+        id="hugo-a",
+        poi_id=hugo.id,
+        narrative_function="establishing",
+        script_body="Hugo lived here from 1832.",
+        active_status="active",
+    )
+    hugo_beat_b = BeatRef(
+        id="hugo-b",
+        poi_id=hugo.id,
+        narrative_function="deepen",
+        script_body="His domestic life was turbulent.",
+        active_status="active",
+    )
+    snap = _snap(
+        [pdv, hugo],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={pdv.id: [pdv_beat], hugo.id: [hugo_beat_a, hugo_beat_b]},
+    )
+    new_selected, demoted_beats = apply_co_located_demotion([pdv, hugo], snap)
+    assert [p.id for p in new_selected] == ["place-des-vosges"]
+    assert hugo.id not in {p.id for p in new_selected}
+    assert pdv.id in demoted_beats
+    demoted_ids = {b.id for b in demoted_beats[pdv.id]}
+    assert demoted_ids == {"hugo-a", "hugo-b"}, (
+        f"All demoted POI's beats must be merged into the host's pool; got {demoted_ids}"
+    )
+
+
+def test_no_demotion_when_distance_above_threshold():
+    """Same address overlap signal but well past the proximity gate → no demotion."""
+    from src.tour.selection import DEMOTION_PROXIMITY_M, apply_co_located_demotion
+
+    a = _poi("a-poi", tier=5, lat=48.85550, lng=2.36560, areas=("Le Marais",), beat_count=5)
+    # ~280m offset — well outside the 100m geofence-radius gate.
+    b = _poi("b-museum", tier=4, lat=48.85800, lng=2.36560, areas=("Le Marais",), beat_count=2)
+    a_beat = BeatRef(
+        id="a1",
+        poi_id=a.id,
+        sub_location="b-museum-room",
+        narrative_function="establishing",
+        active_status="active",
+    )
+    snap = _snap(
+        [a, b],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={a.id: [a_beat], b.id: []},
+    )
+    new_selected, demoted_beats = apply_co_located_demotion([a, b], snap)
+    assert {p.id for p in new_selected} == {"a-poi", "b-museum"}
+    assert demoted_beats == {}
+    # Sanity check on the constant — guards against silent threshold drift.
+    assert DEMOTION_PROXIMITY_M == 100.0
+
+
+def test_no_demotion_when_smaller_is_pause_tier():
+    """Tier-3 (or below) POIs are deliberate pause stops; do not demote.
+
+    Mirrors the Île case: Square du Vert-Galant (tier 3) sits ~80m from
+    Pont Neuf (tier 5) and Pont Neuf carries beats referencing
+    'vert-galant'. The Phase 7.5 guard skips this pair because Vert-
+    Galant is an empirical Pariswalks pause stop, not a sub-feature
+    of Pont Neuf.
+    """
+    from src.tour.selection import apply_co_located_demotion
+
+    pont_neuf = _poi(
+        "pont-neuf",
+        tier=5,
+        lat=48.85698,
+        lng=2.34170,
+        areas=("Île de la Cité",),
+        beat_count=10,
+    )
+    vert_galant = _poi(
+        "vert-galant",
+        tier=3,  # pause tier
+        lat=48.85650,
+        lng=2.34010,
+        areas=("Île de la Cité",),
+        beat_count=4,
+    )
+    pn_beat = BeatRef(
+        id="pn1",
+        poi_id=pont_neuf.id,
+        sub_location="vert-galant-tip",
+        narrative_function="establishing",
+        active_status="active",
+    )
+    snap = _snap(
+        [pont_neuf, vert_galant],
+        area_types={"Île de la Cité": "island"},
+        beats_by_poi={pont_neuf.id: [pn_beat], vert_galant.id: []},
+    )
+    new_selected, demoted_beats = apply_co_located_demotion([pont_neuf, vert_galant], snap)
+    assert {p.id for p in new_selected} == {"pont-neuf", "vert-galant"}
+    assert demoted_beats == {}
+
+
+def test_no_demotion_when_no_address_overlap_signal():
+    """Within 15m but no beat references the other POI's distinctive token."""
+    from src.tour.selection import apply_co_located_demotion
+
+    a = _poi("alpha-anchor", tier=5, lat=48.85550, lng=2.36560, areas=("Le Marais",), beat_count=5)
+    b = _poi("beta-museum", tier=4, lat=48.85553, lng=2.36563, areas=("Le Marais",), beat_count=2)
+    a_beat = BeatRef(
+        id="a1",
+        poi_id=a.id,
+        sub_location="entrance",  # no mention of beta
+        narrative_function="establishing",
+        active_status="active",
+    )
+    b_beat = BeatRef(
+        id="b1",
+        poi_id=b.id,
+        narrative_function="establishing",
+        active_status="active",
+    )
+    snap = _snap(
+        [a, b],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={a.id: [a_beat], b.id: [b_beat]},
+    )
+    new_selected, demoted_beats = apply_co_located_demotion([a, b], snap)
+    assert {p.id for p in new_selected} == {"alpha-anchor", "beta-museum"}
+    assert demoted_beats == {}
+
+
+def test_demotion_merged_via_select_route_end_to_end():
+    """select_route() must surface demoted_beats on the returned Route."""
+    pdv = _poi(
+        "place-des-vosges",
+        tier=5,
+        lat=PDV[0],
+        lng=PDV[1],
+        areas=("Le Marais",),
+        beat_count=8,
+    )
+    hugo = _poi(
+        "musee-victor-hugo",
+        tier=4,
+        lat=PDV[0] + 0.00003,
+        lng=PDV[1] + 0.00003,  # ~4m offset
+        areas=("Le Marais",),
+        beat_count=2,
+    )
+    pdv_beat = BeatRef(
+        id="pdv-no6",
+        poi_id=pdv.id,
+        sub_location="hugo-museum-no-6",
+        trigger_address="no. 6 place des Vosges",
+        narrative_function="establishing",
+        est_spoken_seconds=240,
+        active_status="active",
+    )
+    pdv_extra = [
+        BeatRef(id=f"pdv-x{i}", poi_id=pdv.id, est_spoken_seconds=240, active_status="active")
+        for i in range(7)
+    ]
+    hugo_beat = BeatRef(
+        id="hugo-1",
+        poi_id=hugo.id,
+        narrative_function="establishing",
+        est_spoken_seconds=240,
+        active_status="active",
+    )
+    snap = _snap(
+        [pdv, hugo, *_density_fillers(PDV, n=4)],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={
+            pdv.id: [pdv_beat, *pdv_extra],
+            hugo.id: [hugo_beat],
+        },
+    )
+    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True)
+    route = select_route(inp, snap)
+    poi_ids = {p.id for p in route.pois}
+    assert "place-des-vosges" in poi_ids
+    assert "musee-victor-hugo" not in poi_ids, (
+        "Hugo museum should be demoted into Place des Vosges as a sub-stop"
+    )
+    assert "place-des-vosges" in route.demoted_beats
+    assert any(b.id == "hugo-1" for b in route.demoted_beats["place-des-vosges"])

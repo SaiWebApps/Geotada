@@ -1,0 +1,1379 @@
+{
+  "city_slug": "paris",
+  "generated_at": "2026-04-30T02:33:53.826900+00:00",
+  "inputs": {
+    "start": [
+      48.85675,
+      2.34103
+    ],
+    "duration_min": 90,
+    "city_slug": "paris",
+    "lenses": null,
+    "round_trip": false,
+    "theme_hint": null,
+    "start_label": "48.85675,2.34103"
+  },
+  "total_audio_seconds": 1831,
+  "total_walking_seconds": 1478,
+  "total_walk_distance_m": 912,
+  "total_planned_seconds": 4482,
+  "selected_pois": [
+    {
+      "id": "a15ed4c2-c87a-442a-8a88-050668d23a84",
+      "name": "Pont Neuf",
+      "tier": 5,
+      "lat": 48.85675,
+      "lng": 2.341033,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "d38306de-2bf6-4cda-bcd8-2e428de68465",
+        "76847b20-b881-4cc2-aa30-1234351f5f6d",
+        "cffe1217-138c-418b-98d3-77b80a8f0fac",
+        "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+        "11811369-ed24-416b-a25c-cdc5a4ddfbcf",
+        "46afa2ed-1792-4a6a-ac90-2aeefa2705a3",
+        "16392dbf-6b96-422e-a923-431760f3e34a",
+        "90d4f667-bae7-47f1-8a1f-d45614ade605"
+      ]
+    },
+    {
+      "id": "e69e840b-3ab9-421e-99d9-0ae74b8e64c1",
+      "name": "Square du Vert-Galant",
+      "tier": 3,
+      "lat": 48.85717,
+      "lng": 2.341516,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 150,
+      "beat_ids": [
+        "d72b2d31-a011-4870-b48f-40d29d46c4ab",
+        "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+        "8af14cb2-75e7-4907-b08f-a0e1502805d9"
+      ]
+    },
+    {
+      "id": "b205f541-e04a-4756-a2a0-537c34d67d47",
+      "name": "Sainte-Chapelle",
+      "tier": 5,
+      "lat": 48.855358,
+      "lng": 2.34483,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "ba7be408-5674-4a4b-8b40-c607d7588752",
+        "6a57935f-303f-4b3f-9aa5-aa6f1e451e7a",
+        "14d12dae-52fb-4490-9d69-93dcffbfa480",
+        "028d603e-f754-4eb1-9040-4685045c8510",
+        "a1effe65-bc1e-4903-8a78-49020f737ff4",
+        "0095f842-c349-4409-ad1b-6b7b2c0f1e4d"
+      ]
+    },
+    {
+      "id": "31323537-f0f9-4f02-8d96-694a05ad42c1",
+      "name": "Conciergerie",
+      "tier": 5,
+      "lat": 48.8558,
+      "lng": 2.3458,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+        "0a62096c-61ad-422b-99e6-47951b52f18e",
+        "8a85780f-5c34-4954-914f-d69f314197ff",
+        "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+        "91765c42-70f0-4b31-ac37-26f24774246a",
+        "d1afba2f-62f6-4807-83ec-da961e310c67",
+        "d2c91706-78c8-4e7a-a36b-705e4229599e"
+      ]
+    },
+    {
+      "id": "c9a3739c-0a33-451c-91cb-25e85e65d53e",
+      "name": "Palais de Justice",
+      "tier": 4,
+      "lat": 48.855675,
+      "lng": 2.345924,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "9751d072-3813-4e39-a128-df254238e17d",
+        "b536f6f3-42e4-4a4b-9444-dd196a5994da",
+        "3b1ba25a-d32e-4154-873e-fd6874d02ec7"
+      ]
+    },
+    {
+      "id": "225e06fa-7bae-43ef-92f8-2763d55c6ecb",
+      "name": "Ile de la Cite",
+      "tier": 5,
+      "lat": 48.8544,
+      "lng": 2.3472,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "0fd99fbd-2386-40f2-ab3b-bffb149f7a58",
+        "a0b6bc71-68c0-476c-a11b-fd4c0eea04b5",
+        "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+        "f462910e-b88d-4287-a789-6ed084f0ae3a",
+        "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+        "f6febeee-9172-4b20-990e-7dde6a062fa9",
+        "2645c2b4-62b2-4e81-bb36-8a9e3200df67",
+        "0bc44896-5ac8-4314-85ab-bad506246656"
+      ]
+    },
+    {
+      "id": "9cf649a8-ddcc-4f73-a3e8-2b04e08698f4",
+      "name": "Hotel-Dieu",
+      "tier": 4,
+      "lat": 48.854,
+      "lng": 2.3488,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+        "a220c5ce-314d-4eae-9bdc-719ad4fe2428",
+        "cdaf1ac8-69c2-4ba5-9bdd-448ecf1015e8",
+        "2387f0d7-5700-4a71-a8fb-a9f271cc1616"
+      ]
+    },
+    {
+      "id": "6e6e2a91-0e7e-4d32-adde-1e80381a14bf",
+      "name": "Notre-Dame Cathedral",
+      "tier": 5,
+      "lat": 48.852966,
+      "lng": 2.349902,
+      "area": "\u00cele de la Cit\u00e9",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "a6f46909-757f-4ea1-b298-8cf940f70894",
+        "18858085-ead6-425f-8e48-997713ebeae7",
+        "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+        "a0d269cf-86dc-47af-96a1-fa7f61044711",
+        "280f6636-b7a1-4eab-ba12-8e169a3c5bdd",
+        "1c0742e4-5cad-46e4-9fa4-a4365eca2c49",
+        "3afcf4d0-6983-47cb-9710-b0e85b4181f6",
+        "a92cb98c-15f2-4075-8391-97aa0aeb99d6",
+        "b5bddc70-58ed-42f4-a2d2-674254300c01",
+        "ae1f69b1-e2d0-4c1f-8ffa-f7d059df0e7a",
+        "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+        "d99ac2aa-cf24-42b6-9452-d13c14ed1b27",
+        "dfac7baa-9742-4464-bfa9-61582cb4432f",
+        "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+        "60d90359-9b41-48c3-aa33-f80ab2db4167",
+        "a86ed923-dd8e-4a4d-9876-0c12b93a6749"
+      ]
+    }
+  ],
+  "lens_coverage": {
+    "hidden_history": 15,
+    "historic_arch": 10,
+    "literary_heritage": 1,
+    "social_change": 3,
+    "dark_history": 12,
+    "local_legends": 1,
+    "waterways_views": 1,
+    "famous_residents": 1,
+    "historic_worship": 7,
+    "war_conflict": 1,
+    "music_heritage": 2,
+    "visual_art": 1
+  },
+  "script": [
+    {
+      "text": "Settle in.",
+      "source_id": "GLUE_PACING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "You're starting in the \u00cele de la Cit\u00e9.",
+      "source_id": "SYNTHESIZED_OPENER",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Look up at rue Dauphine stretching from Pont Neuf.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Take a moment to take it in.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "The original statue of Henry IV was melted down during the Revolution.",
+      "source_id": "d38306de-2bf6-4cda-bcd8-2e428de68465",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The anti-Royalist who replaced it secretly hid a statuette of Napoleon in the horse's belly; this was recently discovered during restoration work.",
+      "source_id": "d38306de-2bf6-4cda-bcd8-2e428de68465",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Henri IV's early amorous adventures had gained him the affectionate nickname 'le Vert Galant' \u2014 the amorous youth.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "But the charm faded as he grew older.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The population resented the fact that he had at least eleven illegitimate children scattered throughout the kingdom, which all but plunged France into civil strife yet again.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Furthermore, he had expressed his intention to marry his favourite mistress, Gabrielle d'Estr\u00e9es \u2014 an outrage to the raison d'\u00e9tat.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Only her premature death prevented this infamy.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "As Femme Ladoucette, a Dame des Halles, had expressed it in her letter to the Queen: in the kingdom of France, one separated the sheep from the goats.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The assassination on rue de la Ferronnerie in 1610 was not the first attempt on the King's life \u2014 his scandalous personal conduct had made him many enemies.",
+      "source_id": "76847b20-b881-4cc2-aa30-1234351f5f6d",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Rue Dauphine commemorates the Dauphin and future Louis XIII and was opened by Henri IV as a continuation of the Pont-Neuf and Place Dauphine.",
+      "source_id": "cffe1217-138c-418b-98d3-77b80a8f0fac",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The Augustine monks protested the new street would encroach on their grounds, but Henri IV was a man of vision and refused to bend, saying he would use his guns to carry his project through if he had to.",
+      "source_id": "cffe1217-138c-418b-98d3-77b80a8f0fac",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "He argued the monks would draw greater income from houses along the new street than from their cabbage-beds.",
+      "source_id": "cffe1217-138c-418b-98d3-77b80a8f0fac",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "History proved him right: on the eve of the Revolution, their order was one of the wealthiest in the capital.",
+      "source_id": "cffe1217-138c-418b-98d3-77b80a8f0fac",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Rue Dauphine became one of the most elegant arteries, especially after 1763 when it was the first to substitute oil lamps for candles.",
+      "source_id": "cffe1217-138c-418b-98d3-77b80a8f0fac",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The graceful, twelve-arched Pont-Neuf \u2014 despite its name, meaning New Bridge \u2014 is Paris's oldest surviving bridge.",
+      "source_id": "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "It was built by Henri IV, who is commemorated with a statue halfway across.",
+      "source_id": "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Made of stone and free of the usual medieval complement of houses, it was a radical departure from previous structures, hence its name.",
+      "source_id": "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Henri IV, one of the capital's first great town-planners, took much interest in the Pont-Neuf's progress and would sometimes come to inspect it, on one occasion delighting the workmen by taking a flying leap over an incomplete arch.",
+      "source_id": "a812b47b-b71c-4b21-9ccb-9d60ea6c738c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Pont Neuf means New Bridge, but, ironically, it is the oldest in Paris and was the first to be built of stone and to be free of houses.",
+      "source_id": "11811369-ed24-416b-a25c-cdc5a4ddfbcf",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The semicircular side bays were originally market stalls used by teeth-pullers, quack doctors and other merchants.",
+      "source_id": "11811369-ed24-416b-a25c-cdc5a4ddfbcf",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The picturesque green bookstalls of the bouquinistes along the quais are a remnant of the days when the Pont-Neuf was a world of its own, crowded with strollers, pedlars, acrobats, prostitutes, and riff-raff.",
+      "source_id": "46afa2ed-1792-4a6a-ac90-2aeefa2705a3",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "When the bridge was cleaned up in the late 18th century, its hucksters spilled over to the quais and eventually settled into the book trade.",
+      "source_id": "46afa2ed-1792-4a6a-ac90-2aeefa2705a3",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "So impressive was the bridge in scale and length that it soon became symbolic of the city itself, drawing large crowds.",
+      "source_id": "16392dbf-6b96-422e-a923-431760f3e34a",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Pedlars, secondhand book- and flower-sellers, dog-barbers and tooth-pullers set up stalls, while acrobats and actors entertained passers-by.",
+      "source_id": "16392dbf-6b96-422e-a923-431760f3e34a",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Steps beside the statue lead down to the square du Vert Galant, where Jacques de Molay, Grand Master of the Templars, was burnt at the stake, cursing the kings as he was consumed by the flames.",
+      "source_id": "90d4f667-bae7-47f1-8a1f-d45614ade605",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 1
+    },
+    {
+      "text": "The square du Vert-Galant is enclosed within the triangular stern of the island, reached via steps leading down behind the statue of Henri IV on the Pont-Neuf.",
+      "source_id": "d72b2d31-a011-4870-b48f-40d29d46c4ab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Vert-Galant \u2014 meaning a green or lusty gentleman \u2014 is a reference to the king's legendary amorous exploits, and he would no doubt have approved of this tranquil, tree-lined garden, a popular haunt of lovers.",
+      "source_id": "d72b2d31-a011-4870-b48f-40d29d46c4ab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The prime spot to occupy is the knoll dotted with trees at the extreme point of the island.",
+      "source_id": "d72b2d31-a011-4870-b48f-40d29d46c4ab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "From here you can also hop onto one of the river boats that dock on the north side of the square.",
+      "source_id": "d72b2d31-a011-4870-b48f-40d29d46c4ab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Cross the Pont-Neuf for a glimpse of the garden at the tip of the island, the Square du Vert-Galant, just below Henri IV's equestrian statue.",
+      "source_id": "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The nickname Vert-Galant \u2014 the Green Gallant \u2014 honours the king's famously amorous career.",
+      "source_id": "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "From the garden, the view of the H\u00f4tel de la Monnaie and the dome of the Institut de France on the left, the Louvre on the right, and the Pont-des-Arts ahead is unforgettable.",
+      "source_id": "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "By night the square is an enchantment.",
+      "source_id": "c0ce53a0-d7af-47e0-b5e7-11f591e5f1f8",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Henri IV's early amorous adventures had earned him the affectionate nickname of le Vert Galant \u2014 the amorous youth.",
+      "source_id": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The charm faded as he grew older.",
+      "source_id": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The population resented his dozens of bastard children scattered through the kingdom, which all but plunged France in civil strife again.",
+      "source_id": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Worse, he had expressed his intention to marry his favourite, Gabrielle d'Estr\u00e9es \u2014 an outrage to the raison d'\u00e9tat.",
+      "source_id": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Only her premature death prevented the infamy.",
+      "source_id": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "As Femme Ladoucette had written to the Queen, in the kingdom of France one separated the sheep from the goats.",
+      "source_id": "8af14cb2-75e7-4907-b08f-a0e1502805d9",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 2
+    },
+    {
+      "text": "The Sainte-Chapelle was built by Saint Louis to house a piece of the Holy Cross and the Crown of Thorns, which he bought from Baudouin II, the last Emperor of Constantinople, who was in desperate need of funds to defend his city.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The architects \u2014 Pierre de Montreuil, or perhaps Jean de Chelles \u2014 were set an unusual brief: design a chapel to have the light, lacy aspect of a reliquary.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The result was stunningly beyond expectation.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "It took barely five years.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The silver and gold reliquary that originally held the Crown of Thorns was sent to the Mint during the Revolution, but its contents \u2014 genuine or not \u2014 miraculously survived and are kept today at Notre-Dame.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Even the standard-bearers of the Revolutionary ideal, it seems, did not dare to tamper with the most holy of Christian symbols.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The chapel itself was shown no such consideration: it served as a flour store, then as a depot for court archives, growing so dilapidated that in 1847 it still bore an inscription reading 'National property, for sale.' Fortunately enlightened souls called on Viollet-le-Duc, Lassus, and others to restore the church, and 720 of the 1,134 original stained-glass scenes were preserved.",
+      "source_id": "ba7be408-5674-4a4b-8b40-c607d7588752",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "On 24 May 1871, barely four years after the full restoration was complete, the Communards poured petrol over the Sainte-Chapelle and only failed to set it on fire for lack of time.",
+      "source_id": "6a57935f-303f-4b3f-9aa5-aa6f1e451e7a",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Everything you see inside is what they almost burned.",
+      "source_id": "6a57935f-303f-4b3f-9aa5-aa6f1e451e7a",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "A combined ticket can be purchased for visiting both the museum and the Sainte-Chapelle, built in the 1240s.",
+      "source_id": "14d12dae-52fb-4490-9d69-93dcffbfa480",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The stained glass windows here are the finest in Paris, being intended for the private chapel of the King.",
+      "source_id": "14d12dae-52fb-4490-9d69-93dcffbfa480",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "St Louis had the chapel built to house the Crown of Thorns and other precious holy relics that can now be seen in Notre-Dame.",
+      "source_id": "14d12dae-52fb-4490-9d69-93dcffbfa480",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The Sainte-Chapelle actually consists of two chapels: the simple lower chapel was intended for the servants, and the upper chapel, reached via a spiral staircase, was reserved for the court.",
+      "source_id": "028d603e-f754-4eb1-9040-4685045c8510",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The upper chapel is dazzling \u2014 its walls made almost entirely of stained glass held up by powerful supports that the medieval builders cleverly crafted to appear delicate and fragile by dividing them into clusters of pencil-thin columns.",
+      "source_id": "028d603e-f754-4eb1-9040-4685045c8510",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "When the sun streams through, the glowing blues and reds of the stained glass dapple the interior and you feel like you're surrounded by myriad brilliant butterflies.",
+      "source_id": "028d603e-f754-4eb1-9040-4685045c8510",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "There are 1,113 glass panels in the upper chapel, two-thirds of them original \u2014 the rest date from the nineteenth-century restoration.",
+      "source_id": "a1effe65-bc1e-4903-8a78-49020f737ff4",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Together they tell virtually the entire story of the Bible: starting on the north side with Genesis, continuing with the Passion of Christ at the east end and the history of the Sainte-Chapelle relics on the south side, and ending with the Apocalypse in the rose window.",
+      "source_id": "a1effe65-bc1e-4903-8a78-49020f737ff4",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The chapel is frequently used for classical concerts; tickets bought a day or so in advance avoid long queues.",
+      "source_id": "a1effe65-bc1e-4903-8a78-49020f737ff4",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The only part of the Ile de la Cite's old palace that remains in its entirety is the Sainte-Chapelle, its fragile-looking spire soaring above the Palais buildings, its excessive height in relation to its length giving it the appearance of a lopped-off cathedral choir.",
+      "source_id": "0095f842-c349-4409-ad1b-6b7b2c0f1e4d",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Though damaged in the Revolution \u2014 when it was used as a flour warehouse \u2014 it was sensitively restored in the mid-nineteenth century, and remains one of the finest achievements of French High Gothic, renowned for its exquisite stained glass.",
+      "source_id": "0095f842-c349-4409-ad1b-6b7b2c0f1e4d",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "It was built by Louis IX in 1242 to 1248 to house a collection of holy relics bought at an extortionate price \u2014 far more than the chapel itself cost \u2014 from the bankrupt Byzantine Empire.",
+      "source_id": "0095f842-c349-4409-ad1b-6b7b2c0f1e4d",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The relics, supposedly Christ's crown of thorns and fragments of the True Cross and a nail of the crucifixion, are now in Notre-Dame's treasury, displayed only on certain days, including Good Friday.",
+      "source_id": "0095f842-c349-4409-ad1b-6b7b2c0f1e4d",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 3
+    },
+    {
+      "text": "In the 15th century passers-by could still hear the screams of tortured prisoners from the Tour Bonbec \u2014 the westernmost tower of the Conciergerie.",
+      "source_id": "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "During the tower's restoration in 1828, workers found two oubliettes in the basement: concealed dungeons spiked with iron points and connected to the river.",
+      "source_id": "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Needless to dwell on the fate of the prisoners dropped into them.",
+      "source_id": "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The name bon-bec \u2014 medieval French for prate \u2014 probably alluded to the interrogations on the ground floor, where a varied spectrum of torture methods was devised to extract confessions and denunciations.",
+      "source_id": "338bf07d-ea49-43d1-b2ff-4d7499acb05f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "During the Revolution the Conciergerie boasted an impressive list of prisoners awaiting their deaths.",
+      "source_id": "0a62096c-61ad-422b-99e6-47951b52f18e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Madame Roland, who had supported the Revolution but sided with the Girondins at the wrong moment.",
+      "source_id": "0a62096c-61ad-422b-99e6-47951b52f18e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Marie-Antoinette, who occupied a dreary cell from 2 August to 16 October 1793, until she was taken to the guillotine on the Place de la R\u00e9volution \u2014 today's Place de la Concorde.",
+      "source_id": "0a62096c-61ad-422b-99e6-47951b52f18e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Later Danton, Robespierre, and Saint-Just were detained here in turn, Danton and Robespierre occupying the cells adjacent to the Queen's.",
+      "source_id": "0a62096c-61ad-422b-99e6-47951b52f18e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Today one visits for French history, but the Gothic halls and kitchen fireplaces deserve to be visited for their architectural merit as well.",
+      "source_id": "0a62096c-61ad-422b-99e6-47951b52f18e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Beyond is a corridor where prisoners were allowed to wander freely.",
+      "source_id": "8a85780f-5c34-4954-914f-d69f314197ff",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Among the reconstructed rooms here is the salle de toilette, where the condemned had their hair cropped and shirt collars ripped off in preparation for the guillotine.",
+      "source_id": "8a85780f-5c34-4954-914f-d69f314197ff",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "North of the Gothic halls ran a section of the prison leading to the dark cells, known as rue de Paris \u2014 named after the Great Executioner, Monsieur de Paris.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "That post was held by seven successive generations of the Sanson family, from 1688 to 1847, transmitted from father to son.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Shortly before the Revolution, Louis XVI had set his heart on improving the executioners' plight and granted Charles-Henri Sanson an annual fee of 16,000 pounds plus 2,000 crowns for the upkeep of the scaffold and pillory \u2014 never suspecting he would become his own executioner.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Being a royalist, Charles-Henri had no desire to carry out that deed.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "On 15 August 1792 he was arrested as \"the despot's employee\"; with each execution he was dispatched from his cell to the Place du Carrousel, where the guillotine then stood, and afterwards taken back.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Early on executions were few, but once the guillotine began to work at full swing and his expert hand could not be spared, he was released.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "He retired soon after he had executed his sovereign.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "His son Henri held the position through the Terror and the precarious regimes that followed, until 1840 \u2014 well into the reign of Louis-Philippe.",
+      "source_id": "bd5f18bf-bfff-48d5-8f6d-5234131a143e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "On the upper storey is a mock-up of Marie-Antoinette's cell, in which the condemned queen's crucifix hangs forlornly against peeling fleur-de-lys wallpaper.",
+      "source_id": "91765c42-70f0-4b31-ac37-26f24774246a",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The Conciergerie is one of the few remaining vestiges of the old medieval Palais de Justice and is Paris's oldest prison \u2014 where Marie-Antoinette and the leading figures of the Revolution were incarcerated before execution.",
+      "source_id": "d1afba2f-62f6-4807-83ec-da961e310c67",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Inside are several splendid, vaulted Gothic halls, including the Salle des Gens d'Armes, built in 1301 to 1315.",
+      "source_id": "d1afba2f-62f6-4807-83ec-da961e310c67",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The far end is separated off by an iron grille; during the Revolution this area was reserved for the pailleux, prisoners who couldn't afford to bribe a guard for their own cell and had to sleep on straw (paille).",
+      "source_id": "d1afba2f-62f6-4807-83ec-da961e310c67",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Among the notorious prisoners held here in later centuries were Ravaillac \u2014 the assassin of Henri IV \u2014 the mass poisoner La Marquise de Brinvilliers, who had eliminated the better part of her own household, and Cartouche (1693\u20131721), the most notorious bandit of his age.",
+      "source_id": "d2c91706-78c8-4e7a-a36b-705e4229599e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "To be admitted into Cartouche's gang you had to prove yourself an expert cutpurse: candidates practised on dummies hung with little bells, and had to strip the dummies without the slightest tinkling.",
+      "source_id": "d2c91706-78c8-4e7a-a36b-705e4229599e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "All three awaited execution here.",
+      "source_id": "d2c91706-78c8-4e7a-a36b-705e4229599e",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 4
+    },
+    {
+      "text": "The Palais de Justice stands on the site of the first residence of the kings of France \u2014 and before them, the Roman governors of Lutetia.",
+      "source_id": "9751d072-3813-4e39-a128-df254238e17d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "In 360 the Roman general Julian, the future emperor Julian the Apostate, was proclaimed emperor on this spot by his own soldiers.",
+      "source_id": "9751d072-3813-4e39-a128-df254238e17d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Part of the Roman palace was still standing when Clovis and the first Merovingian kings returned to the site in the 6th century, and the second dynasty \u2014 P\u00e9pin le Bref, Charlemagne, Louis le D\u00e9bonnaire, Charles le Chauve \u2014 lived here too, until the Norman invasion of the 9th century destroyed everything and reconstruction had to begin again from the ruins.",
+      "source_id": "9751d072-3813-4e39-a128-df254238e17d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The arcade on the right of the Cour de Mai was the entrance to the Conciergerie before 1825.",
+      "source_id": "b536f6f3-42e4-4a4b-9444-dd196a5994da",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "During the Revolution, 2,278 victims of the Revolutionary Tribunal passed through this arcade on their way out \u2014 to the jeers of delighted tricoteuses huddled on the perron.",
+      "source_id": "b536f6f3-42e4-4a4b-9444-dd196a5994da",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The moat and drawbridge that defended this palace proved useless on 22 February 1357.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Jean II le Bon, founder of the Valois dynasty, was being held captive in England.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The provost of merchants, Etienne Marcel, thought he could overthrow the monarchy with English help.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "That afternoon the young Dauphin \u2014 the future Charles V \u2014 was sitting in the palace with two of his counsellors when Marcel's men burst in and slew the counsellors before his eyes.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The Dauphin was unhurt, but the victims' gushing blood stained his clothes, an experience he never forgot.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "A prudent politician, deservedly called le Sage \u2014 the Wise \u2014 he slipped out of the palace one night by way of the river, moved to the remote H\u00f4tel de Saint-Pol in the Marais, and arranged for himself a new residence within the safer walls of the Louvre, where he spent time from 1368 onward.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The kings of France never returned to the island.",
+      "source_id": "3b1ba25a-d32e-4154-873e-fd6874d02ec7",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Ile de la Cite is where Paris began.",
+      "source_id": "0fd99fbd-2386-40f2-ab3b-bffb149f7a58",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "It was settled around 300 BC by a Celtic tribe called the Parisii, and in 52 BC was overrun by the Romans, who built a palace-fortress at the western end of the island.",
+      "source_id": "0fd99fbd-2386-40f2-ab3b-bffb149f7a58",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In the tenth century, the Frankish kings transformed this into a splendid palace, of which the Sainte-Chapelle and the Conciergerie prison survive today.",
+      "source_id": "0fd99fbd-2386-40f2-ab3b-bffb149f7a58",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "At the other end of the island they erected the great cathedral of Notre-Dame.",
+      "source_id": "0fd99fbd-2386-40f2-ab3b-bffb149f7a58",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "By the twelfth century the small island teemed with life, somehow accommodating twelve parishes plus numerous chapels and monasteries \u2014 too much for the monks at St-Magloire, who moved out in 1138 to quieter premises on the Right Bank.",
+      "source_id": "0fd99fbd-2386-40f2-ab3b-bffb149f7a58",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Archaeological evidence suggests that a Celtic tribe called the Parisii first settled on the \u00cele de la Cit\u00e9 in the middle of the River Seine during the 3rd century BC.",
+      "source_id": "a0b6bc71-68c0-476c-a11b-fd4c0eea04b5",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The island was a secure settlement, having the Seine as a natural moat, but no defence was sufficient to protect the Celts from Roman invasion in 52 BC.",
+      "source_id": "a0b6bc71-68c0-476c-a11b-fd4c0eea04b5",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "There was relative peace between Romans and Celts, and the city, renamed Lutetia \u2014 meaning born of the waters \u2014 prospered.",
+      "source_id": "a0b6bc71-68c0-476c-a11b-fd4c0eea04b5",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In 1298, the extravagant Philippe le Bel ordered the reconstruction of a new palace on the \u00cele de la Cit\u00e9 \u2014 'the most beautiful that anyone in France ever saw.' Its Great Hall has survived as today's Salle des Pas Perdus.",
+      "source_id": "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In its medieval heyday, the hall consisted of two naves separated by eight pillars, with a black-and-white chequered floor and polychrome walls.",
+      "source_id": "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "A huge marble table served both for sumptuous Gargantuan meals and as a stage for mystery plays, farces and other entertainments.",
+      "source_id": "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Horrific skins of ferocious animals hung from the vaulted ceilings, and nobody seemed to mind the barbaric goings-on literally next door in the Conciergerie prison.",
+      "source_id": "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The statues of every king of France stood against the pillars, gloriously painted in azure and gold \u2014 58 in all by 1618, when a fire burnt down the hall with all its contents.",
+      "source_id": "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Henri III had used the last available space for his own statue.",
+      "source_id": "c699f0d4-2f69-4f0c-a00c-a8e77ca41481",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Ile de la Cite was the first part of Paris to be settled, occupied by the Celtic tribe of the Parisii in the 3rd century BC, making it the original nucleus of the city.",
+      "source_id": "f462910e-b88d-4287-a789-6ed084f0ae3a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In the 3rd century AD, the Roman Emperor Julian established his seat on the island, on the site of today's Palais de Justice \u2014 it was here in 360 that he was proclaimed emperor by his own soldiers.",
+      "source_id": "f462910e-b88d-4287-a789-6ed084f0ae3a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In the 6th century, the Merovingian king Childebert made it the permanent home of the kings of France.",
+      "source_id": "f462910e-b88d-4287-a789-6ed084f0ae3a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "And in the 13th century, the pious Louis IX built a private chapel adjoining the palace \u2014 la Chapelle Royale, now known as la Sainte-Chapelle \u2014 to house a piece of the Holy Cross and the Crown of Thorns he had bought from the last Emperor of Constantinople.",
+      "source_id": "f462910e-b88d-4287-a789-6ed084f0ae3a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "It takes some imagination today to picture the medieval city, because most of it was erased in the nineteenth century by Baron Haussmann, Napoleon III's Prefet de la Seine \u2014 the equivalent of mayor of Paris.",
+      "source_id": "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "He displaced 25,000 people and destroyed ninety streets, which had, admittedly, become squalid and notoriously dangerous at night.",
+      "source_id": "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In their place rose four imposing Neoclassical edifices, largely given over to housing the law and police.",
+      "source_id": "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The few corners untouched by Haussmann include the tranquil square du Vert-Galant, place Dauphine, and the medieval streets rues Chanoinesse, des Ursins and de la Colombe, north of the cathedral.",
+      "source_id": "2d4d766e-1fd7-4d75-8659-cd3d372ab73a",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In the Roman period the island was divided by a north\u2013south axis: the east was residential and the centre of spiritual life, the west was administrative.",
+      "source_id": "f6febeee-9172-4b20-990e-7dde6a062fa9",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Today the same divide exists, but the medieval cathedral Notre-Dame replaces the Roman temple to Jupiter.",
+      "source_id": "f6febeee-9172-4b20-990e-7dde6a062fa9",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In the 19th century, many churches and the maze of medieval houses were demolished and the long straight streets of Haussmann were built.",
+      "source_id": "f6febeee-9172-4b20-990e-7dde6a062fa9",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Parisii had been boat builders and competent sailors, inspiring Roman administrators to choose the ship as their symbol.",
+      "source_id": "2645c2b4-62b2-4e81-bb36-8a9e3200df67",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Latin motto for Paris became Fluctuat Nec Mergitur, meaning 'Paris the unsinkable ship'.",
+      "source_id": "2645c2b4-62b2-4e81-bb36-8a9e3200df67",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The emblem and motto are still used today.",
+      "source_id": "2645c2b4-62b2-4e81-bb36-8a9e3200df67",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "With King Jean II le Bon held captive in England, the provost of merchants \u00c9tienne Marcel reckoned on English support and believed he could overthrow the monarchy.",
+      "source_id": "0bc44896-5ac8-4314-85ab-bad506246656",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "On 22 February 1358, the Dauphin \u2014 the future Charles V \u2014 was sitting with two of his counsellors in the palace on the \u00cele de la Cit\u00e9 when Marcel's men erupted in and slew the counsellors before his very eyes.",
+      "source_id": "0bc44896-5ac8-4314-85ab-bad506246656",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The gushing blood of the victims stained the Dauphin's clothes, an experience he was never going to forget.",
+      "source_id": "0bc44896-5ac8-4314-85ab-bad506246656",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "A prudent politician, deservedly known as 'le Sage,' he left the palace one night stealthily by way of the river and moved to the H\u00f4tel de Saint-Pol in the Marais, then arranged a residence within the safer walls of the Louvre, where he spent time from 1368 on.",
+      "source_id": "0bc44896-5ac8-4314-85ab-bad506246656",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The kings of France never returned to the island, and the premises were taken over by the parliament \u2014 then the kingdom's court of justice.",
+      "source_id": "0bc44896-5ac8-4314-85ab-bad506246656",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 6
+    },
+    {
+      "text": "The 19th-century hospital, H\u00f4tel-Dieu, is on the left side of the square.",
+      "source_id": "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Its interior courtyard and gardens can be visited.",
+      "source_id": "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "This building replaced the medieval hospital that was run by the cathedral.",
+      "source_id": "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "In medieval times there were three people per bed \u2014 one sick, one dying and one dead.",
+      "source_id": "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The original hospital buildings were on the Pont au Double, linking the island to the Left Bank.",
+      "source_id": "b8fb20eb-dd53-4255-8a2d-ff0a6e79d25c",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The Hotel-Dieu is the oldest hospital in Paris, founded in the 12th century by Maurice de Sully, the same bishop who initiated the construction of Notre-Dame.",
+      "source_id": "a220c5ce-314d-4eae-9bdc-719ad4fe2428",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "For centuries it was the only hospital serving the city, and conditions were appalling \u2014 up to five patients were crammed into a single bed.",
+      "source_id": "a220c5ce-314d-4eae-9bdc-719ad4fe2428",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The old Pont au Double, which connected the Hotel-Dieu to the Left Bank, featured an enclosed glass gallery where recovering patients could promenade \u2014 an early form of therapeutic architecture, allowing the sick to take the air without leaving the hospital.",
+      "source_id": "cdaf1ac8-69c2-4ba5-9bdd-448ecf1015e8",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Contemporary accounts described the Hotel-Dieu's wards as containing 'the ill, the dying and the dead' sharing the same beds.",
+      "source_id": "2387f0d7-5700-4a71-a8fb-a9f271cc1616",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Philippe-Auguste donated the straw from his royal horses to serve as bedding.",
+      "source_id": "2387f0d7-5700-4a71-a8fb-a9f271cc1616",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The stench was so overwhelming that visitors could smell the hospital from across the river.",
+      "source_id": "2387f0d7-5700-4a71-a8fb-a9f271cc1616",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 7
+    },
+    {
+      "text": "The left portal shows Mary being crowned by Christ, with scenes of her life in the lower friezes, while the right portal depicts the Virgin enthroned and, below, episodes from the life of St Anne \u2014 Mary's mother \u2014 and the life of Christ.",
+      "source_id": "a6f46909-757f-4ea1-b298-8cf940f70894",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "These are masterfully put together, using visual devices and symbols to communicate more than just the bare-bones story.",
+      "source_id": "a6f46909-757f-4ea1-b298-8cf940f70894",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "In the nativity scene, for example, the infant Christ is placed above Mary to show his elevated status, and lies on an altar rather than in a crib, symbolizing his future sacrifice.",
+      "source_id": "a6f46909-757f-4ea1-b298-8cf940f70894",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The facade is Notre-Dame's most impressive exterior feature.",
+      "source_id": "18858085-ead6-425f-8e48-997713ebeae7",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The Romanesque influence is still visible \u2014 not least in its solid H-shape \u2014 but the overriding impression is one of lightness and grace, created in part by the filigree work of the central rose window and the gallery above.",
+      "source_id": "18858085-ead6-425f-8e48-997713ebeae7",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "If you climb the towers \u2014 access is round the side of the cathedral \u2014 you can see Viollet-le-Duc's gargoyles and angels up close, as well as the great thirteen-ton Emmanuel Bell in the south tower.",
+      "source_id": "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "One of the largest and oldest bells in Europe, the Emmanuel was forged in 1685 and spared during the 1789 Revolution, unlike Marie, the large bell in the north tower, which was destroyed and melted down.",
+      "source_id": "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "It is only rung at Christmas and other special occasions, or in times of mourning \u2014 such as the day after 9/11.",
+      "source_id": "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The cathedral's other nine bells, which had become badly out of tune, were replaced in 2013.",
+      "source_id": "d882cb45-a234-48de-86f3-3aeb8ed5c209",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The row of 27 huge figures beneath the rose window represents the biblical kings who are the ancestors of Christ.",
+      "source_id": "a0d269cf-86dc-47af-96a1-fa7f61044711",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "These statues are copies, because the originals, mistaken for French kings during the Revolution, were destroyed.",
+      "source_id": "a0d269cf-86dc-47af-96a1-fa7f61044711",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The 14th-century carved screen around the altar shows easily recognizable bible stories.",
+      "source_id": "280f6636-b7a1-4eab-ba12-8e169a3c5bdd",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The white marble Piet\u00e0 at the main altar stands between statues of Louis XIII and his son Louis XIV.",
+      "source_id": "280f6636-b7a1-4eab-ba12-8e169a3c5bdd",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Of the magnificent carvings over the portals, perhaps the most arresting is the scene over the central one showing the Day of Judgement.",
+      "source_id": "1c0742e4-5cad-46e4-9fa4-a4365eca2c49",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The lower frieze is a whirl of movement as the dead rise from their graves, while Christ presides above, sending those on his right to heaven and those on his left to hell.",
+      "source_id": "1c0742e4-5cad-46e4-9fa4-a4365eca2c49",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "All around the arch peer out alert and mischievous-looking angels, said to be modelled on the cathedral choirboys of the time.",
+      "source_id": "1c0742e4-5cad-46e4-9fa4-a4365eca2c49",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "She is shown as a child with her mother, St Anne, above the right-hand portal; the death of the Virgin is represented on the left portal.",
+      "source_id": "a92cb98c-15f2-4075-8391-97aa0aeb99d6",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The Emanuel bell hangs in the left tower but has not been rung since the Liberation of Paris as its vibration causes structural damage.",
+      "source_id": "b5bddc70-58ed-42f4-a2d2-674254300c01",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Immediately inside the door you are beneath the bell tower.",
+      "source_id": "ae1f69b1-e2d0-4c1f-8ffa-f7d059df0e7a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Look up at the vault to see the trapdoor through which the bells were hoisted.",
+      "source_id": "ae1f69b1-e2d0-4c1f-8ffa-f7d059df0e7a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The two pillars that support the weight of the towers are massive.",
+      "source_id": "ae1f69b1-e2d0-4c1f-8ffa-f7d059df0e7a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Inside Notre-Dame, you're struck immediately by the dramatic contrast between the darkness of the nave and the light falling on the first great clustered pillars of the choir.",
+      "source_id": "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "It is the end walls of the transepts, nearly two-thirds glass and including two magnificent rose windows coloured in imperial purple, that admit all this light.",
+      "source_id": "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "These, the vaulting and the soaring shafts reaching to the springs of the vaults are all definite Gothic elements, while a strong influence of Romanesque remains in the stout round pillars of the nave and the general sense of four-squareness.",
+      "source_id": "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The tresor is unlikely to appeal unless ornate nineteenth-century monstrances and chalices are your thing.",
+      "source_id": "7b3fe815-ad3a-419e-97bf-1c8f17e7b5d4",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "A brass stud in the pavement in front of the cathedral marks the Zero Point of Paris.",
+      "source_id": "d99ac2aa-cf24-42b6-9452-d13c14ed1b27",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "This has become a 'Wishing Stone' but is actually the point from which distances to other towns are measured.",
+      "source_id": "d99ac2aa-cf24-42b6-9452-d13c14ed1b27",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "At the rear end, to the right, is the Treasury containing what is purported to be the Crown of Thorns.",
+      "source_id": "dfac7baa-9742-4464-bfa9-61582cb4432f",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "At the very back, in a side chapel, is a series of models that show how the medieval builders constructed the cathedral.",
+      "source_id": "dfac7baa-9742-4464-bfa9-61582cb4432f",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Notre-Dame, at the heart of Paris, is also the symbolic heart of France.",
+      "source_id": "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Outside on the pavement by the cathedral's west door is a bronze star, known as kilometre zero, from where all main-road distances in France are calculated.",
+      "source_id": "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The large windswept square in front of the cathedral, built by Haussmann in the 1860s, is the Parvis \u2014 from the word paradise \u2014 Notre-Dame.",
+      "source_id": "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "White paving blocks set into it trace the outlines of the small streets and buildings that stood here in medieval times.",
+      "source_id": "b37f5ead-38e9-4a3a-aaab-303b170ea55a",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The views from the garden are superb.",
+      "source_id": "60d90359-9b41-48c3-aa33-f80ab2db4167",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Stop to admire the Seine, the cathedral spire and its magnificent flying buttresses.",
+      "source_id": "60d90359-9b41-48c3-aa33-f80ab2db4167",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "These buttresses enabled the builders to achieve great height because they carry the weight of the stone-vaulted roof.",
+      "source_id": "60d90359-9b41-48c3-aa33-f80ab2db4167",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The walls could be pierced with large bays containing stained glass because they were no longer needed for support.",
+      "source_id": "60d90359-9b41-48c3-aa33-f80ab2db4167",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Before the discovery of this technique in the 13th century, large windows could not be used.",
+      "source_id": "60d90359-9b41-48c3-aa33-f80ab2db4167",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "A Gothic masterpiece, the Cathedrale de Notre-Dame rears up from the Ile de la Cite like a great ship moored by huge flying buttresses.",
+      "source_id": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "It was built on the site of the Merovingian cathedral of St-Etienne, itself sited on the old Roman temple to Jupiter.",
+      "source_id": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Construction began in 1160 under the auspices of Bishop de Sully and was completed around 1345.",
+      "source_id": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The cathedral's seminaries became an ecclesiastical powerhouse, churning out six popes during the thirteenth and fourteenth centuries, though it later lost some of its pre-eminence to other sees, such as Rheims and St-Denis.",
+      "source_id": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "The building fell into decline, and during the Revolution the frieze of Old Testament kings on the facade was damaged by enthusiasts who mistook them for the kings of France.",
+      "source_id": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Napoleon restored some of the cathedral's prestige, crowning himself emperor here in 1804 \u2014 though the walls were so dilapidated they had to be covered with drapes to provide a sufficiently grand backdrop.",
+      "source_id": "a86ed923-dd8e-4a4d-9876-0c12b93a6749",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "End the walk here, or carry on at your own pace.",
+      "source_id": "GLUE_CLOSING",
+      "source_type": "glue",
+      "stop_idx": 7
+    }
+  ],
+  "validation": {
+    "untraceable_sentences": [],
+    "forbidden_phrase_hits": []
+  }
+}

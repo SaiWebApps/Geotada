@@ -60,12 +60,28 @@ class POI(BaseModel):
     matching_lens_beat_count: int = 0
 
 
+class PhysicalCue(BaseModel):
+    """One physical_cue entry from a beat — Phase 7.5 uses cue + feature_type
+    to compose synthesized openers and to gate the Area-cold-open hoist.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="ignore")
+
+    cue: str
+    direction: str | None = None
+    feature_type: str | None = None
+
+
 class BeatRef(BaseModel):
     """A NarrativeBeat reference carrying just what selection/ordering needs.
 
     Phase 3 added the optional ``script_body`` so generation can emit
     sentence-level traceable records without re-querying Neo4j. Phase 2
     selection/ordering ignores it; tests construct BeatRef without it.
+
+    Phase 7.5 added optional ``physical_cues`` + ``pronunciation`` so the
+    refined cold-open hoist (Fix 1) and synthesized opener (Fix 2) can
+    compose deterministically without re-querying Neo4j.
     """
 
     model_config = ConfigDict(frozen=True, extra="ignore")
@@ -85,6 +101,8 @@ class BeatRef(BaseModel):
     lenses: tuple[str, ...] = ()
     active_status: str = "active"
     script_body: str | None = None
+    physical_cues: tuple[PhysicalCue, ...] = ()
+    pronunciation: str | None = None
 
 
 class TransitSegment(BaseModel):
@@ -128,6 +146,12 @@ class Route(BaseModel):
 
     Phase 6 added the optional ``tourability`` slot so selection can
     surface a YELLOW density assessment to the skill without raising.
+
+    Phase 7.5 (Fix 3) added ``demoted_beats``: when two selected POIs
+    sit within ~15m of each other and share an address-overlap signal,
+    selection demotes the smaller-tier POI and merges its beats into
+    the larger POI's pool. The mapping ``host_poi_id -> tuple[BeatRef]``
+    lets the harness pull the demoted beats without re-querying.
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -141,6 +165,7 @@ class Route(BaseModel):
     target_audio_seconds: int = 0
     err_short_total_seconds: int = 0
     tourability: TourabilityAssessment | None = None
+    demoted_beats: dict[str, tuple[BeatRef, ...]] = Field(default_factory=dict)
 
 
 OrderingStrategy = Literal["sub_location", "trigger_address", "narrative_function"]

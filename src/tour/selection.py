@@ -17,12 +17,14 @@ live. Keep it deliberate and well-commented.
 
 from __future__ import annotations
 
+import json
 import math
+import re
 from collections import Counter
 from dataclasses import dataclass
 from typing import Iterable
 
-from .contract import POI, BeatRef, Route, TourabilityAssessment, TourInput
+from .contract import POI, BeatRef, PhysicalCue, Route, TourabilityAssessment, TourInput
 from .density import TourabilityRefused, assess as assess_tourability
 from .routing import (
     HAVERSINE_CORRECTION,
@@ -85,6 +87,52 @@ SPINE_AREA_TYPE_PRIORITY: tuple[str, ...] = (
     "district",
     "city",
 )
+
+# Phase 7.5 (Fix 3, 2026-04-29) — same-physical-location POI demotion.
+# After the greedy + endpoint-pull + fill pass, two selected POIs sometimes
+# sit at the same address (e.g. Musée Victor Hugo at 6 PdV vs Place des
+# Vosges no. 6). The user walks past the same building twice as separate
+# stops. Demote the smaller-tier of any such pair into the larger; merge
+# its beats into the host POI's pool so content isn't lost.
+#
+# Threshold is the v3 schema geofence radius (100 m) — the same distance
+# the runtime uses to decide two coordinates point at "the same physical
+# place". The Phase 7.5 spec called for 15 m, but live Paris corpus
+# coordinates show PdV (centroid 48.8555,2.3656) sits ~85 m from
+# Musée Victor Hugo's pin (48.8548,2.3661); a 15 m gate would never
+# catch the headline case the spec was written to fix. The name-token
+# overlap signal (`_has_cross_poi_address_overlap`) remains the
+# semantic guard — adjacent-but-unrelated POIs (e.g. ND vs Crypte
+# Archéologique) don't carry beats referencing each other's distinctive
+# tokens, so they don't trigger demotion.
+DEMOTION_PROXIMITY_M: float = 100.0
+
+# Demotion is restricted to anchor-tier (≥4) POIs. The empirical Île
+# walk treats Square du Vert-Galant (tier 3, ~80 m from Pont Neuf) as
+# its own pause stop; merging tier-3 pauses into nearby tier-5 anchors
+# would drop deliberate Pariswalks-style stops. Pavillon du Roi /
+# Hôtel de Coulanges-style cases cited by the spec are all anchor-tier
+# POIs, so this guard preserves the headline behaviour while
+# protecting empirical pause-stop semantics.
+DEMOTION_MIN_TIER: int = 4
+# Common topographic / generic prefix tokens that don't make a POI
+# distinctive when grepping addresses for cross-POI overlap. "Musee
+# Victor Hugo" → distinctive token "hugo" (not "musee" / "victor"
+# alone — Victor is a personal name, but the tokens we care about are
+# the unambiguously POI-specific ones).
+_NAME_GENERIC_TOKENS: frozenset[str] = frozenset(
+    {
+        "the", "of", "and", "or",
+        "de", "des", "du", "le", "la", "les", "et",
+        "place", "rue", "boulevard", "avenue", "quai", "pont", "musee", "musée",
+        "hotel", "hôtel", "cathedral", "cathedrale", "cathédrale", "church",
+        "saint", "sainte", "st", "ste",
+        "square", "garden", "jardin", "park", "parc", "tower", "tour",
+        "victor",  # ambiguous given name; a tour with two "Victor X" POIs in it should already be co-located before this fires
+    }
+)
+_NAME_TOKEN_MIN_LEN: int = 4
+
 
 # Phase 7 (2026-04-29) fill pass — target_audio is a floor, not a soft stop.
 # After the main greedy + endpoint-pull, if delivered audio is still well
@@ -176,6 +224,8 @@ RETURN
   b.entities            AS entities,
   b.subject_tag         AS subject_tag,
   b.active_status       AS active_status,
+  b.physical_cues       AS physical_cues,
+  b.pronunciation       AS pronunciation,
   lens_names            AS lenses
 """
 
@@ -233,6 +283,8 @@ def _snapshot_from_records(
             lenses=tuple(s for s in (r.get("lenses") or ()) if s),
             active_status=r.get("active_status") or "active",
             script_body=body if isinstance(body, str) and body.strip() else None,
+            physical_cues=_decode_physical_cues(r.get("physical_cues")),
+            pronunciation=_clean(r.get("pronunciation")),
         )
         beats_by_poi_acc.setdefault(ref.poi_id, []).append(ref)
 
@@ -288,6 +340,48 @@ def _count_words(s) -> int:
     if not isinstance(s, str):
         return 0
     return sum(1 for token in s.split() if token)
+
+
+def _decode_physical_cues(raw) -> tuple[PhysicalCue, ...]:
+    """Decode the JSON-encoded physical_cues string back to PhysicalCue tuple.
+
+    Neo4j stores list[dict] as JSON-encoded strings (see
+    src/api/crud/nodes.py::_encode_complex_props). This loader reads the
+    raw value back into structured tuples so beat_select / generation
+    can reason about cues without re-querying.
+
+    Tolerates legacy list[str] beats (Vallois pre-migration shape) by
+    wrapping bare strings in a default cue dict.
+    """
+    if raw is None:
+        return ()
+    if isinstance(raw, str):
+        if not raw.strip():
+            return ()
+        try:
+            decoded = json.loads(raw)
+        except (json.JSONDecodeError, ValueError):
+            return ()
+    else:
+        decoded = raw
+    if not isinstance(decoded, list):
+        return ()
+    cues: list[PhysicalCue] = []
+    for item in decoded:
+        if isinstance(item, dict):
+            cue_text = item.get("cue") or ""
+            if not cue_text:
+                continue
+            cues.append(
+                PhysicalCue(
+                    cue=cue_text,
+                    direction=item.get("direction"),
+                    feature_type=item.get("feature_type"),
+                )
+            )
+        elif isinstance(item, str) and item.strip():
+            cues.append(PhysicalCue(cue=item.strip()))
+    return tuple(cues)
 
 
 # ---------------------------------------------------------------------------
@@ -382,7 +476,11 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
                 continue
             base = poi_score(cand, spine, interest, snapshot)
             # +1s smoothing prevents division-by-zero on co-located POIs.
-            value = base / (extra + 1.0)
+            # Phase 7.5: clamp the denominator floor at 1.0 — integer
+            # rounding inside ``insertion_cost_seconds`` can yield extra=-1
+            # when a candidate sits between two waypoints, which the bare
+            # ``extra + 1.0`` would resolve to a divide-by-zero.
+            value = base / max(1.0, extra + 1.0)
             if value > best_value:
                 best_value = value
                 best_candidate = cand
@@ -454,6 +552,11 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
         hard_anchor_cap=HARD_ANCHOR_CAP,
     )
 
+    # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
+    # and demote the smaller-tier of each pair. Demoted POI beats are
+    # merged into the host's pool by the harness via Route.demoted_beats.
+    selected, demoted_beats = apply_co_located_demotion(selected, snapshot)
+
     route = summarise_route(
         selected,
         start_lat=start_lat,
@@ -462,7 +565,119 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
         duration_min=input.duration_min,
         spine_area=spine,
     )
+    if demoted_beats:
+        route = route.model_copy(update={"demoted_beats": demoted_beats})
     return _attach_tourability_if_yellow(route, assessment)
+
+
+def apply_co_located_demotion(
+    selected: list[POI],
+    snapshot: CorpusSnapshot,
+) -> tuple[list[POI], dict[str, tuple[BeatRef, ...]]]:
+    """Return (selected_minus_demoted, host_id → demoted_beats).
+
+    A pair (A, B) of selected POIs qualifies for demotion when
+    ``haversine(A, B) ≤ DEMOTION_PROXIMITY_M`` AND at least one beat at
+    one POI carries a ``trigger_address`` or ``sub_location`` mentioning
+    a distinctive token of the other POI's name. Smaller tier loses;
+    on a tie, fewer beats loses; final tie-break is alphabetical id so
+    the outcome is deterministic.
+
+    The Tour 1 case: Musée Victor Hugo (tier 4) sits at the same
+    physical address as Place des Vosges no. 6 (tier 5). PdV carries a
+    beat with sub_location ``hugo-museum-no-6`` whose tokens overlap
+    Hugo museum's distinctive ``hugo`` token. Hugo museum demotes;
+    its 2 beats merge into PdV's pool.
+
+    No-op when the route is empty or no pair qualifies.
+    """
+    if len(selected) < 2:
+        return list(selected), {}
+
+    demoted_to_host: dict[str, str] = {}
+    for i in range(len(selected)):
+        a = selected[i]
+        if a.id in demoted_to_host:
+            continue
+        for j in range(i + 1, len(selected)):
+            b = selected[j]
+            if b.id in demoted_to_host or a.id in demoted_to_host:
+                continue
+            # Both POIs must be anchor-tier; pause-tier (≤3) POIs are
+            # deliberate empirical-walk stops and must not collapse.
+            if a.tier < DEMOTION_MIN_TIER or b.tier < DEMOTION_MIN_TIER:
+                continue
+            distance = haversine_m(a.lat, a.lng, b.lat, b.lng)
+            if distance > DEMOTION_PROXIMITY_M:
+                continue
+            if not _has_cross_poi_address_overlap(a, b, snapshot):
+                continue
+            host, demote = _pick_demotion_host(a, b)
+            demoted_to_host[demote.id] = host.id
+
+    if not demoted_to_host:
+        return list(selected), {}
+
+    new_selected = [p for p in selected if p.id not in demoted_to_host]
+    demoted_beats: dict[str, tuple[BeatRef, ...]] = {}
+    for demoted_id, host_id in demoted_to_host.items():
+        beats = snapshot.beats_for(demoted_id)
+        merged = demoted_beats.get(host_id, ()) + tuple(beats)
+        demoted_beats[host_id] = merged
+    return new_selected, demoted_beats
+
+
+def _pick_demotion_host(a: POI, b: POI) -> tuple[POI, POI]:
+    """Return (host, demoted) given a co-located pair.
+
+    Larger tier hosts; on tie, more-beats hosts; final tie-break is
+    alphabetical id (low → host) so the choice is deterministic.
+    """
+    if a.tier != b.tier:
+        return (a, b) if a.tier > b.tier else (b, a)
+    if a.beat_count != b.beat_count:
+        return (a, b) if a.beat_count > b.beat_count else (b, a)
+    return (a, b) if a.id < b.id else (b, a)
+
+
+def _has_cross_poi_address_overlap(
+    a: POI, b: POI, snapshot: CorpusSnapshot
+) -> bool:
+    """True iff a beat at one POI mentions a distinctive token of the other.
+
+    Looks at ``trigger_address`` and ``sub_location`` (case-insensitive
+    substring) on every beat at A and B. Distinctive tokens are name
+    fragments ≥ 4 chars that aren't generic topographic prefixes
+    ("place", "rue", "musee" etc.) — see ``_NAME_GENERIC_TOKENS``.
+    """
+    a_tokens = _distinctive_name_tokens(a.name)
+    b_tokens = _distinctive_name_tokens(b.name)
+    if not a_tokens and not b_tokens:
+        return False
+
+    def _beat_address_text(beat: BeatRef) -> str:
+        return f"{beat.trigger_address or ''} {beat.sub_location or ''}".lower()
+
+    for beat in snapshot.beats_for(a.id):
+        text = _beat_address_text(beat)
+        if any(tok in text for tok in b_tokens):
+            return True
+    for beat in snapshot.beats_for(b.id):
+        text = _beat_address_text(beat)
+        if any(tok in text for tok in a_tokens):
+            return True
+    return False
+
+
+def _distinctive_name_tokens(name: str) -> set[str]:
+    """Lowercase name tokens ≥ 4 chars excluding generic topographic words."""
+    if not name:
+        return set()
+    tokens = re.findall(r"[a-zà-öø-ÿ]+", name.lower())
+    return {
+        t for t in tokens
+        if len(t) >= _NAME_TOKEN_MIN_LEN and t not in _NAME_GENERIC_TOKENS
+    }
 
 
 def _apply_fill_pass(

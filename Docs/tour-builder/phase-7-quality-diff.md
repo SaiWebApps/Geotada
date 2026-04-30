@@ -233,3 +233,233 @@ already-friendly no-op, single-beat no-op.
 3. The push-divergence reconciliation, polygon hygiene, and
    `book_slug` backfill remain in the post-launch backlog —
    unchanged by Phase 7.
+
+---
+
+# Phase 7.5 — Surgical fixes on top of Phase 7
+
+**Generated:** 2026-04-29
+**Scope:** three focused fixes building on Phase 7. No algorithm
+shape changes. Re-runs of the four GREEN Phase 7 tours saved at
+`data/paris/tours/phase7.5-rerun/`; Tour 3 (Sacré-Cœur) remains RED.
+
+## Top-line table
+
+| Tour | P7 POIs | P7.5 POIs | P7 cold open | P7.5 cold open | Notes |
+|---|---|---|---|---|---|
+| Tour 1 — PdV 60min RT | 5 | **4** | `ebeab682` (geographically dishonest at Hotel de Sully) | SYNTHESIZED — Hotel de Sully courtyard cue | Hugo museum demoted into PdV no. 6 |
+| Tour 2 — Île 90min OW | 8 | 8 | SYNTHESIZED (no Area-mate) | SYNTHESIZED — rue Dauphine view cue | Vert-Galant retained (tier-3 pause guard) |
+| Tour 3 — Sacré-Cœur 90min RT | RED | RED | — | — | unchanged |
+| Tour 4 — Concorde 180min OW | 6 | 6 | SYNTHESIZED stub | SYNTHESIZED — Concorde obelisk + Arc-de-Triomphe view cue | richer opener |
+| Tour 5 — Pantheon 120min RT | 3 | 3 | SYNTHESIZED stub | SYNTHESIZED — Cluny Old Roman baths cue + Latin Quarter | richer opener |
+
+Total tour tests: **194** passing (was 180 in Phase 7; +14 new
+covering the three fixes). Live PdV / Île golden tests still 100%.
+
+## Per-fix verification
+
+### Fix 1 — Geographically-honest cold-open hoist
+
+`find_area_orientation_beat` now requires a candidate orientation beat
+to satisfy at least one of:
+
+- (a) the beat's POI matches the start POI (Phase 5 behaviour);
+- (b) the beat carries no `physical_cues` at all (Area-generic);
+- (c) the beat's source POI is within 100 m of the start stop
+  (`HOIST_PROXIMITY_M`).
+
+When no candidate passes, the cold open falls through to
+SYNTHESIZED_OPENER instead of hoisting a beat whose physical cues
+describe a different place.
+
+**Tour 1 verification:** Phase 7 hoisted PdV's `ebeab682`
+("find a bench in the garden, near the children's play area, …
+Café Ma Bourgogne at the northwest corner") to position 0 at Hotel
+de Sully — none of those features exist there. Phase 7.5 rejects
+the hoist (PdV is ~190 m from Hotel de Sully, well past
+`HOIST_PROXIMITY_M=100`, and the beat carries view + adjacent_landmark
+cues). The cold open is now the Phase 7.5 SYNTHESIZED opener; PdV
+beat `ebeab682` fires later at its own stop where it's geographically
+honest.
+
+**Test pinning:** four new tests in `tests/test_tour_beat_select.py`
+(reject-when-distant, accept-when-area-generic, accept-when-no-cues,
+accept-when-within-proximity) plus a constant pin.
+
+Code: [src/tour/beat_select.py:367-466](../../src/tour/beat_select.py#L367-L466).
+
+### Fix 2 — Improved SYNTHESIZED_OPENER
+
+When no orientation beat can hoist (the Phase 7.5 default for tours
+2/4/5 and now also 1), the synthesized opener composes from real
+corpus data at the start POI:
+
+1. **Pacing primitive**: "Settle in." (`GLUE_PACING`)
+2. **Location anchor**: "You're starting in {Area}." from
+   `Route.spine_area`. Article-prefix table handles "the Île de la
+   Cité" vs "Le Marais" deterministically.
+3. **Pronunciation**: when any beat at the start POI carries
+   `pronunciation`, append "That's pronounced X."
+4. **Physical staging**: pick the strongest physical_cue at the
+   start POI by feature_type — view ≻ architectural_detail ≻ plaque
+   ≻ adjacent_landmark. View cues use "Look up at X."; everything
+   else uses "Notice X." (`GLUE_STAGING`).
+5. **Sensory invitation**: "Take a moment to take it in."
+   when any beat at the start POI carries a view-feature cue;
+   otherwise the duration primer "We're going to walk for about N
+   minutes." (`GLUE_PACING`).
+
+Validation extended to add Area names + every beat's
+`physical_cues` + `pronunciation` to the canonical-context corpus,
+so cue proper nouns (e.g. "Café Ma Bourgogne", "Arc de Triomphe")
+don't trigger the new-proper-noun gate.
+
+**Sample (Tour 4 — Concorde 180min OW, first 5 sentences of Stop 1):**
+
+```
+## STOP 1 — Place de la Concorde
+Settle in. [GLUE_PACING]
+You're starting in Champs-Élysées. [SYNTHESIZED_OPENER]
+Look up at The obelisk as the center point — look up the Champs-Élysées
+toward the Arc de Triomphe, and see the Grande Arche beyond. [GLUE_STAGING]
+Take a moment to take it in. [GLUE_STAGING]
+```
+
+**Sample (Tour 5 — Pantheon-area 120min RT, first 5 sentences of Stop 1):**
+
+```
+## STOP 1 — Musee de Cluny
+Settle in. [GLUE_PACING]
+You're starting in Latin Quarter. [SYNTHESIZED_OPENER]
+Notice Old Roman baths structure housing the museum. [GLUE_STAGING]
+We're going to walk for about 120 minutes. [GLUE_PACING]
+```
+
+Both read as honest setup, not template stub.
+
+**Test pinning:** four new tests in `test_tour_generation.py`
+(uses-physical-cues, uses-pronunciation, falls-back-gracefully,
+view-cue-uses-look-up-verb).
+
+Code: [src/tour/generation.py:265-461](../../src/tour/generation.py#L265-L461).
+
+### Fix 3 — Same-physical-location POI demotion
+
+After selection, `apply_co_located_demotion` audits every selected
+POI pair. A pair (A, B) demotes the smaller-tier POI into the larger
+when **all** of:
+
+- both POIs are tier ≥ 4 (`DEMOTION_MIN_TIER` — anchor-only);
+- haversine(A, B) ≤ 100 m (`DEMOTION_PROXIMITY_M`, the v3 schema
+  geofence radius);
+- one POI's beats reference a distinctive name token of the other
+  via `trigger_address` or `sub_location` (case-insensitive
+  substring; generic words like "place", "rue", "musee" excluded).
+
+Demoted POI's beats merge into the host's pool via
+`Route.demoted_beats`; the harness extends the host's beat list
+before calling `select_poi_beats`. The host POI's existing
+trigger_address ordering keeps demoted content in the right address
+bucket; B8-lite handles any duplicative content (the Tour 1 Hugo
+case: PdV's beat `8064951e` already covers Hugo museum at no. 6, and
+the demoted museum's `84ec9be0` collapses against it).
+
+**Why 100 m not 15 m (the spec's literal threshold).** Live Paris
+corpus geocodes Place des Vosges to its centroid (48.8555, 2.3656)
+~85 m from Musée Victor Hugo's pin (48.8548, 2.3661). A 15 m gate
+would never catch the headline case. 100 m is the v3 geofence
+radius — the natural notion of "same physical place" — and the
+name-token signal stays the semantic guard against over-collapsing.
+The tier-≥4 guard prevents collapsing empirical pause stops
+(Square du Vert-Galant, ~80 m from Pont Neuf with overlapping
+sub_location text but tier 3) into anchors.
+
+**Tour 1 verification:** Phase 7 had Musée Victor Hugo as Stop 4
+*and* the Hugo Museum sub_location at PdV's Stop 5 — same physical
+building visited twice. Phase 7.5 demotes Hugo museum (tier 4) into
+Place des Vosges (tier 5); the user walks past no. 6 PdV exactly
+once, hearing the canonical 8064951e Hugo content in the trigger-
+address sequence.
+
+```
+P7 POIs: ['Hotel de Sully', 'Rue Saint-Antoine', 'Restaurant Bofinger',
+          'Musee Victor Hugo', 'Place des Vosges']
+P7.5    : ['Hotel de Sully', 'Rue Saint-Antoine', 'Restaurant Bofinger',
+          'Place des Vosges']
+```
+
+**Tour 2 verification:** Pont Neuf (tier 5) and Square du Vert-Galant
+(tier 3) are co-located within 100 m and Pont Neuf carries a beat
+with sub_location text mentioning Vert-Galant — but the tier-≥4
+guard skips the pair and Vert-Galant remains its own pause stop, as
+the empirical Île walk requires.
+
+**Test pinning:** four new tests in `test_tour_selection.py`
+(demote-co-located, no-demotion-above-threshold,
+no-demotion-when-pause-tier, no-demotion-without-overlap-signal)
+plus an end-to-end `select_route` test.
+
+Code: [src/tour/selection.py:540-657](../../src/tour/selection.py#L540-L657)
+(detection + harness wiring at
+[scripts/tour_build.py:109-122](../../scripts/tour_build.py#L109-L122)).
+
+## Tour 1 — before/after
+
+**Before (Phase 7, Stop 1 cold open):**
+
+```
+## STOP 1 — Hotel de Sully
+Settle in. [GLUE_PACING]
+
+### square-center-park
+Find a bench in the garden, near the children's play area, so you
+can watch the children play à la française — and despite the mix of
+Hebrew, Yiddish, and Arabic you'll hear, you're standing in what was
+for nearly two centuries the single most fashionable square in Paris.
+[BEAT:ebeab682]
+
+If it's cold, step into Café Ma Bourgogne at the northwest corner;
+the view of the square is nearly as good from the window. [BEAT:ebeab682]
+```
+
+(Both lines describe Place des Vosges, not Hotel de Sully.)
+
+**After (Phase 7.5):**
+
+```
+## STOP 1 — Hotel de Sully
+Settle in. [GLUE_PACING]
+You're starting in Le Marais. [SYNTHESIZED_OPENER]
+Look up at Oak tree, manicured hedges, vine-covered walls in the
+back courtyard. [GLUE_STAGING]
+Take a moment to take it in. [GLUE_STAGING]
+During the reign of Henry IV (1589–1610), this area — originally a
+swamp (marais) — became the hometown of the French aristocracy.
+[BEAT:6a0b70b8]
+…
+```
+
+(Cold open references Hotel de Sully's actual back courtyard.)
+
+## Soft-launch readiness
+
+- **Tour 1 (PdV 60-min RT)**: Pariswalks-quality readable. Cold open
+  is geographically honest; Hugo museum collapses into PdV no. 6;
+  the address-by-address PdV circumnavigation lands correctly at
+  Stop 4. Ready for tester walk-throughs.
+- **Tour 2 (Île 90-min OW)**: Pariswalks-quality readable. 8 anchors
+  including Vert-Galant; cold open opens with rue Dauphine view from
+  Pont Neuf; Notre-Dame closes the route. Ready for tester walk-
+  throughs.
+- **Tour 4 (Concorde 180-min OW)**: structurally sound but corpus-
+  bound at 9 min audio delivered (extraction backlog). Better cold
+  open lifts the opening but doesn't fix the corpus depth issue.
+- **Tour 5 (Pantheon-area 120-min RT)**: 3 anchors (Cluny, Sorbonne,
+  Pantheon); YELLOW tourability (fill ratio 0.56). Better cold open;
+  the corpus thinness around the Sorbonne/Pantheon corridor remains
+  a backlog item.
+
+**194 tour tests pass** (180 Phase 7 + 14 Phase 7.5). Golden PdV /
+Île tests still 100% beat overlap.
+
+**Updated 2026-04-29.**
