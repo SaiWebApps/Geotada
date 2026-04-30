@@ -1,19 +1,22 @@
 """Playwright UI test suite for the Editorial Review Workbench (review.html).
 
 Systematically exercises the workbench through its complete workflow and
-produces a markdown bug report with screenshots. Runs against a live
-FastAPI + Neo4j stack on localhost:8000.
+produces a markdown bug report with screenshots. Auto-starts a FastAPI
+server on localhost:8000 for the duration of the module.
 
 Usage:
     pytest tests/test_workbench_ui.py -v --tb=short
 
-Requires: playwright, pytest
-Stack must be running: docker compose up -d && make api-up
+Requires: playwright, pytest, Neo4j running
 """
 
 from __future__ import annotations
 
 import json
+import socket
+import subprocess
+import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -87,6 +90,22 @@ WORKBENCH_URL = (Path(__file__).parent.parent / "frontend" / "review.html").reso
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "ui_test_fixture.json"
 REPORT_DIR = Path(__file__).parent / "reports"
 SCREENSHOT_DIR = REPORT_DIR / "screenshots"
+
+
+def _find_chromium() -> str | None:
+    """Find a cached Playwright Chromium binary if the default isn't installed."""
+    cache_dir = Path.home() / "Library" / "Caches" / "ms-playwright"
+    if not cache_dir.exists():
+        return None
+    for d in sorted(cache_dir.glob("chromium-*"), reverse=True):
+        candidate = (
+            d / "chrome-mac-arm64"
+            / "Google Chrome for Testing.app"
+            / "Contents" / "MacOS" / "Google Chrome for Testing"
+        )
+        if candidate.exists():
+            return str(candidate)
+    return None
 
 # Seed data constants
 SEED_POI_NAME = "UI Test Seed \u2014 Sacr\u00e9-C\u0153ur Basilica"
@@ -301,8 +320,42 @@ def _load_fixture() -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Fixtures — Seed Data Setup / Teardown (Task 3)
+# Fixtures — API Server + Seed Data Setup / Teardown
 # ---------------------------------------------------------------------------
+
+
+def _port_open(host: str, port: int) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(1)
+        return s.connect_ex((host, port)) == 0
+
+
+@pytest.fixture(scope="module")
+def api_server():
+    """Start a uvicorn server on port 8000 for the duration of this module."""
+    if _port_open("127.0.0.1", 8000):
+        yield "external"
+        return
+
+    proc = subprocess.Popen(
+        [sys.executable, "-m", "uvicorn", "src.api.app:app",
+         "--host", "127.0.0.1", "--port", "8000"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+
+    for _ in range(30):
+        if _port_open("127.0.0.1", 8000):
+            break
+        time.sleep(0.5)
+    else:
+        proc.terminate()
+        pytest.fail("API server failed to start on port 8000 within 15 seconds")
+
+    yield "managed"
+
+    proc.terminate()
+    proc.wait(timeout=5)
 
 
 @pytest.fixture(scope="module")
@@ -312,26 +365,13 @@ def reporter():
 
 
 @pytest.fixture(scope="module")
-def seed_data():
-    """Seed test data into Neo4j and clean up after all tests.
-
-    Setup:
-      1. Verify API is reachable
-      2. Check/seed 12 lenses
-      3. Create seed POI + 3 beats + edges
-
-    Teardown:
-      1. Delete all test-created POIs (prefix "UI Test")
-    """
-    # --- Verify API ---
-    try:
-        resp = _api_get("/nodes/Lens?limit=1")
-        if resp is None:
-            pytest.skip(f"API not reachable at {API_BASE}")
-        if isinstance(resp, dict) and resp.get("_error"):
-            pytest.skip(f"API error: {resp.get('_status')}")
-    except Exception as exc:
-        pytest.skip(f"API not reachable at {API_BASE}: {exc}")
+def seed_data(api_server):
+    """Seed test data into Neo4j via the API server and clean up after all tests."""
+    resp = _api_get("/nodes/Lens?limit=1")
+    if resp is None:
+        pytest.fail(f"API not reachable at {API_BASE} despite server being {api_server}")
+    if isinstance(resp, dict) and resp.get("_error"):
+        pytest.fail(f"API error: {resp.get('_status')}")
 
     created_ids: dict[str, list[str]] = {
         "poi": [],
@@ -476,9 +516,13 @@ def seed_data():
 
 @pytest.fixture(scope="module")
 def browser_page(seed_data, reporter):
-    """Launch a visible Chromium browser for the test suite."""
+    """Launch a headless Chromium browser for the test suite."""
+    chromium_path = _find_chromium()
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False, slow_mo=300)
+        launch_opts: dict[str, Any] = {"headless": True, "slow_mo": 300}
+        if chromium_path:
+            launch_opts["executable_path"] = chromium_path
+        browser = p.chromium.launch(**launch_opts)
         context = browser.new_context(viewport={"width": 1440, "height": 900})
         page = context.new_page()
         yield page, seed_data, reporter

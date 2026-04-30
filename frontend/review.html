@@ -3344,6 +3344,13 @@
     }
   });
 
+  // Expose internals for Playwright test access
+  window.findProximityMatches = findProximityMatches;
+  window.detectConflictsForPoi = detectConflictsForPoi;
+  window.nameSimilarity = nameSimilarity;
+  window.mapPoiForApi = mapPoiForApi;
+  Object.defineProperty(window, 'cachedPoiList', { get: () => cachedPoiList });
+
 })();
 </script>
 </body>
