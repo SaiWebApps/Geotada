@@ -79,10 +79,13 @@ class TestGenerateBeatAudio:
         mock_update.assert_called_once()
 
     def test_skips_existing_audio(self):
-        with patch(
-            "src.audio.pipeline.get_node",
-            return_value=_mock_beat(audio_url="/api/v1/audio/files/real.mp3"),
-        ), pytest.raises(PipelineError, match="already has audio"):
+        with (
+            patch(
+                "src.audio.pipeline.get_node",
+                return_value=_mock_beat(audio_url="/api/v1/audio/files/real.mp3"),
+            ),
+            pytest.raises(PipelineError, match="already has audio"),
+        ):
             generate_beat_audio(MagicMock(), "beat-001", provider_name="mock")
 
     def test_force_regenerates(self):
