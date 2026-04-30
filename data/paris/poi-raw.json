@@ -1162,7 +1162,9 @@
     "name": "Place des Vosges",
     "short_description": "Oldest planned square in Paris built in 1612 with 36 uniform red-brick houses and Victor Hugo's former home at No. 6",
     "name_variations": [
-      "Place Royale"
+      "Place Royale",
+      "Le Marais",
+      "Marais"
     ],
     "kid_friendly": "yes",
     "_pipeline": {
@@ -2906,7 +2908,6 @@
     "name": "Bibliotheque Francois Mitterrand",
     "short_description": "France's national library with four glass towers shaped like open books, anchoring the 13th arrondissement's modern waterfront",
     "name_variations": [
-      "Bibliotheque Nationale de France",
       "BnF",
       "Tres Grande Bibliotheque"
     ],
@@ -6598,11 +6599,7 @@
   {
     "name": "Place de la Bourse",
     "short_description": "Square dominated by the Palais Brongniart (former Paris Stock Exchange), built by Napoleon on the site of a razed convent",
-    "name_variations": [
-      "Palais Brongniart",
-      "Paris Bourse",
-      "Bourse de Paris"
-    ],
+    "name_variations": [],
     "kid_friendly": "yes",
     "latitude": 48.8696,
     "longitude": 2.3416,
@@ -7574,9 +7571,7 @@
   {
     "name": "Place de Louvois",
     "short_description": "Small square opposite the Bibliothèque Nationale, site of the Opera House where the Duc de Berry was assassinated in 1820",
-    "name_variations": [
-      "Square Louvois"
-    ],
+    "name_variations": [],
     "kid_friendly": "caution",
     "latitude": 48.86822,
     "longitude": 2.33764,

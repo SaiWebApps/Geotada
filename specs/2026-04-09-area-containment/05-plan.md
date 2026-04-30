@@ -325,7 +325,7 @@ You are creating the Area hierarchy for Paris — the city node, 7 arrondissemen
 # 1. Paris city Area exists
 python3 -c "
 from neo4j import GraphDatabase
-d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','travlr_dev_2026'))
+d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','ondoway_dev_2026'))
 with d.session() as s:
     r = s.run(\"MATCH (a:Area {name:'Paris', area_type:'city'}) RETURN a.name, a.city_name\").single()
     assert r, 'Paris city Area not found'
@@ -336,7 +336,7 @@ d.close()
 # 2. 7 arrondissements WITHIN Paris
 python3 -c "
 from neo4j import GraphDatabase
-d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','travlr_dev_2026'))
+d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','ondoway_dev_2026'))
 with d.session() as s:
     r = s.run(\"MATCH (a:Area {area_type:'district'})-[:WITHIN]->(c:Area {name:'Paris'}) RETURN count(a) AS cnt\").single()
     assert r['cnt'] == 7, f'Expected 7 arrondissements, got {r[\"cnt\"]}'
@@ -347,7 +347,7 @@ d.close()
 # 3. Sub-areas WITHIN arrondissements
 python3 -c "
 from neo4j import GraphDatabase
-d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','travlr_dev_2026'))
+d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','ondoway_dev_2026'))
 with d.session() as s:
     r = s.run(\"MATCH (sub:Area)-[:WITHIN]->(arr:Area {area_type:'district'}) WHERE sub.area_type IN ['island','neighborhood','corridor'] RETURN sub.name, arr.name ORDER BY arr.name\").data()
     for row in r:
@@ -361,7 +361,7 @@ d.close()
 python3 -c "
 from neo4j import GraphDatabase
 from shapely import wkt
-d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','travlr_dev_2026'))
+d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','ondoway_dev_2026'))
 with d.session() as s:
     areas = s.run('MATCH (a:Area) RETURN a.name, a.boundary').data()
     for a in areas:
@@ -687,7 +687,7 @@ print(f'AC-7 PASS — Notre-Dame contained in: {names}')
 # AC-4: Full hierarchical containment
 python3 -c "
 from neo4j import GraphDatabase
-d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','travlr_dev_2026'))
+d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','ondoway_dev_2026'))
 with d.session() as s:
     r = s.run('''
         MATCH (p:POI {name:'Notre-Dame Cathedral'})-[:WITHIN]->(island:Area)-[:WITHIN]->(arr:Area)-[:WITHIN]->(city:Area)
@@ -704,7 +704,7 @@ d.close()
 # Orphan check
 python3 -c "
 from neo4j import GraphDatabase
-d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','travlr_dev_2026'))
+d = GraphDatabase.driver('bolt://localhost:7687', auth=('neo4j','ondoway_dev_2026'))
 with d.session() as s:
     orphans = s.run('MATCH (p:POI) WHERE NOT (p)-[:WITHIN]->(:Area) RETURN p.name').data()
     if orphans:

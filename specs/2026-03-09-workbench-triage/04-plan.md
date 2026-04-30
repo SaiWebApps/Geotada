@@ -269,7 +269,7 @@ An editor can load fact-checked JSON, triage POIs by audit priority, review each
 
 ## Context
 
-You are working on the Travlr Editorial Workbench — a browser-based HTML/JS tool at `frontend/review.html` (~2,310 lines, single-file). The workbench lets editors review and upload fact-checked POI data to a Neo4j database via a REST API at localhost:8000.
+You are working on the Ondoway Editorial Workbench — a browser-based HTML/JS tool at `frontend/review.html` (~2,310 lines, single-file). The workbench lets editors review and upload fact-checked POI data to a Neo4j database via a REST API at localhost:8000.
 
 Read these files before starting:
 - `specs/NORTHSTAR.md` — project north star

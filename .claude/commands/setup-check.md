@@ -1,4 +1,4 @@
-Check whether this machine has the prerequisites to run the Travlr project, and help install anything missing.
+Check whether this machine has the prerequisites to run the Ondoway project, and help install anything missing.
 
 ## Core Prerequisites
 

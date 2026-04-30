@@ -166,7 +166,7 @@ def main() -> int:
         if stats["nonws_reduction_pct"] > 40:
             suspicious_flag = "  *SUSPICIOUS (>40% non-ws removed)"
             suspicious.append((p, stats))
-        rel = str(p).replace("/Users/adamserblowski/Geotada/", "")
+        rel = str(p).replace("/Users/adamserblowski/Ondoway/", "")
         print(f"{rel:<70} {stats['lines_before']:>8} {stats['lines_after']:>8} {stats['line_reduction_pct']:>6} {stats['nonws_reduction_pct']:>7}{suspicious_flag}")
 
     if suspicious:

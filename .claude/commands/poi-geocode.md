@@ -63,7 +63,7 @@ import urllib.request, urllib.parse, json, time
 def nominatim_search(query):
     encoded = urllib.parse.quote(query)
     url = f"https://nominatim.openstreetmap.org/search?q={encoded}&format=json&limit=1"
-    req = urllib.request.Request(url, headers={"User-Agent": "Travlr-Dev/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "Ondoway-Dev/1.0"})
     with urllib.request.urlopen(req, timeout=10) as resp:
         data = json.loads(resp.read())
         if data:

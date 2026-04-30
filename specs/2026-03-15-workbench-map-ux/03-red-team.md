@@ -10,7 +10,7 @@
 
 **B1 — Nominatim Usage Policy requires meaningful `User-Agent`, not just `Referer`**
 Nominatim's usage policy requires a custom `User-Agent` header identifying the application. The existing city geocoding code (review.html:960) sets `Referer` but no `User-Agent`. Increased request volume from address geocoding risks being blocked without proper identification.
-**Resolution:** Add `User-Agent: Geotada-Workbench/1.0` header to all Nominatim fetch calls (including the existing city geocode).
+**Resolution:** Add `User-Agent: Ondoway-Workbench/1.0` header to all Nominatim fetch calls (including the existing city geocode).
 
 **B2 — Spec says "address geocoded via Nominatim" but doesn't specify the endpoint**
 The existing code uses `/search` (forward geocoding by city name). The spec needs forward geocoding of a street address — same endpoint, but the spec should be explicit.
@@ -149,7 +149,7 @@ Google Maps URL construction needs `encodeURIComponent()` for POI name and addre
 
 These items must be addressed in the implementation plan:
 
-1. **Add `User-Agent: Geotada-Workbench/1.0`** to all Nominatim fetch calls (B1)
+1. **Add `User-Agent: Ondoway-Workbench/1.0`** to all Nominatim fetch calls (B1)
 2. **Use Nominatim `/search` endpoint** with `format=json&limit=1` for forward geocoding (B2)
 3. **Validate Nominatim response** — confirm lat/lng are valid numbers before creating marker (Section 11)
 4. **Gate geocode call to `selectPoi()` only** — never on `renderDetail()` re-renders or coordinate drags (Performance)

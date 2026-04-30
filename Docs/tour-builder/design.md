@@ -168,7 +168,7 @@ Every source points to "what you can see right now" as the single strongest diff
 - **Viator 5-star Paris reviews** consistently praise guides who point at things and share "lively stories to add further colour to each site."
 - **Viator 3-star reviews** consistently criticize "no real direction on how to walk" — the navigation/sensory void.
 
-**Implication for Travlr:** The `sensory_anchor` beat field is architecturally essential. Without it, the tour builder can't distinguish beats that require the user to be looking at the thing from beats that work anywhere. Misplaced sensory beats are jarring; correctly placed ones are the Detour secret sauce.
+**Implication for Ondoway:** The `sensory_anchor` beat field is architecturally essential. Without it, the tour builder can't distinguish beats that require the user to be looking at the thing from beats that work anywhere. Misplaced sensory beats are jarring; correctly placed ones are the Detour secret sauce.
 
 ### 2. Narrative threading — stories, not facts
 
@@ -177,7 +177,7 @@ Every source points to "what you can see right now" as the single strongest diff
 - **Springer 2022 study** on audio in heritage storytelling: four concepts drive audience engagement — perceived realism, narrative transportation, emotional engagement, and character identification.
 - **Detour's approach:** tours were "serialized urban documentaries" with character-driven narratives. Narrators had genuine personal connections (the Castro tour by activist Cleve Jones, the Suffragettes tour by Dr. Helen Pankhurst).
 
-**Implication for Travlr:** The `entities` field powers this. Without entity extraction, theme discovery requires reading every beat's raw text — either by a human or by a frontier model at runtime ($0.50-2.00/tour, the anti-pattern). Cross-POI graph adjacency is what creates arc from facts; neither beat alone tells the story.
+**Implication for Ondoway:** The `entities` field powers this. Without entity extraction, theme discovery requires reading every beat's raw text — either by a human or by a frontier model at runtime ($0.50-2.00/tour, the anti-pattern). Cross-POI graph adjacency is what creates arc from facts; neither beat alone tells the story.
 
 ### 3. Structural variety — pacing, silence, and beat function
 
@@ -187,7 +187,7 @@ Every source points to "what you can see right now" as the single strongest diff
 - **Fat Tire Tours:** Guided tours' strength is the human guide who adapts in real time — reads the moment, connects story to what's visible, adjusts pacing. Self-guided audio must replicate this structurally.
 - **Heritage walking tour design literature:** "The order of stops matters and should aim for a narrative arc — start with a provocative hook, then develop context, introduce key figures, raise tensions, and resolve with a reflective final stop."
 
-**Implication for Travlr:** The `narrative_function` and `beat_type` fields enable this. Without them, the tour builder can't distinguish a cold-open hook from a deep dive from a walk-by factoid. The 60% silence budget is validated by the research, but enforcing it requires `est_spoken_seconds`.
+**Implication for Ondoway:** The `narrative_function` and `beat_type` fields enable this. Without them, the tour builder can't distinguish a cold-open hook from a deep dive from a walk-by factoid. The 60% silence budget is validated by the research, but enforcing it requires `est_spoken_seconds`.
 
 ### What bad tours get wrong (failure modes to prevent)
 
@@ -198,11 +198,11 @@ Every source identifies the same failures:
 3. **Pacing mismatch.** Audio that keeps playing when the listener has stopped. Silent gaps that don't match walk times.
 4. **Wall-to-wall narration.** No breathing room. The listener can't process or look around.
 5. **No sensory anchoring.** Talking about things the listener cannot see.
-6. **Marketplace quality inconsistency.** GetYourGuide axed self-guided tours entirely because quality was uncontrollable across creators. Questo quality varies wildly by city. The in-house production model (Detour) produced the best results but didn't scale economically. Travlr's "expensive at ingest, cheap at runtime" approach threads this needle.
+6. **Marketplace quality inconsistency.** GetYourGuide axed self-guided tours entirely because quality was uncontrollable across creators. Questo quality varies wildly by city. The in-house production model (Detour) produced the best results but didn't scale economically. Ondoway's "expensive at ingest, cheap at runtime" approach threads this needle.
 
 ### Detour insight worth noting
 
-Detour's use of first-person narrators with genuine personal connections created emotional engagement that third-person narration cannot match. Travlr's beat data is book-sourced and third-person. Future data ingestion could capture first-person primary-source quotes (letters, diaries, trial transcripts) as a distinct beat type that the runtime weaves in as character voices — even within TTS, a shift to direct quotation ("As Marie Antoinette wrote to her mother...") creates a different register than pure narration.
+Detour's use of first-person narrators with genuine personal connections created emotional engagement that third-person narration cannot match. Ondoway's beat data is book-sourced and third-person. Future data ingestion could capture first-person primary-source quotes (letters, diaries, trial transcripts) as a distinct beat type that the runtime weaves in as character voices — even within TTS, a shift to direct quotation ("As Marie Antoinette wrote to her mother...") creates a different register than pure narration.
 
 ### Sources
 

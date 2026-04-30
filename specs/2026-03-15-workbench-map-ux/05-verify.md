@@ -45,7 +45,7 @@
 
 | # | Practice | Status | Evidence |
 |---|----------|--------|----------|
-| 1 | User-Agent on all Nominatim calls | **PASS** | `geocodeAddress()` line 2009 and city geocoding line 961 both include `'User-Agent': 'Geotada-Workbench/1.0'` |
+| 1 | User-Agent on all Nominatim calls | **PASS** | `geocodeAddress()` line 2009 and city geocoding line 961 both include `'User-Agent': 'Ondoway-Workbench/1.0'` |
 | 2 | Input validation on Nominatim response | **PASS** | `isFinite(parseFloat(...))` check on both lat and lon (line 2013) |
 | 3 | Geocode gated to `selectPoi()` only | **PASS** | Geocode call is at end of `selectPoi()` (lines 1452-1454), not in `renderDetail()` |
 | 4 | AbortController for stale requests | **PASS** | Previous controller aborted before new one created (lines 2004-2005); signal passed to fetch (line 2010) |

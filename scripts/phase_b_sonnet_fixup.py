@@ -26,7 +26,7 @@ Usage:
     phase_b_sonnet_fixup.py
         --transcripts <path1> <path2> ...
         --or-json     <path1> <path2> ...
-        --out         /tmp/travlr-probe/wave1
+        --out         /tmp/ondoway-probe/wave1
         --poi-raw     data/paris/poi-raw.json
 
 Centralized in the orchestrator (main conversation), not in agent prompts.
@@ -42,7 +42,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
-PROJECT_ROOT = Path("/Users/adamserblowski/Geotada")
+PROJECT_ROOT = Path("/Users/adamserblowski/Ondoway")
 sys.path.insert(0, str(PROJECT_ROOT))
 
 # Pydantic validator

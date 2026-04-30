@@ -6,12 +6,12 @@ services:
       - "7474:7474"  # HTTP browser
       - "7687:7687"  # Bolt protocol
     environment:
-      NEO4J_AUTH: neo4j/travlr_dev_2026
+      NEO4J_AUTH: neo4j/ondoway_dev_2026
       NEO4J_PLUGINS: '["apoc"]'
     volumes:
       - neo4j_data:/data
     healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "travlr_dev_2026", "RETURN 1"]
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_dev_2026", "RETURN 1"]
       interval: 5s
       timeout: 5s
       retries: 30
@@ -23,12 +23,12 @@ services:
       - "7475:7474"  # HTTP browser (test)
       - "7688:7687"  # Bolt protocol (test)
     environment:
-      NEO4J_AUTH: neo4j/travlr_test_2026
+      NEO4J_AUTH: neo4j/ondoway_test_2026
       NEO4J_PLUGINS: '["apoc"]'
     volumes:
       - neo4j_test_data:/data
     healthcheck:
-      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "travlr_test_2026", "RETURN 1"]
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_test_2026", "RETURN 1"]
       interval: 5s
       timeout: 5s
       retries: 30

@@ -69,7 +69,7 @@ test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
 db-up: ## Start dev Neo4j in Docker (production data)
 	docker compose up -d neo4j
 	@echo "Waiting for Neo4j to be healthy..."
-	@docker compose exec neo4j bash -c 'until cypher-shell -u neo4j -p travlr_dev_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
+	@docker compose exec neo4j bash -c 'until cypher-shell -u neo4j -p ondoway_dev_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
 	@echo "✓ Neo4j is ready at bolt://localhost:7687"
 	@echo "  Browser: http://localhost:7474"
 
@@ -86,7 +86,7 @@ db-reset: ## Stop dev Neo4j and wipe all data (DESTRUCTIVE)
 db-test-up: ## Start test Neo4j in Docker (disposable data)
 	docker compose up -d neo4j-test
 	@echo "Waiting for test Neo4j to be healthy..."
-	@docker compose exec neo4j-test bash -c 'until cypher-shell -u neo4j -p travlr_test_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
+	@docker compose exec neo4j-test bash -c 'until cypher-shell -u neo4j -p ondoway_test_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
 	@echo "✓ Test Neo4j is ready at bolt://localhost:7688"
 	@echo "  Browser: http://localhost:7475"
 

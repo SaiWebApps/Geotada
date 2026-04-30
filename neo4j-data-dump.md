@@ -1,4 +1,4 @@
-# Neo4j Database Dump — Geotada/Travlr
+# Neo4j Database Dump — Ondoway
 
 **Exported:** 2026-03-16
 **Database:** bolt://localhost:7687
@@ -24,7 +24,7 @@
 | Field | Value |
 |---|---|
 | id | `178f3e21-ca09-4139-9135-2480051b4656` |
-| email | testuser@travlr.app |
+| email | testuser@ondoway.app |
 | created_at | 2026-03-13T01:11:34.446Z |
 | last_logon | 2026-03-13T01:11:34.446Z |
 
@@ -61,7 +61,7 @@
 | status | planning |
 | start_date | 2026-04-10 |
 | end_date | 2026-04-14 |
-| cover_image_url | https://images.travlr.app/trips/paris-spring.jpg |
+| cover_image_url | https://images.ondoway.app/trips/paris-spring.jpg |
 
 ---
 
@@ -449,7 +449,7 @@ All items are on **2026-04-10**, assigned to **Profile: Mom**.
 | version | 1 |
 | active_status | active |
 | kid_friendly | yes |
-| audio_url | s3://travlr-audio/placeholder/eiffel_tower.mp3 |
+| audio_url | s3://ondoway-audio/placeholder/eiffel_tower.mp3 |
 
 > Look up. Every rivet you see was placed by hand — 2.5 million of them. Gustave Eiffel didn't build this for beauty; he built it to prove iron could touch the sky. Parisians called it an eyesore. Now it's the most visited paid monument on Earth.
 
@@ -466,7 +466,7 @@ All items are on **2026-04-10**, assigned to **Profile: Mom**.
 | version | 1 |
 | active_status | active |
 | kid_friendly | yes |
-| audio_url | s3://travlr-audio/placeholder/cafe_de_flore.mp3 |
+| audio_url | s3://ondoway-audio/placeholder/cafe_de_flore.mp3 |
 
 > This corner table — yes, this exact one — is where Sartre scribbled Being and Nothingness while chain-smoking Gauloises. De Beauvoir sat across from him, writing her own masterpiece. The hot chocolate recipe hasn't changed since 1887.
 
@@ -483,7 +483,7 @@ All items are on **2026-04-10**, assigned to **Profile: Mom**.
 | version | 1 |
 | active_status | active |
 | kid_friendly | yes |
-| audio_url | s3://travlr-audio/placeholder/cafe_de_flore.mp3 |
+| audio_url | s3://ondoway-audio/placeholder/cafe_de_flore.mp3 |
 
 > During the Occupation, Cafe de Flore became an unlikely resistance hub. The Nazis preferred the Deux Magots next door — which made Flore the place where intellectuals quietly planned acts of cultural defiance.
 
@@ -500,7 +500,7 @@ All items are on **2026-04-10**, assigned to **Profile: Mom**.
 | version | 1 |
 | active_status | active |
 | kid_friendly | yes |
-| audio_url | s3://travlr-audio/placeholder/shakespeare_and_company.mp3 |
+| audio_url | s3://ondoway-audio/placeholder/shakespeare_and_company.mp3 |
 
 > Sylvia Beach opened the original shop in 1919 and published Ulysses when no one else would. This reincarnation, opened by George Whitman in 1951, still lets writers sleep among the shelves — they call them Tumbleweeds.
 
@@ -899,8 +899,8 @@ All items are on **2026-04-10**, assigned to **Profile: Mom**.
 ### HAS_PROFILE (User → Profile)
 | From | To |
 |---|---|
-| testuser@travlr.app | Mom |
-| testuser@travlr.app | Kid |
+| testuser@ondoway.app | Mom |
+| testuser@ondoway.app | Kid |
 
 ### IS_CAPTAIN_OF / IS_CREW_OF (Profile → Trip)
 | Profile | Role | Trip |

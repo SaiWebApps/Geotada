@@ -101,7 +101,8 @@ class TestGetNodeSchema:
         assert kid_friendly["required"] is False
         assert kid_friendly["default"] == "yes"
         importance = next(p for p in data["properties"] if p["name"] == "importance_tier")
-        assert importance["default"] == 1
+        assert importance["required"] is True
+        assert importance["default"] is None
 
     def test_poi_has_point_index(self, client):
         data = client.get("/api/v1/schema/nodes/POI").json()

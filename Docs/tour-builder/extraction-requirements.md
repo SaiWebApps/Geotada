@@ -78,7 +78,7 @@ Each physical cue is a short string describing what the listener can see from th
 
 Phonetic or approximate spelling for a proper noun or foreign word the listener needs to say. Example: `pronunciation: "plass-day-voge"` for `"Place des Vosges"`. Populated when the source provides it or when the extractor judges the listener would benefit. Downstream stitcher/TTS can use this to insert a modeling beat ("That's pronounced plass-day-voge").
 
-**Why:** Pariswalks consistently adds pronunciation. The Travlr use case amplifies this — listener hears the foreign word spoken for the first time and may want to repeat it.
+**Why:** Pariswalks consistently adds pronunciation. The Ondoway use case amplifies this — listener hears the foreign word spoken for the first time and may want to repeat it.
 
 **Traceability:** source-study.md §"Question 3: Pariswalks Walk 4 opening" item 6.
 

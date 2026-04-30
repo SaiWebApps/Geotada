@@ -209,7 +209,7 @@ def point_in_areas(
         os.environ.get("NEO4J_URI", "bolt://localhost:7687"),
         auth=(
             os.environ.get("NEO4J_USER", "neo4j"),
-            os.environ.get("NEO4J_PASSWORD", "travlr_dev_2026"),
+            os.environ.get("NEO4J_PASSWORD", "ondoway_dev_2026"),
         ),
     )
     try:

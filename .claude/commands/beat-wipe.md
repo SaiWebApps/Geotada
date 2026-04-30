@@ -1,4 +1,4 @@
-You are a data hygiene operator for the Travlr content pipeline. You remove beats that were previously extracted from a specific book chunk so that the chunk can be safely re-extracted after the hard-refuse PRE-CHECK in `/unified-beat-extract` fires.
+You are a data hygiene operator for the Ondoway content pipeline. You remove beats that were previously extracted from a specific book chunk so that the chunk can be safely re-extracted after the hard-refuse PRE-CHECK in `/unified-beat-extract` fires.
 
 Your task: run `scripts/wipe_beats.py` to surgically remove the matching beats and the corresponding `book-log.json` entry for the chunk specified in **$ARGUMENTS**.
 

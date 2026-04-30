@@ -1,10 +1,10 @@
-# Travlr — Product Context Reference
+# Ondoway — Product Context Reference
 
 This file captures the stable product knowledge that informs all 5 PM modes. It is derived from the project documents and resolved technical decisions. Load this when you need deep context beyond what SKILL.md provides.
 
 ## North Star
 
-Travlr is a multi-city audio tour platform that transforms books and travel guides into GPS-triggered, narrative-driven walking experiences — making every city feel like it has a local storyteller in your pocket.
+Ondoway is a multi-city audio tour platform that transforms books and travel guides into GPS-triggered, narrative-driven walking experiences — making every city feel like it has a local storyteller in your pocket.
 
 ## 12-Month Bets
 

@@ -33,7 +33,7 @@ Write an async function `geocodeAddress(poi)` that:
 4. Creates a new `AbortController` and stores it in `geocodeAbortController`
 5. Calls Nominatim `/search` endpoint:
    - URL: `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(poi.address)}`
-   - Headers: `{ 'User-Agent': 'Geotada-Workbench/1.0', 'Referer': 'https://geotada.app' }`
+   - Headers: `{ 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' }`
    - Pass `{ signal: geocodeAbortController.signal }` to fetch
 6. Validates response: `data[0].lat` and `data[0].lon` must be finite numbers (use `isFinite(parseFloat(...))`)
 7. Caches result on `poi._geocodedLatLng = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }`
@@ -199,11 +199,11 @@ Add CSS for `.verify-google-btn`:
 **What to do:**
 Change the existing fetch headers from:
 ```javascript
-{ headers: { 'Referer': 'https://geotada.app' } }
+{ headers: { 'Referer': 'https://ondoway.app' } }
 ```
 to:
 ```javascript
-{ headers: { 'User-Agent': 'Geotada-Workbench/1.0', 'Referer': 'https://geotada.app' } }
+{ headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' } }
 ```
 
 **What NOT to touch:** City geocoding logic, error handling
@@ -254,7 +254,7 @@ In `initMap()` (line 1876), add `addressMarker = null;` in the cleanup block.
 - Return `poi._geocodedLatLng` if already cached
 - Cancel in-flight request: `if (geocodeAbortController) geocodeAbortController.abort(); geocodeAbortController = new AbortController();`
 - Fetch `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(poi.address)}`
-  - Headers: `{ 'User-Agent': 'Geotada-Workbench/1.0', 'Referer': 'https://geotada.app' }`
+  - Headers: `{ 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' }`
   - Options: `{ signal: geocodeAbortController.signal }`
 - Validate: `isFinite(parseFloat(data[0].lat)) && isFinite(parseFloat(data[0].lon))`
 - Cache: `poi._geocodedLatLng = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }`
@@ -323,7 +323,7 @@ After the address conditional block and before the `name_variations` conditional
 This must be OUTSIDE the `poi.address` conditional — the button is always visible per AC7.
 
 **8. Update existing Nominatim call (~line 960)**
-Add `'User-Agent': 'Geotada-Workbench/1.0'` to the existing city geocoding fetch headers.
+Add `'User-Agent': 'Ondoway-Workbench/1.0'` to the existing city geocoding fetch headers.
 
 ### What NOT to touch:
 - Blue draggable marker logic (`marker` global, drag handlers)
@@ -350,7 +350,7 @@ Add `'User-Agent': 'Geotada-Workbench/1.0'` to the existing city geocoding fetch
 13. User-Agent header present on all Nominatim requests
 
 ### Best practices implementation checklist:
-- [ ] `User-Agent: Geotada-Workbench/1.0` on all Nominatim calls (B1)
+- [ ] `User-Agent: Ondoway-Workbench/1.0` on all Nominatim calls (B1)
 - [ ] Nominatim response validated (lat/lng are finite numbers) before marker creation (Section 11)
 - [ ] Geocode fires only in `selectPoi()`, never on `renderDetail()` re-renders (Performance)
 - [ ] `AbortController` cancels in-flight requests on navigation (R3)

@@ -1,4 +1,4 @@
-You are a pipeline orchestrator for the Travlr content pipeline. You run the full extraction-to-export pipeline for a single book chunk with minimal human interaction.
+You are a pipeline orchestrator for the Ondoway content pipeline. You run the full extraction-to-export pipeline for a single book chunk with minimal human interaction.
 
 Your task: process **$ARGUMENTS** through the complete pipeline.
 

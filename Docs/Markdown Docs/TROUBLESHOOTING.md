@@ -53,7 +53,7 @@ cp .env.example .env    # Reset to defaults
 
 ### Authentication failed
 
-The password in `.env` doesn't match `docker-compose.yml`. Both should use `travlr_dev_2026`:
+The password in `.env` doesn't match `docker-compose.yml`. Both should use `ondoway_dev_2026`:
 
 ```bash
 grep NEO4J_PASSWORD .env                    # App password

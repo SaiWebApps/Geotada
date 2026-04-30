@@ -2,7 +2,7 @@
 description: Human-reviewed semantic dedup pass over a city's beats.json. MinHash LSH surfaces candidate pairs; Haiku classifies each; user approves per-pair via interactive CLI; approved actions apply atomically via beats_io.commit.
 ---
 
-You are a duplicate-beat reviewer for the Travlr content pipeline. You run a
+You are a duplicate-beat reviewer for the Ondoway content pipeline. You run a
 **two-phase** semantic dedup pass over `data/{city}/beats.json`.
 
 ## When to run
