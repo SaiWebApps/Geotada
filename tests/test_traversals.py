@@ -43,7 +43,7 @@ class TestTraversals:
     def test_wanderer_matches_mom_lens_preferences(self, driver):
         result = run_wanderer_traversal(driver)
         lenses = {row["lens"] for row in result.sample_rows}
-        mom_lenses = {"Hidden History", "Food & Culinary Culture", "Literary & Film Locations"}
+        mom_lenses = {"Hidden History", "Historic Cuisine", "Literary Heritage"}
         assert lenses.issubset(mom_lenses), f"Unexpected lenses: {lenses - mom_lenses}"
 
     def test_dag_returns_at_least_one_row(self, driver):

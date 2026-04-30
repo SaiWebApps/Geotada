@@ -66,8 +66,10 @@ class TestUpdateNode:
             "/api/v1/nodes/POI",
             json={
                 "name": "Movable Place",
+                "city_name": "paris",
                 "latitude": 40.0,
                 "longitude": -74.0,
+                "importance_tier": 1,
             },
         ).json()
 
@@ -153,8 +155,10 @@ class TestFullNodeLifecycle:
             "/api/v1/nodes/POI",
             json={
                 "name": "Lifecycle POI",
+                "city_name": "paris",
                 "latitude": 48.8584,
                 "longitude": 2.2945,
+                "importance_tier": 1,
             },
         ).json()
         poi_id = created["id"]

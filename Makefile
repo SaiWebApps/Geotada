@@ -49,7 +49,8 @@ test-unit: ## Run unit tests only (no Neo4j needed)
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py -v
 
 test-local: ## Run tests against local Neo4j (Docker)
-	@cp .env.local .env.test && echo "  → Testing against LOCAL Neo4j"
+	@cp .env.test.example .env.test && echo "  → Testing against LOCAL Neo4j (test instance, port 7688)"
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest tests/ -v
 
 test-cloud: ## Run tests against Neo4j Aura (cloud)

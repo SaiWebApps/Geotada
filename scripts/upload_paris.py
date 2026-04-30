@@ -78,7 +78,7 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
 
         session.run(
             """
-            MERGE (p:POI {name: $name})
+            MERGE (p:POI {name: $name, city_name: $city_name})
             ON CREATE SET p.id = randomUUID()
             SET p.short_description   = $short_description,
                 p.location            = point({latitude: $lat, longitude: $lon, srid: 4326}),
@@ -88,6 +88,7 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
                 p.name_variations     = $name_variations
             """,
             name=poi["name"],
+            city_name="paris",
             short_description=poi.get("short_description", ""),
             lat=float(lat),
             lon=float(lon),

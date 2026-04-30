@@ -53,8 +53,10 @@ class TestCreatePOI:
             "/api/v1/nodes/POI",
             json={
                 "name": "Test Place",
+                "city_name": "paris",
                 "latitude": 40.7128,
                 "longitude": -74.0060,
+                "importance_tier": 1,
             },
         )
         assert resp.status_code == 201
@@ -66,8 +68,10 @@ class TestCreatePOI:
             "/api/v1/nodes/POI",
             json={
                 "name": "Geo Test",
+                "city_name": "paris",
                 "latitude": 51.5074,
                 "longitude": -0.1278,
+                "importance_tier": 1,
             },
         )
         loc = resp.json()["properties"]["location"]
@@ -79,8 +83,10 @@ class TestCreatePOI:
             "/api/v1/nodes/POI",
             json={
                 "name": "Default Test",
+                "city_name": "paris",
                 "latitude": 0.0,
                 "longitude": 0.0,
+                "importance_tier": 1,
             },
         )
         props = resp.json()["properties"]

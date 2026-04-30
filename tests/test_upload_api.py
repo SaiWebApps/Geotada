@@ -73,8 +73,10 @@ class TestMergeIdempotency:
             "/api/v1/nodes/POI",
             json={
                 "name": "Edge Merge POI",
+                "city_name": "paris",
                 "latitude": 48.85,
                 "longitude": 2.35,
+                "importance_tier": 1,
             },
         )
         poi_id = poi_resp.json()["id"]
@@ -115,8 +117,10 @@ class TestBeatTraversal:
             "/api/v1/nodes/POI",
             json={
                 "name": "Traversal Test POI",
+                "city_name": "paris",
                 "latitude": 48.85,
                 "longitude": 2.35,
+                "importance_tier": 1,
             },
         )
 
@@ -146,9 +150,9 @@ class TestBeatTraversal:
         poi = next(p for p in poi_list["items"] if p["properties"]["name"] == "Traversal Test POI")
 
         # Get lens IDs
-        lens_list = client.get("/api/v1/nodes/Lens?limit=20").json()
+        lens_list = client.get("/api/v1/nodes/Lens?limit=50").json()
         hh_lens = next(l for l in lens_list["items"] if l["properties"]["name"] == "hidden_history")
-        fc_lens = next(l for l in lens_list["items"] if l["properties"]["name"] == "food_culinary")
+        fc_lens = next(l for l in lens_list["items"] if l["properties"]["name"] == "historic_cuisine")
 
         # Create HAS_BEAT edges
         client.post(
@@ -183,7 +187,7 @@ class TestBeatTraversal:
         )
 
         # Now test the traversal endpoint
-        resp = client.get("/api/v1/graph/poi/Traversal Test POI/beats")
+        resp = client.get("/api/v1/graph/poi/Traversal Test POI/beats?city_name=paris")
         assert resp.status_code == 200
         data = resp.json()
         assert data["poi_name"] == "Traversal Test POI"
@@ -191,7 +195,7 @@ class TestBeatTraversal:
 
         slugs = {b["lens_slug"] for b in data["beats"]}
         assert "hidden_history" in slugs
-        assert "food_culinary" in slugs
+        assert "historic_cuisine" in slugs
 
     def test_returns_empty_for_unknown_poi(self, client):
         resp = client.get("/api/v1/graph/poi/NonExistentPOI/beats?city_name=paris")
@@ -239,8 +243,10 @@ class TestForceCreate:
         """force_create=false (default) still MERGEs on name."""
         payload = {
             "name": "Default Merge POI",
+            "city_name": "paris",
             "latitude": 48.85,
             "longitude": 2.35,
+            "importance_tier": 1,
         }
         resp1 = client.post("/api/v1/nodes/POI", json=payload)
         id1 = resp1.json()["id"]
@@ -264,8 +270,10 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "Bad Lat POI",
+                "city_name": "paris",
                 "latitude": 999,
                 "longitude": 2.35,
+                "importance_tier": 1,
             },
         )
         assert resp.status_code == 422
@@ -275,8 +283,10 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "Bad Lng POI",
+                "city_name": "paris",
                 "latitude": 48.85,
                 "longitude": -999,
+                "importance_tier": 1,
             },
         )
         assert resp.status_code == 422
@@ -286,8 +296,10 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "Valid Coords POI",
+                "city_name": "paris",
                 "latitude": 48.8530,
                 "longitude": 2.3499,
+                "importance_tier": 1,
             },
         )
         assert resp.status_code == 201
@@ -298,7 +310,9 @@ class TestCoordinateValidation:
             "/api/v1/nodes/POI",
             json={
                 "name": "No Lat POI",
+                "city_name": "paris",
                 "longitude": 2.35,
+                "importance_tier": 1,
             },
         )
         assert resp.status_code == 422
@@ -314,8 +328,10 @@ class TestNameVariations:
     def test_poi_with_name_variations(self, client):
         payload = {
             "name": "Name Var Test POI",
+            "city_name": "paris",
             "latitude": 48.861,
             "longitude": 2.341,
+            "importance_tier": 1,
             "name_variations": ["Alt Name 1", "Alt Name 2"],
         }
         resp = client.post("/api/v1/nodes/POI", json=payload)
@@ -331,8 +347,10 @@ class TestNameVariations:
     def test_poi_without_name_variations(self, client):
         payload = {
             "name": "No Var Test POI",
+            "city_name": "paris",
             "latitude": 48.862,
             "longitude": 2.342,
+            "importance_tier": 1,
         }
         resp = client.post("/api/v1/nodes/POI", json=payload)
         assert resp.status_code == 201
@@ -341,8 +359,10 @@ class TestNameVariations:
     def test_poi_with_invalid_name_variations(self, client):
         payload = {
             "name": "Invalid Var Test POI",
+            "city_name": "paris",
             "latitude": 48.863,
             "longitude": 2.343,
+            "importance_tier": 1,
             "name_variations": [123, "valid"],
         }
         resp = client.post("/api/v1/nodes/POI", json=payload)
@@ -362,8 +382,10 @@ class TestBeatTraversalDeprecated:
             "/api/v1/nodes/POI",
             json={
                 "name": "Deprecated Test POI",
+                "city_name": "paris",
                 "latitude": 48.87,
                 "longitude": 2.37,
+                "importance_tier": 1,
             },
         )
 
@@ -380,7 +402,7 @@ class TestBeatTraversalDeprecated:
         poi_list = client.get("/api/v1/nodes/POI?limit=200").json()
         poi = next(p for p in poi_list["items"] if p["properties"]["name"] == "Deprecated Test POI")
 
-        lens_list = client.get("/api/v1/nodes/Lens?limit=20").json()
+        lens_list = client.get("/api/v1/nodes/Lens?limit=50").json()
         lens = lens_list["items"][0]
 
         client.post(
@@ -398,6 +420,6 @@ class TestBeatTraversalDeprecated:
             },
         )
 
-        resp = client.get("/api/v1/graph/poi/Deprecated Test POI/beats")
+        resp = client.get("/api/v1/graph/poi/Deprecated Test POI/beats?city_name=paris")
         assert resp.status_code == 200
         assert len(resp.json()["beats"]) == 0, "Deprecated beats should be excluded"
