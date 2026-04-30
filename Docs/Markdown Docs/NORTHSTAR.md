@@ -31,6 +31,7 @@ Can we generate compelling, personalized narrative tours cost-effectively — an
 These are locked. Do not re-open without a sprint decision entry in the PM Living Doc (Section 04).
 
 - **Database:** Neo4j graph database (Schema v3). Three domains: Traveler's Vault, Global Atlas, Execution Bridge.
+- **Data model framing:** Travlr is a **knowledge graph**, not just a graph database. The NarrativeBeat is an *event* (CIDOC-CRM-aligned, event-centric spine); POIs, entities, and times are actors around it. We adopt KG hygiene where it pays off: controlled vocabularies for classification fields, canonical IDs for cross-city-shared concepts, provenance on every fact (source beat ID traceability at runtime), and reified edges when a relationship carries its own properties. We explicitly skip: RDF/SPARQL, OWL reasoning, formal ontology layers (SHACL), and graph embeddings — until a concrete product need outweighs the tax. Revisit the skip list when a proposed feature can't be expressed cleanly with the LPG + Pydantic constraints we already have.
 - **Graph spine:** User → Profile → Trip → ItineraryItem → POI → NarrativeBeat → Lens. Post-MVP nodes attach as branches, never insertions.
 - **Content primitive:** NarrativeBeat — versioned, lensed, gravity-scored (1–5). Multiple beats per lens per POI allowed — the tour builder selects the best fit at runtime based on tour theme, time budget, and user preferences.
 - **Gravity scoring:** POI-level via importance_tier (1–5). Relative to city, not absolute.
@@ -63,6 +64,7 @@ These are locked. Do not re-open without a sprint decision entry in the PM Livin
 - Pipeline automation (PDF upload → auto-extraction abandoned; manual JSON upload instead)
 - Embedding-based lens similarity
 - ~~POI hierarchy~~ → **Moved to active** (2026-04-09): Area nodes with WITHIN containment. See `specs/2026-04-09-area-containment/`.
+- **Entity resolution** (promoting `NarrativeBeat.entities` from string tags to first-class `Entity` nodes with canonical IDs and a reified `MENTIONS` edge). *Known future improvement, captured 2026-04-15.* Rationale: string tags are the canonical KG anti-pattern and runtime theme discovery depends on reliable entity overlap across beats. Promote when (a) unified extraction pipeline has landed, (b) city_name MERGE keys are live, and (c) a feature depending on cross-beat entity queries (theme surfacing, "other beats that mention X", cross-city narrative linking) becomes the next unlock. Do not promote earlier — the current string-tag approach is good enough to validate the MVP thesis.
 - Post-MVP graph nodes: UserPreferences, Badge, Achievement, Challenge, ChallengeCompletion
 
 **Will NOT do (process):**

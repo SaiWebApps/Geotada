@@ -1,7 +1,9 @@
 # Tour B — "Builders of Paris"
 
-**Status:** First draft. Full script with sentence-level source attribution.
-**Last updated:** 2026-04-15
+> **DEPRECATED — 2026-04-22.** Parked along with the tour-builder design doc. Preserved for reference; restart is learn-by-example from real guidebooks.
+
+**Status:** DEPRECATED. Original status was "First draft. Full script with sentence-level source attribution."
+**Last updated:** 2026-04-15 (content); deprecated 2026-04-22.
 
 Hand-built example tour for Scenario 2. Derives and tests rules for the tour-builder skill, focusing on: one-way routing, free endpoint selection, thin-lens interest handling (faith), haversine correction, and routing-aware stop selection.
 

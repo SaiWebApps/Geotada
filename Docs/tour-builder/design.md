@@ -1,8 +1,10 @@
 # Tour Builder — Active Design Doc
 
-**Status:** In active design. Building example tours by hand to derive the rules before writing the skill.
-**Last updated:** 2026-04-20
-**Companion artifacts:** see `examples/` for worked example tours.
+> **DEPRECATED — 2026-04-22.** This rule-forward approach was parked. The problem: we were building a large ruleset with no tested examples of what good looked like, and pipeline data quality kept tangling with tour-building decisions. Restarting via learn-by-example (studying Paris guidebooks) instead of rule-derivation. Contents preserved — individual rules may be re-imported once we know which ones survive contact with real examples.
+
+**Status:** DEPRECATED. No longer auto-loaded into CLAUDE.md.
+**Last updated:** 2026-04-20 (content); deprecated 2026-04-22.
+**Companion artifacts:** see `examples/` for worked example tours (also deprecated).
 
 **What belongs in this doc:** universal rules only. Drafting anecdotes, per-stop iteration history, and failure modes caught on specific tours belong in the corresponding `examples/tour-*.md` file. If you find "discovered during Tour X" or "Tour X Stop N surfaced this" prose in this file, that's detritus — strip it to the universal rule.
 

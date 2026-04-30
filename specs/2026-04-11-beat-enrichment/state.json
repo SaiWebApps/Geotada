@@ -1,0 +1,30 @@
+{
+  "spec_name": "beat-enrichment",
+  "created_at": "2026-04-11",
+  "scopes_total": 3,
+  "scopes": [
+    {
+      "name": "Schema & Model Updates",
+      "stage": "complete",
+      "commit": "00364db",
+      "challenger_invoked": true
+    },
+    {
+      "name": "Classification Backfill",
+      "stage": "complete",
+      "commit": "67df1da",
+      "challenger_invoked": true
+    },
+    {
+      "name": "Export, Upload & Verify",
+      "stage": "complete",
+      "commit": "d9ea52d",
+      "challenger_invoked": true
+    }
+  ],
+  "current_scope": {
+    "index": 3,
+    "stage": "complete"
+  },
+  "verified_at": "2026-04-11"
+}

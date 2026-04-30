@@ -1,7 +1,9 @@
 # Tour A — "Survival on the Island"
 
-**Status:** Complete first draft. Full script with sentence-level source attribution.
-**Last updated:** 2026-04-08
+> **DEPRECATED — 2026-04-22.** Parked along with the tour-builder design doc. Preserved for reference; restart is learn-by-example from real guidebooks.
+
+**Status:** DEPRECATED. Original status was "Complete first draft. Full script with sentence-level source attribution."
+**Last updated:** 2026-04-08 (content); deprecated 2026-04-22.
 
 This is the first hand-built example tour. It exists to derive the rules for the eventual tour-builder skill, not to be a shippable tour. Treat it as a reference for what good output should look like.
 
