@@ -12,6 +12,10 @@ dependencies = [
     "requests>=2.31",
     "datasketch>=1.6.4,<2.0",
     "anthropic>=0.39,<1.0",
+    "pyjwt[crypto]>=2.8",
+    "google-auth>=2.29",
+    "slowapi>=0.1.9",
+    "email-validator>=2.1",
 ]
 
 [project.optional-dependencies]

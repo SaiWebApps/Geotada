@@ -135,3 +135,19 @@ upload-paris: ## Upload full Paris dataset to active Neo4j instance
 all: env db-up db-test-up setup test ## Full bootstrap: env → db → setup → test
 	@echo ""
 	@echo "✓ All done. Run 'make dashboard' for read-only view, 'make api' for CRUD editor."
+
+# ──────────────────────────────────────────────────────────
+# FLUTTER MOBILE APP
+# ──────────────────────────────────────────────────────────
+
+flutter-web: ## Run Flutter web app on port 3000 (Brave)
+	cd mobile && flutter run -d chrome --web-port=3000
+
+flutter-ios: ## Run Flutter app on iOS Simulator
+	cd mobile && flutter run
+
+flutter-test: ## Run Flutter tests
+	cd mobile && flutter test
+
+test-auth: ## Run auth tests only (Python)
+	uv run pytest tests/test_auth_*.py -v

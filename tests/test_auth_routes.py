@@ -1,0 +1,363 @@
+"""Integration tests for auth routes — needs test Neo4j running."""
+
+from __future__ import annotations
+
+from unittest.mock import AsyncMock, patch
+
+from src.api.auth.tokens import (
+    create_access_token,
+    create_magic_token,
+    create_refresh_token,
+    verify_token,
+)
+from src.connection import get_database
+from tests.conftest import needs_neo4j
+
+
+def _seed_user(driver, user_id: str, email: str):
+    """Insert a test user directly into Neo4j."""
+    with driver.session(database=get_database()) as session:
+        session.run(
+            """
+            MERGE (u:User {email: $email})
+            SET u.id = $uid,
+                u.created_at = datetime(),
+                u.last_logon = datetime()
+            """,
+            uid=user_id,
+            email=email,
+        )
+
+
+def _count_users(driver, email: str) -> int:
+    with driver.session(database=get_database()) as session:
+        result = session.run(
+            "MATCH (u:User {email: $email}) RETURN count(u) AS c",
+            email=email,
+        ).single()
+        return result["c"]
+
+
+@needs_neo4j
+class TestAuthMeEndpoint:
+    def test_me_with_valid_token(self, client, clean_driver):
+        _seed_user(clean_driver, "user-99", "me@ondoway.app")
+        token = create_access_token("user-99", "me@ondoway.app")
+
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["id"] == "user-99"
+        assert data["email"] == "me@ondoway.app"
+
+    def test_me_no_auth_header(self, client):
+        resp = client.get("/api/v1/auth/me")
+        assert resp.status_code == 401
+
+    def test_me_invalid_token(self, client):
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": "Bearer garbage.token.here"},
+        )
+        assert resp.status_code == 401
+
+    def test_me_expired_token(self, client):
+        with patch("src.api.auth.tokens.ACCESS_TOKEN_EXPIRE_MINUTES", -1):
+            token = create_access_token("user-99", "me@ondoway.app")
+
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert resp.status_code == 401
+
+    def test_me_user_not_in_db(self, client):
+        token = create_access_token("nonexistent-user", "ghost@ondoway.app")
+
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert resp.status_code == 401
+
+    def test_me_refresh_token_rejected(self, client):
+        token = create_refresh_token("user-99", "sess", "fam")
+
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        assert resp.status_code == 401
+
+
+@needs_neo4j
+class TestMagicLinkRequest:
+    @patch("src.api.auth.routes.send_magic_link", new_callable=AsyncMock)
+    def test_request_returns_200(self, mock_send, client):
+        resp = client.post(
+            "/api/v1/auth/magic-link/request",
+            json={"email": "user@example.com"},
+        )
+        assert resp.status_code == 200
+        assert resp.json()["message"] == "Magic link sent"
+        mock_send.assert_called_once()
+
+    def test_request_invalid_email_returns_422(self, client):
+        resp = client.post(
+            "/api/v1/auth/magic-link/request",
+            json={"email": "not-an-email"},
+        )
+        assert resp.status_code == 422
+
+    @patch(
+        "src.api.auth.routes.send_magic_link",
+        new_callable=AsyncMock,
+        side_effect=Exception("Resend down"),
+    )
+    def test_request_email_failure_returns_502(self, mock_send, client):
+        from src.api.auth.email import EmailDeliveryError
+
+        mock_send.side_effect = EmailDeliveryError("Resend API returned 500")
+        resp = client.post(
+            "/api/v1/auth/magic-link/request",
+            json={"email": "user@example.com"},
+        )
+        assert resp.status_code == 502
+
+
+@needs_neo4j
+class TestMagicLinkVerify:
+    def test_verify_creates_user_and_returns_tokens(self, client, clean_driver):
+        token = create_magic_token("newuser@ondoway.app")
+
+        resp = client.post(
+            "/api/v1/auth/magic-link/verify",
+            json={"token": token},
+        )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "access_token" in data
+        assert "refresh_token" in data
+        assert data["token_type"] == "bearer"
+
+        # Verify user was created in Neo4j
+        assert _count_users(clean_driver, "newuser@ondoway.app") == 1
+
+    def test_verify_existing_user_no_duplicate(self, client, clean_driver):
+        _seed_user(clean_driver, "existing-id", "existing@ondoway.app")
+        token = create_magic_token("existing@ondoway.app")
+
+        resp = client.post(
+            "/api/v1/auth/magic-link/verify",
+            json={"token": token},
+        )
+
+        assert resp.status_code == 200
+        assert _count_users(clean_driver, "existing@ondoway.app") == 1
+
+    def test_verify_expired_token_returns_401(self, client):
+        with patch("src.api.auth.tokens.MAGIC_LINK_EXPIRE_MINUTES", -1):
+            token = create_magic_token("user@ondoway.app")
+
+        resp = client.post(
+            "/api/v1/auth/magic-link/verify",
+            json={"token": token},
+        )
+        assert resp.status_code == 401
+
+    def test_verify_invalid_token_returns_401(self, client):
+        resp = client.post(
+            "/api/v1/auth/magic-link/verify",
+            json={"token": "garbage.token"},
+        )
+        assert resp.status_code == 401
+
+    def test_returned_tokens_are_valid(self, client, clean_driver):
+        token = create_magic_token("valid@ondoway.app")
+
+        resp = client.post(
+            "/api/v1/auth/magic-link/verify",
+            json={"token": token},
+        )
+        data = resp.json()
+
+        access_payload = verify_token(data["access_token"], "access")
+        assert access_payload["email"] == "valid@ondoway.app"
+
+        refresh_payload = verify_token(data["refresh_token"], "refresh")
+        assert refresh_payload["sub"] == access_payload["sub"]
+
+    @patch("src.api.auth.routes.send_magic_link", new_callable=AsyncMock)
+    def test_full_flow_request_then_verify(self, mock_send, client, clean_driver):
+        # Step 1: Request magic link
+        resp = client.post(
+            "/api/v1/auth/magic-link/request",
+            json={"email": "flow@ondoway.app"},
+        )
+        assert resp.status_code == 200
+
+        # Extract the token that was passed to send_magic_link
+        sent_token = mock_send.call_args[0][1]
+
+        # Step 2: Verify magic link
+        resp = client.post(
+            "/api/v1/auth/magic-link/verify",
+            json={"token": sent_token},
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+
+        # Step 3: Use access token with /me
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {data['access_token']}"},
+        )
+        assert resp.status_code == 200
+        assert resp.json()["email"] == "flow@ondoway.app"
+
+
+@needs_neo4j
+class TestRefreshEndpoint:
+    def test_refresh_returns_new_access_token(self, client, clean_driver):
+        _seed_user(clean_driver, "refresh-user", "refresh@ondoway.app")
+        token = create_magic_token("refresh@ondoway.app")
+        verify_resp = client.post(
+            "/api/v1/auth/magic-link/verify", json={"token": token}
+        )
+        refresh_token = verify_resp.json()["refresh_token"]
+
+        resp = client.post(
+            "/api/v1/auth/refresh",
+            json={"refresh_token": refresh_token},
+        )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "access_token" in data
+        access_payload = verify_token(data["access_token"], "access")
+        assert access_payload["email"] == "refresh@ondoway.app"
+
+    def test_refresh_invalid_token_returns_401(self, client):
+        resp = client.post(
+            "/api/v1/auth/refresh",
+            json={"refresh_token": "garbage"},
+        )
+        assert resp.status_code == 401
+
+    def test_refresh_expired_token_returns_401(self, client):
+        with patch("src.api.auth.tokens.REFRESH_TOKEN_EXPIRE_DAYS", -1):
+            token = create_refresh_token("u", "s", "f")
+
+        resp = client.post(
+            "/api/v1/auth/refresh",
+            json={"refresh_token": token},
+        )
+        assert resp.status_code == 401
+
+    def test_refresh_with_access_token_returns_401(self, client):
+        token = create_access_token("u", "e@test.com")
+
+        resp = client.post(
+            "/api/v1/auth/refresh",
+            json={"refresh_token": token},
+        )
+        assert resp.status_code == 401
+
+    def test_refresh_deleted_user_returns_401(self, client):
+        token = create_refresh_token("deleted-user", "s", "f")
+
+        resp = client.post(
+            "/api/v1/auth/refresh",
+            json={"refresh_token": token},
+        )
+        assert resp.status_code == 401
+
+
+@needs_neo4j
+class TestGoogleAuthEndpoint:
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_google_auth_returns_tokens(self, mock_verify, client, clean_driver):
+        mock_verify.return_value = {
+            "email": "google@gmail.com",
+            "sub": "google-123",
+            "name": "Google User",
+        }
+
+        resp = client.post(
+            "/api/v1/auth/google",
+            json={"id_token": "valid-google-token"},
+        )
+
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "access_token" in data
+        assert "refresh_token" in data
+
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_google_auth_invalid_token_returns_401(self, mock_verify, client):
+        from src.api.auth.tokens import TokenError
+
+        mock_verify.side_effect = TokenError("Invalid Google ID token")
+
+        resp = client.post(
+            "/api/v1/auth/google",
+            json={"id_token": "bad-token"},
+        )
+        assert resp.status_code == 401
+
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_google_auth_creates_new_user(self, mock_verify, client, clean_driver):
+        mock_verify.return_value = {
+            "email": "newgoogle@gmail.com",
+            "sub": "g-456",
+            "name": "New User",
+        }
+
+        resp = client.post(
+            "/api/v1/auth/google",
+            json={"id_token": "tok"},
+        )
+        assert resp.status_code == 200
+        assert _count_users(clean_driver, "newgoogle@gmail.com") == 1
+
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_google_auth_existing_user_no_duplicate(self, mock_verify, client, clean_driver):
+        _seed_user(clean_driver, "existing-g", "existingg@gmail.com")
+        mock_verify.return_value = {
+            "email": "existingg@gmail.com",
+            "sub": "g-789",
+            "name": "Existing",
+        }
+
+        resp = client.post(
+            "/api/v1/auth/google",
+            json={"id_token": "tok"},
+        )
+        assert resp.status_code == 200
+        assert _count_users(clean_driver, "existingg@gmail.com") == 1
+
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_google_access_token_works_with_me(self, mock_verify, client, clean_driver):
+        mock_verify.return_value = {
+            "email": "gme@gmail.com",
+            "sub": "g-000",
+            "name": "Me",
+        }
+
+        resp = client.post(
+            "/api/v1/auth/google",
+            json={"id_token": "tok"},
+        )
+        data = resp.json()
+
+        resp = client.get(
+            "/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {data['access_token']}"},
+        )
+        assert resp.status_code == 200
+        assert resp.json()["email"] == "gme@gmail.com"

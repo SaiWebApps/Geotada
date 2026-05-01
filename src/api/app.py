@@ -10,6 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from src.api.dependencies import close_driver, init_driver
+from src.api.auth.routes import router as auth_router
 from src.api.routes import audio, edges, graph, nodes, schema, trips
 
 
@@ -38,6 +39,7 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    app.include_router(auth_router, prefix="/api/v1")
     app.include_router(graph.router, prefix="/api/v1")
     app.include_router(nodes.router, prefix="/api/v1")
     app.include_router(edges.router, prefix="/api/v1")
