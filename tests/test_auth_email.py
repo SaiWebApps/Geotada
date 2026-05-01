@@ -15,9 +15,9 @@ class TestBuildMagicLink:
         link = _build_magic_link("test-token-123")
         assert "test-token-123" in link
 
-    def test_link_uses_hash_fragment_routing(self):
+    def test_link_format(self):
         link = _build_magic_link("tok")
-        assert "/#/auth/callback?token=tok" in link
+        assert link.endswith("/auth?token=tok")
 
     @patch("src.api.auth.email.FRONTEND_URL", "https://app.ondoway.com")
     def test_link_uses_configured_frontend_url(self):

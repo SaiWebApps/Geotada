@@ -16,7 +16,7 @@ class EmailDeliveryError(Exception):
 
 
 def _build_magic_link(token: str) -> str:
-    return f"https://ondoway.com/auth?token={token}"
+    return f"{FRONTEND_URL}/auth?token={token}"
 
 
 async def send_magic_link(email: str, token: str) -> None:

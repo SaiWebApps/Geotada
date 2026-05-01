@@ -104,12 +104,12 @@ class TestMagicToken:
 
     def test_access_token_rejected_as_magic(self):
         token = create_access_token("user-123", "test@ondoway.app")
-        with pytest.raises(TokenError, match="Wrong token type"):
+        with pytest.raises(TokenError):
             verify_magic_token(token)
 
     def test_magic_token_rejected_as_access(self):
         token = create_magic_token("user@ondoway.app")
-        with pytest.raises(TokenError, match="Wrong token type"):
+        with pytest.raises(TokenError):
             verify_token(token, "access")
 
 

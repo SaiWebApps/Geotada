@@ -5,8 +5,11 @@ from __future__ import annotations
 import os
 from contextlib import asynccontextmanager
 
+from pathlib import Path
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from src.api.dependencies import close_driver, init_driver
@@ -38,6 +41,15 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    _auth_html = Path(__file__).resolve().parents[2] / "frontend" / "auth.html"
+
+    @app.get("/auth")
+    async def auth_redirect():
+        if not _auth_html.is_file():
+            from fastapi import HTTPException
+            raise HTTPException(404, "auth redirect page not found")
+        return FileResponse(str(_auth_html), media_type="text/html")
 
     app.include_router(auth_router, prefix="/api/v1")
     app.include_router(graph.router, prefix="/api/v1")
