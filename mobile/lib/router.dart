@@ -10,7 +10,8 @@ GoRouter createRouter(AuthService authService) {
     redirect: (context, state) {
       final isAuthenticated = authService.isAuthenticated;
       final isLoggingIn = state.matchedLocation == '/login';
-      final isCallback = state.matchedLocation == '/auth/callback';
+      final isCallback = state.matchedLocation == '/auth/callback' ||
+          state.matchedLocation == '/auth';
 
       if (!isAuthenticated && !isLoggingIn && !isCallback) {
         return '/login';
@@ -24,6 +25,13 @@ GoRouter createRouter(AuthService authService) {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: '/auth',
+        builder: (context, state) {
+          final token = state.uri.queryParameters['token'] ?? '';
+          return CallbackPage(token: token);
+        },
       ),
       GoRoute(
         path: '/auth/callback',

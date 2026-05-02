@@ -4,7 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService extends ChangeNotifier {
-  static const _baseUrl = 'http://localhost:8000/api/v1/auth';
+  static const _baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'http://localhost:8000/api/v1/auth',
+  );
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
 

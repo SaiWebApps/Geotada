@@ -13,6 +13,8 @@ MAGIC_LINK_SECRET_KEY: str = os.getenv("MAGIC_LINK_SECRET_KEY", "")
 GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID", "")
 MAGIC_LINK_PROVIDER: str = os.getenv("MAGIC_LINK_PROVIDER", "console")
 RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
+APPLE_TEAM_ID: str = os.getenv("APPLE_TEAM_ID", "")
+BUNDLE_ID: str = "com.ondoway.app"
 
 FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
 MAGIC_LINK_FROM_EMAIL: str = os.getenv("MAGIC_LINK_FROM_EMAIL", "onboarding@resend.dev")

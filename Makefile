@@ -1,4 +1,4 @@
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-test test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -43,7 +43,9 @@ format: ## Auto-format with ruff
 # TESTING
 # ──────────────────────────────────────────────────────────
 
-test: test-local ## Run all tests against local Neo4j
+test: test-local test-cloud ## Run all Python tests (local + cloud)
+
+test-all: test-local test-cloud flutter-test ## Run ALL tests including Flutter
 
 test-unit: ## Run unit tests only (no Neo4j needed)
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py -v
@@ -53,9 +55,10 @@ test-local: ## Run tests against local Neo4j (Docker)
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest tests/ -v
 
-test-cloud: ## Run tests against Neo4j Aura (cloud)
+test-cloud: ## Run tests against Neo4j Aura (cloud) — excludes wipe-dependent integration tests
 	@cp .env.cloud .env.test && echo "  → Testing against CLOUD Neo4j (Aura)"
-	uv run pytest tests/ -v
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	uv run pytest tests/ -v --ignore=tests/test_constraints.py --ignore=tests/test_seed.py --ignore=tests/test_traversals.py
 
 test-integration: ## Run integration tests (needs Neo4j)
 	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
@@ -146,8 +149,8 @@ flutter-web: ## Run Flutter web app on port 3000 (Brave)
 flutter-ios: ## Run Flutter app on iOS Simulator
 	cd mobile && flutter run
 
-flutter-test: ## Run Flutter tests
-	cd mobile && flutter test
+flutter-test: ## Run Flutter tests (headless Chrome for Testing — avoids Brave singleton conflicts)
+	cd mobile && CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome
 
 test-auth: ## Run auth tests only (Python)
 	uv run pytest tests/test_auth_*.py -v

@@ -9,7 +9,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from src.api.dependencies import close_driver, init_driver
@@ -50,6 +50,29 @@ def create_app() -> FastAPI:
             from fastapi import HTTPException
             raise HTTPException(404, "auth redirect page not found")
         return FileResponse(str(_auth_html), media_type="text/html")
+
+    @app.get("/.well-known/apple-app-site-association")
+    async def apple_app_site_association():
+        from src.api.auth.config import APPLE_TEAM_ID, BUNDLE_ID
+
+        if not APPLE_TEAM_ID:
+            from fastapi import HTTPException
+            raise HTTPException(500, "APPLE_TEAM_ID not configured")
+
+        return JSONResponse(
+            content={
+                "applinks": {
+                    "apps": [],
+                    "details": [
+                        {
+                            "appID": f"{APPLE_TEAM_ID}.{BUNDLE_ID}",
+                            "paths": ["/auth", "/auth/*"],
+                        }
+                    ],
+                }
+            },
+            media_type="application/json",
+        )
 
     app.include_router(auth_router, prefix="/api/v1")
     app.include_router(graph.router, prefix="/api/v1")
