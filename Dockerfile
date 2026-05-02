@@ -2,7 +2,7 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
-# Copy pre-exported requirements (no Apple-internal PyPI URLs)
+# Copy pre-exported requirements (pinned versions + hashes)
 COPY requirements.txt ./
 
 # Install production dependencies from public PyPI
