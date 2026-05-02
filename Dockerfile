@@ -8,8 +8,8 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 # Copy dependency files first (layer caching)
 COPY pyproject.toml uv.lock ./
 
-# Install production dependencies only (no test/dev extras)
-RUN uv sync --no-dev --frozen
+# Install production dependencies (override Apple-internal PyPI URLs in lockfile)
+RUN uv sync --no-dev --frozen --index-url https://pypi.org/simple/
 
 # Copy application code
 COPY src/ src/
