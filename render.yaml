@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: ondoway-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NEO4J_URI
+        sync: false
+      - key: NEO4J_USER
+        sync: false
+      - key: NEO4J_PASSWORD
+        sync: false
+      - key: NEO4J_DATABASE
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: MAGIC_LINK_SECRET_KEY
+        generateValue: true
+      - key: MAGIC_LINK_PROVIDER
+        value: resend
+      - key: RESEND_API_KEY
+        sync: false
+      - key: MAGIC_LINK_FROM_EMAIL
+        value: auth@ondoway.com
+      - key: FRONTEND_URL
+        value: https://ondoway.com
+      - key: APPLE_TEAM_ID
+        value: BC7F6Q48GB
+      - key: CORS_ORIGINS
+        value: https://ondoway.com
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: TTS_PROVIDER
+        value: mock
+      - key: AUDIO_STORAGE
+        value: local
+      - key: AUDIO_STORAGE_PATH
+        value: audio_store
