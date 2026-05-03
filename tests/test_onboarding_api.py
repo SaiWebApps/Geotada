@@ -185,3 +185,117 @@ class TestEdgeSourceIdFilter:
         assert resp.status_code == 200
         assert resp.json()["total"] == 0
         assert resp.json()["items"] == []
+
+
+@needs_neo4j
+class TestProfileThemePreference:
+    """Tests for storing and retrieving theme_preference on Profile nodes."""
+
+    def test_set_theme_preference_via_node_update(self, client, clean_driver):
+        headers = _get_auth_headers(clean_driver)
+        lens_ids = _get_child_lens_ids(client, clean_driver)
+        try:
+            resp = client.post(
+                "/api/v1/auth/onboarding/complete",
+                json={"lens_ids": lens_ids},
+                headers=headers,
+            )
+            assert resp.status_code == 200
+            profile_id = resp.json()["profile_id"]
+
+            resp = client.put(
+                f"/api/v1/nodes/Profile/{profile_id}",
+                json={"properties": {"theme_preference": "dark"}},
+            )
+            assert resp.status_code == 200
+        finally:
+            _cleanup_onboarding_user(clean_driver)
+
+    def test_get_theme_preference_after_set(self, client, clean_driver):
+        headers = _get_auth_headers(clean_driver)
+        lens_ids = _get_child_lens_ids(client, clean_driver)
+        try:
+            resp = client.post(
+                "/api/v1/auth/onboarding/complete",
+                json={"lens_ids": lens_ids},
+                headers=headers,
+            )
+            profile_id = resp.json()["profile_id"]
+
+            client.put(
+                f"/api/v1/nodes/Profile/{profile_id}",
+                json={"properties": {"theme_preference": "dark"}},
+            )
+
+            resp = client.get(f"/api/v1/nodes/Profile/{profile_id}")
+            assert resp.status_code == 200
+            assert resp.json()["properties"]["theme_preference"] == "dark"
+        finally:
+            _cleanup_onboarding_user(clean_driver)
+
+    def test_theme_preference_null_for_new_profile(self, client, clean_driver):
+        headers = _get_auth_headers(clean_driver)
+        lens_ids = _get_child_lens_ids(client, clean_driver)
+        try:
+            resp = client.post(
+                "/api/v1/auth/onboarding/complete",
+                json={"lens_ids": lens_ids},
+                headers=headers,
+            )
+            profile_id = resp.json()["profile_id"]
+
+            resp = client.get(f"/api/v1/nodes/Profile/{profile_id}")
+            assert resp.status_code == 200
+            assert "theme_preference" not in resp.json()["properties"]
+        finally:
+            _cleanup_onboarding_user(clean_driver)
+
+    def test_theme_preference_accepts_all_valid_values(self, client, clean_driver):
+        headers = _get_auth_headers(clean_driver)
+        lens_ids = _get_child_lens_ids(client, clean_driver)
+        try:
+            resp = client.post(
+                "/api/v1/auth/onboarding/complete",
+                json={"lens_ids": lens_ids},
+                headers=headers,
+            )
+            profile_id = resp.json()["profile_id"]
+
+            for value in ("system", "light", "dark"):
+                resp = client.put(
+                    f"/api/v1/nodes/Profile/{profile_id}",
+                    json={"properties": {"theme_preference": value}},
+                )
+                assert resp.status_code == 200, f"Failed for value '{value}'"
+        finally:
+            _cleanup_onboarding_user(clean_driver)
+
+    def test_theme_preference_survives_onboarding_retry(self, client, clean_driver):
+        headers = _get_auth_headers(clean_driver)
+        lens_ids = _get_child_lens_ids(client, clean_driver)
+        try:
+            resp = client.post(
+                "/api/v1/auth/onboarding/complete",
+                json={"lens_ids": lens_ids},
+                headers=headers,
+            )
+            profile_id = resp.json()["profile_id"]
+
+            client.put(
+                f"/api/v1/nodes/Profile/{profile_id}",
+                json={"properties": {"theme_preference": "dark"}},
+            )
+
+            # Re-run onboarding (idempotent — ON CREATE SET only fires on new nodes)
+            resp = client.post(
+                "/api/v1/auth/onboarding/complete",
+                json={"lens_ids": lens_ids},
+                headers=headers,
+            )
+            assert resp.status_code == 200
+
+            resp = client.get(f"/api/v1/nodes/Profile/{profile_id}")
+            assert resp.status_code == 200
+            assert resp.json()["properties"]["theme_preference"] == "dark"
+        finally:
+            _cleanup_onboarding_user(clean_driver)
