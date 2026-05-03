@@ -24,10 +24,11 @@ def list_edges(
     rel_type: RelType,
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
+    source_id: str | None = Query(None),
     session: Session = Depends(get_session),
 ):
     """List all edges of a given type with pagination."""
-    items, total = crud.list_edges(session, rel_type.value, skip, limit)
+    items, total = crud.list_edges(session, rel_type.value, skip, limit, source_id)
     return EdgeListResponse(items=items, total=total, skip=skip, limit=limit)
 
 

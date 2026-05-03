@@ -14,6 +14,8 @@ from src.api.auth.schemas import (
     GoogleAuthRequest,
     MagicLinkRequest,
     MagicLinkVerifyRequest,
+    OnboardingRequest,
+    OnboardingResponse,
     RefreshRequest,
     TokenResponse,
     UserResponse,
@@ -53,6 +55,11 @@ async def magic_link_request(body: MagicLinkRequest):
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail=f"Failed to send magic link email: {exc}",
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Email delivery connection error: {type(exc).__name__}: {exc}",
         ) from exc
     return {"message": "Magic link sent"}
 
@@ -137,4 +144,54 @@ def google_auth(
     return TokenResponse(
         access_token=create_access_token(user_id, email),
         refresh_token=create_refresh_token(user_id, session_id, token_family),
+    )
+
+
+_ONBOARDING_QUERY = """
+MATCH (u:User {id: $user_id})
+MERGE (u)-[hp:HAS_PROFILE]->(p:Profile {display_name: $display_name})
+ON CREATE SET p.id = randomUUID(), p.created_at = datetime(),
+              hp.id = randomUUID(), hp.created_at = datetime()
+WITH p
+UNWIND $lens_ids AS lid
+MATCH (lens:Lens {id: lid, is_parent: false})
+MERGE (p)-[r:PREFERS_LENS]->(lens)
+ON CREATE SET r.id = randomUUID(), r.created_at = datetime()
+RETURN p.id AS profile_id, p.display_name AS display_name, count(lens) AS lens_count
+"""
+
+
+@router.post("/onboarding/complete", response_model=OnboardingResponse)
+def onboarding_complete(
+    body: OnboardingRequest,
+    current_user: dict = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    if len(body.lens_ids) < 3:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="At least 3 lenses required",
+        )
+
+    user_id = current_user["id"]
+    email = current_user["email"]
+    display_name = email.split("@")[0].capitalize()
+
+    result = session.run(
+        _ONBOARDING_QUERY,
+        user_id=user_id,
+        display_name=display_name,
+        lens_ids=body.lens_ids,
+    ).single()
+
+    if result is None or result["lens_count"] == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User or lenses not found",
+        )
+
+    return OnboardingResponse(
+        profile_id=result["profile_id"],
+        display_name=result["display_name"],
+        lens_count=result["lens_count"],
     )

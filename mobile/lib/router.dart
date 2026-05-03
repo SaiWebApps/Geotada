@@ -1,24 +1,44 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ondoway/models/lens.dart';
 import 'package:ondoway/pages/callback_page.dart';
-import 'package:ondoway/pages/home_page.dart';
+import 'package:ondoway/pages/explore_page.dart';
+import 'package:ondoway/pages/lens_selection_page.dart';
 import 'package:ondoway/pages/login_page.dart';
+import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/lens_service.dart';
+import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/widgets/app_shell.dart';
+import 'package:provider/provider.dart';
 
-GoRouter createRouter(AuthService authService) {
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
+GoRouter createRouter(
+  AuthService authService,
+  ProfileService profileService,
+  LensService lensService,
+) {
   return GoRouter(
     initialLocation: '/login',
+    refreshListenable: authService,
     redirect: (context, state) {
       final isAuthenticated = authService.isAuthenticated;
-      final isLoggingIn = state.matchedLocation == '/login';
-      final isCallback = state.matchedLocation == '/auth/callback' ||
-          state.matchedLocation == '/auth';
+      final path = state.matchedLocation;
+      final isAuthRoute = path == '/login' ||
+          path == '/auth' ||
+          path == '/auth/callback';
+      final isOnboarding = path == '/onboarding';
 
-      if (!isAuthenticated && !isLoggingIn && !isCallback) {
+      if (!isAuthenticated && !isAuthRoute) {
         return '/login';
       }
-      if (isAuthenticated && isLoggingIn) {
-        return '/home';
+
+      if (isAuthenticated && path == '/login') {
+        if (!profileService.isLoaded) return null;
+        return profileService.isFirstTime ? '/onboarding' : '/explore';
       }
+
       return null;
     },
     routes: [
@@ -41,9 +61,94 @@ GoRouter createRouter(AuthService authService) {
         },
       ),
       GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
+        path: '/onboarding',
+        builder: (context, state) {
+          final ls = context.read<LensService>();
+          final ps = context.read<ProfileService>();
+          final as_ = context.read<AuthService>();
+          return LensSelectionPage(
+            isOnboarding: true,
+            userName: as_.userEmail?.split('@')[0].capitalize(),
+            lensesByParent: ls.childrenByParent,
+            onComplete: (selectedIds) async {
+              await ps.completeOnboarding(
+                selectedIds.toList(),
+                as_.accessToken!,
+              );
+              if (context.mounted) context.go('/explore');
+            },
+          );
+        },
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AppShell(
+            currentIndex: navigationShell.currentIndex,
+            onTabChanged: (index) => navigationShell.goBranch(index),
+            child: navigationShell,
+          );
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/explore',
+                builder: (context, state) => const ExplorePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: _shellNavigatorKey,
+            routes: [
+              GoRoute(
+                path: '/lenses',
+                builder: (context, state) {
+                  final ls = context.read<LensService>();
+                  final ps = context.read<ProfileService>();
+                  final as_ = context.read<AuthService>();
+                  return LensSelectionPage(
+                    isOnboarding: false,
+                    lensesByParent: ls.childrenByParent,
+                    initialSelection: ps.selectedLensIds.toSet(),
+                    onSave: (selectedIds) async {
+                      final current = ps.selectedLensIds.toSet();
+                      final toAdd = selectedIds.difference(current);
+                      final toRemove = current.difference(selectedIds);
+                      // For now, re-run onboarding endpoint to replace all preferences
+                      if (toAdd.isNotEmpty || toRemove.isNotEmpty) {
+                        await ps.completeOnboarding(
+                          selectedIds.toList(),
+                          as_.accessToken!,
+                        );
+                      }
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Lenses saved')),
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/profile',
+                builder: (context, state) => const ProfilePage(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );
+}
+
+extension StringCapitalize on String {
+  String capitalize() {
+    if (isEmpty) return this;
+    return '${this[0].toUpperCase()}${substring(1)}';
+  }
 }

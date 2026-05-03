@@ -108,6 +108,7 @@ void main() {
       await authService.verifyMagicLink('magic-token');
 
       expect(authService.isAuthenticated, true);
+      expect(authService.userId, 'user-1');
       expect(authService.userEmail, 'test@ondoway.app');
     });
 

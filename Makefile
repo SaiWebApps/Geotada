@@ -50,7 +50,7 @@ test-all: test-local test-cloud flutter-test ## Run ALL tests including Flutter
 test-unit: ## Run unit tests only (no Neo4j needed)
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py -v
 
-test-local: ## Run tests against local Neo4j (Docker)
+test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@cp .env.test.example .env.test && echo "  → Testing against LOCAL Neo4j (test instance, port 7688)"
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest tests/ -v
@@ -120,7 +120,7 @@ dashboard: ## Start the web dashboard (port 8080)
 	uv run python -m src.server
 
 api: ## Start the FastAPI graph API (port 8000)
-	uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
+	NO_PROXY=api.resend.com,resend.com no_proxy=api.resend.com,resend.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 api-test: ## Start API against test database (port 8000)
 	set -a && . .env.test && set +a && uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
@@ -146,11 +146,22 @@ all: env db-up db-test-up setup test ## Full bootstrap: env → db → setup →
 flutter-web: ## Run Flutter web app on port 3000 (Brave)
 	cd mobile && flutter run -d chrome --web-port=3000
 
-flutter-ios: ## Run Flutter app on iOS Simulator
-	cd mobile && flutter run
+flutter-ios: db-up ## Run Flutter app on iOS Simulator (boots sim + starts API automatically)
+	@xcrun simctl boot 46F0E608-943E-48F4-9EDB-8925855D0069 2>/dev/null || true
+	@open -a Simulator 2>/dev/null || true
+	@echo "  → Starting API server in background (port 8000)..."
+	@lsof -ti:8000 | xargs kill 2>/dev/null || true
+	@NO_PROXY=api.resend.com,resend.com no_proxy=api.resend.com,resend.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
+	@sleep 2
+	cd mobile && flutter run -d 46F0E608-943E-48F4-9EDB-8925855D0069
 
 flutter-test: ## Run Flutter tests (headless Chrome for Testing — avoids Brave singleton conflicts)
 	cd mobile && CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome
 
 test-auth: ## Run auth tests only (Python)
 	uv run pytest tests/test_auth_*.py -v
+
+test-onboarding: ## Run onboarding tests only
+	@cp .env.test.example .env.test
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	uv run pytest tests/test_onboarding_api.py -v --tb=long

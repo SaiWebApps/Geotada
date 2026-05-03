@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/lens_service.dart';
+import 'package:ondoway/services/profile_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -190,7 +192,23 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
       await context.read<AuthService>().loginWithGoogle(idToken);
-      if (mounted) context.go('/home');
+
+      if (!mounted) return;
+      final authService = context.read<AuthService>();
+      final lensService = context.read<LensService>();
+      final profileService = context.read<ProfileService>();
+
+      await Future.wait([
+        if (!lensService.isLoaded) lensService.fetchLenses(),
+        profileService.fetchProfile(
+          authService.userId!,
+          authService.accessToken!,
+        ),
+      ]);
+
+      if (mounted) {
+        context.go(profileService.isFirstTime ? '/onboarding' : '/explore');
+      }
     } on AuthException catch (e) {
       setState(() => _errorMessage = e.message);
     } catch (e) {

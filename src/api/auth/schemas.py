@@ -32,3 +32,13 @@ class UserResponse(BaseModel):
     email: str
     created_at: str | None = None
     last_logon: str | None = None
+
+
+class OnboardingRequest(BaseModel):
+    lens_ids: list[str]
+
+
+class OnboardingResponse(BaseModel):
+    profile_id: str
+    display_name: str
+    lens_count: int

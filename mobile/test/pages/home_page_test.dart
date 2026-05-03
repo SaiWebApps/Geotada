@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:ondoway/pages/home_page.dart';
+import 'package:ondoway/pages/explore_page.dart';
+import 'package:ondoway/pages/profile_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -9,25 +10,16 @@ import 'dart:convert';
 import '../services/auth_service_test.dart';
 
 void main() {
-  group('HomePage', () {
-    testWidgets('shows welcome message', (tester) async {
-      final authService = AuthService(
-        storage: FakeSecureStorage(),
-        httpClient: MockClient((r) async => http.Response('', 200)),
-      );
-
+  group('ExplorePage', () {
+    testWidgets('shows placeholder message', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<AuthService>.value(
-            value: authService,
-            child: const HomePage(),
-          ),
-        ),
+        const MaterialApp(home: ExplorePage()),
       );
-
-      expect(find.text('Welcome!'), findsOneWidget);
+      expect(find.text('Your first tour starts here'), findsOneWidget);
     });
+  });
 
+  group('ProfilePage', () {
     testWidgets('shows email when authenticated', (tester) async {
       final mockClient = MockClient((request) async {
         if (request.url.path.contains('verify')) {
@@ -60,7 +52,7 @@ void main() {
         MaterialApp(
           home: ChangeNotifierProvider<AuthService>.value(
             value: authService,
-            child: const HomePage(),
+            child: const ProfilePage(),
           ),
         ),
       );
@@ -78,7 +70,7 @@ void main() {
         MaterialApp(
           home: ChangeNotifierProvider<AuthService>.value(
             value: authService,
-            child: const HomePage(),
+            child: const ProfilePage(),
           ),
         ),
       );

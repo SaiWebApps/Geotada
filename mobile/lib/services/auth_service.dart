@@ -15,6 +15,7 @@ class AuthService extends ChangeNotifier {
   final http.Client _httpClient;
 
   String? _accessToken;
+  String? _userId;
   String? _userEmail;
   bool _isLoading = false;
 
@@ -25,6 +26,8 @@ class AuthService extends ChangeNotifier {
         _httpClient = httpClient ?? http.Client();
 
   bool get isAuthenticated => _accessToken != null;
+  String? get accessToken => _accessToken;
+  String? get userId => _userId;
   String? get userEmail => _userEmail;
   bool get isLoading => _isLoading;
 
@@ -37,6 +40,7 @@ class AuthService extends ChangeNotifier {
       await _fetchMe();
     } catch (_) {
       _accessToken = null;
+      _userId = null;
       await _storage.delete(key: _accessTokenKey);
       await _storage.delete(key: _refreshTokenKey);
     }
@@ -113,6 +117,7 @@ class AuthService extends ChangeNotifier {
 
   Future<void> logout() async {
     _accessToken = null;
+    _userId = null;
     _userEmail = null;
     await _storage.delete(key: _accessTokenKey);
     await _storage.delete(key: _refreshTokenKey);
@@ -132,6 +137,7 @@ class AuthService extends ChangeNotifier {
     }
 
     final data = jsonDecode(resp.body) as Map<String, dynamic>;
+    _userId = data['id'] as String?;
     _userEmail = data['email'] as String?;
     notifyListeners();
   }
