@@ -24,8 +24,8 @@ class _AppShellState extends State<AppShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: widget.currentIndex,
         onDestinationSelected: widget.onTabChanged,
-        backgroundColor: const Color(0xFF1A1A1A),
-        indicatorColor: const Color(0xFF3D5AFE).withValues(alpha: 0.2),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        indicatorColor: Theme.of(context).colorScheme.primary.withOpacity(0.2),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.explore_outlined),
@@ -36,6 +36,11 @@ class _AppShellState extends State<AppShell> {
             icon: Icon(Icons.grid_view_outlined),
             selectedIcon: Icon(Icons.grid_view),
             label: 'Lenses',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.luggage_outlined),
+            selectedIcon: Icon(Icons.luggage),
+            label: 'Trips',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),

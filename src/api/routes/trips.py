@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from neo4j import Session
 
 from src.api.crud.trips import (
@@ -11,6 +11,7 @@ from src.api.crud.trips import (
     create_trip_with_stops,
     find_candidate_pois,
     find_matching_beats,
+    list_trips_for_profile,
 )
 from src.api.dependencies import get_session
 from src.api.models.trips import (
@@ -96,3 +97,28 @@ def generate_trip(
         flavour_count=flavour_count,
         stops=stops_out,
     )
+
+
+@router.get("/trips", response_model=list[TripGenerateResponse])
+def list_trips(
+    profile_id: str = Query(..., description="Profile ID to list trips for"),
+    session: Session = Depends(get_session),
+):
+    """List all saved trips for a profile, including their stops."""
+    result = list_trips_for_profile(session, profile_id)
+    if result is None:
+        raise HTTPException(404, f"Profile '{profile_id}' not found")
+
+    return [
+        TripGenerateResponse(
+            trip_id=t["trip_id"],
+            trip_name=t["trip_name"],
+            profile_id=t["profile_id"],
+            total_stops=t["total_stops"],
+            total_duration_min=t["total_duration_min"],
+            anchor_count=t["anchor_count"],
+            flavour_count=t["flavour_count"],
+            stops=[GeneratedStop(**s) for s in t["stops"]],
+        )
+        for t in result
+    ]

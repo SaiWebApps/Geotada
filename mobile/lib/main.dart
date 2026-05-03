@@ -5,12 +5,14 @@ import 'package:ondoway/router.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/trip_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final authService = AuthService();
   final lensService = LensService();
   final profileService = ProfileService();
+  final tripService = TripService();
 
   await authService.tryRestoreSession();
 
@@ -30,15 +32,19 @@ void main() async {
 
   final router = createRouter(authService, profileService, lensService);
 
-  final appLinks = AppLinks();
-  appLinks.uriLinkStream.listen((uri) {
+  void handleDeepLink(Uri uri) {
     final host = uri.host;
     final path = uri.path;
     final fullPath = host.isNotEmpty ? '/$host$path' : path;
     final query = uri.query.isNotEmpty ? '?${uri.query}' : '';
     debugPrint('DEEP LINK: $uri → routing to $fullPath$query');
-    router.go('$fullPath$query');
-  });
+    Future.delayed(Duration.zero, () {
+      router.go('$fullPath$query');
+    });
+  }
+
+  final appLinks = AppLinks();
+  appLinks.uriLinkStream.listen(handleDeepLink);
 
   runApp(
     MultiProvider(
@@ -46,6 +52,7 @@ void main() async {
         ChangeNotifierProvider.value(value: authService),
         ChangeNotifierProvider.value(value: lensService),
         ChangeNotifierProvider.value(value: profileService),
+        ChangeNotifierProvider.value(value: tripService),
       ],
       child: OndowayApp(router: router),
     ),
@@ -58,16 +65,34 @@ class OndowayApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profile = context.watch<ProfileService>();
     return MaterialApp.router(
       title: 'Ondoway',
       theme: ThemeData(
         colorSchemeSeed: const Color(0xFF3D5AFE),
         useMaterial3: true,
+        brightness: Brightness.light,
+      ),
+      darkTheme: ThemeData(
+        colorSchemeSeed: const Color(0xFF3D5AFE),
+        useMaterial3: true,
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color(0xFF121212),
       ),
+      themeMode: _resolveThemeMode(profile.themePreference),
       routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  static ThemeMode _resolveThemeMode(String? preference) {
+    switch (preference) {
+      case 'dark':
+        return ThemeMode.dark;
+      case 'light':
+        return ThemeMode.light;
+      default:
+        return ThemeMode.system;
+    }
   }
 }
