@@ -415,5 +415,164 @@ void main() {
       expect(capturedBody, contains('theme_preference'));
       expect(capturedBody, contains('light'));
     });
+
+    testWidgets('display name edit shows TextField on tap', (tester) async {
+      final mockClient = MockClient((request) async {
+        if (request.url.path.contains('verify')) {
+          return http.Response(
+            jsonEncode({
+              'access_token': 'tok',
+              'refresh_token': 'ref',
+              'token_type': 'bearer',
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/me')) {
+          return http.Response(
+            jsonEncode({'id': '1', 'email': 'demo@ondoway.app'}),
+            200,
+          );
+        }
+        if (request.url.path.contains('onboarding')) {
+          return http.Response(
+            jsonEncode({
+              'profile_id': 'p1',
+              'display_name': 'Demo User',
+              'lens_count': 1,
+            }),
+            200,
+          );
+        }
+        return http.Response('', 404);
+      });
+
+      final authService = AuthService(
+        storage: FakeSecureStorage(),
+        httpClient: mockClient,
+      );
+      await authService.verifyMagicLink('tok');
+
+      final profileService = ProfileService(httpClient: mockClient);
+      await profileService.completeOnboarding(['lens1'], 'tok');
+
+      await tester.pumpWidget(
+        _wrapProfilePage(
+          authService: authService,
+          profileService: profileService,
+        ),
+      );
+
+      // Verify the display name is shown
+      expect(find.text('Demo User'), findsOneWidget);
+
+      // Tap the edit icon to enter editing mode
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pump();
+      await tester.pump();
+
+      // TextField should now appear
+      expect(find.byType(TextField), findsOneWidget);
+    });
+
+    testWidgets('display name edit saves on submit', (tester) async {
+      String? capturedPutBody;
+      final mockClient = MockClient((request) async {
+        if (request.url.path.contains('verify')) {
+          return http.Response(
+            jsonEncode({
+              'access_token': 'tok',
+              'refresh_token': 'ref',
+              'token_type': 'bearer',
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/me')) {
+          return http.Response(
+            jsonEncode({'id': '1', 'email': 'demo@ondoway.app'}),
+            200,
+          );
+        }
+        if (request.url.path.contains('/edges/HAS_PROFILE')) {
+          return http.Response(
+            jsonEncode({
+              'items': [
+                {'id': 'e1', 'type': 'HAS_PROFILE', 'source_id': 'user-1', 'target_id': 'profile-1', 'properties': {}}
+              ],
+              'total': 1, 'skip': 0, 'limit': 10,
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/nodes/Profile/') && request.method == 'GET') {
+          return http.Response(
+            jsonEncode({
+              'id': 'profile-1',
+              'labels': ['Profile'],
+              'properties': {'display_name': 'Demo User', 'theme_preference': 'system'},
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/nodes/Profile/') && request.method == 'PUT') {
+          capturedPutBody = request.body;
+          return http.Response(
+            jsonEncode({
+              'id': 'profile-1',
+              'labels': ['Profile'],
+              'properties': {'display_name': 'New Name', 'theme_preference': 'system'},
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/edges/PREFERS_LENS')) {
+          return http.Response(
+            jsonEncode({
+              'items': [],
+              'total': 0, 'skip': 0, 'limit': 200,
+            }),
+            200,
+          );
+        }
+        return http.Response('', 404);
+      });
+
+      final authService = AuthService(
+        storage: FakeSecureStorage(),
+        httpClient: mockClient,
+      );
+      await authService.verifyMagicLink('tok');
+
+      final profileService = ProfileService(httpClient: mockClient);
+      await profileService.fetchProfile('user-1', 'tok');
+
+      await tester.pumpWidget(
+        _wrapProfilePage(
+          authService: authService,
+          profileService: profileService,
+        ),
+      );
+
+      // Tap edit icon (use .first in case of multiple matches from rebuild)
+      await tester.tap(find.byIcon(Icons.edit_outlined).first);
+      await tester.pump();
+      await tester.pump();
+
+      // Clear the text field and enter new name
+      final textField = find.byType(TextField);
+      expect(textField, findsOneWidget);
+      await tester.enterText(textField, 'New Name');
+
+      // Submit by pressing the check icon
+      await tester.tap(find.byIcon(Icons.check).first);
+      await tester.pump();
+      await tester.pump();
+
+      // Verify PUT was called with the new name
+      expect(capturedPutBody, isNotNull);
+      expect(capturedPutBody, contains('display_name'));
+      expect(capturedPutBody, contains('New Name'));
+    });
   });
 }

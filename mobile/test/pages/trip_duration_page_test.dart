@@ -9,7 +9,10 @@ import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import '../services/auth_service_test.dart';
 
-Widget _buildTestWidget() {
+Widget _buildTestWidget({
+  TimeOfDay? initialStartTime,
+  TimeOfDay? initialEndTime,
+}) {
   final mockClient = MockClient((r) async => http.Response('', 200));
   return MaterialApp(
     theme: ThemeData(
@@ -32,77 +35,67 @@ Widget _buildTestWidget() {
           create: (_) => ProfileService(httpClient: mockClient),
         ),
       ],
-      child: const TripDurationPage(citySlug: 'paris'),
+      child: TripDurationPage(
+        citySlug: 'paris',
+        initialStartTime: initialStartTime,
+        initialEndTime: initialEndTime,
+      ),
     ),
   );
 }
 
 void main() {
   group('TripDurationPage', () {
-    testWidgets('shows duration picker with default values', (tester) async {
+    testWidgets('shows date and time pickers', (tester) async {
       await tester.pumpWidget(_buildTestWidget());
       await tester.pumpAndSettle();
 
-      expect(find.text('Plan Trip — Paris'), findsOneWidget);
-      expect(find.text('How long is your trip?'), findsOneWidget);
-      expect(find.text('Days'), findsOneWidget);
-      expect(find.text('Hours'), findsOneWidget);
+      expect(find.text('Paris'), findsOneWidget);
+      expect(find.text('When are you visiting?'), findsOneWidget);
+      expect(find.text('From'), findsOneWidget);
+      expect(find.text('To (inclusive)'), findsOneWidget);
       expect(find.text('Generate My Trip'), findsOneWidget);
+      expect(find.byIcon(Icons.calendar_today), findsNWidgets(2));
+      expect(find.byIcon(Icons.access_time), findsNWidgets(2));
     });
 
-    testWidgets('enforces minimum 1 hour', (tester) async {
+    testWidgets('shows duration summary for valid range', (tester) async {
       await tester.pumpWidget(_buildTestWidget());
       await tester.pumpAndSettle();
 
-      // Set days to 0 and hours to 0
-      // Find the Days row minus button and tap it to go to 0
-      final minusButtons = find.byIcon(Icons.remove_circle_outline);
-      await tester.tap(minusButtons.first); // days 1 -> 0
+      // Default: same day 09:00 to 18:00 = 9 hours
+      expect(find.text('9 hours'), findsOneWidget);
+    });
+
+    testWidgets('generate button is enabled for valid range', (tester) async {
+      await tester.pumpWidget(_buildTestWidget());
       await tester.pumpAndSettle();
 
-      // Now tap hours minus buttons until 0
-      // Default hours is 4, tap 4 times
-      for (int i = 0; i < 4; i++) {
-        await tester.tap(minusButtons.last);
-        await tester.pumpAndSettle();
-      }
+      final button = tester.widget<FilledButton>(find.byType(FilledButton));
+      expect(button.onPressed, isNotNull);
+    });
 
-      // Should show minimum warning
-      expect(
-        find.text('Minimum trip duration is 1 hour'),
-        findsOneWidget,
-      );
+    testWidgets('shows error when end is before start', (tester) async {
+      // Start at 19:00, end at 18:00 — end is before start
+      await tester.pumpWidget(_buildTestWidget(
+        initialStartTime: const TimeOfDay(hour: 19, minute: 0),
+        initialEndTime: const TimeOfDay(hour: 18, minute: 0),
+      ));
+      await tester.pumpAndSettle();
 
-      // Generate button should be disabled
+      expect(find.text('End must be after start'), findsOneWidget);
+    });
+
+    testWidgets('generate button disabled for invalid range', (tester) async {
+      // Start at 19:00, end at 18:00 — invalid range
+      await tester.pumpWidget(_buildTestWidget(
+        initialStartTime: const TimeOfDay(hour: 19, minute: 0),
+        initialEndTime: const TimeOfDay(hour: 18, minute: 0),
+      ));
+      await tester.pumpAndSettle();
+
       final button = tester.widget<FilledButton>(find.byType(FilledButton));
       expect(button.onPressed, isNull);
-    });
-
-    testWidgets('enforces maximum 14 days', (tester) async {
-      await tester.pumpWidget(_buildTestWidget());
-      await tester.pumpAndSettle();
-
-      // The slider for days has max 14, we verify the plus button
-      // stops working at 14 by finding the days Slider max
-      final sliders = find.byType(Slider);
-      final daysSlider = tester.widget<Slider>(sliders.first);
-      expect(daysSlider.max, 14.0);
-    });
-
-    testWidgets('shows start date picker button', (tester) async {
-      await tester.pumpWidget(_buildTestWidget());
-      await tester.pumpAndSettle();
-
-      expect(find.text('Start date'), findsOneWidget);
-      expect(find.byIcon(Icons.calendar_today), findsOneWidget);
-    });
-
-    testWidgets('shows estimated stops count', (tester) async {
-      await tester.pumpWidget(_buildTestWidget());
-      await tester.pumpAndSettle();
-
-      // Default: 1 day + 4 hours = 28 hours = 1680 min / 30 = 56 stops (clamped to 30)
-      expect(find.textContaining('Estimated stops:'), findsOneWidget);
     });
   });
 }

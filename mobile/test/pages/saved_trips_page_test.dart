@@ -88,5 +88,70 @@ void main() {
       expect(find.textContaining('5 stops'), findsOneWidget);
       expect(find.textContaining('120 min'), findsOneWidget);
     });
+
+    testWidgets('swipe to delete shows confirmation dialog', (tester) async {
+      final mockClient = MockClient((r) async => http.Response('', 200));
+      final service = TripService(httpClient: mockClient);
+      service.saveTrip(_sampleTrip());
+
+      await tester.pumpWidget(_buildTestWidget(tripService: service));
+      await tester.pumpAndSettle();
+
+      // Swipe the trip card from right to left (endToStart)
+      await tester.drag(find.text('Paris Day Trip'), const Offset(-500, 0));
+      await tester.pumpAndSettle();
+
+      // Confirmation dialog should appear
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.text('Delete trip?'), findsOneWidget);
+      expect(find.text('Cancel'), findsOneWidget);
+      expect(find.text('Delete'), findsOneWidget);
+    });
+
+    testWidgets('confirming delete removes trip from list', (tester) async {
+      final mockClient = MockClient((r) async => http.Response('', 200));
+      final service = TripService(httpClient: mockClient);
+      service.saveTrip(_sampleTrip());
+
+      await tester.pumpWidget(_buildTestWidget(tripService: service));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Paris Day Trip'), findsOneWidget);
+
+      // Swipe to trigger delete confirmation
+      await tester.drag(find.text('Paris Day Trip'), const Offset(-500, 0));
+      await tester.pumpAndSettle();
+
+      // Tap "Delete" to confirm
+      await tester.tap(find.text('Delete'));
+      await tester.pumpAndSettle();
+
+      // Trip should be removed
+      expect(find.text('Paris Day Trip'), findsNothing);
+      expect(service.savedTrips, isEmpty);
+    });
+
+    testWidgets('canceling delete keeps trip', (tester) async {
+      final mockClient = MockClient((r) async => http.Response('', 200));
+      final service = TripService(httpClient: mockClient);
+      service.saveTrip(_sampleTrip());
+
+      await tester.pumpWidget(_buildTestWidget(tripService: service));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Paris Day Trip'), findsOneWidget);
+
+      // Swipe to trigger delete confirmation
+      await tester.drag(find.text('Paris Day Trip'), const Offset(-500, 0));
+      await tester.pumpAndSettle();
+
+      // Tap "Cancel" to dismiss
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      // Trip should still be there
+      expect(find.text('Paris Day Trip'), findsOneWidget);
+      expect(service.savedTrips.length, 1);
+    });
   });
 }

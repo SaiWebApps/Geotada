@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/trip_service.dart';
@@ -8,22 +9,44 @@ import 'package:ondoway/services/profile_service.dart';
 class TripDurationPage extends StatefulWidget {
   final String citySlug;
 
-  const TripDurationPage({super.key, required this.citySlug});
+  /// Optional initial times for testing validation logic.
+  @visibleForTesting
+  final TimeOfDay? initialStartTime;
+  @visibleForTesting
+  final TimeOfDay? initialEndTime;
+
+  const TripDurationPage({
+    super.key,
+    required this.citySlug,
+    this.initialStartTime,
+    this.initialEndTime,
+  });
 
   @override
   State<TripDurationPage> createState() => _TripDurationPageState();
 }
 
 class _TripDurationPageState extends State<TripDurationPage> {
-  int _days = 1;
-  int _hours = 4;
-  DateTime _startDate = DateTime.now();
+  late DateTime _startDate;
+  late TimeOfDay _startTime;
+  late DateTime _endDate;
+  late TimeOfDay _endTime;
   bool _isLoading = false;
   String? _error;
 
   static const _cityCoordinates = {
     'paris': (lat: 48.8566, lng: 2.3522),
   };
+
+  @override
+  void initState() {
+    super.initState();
+    final now = DateTime.now();
+    _startDate = DateTime(now.year, now.month, now.day + 1);
+    _startTime = widget.initialStartTime ?? const TimeOfDay(hour: 9, minute: 0);
+    _endDate = DateTime(now.year, now.month, now.day + 1);
+    _endTime = widget.initialEndTime ?? const TimeOfDay(hour: 18, minute: 0);
+  }
 
   String get _cityDisplayName {
     switch (widget.citySlug) {
@@ -34,14 +57,32 @@ class _TripDurationPageState extends State<TripDurationPage> {
     }
   }
 
-  int get _totalMinutes => (_days * 24 * 60) + (_hours * 60);
-  bool get _isValid => _totalMinutes >= 60;
+  DateTime get _startDateTime => DateTime(
+        _startDate.year, _startDate.month, _startDate.day,
+        _startTime.hour, _startTime.minute);
 
-  int get _maxStops {
-    // Roughly 1 stop per 30 minutes of trip duration
-    final stops = _totalMinutes ~/ 30;
-    return stops.clamp(3, 30);
+  DateTime get _endDateTime => DateTime(
+        _endDate.year, _endDate.month, _endDate.day,
+        _endTime.hour, _endTime.minute);
+
+  int get _totalMinutes => _endDateTime.difference(_startDateTime).inMinutes;
+
+  bool get _isMultiDay => _endDate.isAfter(_startDate);
+
+  String? get _validationError {
+    if (_endDateTime.isBefore(_startDateTime) || _endDateTime.isAtSameMomentAs(_startDateTime)) {
+      return 'End must be after start';
+    }
+    if (_totalMinutes < 60) {
+      return 'Minimum trip duration is 1 hour';
+    }
+    if (_totalMinutes > 14 * 24 * 60) {
+      return 'Maximum trip duration is 14 days';
+    }
+    return null;
   }
+
+  bool get _isValid => _validationError == null;
 
   Future<void> _generateTrip() async {
     if (!_isValid) return;
@@ -69,50 +110,38 @@ class _TripDurationPageState extends State<TripDurationPage> {
     });
 
     try {
-      final endDate = _startDate.add(Duration(days: _days > 0 ? _days : 1));
       final trip = await tripService.generateTrip(
         profileId: profileId,
         centerLat: coords.lat,
         centerLng: coords.lng,
         startDate: _formatDate(_startDate),
-        endDate: _formatDate(endDate),
+        endDate: _formatDate(_endDate),
         accessToken: token,
         durationMin: _totalMinutes,
-        maxStops: _maxStops,
+        maxStops: (_totalMinutes ~/ 30).clamp(3, 30),
+        startTime: _formatTime(_startTime),
       );
 
       if (mounted) {
         context.push('/trip/${trip.tripId}');
       }
     } on TripServiceException catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _error = e.message;
-        });
-      }
+      if (mounted) setState(() { _isLoading = false; _error = e.message; });
     } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _error = 'Something went wrong. Please try again.';
-        });
-      }
+      if (mounted) setState(() { _isLoading = false; _error = 'Something went wrong. Please try again.'; });
     }
   }
 
-  String _formatDate(DateTime d) =>
-      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
-
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    final validation = _validationError;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Plan Trip — $_cityDisplayName'),
-        backgroundColor: colorScheme.surface,
+        title: Text(_cityDisplayName),
+        backgroundColor: cs.surface,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -121,105 +150,58 @@ class _TripDurationPageState extends State<TripDurationPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'How long is your trip?',
-                style: textTheme.headlineSmall?.copyWith(
+                'When are you visiting?',
+                style: tt.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: colorScheme.onSurface,
+                  color: cs.onSurface,
                 ),
               ),
               const SizedBox(height: 32),
 
-              // Days picker
-              _buildNumberRow(
-                label: 'Days',
-                value: _days,
-                min: 0,
-                max: 14,
-                onChanged: (v) => setState(() => _days = v),
+              _DateTimeSection(
+                label: 'From',
+                date: _startDate,
+                time: _startTime,
+                onDateTap: () => _pickDate(isStart: true),
+                onTimeTap: () => _pickTime(isStart: true),
               ),
               const SizedBox(height: 24),
 
-              // Hours picker
-              _buildNumberRow(
-                label: 'Hours',
-                value: _hours,
-                min: 0,
-                max: 23,
-                onChanged: (v) => setState(() => _hours = v),
+              _DateTimeSection(
+                label: 'To (inclusive)',
+                date: _endDate,
+                time: _endTime,
+                onDateTap: () => _pickDate(isStart: false),
+                onTimeTap: () => _pickTime(isStart: false),
               ),
               const SizedBox(height: 16),
 
-              // Duration summary
-              Text(
-                'Total: ${_formatDuration()}',
-                style: textTheme.bodyLarge?.copyWith(
-                  color: colorScheme.onSurfaceVariant,
+              if (_isValid)
+                Text(
+                  _formatDurationSummary(),
+                  style: tt.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
                 ),
-              ),
-              if (!_isValid)
+
+              if (validation != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    'Minimum trip duration is 1 hour',
-                    style: textTheme.bodySmall?.copyWith(
-                      color: colorScheme.error,
-                    ),
+                    validation,
+                    style: tt.bodySmall?.copyWith(color: cs.error),
                   ),
                 ),
 
-              const SizedBox(height: 32),
-
-              // Start date picker
-              Text(
-                'Start date',
-                style: textTheme.titleMedium?.copyWith(
-                  color: colorScheme.onSurface,
-                ),
-              ),
-              const SizedBox(height: 12),
-              OutlinedButton.icon(
-                onPressed: _pickStartDate,
-                icon: const Icon(Icons.calendar_today),
-                label: Text(_formatDate(_startDate)),
-                style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 48),
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Estimated stops
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    children: [
-                      Icon(Icons.pin_drop, color: colorScheme.primary),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Estimated stops: $_maxStops',
-                        style: textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              // Error display
               if (_error != null)
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Text(
                     _error!,
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.error,
-                    ),
+                    style: tt.bodyMedium?.copyWith(color: cs.error),
                   ),
                 ),
 
-              // Generate button
+              const SizedBox(height: 40),
+
               SizedBox(
                 width: double.infinity,
                 height: 56,
@@ -231,7 +213,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
                           width: 24,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: colorScheme.onPrimary,
+                            color: cs.onPrimary,
                           ),
                         )
                       : const Text(
@@ -247,78 +229,122 @@ class _TripDurationPageState extends State<TripDurationPage> {
     );
   }
 
-  Widget _buildNumberRow({
-    required String label,
-    required int value,
-    required int min,
-    required int max,
-    required ValueChanged<int> onChanged,
-  }) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+  String _formatDurationSummary() {
+    final days = _endDate.difference(_startDate).inDays;
+    final hours = _totalMinutes ~/ 60;
+    final mins = _totalMinutes % 60;
 
-    return Row(
-      children: [
-        SizedBox(
-          width: 80,
-          child: Text(
-            label,
-            style: textTheme.titleMedium?.copyWith(
-              color: colorScheme.onSurface,
-            ),
-          ),
-        ),
-        IconButton(
-          onPressed: value > min ? () => onChanged(value - 1) : null,
-          icon: const Icon(Icons.remove_circle_outline),
-        ),
-        SizedBox(
-          width: 48,
-          child: Text(
-            '$value',
-            textAlign: TextAlign.center,
-            style: textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface,
-            ),
-          ),
-        ),
-        IconButton(
-          onPressed: value < max ? () => onChanged(value + 1) : null,
-          icon: const Icon(Icons.add_circle_outline),
-        ),
-        Expanded(
-          child: Slider(
-            value: value.toDouble(),
-            min: min.toDouble(),
-            max: max.toDouble(),
-            divisions: max - min,
-            onChanged: (v) => onChanged(v.round()),
-          ),
-        ),
-      ],
-    );
-  }
-
-  String _formatDuration() {
-    if (_days > 0 && _hours > 0) {
-      return '$_days day${_days > 1 ? 's' : ''}, $_hours hour${_hours > 1 ? 's' : ''}';
-    } else if (_days > 0) {
-      return '$_days day${_days > 1 ? 's' : ''}';
-    } else {
-      return '$_hours hour${_hours > 1 ? 's' : ''}';
+    if (days > 0) {
+      final nightWord = days == 1 ? 'night' : 'nights';
+      final dayWord = (days + 1) == 1 ? 'day' : 'days';
+      return '${days + 1} $dayWord, $days $nightWord';
     }
+    if (hours > 0 && mins > 0) return '$hours h $mins min';
+    if (hours > 0) return '$hours hour${hours > 1 ? 's' : ''}';
+    return '$mins min';
   }
 
-  Future<void> _pickStartDate() async {
+  Future<void> _pickDate({required bool isStart}) async {
+    final initial = isStart ? _startDate : _endDate;
     final picked = await showDatePicker(
       context: context,
-      initialDate: _startDate,
+      initialDate: initial,
       firstDate: DateTime.now(),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
     if (picked != null) {
-      setState(() => _startDate = picked);
+      setState(() {
+        if (isStart) {
+          _startDate = picked;
+          if (_endDate.isBefore(_startDate)) _endDate = _startDate;
+        } else {
+          _endDate = picked;
+        }
+      });
     }
+  }
+
+  Future<void> _pickTime({required bool isStart}) async {
+    final initial = isStart ? _startTime : _endTime;
+    final picked = await showTimePicker(context: context, initialTime: initial);
+    if (picked != null) {
+      setState(() {
+        if (isStart) {
+          _startTime = picked;
+        } else {
+          _endTime = picked;
+        }
+      });
+    }
+  }
+
+  String _formatDate(DateTime d) =>
+      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+  String _formatTime(TimeOfDay t) =>
+      '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}';
+}
+
+class _DateTimeSection extends StatelessWidget {
+  final String label;
+  final DateTime date;
+  final TimeOfDay time;
+  final VoidCallback onDateTap;
+  final VoidCallback onTimeTap;
+
+  const _DateTimeSection({
+    required this.label,
+    required this.date,
+    required this.time,
+    required this.onDateTap,
+    required this.onTimeTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    final weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    final dateStr = '${weekdays[date.weekday - 1]}, ${months[date.month - 1]} ${date.day}';
+    final timeStr = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: tt.titleMedium?.copyWith(color: cs.onSurface)),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: OutlinedButton.icon(
+                onPressed: onDateTap,
+                icon: const Icon(Icons.calendar_today, size: 18),
+                label: Text(dateStr),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 48),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              flex: 2,
+              child: OutlinedButton.icon(
+                onPressed: onTimeTap,
+                icon: const Icon(Icons.access_time, size: 18),
+                label: Text(timeStr),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 48),
+                  alignment: Alignment.centerLeft,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
