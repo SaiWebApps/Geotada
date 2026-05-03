@@ -175,7 +175,7 @@ def onboarding_complete(
 
     user_id = current_user["id"]
     email = current_user["email"]
-    display_name = email.split("@")[0].capitalize()
+    display_name = email.split("@")[0]
 
     result = session.run(
         _ONBOARDING_QUERY,

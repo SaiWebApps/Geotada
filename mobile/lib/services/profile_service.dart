@@ -16,6 +16,7 @@ class ProfileService extends ChangeNotifier {
 
   String? _profileId;
   String? _displayName;
+  String? _themePreference;
   List<String> _selectedLensIds = [];
   bool _isFirstTime = true;
   bool _isLoaded = false;
@@ -25,6 +26,7 @@ class ProfileService extends ChangeNotifier {
 
   String? get profileId => _profileId;
   String? get displayName => _displayName;
+  String? get themePreference => _themePreference;
   List<String> get selectedLensIds => List.unmodifiable(_selectedLensIds);
   bool get isFirstTime => _isFirstTime;
   bool get isLoaded => _isLoaded;
@@ -55,6 +57,17 @@ class ProfileService extends ChangeNotifier {
     }
 
     _profileId = profileEdges[0]['target_id'] as String;
+
+    final nodeResp = await _httpClient.get(
+      Uri.parse('$_apiBaseUrl/nodes/Profile/$_profileId'),
+      headers: headers,
+    );
+    if (nodeResp.statusCode == 200) {
+      final nodeData = jsonDecode(nodeResp.body) as Map<String, dynamic>;
+      final props = nodeData['properties'] as Map<String, dynamic>;
+      _displayName = props['display_name'] as String?;
+      _themePreference = props['theme_preference'] as String?;
+    }
 
     final lensResp = await _httpClient.get(
       Uri.parse('$_apiBaseUrl/edges/PREFERS_LENS?source_id=$_profileId&limit=200'),
@@ -132,9 +145,62 @@ class ProfileService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateDisplayName(String name, String accessToken) async {
+    if (_profileId == null) return;
+    final resp = await _httpClient.put(
+      Uri.parse('$_apiBaseUrl/nodes/Profile/$_profileId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({
+        'properties': {'display_name': name},
+      }),
+    );
+    if (resp.statusCode != 200) {
+      throw ProfileServiceException('Failed to update name: ${resp.body}');
+    }
+    _displayName = name;
+    notifyListeners();
+  }
+
+  Future<void> updateThemePreference(String preference, String accessToken) async {
+    if (_profileId == null) return;
+    final previous = _themePreference;
+    _themePreference = preference;
+    notifyListeners();
+
+    try {
+      final resp = await _httpClient.put(
+        Uri.parse('$_apiBaseUrl/nodes/Profile/$_profileId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode({
+          'properties': {'theme_preference': preference},
+        }),
+      );
+      if (resp.statusCode != 200) {
+        _themePreference = previous;
+        notifyListeners();
+        throw ProfileServiceException(
+          'Failed to update theme: ${resp.body}',
+        );
+      }
+    } catch (e) {
+      if (e is! ProfileServiceException) {
+        _themePreference = previous;
+        notifyListeners();
+      }
+      rethrow;
+    }
+  }
+
   void reset() {
     _profileId = null;
     _displayName = null;
+    _themePreference = null;
     _selectedLensIds = [];
     _isFirstTime = true;
     _isLoaded = false;

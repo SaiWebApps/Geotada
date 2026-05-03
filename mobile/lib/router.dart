@@ -6,6 +6,9 @@ import 'package:ondoway/pages/explore_page.dart';
 import 'package:ondoway/pages/lens_selection_page.dart';
 import 'package:ondoway/pages/login_page.dart';
 import 'package:ondoway/pages/profile_page.dart';
+import 'package:ondoway/pages/saved_trips_page.dart';
+import 'package:ondoway/pages/trip_duration_page.dart';
+import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
@@ -68,7 +71,7 @@ GoRouter createRouter(
           final as_ = context.read<AuthService>();
           return LensSelectionPage(
             isOnboarding: true,
-            userName: as_.userEmail?.split('@')[0].capitalize(),
+            userName: as_.userEmail?.split('@')[0],
             lensesByParent: ls.childrenByParent,
             onComplete: (selectedIds) async {
               await ps.completeOnboarding(
@@ -78,6 +81,21 @@ GoRouter createRouter(
               if (context.mounted) context.go('/explore');
             },
           );
+        },
+      ),
+      // Full-screen trip planning routes (outside tab shell)
+      GoRoute(
+        path: '/plan-trip/:citySlug',
+        builder: (context, state) {
+          final citySlug = state.pathParameters['citySlug'] ?? 'paris';
+          return TripDurationPage(citySlug: citySlug);
+        },
+      ),
+      GoRoute(
+        path: '/trip/:tripId',
+        builder: (context, state) {
+          final tripId = state.pathParameters['tripId'] ?? '';
+          return TripItineraryPage(tripId: tripId);
         },
       ),
       StatefulShellRoute.indexedStack(
@@ -135,6 +153,14 @@ GoRouter createRouter(
           StatefulShellBranch(
             routes: [
               GoRoute(
+                path: '/saved-trips',
+                builder: (context, state) => const SavedTripsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfilePage(),
               ),
@@ -144,11 +170,4 @@ GoRouter createRouter(
       ),
     ],
   );
-}
-
-extension StringCapitalize on String {
-  String capitalize() {
-    if (isEmpty) return this;
-    return '${this[0].toUpperCase()}${substring(1)}';
-  }
 }

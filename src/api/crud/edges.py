@@ -39,7 +39,7 @@ def _record_to_edge(record) -> dict[str, Any]:
     """Convert a Neo4j record to an edge dict."""
     props = serialize_neo4j_props(dict(record["props"])) if record["props"] else {}
     return {
-        "id": record["id"],
+        "id": record["id"] or "",
         "type": record["type"],
         "source_id": record["source_id"],
         "target_id": record["target_id"],

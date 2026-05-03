@@ -20,7 +20,7 @@ class _CallbackPageState extends State<CallbackPage> {
   @override
   void initState() {
     super.initState();
-    _verifyToken();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _verifyToken());
   }
 
   Future<void> _verifyToken() async {

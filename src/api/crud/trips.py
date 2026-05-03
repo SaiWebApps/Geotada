@@ -248,3 +248,76 @@ def create_trip_with_stops(
         )
 
     return {"trip_id": trip_id, "trip_name": trip_name}
+
+
+def list_trips_for_profile(
+    session: Session,
+    profile_id: str,
+) -> list[dict[str, Any]]:
+    """Return all trips for a profile with their stops.
+
+    For each trip, collects stops via HAS_STOP → ItineraryItem → AT_POI → POI,
+    PLAYS_BEAT → Beat → TAGGED_WITH → Lens. Returns trip data + ordered stops.
+    """
+    # First verify profile exists
+    check = session.run(
+        "MATCH (p:Profile {id: $pid}) RETURN p.id AS id",
+        pid=profile_id,
+    ).single()
+    if check is None:
+        return None  # type: ignore[return-value]
+
+    # Get all trips for this profile
+    trips_query = """
+        MATCH (p:Profile {id: $pid})-[:IS_CAPTAIN_OF]->(t:Trip)
+        RETURN t.id AS trip_id,
+               t.name AS trip_name,
+               t.start_date AS start_date,
+               t.end_date AS end_date,
+               t.status AS status
+        ORDER BY t.created_at DESC
+    """
+    trip_records = session.run(trips_query, pid=profile_id)
+    trips = [dict(r) for r in trip_records]
+
+    results: list[dict[str, Any]] = []
+    for trip in trips:
+        # Get stops for each trip
+        stops_query = """
+            MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(item:ItineraryItem)
+            MATCH (item)-[:AT_POI]->(poi:POI)
+            MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)-[:TAGGED_WITH]->(lens:Lens)
+            RETURN item.sort_order AS sort_order,
+                   poi.id AS poi_id,
+                   poi.name AS poi_name,
+                   poi.location.latitude AS lat,
+                   poi.location.longitude AS lng,
+                   beat.id AS beat_id,
+                   lens.name AS lens_name,
+                   coalesce(lens.display_name, lens.name) AS lens_display,
+                   item.duration_min AS duration_min,
+                   coalesce(poi.importance_tier, 3) AS importance_tier,
+                   item.start_time AS start_time
+            ORDER BY item.sort_order
+        """
+        stop_records = session.run(stops_query, tid=trip["trip_id"])
+        stops = [dict(r) for r in stop_records]
+
+        total_duration = sum(s["duration_min"] for s in stops)
+        anchor_count = sum(1 for s in stops if s["importance_tier"] == 5)
+        flavour_count = len(stops) - anchor_count
+
+        results.append(
+            {
+                "trip_id": trip["trip_id"],
+                "trip_name": trip["trip_name"],
+                "profile_id": profile_id,
+                "total_stops": len(stops),
+                "total_duration_min": total_duration,
+                "anchor_count": anchor_count,
+                "flavour_count": flavour_count,
+                "stops": stops,
+            }
+        )
+
+    return results
