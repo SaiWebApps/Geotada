@@ -23,6 +23,11 @@ class GoogleAuthRequest(BaseModel):
     id_token: str
 
 
+class AppleAuthRequest(BaseModel):
+    identity_token: str
+    nonce: str | None = None
+
+
 class RefreshRequest(BaseModel):
     refresh_token: str
 

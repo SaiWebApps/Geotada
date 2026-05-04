@@ -7,10 +7,12 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 from neo4j import Session
 
+from src.api.auth.apple import verify_apple_id_token
 from src.api.auth.dependencies import get_current_user
 from src.api.auth.email import EmailDeliveryError, send_magic_link
 from src.api.auth.google import verify_google_id_token
 from src.api.auth.schemas import (
+    AppleAuthRequest,
     GoogleAuthRequest,
     MagicLinkRequest,
     MagicLinkVerifyRequest,
@@ -38,6 +40,18 @@ SET u.id = coalesce(u.id, randomUUID()),
     u.created_at = coalesce(u.created_at, datetime()),
     u.last_logon = datetime()
 RETURN u
+"""
+
+_FIND_BY_GOOGLE_SUB = "MATCH (u:User {google_sub: $sub}) RETURN u"
+_SET_GOOGLE_SUB = """
+MATCH (u:User {email: $email})
+SET u.google_sub = coalesce(u.google_sub, $google_sub)
+"""
+
+_FIND_BY_APPLE_SUB = "MATCH (u:User {apple_sub: $sub}) RETURN u"
+_SET_APPLE_SUB = """
+MATCH (u:User {email: $email})
+SET u.apple_sub = coalesce(u.apple_sub, $apple_sub)
 """
 
 
@@ -132,9 +146,58 @@ def google_auth(
         ) from exc
 
     email = google_info["email"]
-    result = session.run(_MERGE_USER, email=email).single()
-    user_node = result["u"]
+    google_sub = google_info.get("sub", "")
+
+    existing = session.run(_FIND_BY_GOOGLE_SUB, sub=google_sub).single() if google_sub else None
+    if existing:
+        user_node = existing["u"]
+        email = user_node["email"]
+    else:
+        result = session.run(_MERGE_USER, email=email).single()
+        user_node = result["u"]
+
     user_id = user_node.get("id")
+
+    if google_sub:
+        session.run(_SET_GOOGLE_SUB, email=email, google_sub=google_sub)
+
+    session_id = str(uuid.uuid4())
+    token_family = str(uuid.uuid4())
+
+    return TokenResponse(
+        access_token=create_access_token(user_id, email),
+        refresh_token=create_refresh_token(user_id, session_id, token_family),
+    )
+
+
+@router.post("/apple", response_model=TokenResponse)
+def apple_auth(
+    body: AppleAuthRequest,
+    session: Session = Depends(get_session),
+):
+    try:
+        apple_info = verify_apple_id_token(body.identity_token, nonce=body.nonce)
+    except TokenError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+        ) from exc
+
+    email = apple_info["email"]
+    apple_sub = apple_info.get("sub", "")
+
+    existing = session.run(_FIND_BY_APPLE_SUB, sub=apple_sub).single() if apple_sub else None
+    if existing:
+        user_node = existing["u"]
+        email = user_node["email"]
+    else:
+        result = session.run(_MERGE_USER, email=email).single()
+        user_node = result["u"]
+
+    user_id = user_node.get("id")
+
+    if apple_sub:
+        session.run(_SET_APPLE_SUB, email=email, apple_sub=apple_sub)
 
     session_id = str(uuid.uuid4())
     token_family = str(uuid.uuid4())

@@ -56,6 +56,8 @@ INDEXES: list[Index] = [
     Index("POI", ("location",), index_type="POINT"),
     Index("NarrativeBeat", ("active_status", "version"), index_type="RANGE"),
     Index("Area", ("centroid",), index_type="POINT"),
+    Index("User", ("google_sub",)),
+    Index("User", ("apple_sub",)),
 ]
 
 # ---------------------------------------------------------------------------
