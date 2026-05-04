@@ -118,10 +118,10 @@ dashboard: ## Start the web dashboard (port 8080)
 	uv run python -m src.server
 
 api: ## Start the FastAPI graph API (port 8000)
-	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
+	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 api-test: ## Start API against test database (port 8000)
-	set -a && . .env.test && set +a && uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
+	set -a && . .env.test && set +a && NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 	uv run python scripts/check_audio_setup.py
@@ -149,12 +149,15 @@ flutter-ios: db-up ## Run Flutter app on iOS Simulator (boots sim + starts API a
 	@open -a Simulator 2>/dev/null || true
 	@echo "  → Starting API server in background (port 8000)..."
 	@lsof -ti:8000 | xargs kill 2>/dev/null || true
-	@NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
+	@NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
 	@sleep 2
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter run -d 46F0E608-943E-48F4-9EDB-8925855D0069
 
+flutter-device: ## Run Flutter app on physical iOS device (points at production API)
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter run --dart-define=API_BASE_URL=https://ondoway.com/api/v1
+
 flutter-ipa: ## Build IPA for TestFlight (points at production API)
-	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter build ipa --dart-define=API_BASE_URL=https://ondoway.com/api/v1
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev,cdn.cocoapods.org,cocoapods.org,cdn.jsdelivr.net,jsdelivr.net no_proxy=pub.dev,*.pub.dev,cdn.cocoapods.org,cocoapods.org,cdn.jsdelivr.net,jsdelivr.net flutter build ipa --dart-define=API_BASE_URL=https://ondoway.com/api/v1
 
 flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 	cd mobile && flutter clean
