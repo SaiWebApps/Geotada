@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
+import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/location_service.dart';
+import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 
 class TripItineraryPage extends StatelessWidget {
@@ -32,27 +35,87 @@ class TripItineraryPage extends StatelessWidget {
   }
 }
 
-class _TripItineraryContent extends StatelessWidget {
+class _TripItineraryContent extends StatefulWidget {
   final GeneratedTrip trip;
 
   const _TripItineraryContent({required this.trip});
 
   @override
+  State<_TripItineraryContent> createState() =>
+      _TripItineraryContentState();
+}
+
+class _TripItineraryContentState extends State<_TripItineraryContent> {
+  bool _isUpdating = false;
+
+  Future<void> _updateFromHere() async {
+    final locationService = context.read<LocationService>();
+    final tripService = context.read<TripService>();
+    final authService = context.read<AuthService>();
+    final profileService = context.read<ProfileService>();
+
+    setState(() => _isUpdating = true);
+
+    final position = await locationService.getCurrentPosition();
+    if (position == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              locationService.error ?? 'Could not get location',
+            ),
+          ),
+        );
+        setState(() => _isUpdating = false);
+      }
+      return;
+    }
+
+    try {
+      final now = DateTime.now();
+      final dateStr =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}'
+          '-${now.day.toString().padLeft(2, '0')}';
+      final timeStr =
+          '${now.hour.toString().padLeft(2, '0')}'
+          ':${now.minute.toString().padLeft(2, '0')}';
+
+      final newTrip = await tripService.generateTrip(
+        profileId: profileService.profileId!,
+        centerLat: position.latitude,
+        centerLng: position.longitude,
+        startDate: dateStr,
+        endDate: dateStr,
+        accessToken: authService.accessToken!,
+        startTime: timeStr,
+      );
+      if (mounted) {
+        context.pushReplacement('/trip/${newTrip.tripId}');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to regenerate: $e')),
+        );
+        setState(() => _isUpdating = false);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
     final tripService = context.read<TripService>();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(trip.tripName),
+        title: Text(widget.trip.tripName),
         backgroundColor: colorScheme.surface,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Regenerate',
             onPressed: () {
-              // Pop back to duration page for re-generation
               context.pop();
             },
           ),
@@ -60,15 +123,41 @@ class _TripItineraryContent extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Summary card
-          _SummaryCard(trip: trip),
-          // Stops list
+          _SummaryCard(trip: widget.trip),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _isUpdating ? null : _updateFromHere,
+                icon: _isUpdating
+                    ? SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: colorScheme.primary,
+                        ),
+                      )
+                    : const Icon(Icons.my_location),
+                label: Text(
+                  _isUpdating
+                      ? 'Updating...'
+                      : 'Update trip from here',
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: trip.stops.length,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 8,
+              ),
+              itemCount: widget.trip.stops.length,
               itemBuilder: (context, index) {
-                final stop = trip.stops[index];
+                final stop = widget.trip.stops[index];
                 return _StopCard(stop: stop);
               },
             ),
@@ -77,7 +166,7 @@ class _TripItineraryContent extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          tripService.saveTrip(trip);
+          tripService.saveTrip(widget.trip);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Trip saved!')),
           );

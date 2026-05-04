@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/trip_service.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 
 class TripDurationPage extends StatefulWidget {
@@ -90,12 +91,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
     final tripService = context.read<TripService>();
     final authService = context.read<AuthService>();
     final profileService = context.read<ProfileService>();
-
-    final coords = _cityCoordinates[widget.citySlug];
-    if (coords == null) {
-      setState(() => _error = 'City not supported');
-      return;
-    }
+    final locationService = context.read<LocationService>();
 
     final profileId = profileService.profileId;
     final token = authService.accessToken;
@@ -109,11 +105,30 @@ class _TripDurationPageState extends State<TripDurationPage> {
       _error = null;
     });
 
+    double lat;
+    double lng;
+    final position = await locationService.getCurrentPosition();
+    if (position != null) {
+      lat = position.latitude;
+      lng = position.longitude;
+    } else {
+      final coords = _cityCoordinates[widget.citySlug];
+      if (coords == null) {
+        setState(() {
+          _isLoading = false;
+          _error = 'City not supported';
+        });
+        return;
+      }
+      lat = coords.lat;
+      lng = coords.lng;
+    }
+
     try {
       final trip = await tripService.generateTrip(
         profileId: profileId,
-        centerLat: coords.lat,
-        centerLng: coords.lng,
+        centerLat: lat,
+        centerLng: lng,
         startDate: _formatDate(_startDate),
         endDate: _formatDate(_endDate),
         accessToken: token,
@@ -126,9 +141,16 @@ class _TripDurationPageState extends State<TripDurationPage> {
         context.push('/trip/${trip.tripId}');
       }
     } on TripServiceException catch (e) {
-      if (mounted) setState(() { _isLoading = false; _error = e.message; });
+      if (mounted) {
+        setState(() { _isLoading = false; _error = e.message; });
+      }
     } catch (e) {
-      if (mounted) setState(() { _isLoading = false; _error = 'Something went wrong. Please try again.'; });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _error = 'Something went wrong. Please try again.';
+        });
+      }
     }
   }
 
