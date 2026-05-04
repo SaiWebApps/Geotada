@@ -11,6 +11,7 @@ This catches two failure modes that bit us today:
 The test runs in <100ms with no DB. To re-baseline after intentional schema
 changes, update DISTRIBUTION_TARGETS below.
 """
+
 from __future__ import annotations
 
 import json
@@ -26,21 +27,18 @@ DATA_ROOT = REPO_ROOT / "data"
 # tolerance band so natural breakpoints don't trip the test.
 # (lo_pct, hi_pct) — both inclusive.
 DISTRIBUTION_TARGETS: dict[int, tuple[float, float]] = {
-    5: (8.0, 18.0),    # rules say 10-15%, allow ±3
-    4: (12.0, 22.0),   # rules say 15-20%, allow ±3
-    3: (22.0, 32.0),   # rules say 25-30%, allow ±3
-    2: (17.0, 27.0),   # rules say 20-25%, allow ±3
-    1: (12.0, 22.0),   # rules say 15-20%, allow ±3
+    5: (8.0, 18.0),  # rules say 10-15%, allow ±3
+    4: (12.0, 22.0),  # rules say 15-20%, allow ±3
+    3: (22.0, 32.0),  # rules say 25-30%, allow ±3
+    2: (17.0, 27.0),  # rules say 20-25%, allow ±3
+    1: (12.0, 22.0),  # rules say 15-20%, allow ±3
 }
 
 
 def _city_dirs() -> list[Path]:
     if not DATA_ROOT.exists():
         return []
-    return [
-        d for d in sorted(DATA_ROOT.iterdir())
-        if d.is_dir() and (d / "poi-raw.json").exists()
-    ]
+    return [d for d in sorted(DATA_ROOT.iterdir()) if d.is_dir() and (d / "poi-raw.json").exists()]
 
 
 @pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
@@ -49,10 +47,7 @@ def test_every_poi_has_gravity_audit(city_dir: Path) -> None:
     through a real scoring pass. Agent-guessed tiers without an audit trail
     are not allowed."""
     pois = json.loads((city_dir / "poi-raw.json").read_text())
-    unaudited = [
-        p["name"] for p in pois
-        if not p.get("_pipeline", {}).get("gravity_audit")
-    ]
+    unaudited = [p["name"] for p in pois if not p.get("_pipeline", {}).get("gravity_audit")]
     if unaudited:
         pytest.fail(
             f"{city_dir.name}: {len(unaudited)} POI(s) lack a gravity_audit "
@@ -79,8 +74,7 @@ def test_tier_distribution_within_targets(city_dir: Path) -> None:
         actual_pct = actual / n * 100
         if not (lo_pct <= actual_pct <= hi_pct):
             failures.append(
-                f"  T{tier}: {actual:3d}/{n} ({actual_pct:.1f}%) "
-                f"— target {lo_pct}-{hi_pct}%"
+                f"  T{tier}: {actual:3d}/{n} ({actual_pct:.1f}%) — target {lo_pct}-{hi_pct}%"
             )
     if failures:
         pytest.fail(

@@ -87,7 +87,9 @@ class TestCreateModels:
 
     def test_poi_create_requires_lat_lng(self):
         model = CREATE_MODELS[NodeLabel.POI]
-        instance = model(name="Test POI", city_name="paris", latitude=48.8, longitude=2.3, importance_tier=3)
+        instance = model(
+            name="Test POI", city_name="paris", latitude=48.8, longitude=2.3, importance_tier=3
+        )
         assert instance.latitude == 48.8
         assert instance.longitude == 2.3
 

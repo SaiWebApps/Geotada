@@ -118,12 +118,10 @@ def _generated_beat_ids(snapshot, fixture):
 
 def test_pdv_golden_overlap(snapshot, fixture):
     """≥90% beat-ID overlap between generated tour and empirical Tour 1."""
-    script, route, seq = _generated_beat_ids(snapshot, fixture)
+    script, route, _seq = _generated_beat_ids(snapshot, fixture)
 
     expected: set[str] = set(fixture["expected_beat_ids"])
-    generated_ids: set[str] = {
-        s.source_id for s in script.script if s.source_type == "beat"
-    }
+    generated_ids: set[str] = {s.source_id for s in script.script if s.source_type == "beat"}
 
     overlap = len(expected & generated_ids)
     overlap_pct = overlap / len(expected) if expected else 0.0
@@ -140,7 +138,7 @@ def test_pdv_golden_overlap(snapshot, fixture):
 
 def test_pdv_golden_spine(snapshot, fixture):
     """Spine area should be Le Marais."""
-    script, route, _ = _generated_beat_ids(snapshot, fixture)
+    _script, route, _ = _generated_beat_ids(snapshot, fixture)
     expected_spine = fixture["expected_spine_area"]
     assert route.spine_area == expected_spine, (
         f"Spine area mismatch: expected {expected_spine!r}, got {route.spine_area!r}. "
@@ -153,8 +151,10 @@ def test_pdv_golden_validation_passes(snapshot, fixture):
     script, _, _ = _generated_beat_ids(snapshot, fixture)
     assert script.validation.passed, (
         f"Validation failed. "
-        f"Untraceable: {[s.text[:80] for s in script.validation.untraceable_sentences]}. "
-        f"Forbidden: {[(s.text[:80], phrase) for s, phrase in script.validation.forbidden_phrase_hits]}."
+        f"Untraceable: "
+        f"{[s.text[:80] for s in script.validation.untraceable_sentences]}. "
+        f"Forbidden: "
+        f"{[(s.text[:80], phrase) for s, phrase in script.validation.forbidden_phrase_hits]}."
     )
 
 

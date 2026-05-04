@@ -99,13 +99,17 @@ def _find_chromium() -> str | None:
         return None
     for d in sorted(cache_dir.glob("chromium-*"), reverse=True):
         candidate = (
-            d / "chrome-mac-arm64"
+            d
+            / "chrome-mac-arm64"
             / "Google Chrome for Testing.app"
-            / "Contents" / "MacOS" / "Google Chrome for Testing"
+            / "Contents"
+            / "MacOS"
+            / "Google Chrome for Testing"
         )
         if candidate.exists():
             return str(candidate)
     return None
+
 
 # Seed data constants
 SEED_POI_NAME = "UI Test Seed \u2014 Sacr\u00e9-C\u0153ur Basilica"
@@ -338,8 +342,16 @@ def api_server():
         return
 
     proc = subprocess.Popen(
-        [sys.executable, "-m", "uvicorn", "src.api.app:app",
-         "--host", "127.0.0.1", "--port", "8000"],
+        [
+            sys.executable,
+            "-m",
+            "uvicorn",
+            "src.api.app:app",
+            "--host",
+            "127.0.0.1",
+            "--port",
+            "8000",
+        ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )

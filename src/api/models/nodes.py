@@ -89,27 +89,27 @@ POIRole = Literal["stop", "setting", "walk_by_only"]
 class POICreate(BaseModel):
     name: str = Field(max_length=500)
     city_name: str  # REQUIRED — matches AreaCreate.city_name convention.
-                    # Part of the (name, city_name) MERGE key for multi-city safety.
+    # Part of the (name, city_name) MERGE key for multi-city safety.
     short_description: str = Field(default="", max_length=2000)
     latitude: float
     longitude: float
     importance_tier: int  # REQUIRED — no default. Silent default of 1 caused
-                           # famous landmarks to be demoted in earlier pipeline runs.
-                           # See tests/test_export_consistency.py for the regression guard.
+    # famous landmarks to be demoted in earlier pipeline runs.
+    # See tests/test_export_consistency.py for the regression guard.
     trigger_radius: int = 10
     typical_duration_min: int = 30
     kid_friendly: str = Field(default="yes", max_length=50)
     name_variations: list[str] = []
     poi_role: POIRole = "stop"
     parent_poi: str | None = None  # Set on sub-POIs; names the parent POI
-    source_passage: str = ""       # Required when parent_poi is set (AC-9):
-                                   # verbatim/near-verbatim quote from source
-                                   # text grounding the poi_role classification
+    source_passage: str = ""  # Required when parent_poi is set (AC-9):
+    # verbatim/near-verbatim quote from source
+    # text grounding the poi_role classification
     establishing_not_applicable: bool = False  # Per AC-6: auto-flag set during
-                                               # extraction when a poi_role: stop
-                                               # POI has tier ≤ 2 and lacks an
-                                               # establishing beat. Higher-tier
-                                               # stops must carry a real beat.
+    # extraction when a poi_role: stop
+    # POI has tier ≤ 2 and lacks an
+    # establishing beat. Higher-tier
+    # stops must carry a real beat.
     force_create: bool = False
 
     @field_validator("importance_tier")
@@ -134,7 +134,7 @@ class POICreate(BaseModel):
         return v
 
     @model_validator(mode="after")
-    def sub_poi_requires_source_passage(self) -> "POICreate":
+    def sub_poi_requires_source_passage(self) -> POICreate:
         """Per AC-9: any POI with parent_poi set must carry a non-empty
         source_passage quoting the source text that grounds the poi_role."""
         if self.parent_poi and not self.source_passage.strip():
@@ -205,11 +205,11 @@ class NarrativeBeatCreate(BaseModel):
 
     # Structural enrichment fields added by unified_v2 extraction prompt.
     # All optional — legacy beats have them as None/""/[] and upload without issue.
-    sub_location: str | None = None      # Within-POI spatial tag (façade, crypt, nave...)
-    trigger_address: str | None = None   # Address-level GPS trigger ("no. 6 place des Vosges")
-    beat_length_class: str = ""          # anchor | mid | seasoning | micro; empty on legacy
+    sub_location: str | None = None  # Within-POI spatial tag (façade, crypt, nave...)
+    trigger_address: str | None = None  # Address-level GPS trigger ("no. 6 place des Vosges")
+    beat_length_class: str = ""  # anchor | mid | seasoning | micro; empty on legacy
     inline_foreign_phrases: list[InlineForeignPhrase] = []
-    pronunciation: str | None = None     # Phonetic approximation, e.g. "plass-day-voge"
+    pronunciation: str | None = None  # Phonetic approximation, e.g. "plass-day-voge"
 
     @field_validator("subject_tag")
     @classmethod
@@ -220,11 +220,11 @@ class NarrativeBeatCreate(BaseModel):
             raise ValueError("subject_tag must be between 1 and 32 characters")
         words = v.split()
         if not 1 <= len(words) <= 3:
-            raise ValueError("subject_tag must be 1–3 words")
+            raise ValueError("subject_tag must be 1-3 words")
         return v
 
     @model_validator(mode="after")
-    def hash_matches_normalized_body(self) -> "NarrativeBeatCreate":
+    def hash_matches_normalized_body(self) -> NarrativeBeatCreate:
         expected = _normalized_script_body_hash(self.script_body)
         if not self.script_body_hash:
             self.script_body_hash = expected
@@ -263,7 +263,10 @@ class AreaCreate(BaseModel):
     @classmethod
     def boundary_is_wkt_polygon(cls, v: str) -> str:
         if not v.startswith("POLYGON((") or not v.endswith("))"):
-            raise ValueError("boundary must be a WKT POLYGON string starting with 'POLYGON((' and ending with '))'")
+            raise ValueError(
+                "boundary must be a WKT POLYGON string "
+                "starting with 'POLYGON((' and ending with '))'"
+            )
         return v
 
 

@@ -88,9 +88,7 @@ def transcribe(audio_bytes: bytes, *, filename: str = "audio.mp3") -> str:
     if not api_key:
         raise EvalError("OPENAI_API_KEY not set — needed for Whisper transcription")
 
-    with httpx.Client(
-        transport=httpx.HTTPTransport(proxy=None), timeout=120.0
-    ) as client:
+    with httpx.Client(transport=httpx.HTTPTransport(proxy=None), timeout=120.0) as client:
         resp = client.post(
             "https://api.openai.com/v1/audio/transcriptions",
             headers={"Authorization": f"Bearer {api_key}"},

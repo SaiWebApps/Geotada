@@ -20,7 +20,6 @@ the caller treats as "fall back to a templated default").
 
 from __future__ import annotations
 
-import importlib.resources as resources
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
@@ -130,11 +129,11 @@ class HaikuGlueClient:
 
 
 __all__ = [
+    "DEFAULT_HAIKU_MODEL",
+    "GLUE_MAX_OUTPUT_TOKENS",
+    "NO_GLUE_SENTINEL",
     "GlueClient",
     "HaikuGlueClient",
     "MockGlueClient",
-    "NO_GLUE_SENTINEL",
-    "GLUE_MAX_OUTPUT_TOKENS",
-    "DEFAULT_HAIKU_MODEL",
     "load_glue_prompt",
 ]

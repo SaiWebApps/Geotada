@@ -152,7 +152,9 @@ class TestBeatTraversal:
         # Get lens IDs
         lens_list = client.get("/api/v1/nodes/Lens?limit=50").json()
         hh_lens = next(l for l in lens_list["items"] if l["properties"]["name"] == "hidden_history")
-        fc_lens = next(l for l in lens_list["items"] if l["properties"]["name"] == "historic_cuisine")
+        fc_lens = next(
+            l for l in lens_list["items"] if l["properties"]["name"] == "historic_cuisine"
+        )
 
         # Create HAS_BEAT edges
         client.post(

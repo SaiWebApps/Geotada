@@ -9,12 +9,10 @@ Requires:
 
 from __future__ import annotations
 
-import os
-
 import pytest
 
 from src.api.auth.config import MAGIC_LINK_PROVIDER, RESEND_API_KEY
-from src.api.auth.email import send_magic_link, EmailDeliveryError
+from src.api.auth.email import EmailDeliveryError, send_magic_link
 from src.api.auth.tokens import create_magic_token
 
 _can_send = MAGIC_LINK_PROVIDER == "resend" and bool(RESEND_API_KEY)
@@ -47,6 +45,7 @@ class TestLiveEmailDelivery:
     @pytest.mark.anyio
     async def test_api_endpoint_sends_email(self):
         from fastapi.testclient import TestClient
+
         from src.api.app import create_app
 
         app = create_app()
@@ -61,7 +60,6 @@ class TestLiveEmailDelivery:
 
     @pytest.mark.anyio
     async def test_invalid_api_key_returns_502(self):
-        import httpx
         from unittest.mock import patch
 
         with patch("src.api.auth.email.RESEND_API_KEY", "invalid-key"):

@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 
 _VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
 
+
 def _encode_complex_props(props: dict) -> dict:
     """JSON-encode list-of-dict values so Neo4j can store them as strings.
 
@@ -191,8 +192,9 @@ def update_node(
         return get_node(session, label, node_id)
 
     _validate_property_keys(properties)
-    properties = _encode_complex_props(dict(properties))  # Don't mutate caller's dict + JSON-encode list[dict]
-
+    properties = _encode_complex_props(
+        dict(properties)
+    )  # Don't mutate caller's dict + JSON-encode list[dict]
 
     params: dict[str, Any] = {"node_id": node_id}
     set_parts: list[str] = []
@@ -211,9 +213,7 @@ def update_node(
         lat = properties.pop("centroid_lat", None)
         lng = properties.pop("centroid_lng", None)
         if lat is not None and lng is not None:
-            set_parts.append(
-                "n.centroid = point({latitude: $lat, longitude: $lng, srid: 4326})"
-            )
+            set_parts.append("n.centroid = point({latitude: $lat, longitude: $lng, srid: 4326})")
             params["lat"] = lat
             params["lng"] = lng
 

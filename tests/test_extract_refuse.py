@@ -10,12 +10,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-SKILL = (
-    Path(__file__).resolve().parent.parent
-    / ".claude"
-    / "commands"
-    / "unified-beat-extract.md"
-)
+SKILL = Path(__file__).resolve().parent.parent / ".claude" / "commands" / "unified-beat-extract.md"
 
 
 def _text() -> str:

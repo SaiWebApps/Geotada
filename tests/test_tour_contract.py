@@ -6,9 +6,9 @@ import pytest
 from pydantic import ValidationError
 
 from src.tour.contract import (
+    POI,
     BeatRef,
     BeatSequence,
-    POI,
     POIBeats,
     Route,
     TourInput,
@@ -48,9 +48,7 @@ def test_tour_input_strips_empty_lenses():
 
 
 def test_tour_input_empty_lens_list_normalized_to_none():
-    inp = TourInput(
-        start=(48.0, 2.0), duration_min=60, city_slug="paris", lenses=["", "  "]
-    )
+    inp = TourInput(start=(48.0, 2.0), duration_min=60, city_slug="paris", lenses=["", "  "])
     assert inp.lenses is None
 
 

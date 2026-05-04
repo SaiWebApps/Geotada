@@ -7,12 +7,10 @@ fragments are glue sentences whose category is asserted via mock calls.
 
 from __future__ import annotations
 
-import pytest
-
 from src.tour.contract import (
+    POI,
     BeatRef,
     BeatSequence,
-    POI,
     PhysicalCue,
     POIBeats,
     Route,
@@ -20,19 +18,16 @@ from src.tour.contract import (
     TransitSegment,
 )
 from src.tour.generation import (
-    ARITH,
     FORBIDDEN_PHRASES,
     GLUE_CLOSING,
     GLUE_LABELS,
     GLUE_NAV,
     GLUE_PACING,
-    GLUE_STAGING,
     SYNTHESIZED_OPENER,
     generate,
     split_sentences,
 )
-from src.tour.glue_client import MockGlueClient, NO_GLUE_SENTINEL
-
+from src.tour.glue_client import NO_GLUE_SENTINEL, MockGlueClient
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -130,9 +125,7 @@ def test_split_sentences_keeps_no_dot_address():
 
 
 def test_split_sentences_handles_quoted_material():
-    out = split_sentences(
-        'He wrote "It has to hurt." That was 1752. Brice argued his case.'
-    )
+    out = split_sentences('He wrote "It has to hurt." That was 1752. Brice argued his case.')
     assert "Brice argued his case." in out
 
 
@@ -178,7 +171,9 @@ def test_cold_open_uses_stop_orientation_when_present():
 
 def test_cold_open_synthesizes_when_no_orientation():
     poi = _poi("p1", "Notre-Dame Cathedral")
-    body = _beat("body-1", poi.id, body="The cathedral rears up like a great ship.", nf="establishing")
+    body = _beat(
+        "body-1", poi.id, body="The cathedral rears up like a great ship.", nf="establishing"
+    )
     seq = BeatSequence(
         poi_beats=(
             POIBeats(
@@ -189,7 +184,9 @@ def test_cold_open_synthesizes_when_no_orientation():
             ),
         )
     )
-    script = generate(seq, _route((poi,), duration_min=60), _input(round_trip=False), glue_client=MockGlueClient())
+    script = generate(
+        seq, _route((poi,), duration_min=60), _input(round_trip=False), glue_client=MockGlueClient()
+    )
     sources = [s.source_id for s in script.script]
     assert SYNTHESIZED_OPENER in sources
     # Phase 7.5 (Fix 2): synthesized opener anchors on the spine Area name
@@ -242,18 +239,25 @@ def test_transit_uses_corpus_beat_when_present():
     p2_transit = _beat(
         "p2-transit",
         p2.id,
-        body="From the Pont Neuf, cross the road into place Dauphine and walk around the Conciergerie.",
+        body=(
+            "From the Pont Neuf, cross the road into place Dauphine "
+            "and walk around the Conciergerie."
+        ),
         nf="transition",
     )
     p2_body = _beat("p2-body", p2.id, body="The Conciergerie is Paris's oldest prison.")
     seq = BeatSequence(
         poi_beats=(
             POIBeats(
-                poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
+                poi_id=p1.id,
+                poi_name=p1.name,
+                ordering_strategy="narrative_function",
                 beats=(orient, p1_body),
             ),
             POIBeats(
-                poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
+                poi_id=p2.id,
+                poi_name=p2.name,
+                ordering_strategy="narrative_function",
                 beats=(p2_transit, p2_body),
             ),
         )
@@ -289,10 +293,18 @@ def test_phase7_transit_rejects_wrong_direction_beat():
     p2_body = _beat("p2-body", p2.id, body="The Beaux-Arts span opened in 1900.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
-                     beats=(orient, p1_body)),
-            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
-                     beats=(p2_transit, p2_body)),
+            POIBeats(
+                poi_id=p1.id,
+                poi_name=p1.name,
+                ordering_strategy="narrative_function",
+                beats=(orient, p1_body),
+            ),
+            POIBeats(
+                poi_id=p2.id,
+                poi_name=p2.name,
+                ordering_strategy="narrative_function",
+                beats=(p2_transit, p2_body),
+            ),
         )
     )
     client = MockGlueClient(responses={"GLUE_NAV": "Walk along the embankment."})
@@ -324,10 +336,18 @@ def test_phase7_transit_accepts_directionally_consistent_beat():
     p2_body = _beat("p2-body", p2.id, body="The little church is older than Sacré-Cœur.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
-                     beats=(orient,)),
-            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
-                     beats=(p2_transit, p2_body)),
+            POIBeats(
+                poi_id=p1.id,
+                poi_name=p1.name,
+                ordering_strategy="narrative_function",
+                beats=(orient,),
+            ),
+            POIBeats(
+                poi_id=p2.id,
+                poi_name=p2.name,
+                ordering_strategy="narrative_function",
+                beats=(p2_transit, p2_body),
+            ),
         )
     )
     client = MockGlueClient()
@@ -354,10 +374,18 @@ def test_phase7_transit_falls_back_when_origin_mismatch():
     p2_body = _beat("p2-body", p2.id, body="The little church.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
-                     beats=(p1_body,)),
-            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
-                     beats=(p2_transit, p2_body)),
+            POIBeats(
+                poi_id=p1.id,
+                poi_name=p1.name,
+                ordering_strategy="narrative_function",
+                beats=(p1_body,),
+            ),
+            POIBeats(
+                poi_id=p2.id,
+                poi_name=p2.name,
+                ordering_strategy="narrative_function",
+                beats=(p2_transit, p2_body),
+            ),
         )
     )
     client = MockGlueClient(responses={"GLUE_NAV": "Walk down the street."})
@@ -376,11 +404,15 @@ def test_transit_falls_back_to_glue_when_no_corpus_beat():
     seq = BeatSequence(
         poi_beats=(
             POIBeats(
-                poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function",
+                poi_id=p1.id,
+                poi_name=p1.name,
+                ordering_strategy="narrative_function",
                 beats=(p1_orient, p1_body),
             ),
             POIBeats(
-                poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function",
+                poi_id=p2.id,
+                poi_name=p2.name,
+                ordering_strategy="narrative_function",
                 beats=(p2_body,),
             ),
         )
@@ -402,8 +434,12 @@ def test_transit_glue_falls_back_to_default_on_no_glue_sentinel():
     b = _beat("b", p2.id, body="A second history beat.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o, a)),
-            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function", beats=(b,)),
+            POIBeats(
+                poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o, a)
+            ),
+            POIBeats(
+                poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function", beats=(b,)
+            ),
         )
     )
     client = MockGlueClient(responses={"GLUE_NAV": NO_GLUE_SENTINEL})
@@ -425,7 +461,9 @@ def test_closing_round_trip_single_stop_uses_circled_phrase():
     seq = BeatSequence(
         poi_beats=(
             POIBeats(
-                poi_id=poi.id, poi_name=poi.name, ordering_strategy="trigger_address",
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="trigger_address",
                 beats=(orient, body),
             ),
         )
@@ -441,9 +479,15 @@ def test_closing_oneway_no_thematic_summary():
     o = _beat("o", p1.id, body="Stand on the bridge.", nf="stop_orientation")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o,)),
-            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="sub_location",
-                     beats=(_beat("nd", p2.id, body="The cathedral, a Gothic masterpiece, rears up."),)),
+            POIBeats(
+                poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o,)
+            ),
+            POIBeats(
+                poi_id=p2.id,
+                poi_name=p2.name,
+                ordering_strategy="sub_location",
+                beats=(_beat("nd", p2.id, body="The cathedral, a Gothic masterpiece, rears up."),),
+            ),
         )
     )
     script = generate(seq, _route((p1, p2)), _input(round_trip=False), glue_client=MockGlueClient())
@@ -458,8 +502,13 @@ def test_closing_oneway_no_thematic_summary():
 
 def test_glue_label_set_matches_design_doc():
     expected = {
-        "GLUE_NAV", "GLUE_STAGING", "GLUE_PACING", "GLUE_CALLBACK",
-        "GLUE_CLOSING", "ARITH", "SYNTHESIZED_OPENER",
+        "GLUE_NAV",
+        "GLUE_STAGING",
+        "GLUE_PACING",
+        "GLUE_CALLBACK",
+        "GLUE_CLOSING",
+        "ARITH",
+        "SYNTHESIZED_OPENER",
     }
     assert set(GLUE_LABELS) == expected
 
@@ -470,8 +519,12 @@ def test_every_glue_sentence_has_whitelisted_source_id():
     body = _beat("b", poi.id, body="Henri IV built the square.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="trigger_address",
-                     beats=(orient, body)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="trigger_address",
+                beats=(orient, body),
+            ),
         )
     )
     script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
@@ -490,8 +543,12 @@ def test_haiku_invented_forbidden_phrase_is_replaced_with_default():
     b = _beat("b", p2.id, body="Another fact.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o, a)),
-            POIBeats(poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function", beats=(b,)),
+            POIBeats(
+                poi_id=p1.id, poi_name=p1.name, ordering_strategy="narrative_function", beats=(o, a)
+            ),
+            POIBeats(
+                poi_id=p2.id, poi_name=p2.name, ordering_strategy="narrative_function", beats=(b,)
+            ),
         )
     )
     client = MockGlueClient(responses={"GLUE_NAV": "Imagine the river. Picture this scene."})
@@ -512,8 +569,12 @@ def test_generation_is_deterministic_under_mock():
     body = _beat("b", poi.id, body="Henri IV built the square.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="trigger_address",
-                     beats=(orient, body)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="trigger_address",
+                beats=(orient, body),
+            ),
         )
     )
     a = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
@@ -534,8 +595,12 @@ def test_every_beat_sentence_carries_beat_id():
     body = _beat("b", poi.id, body="Henri IV built it. Crowds came.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="trigger_address",
-                     beats=(orient, body)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="trigger_address",
+                beats=(orient, body),
+            ),
         )
     )
     script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
@@ -551,13 +616,20 @@ def test_every_beat_sentence_carries_beat_id():
 
 def test_lens_coverage_counts_beats_per_lens():
     poi = _poi("p1", "Place des Vosges")
-    o = _beat("o", poi.id, body="Find a bench.", nf="stop_orientation",
-              lenses=("famous_residents",))
+    o = _beat(
+        "o", poi.id, body="Find a bench.", nf="stop_orientation", lenses=("famous_residents",)
+    )
     a = _beat("a", poi.id, body="A fact.", lenses=("famous_residents", "literary_heritage"))
     b = _beat("b", poi.id, body="Another fact.", lenses=("famous_residents",))
     seq = BeatSequence(
-        poi_beats=(POIBeats(poi_id=poi.id, poi_name=poi.name,
-                            ordering_strategy="trigger_address", beats=(o, a, b)),),
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="trigger_address",
+                beats=(o, a, b),
+            ),
+        ),
     )
     script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
     assert script.lens_coverage["famous_residents"] == 3
@@ -569,8 +641,11 @@ def test_selected_pois_carry_beat_ids_in_order():
     o = _beat("o", poi.id, body="x.", nf="stop_orientation")
     a = _beat("a", poi.id, body="y.")
     seq = BeatSequence(
-        poi_beats=(POIBeats(poi_id=poi.id, poi_name=poi.name,
-                            ordering_strategy="trigger_address", beats=(o, a)),),
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id, poi_name=poi.name, ordering_strategy="trigger_address", beats=(o, a)
+            ),
+        ),
     )
     script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
     assert script.selected_pois[0].beat_ids == ("o", "a")
@@ -617,13 +692,22 @@ def test_synthesized_opener_uses_physical_cues():
         "body",
         poi.id,
         cues=(
-            PhysicalCue(cue="the wrought-iron balconies", direction="up", feature_type="architectural_detail"),
+            PhysicalCue(
+                cue="the wrought-iron balconies",
+                direction="up",
+                feature_type="architectural_detail",
+            ),
         ),
         body="A square fact.",
     )
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=(body,),
+            ),
         )
     )
     script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
@@ -631,7 +715,8 @@ def test_synthesized_opener_uses_physical_cues():
     texts = [s.text for s in cold_open]
     # Area-anchored location line.
     assert any("Marais" in t for t in texts)
-    # Architectural-detail cue surfaces via "Notice X." (not "Look up at" — that's the view feature_type).
+    # Architectural-detail cue surfaces via "Notice X."
+    # (not "Look up at" - that's the view feature_type).
     assert any("the wrought-iron balconies" in t for t in texts)
 
 
@@ -645,7 +730,12 @@ def test_synthesized_opener_uses_pronunciation_when_present():
     )
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=(body,),
+            ),
         )
     )
     script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())
@@ -660,10 +750,20 @@ def test_synthesized_opener_falls_back_gracefully_with_no_cues():
     body = _beat_with_cues("body", poi.id, body="A fact.")
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=(body,),
+            ),
         )
     )
-    script = generate(seq, _route((poi,), duration_min=60), _input(round_trip=True, duration=60), glue_client=MockGlueClient())
+    script = generate(
+        seq,
+        _route((poi,), duration_min=60),
+        _input(round_trip=True, duration=60),
+        glue_client=MockGlueClient(),
+    )
     cold_open = [s for s in script.script if s.stop_idx == 0]
     texts = [s.text for s in cold_open]
     # Minimal but readable: pacing + location anchor + duration primer.
@@ -678,14 +778,17 @@ def test_synthesized_opener_view_cue_uses_look_up_verb():
     body = _beat_with_cues(
         "body",
         poi.id,
-        cues=(
-            PhysicalCue(cue="the gilded statue", direction="up", feature_type="view"),
-        ),
+        cues=(PhysicalCue(cue="the gilded statue", direction="up", feature_type="view"),),
         body="A fact.",
     )
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=poi.id, poi_name=poi.name, ordering_strategy="narrative_function", beats=(body,)),
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=(body,),
+            ),
         )
     )
     script = generate(seq, _route((poi,)), _input(round_trip=True), glue_client=MockGlueClient())

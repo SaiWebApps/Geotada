@@ -14,6 +14,7 @@ How it works:
 If you intentionally add a new lens, update definitions.py first — then this
 test will pass automatically.
 """
+
 from __future__ import annotations
 
 import ast
@@ -28,10 +29,9 @@ from src.schema.definitions import DAG_CHILD_LENSES, MVP_LENSES, TAGGABLE_LENSES
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SRC_ROOT = REPO_ROOT / "src"
 
-CANONICAL_SLUGS: set[str] = (
-    {lens["name"] for lens in MVP_LENSES}
-    | {child["name"] for child in DAG_CHILD_LENSES}
-)
+CANONICAL_SLUGS: set[str] = {lens["name"] for lens in MVP_LENSES} | {
+    child["name"] for child in DAG_CHILD_LENSES
+}
 
 # Keys whose values reference lens slugs. Add to this set if new patterns appear.
 LENS_KEYS = {"lens", "lens_name", "lens_names", "lenses", "lens_slug", "lens_slugs"}
@@ -66,7 +66,9 @@ def _collect_lens_strings(py_file: Path) -> list[tuple[int, str]]:
         def visit_Assign(self, node: ast.Assign) -> None:
             for tgt in node.targets:
                 if isinstance(tgt, ast.Name) and tgt.id.lower() in {
-                    "lens_names", "lens_slugs", "taggable_lenses"
+                    "lens_names",
+                    "lens_slugs",
+                    "taggable_lenses",
                 }:
                     self._extract(node.value)
             self.generic_visit(node)
@@ -112,9 +114,7 @@ def test_canonical_slug_count() -> None:
     """Sanity check: the canonical set has the expected size. If this number
     changes, definitions.py was modified — update this test deliberately."""
     assert len(MVP_LENSES) == 8, f"Expected 8 parent lenses, got {len(MVP_LENSES)}"
-    assert len(DAG_CHILD_LENSES) == 21, (
-        f"Expected 21 child lenses, got {len(DAG_CHILD_LENSES)}"
-    )
+    assert len(DAG_CHILD_LENSES) == 21, f"Expected 21 child lenses, got {len(DAG_CHILD_LENSES)}"
     assert len(CANONICAL_SLUGS) == 29, (
         f"Expected 29 unique canonical slugs, got {len(CANONICAL_SLUGS)}"
     )

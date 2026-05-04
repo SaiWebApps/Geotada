@@ -7,8 +7,8 @@ import os
 from pathlib import Path
 
 import requests
-from shapely.geometry import Point, Polygon, MultiPolygon
 from shapely import wkt
+from shapely.geometry import MultiPolygon, Point, Polygon
 
 BOUNDARY_CACHE_DIR = Path("data/paris/boundaries")
 
@@ -37,9 +37,10 @@ def fetch_osm_boundary(osm_relation_id: int) -> list[tuple[float, float]]:
             timeout=90,
         )
         if resp.status_code == 429 or resp.status_code == 504:
-            wait = 10 * (2 ** attempt)
+            wait = 10 * (2**attempt)
             print(f"  Overpass {resp.status_code}, retrying in {wait}s...")
             import time
+
             time.sleep(wait)
             continue
         resp.raise_for_status()
@@ -50,9 +51,7 @@ def fetch_osm_boundary(osm_relation_id: int) -> list[tuple[float, float]]:
 
     coords = _extract_outer_coords(data)
     if not coords:
-        raise ValueError(
-            f"No outer boundary found for OSM relation {osm_relation_id}"
-        )
+        raise ValueError(f"No outer boundary found for OSM relation {osm_relation_id}")
 
     # Cache the result
     BOUNDARY_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -167,16 +166,14 @@ def coords_to_wkt(coords: list[tuple[float, float]]) -> str:
     Ensures the polygon is closed (first vertex = last vertex).
     """
     if coords[0] != coords[-1]:
-        coords = coords + [coords[0]]
+        coords = [*coords, coords[0]]
 
     # WKT format: POLYGON((lng lat, lng lat, ...))
     pairs = [f"{lng} {lat}" for lat, lng in coords]
     return f"POLYGON(({', '.join(pairs)}))"
 
 
-def point_in_polygon(
-    lat: float, lng: float, wkt_str: str, buffer_deg: float = 0.0
-) -> bool:
+def point_in_polygon(lat: float, lng: float, wkt_str: str, buffer_deg: float = 0.0) -> bool:
     """Test if a point is inside a WKT polygon.
 
     Args:
@@ -192,9 +189,7 @@ def point_in_polygon(
     return poly.covers(point)
 
 
-def point_in_areas(
-    lat: float, lng: float, buffer_deg: float = 0.00075
-) -> list[dict]:
+def point_in_areas(lat: float, lng: float, buffer_deg: float = 0.00075) -> list[dict]:
     """Find all Areas containing a given point by querying Neo4j.
 
     Args:

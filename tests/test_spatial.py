@@ -6,10 +6,10 @@ import math
 
 from src.utils.spatial import coords_to_wkt, point_in_polygon, simplify_polygon
 
-
 # ---------------------------------------------------------------------------
 # coords_to_wkt
 # ---------------------------------------------------------------------------
+
 
 class TestCoordsToWkt:
     def test_format(self):
@@ -75,12 +75,12 @@ class TestPointInPolygon:
 # simplify_polygon
 # ---------------------------------------------------------------------------
 
+
 class TestSimplifyPolygon:
     def test_simplify_within_range(self):
         # Generate a 50-vertex circle
         coords = [
-            (math.cos(i * 2 * math.pi / 50), math.sin(i * 2 * math.pi / 50))
-            for i in range(50)
+            (math.cos(i * 2 * math.pi / 50), math.sin(i * 2 * math.pi / 50)) for i in range(50)
         ]
         coords.append(coords[0])  # close it
         result = simplify_polygon(coords, max_vertices=15)
@@ -96,8 +96,7 @@ class TestSimplifyPolygon:
 
     def test_result_is_closed(self):
         coords = [
-            (math.cos(i * 2 * math.pi / 30), math.sin(i * 2 * math.pi / 30))
-            for i in range(30)
+            (math.cos(i * 2 * math.pi / 30), math.sin(i * 2 * math.pi / 30)) for i in range(30)
         ]
         coords.append(coords[0])
         result = simplify_polygon(coords, max_vertices=10)

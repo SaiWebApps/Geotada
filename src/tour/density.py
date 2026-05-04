@@ -7,7 +7,7 @@ selection guards did not catch:
 
 1. Tours from sparse starting points produced <11% audio fill — a
    90-min "tour" that delivered 5 minutes of audio over 1.3km of
-   silence. The empirical walks ran 70–80% audio fill.
+   silence. The empirical walks ran 70-80% audio fill.
 2. Selection picked tier-3+ POIs with **zero active beats** as anchors
    (Petit Palais in Tour 4) because routing-aware scoring did not look
    at the beat count.
@@ -29,16 +29,12 @@ roster (303 POIs in Paris) — well under 50 ms.
 
 from __future__ import annotations
 
-import math
-from typing import Iterable
+from collections.abc import Iterable
 
-from .contract import BeatRef, POI, TourabilityAssessment, TourInput
+from .contract import POI, BeatRef, TourabilityAssessment, TourInput
 from .routing import (
     AUDIO_FRACTION,
     ERR_SHORT,
-    HAVERSINE_CORRECTION,
-    PACE_KMH,
-    WALK_FRACTION,
     envelope_radius_m,
     haversine_m,
 )
@@ -56,7 +52,7 @@ YELLOW_CLUSTER_COMPACTNESS_MAX: float = 0.7
 # Phase 6 calibration (2026-04-29): the canonical compactness check
 # (≤ 0.6 for GREEN) misfires for long one-way tours where rich anchor
 # candidates legitimately spread across the envelope. The empirical
-# Île de la Cité one-way 90min from Pont Neuf scores fill=3.95 (4×
+# Île de la Cité one-way 90min from Pont Neuf scores fill=3.95 (4x
 # target), anchors=28 (well above min), but compactness=0.74 because
 # the candidate pool genuinely spans the 1.1km traverse from end to
 # end. The literal formula classifies it RED, but the user-facing gate
@@ -84,11 +80,11 @@ WORDS_PER_SECOND: float = 2.5
 
 # YELLOW alternative-search bounds. When a round-trip falls YELLOW or
 # RED, we look for a denser one-way destination within the equivalent
-# one-way envelope (≈2× the round-trip envelope) to recommend.
+# one-way envelope (≈2x the round-trip envelope) to recommend.
 ALTERNATIVE_DURATION_BUCKETS: tuple[int, ...] = (60, 90, 120, 180)
 
 
-class TourabilityRefused(Exception):
+class TourabilityRefusedError(Exception):
     """Raised by selection when density.assess() returns RED.
 
     Carries the assessment so the harness can surface fill_ratio,
@@ -159,11 +155,9 @@ def assess(
         for p in reachable_pois
         if p.tier >= ANCHOR_CANDIDATE_TIER_MIN
         and (
-            len([
-                b
-                for b in beats_by_poi.get(p.id, ())
-                if (b.active_status or "active") == "active"
-            ])
+            len(
+                [b for b in beats_by_poi.get(p.id, ()) if (b.active_status or "active") == "active"]
+            )
             >= ANCHOR_CANDIDATE_BEAT_COUNT_MIN
         )
     ]
@@ -221,9 +215,9 @@ def assess(
 def _target_audio_seconds(duration_min: int) -> int:
     """The err-short audio target. Matches phase-5-quality-audit.md.
 
-    target_audio_s = duration_min × 0.83 × 0.6 × 60
+    target_audio_s = duration_min x 0.83 x 0.6 x 60
     """
-    return int(round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60))
+    return round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60)
 
 
 def _beat_spoken_seconds(beat: BeatRef) -> int:
@@ -231,7 +225,7 @@ def _beat_spoken_seconds(beat: BeatRef) -> int:
     if beat.est_spoken_seconds and beat.est_spoken_seconds > 0:
         return int(beat.est_spoken_seconds)
     if beat.word_count and beat.word_count > 0:
-        return int(round(beat.word_count / WORDS_PER_SECOND))
+        return round(beat.word_count / WORDS_PER_SECOND)
     return 0
 
 
@@ -248,9 +242,7 @@ def _compactness(anchors: list[POI], walk_radius_m: float) -> float:
     pair_count = 0
     for i in range(n):
         for j in range(i + 1, n):
-            total += haversine_m(
-                anchors[i].lat, anchors[i].lng, anchors[j].lat, anchors[j].lng
-            )
+            total += haversine_m(anchors[i].lat, anchors[i].lng, anchors[j].lat, anchors[j].lng)
             pair_count += 1
     if pair_count == 0:
         return 0.0
@@ -312,7 +304,7 @@ def _status(
 def _duration_where_fill_equals_one(audio_capacity_s: int) -> int:
     """Solve target_audio_s(d) = audio_capacity_s for d.
 
-    target_audio_s = d × 0.83 × 0.6 × 60 → d = capacity / (0.83 × 0.6 × 60).
+    target_audio_s = d x 0.83 x 0.6 x 60 → d = capacity / (0.83 x 0.6 x 60).
 
     Round down to nearest minute; floor at 1 to avoid degenerate 0s.
     """
@@ -354,7 +346,7 @@ def _suggest_one_way_destination(
         active = [b for b in beats if (b.active_status or "active") == "active"]
         if not active:
             continue
-        # Score = beat count × distance bonus (farther = more meaningful suggestion).
+        # Score = beat count x distance bonus (farther = more meaningful suggestion).
         score = float(len(active)) * (d / one_way_radius)
         if score > best_score:
             best_score = score
@@ -363,15 +355,15 @@ def _suggest_one_way_destination(
 
 
 __all__ = [
-    "TourabilityAssessment",
-    "TourabilityRefused",
-    "assess",
-    "GREEN_FILL_RATIO_MIN",
+    "ANCHOR_CANDIDATE_BEAT_COUNT_MIN",
+    "ANCHOR_CANDIDATE_TIER_MIN",
     "GREEN_ANCHOR_CANDIDATES_MIN",
     "GREEN_CLUSTER_COMPACTNESS_MAX",
-    "YELLOW_FILL_RATIO_MIN",
+    "GREEN_FILL_RATIO_MIN",
     "YELLOW_ANCHOR_CANDIDATES_MIN",
     "YELLOW_CLUSTER_COMPACTNESS_MAX",
-    "ANCHOR_CANDIDATE_TIER_MIN",
-    "ANCHOR_CANDIDATE_BEAT_COUNT_MIN",
+    "YELLOW_FILL_RATIO_MIN",
+    "TourabilityAssessment",
+    "TourabilityRefusedError",
+    "assess",
 ]

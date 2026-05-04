@@ -10,7 +10,6 @@ Covers:
 from __future__ import annotations
 
 import json
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -20,9 +19,11 @@ from scripts.migrate_beats_dedup_fields import (
     LEGACY_UNKNOWN,
     build_poi_chunk_index,
     derive_source_chunk_slug,
-    main as migrate_main,
     parse_legacy_beat_id,
     parse_unified_v1_book_slug,
+)
+from scripts.migrate_beats_dedup_fields import (
+    main as migrate_main,
 )
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -84,8 +85,7 @@ def test_parse_unified_v1_book_slug_falls_back():
     assert parse_unified_v1_book_slug("garbage", "paris", "lens", "topic") == LEGACY_UNKNOWN
     # missing topic suffix
     assert (
-        parse_unified_v1_book_slug("paris_x_lens_y_z", "paris", "lens", "WRONG")
-        == LEGACY_UNKNOWN
+        parse_unified_v1_book_slug("paris_x_lens_y_z", "paris", "lens", "WRONG") == LEGACY_UNKNOWN
     )
 
 
@@ -98,9 +98,7 @@ def test_parse_legacy_beat_id_happy():
 
 
 def test_parse_legacy_beat_id_unknown_book_falls_back():
-    book, topic = parse_legacy_beat_id(
-        "some_poi_lens_topic_unknown_book_slug", "lens"
-    )
+    book, topic = parse_legacy_beat_id("some_poi_lens_topic_unknown_book_slug", "lens")
     assert book == LEGACY_UNKNOWN
     assert topic == LEGACY_UNKNOWN
 

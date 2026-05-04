@@ -28,9 +28,8 @@ time. Validation guards against runtime invention only.
 from __future__ import annotations
 
 import re
-from typing import Iterable
 
-from .contract import BeatRef, BeatSequence, Script, Sentence, ValidationReport
+from .contract import BeatSequence, Script, Sentence, ValidationReport
 from .generation import FORBIDDEN_PHRASES, GLUE_LABELS
 
 # Capitalized tokens past the first word are candidate proper nouns.
@@ -43,13 +42,53 @@ _YEAR_RE = re.compile(r"\b1[0-9]{3}\b|\b20[0-2][0-9]\b")
 # proper nouns when they appear capitalized at the head of a sentence.
 _SENTENCE_HEAD_WORDS: frozenset[str] = frozenset(
     {
-        "the", "a", "an", "and", "but", "or", "so", "for", "yet",
-        "this", "that", "these", "those", "here", "there",
-        "you", "your", "we", "our", "i",
-        "walk", "stand", "step", "find", "look", "turn", "press",
-        "now", "next", "then", "settle", "take", "stop", "end", "cross", "exit",
-        "le", "la", "les", "un", "une", "des", "du", "de",
-        "you've", "we've", "let's",
+        "the",
+        "a",
+        "an",
+        "and",
+        "but",
+        "or",
+        "so",
+        "for",
+        "yet",
+        "this",
+        "that",
+        "these",
+        "those",
+        "here",
+        "there",
+        "you",
+        "your",
+        "we",
+        "our",
+        "i",
+        "walk",
+        "stand",
+        "step",
+        "find",
+        "look",
+        "turn",
+        "press",
+        "now",
+        "next",
+        "then",
+        "settle",
+        "take",
+        "stop",
+        "end",
+        "cross",
+        "exit",
+        "le",
+        "la",
+        "les",
+        "un",
+        "une",
+        "des",
+        "du",
+        "de",
+        "you've",
+        "we've",
+        "let's",
     }
 )
 

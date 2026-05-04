@@ -5,8 +5,6 @@ Phase 3.5 (2026-04-29) added B8-lite claim-dedup tests at the end.
 
 from __future__ import annotations
 
-import pytest
-
 from src.tour.beat_select import (
     B8_JACCARD_THRESHOLD,
     HOIST_PROXIMITY_M,
@@ -717,9 +715,7 @@ def test_area_level_orientation_hoist_picks_up_sibling_orientation():
         poi_id=start_poi.id,
         poi_name=start_poi.name,
         ordering_strategy="narrative_function",
-        beats=(
-            BeatRef(id="hds-est", poi_id=start_poi.id, narrative_function="establishing"),
-        ),
+        beats=(BeatRef(id="hds-est", poi_id=start_poi.id, narrative_function="establishing"),),
     )
     sibling_beats = POIBeats(
         poi_id=sibling_poi.id,
@@ -744,21 +740,43 @@ def test_area_level_orientation_hoist_picks_up_sibling_orientation():
 def test_area_level_orientation_returns_none_when_no_shared_area():
     """Sibling POI in a DIFFERENT Area → no hoist."""
     start_poi = POI(
-        id="hotel-de-sully", name="Hotel de Sully", tier=4, poi_role="stop",
-        lat=48.8538, lng=2.3651, areas=("Le Marais",),
+        id="hotel-de-sully",
+        name="Hotel de Sully",
+        tier=4,
+        poi_role="stop",
+        lat=48.8538,
+        lng=2.3651,
+        areas=("Le Marais",),
     )
     other_area_poi = POI(
-        id="pantheon", name="Pantheon", tier=5, poi_role="stop",
-        lat=48.8462, lng=2.3464, areas=("Latin Quarter",),
+        id="pantheon",
+        name="Pantheon",
+        tier=5,
+        poi_role="stop",
+        lat=48.8462,
+        lng=2.3464,
+        areas=("Latin Quarter",),
     )
     orient = BeatRef(
-        id="some-orient", poi_id=other_area_poi.id,
-        beat_type="stop_orientation", word_count=40,
+        id="some-orient",
+        poi_id=other_area_poi.id,
+        beat_type="stop_orientation",
+        word_count=40,
     )
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=start_poi.id, poi_name=start_poi.name, ordering_strategy="narrative_function", beats=(BeatRef(id="x", poi_id=start_poi.id),)),
-            POIBeats(poi_id=other_area_poi.id, poi_name=other_area_poi.name, ordering_strategy="narrative_function", beats=(orient,)),
+            POIBeats(
+                poi_id=start_poi.id,
+                poi_name=start_poi.name,
+                ordering_strategy="narrative_function",
+                beats=(BeatRef(id="x", poi_id=start_poi.id),),
+            ),
+            POIBeats(
+                poi_id=other_area_poi.id,
+                poi_name=other_area_poi.name,
+                ordering_strategy="narrative_function",
+                beats=(orient,),
+            ),
         )
     )
     route = _route_for([start_poi, other_area_poi])
@@ -767,12 +785,26 @@ def test_area_level_orientation_returns_none_when_no_shared_area():
 
 def test_area_level_orientation_returns_none_when_no_orientation_beat_exists():
     """Sibling shares Area but has no orientation beat → no hoist."""
-    start = POI(id="a", name="A", tier=4, poi_role="stop", lat=48.85, lng=2.36, areas=("Le Marais",))
-    sibling = POI(id="b", name="B", tier=4, poi_role="stop", lat=48.852, lng=2.366, areas=("Le Marais",))
+    start = POI(
+        id="a", name="A", tier=4, poi_role="stop", lat=48.85, lng=2.36, areas=("Le Marais",)
+    )
+    sibling = POI(
+        id="b", name="B", tier=4, poi_role="stop", lat=48.852, lng=2.366, areas=("Le Marais",)
+    )
     seq = BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=start.id, poi_name=start.name, ordering_strategy="narrative_function", beats=(BeatRef(id="x", poi_id=start.id),)),
-            POIBeats(poi_id=sibling.id, poi_name=sibling.name, ordering_strategy="narrative_function", beats=(BeatRef(id="y", poi_id=sibling.id, narrative_function="establishing"),)),
+            POIBeats(
+                poi_id=start.id,
+                poi_name=start.name,
+                ordering_strategy="narrative_function",
+                beats=(BeatRef(id="x", poi_id=start.id),),
+            ),
+            POIBeats(
+                poi_id=sibling.id,
+                poi_name=sibling.name,
+                ordering_strategy="narrative_function",
+                beats=(BeatRef(id="y", poi_id=sibling.id, narrative_function="establishing"),),
+            ),
         )
     )
     route = _route_for([start, sibling])
@@ -824,8 +856,15 @@ def test_phase7_closing_reorder_falls_back_to_longest_when_no_callback_or_climax
     """No callback, no climax → longest body wins. Avoids closing on factoids."""
     beats = (
         _beat("short", narrative_function="establishing", script_body="A."),
-        _beat("long", narrative_function="deepen",
-              script_body="A much longer wrap-up paragraph that gives the close some narrative weight " * 3),
+        _beat(
+            "long",
+            narrative_function="deepen",
+            script_body=(
+                "A much longer wrap-up paragraph that gives "
+                "the close some narrative weight "
+            )
+            * 3,
+        ),
         _beat("med", narrative_function="hook", script_body="A medium one."),
     )
     seq = _seq_with_final_beats(beats)
@@ -904,7 +943,7 @@ def test_orientation_beat_hoisted_to_head_under_sub_location_strategy():
     orient = BeatRef(
         id="orient",
         poi_id="poi",
-        sub_location=None,           # orientation beats lack sub_location
+        sub_location=None,  # orientation beats lack sub_location
         beat_type="stop_orientation",
         narrative_function="establishing",
         word_count=20,
@@ -928,10 +967,7 @@ def test_orientation_beat_hoisted_under_trigger_address_strategy():
         narrative_function="establishing",
         word_count=20,
     )
-    addrs = [
-        _beat(f"a{i}", trigger_address=f"no. {i} place des Vosges")
-        for i in range(1, 6)
-    ]
+    addrs = [_beat(f"a{i}", trigger_address=f"no. {i} place des Vosges") for i in range(1, 6)]
     plan = select_poi_beats(poi, [*addrs, orient])
     assert plan.beats[0].id == "orient"
     assert plan.ordering_strategy == "trigger_address"
@@ -976,12 +1012,24 @@ def _hoist_seq(
     if start_orient is not None:
         start_beats = (start_orient,)
     else:
-        start_beats = (BeatRef(id="start-est", poi_id=start_poi.id, narrative_function="establishing"),)
+        start_beats = (
+            BeatRef(id="start-est", poi_id=start_poi.id, narrative_function="establishing"),
+        )
     sibling_beats = (sibling_orient,)
     return BeatSequence(
         poi_beats=(
-            POIBeats(poi_id=start_poi.id, poi_name=start_poi.name, ordering_strategy="narrative_function", beats=start_beats),
-            POIBeats(poi_id=sibling_poi.id, poi_name=sibling_poi.name, ordering_strategy="narrative_function", beats=sibling_beats),
+            POIBeats(
+                poi_id=start_poi.id,
+                poi_name=start_poi.name,
+                ordering_strategy="narrative_function",
+                beats=start_beats,
+            ),
+            POIBeats(
+                poi_id=sibling_poi.id,
+                poi_name=sibling_poi.name,
+                ordering_strategy="narrative_function",
+                beats=sibling_beats,
+            ),
         )
     )
 
@@ -997,12 +1045,22 @@ def test_hoist_rejected_when_beat_describes_distant_features():
     let the cold-open fall through to SYNTHESIZED_OPENER.
     """
     hotel_de_sully = POI(
-        id="hotel-de-sully", name="Hotel de Sully", tier=4, poi_role="stop",
-        lat=48.85389, lng=2.36514, areas=("Le Marais",),
+        id="hotel-de-sully",
+        name="Hotel de Sully",
+        tier=4,
+        poi_role="stop",
+        lat=48.85389,
+        lng=2.36514,
+        areas=("Le Marais",),
     )
     pdv = POI(
-        id="place-des-vosges", name="Place des Vosges", tier=5, poi_role="stop",
-        lat=48.85553, lng=2.36560, areas=("Le Marais",),  # ~190m NE of Hotel de Sully
+        id="place-des-vosges",
+        name="Place des Vosges",
+        tier=5,
+        poi_role="stop",
+        lat=48.85553,
+        lng=2.36560,
+        areas=("Le Marais",),  # ~190m NE of Hotel de Sully
     )
     pdv_orient = BeatRef(
         id="ebeab682",
@@ -1013,7 +1071,11 @@ def test_hoist_rejected_when_beat_describes_distant_features():
         active_status="active",
         physical_cues=(
             PhysicalCue(cue="children's play area", direction="here", feature_type="view"),
-            PhysicalCue(cue="Café Ma Bourgogne at the northwest corner", direction="north", feature_type="adjacent_landmark"),
+            PhysicalCue(
+                cue="Café Ma Bourgogne at the northwest corner",
+                direction="north",
+                feature_type="adjacent_landmark",
+            ),
         ),
     )
     seq = _hoist_seq(hotel_de_sully, pdv, pdv_orient)
@@ -1023,10 +1085,24 @@ def test_hoist_rejected_when_beat_describes_distant_features():
 
 def test_hoist_accepted_when_beat_is_area_generic():
     """No physical_cues → beat is treated as Area-generic; hoist proceeds."""
-    start = POI(id="start", name="Start", tier=4, poi_role="stop",
-                lat=48.85389, lng=2.36514, areas=("Le Marais",))
-    sibling = POI(id="sib", name="Sibling", tier=5, poi_role="stop",
-                  lat=48.85553, lng=2.36560, areas=("Le Marais",))
+    start = POI(
+        id="start",
+        name="Start",
+        tier=4,
+        poi_role="stop",
+        lat=48.85389,
+        lng=2.36514,
+        areas=("Le Marais",),
+    )
+    sibling = POI(
+        id="sib",
+        name="Sibling",
+        tier=5,
+        poi_role="stop",
+        lat=48.85553,
+        lng=2.36560,
+        areas=("Le Marais",),
+    )
     orient = BeatRef(
         id="orient",
         poi_id=sibling.id,
@@ -1044,10 +1120,24 @@ def test_hoist_accepted_when_beat_is_area_generic():
 
 def test_hoist_accepted_when_beat_has_no_cues():
     """Empty physical_cues tuple is treated identically to no cues."""
-    start = POI(id="start", name="Start", tier=4, poi_role="stop",
-                lat=48.85389, lng=2.36514, areas=("Le Marais",))
-    sibling = POI(id="sib", name="Sibling", tier=5, poi_role="stop",
-                  lat=48.85553, lng=2.36560, areas=("Le Marais",))
+    start = POI(
+        id="start",
+        name="Start",
+        tier=4,
+        poi_role="stop",
+        lat=48.85389,
+        lng=2.36514,
+        areas=("Le Marais",),
+    )
+    sibling = POI(
+        id="sib",
+        name="Sibling",
+        tier=5,
+        poi_role="stop",
+        lat=48.85553,
+        lng=2.36560,
+        areas=("Le Marais",),
+    )
     orient = BeatRef(
         id="orient",
         poi_id=sibling.id,
@@ -1070,11 +1160,25 @@ def test_hoist_accepted_when_sibling_within_proximity():
     treated as part of the same physical place and the cues describe
     features the listener can actually see from the start.
     """
-    start = POI(id="start", name="Start", tier=4, poi_role="stop",
-                lat=48.85553, lng=2.36560, areas=("Le Marais",))
+    start = POI(
+        id="start",
+        name="Start",
+        tier=4,
+        poi_role="stop",
+        lat=48.85553,
+        lng=2.36560,
+        areas=("Le Marais",),
+    )
     # ~30m offset — well inside the proximity gate
-    sibling = POI(id="sib", name="Sibling", tier=5, poi_role="stop",
-                  lat=48.85580, lng=2.36560, areas=("Le Marais",))
+    sibling = POI(
+        id="sib",
+        name="Sibling",
+        tier=5,
+        poi_role="stop",
+        lat=48.85580,
+        lng=2.36560,
+        areas=("Le Marais",),
+    )
     orient = BeatRef(
         id="orient",
         poi_id=sibling.id,

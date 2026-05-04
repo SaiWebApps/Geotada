@@ -94,9 +94,7 @@ class OpenAITTSProvider:
 
         voice = voice_id or os.getenv("OPENAI_VOICE", self.DEFAULT_VOICE)
 
-        with httpx.Client(
-            transport=httpx.HTTPTransport(proxy=None), timeout=60.0
-        ) as client:
+        with httpx.Client(transport=httpx.HTTPTransport(proxy=None), timeout=60.0) as client:
             resp = client.post(
                 self.API_URL,
                 headers={"Authorization": f"Bearer {api_key}"},
@@ -142,9 +140,7 @@ class ElevenLabsTTSProvider:
 
         url = f"{self.API_BASE}/text-to-speech/{vid}"
 
-        with httpx.Client(
-            transport=httpx.HTTPTransport(proxy=None), timeout=60.0
-        ) as client:
+        with httpx.Client(transport=httpx.HTTPTransport(proxy=None), timeout=60.0) as client:
             resp = client.post(
                 url,
                 headers={

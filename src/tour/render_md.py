@@ -31,11 +31,12 @@ def render_markdown(
     assessment is passed, a warning banner is prepended at the top so
     the user sees the thin-tour caveat before the script.
     """
-    inp = script.inputs
     sub_lookup = _build_sub_lookup(beat_sequence)
 
     out: list[str] = []
-    out.append(_header(script, cost_usd, haiku_input_tokens, haiku_output_tokens, wall_clock_seconds))
+    out.append(
+        _header(script, cost_usd, haiku_input_tokens, haiku_output_tokens, wall_clock_seconds)
+    )
     if tourability is not None and tourability.status == "YELLOW":
         out.append("")
         out.append(_yellow_banner(tourability))
@@ -105,7 +106,8 @@ def _header(
     parts.append("")
     for i, poi in enumerate(script.selected_pois, 1):
         parts.append(
-            f"  {i}. {poi.name} — tier {poi.tier} · {len(poi.beat_ids)} beats · area={poi.area or '—'}"
+            f"  {i}. {poi.name} - tier {poi.tier} "
+            f"- {len(poi.beat_ids)} beats - area={poi.area or '-'}"
         )
     return "\n".join(parts)
 
@@ -128,7 +130,6 @@ def _render_stop_block(
     """
     out: list[str] = []
     current_sub: tuple[str | None, str | None] | None = None
-    pending_sub_header: str | None = None
 
     for sent in sentences:
         sub_key: tuple[str | None, str | None] = (None, None)
@@ -189,10 +190,10 @@ def _build_sub_lookup(
 
 def _yellow_banner(tourability) -> str:
     """Top-of-tour warning when density.assess returned YELLOW."""
-    fill_pct = int(round(tourability.fill_ratio * 100))
+    fill_pct = round(tourability.fill_ratio * 100)
     lines = [
         f"> **⚠ THIN TOUR (YELLOW) — {fill_pct}% audio fill.**",
-        "> This tour ran below the empirical 70–80% audio-fill bar; expect "
+        "> This tour ran below the empirical 70-80% audio-fill bar; expect "
         "long stretches of silence between stops.",
     ]
     if tourability.max_supportable_duration_min:
@@ -202,8 +203,7 @@ def _yellow_banner(tourability) -> str:
         )
     if tourability.round_trip and tourability.one_way_alternative_destination:
         lines.append(
-            f"> Or try a one-way ending at "
-            f"{tourability.one_way_alternative_destination!r}."
+            f"> Or try a one-way ending at {tourability.one_way_alternative_destination!r}."
         )
     return "\n".join(lines)
 
@@ -242,9 +242,7 @@ def _footer(
         lines.append("")
         lines.append("## Lens coverage")
         lines.append("")
-        for lens, count in sorted(
-            script.lens_coverage.items(), key=lambda kv: (-kv[1], kv[0])
-        ):
+        for lens, count in sorted(script.lens_coverage.items(), key=lambda kv: (-kv[1], kv[0])):
             lines.append(f"  - {lens}: {count}")
 
     return "\n".join(lines)

@@ -3,7 +3,7 @@
 Constants and pure functions used by selection.py:
 
 - haversine: great-circle distance in metres between (lat, lng) points.
-- pace_corrected_walk_seconds: applies the ×1.35 Paris haversine correction
+- pace_corrected_walk_seconds: applies the x1.35 Paris haversine correction
   on top of the 3 km/h walking pace.
 - envelope_radius_m: the radius around `start` reachable inside the
   err-short walk budget.
@@ -19,12 +19,13 @@ selection.py reads identical values.
 
 from __future__ import annotations
 
+import itertools
 import math
-from typing import Iterable
+from collections.abc import Iterable
 
 from .contract import POI, Route, TransitSegment
 
-# §3.2 / phase-1-design rule ledger 20–25.
+# §3.2 / phase-1-design rule ledger 20-25.
 PACE_KMH: float = 3.0
 HAVERSINE_CORRECTION: float = 1.35
 ERR_SHORT: float = 0.83
@@ -34,9 +35,9 @@ EARTH_RADIUS_M: float = 6_371_000.0
 
 # Per-tier dwell defaults (§3.2 + rule 22). Values in seconds.
 DWELL_SECONDS_BY_TIER: dict[int, int] = {
-    5: 5 * 60,  # 4–6 min anchor → midpoint
+    5: 5 * 60,  # 4-6 min anchor → midpoint
     4: 5 * 60,
-    3: 150,  # 2–3 min pause
+    3: 150,  # 2-3 min pause
     2: 60,  # walk-by gets a brief pause
     1: 0,  # pure walk-by
 }
@@ -56,21 +57,21 @@ def haversine_m(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
 def pace_corrected_walk_seconds(haversine_distance_m: float) -> int:
     """Walking time in seconds for a haversine straight-line distance.
 
-    Applies the ×1.35 correction so that a 1km haversine line takes
+    Applies the x1.35 correction so that a 1km haversine line takes
     1350m / (3000m/h) ≈ 27 minutes worth of walking.
     """
     if haversine_distance_m <= 0:
         return 0
     actual_distance_m = haversine_distance_m * HAVERSINE_CORRECTION
     speed_m_per_s = (PACE_KMH * 1000.0) / 3600.0
-    return int(round(actual_distance_m / speed_m_per_s))
+    return round(actual_distance_m / speed_m_per_s)
 
 
 def envelope_radius_m(duration_min: int, *, round_trip: bool) -> float:
     """Reachable straight-line radius from the origin under the err-short budget.
 
-    Derivation: walk_min = duration × 0.83 × 0.40. Effective straight-line
-    distance is walk_min × (3 km/h) ÷ 1.35. Halve for round trips.
+    Derivation: walk_min = duration x 0.83 x 0.40. Effective straight-line
+    distance is walk_min x (3 km/h) ÷ 1.35. Halve for round trips.
     """
     if duration_min <= 0:
         return 0.0
@@ -80,15 +81,15 @@ def envelope_radius_m(duration_min: int, *, round_trip: bool) -> float:
 
 
 def err_short_total_seconds(duration_min: int) -> int:
-    return int(round(duration_min * ERR_SHORT * 60))
+    return round(duration_min * ERR_SHORT * 60)
 
 
 def target_audio_seconds(duration_min: int) -> int:
-    return int(round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60))
+    return round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60)
 
 
 def walk_budget_seconds(duration_min: int) -> int:
-    return int(round(duration_min * ERR_SHORT * WALK_FRACTION * 60))
+    return round(duration_min * ERR_SHORT * WALK_FRACTION * 60)
 
 
 def compute_dwell_seconds(tier: int) -> int:
@@ -123,7 +124,7 @@ def insertion_cost_seconds(
     # but never after the closing-return-to-origin segment.
     insertable_positions = len(ordered) + 1
     for idx in range(insertable_positions):
-        new_coords = coords[: idx + 1] + [(candidate.lat, candidate.lng)] + coords[idx + 1 :]
+        new_coords = [*coords[:idx + 1], (candidate.lat, candidate.lng), *coords[idx + 1:]]
         extra = _path_walk_seconds(new_coords) - base_seconds
         if best_extra is None or extra < best_extra:
             best_extra = extra
@@ -134,7 +135,7 @@ def insertion_cost_seconds(
 
 def _path_walk_seconds(coords: list[tuple[float, float]]) -> int:
     total = 0
-    for (lat1, lng1), (lat2, lng2) in zip(coords, coords[1:]):
+    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
         total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
     return total
 
