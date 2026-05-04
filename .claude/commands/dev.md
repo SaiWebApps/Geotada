@@ -49,12 +49,16 @@ Before doing anything else, execute these reads and commands directly:
 5. Run `find src/ -type f -name "*.py" | head -40` and `find tests/ -type f -name "*.py" | head -40`. **If either returns zero results,** run `find . -path ./.venv -prune -o -type f -name "*.py" -print | head -60` to discover the actual structure. Do NOT proceed with empty file listings.
 6. Check infrastructure: `docker ps` to see if Neo4j is running.
 7. **Baseline test snapshot:** Run `uv run pytest tests/ -v --tb=line 2>&1 | tail -30` and record the pass/fail/skip counts and names of any failing tests.
+8. **Baseline lint snapshot:** Run `make lint 2>&1` and record the error count. **If lint shows ANY errors, fix them ALL before proceeding to Step 1.** This is the same gate as test failures. "Pre-existing" is not an exemption.
+9. **Read memory entries:** Check `~/.claude/projects/*/memory/MEMORY.md` for any prior-session context about this exact issue. If a previous session already investigated and left notes (e.g., "try flutter clean first"), follow those instructions BEFORE planning. Memory is prior work — ignoring it wastes the user's time re-discovering known answers.
 
 **HARD BLOCKER — FIX BEFORE PROCEEDING:**
 If the baseline shows ANY failures, errors, or skipped tests, you MUST fix them NOW — before Step 1. This is not context for later; this is a gate.
+If `make lint` shows ANY errors, you MUST fix them ALL NOW — before Step 1. "Pre-existing" is not an exemption. 0 errors or blocked.
 - **Failures/errors:** Diagnose and fix each one. Re-run until the suite is clean.
+- **Lint errors:** Fix every single one. Run `make lint` until it shows 0 errors. Do NOT proceed with dirty lint.
 - **Skipped tests:** Investigate WHY they're skipped. Fix the underlying condition so they run. If a skip requires something truly impossible (external paid API, hardware not available), flag it to the user as a BLOCKER and get explicit permission before proceeding.
-- **Do NOT proceed to Step 1 with a broken or partially-running test suite.** The baseline must be ALL PASS, ZERO SKIP, ZERO FAIL, ZERO ERROR.
+- **Do NOT proceed to Step 1 with a broken or partially-running test suite.** The baseline must be ALL PASS, ZERO SKIP, ZERO FAIL, ZERO ERROR. Lint must be ZERO ERRORS.
 - **Do NOT blame prior sessions.** If the tests are broken, they're broken on YOUR watch. Fix them.
 
 **Print ALL Step 0 output to the user** in a fenced block labeled `## RAW STEP 0 OUTPUT` before proceeding. This is the ground truth — if it's not visible to the user, it's not trustworthy.
@@ -802,3 +806,11 @@ bash ~/.claude/hooks/dev-state.sh status
 17. **Every interruption scars LEARNINGS.md.** If the user stops you, pushes back, corrects you, or the workflow terminates early, you MUST append a LEARNINGS.md entry BEFORE doing anything else. The entry must be brutally honest — quote the user's words, state what you did wrong, and write a mechanical rule to prevent recurrence. If you find yourself writing "The workflow was paused" instead of "I screwed up by...", rewrite it. Future sessions read LEARNINGS.md — vague entries are useless.
 
 18. **LEARNINGS postmortem is mandatory.** Step 5.5 runs after every QA pass. If any rework loops, baseline fixes, agent disagreements, or deviations occurred, they MUST become LEARNINGS entries. A clean workflow with zero rework is the only case where no entries are added. The final report includes the postmortem count.
+
+19. **Flutter asset changes require `make flutter-clean`.** If ANY file under `mobile/assets/` was added, modified, or converted, you MUST run `make flutter-clean` before `make flutter-test` or `make flutter-ios`. Flutter's incremental build does NOT reliably detect binary asset changes. A stale build cache will silently serve the old asset. This rule exists because Claude converted a JPEG from progressive to baseline, ran tests (which passed because test asset bundles rebuilt), but never cleaned the iOS build — the simulator showed the old broken image for 30 minutes.
+
+20. **Never run Flutter tests in background.** Flutter buffers stdout completely — `run_in_background` produces 0 bytes until the process finishes. This makes monitoring impossible. Always run `make flutter-test` in the foreground. The prevent-laziness hook enforces this mechanically.
+
+21. **Read prior-session memory BEFORE planning.** If a memory entry exists about the exact issue being fixed, follow its instructions FIRST. A previous session that investigated for 30 minutes and left "try X next" is prior work — ignoring it wastes the user's time re-discovering known answers. This rule exists because a memory entry said "try `make flutter-clean && make flutter-ios`" and Claude ignored it, instead spawning a Planner agent that theorized a wrong root cause.
+
+22. **UI/visual changes require simulator verification.** Tests passing does NOT mean the feature works visually. If the change affects what the user sees (images, layout, colors, navigation), `make flutter-ios` and a simulator screenshot are MANDATORY before declaring done. "Tests pass" is not evidence for visual correctness.

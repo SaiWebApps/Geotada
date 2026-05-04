@@ -1,4 +1,4 @@
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-test test-auth
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-test flutter-clean test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -43,22 +43,20 @@ format: ## Auto-format with ruff
 # TESTING
 # ──────────────────────────────────────────────────────────
 
-test: test-local test-cloud ## Run all Python tests (local + cloud)
+test: test-local test-cloud flutter-test ## Run ALL tests (Python local + cloud + Flutter) — THE bar before any commit
 
-test-all: test-local test-cloud flutter-test ## Run ALL tests including Flutter
-
-test-unit: ## Run unit tests only (no Neo4j needed)
-	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py -v
+test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT the bar
+	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_generation.py tests/test_trip_models.py -v
 
 test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@cp .env.test.example .env.test && echo "  → Testing against LOCAL Neo4j (test instance, port 7688)"
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	uv run pytest tests/ -v
+	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/ -v
 
 test-cloud: ## Run tests against Neo4j Aura (cloud) — excludes wipe-dependent integration tests
 	@cp .env.cloud .env.test && echo "  → Testing against CLOUD Neo4j (Aura)"
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	uv run pytest tests/ -v --ignore=tests/test_constraints.py --ignore=tests/test_seed.py --ignore=tests/test_traversals.py
+	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/ -v --ignore=tests/test_constraints.py --ignore=tests/test_seed.py --ignore=tests/test_traversals.py
 
 test-integration: ## Run integration tests (needs Neo4j)
 	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
@@ -120,7 +118,7 @@ dashboard: ## Start the web dashboard (port 8080)
 	uv run python -m src.server
 
 api: ## Start the FastAPI graph API (port 8000)
-	NO_PROXY=api.resend.com,resend.com no_proxy=api.resend.com,resend.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
+	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
 api-test: ## Start API against test database (port 8000)
 	set -a && . .env.test && set +a && uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
@@ -151,12 +149,16 @@ flutter-ios: db-up ## Run Flutter app on iOS Simulator (boots sim + starts API a
 	@open -a Simulator 2>/dev/null || true
 	@echo "  → Starting API server in background (port 8000)..."
 	@lsof -ti:8000 | xargs kill 2>/dev/null || true
-	@NO_PROXY=api.resend.com,resend.com no_proxy=api.resend.com,resend.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
+	@NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 &
 	@sleep 2
-	cd mobile && flutter run -d 46F0E608-943E-48F4-9EDB-8925855D0069
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter run -d 46F0E608-943E-48F4-9EDB-8925855D0069
+
+flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
+	cd mobile && flutter clean
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get
 
 flutter-test: ## Run Flutter tests (headless Chrome for Testing — avoids Brave singleton conflicts)
-	cd mobile && CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome
 
 test-auth: ## Run auth tests only (Python)
 	uv run pytest tests/test_auth_*.py -v
