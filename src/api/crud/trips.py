@@ -62,8 +62,13 @@ def find_matching_beats(
                poi.id AS poi_id,
                poi.name AS poi_name,
                l.name AS lens_name,
-               coalesce(l.display_name, l.name) AS lens_display,
+               coalesce(l.display_label, l.name) AS lens_display,
                coalesce(beat.duration_sec, 180) AS duration_sec,
+               coalesce(poi.typical_duration_min,
+                   CASE WHEN coalesce(poi.importance_tier, 3) >= 5 THEN 60
+                        WHEN coalesce(poi.importance_tier, 3) >= 4 THEN 45
+                        ELSE 30 END
+               ) AS typical_duration_min,
                coalesce(poi.importance_tier, 3) AS importance_tier,
                poi.location.latitude AS lat,
                poi.location.longitude AS lng
@@ -116,16 +121,15 @@ def apply_golden_ratio(
 
     selected = selected_anchors + selected_flavour
 
-    # Trim to duration budget if provided
+    # Trim to duration budget if provided (using POI visit duration, not beat audio length)
     if duration_min is not None:
         trimmed: list[dict[str, Any]] = []
-        total_sec = 0
-        budget_sec = duration_min * 60
+        total_min = 0
         for stop in selected:
-            stop_dur = stop.get("duration_sec", 180)
-            if total_sec + stop_dur <= budget_sec:
+            stop_dur = stop.get("typical_duration_min", 30)
+            if total_min + stop_dur <= duration_min:
                 trimmed.append(stop)
-                total_sec += stop_dur
+                total_min += stop_dur
             else:
                 break
         selected = trimmed
@@ -148,8 +152,7 @@ def compute_schedule(
 
     scheduled: list[dict[str, Any]] = []
     for idx, stop in enumerate(stops):
-        duration_sec = stop.get("duration_sec", 180)
-        duration_min = max(1, duration_sec // 60)
+        duration_min = stop.get("typical_duration_min", 30)
         time_str = f"{current_hour:02d}:{current_minute:02d}"
 
         scheduled.append(
@@ -168,7 +171,7 @@ def compute_schedule(
             }
         )
 
-        # Advance clock
+        # Advance clock by POI visit duration
         current_minute += duration_min
         current_hour += current_minute // 60
         current_minute = current_minute % 60
@@ -294,10 +297,12 @@ def list_trips_for_profile(
                    poi.location.longitude AS lng,
                    beat.id AS beat_id,
                    lens.name AS lens_name,
-                   coalesce(lens.display_name, lens.name) AS lens_display,
+                   coalesce(lens.display_label, lens.name) AS lens_display,
                    item.duration_min AS duration_min,
                    coalesce(poi.importance_tier, 3) AS importance_tier,
-                   item.start_time AS start_time
+                   CASE WHEN item.start_time IS NOT NULL
+                        THEN substring(toString(item.start_time), 0, 5)
+                        ELSE '09:00' END AS start_time
             ORDER BY item.sort_order
         """
         stop_records = session.run(stops_query, tid=trip["trip_id"])

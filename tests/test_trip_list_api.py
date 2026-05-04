@@ -41,9 +41,7 @@ def client(seeded_driver):
 def mom_profile_id(seeded_driver):
     """Get the profile ID for the 'Mom' profile from seed data."""
     with seeded_driver.session(database=get_database()) as s:
-        result = s.run(
-            "MATCH (p:Profile {display_name: 'Mom'}) RETURN p.id AS id"
-        ).single()
+        result = s.run("MATCH (p:Profile {display_name: 'Mom'}) RETURN p.id AS id").single()
         return result["id"]
 
 
