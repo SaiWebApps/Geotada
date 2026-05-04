@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/router.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/feedback_service.dart';
 import 'package:ondoway/services/lens_service.dart';
+import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/trip_service.dart';
+import 'package:ondoway/widgets/feedback_overlay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +16,8 @@ void main() async {
   final lensService = LensService();
   final profileService = ProfileService();
   final tripService = TripService();
+  final feedbackService = FeedbackService();
+  final locationService = LocationService();
 
   await authService.tryRestoreSession();
 
@@ -53,6 +58,8 @@ void main() async {
         ChangeNotifierProvider.value(value: lensService),
         ChangeNotifierProvider.value(value: profileService),
         ChangeNotifierProvider.value(value: tripService),
+        ChangeNotifierProvider.value(value: feedbackService),
+        ChangeNotifierProvider.value(value: locationService),
       ],
       child: OndowayApp(router: router),
     ),
@@ -82,6 +89,7 @@ class OndowayApp extends StatelessWidget {
       themeMode: _resolveThemeMode(profile.themePreference),
       routerConfig: router,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) => FeedbackOverlay(child: child!),
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:ondoway/main.dart';
 import 'package:ondoway/router.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/feedback_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'services/auth_service_test.dart';
@@ -18,6 +19,7 @@ void main() {
     );
     final profileService = ProfileService(httpClient: mockClient);
     final lensService = LensService(httpClient: mockClient);
+    final feedbackService = FeedbackService(httpClient: mockClient);
     final router = createRouter(authService, profileService, lensService);
 
     await tester.pumpWidget(
@@ -26,6 +28,7 @@ void main() {
           ChangeNotifierProvider<AuthService>.value(value: authService),
           ChangeNotifierProvider<LensService>.value(value: lensService),
           ChangeNotifierProvider<ProfileService>.value(value: profileService),
+          ChangeNotifierProvider<FeedbackService>.value(value: feedbackService),
         ],
         child: OndowayApp(router: router),
       ),
