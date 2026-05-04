@@ -11,11 +11,11 @@ from src.api.auth.tokens import TokenError
 
 def verify_google_id_token(token: str) -> dict:
     try:
-        idinfo = id_token.verify_oauth2_token(
-            token, google_requests.Request(), GOOGLE_CLIENT_ID
-        )
+        idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), GOOGLE_CLIENT_ID)
     except ValueError as exc:
         raise TokenError(f"Invalid Google ID token: {exc}") from exc
+    except Exception as exc:
+        raise TokenError(f"Google token verification failed: {exc}") from exc
 
     email = idinfo.get("email")
     if not email:

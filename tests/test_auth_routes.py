@@ -226,9 +226,7 @@ class TestRefreshEndpoint:
     def test_refresh_returns_new_access_token(self, client, clean_driver):
         _seed_user(clean_driver, "refresh-user", "refresh@ondoway.app")
         token = create_magic_token("refresh@ondoway.app")
-        verify_resp = client.post(
-            "/api/v1/auth/magic-link/verify", json={"token": token}
-        )
+        verify_resp = client.post("/api/v1/auth/magic-link/verify", json={"token": token})
         refresh_token = verify_resp.json()["refresh_token"]
 
         resp = client.post(

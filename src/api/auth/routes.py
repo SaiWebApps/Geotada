@@ -104,9 +104,7 @@ def refresh(
         ) from exc
 
     user_id = payload["sub"]
-    result = session.run(
-        "MATCH (u:User {id: $uid}) RETURN u.email AS email", uid=user_id
-    ).single()
+    result = session.run("MATCH (u:User {id: $uid}) RETURN u.email AS email", uid=user_id).single()
 
     if not result:
         raise HTTPException(

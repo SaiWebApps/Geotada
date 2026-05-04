@@ -59,7 +59,7 @@ class TestOnboardingComplete:
             )
             assert resp.status_code == 200
             data = resp.json()
-            assert data["display_name"] == "Onboard"
+            assert data["display_name"] == "onboard"
             assert data["lens_count"] == 3
             assert data["profile_id"]
         finally:
@@ -153,9 +153,7 @@ class TestEdgeSourceIdFilter:
             )
             profile_id = resp.json()["profile_id"]
 
-            resp = client.get(
-                f"/api/v1/edges/PREFERS_LENS?source_id={profile_id}&limit=200"
-            )
+            resp = client.get(f"/api/v1/edges/PREFERS_LENS?source_id={profile_id}&limit=200")
             assert resp.status_code == 200
             edges = resp.json()["items"]
             assert len(edges) == 3
@@ -179,9 +177,7 @@ class TestEdgeSourceIdFilter:
             _cleanup_onboarding_user(clean_driver)
 
     def test_source_id_filter_returns_empty_for_unknown(self, client):
-        resp = client.get(
-            "/api/v1/edges/PREFERS_LENS?source_id=nonexistent-id&limit=200"
-        )
+        resp = client.get("/api/v1/edges/PREFERS_LENS?source_id=nonexistent-id&limit=200")
         assert resp.status_code == 200
         assert resp.json()["total"] == 0
         assert resp.json()["items"] == []

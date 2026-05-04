@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 from contextlib import asynccontextmanager
-
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -12,8 +11,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from src.api.dependencies import close_driver, init_driver
 from src.api.auth.routes import router as auth_router
+from src.api.dependencies import close_driver, init_driver
 from src.api.routes import audio, edges, graph, nodes, schema, trips
 
 
@@ -48,6 +47,7 @@ def create_app() -> FastAPI:
     async def auth_redirect():
         if not _auth_html.is_file():
             from fastapi import HTTPException
+
             raise HTTPException(404, "auth redirect page not found")
         return FileResponse(str(_auth_html), media_type="text/html")
 
@@ -57,6 +57,7 @@ def create_app() -> FastAPI:
 
         if not APPLE_TEAM_ID:
             from fastapi import HTTPException
+
             raise HTTPException(500, "APPLE_TEAM_ID not configured")
 
         return JSONResponse(
