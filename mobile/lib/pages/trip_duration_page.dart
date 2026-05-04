@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/trip_service.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 
@@ -109,8 +110,23 @@ class _TripDurationPageState extends State<TripDurationPage> {
     double lng;
     final position = await locationService.getCurrentPosition();
     if (position != null) {
-      lat = position.latitude;
-      lng = position.longitude;
+      final coords = _cityCoordinates[widget.citySlug];
+      if (coords != null) {
+        final distanceM = Geolocator.distanceBetween(
+          position.latitude, position.longitude,
+          coords.lat, coords.lng,
+        );
+        if (distanceM <= 50000) {
+          lat = position.latitude;
+          lng = position.longitude;
+        } else {
+          lat = coords.lat;
+          lng = coords.lng;
+        }
+      } else {
+        lat = position.latitude;
+        lng = position.longitude;
+      }
     } else {
       final coords = _cityCoordinates[widget.citySlug];
       if (coords == null) {
