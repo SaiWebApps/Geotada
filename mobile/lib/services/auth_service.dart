@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthService extends ChangeNotifier {
   static const _apiBaseUrl = String.fromEnvironment(
@@ -114,6 +115,58 @@ class AuthService extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> loginWithApple() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final identityToken = credential.identityToken;
+      if (identityToken == null) {
+        throw AuthException('Failed to get Apple credentials');
+      }
+
+      await _postAppleToken(identityToken);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loginWithAppleWithToken(String identityToken) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      await _postAppleToken(identityToken);
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _postAppleToken(String identityToken) async {
+    final resp = await _httpClient.post(
+      Uri.parse('$_baseUrl/apple'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'identity_token': identityToken}),
+    );
+
+    if (resp.statusCode != 200) {
+      throw AuthException('Apple login failed: ${resp.body}');
+    }
+
+    final data = jsonDecode(resp.body) as Map<String, dynamic>;
+    await _storeTokens(data['access_token'], data['refresh_token']);
+    await _fetchMe();
   }
 
   Future<void> logout() async {

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -76,6 +77,26 @@ void main() {
 
       expect(find.text('Ondoway'), findsOneWidget);
       expect(find.text('Your city, your story'), findsOneWidget);
+    });
+
+    testWidgets('shows Apple Sign-In button on iOS', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+
+      await tester.pumpWidget(_wrapWithProviders(const LoginPage()));
+
+      expect(find.text('Sign in with Apple'), findsOneWidget);
+
+      debugDefaultTargetPlatformOverride = null;
+    });
+
+    testWidgets('hides Apple Sign-In button on Android', (tester) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.android;
+
+      await tester.pumpWidget(_wrapWithProviders(const LoginPage()));
+
+      expect(find.text('Sign in with Apple'), findsNothing);
+
+      debugDefaultTargetPlatformOverride = null;
     });
   });
 }

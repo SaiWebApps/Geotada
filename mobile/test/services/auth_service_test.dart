@@ -257,5 +257,40 @@ void main() {
 
       expect(authService.isAuthenticated, false);
     });
+
+    test('loginWithApple sends correct POST to /apple', () async {
+      mockClient = MockClient((request) async {
+        if (request.url.path.contains('/apple')) {
+          expect(request.method, 'POST');
+          final body = jsonDecode(request.body);
+          expect(body['identity_token'], 'apple-identity-token');
+          return http.Response(
+            jsonEncode({
+              'access_token': 'a-access',
+              'refresh_token': 'a-refresh',
+              'token_type': 'bearer',
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/me')) {
+          return http.Response(
+            jsonEncode({'id': 'a1', 'email': 'apple@icloud.com'}),
+            200,
+          );
+        }
+        return http.Response('', 404);
+      });
+
+      authService = AuthService(
+        storage: FakeSecureStorage(),
+        httpClient: mockClient,
+      );
+
+      await authService.loginWithAppleWithToken('apple-identity-token');
+
+      expect(authService.isAuthenticated, true);
+      expect(authService.userEmail, 'apple@icloud.com');
+    });
   });
 }
