@@ -409,7 +409,8 @@ void main() {
 
       // Tap the 'Light' segment
       await tester.tap(find.text('Light'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump();
 
       expect(capturedBody, isNotNull);
       expect(capturedBody, contains('theme_preference'));
