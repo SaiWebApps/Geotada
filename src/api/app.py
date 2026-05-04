@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 
 from src.api.auth.routes import router as auth_router
 from src.api.dependencies import close_driver, init_driver
-from src.api.routes import audio, edges, graph, nodes, schema, trips
+from src.api.routes import audio, edges, feedback, graph, nodes, schema, trips
 
 
 @asynccontextmanager
@@ -82,6 +82,7 @@ def create_app() -> FastAPI:
     app.include_router(schema.router, prefix="/api/v1")
     app.include_router(audio.router, prefix="/api/v1")
     app.include_router(trips.router, prefix="/api/v1")
+    app.include_router(feedback.router, prefix="/api/v1")
 
     # Serve the graph editor frontend
     editor_dir = os.path.join(
