@@ -1,4 +1,4 @@
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-test flutter-clean test-auth
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa flutter-test flutter-clean test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -46,7 +46,7 @@ format: ## Auto-format with ruff
 test: test-local test-cloud flutter-test ## Run ALL tests (Python local + cloud + Flutter) — THE bar before any commit
 
 test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT the bar
-	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_generation.py tests/test_trip_models.py -v
+	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_generation.py tests/test_trip_models.py tests/test_feedback.py -v
 
 test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@cp .env.test.example .env.test && echo "  → Testing against LOCAL Neo4j (test instance, port 7688)"
@@ -153,12 +153,15 @@ flutter-ios: db-up ## Run Flutter app on iOS Simulator (boots sim + starts API a
 	@sleep 2
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter run -d 46F0E608-943E-48F4-9EDB-8925855D0069
 
+flutter-ipa: ## Build IPA for TestFlight (points at production API)
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter build ipa --dart-define=API_BASE_URL=https://ondoway.com/api/v1
+
 flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 	cd mobile && flutter clean
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get
 
 flutter-test: ## Run Flutter tests (headless Chrome for Testing — avoids Brave singleton conflicts)
-	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome & PID=$$!; wait $$PID; EXIT=$$?; pkill -f "Google Chrome for Testing" 2>/dev/null || true; exit $$EXIT
 
 test-auth: ## Run auth tests only (Python)
 	uv run pytest tests/test_auth_*.py -v

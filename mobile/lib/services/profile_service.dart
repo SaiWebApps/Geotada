@@ -3,14 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileService extends ChangeNotifier {
-  static const _authBaseUrl = String.fromEnvironment(
-    'API_BASE_URL',
-    defaultValue: 'http://localhost:8000/api/v1/auth',
-  );
   static const _apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
     defaultValue: 'http://localhost:8000/api/v1',
   );
+  static const _authBaseUrl = '$_apiBaseUrl/auth';
 
   final http.Client _httpClient;
 
