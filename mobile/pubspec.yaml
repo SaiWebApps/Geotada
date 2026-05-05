@@ -19,6 +19,7 @@ dependencies:
   speech_to_text: ^7.0.0
   geolocator: ^13.0.2
   sign_in_with_apple: ^6.1.0
+  apple_maps_flutter: ^1.4.0
 
 dev_dependencies:
   flutter_test:

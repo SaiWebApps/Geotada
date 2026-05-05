@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:flutter/foundation.dart' show visibleForTesting, kIsWeb;
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/trip_service.dart';
@@ -7,6 +7,8 @@ import 'package:ondoway/services/auth_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/geocoding_service.dart';
+import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 
 class TripDurationPage extends StatefulWidget {
   final String citySlug;
@@ -36,6 +38,13 @@ class _TripDurationPageState extends State<TripDurationPage> {
   bool _isLoading = false;
   String? _error;
 
+  // Location state — resolved at init, consumed at generate time
+  double? _pinLat;
+  double? _pinLng;
+  String _locationSource = 'pending'; // 'gps', 'city_center', 'pending', 'manual'
+  bool _locationResolved = false;
+  final _searchController = TextEditingController();
+
   static const _cityCoordinates = {
     'paris': (lat: 48.8566, lng: 2.3522),
   };
@@ -48,6 +57,116 @@ class _TripDurationPageState extends State<TripDurationPage> {
     _startTime = widget.initialStartTime ?? const TimeOfDay(hour: 9, minute: 0);
     _endDate = DateTime(now.year, now.month, now.day + 1);
     _endTime = widget.initialEndTime ?? const TimeOfDay(hour: 18, minute: 0);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _resolveLocation());
+  }
+
+  Future<void> _resolveLocation() async {
+    final locationService = context.read<LocationService>();
+    final position = await locationService.getCurrentPosition();
+    if (!mounted) return;
+
+    if (position != null) {
+      final coords = _cityCoordinates[widget.citySlug];
+      if (coords != null) {
+        final distanceM = Geolocator.distanceBetween(
+          position.latitude, position.longitude,
+          coords.lat, coords.lng,
+        );
+        if (distanceM <= 50000) {
+          setState(() {
+            _pinLat = position.latitude;
+            _pinLng = position.longitude;
+            _locationSource = 'gps';
+            _locationResolved = true;
+          });
+        } else {
+          setState(() {
+            _pinLat = coords.lat;
+            _pinLng = coords.lng;
+            _locationSource = 'city_center';
+            _locationResolved = true;
+          });
+        }
+      } else {
+        setState(() {
+          _pinLat = position.latitude;
+          _pinLng = position.longitude;
+          _locationSource = 'gps';
+          _locationResolved = true;
+        });
+      }
+    } else {
+      final coords = _cityCoordinates[widget.citySlug];
+      if (coords == null) {
+        setState(() {
+          _error = 'City not supported';
+          _locationResolved = true;
+        });
+        return;
+      }
+      setState(() {
+        _pinLat = coords.lat;
+        _pinLng = coords.lng;
+        _locationSource = 'city_center';
+        _locationResolved = true;
+      });
+    }
+  }
+
+  void _onPinDragEnd(LatLng newPosition) {
+    setState(() {
+      _pinLat = newPosition.latitude;
+      _pinLng = newPosition.longitude;
+      _locationSource = 'manual';
+    });
+  }
+
+  void _onMapTap(LatLng position) {
+    setState(() {
+      _pinLat = position.latitude;
+      _pinLng = position.longitude;
+      _locationSource = 'manual';
+    });
+  }
+
+  static final _coordRegex = RegExp(
+    r'^(-?\d{1,3}(?:\.\d+)?)\s*[,\s]\s*(-?\d{1,3}(?:\.\d+)?)$',
+  );
+
+  void _onSearchSubmitted(String value) {
+    final match = _coordRegex.firstMatch(value.trim());
+    if (match != null) {
+      final lat = double.tryParse(match.group(1)!);
+      final lng = double.tryParse(match.group(2)!);
+      if (lat != null && lng != null && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+        setState(() {
+          _pinLat = lat;
+          _pinLng = lng;
+          _locationSource = 'manual';
+          _locationResolved = true;
+        });
+        return;
+      }
+    }
+    _geocodeQuery(value.trim());
+  }
+
+  Future<void> _geocodeQuery(String query) async {
+    if (query.isEmpty) return;
+    final result = await GeocodingService().search(query);
+    if (!mounted || result == null) return;
+    setState(() {
+      _pinLat = result.lat;
+      _pinLng = result.lng;
+      _locationSource = 'manual';
+      _locationResolved = true;
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   String get _cityDisplayName {
@@ -92,7 +211,6 @@ class _TripDurationPageState extends State<TripDurationPage> {
     final tripService = context.read<TripService>();
     final authService = context.read<AuthService>();
     final profileService = context.read<ProfileService>();
-    final locationService = context.read<LocationService>();
 
     final profileId = profileService.profileId;
     final token = authService.accessToken;
@@ -101,50 +219,21 @@ class _TripDurationPageState extends State<TripDurationPage> {
       return;
     }
 
+    if (_pinLat == null || _pinLng == null) {
+      setState(() => _error = 'Location not available');
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _error = null;
     });
 
-    double lat;
-    double lng;
-    final position = await locationService.getCurrentPosition();
-    if (position != null) {
-      final coords = _cityCoordinates[widget.citySlug];
-      if (coords != null) {
-        final distanceM = Geolocator.distanceBetween(
-          position.latitude, position.longitude,
-          coords.lat, coords.lng,
-        );
-        if (distanceM <= 50000) {
-          lat = position.latitude;
-          lng = position.longitude;
-        } else {
-          lat = coords.lat;
-          lng = coords.lng;
-        }
-      } else {
-        lat = position.latitude;
-        lng = position.longitude;
-      }
-    } else {
-      final coords = _cityCoordinates[widget.citySlug];
-      if (coords == null) {
-        setState(() {
-          _isLoading = false;
-          _error = 'City not supported';
-        });
-        return;
-      }
-      lat = coords.lat;
-      lng = coords.lng;
-    }
-
     try {
       final trip = await tripService.generateTrip(
         profileId: profileId,
-        centerLat: lat,
-        centerLng: lng,
+        centerLat: _pinLat!,
+        centerLng: _pinLng!,
         startDate: _formatDate(_startDate),
         endDate: _formatDate(_endDate),
         accessToken: token,
@@ -154,6 +243,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
       );
 
       if (mounted) {
+        setState(() => _isLoading = false);
         context.push('/trip/${trip.tripId}');
       }
     } on TripServiceException catch (e) {
@@ -220,6 +310,65 @@ class _TripDurationPageState extends State<TripDurationPage> {
                   style: tt.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
                 ),
 
+              const SizedBox(height: 24),
+
+              // Location search field
+              if (!kIsWeb)
+                TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search a place or paste coordinates',
+                    prefixIcon: const Icon(Icons.search, size: 20),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 12,
+                    ),
+                  ),
+                  onSubmitted: _onSearchSubmitted,
+                ),
+
+              // Map showing trip center location — tap to reposition pin
+              if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: SizedBox(
+                    height: 200,
+                    width: double.infinity,
+                    child: AppleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(_pinLat!, _pinLng!),
+                        zoom: 14,
+                      ),
+                      onTap: _onMapTap,
+                      annotations: {
+                        Annotation(
+                          annotationId: AnnotationId('trip_center'),
+                          position: LatLng(_pinLat!, _pinLng!),
+                          draggable: true,
+                          onDragEnd: _onPinDragEnd,
+                        ),
+                      },
+                    ),
+                  ),
+                )
+              else if (!_locationResolved && !kIsWeb)
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    height: 200,
+                    width: double.infinity,
+                    color: cs.surfaceContainerHighest,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: cs.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ),
+
               if (validation != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
@@ -244,7 +393,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
                 width: double.infinity,
                 height: 56,
                 child: FilledButton(
-                  onPressed: _isValid && !_isLoading ? _generateTrip : null,
+                  onPressed: _isValid && !_isLoading && _locationResolved ? _generateTrip : null,
                   child: _isLoading
                       ? SizedBox(
                           height: 24,
