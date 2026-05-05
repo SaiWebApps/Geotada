@@ -1,4 +1,6 @@
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean test-auth
+-include .env
+
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -38,6 +40,9 @@ lint: ## Run ruff linter
 format: ## Auto-format with ruff
 	uv run ruff format src/ tests/
 	uv run ruff check --fix src/ tests/
+
+flutter-analyze: ## Run Dart static analysis on Flutter code
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter analyze
 
 # ──────────────────────────────────────────────────────────
 # TESTING
@@ -159,39 +164,20 @@ flutter-device: ## Run Flutter app on physical iOS device (points at production 
 flutter-ipa: ## Build IPA for TestFlight (points at production API)
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev,cdn.cocoapods.org,cocoapods.org,cdn.jsdelivr.net,jsdelivr.net no_proxy=pub.dev,*.pub.dev,cdn.cocoapods.org,cocoapods.org,cdn.jsdelivr.net,jsdelivr.net flutter build ipa --dart-define=API_BASE_URL=https://ondoway.com/api/v1
 
-# Upload methods (set env vars for your preferred method):
-#   Option A — App-specific password:
-#     APPLE_ID=you@example.com  (your Apple ID email)
-#     Store password: xcrun altool --store-password-in-keychain-item AC_PASSWORD -u <APPLE_ID> -p <app-specific-password>
-#   Option B — App Store Connect API key:
-#     APP_STORE_API_KEY_ID=<your-key-id>
-#     APP_STORE_ISSUER_ID=<your-issuer-id>
-#     Place .p8 key file in ~/.private_keys/ or ~/.appstoreconnect/private_keys/
 testflight: flutter-ipa ## Bump build number, build IPA, and upload to TestFlight
+	@test -n "$(APP_STORE_API_KEY_ID)" || (echo "ERROR: APP_STORE_API_KEY_ID not set. Add it to .env" >&2; exit 1)
+	@test -n "$(APP_STORE_ISSUER_ID)" || (echo "ERROR: APP_STORE_ISSUER_ID not set. Add it to .env" >&2; exit 1)
 	@echo "==> Bumping build number..."
 	cd mobile/ios && agvtool next-version -all
 	@echo "==> Building IPA (via flutter-ipa dependency)... done."
 	@echo "==> Uploading to App Store Connect..."
-	@if [ -n "$(APP_STORE_API_KEY_ID)" ] && [ -n "$(APP_STORE_ISSUER_ID)" ]; then \
-		NO_PROXY=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
-		no_proxy=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
-		xcrun altool --upload-app \
-			--file mobile/build/ios/ipa/*.ipa \
-			--type ios \
-			--apiKey $(APP_STORE_API_KEY_ID) \
-			--apiIssuer $(APP_STORE_ISSUER_ID); \
-	elif [ -n "$(APPLE_ID)" ]; then \
-		NO_PROXY=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
-		no_proxy=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
-		xcrun altool --upload-app \
-			--file mobile/build/ios/ipa/*.ipa \
-			--type ios \
-			--username $(APPLE_ID) \
-			--password @keychain:AC_PASSWORD; \
-	else \
-		echo "ERROR: Set APPLE_ID (for app-specific password) or APP_STORE_API_KEY_ID + APP_STORE_ISSUER_ID (for API key)." >&2; \
-		exit 1; \
-	fi
+	NO_PROXY=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
+	no_proxy=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
+	xcrun altool --upload-app \
+		--file mobile/build/ios/ipa/*.ipa \
+		--type ios \
+		--apiKey $(APP_STORE_API_KEY_ID) \
+		--apiIssuer $(APP_STORE_ISSUER_ID)
 	@echo "==> Upload complete. Check TestFlight in App Store Connect (~15 min for processing)."
 
 flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
