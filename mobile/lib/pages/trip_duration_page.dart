@@ -44,6 +44,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
   String _locationSource = 'pending'; // 'gps', 'city_center', 'pending', 'manual'
   bool _locationResolved = false;
   final _searchController = TextEditingController();
+  AppleMapController? _mapController;
 
   static const _cityCoordinates = {
     'paris': (lat: 48.8566, lng: 2.3522),
@@ -113,20 +114,15 @@ class _TripDurationPageState extends State<TripDurationPage> {
     }
   }
 
-  void _onPinDragEnd(LatLng newPosition) {
-    setState(() {
-      _pinLat = newPosition.latitude;
-      _pinLng = newPosition.longitude;
-      _locationSource = 'manual';
-    });
-  }
-
   void _onMapTap(LatLng position) {
     setState(() {
       _pinLat = position.latitude;
       _pinLng = position.longitude;
       _locationSource = 'manual';
     });
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLng(position),
+    );
   }
 
   static final _coordRegex = RegExp(
@@ -331,6 +327,14 @@ class _TripDurationPageState extends State<TripDurationPage> {
 
               // Map showing trip center location — tap to reposition pin
               if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    'Tap the map to set your starting point',
+                    style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),
+                  ),
+                ),
+              if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: SizedBox(
@@ -341,13 +345,12 @@ class _TripDurationPageState extends State<TripDurationPage> {
                         target: LatLng(_pinLat!, _pinLng!),
                         zoom: 14,
                       ),
+                      onMapCreated: (controller) => _mapController = controller,
                       onTap: _onMapTap,
                       annotations: {
                         Annotation(
                           annotationId: AnnotationId('trip_center'),
                           position: LatLng(_pinLat!, _pinLng!),
-                          draggable: true,
-                          onDragEnd: _onPinDragEnd,
                         ),
                       },
                     ),
