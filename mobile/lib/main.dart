@@ -8,7 +8,6 @@ import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/trip_service.dart';
-import 'package:ondoway/widgets/feedback_overlay.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -89,7 +88,6 @@ class OndowayApp extends StatelessWidget {
       themeMode: _resolveThemeMode(profile.themePreference),
       routerConfig: router,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) => FeedbackOverlay(child: child!),
     );
   }
 

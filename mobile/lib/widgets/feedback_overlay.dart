@@ -44,19 +44,19 @@ class _FeedbackFab extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (sheetContext) => const _FeedbackSheet(),
+      builder: (sheetContext) => const FeedbackSheet(),
     );
   }
 }
 
-class _FeedbackSheet extends StatefulWidget {
-  const _FeedbackSheet();
+class FeedbackSheet extends StatefulWidget {
+  const FeedbackSheet({super.key});
 
   @override
-  State<_FeedbackSheet> createState() => _FeedbackSheetState();
+  State<FeedbackSheet> createState() => _FeedbackSheetState();
 }
 
-class _FeedbackSheetState extends State<_FeedbackSheet> {
+class _FeedbackSheetState extends State<FeedbackSheet> {
   final _controller = TextEditingController();
   final _speech = stt.SpeechToText();
   bool _isSubmitting = false;

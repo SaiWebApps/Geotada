@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/feedback_service.dart';
-import 'package:ondoway/widgets/feedback_overlay.dart';
+import 'package:ondoway/widgets/app_shell.dart';
 import 'package:provider/provider.dart';
 
 import '../services/auth_service_test.dart';
@@ -14,6 +14,7 @@ import '../services/auth_service_test.dart';
 Widget _wrap({
   FeedbackService? feedbackService,
   AuthService? authService,
+  int currentIndex = 0,
 }) {
   final defaultClient = MockClient((r) async => http.Response('', 200));
   return MultiProvider(
@@ -30,37 +31,53 @@ Widget _wrap({
       ),
     ],
     child: MaterialApp(
-      home: const FeedbackOverlay(
-        child: Scaffold(body: Text('App content')),
+      home: AppShell(
+        currentIndex: currentIndex,
+        onTabChanged: (_) {},
+        child: const Scaffold(body: Text('App content')),
       ),
     ),
   );
 }
 
 void main() {
-  group('FeedbackOverlay', () {
-    testWidgets('shows FAB on screen', (tester) async {
+  group('Feedback in NavigationBar', () {
+    testWidgets('feedback icon appears in NavigationBar', (tester) async {
       await tester.pumpWidget(_wrap());
-      expect(find.byIcon(Icons.feedback_outlined), findsOneWidget);
+      expect(find.byIcon(Icons.mic_outlined), findsOneWidget);
+      expect(find.text('Feedback'), findsOneWidget);
     });
 
-    testWidgets('app content renders behind FAB', (tester) async {
+    testWidgets('app content renders with NavigationBar', (tester) async {
       await tester.pumpWidget(_wrap());
       expect(find.text('App content'), findsOneWidget);
     });
 
-    testWidgets('tapping FAB opens bottom sheet', (tester) async {
+    testWidgets('tapping feedback icon opens bottom sheet', (tester) async {
       await tester.pumpWidget(_wrap());
-      await tester.tap(find.byIcon(Icons.feedback_outlined));
+      await tester.tap(find.text('Feedback'));
       await tester.pumpAndSettle();
 
       expect(find.text('Send Feedback'), findsOneWidget);
       expect(find.byType(TextField), findsOneWidget);
     });
 
+    testWidgets('selected tab does not change when feedback tapped',
+        (tester) async {
+      await tester.pumpWidget(_wrap(currentIndex: 0));
+      final navBar = tester.widget<NavigationBar>(find.byType(NavigationBar));
+      expect(navBar.selectedIndex, 0);
+
+      await tester.tap(find.text('Feedback'));
+      await tester.pumpAndSettle();
+
+      // The sheet opened but selectedIndex stays at 0
+      expect(find.text('Send Feedback'), findsOneWidget);
+    });
+
     testWidgets('submit button disabled when text empty', (tester) async {
       await tester.pumpWidget(_wrap());
-      await tester.tap(find.byIcon(Icons.feedback_outlined));
+      await tester.tap(find.text('Feedback'));
       await tester.pumpAndSettle();
 
       final button = tester.widget<FilledButton>(
@@ -71,7 +88,7 @@ void main() {
 
     testWidgets('submit button enabled after typing', (tester) async {
       await tester.pumpWidget(_wrap());
-      await tester.tap(find.byIcon(Icons.feedback_outlined));
+      await tester.tap(find.text('Feedback'));
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), 'The map is broken');
@@ -103,7 +120,7 @@ void main() {
       final feedbackService = FeedbackService(httpClient: mockClient);
 
       await tester.pumpWidget(_wrap(feedbackService: feedbackService));
-      await tester.tap(find.byIcon(Icons.feedback_outlined));
+      await tester.tap(find.text('Feedback'));
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextField), 'The map is broken');
