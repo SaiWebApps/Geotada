@@ -1,4 +1,4 @@
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa flutter-test flutter-clean test-auth
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -159,12 +159,60 @@ flutter-device: ## Run Flutter app on physical iOS device (points at production 
 flutter-ipa: ## Build IPA for TestFlight (points at production API)
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev,cdn.cocoapods.org,cocoapods.org,cdn.jsdelivr.net,jsdelivr.net no_proxy=pub.dev,*.pub.dev,cdn.cocoapods.org,cocoapods.org,cdn.jsdelivr.net,jsdelivr.net flutter build ipa --dart-define=API_BASE_URL=https://ondoway.com/api/v1
 
+# Upload methods (set env vars for your preferred method):
+#   Option A — App-specific password:
+#     APPLE_ID=you@example.com  (your Apple ID email)
+#     Store password: xcrun altool --store-password-in-keychain-item AC_PASSWORD -u <APPLE_ID> -p <app-specific-password>
+#   Option B — App Store Connect API key:
+#     APP_STORE_API_KEY_ID=<your-key-id>
+#     APP_STORE_ISSUER_ID=<your-issuer-id>
+#     Place .p8 key file in ~/.private_keys/ or ~/.appstoreconnect/private_keys/
+testflight: flutter-ipa ## Bump build number, build IPA, and upload to TestFlight
+	@echo "==> Bumping build number..."
+	cd mobile/ios && agvtool next-version -all
+	@echo "==> Building IPA (via flutter-ipa dependency)... done."
+	@echo "==> Uploading to App Store Connect..."
+	@if [ -n "$(APP_STORE_API_KEY_ID)" ] && [ -n "$(APP_STORE_ISSUER_ID)" ]; then \
+		NO_PROXY=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
+		no_proxy=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
+		xcrun altool --upload-app \
+			--file mobile/build/ios/ipa/*.ipa \
+			--type ios \
+			--apiKey $(APP_STORE_API_KEY_ID) \
+			--apiIssuer $(APP_STORE_ISSUER_ID); \
+	elif [ -n "$(APPLE_ID)" ]; then \
+		NO_PROXY=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
+		no_proxy=contentdelivery.itunes.apple.com,itunesconnect.apple.com \
+		xcrun altool --upload-app \
+			--file mobile/build/ios/ipa/*.ipa \
+			--type ios \
+			--username $(APPLE_ID) \
+			--password @keychain:AC_PASSWORD; \
+	else \
+		echo "ERROR: Set APPLE_ID (for app-specific password) or APP_STORE_API_KEY_ID + APP_STORE_ISSUER_ID (for API key)." >&2; \
+		exit 1; \
+	fi
+	@echo "==> Upload complete. Check TestFlight in App Store Connect (~15 min for processing)."
+
 flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 	cd mobile && flutter clean
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get
 
-flutter-test: ## Run Flutter tests (headless Chrome for Testing — avoids Brave singleton conflicts)
-	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" flutter test --platform chrome & PID=$$!; wait $$PID; EXIT=$$?; pkill -f "Google Chrome for Testing" 2>/dev/null || true; exit $$EXIT
+flutter-test: ## Run Flutter tests (headless Chrome for Testing — gtimeout kills Flutter SDK hang after completion)
+	@pkill -f "Google Chrome for Testing" 2>/dev/null || true
+	@rm -rf /tmp/flutter_tools.* 2>/dev/null || true
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
+	  CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" \
+	  gtimeout 30 flutter test --platform chrome 2>&1; EXIT=$$?; \
+	  pkill -f "Google Chrome for Testing" 2>/dev/null || true; \
+	  if [ $$EXIT -eq 124 ]; then echo "flutter test hung after completion (killed by timeout)"; exit 0; fi; \
+	  exit $$EXIT
+
+flutter-test-diag: ## Diagnostic: run flutter-test with timeout and process logging
+	@echo "==> PRE-TEST: Chrome/Dart processes"
+	@pgrep -lf "Chrome for Testing|dart|flutter" 2>/dev/null || echo "(none)"
+	@echo "==> Running flutter test with 120s timeout..."
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" timeout 120 flutter test --platform chrome 2>&1; EXIT=$$?; echo "==> flutter test exited with code $$EXIT"; echo "==> POST-TEST: Chrome/Dart processes"; pgrep -lf "Chrome for Testing|dart|flutter" 2>/dev/null || echo "(none)"; pkill -f "Google Chrome for Testing" 2>/dev/null || true; exit $$EXIT
 
 test-auth: ## Run auth tests only (Python)
 	uv run pytest tests/test_auth_*.py -v
