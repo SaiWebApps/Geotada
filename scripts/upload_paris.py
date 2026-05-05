@@ -41,29 +41,28 @@ def _load_json(path: Path) -> list[dict]:
 
 def _ensure_lenses(session, lens_slugs: set[str]) -> int:
     """Create any lens nodes that don't already exist. Returns count created."""
-    created = 0
-    for slug in sorted(lens_slugs):
-        display = slug.replace("_", " ").title()
-        result = session.run(
-            """
-            MERGE (l:Lens {name: $name})
-            ON CREATE SET
-                l.id = randomUUID(),
-                l.display_label = $display_label,
-                l.is_parent = false
-            RETURN l.id AS id
-            """,
-            name=slug,
-            display_label=display,
-        )
-        result.consume()
-        created += 1
-    return created
+    params = [
+        {"name": slug, "display_label": slug.replace("_", " ").title()}
+        for slug in sorted(lens_slugs)
+    ]
+    result = session.run(
+        """
+        UNWIND $lenses AS lens
+        MERGE (l:Lens {name: lens.name})
+        ON CREATE SET
+            l.id = randomUUID(),
+            l.display_label = lens.display_label,
+            l.is_parent = false
+        RETURN count(l) AS total
+        """,
+        lenses=params,
+    )
+    return result.single()["total"]
 
 
 def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
-    """Upload POI nodes with spatial points. Returns stats."""
-    created = 0
+    """Upload POI nodes with spatial points via batched UNWIND. Returns stats."""
+    params = []
     skipped = 0
     for poi in pois:
         lat = poi.get("latitude")
@@ -76,45 +75,49 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
         if isinstance(name_variations, str):
             name_variations = [name_variations]
 
-        session.run(
-            """
-            MERGE (p:POI {name: $name, city_name: $city_name})
-            ON CREATE SET p.id = randomUUID()
-            SET p.short_description   = $short_description,
-                p.location            = point({latitude: $lat, longitude: $lon, srid: 4326}),
-                p.importance_tier     = $importance_tier,
-                p.trigger_radius      = $trigger_radius,
-                p.kid_friendly        = $kid_friendly,
-                p.name_variations     = $name_variations
-            """,
-            name=poi["name"],
-            city_name="paris",
-            short_description=poi.get("short_description", ""),
-            lat=float(lat),
-            lon=float(lon),
-            importance_tier=poi.get("importance_tier", 1),
-            trigger_radius=poi.get("trigger_radius", 10),
-            kid_friendly=poi.get("kid_friendly", "yes"),
-            name_variations=name_variations,
-        )
-        created += 1
+        params.append({
+            "name": poi["name"],
+            "city_name": "paris",
+            "short_description": poi.get("short_description", ""),
+            "lat": float(lat),
+            "lon": float(lon),
+            "importance_tier": poi.get("importance_tier", 1),
+            "trigger_radius": poi.get("trigger_radius", 10),
+            "kid_friendly": poi.get("kid_friendly", "yes"),
+            "name_variations": name_variations,
+        })
+
+    result = session.run(
+        """
+        UNWIND $pois AS poi
+        MERGE (p:POI {name: poi.name, city_name: poi.city_name})
+        ON CREATE SET p.id = randomUUID()
+        SET p.short_description   = poi.short_description,
+            p.location            = point({latitude: poi.lat, longitude: poi.lon, srid: 4326}),
+            p.importance_tier     = poi.importance_tier,
+            p.trigger_radius      = poi.trigger_radius,
+            p.kid_friendly        = poi.kid_friendly,
+            p.name_variations     = poi.name_variations
+        RETURN count(p) AS total
+        """,
+        pois=params,
+    )
+    created = result.single()["total"]
     return {"created": created, "skipped": skipped}
 
 
 def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
-    """Upload NarrativeBeat nodes and link to POIs + Lenses. Returns stats."""
-    linked = 0
-    orphaned = 0
-    tagged = 0
+    """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND."""
+    params = []
+    pre_skipped = 0
 
     for beat in beats:
         poi_name = beat.get("poi_name", "")
-        lens = beat.get("lens", "")
         script_body = beat.get("script_body", "")
         beat_id = beat.get("beat_id", "")
 
         if not poi_name or not script_body:
-            orphaned += 1
+            pre_skipped += 1
             continue
 
         word_count = len(script_body.split())
@@ -125,48 +128,55 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
         if isinstance(beat.get("fact_check"), dict):
             fact_status = beat["fact_check"].get("status", "")
 
-        result = session.run(
-            """
-            MATCH (p:POI {name: $poi_name})
-            MERGE (b:NarrativeBeat {beat_id: $beat_id})
-            ON CREATE SET b.id = randomUUID()
-            SET b.script_body    = $script_body,
-                b.duration_sec   = $duration_sec,
-                b.kid_friendly   = $kid_friendly,
-                b.confidence     = $confidence,
-                b.fact_status    = $fact_status,
-                b.version        = 1,
-                b.active_status  = 'active',
-                b.audio_url      = ''
-            MERGE (p)-[:HAS_BEAT]->(b)
-            RETURN p.name AS poi
-            """,
-            poi_name=poi_name,
-            beat_id=beat_id,
-            script_body=script_body,
-            duration_sec=duration_sec,
-            kid_friendly=kid_friendly,
-            confidence=confidence,
-            fact_status=fact_status,
-        )
-        record = result.single()
-        if record:
-            linked += 1
-        else:
-            orphaned += 1
-            continue
+        params.append({
+            "poi_name": poi_name,
+            "beat_id": beat_id,
+            "script_body": script_body,
+            "duration_sec": duration_sec,
+            "kid_friendly": kid_friendly,
+            "confidence": confidence,
+            "fact_status": fact_status,
+            "lens": beat.get("lens", ""),
+        })
 
-        if lens:
-            session.run(
-                """
-                MATCH (b:NarrativeBeat {beat_id: $beat_id})
-                MATCH (l:Lens {name: $lens})
-                MERGE (b)-[:TAGGED_WITH]->(l)
-                """,
-                beat_id=beat_id,
-                lens=lens,
-            )
-            tagged += 1
+    result = session.run(
+        """
+        UNWIND $beats AS b
+        OPTIONAL MATCH (p:POI {name: b.poi_name})
+        WITH b, p WHERE p IS NOT NULL
+        MERGE (beat:NarrativeBeat {beat_id: b.beat_id})
+        ON CREATE SET beat.id = randomUUID()
+        SET beat.script_body    = b.script_body,
+            beat.duration_sec   = b.duration_sec,
+            beat.kid_friendly   = b.kid_friendly,
+            beat.confidence     = b.confidence,
+            beat.fact_status    = b.fact_status,
+            beat.version        = 1,
+            beat.active_status  = 'active',
+            beat.audio_url      = ''
+        MERGE (p)-[:HAS_BEAT]->(beat)
+        RETURN count(beat) AS linked
+        """,
+        beats=params,
+    )
+    linked = result.single()["linked"]
+    orphaned = len(params) - linked + pre_skipped
+
+    taggable = [b for b in params if b["lens"]]
+    if taggable:
+        tag_result = session.run(
+            """
+            UNWIND $beats AS b
+            MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
+            MATCH (l:Lens {name: b.lens})
+            MERGE (beat)-[:TAGGED_WITH]->(l)
+            RETURN count(*) AS tagged
+            """,
+            beats=taggable,
+        )
+        tagged = tag_result.single()["tagged"]
+    else:
+        tagged = 0
 
     return {"linked": linked, "orphaned": orphaned, "tagged": tagged}
 
