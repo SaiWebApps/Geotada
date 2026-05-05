@@ -37,7 +37,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>3</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Ondoway uses your location to trigger audio stories as you walk past points of interest.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
