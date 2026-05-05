@@ -40,13 +40,47 @@ class AuthService extends ChangeNotifier {
     _accessToken = token;
     try {
       await _fetchMe();
+    } on AuthException catch (e) {
+      if (e.statusCode == 401 || e.statusCode == 403) {
+        final refreshed = await _tryRefresh();
+        if (!refreshed) {
+          await _clearTokens();
+        }
+      }
     } catch (_) {
-      _accessToken = null;
-      _userId = null;
-      await _storage.delete(key: _accessTokenKey);
-      await _storage.delete(key: _refreshTokenKey);
+      // Network errors, timeouts: leave tokens intact so next launch can retry.
     }
     notifyListeners();
+  }
+
+  Future<bool> _tryRefresh() async {
+    final refreshToken = await _storage.read(key: _refreshTokenKey);
+    if (refreshToken == null) return false;
+
+    try {
+      final resp = await _httpClient.post(
+        Uri.parse('$_baseUrl/refresh'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'refresh_token': refreshToken}),
+      );
+
+      if (resp.statusCode != 200) return false;
+
+      final data = jsonDecode(resp.body) as Map<String, dynamic>;
+      await _storeTokens(data['access_token'], data['refresh_token']);
+      await _fetchMe();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  Future<void> _clearTokens() async {
+    _accessToken = null;
+    _userId = null;
+    _userEmail = null;
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
   }
 
   Future<void> requestMagicLink(String email) async {
@@ -170,11 +204,7 @@ class AuthService extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    _accessToken = null;
-    _userId = null;
-    _userEmail = null;
-    await _storage.delete(key: _accessTokenKey);
-    await _storage.delete(key: _refreshTokenKey);
+    await _clearTokens();
     notifyListeners();
   }
 
@@ -187,7 +217,8 @@ class AuthService extends ChangeNotifier {
     );
 
     if (resp.statusCode != 200) {
-      throw AuthException('Failed to fetch user: ${resp.body}');
+      throw AuthException('Failed to fetch user: ${resp.body}',
+          statusCode: resp.statusCode);
     }
 
     final data = jsonDecode(resp.body) as Map<String, dynamic>;
@@ -205,7 +236,8 @@ class AuthService extends ChangeNotifier {
 
 class AuthException implements Exception {
   final String message;
-  AuthException(this.message);
+  final int? statusCode;
+  AuthException(this.message, {this.statusCode});
 
   @override
   String toString() => message;

@@ -98,6 +98,20 @@ MockClient _onboardingClient() {
 
 void main() {
   group('ProfileService', () {
+    test('fetchProfile does not set isFirstTime on 401 (auth failure)', () async {
+      final service = ProfileService(
+        httpClient: MockClient((request) async {
+          return http.Response('{"detail":"Unauthorized"}', 401);
+        }),
+      );
+
+      await service.fetchProfile('user-1', 'bad-token');
+
+      // Should NOT mark as first-time or loaded — auth layer needs to handle this
+      expect(service.isLoaded, false);
+      expect(service.isFirstTime, true); // default, but isLoaded=false means router won't act on it
+    });
+
     test('detects first-time user (no profile)', () async {
       final service = ProfileService(httpClient: _firstTimeUserClient());
       await service.fetchProfile('user-1', 'token');

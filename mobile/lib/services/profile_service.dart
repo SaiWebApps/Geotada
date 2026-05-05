@@ -36,6 +36,12 @@ class ProfileService extends ChangeNotifier {
       headers: headers,
     );
 
+    if (profileResp.statusCode == 401 || profileResp.statusCode == 403) {
+      // Auth failed — don't treat as "new user", leave state unloaded so
+      // the auth layer can attempt refresh and retry.
+      return;
+    }
+
     if (profileResp.statusCode != 200) {
       _isFirstTime = true;
       _isLoaded = true;

@@ -258,6 +258,63 @@ void main() {
       expect(authService.isAuthenticated, false);
     });
 
+    test('tryRestoreSession refreshes expired token successfully', () async {
+      final storage = FakeSecureStorage();
+      await storage.write(key: 'access_token', value: 'expired-tok');
+      await storage.write(key: 'refresh_token', value: 'valid-refresh');
+
+      int meCallCount = 0;
+      mockClient = MockClient((request) async {
+        if (request.url.path.contains('/auth/refresh')) {
+          final body = jsonDecode(request.body);
+          expect(body['refresh_token'], 'valid-refresh');
+          return http.Response(
+            jsonEncode({
+              'access_token': 'new-access',
+              'refresh_token': 'valid-refresh',
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/me')) {
+          meCallCount++;
+          if (meCallCount == 1) {
+            return http.Response('{"detail":"Token expired"}', 401);
+          }
+          return http.Response(
+            jsonEncode({'id': 'u1', 'email': 'user@ondoway.app'}),
+            200,
+          );
+        }
+        return http.Response('', 404);
+      });
+
+      authService = AuthService(storage: storage, httpClient: mockClient);
+      await authService.tryRestoreSession();
+
+      expect(authService.isAuthenticated, true);
+      expect(authService.userEmail, 'user@ondoway.app');
+      expect(await storage.read(key: 'access_token'), 'new-access');
+    });
+
+    test('tryRestoreSession preserves tokens on network error', () async {
+      final storage = FakeSecureStorage();
+      await storage.write(key: 'access_token', value: 'valid-tok');
+      await storage.write(key: 'refresh_token', value: 'valid-refresh');
+
+      mockClient = MockClient((request) async {
+        throw http.ClientException('Network unreachable');
+      });
+
+      authService = AuthService(storage: storage, httpClient: mockClient);
+      await authService.tryRestoreSession();
+
+      // Tokens preserved, user stays authenticated for next attempt
+      expect(authService.isAuthenticated, true);
+      expect(await storage.read(key: 'access_token'), 'valid-tok');
+      expect(await storage.read(key: 'refresh_token'), 'valid-refresh');
+    });
+
     test('loginWithApple sends correct POST to /apple', () async {
       mockClient = MockClient((request) async {
         if (request.url.path.contains('/apple')) {
