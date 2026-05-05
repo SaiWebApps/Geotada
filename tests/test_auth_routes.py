@@ -359,3 +359,49 @@ class TestGoogleAuthEndpoint:
         )
         assert resp.status_code == 200
         assert resp.json()["email"] == "gme@gmail.com"
+
+
+@needs_neo4j
+class TestCrossProviderIdentity:
+    """User who signs in with Google OAuth and then magic link (same email)
+    must resolve to the same User node — not create a duplicate."""
+
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_google_then_magic_link_same_user(self, mock_verify, client, clean_driver):
+        email = "crosstest@gmail.com"
+
+        # Step 1: Sign in with Google
+        mock_verify.return_value = {"email": email, "sub": "g-cross-1", "name": "Cross"}
+        resp = client.post("/api/v1/auth/google", json={"id_token": "tok"})
+        assert resp.status_code == 200
+        google_user_id = verify_token(resp.json()["access_token"], "access")["sub"]
+
+        # Step 2: Sign in with magic link (same email)
+        magic_token = create_magic_token(email)
+        resp = client.post("/api/v1/auth/magic-link/verify", json={"token": magic_token})
+        assert resp.status_code == 200
+        magic_user_id = verify_token(resp.json()["access_token"], "access")["sub"]
+
+        # Same user, not a duplicate
+        assert google_user_id == magic_user_id
+        assert _count_users(clean_driver, email) == 1
+
+    @patch("src.api.auth.routes.verify_google_id_token")
+    def test_magic_link_then_google_same_user(self, mock_verify, client, clean_driver):
+        email = "crosstest2@gmail.com"
+
+        # Step 1: Sign in with magic link
+        magic_token = create_magic_token(email)
+        resp = client.post("/api/v1/auth/magic-link/verify", json={"token": magic_token})
+        assert resp.status_code == 200
+        magic_user_id = verify_token(resp.json()["access_token"], "access")["sub"]
+
+        # Step 2: Sign in with Google (same email)
+        mock_verify.return_value = {"email": email, "sub": "g-cross-2", "name": "Cross2"}
+        resp = client.post("/api/v1/auth/google", json={"id_token": "tok"})
+        assert resp.status_code == 200
+        google_user_id = verify_token(resp.json()["access_token"], "access")["sub"]
+
+        # Same user, not a duplicate
+        assert google_user_id == magic_user_id
+        assert _count_users(clean_driver, email) == 1
