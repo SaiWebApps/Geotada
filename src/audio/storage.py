@@ -1,8 +1,9 @@
 """Audio storage — upload generated audio and return accessible URLs.
 
-Two implementations:
+Three implementations:
 - LocalStorageProvider: saves to a local directory (development)
 - S3StorageProvider: uploads to AWS S3 (production, requires boto3)
+- R2StorageProvider: uploads to Cloudflare R2 (production, zero egress fees)
 
 Usage:
     storage = get_storage()
@@ -135,6 +136,63 @@ class S3StorageProvider:
             return False
 
 
+class R2StorageProvider:
+    """Upload audio to Cloudflare R2 (S3-compatible).
+
+    Returns public URLs for direct client streaming (zero egress fees).
+    Requires: R2_ENDPOINT_URL, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL.
+    """
+
+    def __init__(self) -> None:
+        self._endpoint_url = os.getenv("R2_ENDPOINT_URL")
+        self._bucket = os.getenv("R2_BUCKET", "ondoway-audio")
+        self._public_url = os.getenv("R2_PUBLIC_URL")
+        if not self._endpoint_url:
+            raise StorageError("R2_ENDPOINT_URL not set")
+        if not self._public_url:
+            raise StorageError("R2_PUBLIC_URL not set")
+        try:
+            import boto3
+
+            self._s3 = boto3.client(
+                "s3",
+                endpoint_url=self._endpoint_url,
+                aws_access_key_id=os.getenv("R2_ACCESS_KEY_ID"),
+                aws_secret_access_key=os.getenv("R2_SECRET_ACCESS_KEY"),
+            )
+        except ImportError as exc:
+            raise StorageError("boto3 not installed — run: pip install boto3") from exc
+
+    @property
+    def name(self) -> str:
+        return "r2"
+
+    def upload(self, data: bytes, key: str) -> str:
+        self._s3.put_object(
+            Bucket=self._bucket,
+            Key=key,
+            Body=data,
+            ContentType="audio/mpeg",
+        )
+        # Return public URL for direct client access (R2 has zero egress fees)
+        public_base = self._public_url.rstrip("/")
+        return f"{public_base}/{key}"
+
+    def exists(self, key: str) -> bool:
+        try:
+            self._s3.head_object(Bucket=self._bucket, Key=key)
+            return True
+        except Exception:
+            return False
+
+    def delete(self, key: str) -> bool:
+        try:
+            self._s3.delete_object(Bucket=self._bucket, Key=key)
+            return True
+        except Exception:
+            return False
+
+
 def get_storage(name: str | None = None) -> StorageProvider:
     """Return a storage provider by name.
 
@@ -143,6 +201,8 @@ def get_storage(name: str | None = None) -> StorageProvider:
     storage_name = name or os.getenv("AUDIO_STORAGE", "local")
     if storage_name == "s3":
         return S3StorageProvider()
+    if storage_name == "r2":
+        return R2StorageProvider()
     if storage_name == "local":
         return LocalStorageProvider()
-    raise ValueError(f"Unknown storage provider: '{storage_name}'. Available: local, s3")
+    raise ValueError(f"Unknown storage provider: '{storage_name}'. Available: local, s3, r2")

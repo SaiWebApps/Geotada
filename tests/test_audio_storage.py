@@ -2,10 +2,13 @@
 
 from __future__ import annotations
 
+from unittest.mock import MagicMock, patch
+
 import pytest
 
 from src.audio.storage import (
     LocalStorageProvider,
+    R2StorageProvider,
     StorageError,
     StorageProvider,
     get_storage,
@@ -71,3 +74,120 @@ class TestGetStorage:
     def test_unknown_raises(self):
         with pytest.raises(ValueError, match="Unknown storage provider"):
             get_storage("unknown")
+
+
+class TestR2Storage:
+    """Tests for R2StorageProvider (Cloudflare R2, S3-compatible)."""
+
+    def test_missing_endpoint_url_raises(self, monkeypatch):
+        monkeypatch.delenv("R2_ENDPOINT_URL", raising=False)
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        with pytest.raises(StorageError, match="R2_ENDPOINT_URL not set"):
+            R2StorageProvider()
+
+    def test_missing_public_url_raises(self, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.delenv("R2_PUBLIC_URL", raising=False)
+        with pytest.raises(StorageError, match="R2_PUBLIC_URL not set"):
+            R2StorageProvider()
+
+    @patch("boto3.client")
+    def test_upload_calls_put_object(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        monkeypatch.setenv("R2_BUCKET", "my-bucket")
+        mock_s3 = MagicMock()
+        mock_boto_client.return_value = mock_s3
+
+        provider = R2StorageProvider()
+        url = provider.upload(b"audio data", "paris/eiffel.mp3")
+
+        mock_s3.put_object.assert_called_once_with(
+            Bucket="my-bucket",
+            Key="paris/eiffel.mp3",
+            Body=b"audio data",
+            ContentType="audio/mpeg",
+        )
+        assert url == "https://audio.ondoway.com/paris/eiffel.mp3"
+
+    @patch("boto3.client")
+    def test_upload_returns_public_url(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com/")
+        monkeypatch.setenv("R2_BUCKET", "ondoway-audio")
+        mock_boto_client.return_value = MagicMock()
+
+        provider = R2StorageProvider()
+        url = provider.upload(b"data", "test.mp3")
+
+        # Trailing slash on public URL should be normalized
+        assert url == "https://audio.ondoway.com/test.mp3"
+
+    @patch("boto3.client")
+    def test_exists_calls_head_object(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        monkeypatch.setenv("R2_BUCKET", "my-bucket")
+        mock_s3 = MagicMock()
+        mock_boto_client.return_value = mock_s3
+
+        provider = R2StorageProvider()
+        result = provider.exists("test.mp3")
+
+        mock_s3.head_object.assert_called_once_with(Bucket="my-bucket", Key="test.mp3")
+        assert result is True
+
+    @patch("boto3.client")
+    def test_exists_returns_false_on_error(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        mock_s3 = MagicMock()
+        mock_s3.head_object.side_effect = Exception("Not found")
+        mock_boto_client.return_value = mock_s3
+
+        provider = R2StorageProvider()
+        assert provider.exists("missing.mp3") is False
+
+    @patch("boto3.client")
+    def test_delete_calls_delete_object(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        monkeypatch.setenv("R2_BUCKET", "my-bucket")
+        mock_s3 = MagicMock()
+        mock_boto_client.return_value = mock_s3
+
+        provider = R2StorageProvider()
+        result = provider.delete("test.mp3")
+
+        mock_s3.delete_object.assert_called_once_with(Bucket="my-bucket", Key="test.mp3")
+        assert result is True
+
+    @patch("boto3.client")
+    def test_delete_returns_false_on_error(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        mock_s3 = MagicMock()
+        mock_s3.delete_object.side_effect = Exception("Error")
+        mock_boto_client.return_value = mock_s3
+
+        provider = R2StorageProvider()
+        assert provider.delete("test.mp3") is False
+
+    @patch("boto3.client")
+    def test_implements_protocol(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        mock_boto_client.return_value = MagicMock()
+
+        provider = R2StorageProvider()
+        assert isinstance(provider, StorageProvider)
+
+    @patch("boto3.client")
+    def test_get_storage_r2(self, mock_boto_client, monkeypatch):
+        monkeypatch.setenv("R2_ENDPOINT_URL", "https://abc123.r2.cloudflarestorage.com")
+        monkeypatch.setenv("R2_PUBLIC_URL", "https://audio.ondoway.com")
+        mock_boto_client.return_value = MagicMock()
+
+        s = get_storage("r2")
+        assert s.name == "r2"
+        assert isinstance(s, R2StorageProvider)
