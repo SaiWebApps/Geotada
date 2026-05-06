@@ -71,7 +71,10 @@ def find_matching_beats(
                ) AS typical_duration_min,
                coalesce(poi.importance_tier, 3) AS importance_tier,
                poi.location.latitude AS lat,
-               poi.location.longitude AS lng
+               poi.location.longitude AS lng,
+               beat.script_body AS script_body,
+               beat.audio_url AS audio_url,
+               beat.duration_sec AS audio_duration_sec
     """
     result = session.run(query, profile_id=profile_id, poi_ids=poi_ids)
     return [dict(record) for record in result]
@@ -168,6 +171,9 @@ def compute_schedule(
                 "duration_min": duration_min,
                 "importance_tier": stop["importance_tier"],
                 "start_time": time_str,
+                "script_body": stop.get("script_body"),
+                "audio_url": stop.get("audio_url"),
+                "audio_duration_sec": stop.get("audio_duration_sec"),
             }
         )
 
@@ -302,7 +308,10 @@ def list_trips_for_profile(
                    coalesce(poi.importance_tier, 3) AS importance_tier,
                    CASE WHEN item.start_time IS NOT NULL
                         THEN substring(toString(item.start_time), 0, 5)
-                        ELSE '09:00' END AS start_time
+                        ELSE '09:00' END AS start_time,
+                   beat.script_body AS script_body,
+                   beat.audio_url AS audio_url,
+                   beat.duration_sec AS audio_duration_sec
             ORDER BY item.sort_order
         """
         stop_records = session.run(stops_query, tid=trip["trip_id"])

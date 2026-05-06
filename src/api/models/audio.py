@@ -133,3 +133,23 @@ class BatchGenerateResponse(BaseModel):
     total_bytes: int = Field(0, description="Total bytes of audio generated")
     elapsed_sec: float = Field(0.0, description="Wall clock time in seconds")
     results: list[BatchResultItem]
+
+
+class TripAudioResultItem(BaseModel):
+    """Result for one beat in a trip audio generation."""
+
+    beat_id: str
+    status: str = Field(description="generated | skipped | failed")
+    audio_url: str | None = None
+    reason: str | None = None
+    error: str | None = None
+
+
+class TripAudioGenerateResponse(BaseModel):
+    """Results of generating audio for all beats in a trip."""
+
+    trip_id: str
+    generated: int
+    skipped: int
+    failed: int
+    results: list[TripAudioResultItem]

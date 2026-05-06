@@ -52,6 +52,9 @@ class GeneratedStop(BaseModel):
     duration_min: int
     importance_tier: int
     start_time: str
+    script_body: str | None = None
+    audio_url: str | None = None
+    audio_duration_sec: float | None = None
 
 
 class TripGenerateResponse(BaseModel):

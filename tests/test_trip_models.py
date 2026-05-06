@@ -154,6 +154,55 @@ class TestGeneratedStop:
         assert stop.duration_min == 5
         assert stop.importance_tier == 5
         assert stop.start_time == "09:00"
+        # New optional fields default to None
+        assert stop.script_body is None
+        assert stop.audio_url is None
+        assert stop.audio_duration_sec is None
+
+    def test_generated_stop_with_audio_fields(self):
+        """T1: GeneratedStop accepts optional script_body, audio_url, audio_duration_sec."""
+        stop = GeneratedStop(
+            sort_order=2,
+            poi_id="poi-def",
+            poi_name="Notre-Dame",
+            lat=48.853,
+            lng=2.349,
+            beat_id="beat-456",
+            lens_name="architecture",
+            lens_display="Architecture",
+            duration_min=10,
+            importance_tier=5,
+            start_time="10:30",
+            script_body="The flying buttresses of Notre-Dame...",
+            audio_url="https://cdn.ondoway.com/beats/notre_dame/beat-456.mp3",
+            audio_duration_sec=185.5,
+        )
+        assert stop.script_body == "The flying buttresses of Notre-Dame..."
+        assert stop.audio_url == "https://cdn.ondoway.com/beats/notre_dame/beat-456.mp3"
+        assert stop.audio_duration_sec == 185.5
+
+    def test_generated_stop_serializes_null_audio_fields(self):
+        """T1: JSON serialization includes null audio fields when not provided."""
+        stop = GeneratedStop(
+            sort_order=1,
+            poi_id="poi-1",
+            poi_name="Test",
+            lat=48.0,
+            lng=2.0,
+            beat_id="b-1",
+            lens_name="history",
+            lens_display="History",
+            duration_min=5,
+            importance_tier=3,
+            start_time="09:00",
+        )
+        data = stop.model_dump()
+        assert "script_body" in data
+        assert "audio_url" in data
+        assert "audio_duration_sec" in data
+        assert data["script_body"] is None
+        assert data["audio_url"] is None
+        assert data["audio_duration_sec"] is None
 
 
 class TestTripGenerateResponse:

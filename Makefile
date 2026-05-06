@@ -74,11 +74,15 @@ test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
 # ──────────────────────────────────────────────────────────
 
 db-up: ## Start dev Neo4j in Docker (production data)
-	docker compose up -d neo4j
-	@echo "Waiting for Neo4j to be healthy..."
-	@docker compose exec neo4j bash -c 'until cypher-shell -u neo4j -p ondoway_dev_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
-	@echo "✓ Neo4j is ready at bolt://localhost:7687"
-	@echo "  Browser: http://localhost:7474"
+	@if docker ps --format '{{.Names}}' | grep -q '^ondoway-neo4j$$'; then \
+		echo "✓ Neo4j already running at bolt://localhost:7687"; \
+	else \
+		docker compose up -d neo4j; \
+		echo "Waiting for Neo4j to be healthy..."; \
+		docker compose exec neo4j bash -c 'until cypher-shell -u neo4j -p ondoway_dev_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null; \
+		echo "✓ Neo4j is ready at bolt://localhost:7687"; \
+		echo "  Browser: http://localhost:7474"; \
+	fi
 
 db-down: ## Stop dev Neo4j (data preserved)
 	docker compose stop neo4j
@@ -91,11 +95,15 @@ db-reset: ## Stop dev Neo4j and wipe all data (DESTRUCTIVE)
 	@echo "✓ Dev Neo4j stopped and data wiped."
 
 db-test-up: ## Start test Neo4j in Docker (disposable data)
-	docker compose up -d neo4j-test
-	@echo "Waiting for test Neo4j to be healthy..."
-	@docker compose exec neo4j-test bash -c 'until cypher-shell -u neo4j -p ondoway_test_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null
-	@echo "✓ Test Neo4j is ready at bolt://localhost:7688"
-	@echo "  Browser: http://localhost:7475"
+	@if docker ps --format '{{.Names}}' | grep -q '^ondoway-neo4j-test$$'; then \
+		echo "✓ Test Neo4j already running at bolt://localhost:7688"; \
+	else \
+		docker compose up -d neo4j-test; \
+		echo "Waiting for test Neo4j to be healthy..."; \
+		docker compose exec neo4j-test bash -c 'until cypher-shell -u neo4j -p ondoway_test_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null; \
+		echo "✓ Test Neo4j is ready at bolt://localhost:7688"; \
+		echo "  Browser: http://localhost:7475"; \
+	fi
 
 db-test-down: ## Stop test Neo4j (data preserved)
 	docker compose stop neo4j-test

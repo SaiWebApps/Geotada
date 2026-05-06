@@ -199,3 +199,44 @@ class TestComputeSchedule:
 
         total = sum(s["duration_min"] for s in result)
         assert total == 225  # 3h 45m — realistic half-day
+
+    def test_schedule_passes_through_audio_fields(self):
+        """Audio fields (script_body, audio_url, audio_duration_sec) are forwarded."""
+        stop = {
+            "poi_id": "p1",
+            "poi_name": "Test POI",
+            "beat_id": "b1",
+            "lens_name": "history",
+            "lens_display": "History",
+            "duration_sec": 180,
+            "typical_duration_min": 30,
+            "importance_tier": 3,
+            "lat": 48.85,
+            "lng": 2.34,
+            "script_body": "A fascinating story about this place...",
+            "audio_url": "https://cdn.example.com/beats/b1.mp3",
+            "audio_duration_sec": 142.5,
+        }
+        result = compute_schedule([stop], start_time="09:00")
+        assert result[0]["script_body"] == "A fascinating story about this place..."
+        assert result[0]["audio_url"] == "https://cdn.example.com/beats/b1.mp3"
+        assert result[0]["audio_duration_sec"] == 142.5
+
+    def test_schedule_audio_fields_default_to_none(self):
+        """When audio fields are absent from input, they default to None."""
+        stop = {
+            "poi_id": "p1",
+            "poi_name": "Test POI",
+            "beat_id": "b1",
+            "lens_name": "history",
+            "lens_display": "History",
+            "duration_sec": 180,
+            "typical_duration_min": 30,
+            "importance_tier": 3,
+            "lat": 48.85,
+            "lng": 2.34,
+        }
+        result = compute_schedule([stop], start_time="09:00")
+        assert result[0]["script_body"] is None
+        assert result[0]["audio_url"] is None
+        assert result[0]["audio_duration_sec"] is None

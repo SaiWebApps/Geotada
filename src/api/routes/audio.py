@@ -28,6 +28,8 @@ from src.api.models.audio import (
     GenerateResponse,
     ProviderInfo,
     ProviderListResponse,
+    TripAudioGenerateResponse,
+    TripAudioResultItem,
 )
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
@@ -357,4 +359,90 @@ def generate_audio_batch(
         total_bytes=summary.total_bytes,
         elapsed_sec=summary.elapsed_sec,
         results=items,
+    )
+
+
+@router.post("/audio/generate-trip/{trip_id}", response_model=TripAudioGenerateResponse)
+def generate_audio_for_trip(
+    trip_id: str,
+    body: GenerateRequest | None = None,
+    session: Session = Depends(get_session),
+):
+    """Generate audio for all beats in a trip that don't have audio yet.
+
+    Finds beats linked to the trip via HAS_STOP -> ItineraryItem -> PLAYS_BEAT,
+    filters to those without audio, and runs TTS generation for each.
+    """
+    # Verify trip exists
+    trip_check = session.run(
+        "MATCH (t:Trip {id: $tid}) RETURN t.id AS id",
+        tid=trip_id,
+    ).single()
+    if trip_check is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+
+    # Find beats without audio
+    query = """
+        MATCH (t:Trip {id: $trip_id})-[:HAS_STOP]->(item:ItineraryItem)
+        MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)
+        WHERE beat.audio_url IS NULL OR beat.audio_url = ''
+        RETURN beat.id AS beat_id, beat.script_body AS script_body
+    """
+    records = session.run(query, trip_id=trip_id)
+    beats_to_generate = [dict(r) for r in records]
+
+    if not beats_to_generate:
+        return TripAudioGenerateResponse(
+            trip_id=trip_id,
+            generated=0,
+            skipped=0,
+            failed=0,
+            results=[],
+        )
+
+    provider_name = body.provider if body else None
+    voice_id = body.voice_id if body else None
+    force = body.force if body else False
+
+    results: list[TripAudioResultItem] = []
+    for beat in beats_to_generate:
+        if not beat["script_body"]:
+            results.append(
+                TripAudioResultItem(
+                    beat_id=beat["beat_id"],
+                    status="skipped",
+                    reason="no script_body",
+                )
+            )
+            continue
+        try:
+            gen_result = generate_beat_audio(
+                session,
+                beat["beat_id"],
+                provider_name=provider_name,
+                voice_id=voice_id,
+                force=force,
+            )
+            results.append(
+                TripAudioResultItem(
+                    beat_id=beat["beat_id"],
+                    status="generated",
+                    audio_url=gen_result.audio_url,
+                )
+            )
+        except PipelineError as e:
+            results.append(
+                TripAudioResultItem(
+                    beat_id=beat["beat_id"],
+                    status="failed",
+                    error=str(e),
+                )
+            )
+
+    return TripAudioGenerateResponse(
+        trip_id=trip_id,
+        generated=sum(1 for r in results if r.status == "generated"),
+        skipped=sum(1 for r in results if r.status == "skipped"),
+        failed=sum(1 for r in results if r.status == "failed"),
+        results=results,
     )
