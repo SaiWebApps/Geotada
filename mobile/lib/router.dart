@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:ondoway/models/lens.dart';
 import 'package:ondoway/pages/callback_page.dart';
 import 'package:ondoway/pages/explore_page.dart';
 import 'package:ondoway/pages/lens_selection_page.dart';
@@ -31,8 +30,6 @@ GoRouter createRouter(
       final isAuthRoute = path == '/login' ||
           path == '/auth' ||
           path == '/auth/callback';
-      final isOnboarding = path == '/onboarding';
-
       if (!isAuthenticated && !isAuthRoute) {
         return '/login';
       }

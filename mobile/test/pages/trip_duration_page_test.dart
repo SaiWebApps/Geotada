@@ -99,7 +99,7 @@ void main() {
       expect(find.text('When are you visiting?'), findsOneWidget);
       expect(find.text('From'), findsOneWidget);
       expect(find.text('To (inclusive)'), findsOneWidget);
-      expect(find.text('Generate My Trip'), findsOneWidget);
+      expect(find.text('Generate Trip Plan'), findsOneWidget);
       expect(find.byIcon(Icons.calendar_today), findsNWidgets(2));
       expect(find.byIcon(Icons.access_time), findsNWidgets(2));
     });

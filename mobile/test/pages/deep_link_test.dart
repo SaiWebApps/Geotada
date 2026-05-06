@@ -1,10 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
-import 'package:ondoway/services/auth_service.dart';
-import 'package:ondoway/services/lens_service.dart';
-import 'package:ondoway/services/profile_service.dart';
-import '../services/auth_service_test.dart';
 
 String? simulateRedirect(bool isAuthenticated, String path, {bool profileLoaded = false, bool isFirstTime = true}) {
   final isAuthRoute = path == '/login' || path == '/auth' || path == '/auth/callback';
@@ -18,17 +12,6 @@ String? simulateRedirect(bool isAuthenticated, String path, {bool profileLoaded 
 
 void main() {
   group('Router redirect logic', () {
-    late AuthService authService;
-    late ProfileService profileService;
-    late LensService lensService;
-
-    setUp(() {
-      final client = MockClient((r) async => http.Response('', 200));
-      authService = AuthService(storage: FakeSecureStorage(), httpClient: client);
-      profileService = ProfileService(httpClient: client);
-      lensService = LensService(httpClient: client);
-    });
-
     test('unauthenticated user on /login stays on /login', () {
       expect(simulateRedirect(false, '/login'), isNull);
     });

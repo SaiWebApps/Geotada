@@ -13,7 +13,6 @@ import 'package:apple_maps_flutter/apple_maps_flutter.dart';
 class TripDurationPage extends StatefulWidget {
   final String citySlug;
 
-  /// Optional initial times for testing validation logic.
   @visibleForTesting
   final TimeOfDay? initialStartTime;
   @visibleForTesting
@@ -30,7 +29,9 @@ class TripDurationPage extends StatefulWidget {
   State<TripDurationPage> createState() => _TripDurationPageState();
 }
 
-class _TripDurationPageState extends State<TripDurationPage> {
+class _TripDurationPageState extends State<TripDurationPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
   late DateTime _startDate;
   late TimeOfDay _startTime;
   late DateTime _endDate;
@@ -53,6 +54,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     final now = DateTime.now();
     _startDate = DateTime(now.year, now.month, now.day + 1);
     _startTime = widget.initialStartTime ?? const TimeOfDay(hour: 9, minute: 0);
@@ -161,6 +163,7 @@ class _TripDurationPageState extends State<TripDurationPage> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _searchController.dispose();
     super.dispose();
   }
@@ -184,7 +187,6 @@ class _TripDurationPageState extends State<TripDurationPage> {
 
   int get _totalMinutes => _endDateTime.difference(_startDateTime).inMinutes;
 
-  bool get _isMultiDay => _endDate.isAfter(_startDate);
 
   String? get _validationError {
     if (_endDateTime.isBefore(_startDateTime) || _endDateTime.isAtSameMomentAs(_startDateTime)) {
@@ -200,6 +202,19 @@ class _TripDurationPageState extends State<TripDurationPage> {
   }
 
   bool get _isValid => _validationError == null;
+
+  String get _locationSummary {
+    switch (_locationSource) {
+      case 'gps':
+        return 'Using your current location';
+      case 'city_center':
+        return 'Using city center';
+      case 'manual':
+        return 'Custom location set';
+      default:
+        return 'Detecting location…';
+    }
+  }
 
   Future<void> _generateTrip() async {
     if (!_isValid) return;
@@ -260,7 +275,6 @@ class _TripDurationPageState extends State<TripDurationPage> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
-    final validation = _validationError;
 
     return Scaffold(
       appBar: AppBar(
@@ -268,153 +282,308 @@ class _TripDurationPageState extends State<TripDurationPage> {
         backgroundColor: cs.surface,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
+              child: _buildTabBar(cs, tt),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildDurationTab(cs, tt),
+                  _buildStartPointTab(cs, tt),
+                ],
+              ),
+            ),
+            _buildBottomSection(cs, tt),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabBar(ColorScheme cs, TextTheme tt) {
+    return Container(
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(4),
+      child: TabBar(
+        controller: _tabController,
+        indicator: BoxDecoration(
+          color: cs.surface,
+          borderRadius: BorderRadius.circular(9),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
+        labelColor: cs.onSurface,
+        unselectedLabelColor: cs.onSurfaceVariant,
+        labelStyle: tt.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: tt.titleSmall,
+        tabs: [
+          Tab(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.schedule, size: 18),
+                const SizedBox(width: 8),
+                const Text('Duration'),
+              ],
+            ),
+          ),
+          Tab(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.location_on_outlined, size: 18),
+                const SizedBox(width: 8),
+                const Text('Start Point'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDurationTab(ColorScheme cs, TextTheme tt) {
+    final validation = _validationError;
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'When are you visiting?',
+            style: tt.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Default: 1 day (9:00 AM – 6:00 PM)',
+            style: tt.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+          ),
+          const SizedBox(height: 32),
+
+          _DateTimeSection(
+            label: 'From',
+            date: _startDate,
+            time: _startTime,
+            onDateTap: () => _pickDate(isStart: true),
+            onTimeTap: () => _pickTime(isStart: true),
+          ),
+          const SizedBox(height: 24),
+
+          _DateTimeSection(
+            label: 'To (inclusive)',
+            date: _endDate,
+            time: _endTime,
+            onDateTap: () => _pickDate(isStart: false),
+            onTimeTap: () => _pickTime(isStart: false),
+          ),
+          const SizedBox(height: 16),
+
+          if (_isValid)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: cs.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.timer_outlined, size: 16, color: cs.onPrimaryContainer),
+                  const SizedBox(width: 8),
+                  Text(
+                    _formatDurationSummary(),
+                    style: tt.bodyMedium?.copyWith(
+                      color: cs.onPrimaryContainer,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          if (validation != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                validation,
+                style: tt.bodySmall?.copyWith(color: cs.error),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStartPointTab(ColorScheme cs, TextTheme tt) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Where do you want to start?',
+            style: tt.headlineSmall?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Row(
             children: [
-              Text(
-                'When are you visiting?',
-                style: tt.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: cs.onSurface,
-                ),
+              Icon(
+                _locationSource == 'gps' ? Icons.my_location : Icons.location_city,
+                size: 16,
+                color: cs.onSurfaceVariant,
               ),
-              const SizedBox(height: 32),
-
-              _DateTimeSection(
-                label: 'From',
-                date: _startDate,
-                time: _startTime,
-                onDateTap: () => _pickDate(isStart: true),
-                onTimeTap: () => _pickTime(isStart: true),
-              ),
-              const SizedBox(height: 24),
-
-              _DateTimeSection(
-                label: 'To (inclusive)',
-                date: _endDate,
-                time: _endTime,
-                onDateTap: () => _pickDate(isStart: false),
-                onTimeTap: () => _pickTime(isStart: false),
-              ),
-              const SizedBox(height: 16),
-
-              if (_isValid)
-                Text(
-                  _formatDurationSummary(),
-                  style: tt.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
-                ),
-
-              const SizedBox(height: 24),
-
-              // Location search field
-              if (!kIsWeb)
-                TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search a place or paste coordinates',
-                    prefixIcon: const Icon(Icons.search, size: 20),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12,
-                    ),
-                  ),
-                  onSubmitted: _onSearchSubmitted,
-                ),
-
-              // Map showing trip center location — tap to reposition pin
-              if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    'Tap the map to set your starting point',
-                    style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),
-                  ),
-                ),
-              if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: SizedBox(
-                    height: 200,
-                    width: double.infinity,
-                    child: AppleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(_pinLat!, _pinLng!),
-                        zoom: 14,
-                      ),
-                      onMapCreated: (controller) => _mapController = controller,
-                      onTap: _onMapTap,
-                      annotations: {
-                        Annotation(
-                          annotationId: AnnotationId('trip_center'),
-                          position: LatLng(_pinLat!, _pinLng!),
-                        ),
-                      },
-                    ),
-                  ),
-                )
-              else if (!_locationResolved && !kIsWeb)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    color: cs.surfaceContainerHighest,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: cs.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ),
-
-              if (validation != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    validation,
-                    style: tt.bodySmall?.copyWith(color: cs.error),
-                  ),
-                ),
-
-              if (_error != null)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Text(
-                    _error!,
-                    style: tt.bodyMedium?.copyWith(color: cs.error),
-                  ),
-                ),
-
-              const SizedBox(height: 40),
-
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: FilledButton(
-                  onPressed: _isValid && !_isLoading && _locationResolved ? _generateTrip : null,
-                  child: _isLoading
-                      ? SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: cs.onPrimary,
-                          ),
-                        )
-                      : const Text(
-                          'Generate My Trip',
-                          style: TextStyle(fontSize: 16),
-                        ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Default: ${_locationSource == 'pending' ? 'Detecting…' : _locationSummary}',
+                  style: tt.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 24),
+
+          if (!kIsWeb)
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search a place or paste coordinates',
+                prefixIcon: const Icon(Icons.search, size: 20),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 12,
+                ),
+              ),
+              onSubmitted: _onSearchSubmitted,
+            ),
+          const SizedBox(height: 16),
+
+          if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Text(
+                'Tap the map to set your starting point',
+                style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),
+              ),
+            ),
+          if (_locationResolved && _pinLat != null && _pinLng != null && !kIsWeb)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: SizedBox(
+                height: 280,
+                width: double.infinity,
+                child: AppleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(_pinLat!, _pinLng!),
+                    zoom: 14,
+                  ),
+                  onMapCreated: (controller) => _mapController = controller,
+                  onTap: _onMapTap,
+                  annotations: {
+                    Annotation(
+                      annotationId: AnnotationId('trip_center'),
+                      position: LatLng(_pinLat!, _pinLng!),
+                    ),
+                  },
+                ),
+              ),
+            )
+          else if (!_locationResolved && !kIsWeb)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                height: 280,
+                width: double.infinity,
+                color: cs.surfaceContainerHighest,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: cs.onSurfaceVariant,
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Detecting your location…',
+                        style: tt.bodySmall?.copyWith(color: cs.onSurfaceVariant),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomSection(ColorScheme cs, TextTheme tt) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 12, 24, 16),
+      decoration: BoxDecoration(
+        color: cs.surface,
+        border: Border(
+          top: BorderSide(color: cs.outlineVariant.withValues(alpha: 0.3)),
         ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (_error != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Text(
+                _error!,
+                style: tt.bodySmall?.copyWith(color: cs.error),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: FilledButton(
+              onPressed: _isValid && !_isLoading && _locationResolved ? _generateTrip : null,
+              child: _isLoading
+                  ? SizedBox(
+                      height: 24,
+                      width: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: cs.onPrimary,
+                      ),
+                    )
+                  : const Text(
+                      'Generate Trip Plan',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+            ),
+          ),
+        ],
       ),
     );
   }

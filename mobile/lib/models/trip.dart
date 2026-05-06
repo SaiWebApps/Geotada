@@ -1,5 +1,3 @@
-/// Dart models for trip generation — mirrors backend TripGenerateResponse / GeneratedStop.
-
 class ItineraryStop {
   final int sortOrder;
   final String poiId;
