@@ -10,6 +10,9 @@ class ItineraryStop {
   final int durationMin;
   final int importanceTier;
   final String startTime;
+  final String? scriptBody;
+  final String? audioUrl;
+  final double? audioDurationSec;
 
   const ItineraryStop({
     required this.sortOrder,
@@ -23,6 +26,9 @@ class ItineraryStop {
     required this.durationMin,
     required this.importanceTier,
     required this.startTime,
+    this.scriptBody,
+    this.audioUrl,
+    this.audioDurationSec,
   });
 
   factory ItineraryStop.fromJson(Map<String, dynamic> json) {
@@ -38,6 +44,9 @@ class ItineraryStop {
       durationMin: json['duration_min'] as int,
       importanceTier: json['importance_tier'] as int,
       startTime: json['start_time'] as String,
+      scriptBody: json['script_body'] as String?,
+      audioUrl: json['audio_url'] as String?,
+      audioDurationSec: (json['audio_duration_sec'] as num?)?.toDouble(),
     );
   }
 
@@ -53,6 +62,9 @@ class ItineraryStop {
         'duration_min': durationMin,
         'importance_tier': importanceTier,
         'start_time': startTime,
+        'script_body': scriptBody,
+        'audio_url': audioUrl,
+        'audio_duration_sec': audioDurationSec,
       };
 }
 

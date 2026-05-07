@@ -289,7 +289,7 @@ class _StopCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
+      child: ExpansionTile(
         leading: CircleAvatar(
           backgroundColor: isAnchor
               ? colorScheme.primaryContainer
@@ -350,6 +350,35 @@ class _StopCard extends StatelessWidget {
             color: colorScheme.primary,
           ),
         ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(),
+                const SizedBox(height: 8),
+                if (stop.scriptBody != null)
+                  SelectableText(
+                    stop.scriptBody!,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurface,
+                    ),
+                  )
+                else
+                  Text(
+                    'Script not yet available',
+                    style: textTheme.bodyMedium?.copyWith(
+                      fontStyle: FontStyle.italic,
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                // Audio player placeholder
+                const SizedBox(height: 48),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
