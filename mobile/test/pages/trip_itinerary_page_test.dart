@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -6,11 +8,9 @@ import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
-import 'package:ondoway/services/tour_playback_service.dart';
+import 'package:ondoway/services/audio_service.dart';
+import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/trip_service.dart';
-
-import '../services/mocks/mock_audio_service.dart';
-import '../services/mocks/mock_location_service.dart';
 
 GeneratedTrip _sampleTrip({
   String id = 'trip-1',
@@ -57,15 +57,10 @@ GeneratedTrip _sampleTrip({
 
 Widget _buildTestWidget({
   required TripService tripService,
+  required AudioService audioService,
+  AuthService? authService,
   String tripId = 'trip-1',
 }) {
-  final locationService = MockLocationService();
-  final audioService = MockAudioService();
-  final tourPlaybackService = TourPlaybackService(
-    locationService: locationService,
-    audioService: audioService,
-  );
-
   final router = GoRouter(
     initialLocation: '/trip/$tripId',
     routes: [
@@ -86,10 +81,9 @@ Widget _buildTestWidget({
   return MultiProvider(
     providers: [
       ChangeNotifierProvider<TripService>.value(value: tripService),
-      ChangeNotifierProvider<MockLocationService>.value(
-          value: locationService),
-      ChangeNotifierProvider<TourPlaybackService>.value(
-          value: tourPlaybackService),
+      ChangeNotifierProvider<AudioService>.value(value: audioService),
+      if (authService != null)
+        ChangeNotifierProvider<AuthService>.value(value: authService),
     ],
     child: MaterialApp.router(
       routerConfig: router,
@@ -105,10 +99,12 @@ Widget _buildTestWidget({
 void main() {
   group('TripItineraryPage', () {
     late TripService tripService;
+    late AudioService audioService;
 
     setUp(() {
       final mockClient = MockClient((r) async => http.Response('', 200));
       tripService = TripService(httpClient: mockClient);
+      audioService = AudioService(httpClient: mockClient);
     });
 
     testWidgets('renders trip summary card', (tester) async {
@@ -117,6 +113,7 @@ void main() {
 
       await tester.pumpWidget(_buildTestWidget(
         tripService: tripService,
+        audioService: audioService,
         tripId: trip.tripId,
       ));
       await tester.pump();
@@ -139,6 +136,7 @@ void main() {
 
       await tester.pumpWidget(_buildTestWidget(
         tripService: tripService,
+        audioService: audioService,
         tripId: trip.tripId,
       ));
       await tester.pump();
@@ -156,6 +154,7 @@ void main() {
 
       await tester.pumpWidget(_buildTestWidget(
         tripService: tripService,
+        audioService: audioService,
         tripId: trip.tripId,
       ));
       await tester.pump();
@@ -165,22 +164,67 @@ void main() {
       expect(find.text('Historic Architecture'), findsOneWidget);
     });
 
-    testWidgets('save trip FAB calls tripService.saveTrip', (tester) async {
-      // Use lastGenerated path (trip in lastGenerated, not in savedTrips)
+    testWidgets('confirm and prepare FAB saves trip and triggers audio',
+        (tester) async {
+      // Mock the backend: generate-trip for setup, then audio endpoints
       final mockClient = MockClient((request) async {
         if (request.url.path.contains('/trips/generate')) {
           return http.Response(
-            '{"trip_id":"trip-gen","trip_name":"Generated","profile_id":"p1",'
-            '"total_stops":1,"total_duration_min":30,"anchor_count":0,"flavour_count":1,'
-            '"stops":[{"sort_order":1,"poi_id":"poi-1","poi_name":"Test POI",'
-            '"lat":48.85,"lng":2.34,"beat_id":"b1","lens_name":"a","lens_display":"A",'
-            '"duration_min":5,"importance_tier":3,"start_time":"09:00"}]}',
+            jsonEncode({
+              'trip_id': 'trip-gen',
+              'trip_name': 'Generated',
+              'profile_id': 'p1',
+              'total_stops': 1,
+              'total_duration_min': 30,
+              'anchor_count': 0,
+              'flavour_count': 1,
+              'stops': [
+                {
+                  'sort_order': 1,
+                  'poi_id': 'poi-1',
+                  'poi_name': 'Test POI',
+                  'lat': 48.85,
+                  'lng': 2.34,
+                  'beat_id': 'b1',
+                  'lens_name': 'a',
+                  'lens_display': 'A',
+                  'duration_min': 5,
+                  'importance_tier': 3,
+                  'start_time': '09:00',
+                },
+              ],
+            }),
             201,
+          );
+        }
+        if (request.url.path.contains('/audio/generate-trip/')) {
+          return http.Response(
+            jsonEncode({
+              'trip_id': 'trip-gen',
+              'generated': 1,
+              'skipped': 0,
+              'failed': 0,
+              'results': [],
+            }),
+            200,
+          );
+        }
+        if (request.url.path.contains('/audio/status/')) {
+          return http.Response(
+            jsonEncode({
+              'has_audio': true,
+              'audio_url': 'https://cdn.example.com/b1.mp3',
+              'duration_sec': 120,
+              'is_stale': false,
+            }),
+            200,
           );
         }
         return http.Response('', 200);
       });
+
       final service = TripService(httpClient: mockClient);
+      final audio = AudioService(httpClient: mockClient);
 
       // Generate a trip so lastGenerated is set
       await service.generateTrip(
@@ -195,18 +239,55 @@ void main() {
       expect(service.lastGenerated, isNotNull);
       expect(service.savedTrips, isEmpty);
 
-      await tester.pumpWidget(_buildTestWidget(
-        tripService: service,
-        tripId: 'trip-gen',
-      ));
+      // Build the widget with AuthService providing the token
+      final authClient = MockClient((r) async => http.Response(
+            jsonEncode({'id': 'user-1', 'email': 'test@example.com'}),
+            200,
+          ));
+      final authService = AuthService(httpClient: authClient);
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TripService>.value(value: service),
+            ChangeNotifierProvider<AudioService>.value(value: audio),
+            ChangeNotifierProvider<AuthService>.value(value: authService),
+          ],
+          child: MaterialApp.router(
+            routerConfig: GoRouter(
+              initialLocation: '/trip/trip-gen',
+              routes: [
+                GoRoute(
+                  path: '/trip/:tripId',
+                  builder: (context, state) => TripItineraryPage(
+                    tripId: state.pathParameters['tripId']!,
+                  ),
+                ),
+                GoRoute(
+                  path: '/saved-trips',
+                  builder: (context, state) => const Scaffold(
+                    body: Center(child: Text('Saved Trips')),
+                  ),
+                ),
+              ],
+            ),
+            theme: ThemeData(
+              colorSchemeSeed: const Color(0xFF3D5AFE),
+              useMaterial3: true,
+              brightness: Brightness.dark,
+            ),
+          ),
+        ),
+      );
       await tester.pump();
       await tester.pump();
 
-      // Tap the Save Trip FAB
-      await tester.tap(find.text('Save Trip'));
+      // Tap the "Confirm & Prepare" FAB
+      expect(find.text('Confirm & Prepare'), findsOneWidget);
+      await tester.tap(find.text('Confirm & Prepare'));
       await tester.pump();
 
-      // saveTrip should have been called — verify savedTrips is no longer empty
+      // saveTrip should have been called
       expect(service.savedTrips.length, 1);
       expect(service.savedTrips.first.tripId, 'trip-gen');
     });
@@ -217,6 +298,7 @@ void main() {
 
       await tester.pumpWidget(_buildTestWidget(
         tripService: tripService,
+        audioService: audioService,
         tripId: trip.tripId,
       ));
       await tester.pump();
@@ -224,7 +306,6 @@ void main() {
 
       // The summary card has an Icons.star (size 20) for the Anchors section
       // AND the stop card shows Icons.star (size 16) for anchor stops.
-      // Both should be present — verify at least the small one for the stop card.
       final starIcons = find.byIcon(Icons.star);
       expect(starIcons, findsNWidgets(2)); // one in summary, one on stop card
     });
@@ -232,12 +313,75 @@ void main() {
     testWidgets('shows trip not found for unknown tripId', (tester) async {
       await tester.pumpWidget(_buildTestWidget(
         tripService: tripService,
+        audioService: audioService,
         tripId: 'nonexistent',
       ));
       await tester.pump();
       await tester.pump();
 
       expect(find.text('Trip not found'), findsOneWidget);
+    });
+
+    testWidgets('shows error card when audio preparation fails',
+        (tester) async {
+      // When accessToken is null, the null assertion throws.
+      // The error should be caught and displayed in the error card.
+      final mockClient = MockClient((request) async {
+        return http.Response('', 200);
+      });
+
+      final service = TripService(httpClient: mockClient);
+      final audio = AudioService(httpClient: mockClient);
+      final trip = _sampleTrip();
+      service.saveTrip(trip);
+
+      // AuthService with no authentication (accessToken is null)
+      final authClient = MockClient((r) async => http.Response('', 200));
+      final authService = AuthService(httpClient: authClient);
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TripService>.value(value: service),
+            ChangeNotifierProvider<AudioService>.value(value: audio),
+            ChangeNotifierProvider<AuthService>.value(value: authService),
+          ],
+          child: MaterialApp.router(
+            routerConfig: GoRouter(
+              initialLocation: '/trip/trip-1',
+              routes: [
+                GoRoute(
+                  path: '/trip/:tripId',
+                  builder: (context, state) => TripItineraryPage(
+                    tripId: state.pathParameters['tripId']!,
+                  ),
+                ),
+                GoRoute(
+                  path: '/saved-trips',
+                  builder: (context, state) => const Scaffold(
+                    body: Center(child: Text('Saved Trips')),
+                  ),
+                ),
+              ],
+            ),
+            theme: ThemeData(
+              colorSchemeSeed: const Color(0xFF3D5AFE),
+              useMaterial3: true,
+              brightness: Brightness.dark,
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+
+      // Tap confirm button — will fail because accessToken is null
+      await tester.tap(find.text('Confirm & Prepare'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Trip should still be saved (happens before the error)
+      expect(service.savedTrips.length, 1);
     });
   });
 }

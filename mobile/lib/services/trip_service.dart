@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:ondoway/models/trip.dart';
 
 class TripService extends ChangeNotifier {
-  static const _baseUrl = String.fromEnvironment(
+  static const baseUrl = String.fromEnvironment(
     'API_BASE_URL',
     defaultValue: 'http://localhost:8000/api/v1',
   );
@@ -58,7 +58,7 @@ class TripService extends ChangeNotifier {
       if (tripName != null) body['trip_name'] = tripName;
 
       final response = await _httpClient.post(
-        Uri.parse('$_baseUrl/trips/generate'),
+        Uri.parse('$baseUrl/trips/generate'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
@@ -102,7 +102,7 @@ class TripService extends ChangeNotifier {
     String accessToken,
   ) async {
     final response = await _httpClient.get(
-      Uri.parse('$_baseUrl/trips?profile_id=$profileId'),
+      Uri.parse('$baseUrl/trips?profile_id=$profileId'),
       headers: {
         'Authorization': 'Bearer $accessToken',
       },
@@ -134,6 +134,32 @@ class TripService extends ChangeNotifier {
   void deleteTrip(String tripId) {
     _savedTrips = _savedTrips.where((t) => t.tripId != tripId).toList();
     notifyListeners();
+  }
+
+  /// POST /audio/generate-trip/{tripId} — trigger backend audio generation.
+  ///
+  /// Returns the generation response with counts of generated/skipped/failed.
+  Future<Map<String, dynamic>> confirmTripAudio(
+    String tripId,
+    String accessToken,
+  ) async {
+    final response = await _httpClient.post(
+      Uri.parse('$baseUrl/audio/generate-trip/$tripId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    } else if (response.statusCode == 404) {
+      throw TripServiceException('Trip not found');
+    } else {
+      throw TripServiceException(
+        'Audio generation failed (${response.statusCode}): ${response.body}',
+      );
+    }
   }
 
   /// Clear all local state.
