@@ -6,6 +6,7 @@ import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/trip_service.dart';
+import 'package:ondoway/widgets/beat_audio_player.dart';
 
 class TripItineraryPage extends StatelessWidget {
   final String tripId;
@@ -341,23 +342,22 @@ class _StopCard extends StatelessWidget {
                 color: colorScheme.onSurfaceVariant,
               ),
             ),
+            const Spacer(),
+            Text(
+              stop.startTime,
+              style: textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.primary,
+              ),
+            ),
           ],
-        ),
-        trailing: Text(
-          stop.startTime,
-          style: textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: colorScheme.primary,
-          ),
         ),
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Divider(),
-                const SizedBox(height: 8),
                 if (stop.scriptBody != null)
                   SelectableText(
                     stop.scriptBody!,
@@ -367,14 +367,19 @@ class _StopCard extends StatelessWidget {
                   )
                 else
                   Text(
-                    'Script not yet available',
+                    'Script not yet generated',
                     style: textTheme.bodyMedium?.copyWith(
                       fontStyle: FontStyle.italic,
                       color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                // Audio player placeholder
-                const SizedBox(height: 48),
+                const SizedBox(height: 8),
+                BeatAudioPlayer(
+                  beatId: stop.beatId,
+                  audioUrl: stop.audioUrl,
+                  durationSec: stop.audioDurationSec,
+                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),

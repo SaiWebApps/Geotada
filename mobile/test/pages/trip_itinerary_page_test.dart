@@ -6,6 +6,7 @@ import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
+import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 
 GeneratedTrip _sampleTrip({
@@ -54,14 +55,20 @@ GeneratedTrip _sampleTrip({
 Widget _buildTestWidget({
   required TripService tripService,
   String tripId = 'trip-1',
+  AudioService? audioService,
 }) {
   final router = GoRouter(
     initialLocation: '/trip/$tripId',
     routes: [
       GoRoute(
         path: '/trip/:tripId',
-        builder: (context, state) => ChangeNotifierProvider<TripService>.value(
-          value: tripService,
+        builder: (context, state) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TripService>.value(value: tripService),
+            ChangeNotifierProvider<AudioService>.value(
+              value: audioService ?? AudioService(),
+            ),
+          ],
           child: TripItineraryPage(tripId: state.pathParameters['tripId']!),
         ),
       ),
