@@ -3,8 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:ondoway/services/providers.dart';
 
-class AudioService extends ChangeNotifier {
+class AudioService extends ChangeNotifier implements AudioProvider {
   final AudioPlayer _player = AudioPlayer();
   final http.Client _httpClient;
 
@@ -22,7 +23,9 @@ class AudioService extends ChangeNotifier {
   }
 
   // Getters
+  @override
   String? get currentBeatId => _currentBeatId;
+  @override
   bool get isPlaying => _isPlaying;
   bool get isBuffering => _isBuffering;
   Duration get position => _position;
@@ -30,6 +33,7 @@ class AudioService extends ChangeNotifier {
   bool get isActive => _currentBeatId != null;
 
   /// Play audio for a beat. Uses cached file if available, otherwise streams from URL.
+  @override
   Future<void> play(String beatId, String audioUrl) async {
     if (_currentBeatId == beatId && _isPlaying) return;
 
@@ -60,6 +64,7 @@ class AudioService extends ChangeNotifier {
     await _player.play();
   }
 
+  @override
   Future<void> stop() async {
     await _player.stop();
     _currentBeatId = null;

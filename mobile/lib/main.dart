@@ -20,7 +20,6 @@ void main() async {
   final tripService = TripService();
   final feedbackService = FeedbackService();
   final locationService = LocationService();
-  final audioService = AudioService();
   final tourPlaybackService = TourPlaybackService(
     locationService: locationService,
     audioService: audioService,

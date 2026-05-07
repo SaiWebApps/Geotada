@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ondoway/services/providers.dart';
 
-class LocationService extends ChangeNotifier {
+class LocationService extends ChangeNotifier implements LocationProvider {
   Position? _lastPosition;
   String? _error;
   bool _isFetching = false;
@@ -11,10 +12,13 @@ class LocationService extends ChangeNotifier {
   bool _isTracking = false;
   bool _lowAccuracy = false;
 
+  @override
   Position? get lastPosition => _lastPosition;
   String? get error => _error;
   bool get isFetching => _isFetching;
+  @override
   bool get isTracking => _isTracking;
+  @override
   bool get lowAccuracy => _lowAccuracy;
 
   Future<Position?> getCurrentPosition() async {
@@ -71,6 +75,7 @@ class LocationService extends ChangeNotifier {
 
   /// Start continuous position tracking.
   /// Uses adaptive polling: 5m distance filter, high accuracy, walking activity.
+  @override
   Future<bool> startTracking() async {
     if (_isTracking) return true;
 
@@ -117,6 +122,7 @@ class LocationService extends ChangeNotifier {
   }
 
   /// Stop continuous position tracking.
+  @override
   void stopTracking() {
     _positionSubscription?.cancel();
     _positionSubscription = null;

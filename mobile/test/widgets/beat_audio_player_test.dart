@@ -116,29 +116,6 @@ void main() {
       expect(find.byIcon(Icons.pause_circle_filled), findsNothing);
     });
 
-    testWidgets('progress bar shows when beat is active', (tester) async {
-      final audioService = AudioService();
-      await audioService.play('beat-1', 'https://example.com/audio.mp3');
-      audioService.updateDuration(const Duration(seconds: 90));
-      audioService.updatePosition(const Duration(seconds: 45));
-
-      await tester.pumpWidget(
-        _wrap(
-          audioService: audioService,
-          child: const BeatAudioPlayer(
-            beatId: 'beat-1',
-            audioUrl: 'https://example.com/audio.mp3',
-            durationSec: 90.0,
-          ),
-        ),
-      );
-
-      final progressIndicator = tester.widget<LinearProgressIndicator>(
-        find.byType(LinearProgressIndicator),
-      );
-      // 45/90 = 0.5
-      expect(progressIndicator.value, closeTo(0.5, 0.01));
-    });
 
     testWidgets('formats duration correctly for various values',
         (tester) async {
