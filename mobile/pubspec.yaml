@@ -20,6 +20,8 @@ dependencies:
   geolocator: ^13.0.2
   sign_in_with_apple: ^6.1.0
   apple_maps_flutter: ^1.4.0
+  just_audio: ^0.9.40
+  path_provider: ^2.1.0
 
 dev_dependencies:
   flutter_test:

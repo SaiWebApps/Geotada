@@ -2,6 +2,7 @@ import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/router.dart';
+import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/feedback_service.dart';
 import 'package:ondoway/services/lens_service.dart';
@@ -12,6 +13,7 @@ import 'package:ondoway/services/trip_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final authService = AuthService();
+  final audioService = AudioService();
   final lensService = LensService();
   final profileService = ProfileService();
   final tripService = TripService();
@@ -54,6 +56,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: authService),
+        ChangeNotifierProvider.value(value: audioService),
         ChangeNotifierProvider.value(value: lensService),
         ChangeNotifierProvider.value(value: profileService),
         ChangeNotifierProvider.value(value: tripService),

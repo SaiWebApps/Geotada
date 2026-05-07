@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -190,6 +190,9 @@ testflight: flutter-ipa ## Bump build number, build IPA, and upload to TestFligh
 		--apiKey $(APP_STORE_API_KEY_ID) \
 		--apiIssuer $(APP_STORE_ISSUER_ID)
 	@echo "==> Upload complete. Check TestFlight in App Store Connect (~15 min for processing)."
+
+flutter-pub-get: ## Resolve Flutter dependencies (pub get only)
+	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get
 
 flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 	cd mobile && flutter clean
