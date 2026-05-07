@@ -6,8 +6,11 @@ import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/pages/trip_itinerary_page.dart';
-import 'package:ondoway/services/audio_service.dart';
+import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
+
+import '../services/mocks/mock_audio_service.dart';
+import '../services/mocks/mock_location_service.dart';
 
 GeneratedTrip _sampleTrip({
   String id = 'trip-1',
@@ -55,21 +58,21 @@ GeneratedTrip _sampleTrip({
 Widget _buildTestWidget({
   required TripService tripService,
   String tripId = 'trip-1',
-  AudioService? audioService,
 }) {
+  final locationService = MockLocationService();
+  final audioService = MockAudioService();
+  final tourPlaybackService = TourPlaybackService(
+    locationService: locationService,
+    audioService: audioService,
+  );
+
   final router = GoRouter(
     initialLocation: '/trip/$tripId',
     routes: [
       GoRoute(
         path: '/trip/:tripId',
-        builder: (context, state) => MultiProvider(
-          providers: [
-            ChangeNotifierProvider<TripService>.value(value: tripService),
-            ChangeNotifierProvider<AudioService>.value(
-              value: audioService ?? AudioService(),
-            ),
-          ],
-          child: TripItineraryPage(tripId: state.pathParameters['tripId']!),
+        builder: (context, state) => TripItineraryPage(
+          tripId: state.pathParameters['tripId']!,
         ),
       ),
       GoRoute(
@@ -80,12 +83,21 @@ Widget _buildTestWidget({
       ),
     ],
   );
-  return MaterialApp.router(
-    routerConfig: router,
-    theme: ThemeData(
-      colorSchemeSeed: const Color(0xFF3D5AFE),
-      useMaterial3: true,
-      brightness: Brightness.dark,
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider<TripService>.value(value: tripService),
+      ChangeNotifierProvider<MockLocationService>.value(
+          value: locationService),
+      ChangeNotifierProvider<TourPlaybackService>.value(
+          value: tourPlaybackService),
+    ],
+    child: MaterialApp.router(
+      routerConfig: router,
+      theme: ThemeData(
+        colorSchemeSeed: const Color(0xFF3D5AFE),
+        useMaterial3: true,
+        brightness: Brightness.dark,
+      ),
     ),
   );
 }

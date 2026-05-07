@@ -8,6 +8,7 @@ import 'package:ondoway/services/feedback_service.dart';
 import 'package:ondoway/services/lens_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 
 void main() async {
@@ -19,6 +20,11 @@ void main() async {
   final tripService = TripService();
   final feedbackService = FeedbackService();
   final locationService = LocationService();
+  final audioService = AudioService();
+  final tourPlaybackService = TourPlaybackService(
+    locationService: locationService,
+    audioService: audioService,
+  );
 
   await authService.tryRestoreSession();
 
@@ -62,6 +68,8 @@ void main() async {
         ChangeNotifierProvider.value(value: tripService),
         ChangeNotifierProvider.value(value: feedbackService),
         ChangeNotifierProvider.value(value: locationService),
+        ChangeNotifierProvider.value(value: audioService),
+        ChangeNotifierProvider.value(value: tourPlaybackService),
       ],
       child: OndowayApp(router: router),
     ),

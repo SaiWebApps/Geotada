@@ -5,6 +5,7 @@ import 'package:ondoway/models/trip.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/tour_playback_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 import 'package:ondoway/widgets/beat_audio_player.dart';
 
@@ -107,12 +108,20 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final tripService = context.read<TripService>();
+    final tourPlayback = context.watch<TourPlaybackService>();
+    final hasAudio = widget.trip.stops.any((s) => s.audioUrl != null);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.trip.tripName),
         backgroundColor: colorScheme.surface,
         actions: [
+          if (tourPlayback.isActive)
+            IconButton(
+              icon: const Icon(Icons.stop_circle_outlined),
+              tooltip: 'Stop Tour',
+              onPressed: () => tourPlayback.stopTour(),
+            ),
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Regenerate',
@@ -125,6 +134,71 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
       body: Column(
         children: [
           _SummaryCard(trip: widget.trip),
+          if (tourPlayback.isActive)
+            _TourStatusBanner(tourPlayback: tourPlayback)
+          else if (hasAudio)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    final started =
+                        await tourPlayback.startTour(widget.trip.stops);
+                    if (!started && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Could not start tour. Check location permissions.',
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.headphones),
+                  label: const Text('Start Tour'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+            ),
+          if (tourPlayback.state == TourState.completed)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Card(
+                color: colorScheme.tertiaryContainer,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Icon(Icons.check_circle,
+                          color: colorScheme.onTertiaryContainer),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          'Tour complete!',
+                          style: TextStyle(
+                            color: colorScheme.onTertiaryContainer,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => tourPlayback.stopTour(),
+                        child: Text(
+                          'Dismiss',
+                          style: TextStyle(
+                            color: colorScheme.onTertiaryContainer,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: SizedBox(
@@ -384,6 +458,92 @@ class _StopCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _TourStatusBanner extends StatelessWidget {
+  final TourPlaybackService tourPlayback;
+
+  const _TourStatusBanner({required this.tourPlayback});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    if (tourPlayback.state == TourState.approaching &&
+        tourPlayback.hasPendingStop) {
+      final pendingStop =
+          tourPlayback.pendingStopIndex != null ? tourPlayback.nextStop : null;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Card(
+          color: colorScheme.secondaryContainer,
+          child: InkWell(
+            onTap: () => tourPlayback.acceptPendingStop(),
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Icon(Icons.near_me,
+                      color: colorScheme.onSecondaryContainer),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Arriving at ${pendingStop?.poiName ?? "next stop"}'
+                      ' — tap to switch',
+                      style: TextStyle(
+                        color: colorScheme.onSecondaryContainer,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.close,
+                        color: colorScheme.onSecondaryContainer, size: 20),
+                    onPressed: () => tourPlayback.dismissPending(),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    // Active state: walking to next stop
+    final distance = tourPlayback.distanceToNext;
+    final nextStop = tourPlayback.currentStop;
+    final distanceText = distance != null ? '${distance.round()}m away' : '';
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Card(
+        color: colorScheme.primaryContainer,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Icon(Icons.directions_walk,
+                  color: colorScheme.onPrimaryContainer),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Walking to ${nextStop?.poiName ?? "next stop"}'
+                  '${distanceText.isNotEmpty ? " — $distanceText" : ""}',
+                  style: TextStyle(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
