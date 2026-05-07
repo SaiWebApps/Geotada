@@ -66,6 +66,29 @@ class ItineraryStop {
         'audio_url': audioUrl,
         'audio_duration_sec': audioDurationSec,
       };
+
+  ItineraryStop copyWith({
+    String? audioUrl,
+    double? audioDurationSec,
+    String? scriptBody,
+  }) {
+    return ItineraryStop(
+      sortOrder: sortOrder,
+      poiId: poiId,
+      poiName: poiName,
+      lat: lat,
+      lng: lng,
+      beatId: beatId,
+      lensName: lensName,
+      lensDisplay: lensDisplay,
+      durationMin: durationMin,
+      importanceTier: importanceTier,
+      startTime: startTime,
+      scriptBody: scriptBody ?? this.scriptBody,
+      audioUrl: audioUrl ?? this.audioUrl,
+      audioDurationSec: audioDurationSec ?? this.audioDurationSec,
+    );
+  }
 }
 
 class GeneratedTrip {

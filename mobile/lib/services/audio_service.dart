@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -107,6 +108,22 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   Future<bool> isCached(String beatId) async {
     final path = await _getCachedPath(beatId);
     return path != null;
+  }
+
+  /// Check audio status for a specific beat via the backend API.
+  Future<Map<String, dynamic>?> checkAudioStatus(
+    String baseUrl,
+    String beatId,
+  ) async {
+    try {
+      final resp = await _httpClient.get(
+        Uri.parse('$baseUrl/audio/status/$beatId'),
+      );
+      if (resp.statusCode == 200) {
+        return jsonDecode(resp.body) as Map<String, dynamic>;
+      }
+    } catch (_) {}
+    return null;
   }
 
   /// Clear all cached audio files.

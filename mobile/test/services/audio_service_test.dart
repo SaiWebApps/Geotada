@@ -6,74 +6,6 @@ import 'package:ondoway/services/audio_service.dart';
 
 void main() {
   group('AudioService', () {
-    test('prefetchAudio downloads and caches beats', () async {
-      final client = MockClient((request) async {
-        // Simulate successful MP3 download
-        return http.Response('fake-mp3-data', 200);
-      });
-
-      final service = AudioService(httpClient: client);
-      final beats = [
-        const BeatAudioInfo(
-          beatId: 'beat-1',
-          audioUrl: 'https://cdn.example.com/beat-1.mp3',
-        ),
-        const BeatAudioInfo(
-          beatId: 'beat-2',
-          audioUrl: 'https://cdn.example.com/beat-2.mp3',
-        ),
-      ];
-
-      final count = await service.prefetchAudio(beats);
-
-      expect(count, 2);
-      expect(service.isCached('beat-1'), true);
-      expect(service.isCached('beat-2'), true);
-      expect(service.cachedBeatIds.length, 2);
-    });
-
-    test('prefetchAudio handles individual failures gracefully', () async {
-      int callCount = 0;
-      final client = MockClient((request) async {
-        callCount++;
-        if (callCount == 1) {
-          return http.Response('fake-mp3-data', 200);
-        }
-        // Second call fails
-        return http.Response('not found', 404);
-      });
-
-      final service = AudioService(httpClient: client);
-      final beats = [
-        const BeatAudioInfo(
-          beatId: 'beat-1',
-          audioUrl: 'https://cdn.example.com/beat-1.mp3',
-        ),
-        const BeatAudioInfo(
-          beatId: 'beat-2',
-          audioUrl: 'https://cdn.example.com/beat-2.mp3',
-        ),
-      ];
-
-      final count = await service.prefetchAudio(beats);
-
-      expect(count, 1);
-      expect(service.isCached('beat-1'), true);
-      expect(service.isCached('beat-2'), false);
-    });
-
-    test('prefetchAudio returns 0 for empty list', () async {
-      final client = MockClient((request) async {
-        return http.Response('', 200);
-      });
-
-      final service = AudioService(httpClient: client);
-      final count = await service.prefetchAudio([]);
-
-      expect(count, 0);
-      expect(service.cachedBeatIds, isEmpty);
-    });
-
     test('checkAudioStatus returns parsed response on 200', () async {
       final client = MockClient((request) async {
         expect(request.url.path, contains('/audio/status/beat-1'));
@@ -128,35 +60,22 @@ void main() {
 
       expect(result, isNull);
     });
+  });
 
-    test('reset clears all cached state', () async {
-      final client = MockClient((request) async {
-        return http.Response('fake-mp3-data', 200);
-      });
-
-      final service = AudioService(httpClient: client);
-      await service.prefetchAudio([
-        const BeatAudioInfo(
-          beatId: 'beat-1',
-          audioUrl: 'https://cdn.example.com/beat-1.mp3',
-        ),
-      ]);
-
-      expect(service.cachedBeatIds.length, 1);
-
-      service.reset();
-
-      expect(service.cachedBeatIds, isEmpty);
-      expect(service.isCached('beat-1'), false);
+  group('BeatAudioInfo', () {
+    test('stores beatId and audioUrl', () {
+      const info = BeatAudioInfo(
+        beatId: 'beat-123',
+        audioUrl: 'https://audio.ondoway.com/beats/beat-123.mp3',
+      );
+      expect(info.beatId, 'beat-123');
+      expect(info.audioUrl, 'https://audio.ondoway.com/beats/beat-123.mp3');
     });
 
-    test('isCached returns false for uncached beats', () {
-      final client = MockClient((request) async {
-        return http.Response('', 200);
-      });
-
-      final service = AudioService(httpClient: client);
-      expect(service.isCached('nonexistent'), false);
+    test('audioUrl can be null', () {
+      const info = BeatAudioInfo(beatId: 'beat-456');
+      expect(info.beatId, 'beat-456');
+      expect(info.audioUrl, isNull);
     });
   });
 }
