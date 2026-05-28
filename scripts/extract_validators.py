@@ -318,6 +318,47 @@ def fabrication_probe(
     )
 
 
+# ─── Source-grounding gate ──────────────────────────────────────────────
+# B12 and the fabrication probe both trust `source_passage` as ground truth;
+# nothing verifies the passage itself was quoted from the chunk. A 2026-05-28
+# Wikipedia run produced beats whose source_passage was reconstructed from
+# model memory (wrong facts, absent from the pinned file) yet cleared every
+# other gate. This gate closes that hole: each contiguous span the passage
+# claims to quote must actually appear in chunk_text.
+
+_ELLIPSIS_RE = re.compile(r"\.{3}|…")
+
+
+def _grounding_fragments(source_passage: str) -> list[str]:
+    """Split a source_passage into the contiguous spans it claims to quote.
+
+    Splits on sentence terminators AND ellipsis (an elision marker separates
+    two independently-quoted spans). Keeps only fragments with ≥4 real words,
+    so trivial fragments and headings don't dominate the ratio.
+    """
+    text = _ELLIPSIS_RE.sub(" ", source_passage or "")
+    out: list[str] = []
+    for frag in _SENT_SPLIT_RE.split(text):
+        if len(re.findall(r"[A-Za-zÀ-ÿ]{2,}", frag)) >= 4:
+            out.append(frag.strip())
+    return out
+
+
+def source_grounding_gate(source_passage: str, chunk_text: str) -> tuple[int, list[str]]:
+    """Return (total_substantial_fragments, ungrounded_fragments).
+
+    A fragment is grounded if its normalized form is a substring of the
+    normalized chunk_text. An empty chunk (can't assess) yields no ungrounded
+    fragments so the gate never blocks on missing source.
+    """
+    chunk_n = _normalize(chunk_text)
+    fragments = _grounding_fragments(source_passage)
+    if not chunk_n:
+        return len(fragments), []
+    ungrounded = [f for f in fragments if _normalize(f) not in chunk_n]
+    return len(fragments), ungrounded
+
+
 # ─── Orchestration ────────────────────────────────────────────────────────
 
 
@@ -350,6 +391,21 @@ def validate_beat(beat: dict, chunk_text: str) -> BeatVerdict:
             f"B12 violation: beat_length_class={declared!r} exceeds source-span ceiling "
             f"of {span_max!r} ({count_source_sentences(beat.get('source_passage',''))} "
             f"source sentences). Re-class down or cite more source."
+        )
+
+    # Source-grounding gate: source_passage must be quoted from chunk_text.
+    # Fire only when ≥2 fragments AND >30% are ungrounded — a single
+    # artifact-broken fragment (mid-sentence page break, OCR noise) in a short
+    # passage must not hard-block an otherwise-honest beat, but wholesale
+    # reconstruction from memory (the failure this gate exists for) misses
+    # most or all fragments and trips both conditions.
+    total_frags, ungrounded = source_grounding_gate(beat.get("source_passage", ""), chunk_text)
+    if len(ungrounded) >= 2 and len(ungrounded) / total_frags > 0.3:
+        errors.append(
+            f"source-grounding violation: {len(ungrounded)}/{total_frags} source_passage "
+            f"sentence(s) do not appear in chunk_text — the passage was not quoted from the "
+            f"pinned source (likely reconstructed from memory). "
+            f"First ungrounded: {ungrounded[0][:90]!r}"
         )
 
     # Length-class word count

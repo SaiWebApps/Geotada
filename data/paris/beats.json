@@ -80978,5 +80978,826 @@
     },
     "_word_count": 74,
     "script_body_hash": "11d44b2e193caa0fb14d43dfc8523e4b7636abaeca88ea3244f8d21756d9d2ec"
+  },
+  {
+    "beat_id": "paris_saint_sulpice_historic_worship_wikipedia_church_identity_and_founding",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "historic_worship",
+    "topic_slug": "church_identity_and_founding",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Saint-Sulpice is the second-largest church in Paris, dedicated to Sulpitius the Pious. The present building — the second on the site, raised over a Romanesque church from the 13th century — was founded in 1646 by the parish priest Jean-Jacques Olier, who had established the Society of Saint-Sulpice, a clerical congregation, and a seminary attached to the church. Anne of Austria laid the first stone.",
+    "script_body_hash": "d2ad1d31bdd6dd4f92874b9abd92105c26385e92823d96df6586f713a9a0bbb3",
+    "beat_length_class": "seasoning",
+    "duration_sec": 26,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean-Jacques Olier",
+      "Society of Saint-Sulpice",
+      "Anne of Austria",
+      "Sulpitius the Pious"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "neutral",
+    "subject_tag": "church founding",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Second largest church in Paris, dedicated to Sulpitius the Pious",
+      "Second building on site, over a 13th-c Romanesque church",
+      "Founded 1646 by Jean-Jacques Olier, founder of the Society of Saint-Sulpice",
+      "Anne of Austria laid the first stone"
+    ],
+    "source_passage": "It is the second largest church in the city. It is dedicated to Sulpitius the Pious. The present church is the second building on the site, erected over a Romanesque church originally constructed during the 13th century. The new building was founded in 1646 by parish priest Jean-Jacques Olier (1608–1657) who had established the Society of Saint-Sulpice, a clerical congregation, and a seminary attached to the church. Anne of Austria laid the first stone.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "Lead / History",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_sulpice_visual_art_wikipedia_our_lady_old_tableware",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "our_lady_old_tableware",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "At the far end of the church, in the Lady Chapel, stands a large white marble statue of the Virgin by Jean-Baptiste Pigalle. It is a replacement. The original was solid silver, sculpted by Edmé Bouchardon and cast from silverware donated by the parishioners — and it was known as \"Our Lady of the Old Tableware.\" That silver Virgin vanished at the time of the Revolution, and Pigalle's marble figure, ringed by stucco from Louis-Philippe Mouchy, has stood in her place ever since.",
+    "script_body_hash": "7955e80c0143d711978e7d20b1e79cca0594738b43615aa1a8f658b9ec48bd03",
+    "beat_length_class": "mid",
+    "duration_sec": 33,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean-Baptiste Pigalle",
+      "Edmé Bouchardon",
+      "Louis-Philippe Mouchy",
+      "Our Lady of the Old Tableware"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "old tableware virgin",
+    "physical_cues": [
+      {
+        "cue": "Large white marble statue of the Virgin by Pigalle in the Lady Chapel at the far end of the church",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Pigalle's white marble Virgin replaced a vanished solid-silver one by Bouchardon",
+      "Silver statue cast from parishioner silverware, called 'Our Lady of the Old Tableware'",
+      "Silver statue vanished during the Revolution"
+    ],
+    "source_passage": "Pigalle also designed the large white marble statue of Mary in the Lady Chapel at the far end of the church. The stucco decoration surrounding it is by Louis-Philippe Mouchy. Pigalle's work replaced a solid-silver statue by Edmé Bouchardon, which vanished at the time of the Revolution. It was cast from silverware donated by parishioners and was known as \"Our Lady of the Old Tableware\".",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "Interior",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_sulpice_historic_arch_wikipedia_oppenord_bell_tower",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "oppenord_bell_tower",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "When the architect Gilles-Marie Oppenord was working on the transept in the 1720s, he built a bell tower on top of the crossing, around 1725. It was a costly miscalculation: the tower's own weight threatened to collapse the structure, and it had to be removed. This may account for what came next — Oppenord was relieved of his duties as an architect and restricted to designing decoration.",
+    "script_body_hash": "74bc85cbed2209266d9f9436ed52373805eba7d8c66fb1ff96f713ebe6862119",
+    "beat_length_class": "seasoning",
+    "duration_sec": 27,
+    "kid_friendly": "yes",
+    "entities": [
+      "Gilles-Marie Oppenord"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "oppenord bell tower",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Oppenord built a crossing bell tower c. 1725",
+      "Its weight threatened collapse; it was removed",
+      "Oppenord was then demoted from architect to decoration"
+    ],
+    "source_passage": "He also built a bell tower on top of the transept crossing (c. 1725), which threatened to collapse the structure because of its weight and had to be removed. This miscalculation may account for the fact that Oppenord was then relieved of his duties as an architect and restricted to designing decoration.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "History",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_sulpice_war_conflict_wikipedia_revolutionary_pulpit",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "war_conflict",
+    "topic_slug": "revolutionary_pulpit",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The pulpit in the nave, designed by Charles de Wailly and completed in 1788, has a quirk: its oak canopy broadcasts sound so well it needs no amplification. It also became a stage for revolution. From here the parish priest of Saint-Sulpice declared his refusal to accept the Civil Constitution of the Clergy, and revolutionary orators used it later too. During the Paris Commune of 1871, the church served as headquarters of a faction called the Club de la Victoire, and Louise Michel spoke from this same pulpit.",
+    "script_body_hash": "e72e504c719437e21fac0dcd3b77a41581d56f9e01bb392e85ac07b7f3164ea0",
+    "beat_length_class": "mid",
+    "duration_sec": 35,
+    "kid_friendly": "yes",
+    "entities": [
+      "Charles de Wailly",
+      "Civil Constitution of the Clergy",
+      "Paris Commune",
+      "Club de la Victoire",
+      "Louise Michel"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "dramatic",
+    "subject_tag": "revolutionary pulpit",
+    "physical_cues": [
+      {
+        "cue": "The carved oak pulpit standing in the nave, designed by Charles de Wailly",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Pulpit designed by Charles de Wailly, completed 1788, oak canopy broadcasts sound",
+      "Priest refused the Civil Constitution of the Clergy from the pulpit",
+      "Louise Michel spoke from it during the 1871 Commune (Club de la Victoire HQ)"
+    ],
+    "source_passage": "De Wailly also designed the pulpit (in the nave), completed in 1788. The oak canopy broadcasts sound very well and it was from here that the parish priest of Saint-Sulpice declared his refusal to accept the Civil Constitution of the Clergy. Revolutionary orators used it later also. During the Paris Commune (1871) one faction, called the Club de la Victoire, chose Saint-Sulpice as its headquarters and Louise Michel spoke from the pulpit.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "Interior / Notable events",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_sulpice_social_change_wikipedia_supreme_being_sign",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "supreme_being_sign",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Look above the center door of the main entrance and you can still barely make out a printed sign. It dates from the Revolution, when Christianity was suppressed and Saint-Sulpice was turned into a place of worship for Robespierre's Cult of the Supreme Being. The faded words read: Le Peuple Français Reconnoit L'Etre Suprême Et L'Immortalité de L'Âme — \"The French people recognize the Supreme Being and the immortality of the soul.\"",
+    "script_body_hash": "00b029e4492a97dafcdac48c21ef17d35b1e3dd4880bc22b8c34018604f1cc74",
+    "beat_length_class": "seasoning",
+    "duration_sec": 29,
+    "kid_friendly": "yes",
+    "entities": [
+      "Cult of the Supreme Being",
+      "Robespierre"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "somber",
+    "subject_tag": "supreme being sign",
+    "physical_cues": [
+      {
+        "cue": "Faded printed sign above the center door of the main west entrance",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [
+      {
+        "phrase": "Le Peuple Français Reconnoit L'Etre Suprême Et L'Immortalité de L'Âme",
+        "gloss": "The French people recognize the Supreme Being and the immortality of the soul"
+      }
+    ],
+    "pronunciation": null,
+    "key_claims": [
+      "A faded printed sign survives over the center door",
+      "Dates from when the church was the Robespierrean Cult of the Supreme Being",
+      "Reads: 'The French people recognize the Supreme Being and the immortality of the soul'"
+    ],
+    "source_passage": "Another point of interest dating from the time of the Revolution, when Christianity was suppressed and Saint-Sulpice became a place of worship for the Robespierrean Cult of the Supreme Being, is a printed sign over the center door of the main entrance. One can still barely make out the printed words Le Peuple Français Reconnoit L'Etre Suprême Et L'Immortalité de L'Âme (\"The French people recognize the Supreme Being and the immortality of the soul\").",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "West façade",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_sulpice_literary_heritage_wikipedia_literary_baptisms_and_wedding",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "literary_heritage",
+    "topic_slug": "literary_baptisms_and_wedding",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Three names from French literature are written into Saint-Sulpice's records. The Marquis de Sade was baptized here in 1740, Charles Baudelaire in 1821, and in 1822 the church hosted the marriage of Victor Hugo to Adèle Foucher.",
+    "script_body_hash": "70e53acca252bdce0650b9bcbeb060e660d91cd565eec3b27050e667500b55ce",
+    "beat_length_class": "seasoning",
+    "duration_sec": 15,
+    "kid_friendly": "yes",
+    "entities": [
+      "Marquis de Sade",
+      "Charles Baudelaire",
+      "Victor Hugo",
+      "Adèle Foucher"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "hook",
+    "beat_type": "factoid",
+    "emotional_register": "neutral",
+    "subject_tag": "literary baptisms",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Marquis de Sade baptized 1740, Baudelaire baptized 1821",
+      "Victor Hugo married Adele Foucher here in 1822"
+    ],
+    "source_passage": "The Marquis de Sade and Charles Baudelaire were baptized in Saint-Sulpice (1740 and 1821, respectively), and the church also saw the marriage of Victor Hugo to Adèle Foucher (1822).",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "Notable events",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_saint_sulpice_film_tv_wikipedia_da_vinci_code_refutation",
+    "city_name": "paris",
+    "poi_name": "Saint-Sulpice",
+    "parent_poi": null,
+    "lens": "film_tv",
+    "topic_slug": "da_vinci_code_refutation",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_sulpice-rev-1354368793",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "When Dan Brown's 2003 novel The Da Vinci Code became an international bestseller, it brought crowds of tourists to Saint-Sulpice hunting for the secrets the book claimed were hidden here. The church pushed back with a note on display for visitors: the brass line in the floor is not the vestige of a pagan temple, it was never called a \"Rose-Line,\" and the letters P and S in the round transept windows stand for Peter and Sulpice, the church's patron saints — not for any imaginary \"Priory of Sion.\" In 2005, the Archdiocese of Paris refused Ron Howard permission to film inside the church for the movie.",
+    "script_body_hash": "5cc5eb9d33f10dead93a3405cb0b97ace0642d62add87969dd1fd481c2a1139b",
+    "beat_length_class": "mid",
+    "duration_sec": 43,
+    "kid_friendly": "yes",
+    "entities": [
+      "Dan Brown",
+      "The Da Vinci Code",
+      "Ron Howard",
+      "Priory of Sion"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "da vinci code",
+    "physical_cues": [
+      {
+        "cue": "The brass meridian line inlaid across the floor",
+        "direction": "here",
+        "feature_type": "interior"
+      },
+      {
+        "cue": "The letters P and S in the small round windows at both ends of the transept",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Da Vinci Code (2003) brought tourist crowds to Saint-Sulpice",
+      "Church posted a note refuting Rose-Line / pagan-temple / Priory of Sion claims",
+      "P and S windows = Peter and Sulpice, the patron saints",
+      "2005: Archdiocese refused Ron Howard permission to film inside"
+    ],
+    "source_passage": "Dan Brown's 2003 novel The Da Vinci Code was an international bestseller that brought crowds of tourists to Saint-Sulpice. This note has been on display in the church: Contrary to fanciful allegations in a recent best-selling novel, this [the line in the floor] is not a vestige of a pagan temple. No such temple ever existed in this place. It was never called a «Rose-Line». ... Please also note that the letters «P» and «S» in the small round windows at both ends of the transept refer to Peter and Sulpice, the patron saints of the church, not an imaginary «Priory of Sion». In 2005, the Archdiocese of Paris refused Ron Howard permission to film inside Saint-Sulpice when he was making The Da Vinci Code.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Sulpice, Paris",
+      "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+      "revision_id": "1354368793",
+      "section": "Cultural allusions",
+      "retrieved_at": "2026-05-28T05:07:33+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T05:07:33+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_arc_de_triomphe_du_carrousel_historic_arch_wikipedia_carrousel_identity_and_scale",
+    "city_name": "paris",
+    "poi_name": "Arc de Triomphe du Carrousel",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "carrousel_identity_and_scale",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "arc_de_triomphe_du_carrousel-rev-1344791373",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "You're standing at the smaller of Paris's two triumphal arches. Napoleon had it raised between 1806 and 1808 to commemorate his victories in the Wars of the Third and Fourth Coalitions, in the Neoclassical style, its columns set in the Corinthian order. Look down the long axis to the west and you can pick out its far more famous sibling, the Arc de Triomphe de l'Étoile, at the end of the Champs-Élysées — about twice this size. The two were designed in the same year, though that larger arch wasn't completed until 1836.",
+    "script_body_hash": "4f160412d537a9c60e5e24a12d92dbf496b4494d5068b27c1ba7380f9e3bdb97",
+    "beat_length_class": "mid",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Napoleon",
+      "Arc de Triomphe de l'Étoile",
+      "Champs-Élysées"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "grounded",
+    "subject_tag": "carrousel identity and scale",
+    "physical_cues": [
+      {
+        "cue": "the view west down the long axis toward the distant Arc de Triomphe de l'Étoile",
+        "direction": "west",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Neoclassical arch in the Corinthian order, built 1806-1808 for Napoleon's victories in the Wars of the Third and Fourth Coalitions",
+      "The Arc de Triomphe de l'Étoile at the end of the Champs-Élysées is about twice the size, designed the same year but finished only in 1836"
+    ],
+    "source_passage": "It is an example of Neoclassical architecture in the Corinthian order. It was built between 1806 and 1808 to commemorate Napoleon's military victories in the Wars of the Third and Fourth Coalitions. The Arc de Triomphe de l'Étoile, at the far end of the Champs-Élysées, is about twice the size; designed in the same year but not completed until 1836.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Arc de Triomphe du Carrousel",
+      "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+      "revision_id": "1344791373",
+      "section": "Lead",
+      "retrieved_at": "2026-05-28T18:43:36+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T18:43:36+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_arc_de_triomphe_du_carrousel_historic_arch_wikipedia_percier_fontaine_roman_models",
+    "city_name": "paris",
+    "poi_name": "Arc de Triomphe du Carrousel",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "percier_fontaine_roman_models",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "arc_de_triomphe_du_carrousel-rev-1344791373",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The arch was designed by Charles Percier and Pierre François Léonard Fontaine and raised for the Emperor Napoleon the First between 1806 and 1808. They modelled it openly on ancient Rome — in particular the Arch of Septimius Severus, and the Arch of Constantine, built there in the year 312. Around the outside stand eight Corinthian columns of marble. Those columns weren't cut for the arch at all: they were salvaged from the Château de Meudon, which had been pulled down in 1804.",
+    "script_body_hash": "361a6db2b3b85e20796fb8bdeae41d183b6390807270fd000f1cd0a42737823d",
+    "beat_length_class": "mid",
+    "duration_sec": 33,
+    "kid_friendly": "yes",
+    "entities": [
+      "Charles Percier",
+      "Pierre François Léonard Fontaine",
+      "Arch of Septimius Severus",
+      "Arch of Constantine",
+      "Château de Meudon"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "curious",
+    "subject_tag": "roman models and salvaged columns",
+    "physical_cues": [
+      {
+        "cue": "the eight marble Corinthian columns around the arch's exterior",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Designed by Charles Percier and Pierre François Léonard Fontaine, built 1806-1808 for Napoleon I",
+      "Modelled on Roman arches — the Arch of Septimius Severus and the Arch of Constantine (312 AD)",
+      "Its eight Corinthian marble columns were recovered from the Château de Meudon, destroyed in 1804"
+    ],
+    "source_passage": "Designed by Charles Percier and Pierre François Léonard Fontaine, the arch was built between 1806 and 1808 by the Emperor Napoleon I, on the model of the Arch of Constantine (312 AD) in Rome, as a gateway of the Tuileries Palace, the Imperial residence. Around its exterior are eight Corinthian columns of marble. These columns were recovered from the Château de Meudon, destroyed in 1804. The arch is derivative of the triumphal arches of the Roman Empire, in particular the Arch of Septimius Severus in Rome.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Arc de Triomphe du Carrousel",
+      "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+      "revision_id": "1344791373",
+      "section": "History",
+      "retrieved_at": "2026-05-28T18:43:36+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T18:43:36+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_arc_de_triomphe_du_carrousel_war_conflict_wikipedia_rose_marble_victory_reliefs",
+    "city_name": "paris",
+    "poi_name": "Arc de Triomphe du Carrousel",
+    "parent_poi": null,
+    "lens": "war_conflict",
+    "topic_slug": "rose_marble_victory_reliefs",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "arc_de_triomphe_du_carrousel-rev-1344791373",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The carved panels set into the arch are a roll-call of Napoleon's triumphs, worked in rose-coloured marble. Among them are the Battle of Austerlitz, the surrender of Ulm, the entrances into Vienna and Munich, the Peace of Pressburg, and the conference at Tilsit. The battle subjects were chosen by Vivant Denon, director of the Musée Napoléon — then housed in the Louvre — and drawn up by Charles Meynier.",
+    "script_body_hash": "a4335ac47b88bcd56b4976b5f732720f13b8888eee65561429ee93d26c5d8df5",
+    "beat_length_class": "seasoning",
+    "duration_sec": 28,
+    "kid_friendly": "yes",
+    "entities": [
+      "Battle of Austerlitz",
+      "Vivant Denon",
+      "Charles Meynier",
+      "Tilsit"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "grounded",
+    "subject_tag": "rose marble victory bas-reliefs",
+    "physical_cues": [
+      {
+        "cue": "the carved rose-marble battle panels set around the arch",
+        "direction": "here",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "The bas-reliefs commemorate Napoleon's 1805 victories, executed in rose marble",
+      "Battle subjects were selected by Vivant Denon, director of the Musée Napoléon in the Louvre, and designed by Charles Meynier"
+    ],
+    "source_passage": "Napoleon's diplomatic and military victories are commemorated by bas-reliefs executed in rose marble. The subjects of the bas-reliefs devoted to the battles were selected by the director of the Musée Napoléon (located at the time in the Louvre), Vivant Denon, and designed by Charles Meynier.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Arc de Triomphe du Carrousel",
+      "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+      "revision_id": "1344791373",
+      "section": "Description",
+      "retrieved_at": "2026-05-28T18:43:36+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T18:43:36+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_arc_de_triomphe_du_carrousel_visual_art_wikipedia_eight_soldier_statues_sapper",
+    "city_name": "paris",
+    "poi_name": "Arc de Triomphe du Carrousel",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "eight_soldier_statues_sapper",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "arc_de_triomphe_du_carrousel-rev-1344791373",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Look up to the tops of the columns. Each is crowned by a marble soldier, and together the eight figures reproduce, in careful detail, the uniforms of the principal corps of Napoleon's imperial army. Only one of them portrays a real man. The sapper is modelled on Dominique Gaye Mariolle, a soldier known for his strength and for a height that topped two metres. He is remembered for a single gesture: during a review of the troops before Tilsit, in July 1807, he presented a cannon to Napoleon in place of a rifle.",
+    "script_body_hash": "7be21d52d14f78c9b973513babf12e52122ba0b9b9985778d37c68bd936e15ce",
+    "beat_length_class": "mid",
+    "duration_sec": 37,
+    "kid_friendly": "yes",
+    "entities": [
+      "Dominique Gaye Mariolle",
+      "Napoleon",
+      "Tilsit"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "hook",
+    "beat_type": "anecdote",
+    "emotional_register": "wonder",
+    "subject_tag": "the sapper, the only real soldier",
+    "physical_cues": [
+      {
+        "cue": "the marble soldier statues standing atop the columns",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Eight marble sculptures atop the columns reproduce the uniforms of the principal corps of Napoleon's imperial army",
+      "Only the sapper depicts a real man: Dominique Gaye Mariolle, over two metres tall",
+      "He famously presented a cannon instead of a rifle at Napoleon's troop review before Tilsit, July 1807"
+    ],
+    "source_passage": "On the top of each of the eight marble columns are marble sculptures that faithfully reproduce the uniforms of the principal corps of Napoleon's imperial army. The statue of the sapper is the only one that represents a real soldier, fr: Dominique Gaye Mariolle, who was known for his strength and height, which exceeded 2 meters. He is famous for having presented a cannon instead of a rifle during Napoleon's review of his troops prior to the battle of Tilsitt in July 1807.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Arc de Triomphe du Carrousel",
+      "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+      "revision_id": "1344791373",
+      "section": "Description",
+      "retrieved_at": "2026-05-28T18:43:36+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T18:43:36+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_arc_de_triomphe_du_carrousel_hidden_history_wikipedia_quadriga_horses_of_st_mark",
+    "city_name": "paris",
+    "poi_name": "Arc de Triomphe du Carrousel",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "quadriga_horses_of_st_mark",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "arc_de_triomphe_du_carrousel-rev-1344791373",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The chariot and horses on top of the arch carry a story of conquest and reversal. When the arch went up, it was crowned by the Horses of Saint Mark, taken from St Mark's Basilica in Venice — Napoleon had seized them in 1798. They didn't stay long. In 1815, after the defeat at Waterloo and the return of the Bourbon kings, France ceded the horses to the Austrian Empire, which then held Venice under the Congress of Vienna; the Austrians sent them straight back to Venice. So in 1828 they were replaced by the group you see now, sculpted by Baron François Joseph Bosio: Peace riding in a triumphal chariot, led by gilded Victories on either side — raised not to Napoleon, but to the restored Bourbon monarchy that had outlasted him.",
+    "script_body_hash": "d51c918b6c861183bd5f5743023a68904351e94ab33d5a8afef63f8e5bbe49ea",
+    "beat_length_class": "mid",
+    "duration_sec": 53,
+    "kid_friendly": "yes",
+    "entities": [
+      "Horses of Saint Mark",
+      "St Mark's Basilica",
+      "Venice",
+      "Napoleon",
+      "Congress of Vienna",
+      "François Joseph Bosio"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "dramatic",
+    "subject_tag": "the travelling quadriga",
+    "physical_cues": [
+      {
+        "cue": "the quadriga of Peace in a chariot, led by gilded Victories, atop the arch",
+        "direction": "up",
+        "feature_type": "architectural_detail"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Originally crowned by the Horses of Saint Mark, seized from Venice by Napoleon in 1798",
+      "Returned to Venice in 1815 after Waterloo via the Austrian Empire and the Congress of Vienna",
+      "Replaced in 1828 by Bosio's quadriga of Peace led by gilded Victories, commemorating the Bourbon Restoration"
+    ],
+    "source_passage": "It was originally surmounted by the Horses of Saint Mark from St Mark's Basilica in Venice, which had been captured in 1798 by Napoleon. In 1815, following the Battle of Waterloo and the Bourbon restoration, France ceded the quadriga to the Austrian Empire which had annexed Venice under the terms of the Congress of Vienna. The Austrians immediately returned the statuary to Venice. The horses of Saint Mark were replaced in 1828 by a quadriga sculpted by Baron François Joseph Bosio, depicting Peace riding in a triumphal chariot led by gilded Victories on both sides. The composition commemorates the Restoration of the Bourbons following Napoleon's downfall.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Arc de Triomphe du Carrousel",
+      "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+      "revision_id": "1344791373",
+      "section": "History",
+      "retrieved_at": "2026-05-28T18:43:36+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T18:43:36+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_arc_de_triomphe_du_carrousel_hidden_history_wikipedia_tuileries_gateway_axe_historique",
+    "city_name": "paris",
+    "poi_name": "Arc de Triomphe du Carrousel",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "tuileries_gateway_axe_historique",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "arc_de_triomphe_du_carrousel-rev-1344791373",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "This arch was never meant to stand on its own. It was built as the ceremonial gateway to the Tuileries Palace, the imperial residence that once closed off this end of the Louvre. That palace is gone — destroyed in 1871, during the Paris Commune — and clearing its ruins opened the long, unobstructed view west, straight toward the distant Arc de Triomphe. What you're standing on is the eastern end of the Axe historique, the 'historic axis': a roughly nine-kilometre line running out across the northwestern quarter of the city, arch aligned with arch all the way to the horizon.",
+    "script_body_hash": "97a11a5fc15f12104892450c7c67df6e192f9d22c00ef56568379d034a58f734",
+    "beat_length_class": "mid",
+    "duration_sec": 40,
+    "kid_friendly": "yes",
+    "entities": [
+      "Tuileries Palace",
+      "Paris Commune",
+      "Arc de Triomphe",
+      "Axe historique",
+      "Louvre"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "contemplative",
+    "subject_tag": "gateway to a vanished palace",
+    "physical_cues": [
+      {
+        "cue": "the open western view down the axis toward the distant Arc de Triomphe, where the Tuileries Palace once stood",
+        "direction": "west",
+        "feature_type": "view"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Built as the ceremonial gateway to the Tuileries Palace, the imperial residence",
+      "The palace was destroyed in the 1871 Paris Commune, opening the unobstructed western view",
+      "The arch marks the eastern end of the nine-kilometre Axe historique"
+    ],
+    "source_passage": "as a gateway of the Tuileries Palace, the Imperial residence. The destruction of the Tuileries Palace during the Paris Commune in 1871, allowed an unobstructed view west towards the Arc de Triomphe. The Arc de Triomphe du Carrousel is at the eastern end of Paris Axe historique (\"historic axis\"), a nine-kilometre-long linear route which dominates much of the northwestern quadrant of the city.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Arc de Triomphe du Carrousel",
+      "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+      "revision_id": "1344791373",
+      "section": "History",
+      "retrieved_at": "2026-05-28T18:43:36+00:00"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": ""
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-05-28T18:43:36+00:00",
+      "city_name": "paris"
+    }
   }
 ]

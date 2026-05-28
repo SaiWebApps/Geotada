@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -133,6 +133,9 @@ setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 
 upload-paris: ## Upload full Paris dataset to active Neo4j instance
 	uv run python -m scripts.upload_paris
+
+wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
+	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)
 
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS

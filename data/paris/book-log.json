@@ -1289,6 +1289,32 @@
           "model": "sonnet"
         }
       ]
+    },
+    {
+      "book_title": "Wikipedia",
+      "author": "Wikipedia contributors",
+      "chunks_processed": [
+        {
+          "chunk": "saint_sulpice-rev-1354368793",
+          "processed_at": "2026-05-28T05:07:33+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Saint-Sulpice"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "arc_de_triomphe_du_carrousel-rev-1344791373",
+          "processed_at": "2026-05-28T18:43:36+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Arc de Triomphe du Carrousel"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        }
+      ]
     }
   ]
 }

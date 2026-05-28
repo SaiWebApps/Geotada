@@ -463,6 +463,58 @@ def test_validate_beat_warns_on_unflagged_fabrication():
     assert any("fabrication probe" in w for w in verdict.warnings)
 
 
+def test_validate_beat_grounding_violation_when_passage_absent():
+    """The memory-fabrication failure: a source_passage reconstructed from
+    memory whose sentences don't appear in the pinned chunk is a HARD error."""
+    beat = _minimal_beat(
+        source_passage=(
+            "The arch is three times the size of its sibling. The eight statues "
+            "were carved by Ramey and Cartellier. The horses came from Berlin."
+        ),
+        beat_length_class="mid",
+        script_body="x " * 100,
+    )
+    chunk = "The monument is built of marble. It stands in a public square. Visitors pass it daily."
+    verdict = validate_beat(beat, chunk_text=chunk)
+    assert not verdict.ok
+    assert any("source-grounding violation" in e for e in verdict.errors)
+
+
+def test_validate_beat_grounding_passes_when_passage_in_larger_chunk():
+    """A faithful passage that appears verbatim inside a longer chunk passes."""
+    passage = "It was built between 1806 and 1808. The arch stands at the Place du Carrousel."
+    beat = _minimal_beat(
+        source_passage=passage, beat_length_class="seasoning", script_body="x " * 40
+    )
+    chunk = (
+        "The Arc de Triomphe du Carrousel is a triumphal arch. It was built between 1806 and "
+        "1808. The arch stands at the Place du Carrousel, near the Louvre."
+    )
+    verdict = validate_beat(beat, chunk_text=chunk)
+    assert verdict.ok
+    assert not any("source-grounding" in e for e in verdict.errors)
+
+
+def test_validate_beat_grounding_tolerates_single_broken_fragment():
+    """One absent fragment in a short passage (e.g. an OCR/page-break artifact)
+    must NOT hard-block — the gate fires only on >=2 ungrounded fragments."""
+    beat = _minimal_beat(
+        source_passage=(
+            "The arch was built between 1806 and 1808. "
+            "The statues were sculpted by aliens from Mars."
+        ),
+        beat_length_class="seasoning",
+        script_body="x " * 40,
+    )
+    chunk = (
+        "The arch was built between 1806 and 1808 by Napoleon. "
+        "It stands at the Place du Carrousel."
+    )
+    verdict = validate_beat(beat, chunk_text=chunk)
+    assert verdict.ok
+    assert not any("source-grounding" in e for e in verdict.errors)
+
+
 # ─── audit_chunk ─────────────────────────────────────────────────────
 
 
