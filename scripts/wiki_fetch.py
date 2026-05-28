@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import urllib.parse
 import urllib.request
@@ -79,6 +80,17 @@ def main(argv: list[str]) -> int:
     parser.add_argument("--title", help="Wikipedia article title (defaults to --name)")
     args = parser.parse_args(argv)
 
+    # Sanitize city before it touches the filesystem path — never trust it raw
+    # (a value like "../../x" would otherwise write outside the data tree).
+    city = args.city.lower()
+    if not re.fullmatch(r"[a-z0-9_-]+", city):
+        print(json.dumps(
+            {"status": "invalid_city", "requested_city": args.city,
+             "note": "city must be a slug: lowercase letters, digits, hyphen, underscore."},
+            indent=2,
+        ))
+        return 0
+
     poi_slug = slugify(args.name)
     title = args.title or args.name
     data = fetch_article(title)
@@ -101,12 +113,12 @@ def main(argv: list[str]) -> int:
     revid = str(rev["revid"])
     extract = page.get("extract", "")
 
-    wiki_dir = Path(f"data/{args.city}/wikipedia")
+    wiki_dir = Path(f"data/{city}/wikipedia")
     wiki_dir.mkdir(parents=True, exist_ok=True)
     saved_path = wiki_dir / f"{poi_slug}-rev-{revid}.txt"
     saved_path.write_text(extract)
 
-    log_scan = scan_log(Path(f"data/{args.city}/book-log.json"), poi_slug, revid)
+    log_scan = scan_log(Path(f"data/{city}/book-log.json"), poi_slug, revid)
 
     url_title = urllib.parse.quote(resolved_title.replace(" ", "_"))
     summary = {

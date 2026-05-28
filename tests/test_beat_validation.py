@@ -168,3 +168,59 @@ def test_validator_city_isolated(tmp_path):
     paris_second = run_validator(paris_copy)
     assert london_first.returncode == 0
     assert paris_second.returncode == 0
+
+
+# ── commit-time Wikipedia source-grounding gate ──
+
+
+def _wiki_beat(chunk: str, source_passage: str) -> dict:
+    return {
+        "beat_id": "paris_test_poi_historic_arch_wikipedia_t",
+        "city_name": "paris",
+        "poi_name": "Test POI",
+        "lens": "historic_arch",
+        "book_slug": "wikipedia",
+        "topic_slug": "t",
+        "source_chunk_slug": chunk,
+        "script_body_hash": "deadbeef",
+        "source_passage": source_passage,
+    }
+
+
+def test_validator_wikipedia_grounded_passes(tmp_path):
+    """A Wikipedia beat whose source_passage is in the pinned .txt passes."""
+    chunk = "test_poi-rev-123"
+    (tmp_path / "wikipedia").mkdir()
+    text = "The arch was built in 1806. It stands at the Place du Carrousel near the Louvre."
+    (tmp_path / "wikipedia" / f"{chunk}.txt").write_text(text)
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_wiki_beat(chunk, text)]))
+    result = run_validator(target)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_validator_wikipedia_ungrounded_fails(tmp_path):
+    """A source_passage absent from the pinned .txt is blocked at commit."""
+    chunk = "test_poi-rev-123"
+    (tmp_path / "wikipedia").mkdir()
+    (tmp_path / "wikipedia" / f"{chunk}.txt").write_text(
+        "The monument is built of marble. It stands in a public square."
+    )
+    passage = (
+        "The arch is three times the size of its sibling. The statues were carved "
+        "by Ramey and Cartellier. The horses came from Berlin."
+    )
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_wiki_beat(chunk, passage)]))
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "WIKIPEDIA_UNGROUNDED" in result.stdout
+
+
+def test_validator_wikipedia_missing_source_fails(tmp_path):
+    """A Wikipedia beat whose pinned .txt is absent cannot be committed."""
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_wiki_beat("absent-rev-9", "Some claim here that has words.")]))
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "WIKIPEDIA_MISSING_SOURCE" in result.stdout
