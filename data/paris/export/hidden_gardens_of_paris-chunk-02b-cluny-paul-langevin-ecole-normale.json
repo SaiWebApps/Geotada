@@ -1,0 +1,1024 @@
+[
+  {
+    "name": "Jardins du Musee de Cluny",
+    "short_description": "Medieval-themed enclosed gardens at the Musée de Cluny, arranged thematically around love, nature, and the soul, inspired by medieval hortus conclusus tradition.",
+    "latitude": 48.8522,
+    "longitude": 2.3447,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Gardens of the Musée de Cluny",
+      "Jardins du Musée de Cluny",
+      "Cluny Museum Gardens"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_jardins_du_musee_de_cluny_parks_gardens_hidden_gardens_of_paris_medieval_themed_gardens",
+        "city_name": "paris",
+        "poi_name": "Jardins du Musee de Cluny",
+        "lens": "parks_gardens",
+        "topic_slug": "medieval_themed_gardens",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "These small enclosed gardens feel undiscovered and private, the traffic beyond the boulevard's high hedges just a murmur. Inspired by medieval models, they are arranged thematically. \"The Love Garden,\" in season fragrant with roses, symbolizes the object of the heart's desire. Plantings of hazel, elder, quince, and holly fill \"The Forest of the Unicorn.\" \"The Children's Glade\" imitates a medieval bestiary: rabbits, foxes, and a unicorn play and hide. \"The Heavenly Garden,\" beneath the shadows of a stately tree of flamboyantly wide branches, signifies the garden as a figure of the soul — a private sanctuary, attached to the cloister — hortus conclusus — an image found in the biblical Song of Songs and the writings of medieval women mystics.",
+        "duration_sec": 76,
+        "kid_friendly": "yes",
+        "entities": [
+          "Song of Songs"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "medieval garden themes",
+        "physical_cues": [
+          {
+            "cue": "High hedges screening the boulevards; thematic garden sections with named plantings",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Stately tree with flamboyantly wide branches in The Heavenly Garden",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "hortus conclusus",
+            "gloss": "enclosed garden, a private sanctuary attached to the cloister"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Gardens arranged thematically on medieval models",
+          "Four named sections: Love Garden, Forest of the Unicorn, Children's Glade, Heavenly Garden",
+          "hortus conclusus image from biblical Song of Songs and medieval women mystics"
+        ],
+        "source_passage": "These small enclosed gardens feel undiscovered and private, the traffic beyond the boulevard's high hedges just a murmur. Inspired by medieval models, they are arranged thematically. \"The Love Garden,\" in season fragrant with roses, symbolizes the object of the heart's desire: \"The rose is Beauty and Love.\" In the Middle Ages it was Mary's flower, the central stained-glass image on the façade of Notre-Dame, Chartres, and other Gothic cathedrals. Plantings of hazel, elder, quince, and holly fill \"The Forest of the Unicorn.\" \"The Children's Glade\" imitates a medieval bestiary: rabbits, foxes, and a unicorn play and hide. \"The Heavenly Garden,\" beneath the shadows of a stately tree of flamboyantly wide branches, signifies the garden as a figure of the soul, a private sanctuary, attached to the cloister—hortus conclusus—an image found in the biblical Song of Songs and the writings of medieval women mysticsfl",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardins du Musee de Cluny"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 120
+      },
+      {
+        "beat_id": "paris_jardins_du_musee_de_cluny_sacred_traditions_hidden_gardens_of_paris_heavenly_garden_mary_virginal_flowers",
+        "city_name": "paris",
+        "poi_name": "Jardins du Musee de Cluny",
+        "lens": "sacred_traditions",
+        "topic_slug": "heavenly_garden_mary_virginal_flowers",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "\"The Heavenly Garden\" is also a metaphor for the Blessed Virgin Mary, the bride of the Song of Songs according to Christian interpretation, her love for humanity manifested in lily of the valley, violets, daisies, roses, and strawberries. As in all monastic cloister gardens, the intimacy between the soul's interiority and a sensory embrace of life is palpable, expressive of a time that \"had little difficulty in squaring love of God with love of worldly beauty and of the sensuous world.\" In the High Middle Ages and especially in Paris, amor mundi — love of the world — was a state of beatitude.",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Blessed Virgin Mary",
+          "Song of Songs"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "amor mundi monastic",
+        "physical_cues": [
+          {
+            "cue": "Plantings of lily of the valley, violets, daisies, roses, and strawberries in The Heavenly Garden",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "amor mundi",
+            "gloss": "love of the world, a state of beatitude in the High Middle Ages"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Heavenly Garden symbolizes the Blessed Virgin Mary",
+          "Mary's flowers: lily of the valley, violets, daisies, roses, strawberries",
+          "amor mundi was a state of beatitude in the High Middle Ages, especially in Paris"
+        ],
+        "source_passage": "\"The Heavenly Garden\" is also a metaphor for the Blessed Virgin Mary, the bride of the Song of Songs according to Christian interpretation, her love for humanity manifested in lily of the valley, violets, daisies, roses, and strawberries. As in all monastic cloister gardens, the intimacy between the soul's interiority and a sensory embrace of life is palpable, expressive of a time that \"had little difficulty in squaring love of God with love of worldly beauty and of the sensuous world.\" In the High Middle Ages and especially in Paris, amor mundi was a state of beatitude.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardins du Musee de Cluny"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 102
+      },
+      {
+        "beat_id": "paris_jardins_du_musee_de_cluny_literary_heritage_hidden_gardens_of_paris_hadewijch_song_of_songs_mystical",
+        "city_name": "paris",
+        "poi_name": "Jardins du Musee de Cluny",
+        "lens": "literary_heritage",
+        "topic_slug": "hadewijch_song_of_songs_mystical",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The thirteenth-century Hadewijch saw the garden of the Song of Songs as an emblem of a mystical relationship between the soul — personified as female — and the God of Love. Her verse gives voice to the garden's meaning: \"You ravish my heart, my sister, my promised bride... How delicious is your love, more delicious than wine! How fragrant your perfumes, more fragrant than all spices!... She is a garden enclosed, my sister, my promised bride; a garden enclosed, a sealed fountain.\"",
+        "duration_sec": 63,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hadewijch",
+          "Song of Songs"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Hadewijch mystic garden",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Thirteenth-century Hadewijch interpreted the garden of the Song of Songs as a mystical relationship between the soul and the God of Love",
+          "The soul personified as female in Hadewijch's vision"
+        ],
+        "source_passage": "The thirteenth-century Hadewijch saw the garden of the Song of Songs as an emblem of a mystical relationship between the soul—personified as female—and the God of Love: You ravish my heart, my sister, my promised bride,... How delicious is your love, more delicious than wine! How fragrant your perfumes, more fragrant than all spices!... She is a garden enclosed, my sister, my promised bride; a garden enclosed, a sealed fountain.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardins du Musee de Cluny"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 82
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Square Paul-Painleve",
+    "short_description": "Small square on the south side of rue des Ecoles adjacent to the Musée de Cluny, featuring a bronze statue of Michel de Montaigne and flanked by Librairie Compagnie and Brasserie Balzar.",
+    "latitude": 48.8517,
+    "longitude": 2.3443,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Square Paul-Painlevé",
+      "place Paul-Painleve"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_square_paul_painleve_famous_residents_hidden_gardens_of_paris_montaigne_statue_students",
+        "city_name": "paris",
+        "poi_name": "Square Paul-Painleve",
+        "lens": "famous_residents",
+        "topic_slug": "montaigne_statue_students",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": "rue des Ecoles, south side of Square Paul-Painleve",
+        "beat_length_class": "seasoning",
+        "script_body": "The bronze statue of Michel de Montaigne (1533–1592) on rue des Ecoles, on the south side of Square Paul-Painlevé, is a favorite icon of the Latin Quarter, regularly touched and caressed by passing students. \"I have seen the leaves, the flowers, and the fruit,\" he wrote in old age. \"Now I see the withering—happily, since it is natural.\"",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Michel de Montaigne"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "Montaigne statue touch",
+        "physical_cues": [
+          {
+            "cue": "Bronze statue of Montaigne on the south side of Square Paul-Painlevé, worn from being touched by students",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Bronze statue of Michel de Montaigne on rue des Ecoles at Square Paul-Painlevé",
+          "Regularly touched and caressed by passing students",
+          "Montaigne lived 1533–1592"
+        ],
+        "source_passage": "MICHEL DE MONTAIGNE The bronze statue of the great philosopher-essayist (1533—1592) on rue des Ecoles, on the south side of Square Paul-Painleve, is a favorite icon of the Latin Quarter, regularly touched and caressed by passing students. \"I have seen the leaves, the flowers, and the fruit,\" he wrote in old age. \"Now I see the withering—happily, since it is natural.\"",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Square Paul-Painleve"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 61
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Square Paul-Langevin",
+    "short_description": "Flower-bordered square beneath la Montagne Sainte-Geneviève named for physicist Paul Langevin, featuring a statue of François Villon and the ivy-covered rear wall of the former Ecole Polytechnique.",
+    "latitude": 48.8509,
+    "longitude": 2.3507,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Square Paul Langevin"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_square_paul_langevin_science_tech_hidden_gardens_of_paris_langevin_ultrasound_vichy",
+        "city_name": "paris",
+        "poi_name": "Square Paul-Langevin",
+        "lens": "science_tech",
+        "topic_slug": "langevin_ultrasound_vichy",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The square is named for physicist Paul Langevin (1872–1946), renowned for his discovery of ultrasound, the process of echolocation, used to detect the presence of German submarines. Acclaimed throughout the European scientific community, Langevin was a fierce opponent of Nazism — his daughter, une Résistante, survived imprisonment in several concentration camps — and was removed from his position at the Ecole de Physique et Chimie by the Vichy government. He outlived the Occupation and is buried over the hill in the Pantheon, the monumental tomb of France's great men and women. Buried near Langevin are the remains of his mentors Pierre and Marie Curie. After Pierre Curie's death, Marie Curie and Langevin had an affair; Langevin was still married and had four children. Marie Curie, who was born in Poland, was ostracized as a foreigner and condemned in the right-wing press — they accused her of being a Jew — and her home was attacked by a mob while she was in Stockholm picking up her second Nobel Prize.",
+        "duration_sec": 114,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paul Langevin",
+          "Ecole de Physique et Chimie",
+          "Vichy government",
+          "Pierre Curie",
+          "Marie Curie",
+          "Pantheon"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "somber",
+        "subject_tag": "Langevin physicist resistance",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "une Résistante",
+            "gloss": "a female member of the French Resistance"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Paul Langevin (1872–1946) discovered ultrasound / echolocation used to detect German submarines",
+          "Langevin removed from his position at Ecole de Physique et Chimie by Vichy government",
+          "Langevin buried in the Pantheon near Pierre and Marie Curie",
+          "Marie Curie and Langevin had an affair after Pierre Curie's death; Langevin had four children",
+          "Marie Curie's home was attacked while she was in Stockholm collecting her second Nobel Prize"
+        ],
+        "source_passage": "It's named for physicist Paul Langevin (1872—1946), renowned for his discovery of ultrasound, the process of echolocation, used to detect the presence of German submarines. Acclaimed throughout the European scientific community, Langevin, a fierce opponent of Nazism (whose daughter, une Resistante, survived imprisonment in several concentration camps), was removed from his position at the Ecole de Physique et Chimie by the Vichy government. He outlived the Occupation and is buried over the hill in the Pantheon (climb the serpentine rue de la Montagne Sainte-Genevieve to the Place du Pantheon), the monumental tomb of France's great men and women. Buried near Langevin are the remains of his mentors Pierre and Marie Curie. After Pierre Curie's death, Marie Curie and Langevin had an affair; Langevin was still married and had four children. Marie Curie, who was born in Poland, was ostracized as a foreigner and condemned in the right-wing press—they accused her of being a Jew—and her home was attacked by a mob while she was in Stockholm picking up her second Nobel Prize.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Square Paul-Langevin"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 169
+      },
+      {
+        "beat_id": "paris_square_paul_langevin_literary_heritage_hidden_gardens_of_paris_villon_medieval_poet_exile",
+        "city_name": "paris",
+        "poi_name": "Square Paul-Langevin",
+        "lens": "literary_heritage",
+        "topic_slug": "villon_medieval_poet_exile",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The square also commemorates, in a statue of François Villon (1431–1472), the first modern poet of France as well as the last great poet of the Middle Ages. In a time of violent death, famine, and invasion, Villon lived the lawless life of a perpetual student in the lawless Latin Quarter, this Left Bank student neighborhood where, from the beginning, Latin was the language of the schools. Villon, fighting over a girl, killed a priest in self-defense, thieved, womanized, and was jailed regularly, almost executed, finally exiled. The songs he wrote are boisterous, the poems lyrical evocations of the era's melancholy and nostalgia for the optimism of the High Middle Ages: the refrain \"Mais où sont les neiges d'antan?\" — Where are the snows of yesteryear? — is from the poem \"Ballade des Dames du Temps Jadis\" (\"The Ballad of the Women of Yore\"). The prayers and songs he wrote to Mary — his \"Dame des ciel\" (Lady of heaven) — are as sweetly passionate as his love poems. Published posthumously in Paris in 1489, Villon as poet and bohemian would later appeal to such poets as Verlaine, Pound, and Huysmans.",
+        "duration_sec": 130,
+        "kid_friendly": "no",
+        "entities": [
+          "François Villon",
+          "Verlaine",
+          "Ezra Pound",
+          "Huysmans"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic",
+        "subject_tag": "Villon lawless poet",
+        "physical_cues": [
+          {
+            "cue": "Statue of François Villon in the square",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Mais où sont les neiges d'antan?",
+            "gloss": "Where are the snows of yesteryear?"
+          },
+          {
+            "phrase": "Ballade des Dames du Temps Jadis",
+            "gloss": "The Ballad of the Women of Yore"
+          },
+          {
+            "phrase": "Dame des ciel",
+            "gloss": "Lady of heaven"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "François Villon (1431–1472) was the first modern poet and last great poet of the Middle Ages",
+          "Villon killed a priest in self-defense, was jailed, almost executed, finally exiled",
+          "Refrain 'Mais où sont les neiges d'antan?' from 'Ballade des Dames du Temps Jadis'",
+          "Works published posthumously in Paris in 1489",
+          "Influenced later poets Verlaine, Pound, and Huysmans"
+        ],
+        "source_passage": "The Square also commemorates, in a statue of Francois Villon (1431—1472), the first modern poet of France as well as the last great poet of the Middle Ages. In a time of violent death, famine, and invasion, Villon lived the lawless life of a perpetual student in the lawless Latin Quarter, this Left Bank student neighborhood where, from the beginning, Latin was the language of the schools. Villon, fighting over a girl, killed a priest in self-defense, thieved, womanized, and was jailed regularly, almost executed, finally exiled. The songs he wrote are boisterous, the poems lyrical evocations of the era's melancholy and nostalgia for the optimism of the High Middle Ages: the refrain \"Mais ou sont les neiges d'antan?\" (Where are the snows of yesteryear?) is from the poem \"Ballade des Dames du Temps Jadis\" (\"The Ballad of the Women of Yore\"). The prayers and songs he wrote to Mary—his \"Dame des ciel\" (Lady of heaven)—are as sweetly passionate as his love poems. Published posthumously in Paris in 1489, Villon as poet and bohemian would later appeal to such poets as Verlaine, Pound, and Huysmans.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Square Paul-Langevin"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 191
+      },
+      {
+        "beat_id": "paris_square_paul_langevin_parks_gardens_hidden_gardens_of_paris_ivy_wall_fountain_angels",
+        "city_name": "paris",
+        "poi_name": "Square Paul-Langevin",
+        "lens": "parks_gardens",
+        "topic_slug": "ivy_wall_fountain_angels",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The south side of the square fits into the high rear wall of what was formerly the Ecole Polytechnique (since moved to the suburbs) and is now the Research Ministry. A charming old moss-covered fountain is embedded in the wall, which is covered with ivy and flowers and sculpted angels by Ingres; behind it, a staircase overflowing with viburnum plants looks like a green mossy sculpture. The children's playground, filled with fathers and kids on a Sunday afternoon, is wonderful to behold.",
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "entities": [
+          "Ecole Polytechnique",
+          "Ingres"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "ivy wall fountain",
+        "physical_cues": [
+          {
+            "cue": "Moss-covered fountain embedded in the ivy-covered rear wall of the former Ecole Polytechnique, with sculpted angels",
+            "direction": "south",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Staircase behind the wall overflowing with viburnum plants",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "South wall is the rear of the former Ecole Polytechnique, now the Research Ministry",
+          "Moss-covered fountain with sculpted angels by Ingres embedded in the wall",
+          "Wall covered with ivy and flowers; staircase overflowing with viburnum"
+        ],
+        "source_passage": "The south side of the square fits into the high rear wall of what was formerly the Ecole Polytechnique (since moved to the suburbs) and is now the Research Ministry. A charming old moss-covered fountain is embedded in the wall, which is covered with ivy and flowers and sculpted angels by Ingres; behind it, a staircase overflowing with viburnum plants looks like a green mossy sculpture. The children's playground, filled with fathers and kids on a Sunday afternoon, is wonderful to behold.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Square Paul-Langevin"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [
+          {
+            "claim": "Sculpted angels by Ingres on the wall",
+            "note": "Jean-Auguste-Dominique Ingres was a painter, not a sculptor. The attribution of sculptural work to Ingres on this wall is architecturally unusual. However, Cahill's text makes this claim; it is reproduced as written. No auto-correction applied (single source). Flag for fact-check: possible misattribution or reference to a relief/design Ingres contributed.",
+            "sources": []
+          }
+        ],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 84
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Jardin Carre",
+    "short_description": "Serene topiary garden with a square pool at 11 rue Descartes, created in the courtyard of the original Ecole Polytechnique (1794), a public hideaway for Sorbonne academic families.",
+    "latitude": 48.8481,
+    "longitude": 2.3505,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Jardin Carré",
+      "Jardin Carré de l'Ecole Polytechnique"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_jardin_carre_parks_gardens_hidden_gardens_of_paris_polytechnique_courtyard_topiary",
+        "city_name": "paris",
+        "poi_name": "Jardin Carre",
+        "lens": "parks_gardens",
+        "topic_slug": "polytechnique_courtyard_topiary",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": "11, rue Descartes",
+        "beat_length_class": "seasoning",
+        "script_body": "Enter at 11, rue Descartes, to the left as you ascend from rue des Ecoles. A serene and sprawling green space of topiary with a square pool in the center, it's a public hideaway for academic families of the Sorbonne. On the grounds of some of the original fourteenth-century colleges, it was created in the courtyard of the original building of the Ecole Polytechnique (1794). You can see its rear ivy-covered wall from Square Paul-Langevin.",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "entities": [
+          "Ecole Polytechnique",
+          "Sorbonne"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "hidden topiary garden",
+        "physical_cues": [
+          {
+            "cue": "Entrance at 11, rue Descartes; topiary green space with square pool in center",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Ivy-covered rear wall visible from Square Paul-Langevin",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Enter at 11, rue Descartes",
+          "Topiary garden with square pool; created in courtyard of original Ecole Polytechnique (1794)",
+          "On grounds of some original fourteenth-century colleges"
+        ],
+        "source_passage": "JARDIN CARRE Enter at 11, rue Descartes, to the left as you ascend from rue des Ecoles (bearing left at the square). A serene and sprawling green space of topiary with a square pool in the center, it's a public hideaway for academic families of the Sorbonne. On the grounds of some of the original fourteenth-century colleges, it was created in the courtyard of the original building of the Ecole Polytechnique (1794). You see its rear ivy-covered wall from Square Paul-Langevin.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin Carre"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 79
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Musee de Cluny",
+    "short_description": "Medieval art museum built atop 2nd-century Gallo-Roman thermal baths, home to the Lady and the Unicorn tapestries",
+    "latitude": 48.850474,
+    "longitude": 2.343391,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Musee National du Moyen Age",
+      "Thermes de Cluny",
+      "National Museum of the Middle Ages"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_musee_de_cluny_visual_art_hidden_gardens_of_paris_lady_unicorn_tapestries_mille_fleurs",
+        "city_name": "paris",
+        "poi_name": "Musee de Cluny",
+        "lens": "visual_art",
+        "topic_slug": "lady_unicorn_tapestries_mille_fleurs",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Lady with the Unicorn tapestries are located in room 13 on the first floor of the Musée du Moyen Age (Hotel de Cluny). The scarlet red background of the six tapestries, woven in wool and silk in the mille-fleurs — or thousand flowers — design, are strewn with tiny flowers, plants, and birds, each one an exquisite garden world of allegorical mystery, beautifully lit and displayed. Five of the tapestries symbolize the five senses. In the fourth, the Lady weaves a wreath of carnations and a monkey inhales the perfume of a rose, evoking the sense of smell. Following the medieval taste for multiple symbolism, the unicorn can be seen as both a religious and a profane image, both a Christ figure and a lover.",
+        "duration_sec": 86,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lady with the Unicorn tapestries",
+          "Musée du Moyen Age"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Lady Unicorn tapestries",
+        "physical_cues": [
+          {
+            "cue": "Room 13, first floor of the Musée du Moyen Age — six tapestries on scarlet red background",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "mille-fleurs",
+            "gloss": "thousand flowers design"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Six tapestries in room 13, first floor, woven in wool and silk in the mille-fleurs design",
+          "Five of the six tapestries symbolize the five senses",
+          "The unicorn represents both a Christ figure and a lover"
+        ],
+        "source_passage": "Located in room 13 on the first floor of the Musee du Moyen Age (Hotel de Cluny); open daily except Tues, 9:15—5:45. The scarlet red background of the six tapestries, woven in wool and silk in the mille-fleurs, or thousand flowers, design, are strewn with tiny flowers, plants, and birds, each one an exquisite garden world of allegorical mystery, beautifully lit and displayed. Five of the tapestries symbolize the five senses. In the fourth, the Lady weaves a wreath of carnations and a monkey inhales the perfume of a rose, evoking the sense of smell. Following the medieval taste for multiple symbolism, the unicorn can be seen as both a religious and a profane image, both a Christ figure and a lover.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "The Lady with the Unicorn Tapestries"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 125
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Ecole Normale Superieure",
+    "short_description": "France's most prestigious teacher-training institution founded in 1794, located on rue d'Ulm south of the Place du Pantheon.",
+    "latitude": 48.8421,
+    "longitude": 2.3447,
+    "importance_tier": 3,
+    "trigger_radius": 25,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "ENS",
+      "Normale Sup",
+      "Ecole Normale Superieure de la rue d'Ulm"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_ecole_normale_superieure_parks_gardens_hidden_gardens_of_paris_students_garden_fountain",
+        "city_name": "paris",
+        "poi_name": "Ecole Normale Superieure",
+        "lens": "parks_gardens",
+        "topic_slug": "students_garden_fountain",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The students' garden opens into a circular retreat around a splashing fountain under tall trees, boughs spread wide and low over benches and flower beds. It's an idyllic place, the undertone of conversation, serious and animated, an ongoing background thrum. The branches of a robust holly tree reach toward the sky. Above the graceful windows recessed under the roof of the school's surrounding walls are the stone heads of French genius: Foucault, Aragon, Lavoisier, Descartes, Pascal, Corneille, Molière, Racine, La Fontaine, Bossuet, Voltaire, Rousseau, Chateaubriand — a pantheon of secular gods high in the serious air.",
+        "duration_sec": 80,
+        "kid_friendly": "yes",
+        "entities": [
+          "Michel Foucault",
+          "Louis Aragon",
+          "Antoine Lavoisier",
+          "René Descartes",
+          "Blaise Pascal",
+          "Pierre Corneille",
+          "Molière",
+          "Jean Racine",
+          "Jean de La Fontaine",
+          "Jacques-Bénigne Bossuet",
+          "Voltaire",
+          "Jean-Jacques Rousseau",
+          "François-René de Chateaubriand"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "garden stone heads",
+        "physical_cues": [
+          {
+            "cue": "Circular garden with central fountain under tall trees; stone heads of French intellectual figures above windows on surrounding walls",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Robust holly tree with branches reaching toward the sky",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Garden is circular, around a splashing fountain under tall trees",
+          "Stone heads above windows: Foucault, Aragon, Lavoisier, Descartes, Pascal, Corneille, Molière, Racine, La Fontaine, Bossuet, Voltaire, Rousseau, Chateaubriand"
+        ],
+        "source_passage": "The students' garden opens into a circular retreat around a splashing fountain under tall trees, boughs spread wide and low over benches and flower beds. It's an idyllic place, the undertone of conversation, serious and animated, an ongoing background thrum. The branches of a robust holly tree reach toward the sky. Above the graceful windows recessed under the roof of the school's surrounding walls are the stone heads of French genius: Foucault, Aragon, Lavoisier, Descartes, Pascal, Corneille, Moliere, Racine, La Fontaine, Bossuet, Voltaire, Rousseau, Chateaubriand—a pantheon of secular gods high in the serious air.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "The Students Garden: L'Ecole Normale Superieure"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 97
+      },
+      {
+        "beat_id": "paris_ecole_normale_superieure_famous_residents_hidden_gardens_of_paris_tony_judt_republican_elite",
+        "city_name": "paris",
+        "poi_name": "Ecole Normale Superieure",
+        "lens": "famous_residents",
+        "topic_slug": "tony_judt_republican_elite",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The historian Tony Judt visited here in 1970 when he was an undergraduate at Cambridge, probing \"the mystery of French intellectuality.\" In his memoir, he asserts that to achieve clarity one must begin here, at the Ecole Normale. Founded in 1794 to train secondary school teachers, it became the forcing house of the republican elite. Between 1850 and 1970, virtually every Frenchman of intellectual distinction graduated from it — among them Sartre, Pasteur, Durkheim, Pompidou, Péguy, Derrida, Bergson, Rolland, Althusser, Debray, and Paul Langevin. Samuel Beckett taught here when he first came to Paris in 1928.",
+        "duration_sec": 79,
+        "kid_friendly": "yes",
+        "entities": [
+          "Tony Judt",
+          "Jean-Paul Sartre",
+          "Louis Pasteur",
+          "Émile Durkheim",
+          "Georges Pompidou",
+          "Charles Péguy",
+          "Jacques Derrida",
+          "Henri Bergson",
+          "Romain Rolland",
+          "Louis Althusser",
+          "Régis Debray",
+          "Paul Langevin",
+          "Samuel Beckett"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "normalien intellectual elite",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Tony Judt visited ENS in 1970 as Cambridge undergraduate",
+          "Founded in 1794 to train secondary school teachers",
+          "Between 1850 and 1970 virtually every French intellectual of distinction graduated from it",
+          "Graduates include Sartre, Pasteur, Durkheim, Pompidou, Péguy, Derrida, Bergson, Rolland, Althusser, Debray, Langevin",
+          "Samuel Beckett taught here in 1928"
+        ],
+        "source_passage": "The historian Tony Judt visited here in 1970 when he was an undergraduate at Cambridge. Probing \"the mystery of French intellectuality\" in his memoir Paris Was Yesterday, he asserts that to achieve clarity one must begin here, at the Ecole Normale: Founded in 1794 to train secondary school teachers, it became the forcing house of the republican elite. Between 1850 and 1970, virtually every Frenchman of intellectual distinction (women were not admitted until recently) graduated from it. Sartre, Pasteur, Durkheim, Pompidou, Peguy, Derrida, Bergson, Rolland, Althusser, Debray, Paul Langevin—each man started out as a normalien. (Samuel Beckett taught here when he first came to Paris in 1928.)",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "The Students Garden: L'Ecole Normale Superieure"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [
+          {
+            "field": "source_attribution.book_title",
+            "note": "Cahill attributes the Judt quote to 'Paris Was Yesterday' — this is actually the title of a book by Janet Flanner; Judt's memoir is 'The Memory Chalet'. The article in question ('Historian's Progress', NY Review of Books, March 11, 2010) is correctly cited in the footnote. The beat quotes Judt accurately from the footnote's source. No content correction needed — the quote comes from the article cited.",
+            "sources": [
+              "https://www.nybooks.com/articles/2010/03/11/a-historians-progress/"
+            ]
+          }
+        ],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 95
+      },
+      {
+        "beat_id": "paris_ecole_normale_superieure_social_change_hidden_gardens_of_paris_women_admission_simone_beauvoir",
+        "city_name": "paris",
+        "poi_name": "Ecole Normale Superieure",
+        "lens": "social_change",
+        "topic_slug": "women_admission_simone_beauvoir",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Neither Judt nor the guidebooks mention the brilliant women such as Simone de Beauvoir who passed through the Ecole Normale. Women were admitted to ENS long before Judt's 1970 visit, but their campus was separate from rue d'Ulm's and was eventually joined with it. The school's founding ethos excluded women from its initial mission — 'to train secondary school teachers' — and women were effectively absent from Judt's account of intellectual distinction between 1850 and 1970.",
+        "duration_sec": 67,
+        "kid_friendly": "yes",
+        "entities": [
+          "Simone de Beauvoir"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "women ENS admission",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Women admitted to ENS long before Judt's 1970 visit",
+          "Women's campus was separate from rue d'Ulm's, eventually joined with it",
+          "Simone de Beauvoir passed through the Ecole Normale"
+        ],
+        "source_passage": "Neither Judt nor the guidebooks mention the brilliant women such as Simone de Beauvoir who passed through the Ecole Normale (women were admitted to ENS long before Judt's visit, but their campus was separate from rue d'Ulm's; it was eventually joined with it).",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "The Students Garden: L'Ecole Normale Superieure"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris",
+          "beat_type_fixup_from": "social_change"
+        },
+        "_word_count": 79
+      },
+      {
+        "beat_id": "paris_ecole_normale_superieure_famous_residents_hidden_gardens_of_paris_simone_weil_red_virgin",
+        "city_name": "paris",
+        "poi_name": "Ecole Normale Superieure",
+        "lens": "famous_residents",
+        "topic_slug": "simone_weil_red_virgin",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "script_body": "One of the most intriguing of the female normaliens was the philosopher, political activist, and mystic Simone Weil (1909–1943). Though plagued by a feeling of intellectual inferiority throughout her privileged childhood, Weil achieved academic success at the Ecole Normale, graduating agrégée de philosophie — a degree reserved for the top few graduates. For her moral intensity and activism in leftist causes her fellow students nicknamed her \"The Red Virgin\" and \"The Categorical Imperative in Skirts.\" Later, her writings — the posthumously published Waiting for God (1951), Gravity and Grace (1947), The Need for Roots (1943), and many other volumes — would be important to Albert Camus, who called her \"the only great spirit of our time,\" and to André Gide, who considered her \"the best spiritual writer of this century,\" as well as to Flannery O'Connor, Kenneth Rexroth, Susan Sontag, Anne Carson, Elaine Scarry, and Edward Hirsch. Weil became a believer under the influence of the mystic light of Assisi and the seventeenth-century metaphysical poetry of George Herbert, in particular the poem \"Love Bade Me Welcome.\" A perceptive critic of institutional Christianity, she refused baptism. She had no use, she said, for authoritarian organizations that practiced anathema sit — \"let him be anathema.\" In 2009, La Passion de Simone by Finnish composer Kaija Saariaho was produced to critical acclaim in Europe and New York, an oratorio based on Weil's difficult ascetic philosophy and her austere, eccentric life.",
+        "duration_sec": 178,
+        "kid_friendly": "yes",
+        "entities": [
+          "Simone Weil",
+          "Albert Camus",
+          "André Gide",
+          "Flannery O'Connor",
+          "Kenneth Rexroth",
+          "Susan Sontag",
+          "Anne Carson",
+          "Elaine Scarry",
+          "Edward Hirsch",
+          "George Herbert",
+          "Kaija Saariaho",
+          "La Passion de Simone"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Simone Weil mystic",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "agrégée de philosophie",
+            "gloss": "a degree reserved for the top few graduates"
+          },
+          {
+            "phrase": "anathema sit",
+            "gloss": "let him be anathema — formula of ecclesiastical exclusion"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Simone Weil (1909–1943) graduated agrégée de philosophie from Ecole Normale",
+          "Nicknamed 'The Red Virgin' and 'The Categorical Imperative in Skirts' by fellow students",
+          "Key works: Waiting for God (1951), Gravity and Grace (1947), The Need for Roots (1943)",
+          "Camus called her 'the only great spirit of our time'; Gide called her 'the best spiritual writer of this century'",
+          "Became a believer through the mystic light of Assisi and George Herbert's poem 'Love Bade Me Welcome'",
+          "Refused baptism; rejected Communist Party membership",
+          "La Passion de Simone by Kaija Saariaho (2009) based on her life"
+        ],
+        "source_passage": "One of the most intriguing of the female normaliens was the philosopher, political activist, and mystic Simone Weil (1909—1943). Though plagued by a feeling of intellectual inferiority throughout her privileged childhood (she would later revile the secular Jewish ethos of her family), Weil achieved academic success at the Ecole Normale, graduating agrege de philosophie—a degree reserved for the top few graduates. For her moral intensity and activism in leftist causes her fellow students nicknamed her \"The Red Virgin\" and \"The Categorical Imperative in Skirts.\" Later on, her writings—the posthumously published Waiting for God (1951), Gravity and Grace (1947), The Need for Roots (1943), and many other volumes—would be important to Albert Camus, who called her \"the only great spirit of our time,\" and to Andre Gide, who considered her \"the best spiritual writer of this century,\" as well as to Flannery O'Connor, Kenneth Rexroth, Susan Sontag, Anne Carson, Elaine Scarry, and Edward Hirsch. Weil became a believer under the influence of the mystic light of Assisi and the seventeenth-century metaphysical poetry of George Herbert, in particular the poem \"Love Bade Me Welcome.\" A perceptive critic of institutional Christianity, she refused baptism. Earlier she had rejected membership in the French Communist Party, though for many years she thought of herself as a communist. She had no use, she said, for authoritarian organizations that practiced anathema sit (\"let him be anathema\"). In 2009, La Passion de Simone by Finnish composer Kaija Saariaho was produced to critical acclaim in Europe and New York, an oratorio based on Weil's difficult ascetic philosophy and her austere, eccentric life (some say she starved herself to death out of sympathy for the poor people of France who were starving under the Nazi Occupation).",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "The Students Garden: L'Ecole Normale Superieure"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 237
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Montagne Sainte-Genevieve",
+    "short_description": "",
+    "latitude": 48.8446766,
+    "longitude": 2.3472341,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_montagne_sainte_genevieve_hidden_history_hidden_gardens_of_paris_abelard_university_latin_quarter",
+        "city_name": "paris",
+        "poi_name": "Montagne Sainte-Genevieve",
+        "lens": "hidden_history",
+        "topic_slug": "abelard_university_latin_quarter",
+        "book_slug": "hidden_gardens_of_paris",
+        "source_chunk_slug": "chunk-02b-cluny-paul-langevin-ecole-normale",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Montagne Sainte-Geneviève is a very ancient quarter. Here on the (not very high) Montagne are the academic institutions — the Sorbonne and the grandes écoles — where most of France's political leaders, philosophers, artists, and scientists got their start. The Montagne's intellectual lineage goes back to Peter Abelard, the famous teacher, philosopher, and lover of Héloïse, who in about 1100 moved here to the Left Bank to escape the conservative cathedral school of Notre-Dame on the Île de la Cité. Away from the strictures of the hierarchy, he and his fellow scholars could teach with more independence. The Paris schools, chartered in 1215 as the Université de Paris, attracted students and hell-raisers such as François Villon from all over Europe.",
+        "duration_sec": 92,
+        "kid_friendly": "yes",
+        "entities": [
+          "Peter Abelard",
+          "Héloïse",
+          "Université de Paris",
+          "François Villon",
+          "Sorbonne"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "Abelard university origins",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "grandes écoles",
+            "gloss": "elite higher education institutions"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Peter Abelard moved to the Left Bank around 1100 to escape the conservative cathedral school of Notre-Dame",
+          "Paris schools chartered in 1215 as the Université de Paris",
+          "John Calvin and Ignatius Loyola attended the Montagne Sainte-Geneviève schools at the same time"
+        ],
+        "source_passage": "MONTAGNE SAINTE-GENEVIEVE A very ancient quarter. Follow rue d'Ulm north to Place du Pantheon, then bear right to Place Sainte-Genevieve, an open space in front of the Eglise Saint-Etienne du Mont. Here on the (not very high) Montagne are the academic institutions—the Sorbonne and the grandes ecoles—where most of France's political leaders, philosophers, artists, and scientists got their start. (John Calvin and Ignatius Loyola attended at the same time.) The Montagne's intellectual lineage goes back to Peter Abelard, the famous teacher, philosopher, and lover of Heloise, who in about 1100 moved here to the Left Bank to escape the conservative cathedral school of Notre-Dame on the lie de la Cite. Away from the strictures of the hierarchy, he and his fellow scholars could teach with more independence. The Paris schools, chartered in 1215 as the Universite de Paris, attracted students and hell-raisers such as Francois Villon from all over Europe.",
+        "source_passage_verified": true,
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Montagne Sainte-Genevieve"
+        },
+        "confidence": "HIGH",
+        "fact_check_status": "verified",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 124
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  }
+]

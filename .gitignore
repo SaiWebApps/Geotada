@@ -275,5 +275,8 @@ Books/**/*.pdf
 # Playwright test screenshots and reports
 tests/reports/
 
+# Local sandbox copy of Paris pipeline data — not referenced by tests or scripts.
+data/paris_test/
+
 # uv.lock is committed (reproducible dependency resolution)
 # Do NOT add uv.lock to this file.

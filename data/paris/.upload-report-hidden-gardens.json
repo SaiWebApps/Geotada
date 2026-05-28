@@ -1,0 +1,330 @@
+{
+  "started_at": "2026-05-01T16:02:04.429119+00:00",
+  "city": "paris",
+  "book": "hidden_gardens_of_paris",
+  "chunks": [
+    {
+      "chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "pois_created": [],
+      "pois_matched": [
+        "Square du Vert-Galant",
+        "Place Dauphine",
+        "Pont des Arts",
+        "Voltaire Statue (Square Honoré-Champion)",
+        "Square Jean XXIII",
+        "Square Rene Viviani",
+        "Shakespeare and Company",
+        "Memorial des Martyrs de la Deportation",
+        "Hotel-Dieu",
+        "Pont Neuf"
+      ],
+      "beats_created": 16,
+      "beats_matched": 0,
+      "has_beat_edges": 16,
+      "tagged_with_edges": 16,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+      "pois_created": [
+        "Montagne Sainte-Genevieve"
+      ],
+      "pois_matched": [
+        "Jardins du Musee de Cluny",
+        "Square Paul-Painleve",
+        "Square Paul-Langevin",
+        "Jardin Carre",
+        "Musee de Cluny",
+        "Ecole Normale Superieure"
+      ],
+      "beats_created": 14,
+      "beats_matched": 0,
+      "has_beat_edges": 14,
+      "tagged_with_edges": 14,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-02c-arenes-jardin-des-plantes",
+      "pois_created": [
+        "Librairie Michael Seksik"
+      ],
+      "pois_matched": [
+        "Arenes de Lutece",
+        "Place de la Contrescarpe",
+        "Rue Mouffetard",
+        "Eglise Saint-Medard",
+        "Jardin des Plantes",
+        "Jardin Alpin",
+        "Grand Mosque of Paris",
+        "Institut du Monde Arabe",
+        "Jardin Tino Rossi"
+      ],
+      "beats_created": 16,
+      "beats_matched": 0,
+      "has_beat_edges": 16,
+      "tagged_with_edges": 16,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-03a-luxembourg-delacroix",
+      "pois_created": [
+        "Musée Eugène Delacroix"
+      ],
+      "pois_matched": [
+        "Luxembourg Gardens",
+        "Fontaine Médicis",
+        "Palais du Luxembourg",
+        "Place de Furstemberg",
+        "Institut Catholique",
+        "Ecole des Beaux-Arts",
+        "9 Quai Malaquais (George Sand)",
+        "Saint-Sulpice",
+        "Saint-Germain-des-Pres"
+      ],
+      "beats_created": 21,
+      "beats_matched": 0,
+      "has_beat_edges": 21,
+      "tagged_with_edges": 21,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-03b-boucicaut-clinique-rodin",
+      "pois_created": [],
+      "pois_matched": [
+        "Square Boucicaut",
+        "Jardin de la Clinique Saint-Jean de Dieu",
+        "Musee Rodin",
+        "Le Bon Marché",
+        "Hotel Lutetia",
+        "Jardin Catherine-Laboure",
+        "Eglise Sainte-Clotilde"
+      ],
+      "beats_created": 14,
+      "beats_matched": 0,
+      "has_beat_edges": 14,
+      "tagged_with_edges": 14,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-04a-recamier-champ-de-mars-santiago",
+      "pois_created": [
+        "Théâtre du Vieux-Colombier",
+        "Jardin Atlantique"
+      ],
+      "pois_matched": [
+        "Square Récamier",
+        "Square Santiago du Chili",
+        "Champ de Mars",
+        "Eiffel Tower"
+      ],
+      "beats_created": 20,
+      "beats_matched": 0,
+      "has_beat_edges": 20,
+      "tagged_with_edges": 20,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
+      "pois_created": [],
+      "pois_matched": [
+        "Musee Zadkine",
+        "Musee Bourdelle",
+        "La Closerie des Lilas",
+        "Montparnasse Cemetery",
+        "Parc Georges-Brassens",
+        "La Ruche",
+        "Parc Montsouris",
+        "Villa Santos-Dumont",
+        "Butte-aux-Cailles"
+      ],
+      "beats_created": 19,
+      "beats_matched": 0,
+      "has_beat_edges": 19,
+      "tagged_with_edges": 19,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-05a-bagatelle-balzac",
+      "pois_created": [],
+      "pois_matched": [
+        "Parc de Bagatelle",
+        "Maison de Balzac",
+        "Allée des Cygnes",
+        "Trocadero",
+        "Parc des Serres d'Auteuil"
+      ],
+      "beats_created": 18,
+      "beats_matched": 0,
+      "has_beat_edges": 18,
+      "tagged_with_edges": 18,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-05b-tuileries-palais-royal",
+      "pois_created": [
+        "Galignani",
+        "Angelina Paris"
+      ],
+      "pois_matched": [
+        "Jardin des Tuileries",
+        "Palais-Royal",
+        "Saint-Germain-l'Auxerrois",
+        "Eglise Saint-Roch",
+        "Notre-Dame-des-Victoires",
+        "Galerie Vivienne",
+        "Comedie-Francaise"
+      ],
+      "beats_created": 22,
+      "beats_matched": 0,
+      "has_beat_edges": 22,
+      "tagged_with_edges": 22,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "pois_created": [],
+      "pois_matched": [
+        "La Vallée Suisse",
+        "Petit Palais",
+        "Grand Palais",
+        "Champs-Elysees",
+        "Place des Vosges",
+        "Jardin Saint-Gilles Grand Veneur",
+        "Hotel de Sully",
+        "Place du Marché Sainte-Catherine",
+        "Musee Carnavalet",
+        "La Tartine"
+      ],
+      "beats_created": 20,
+      "beats_matched": 0,
+      "has_beat_edges": 20,
+      "tagged_with_edges": 20,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-06b-georges-cain-temple",
+      "pois_created": [],
+      "pois_matched": [
+        "Square Georges-Cain",
+        "Square Léopold-Achille",
+        "Clos des Blancs-Manteaux",
+        "Square du Temple",
+        "Marche des Enfants Rouges",
+        "Musee des Arts et Metiers"
+      ],
+      "beats_created": 15,
+      "beats_matched": 0,
+      "has_beat_edges": 15,
+      "tagged_with_edges": 15,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-07a-monceau-vie-romantique-batignolles",
+      "pois_created": [],
+      "pois_matched": [
+        "Parc Monceau",
+        "Musée Jacquemart-André",
+        "Musée de la Vie Romantique",
+        "Square des Batignolles",
+        "Square d'Orléans",
+        "Cathédrale Saint-Alexandre-Nevsky",
+        "Place Saint-Georges"
+      ],
+      "beats_created": 15,
+      "beats_matched": 0,
+      "has_beat_edges": 15,
+      "tagged_with_edges": 15,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-07b-suzanne-buisson-montmartre",
+      "pois_created": [],
+      "pois_matched": [
+        "Square Suzanne-Buisson",
+        "Musée de Montmartre",
+        "Square Carpeaux",
+        "Square Léon-Serpollet",
+        "Parc Turlure",
+        "Square Louise-Michel",
+        "Square des Abbesses",
+        "Montmartre Cemetery",
+        "Lapin Agile"
+      ],
+      "beats_created": 17,
+      "beats_matched": 0,
+      "has_beat_edges": 17,
+      "tagged_with_edges": 17,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "pois_created": [],
+      "pois_matched": [
+        "Promenade Plantee",
+        "Viaduc des Arts",
+        "Bois de Vincennes",
+        "Chateau de Vincennes",
+        "Bibliotheque Francois Mitterrand",
+        "Parc Floral",
+        "Jardin de Reuilly",
+        "Bistro du Peintre",
+        "Square Raoul Nordling",
+        "Parc de Bercy",
+        "Cinematheque Française",
+        "Buddhist Temple Lac Daumesnil",
+        "Sainte-Chapelle"
+      ],
+      "beats_created": 18,
+      "beats_matched": 0,
+      "has_beat_edges": 18,
+      "tagged_with_edges": 18,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-08b-maurice-gardette-roquette",
+      "pois_created": [],
+      "pois_matched": [
+        "Square Maurice-Gardette",
+        "Square de la Roquette",
+        "Canal Saint-Martin",
+        "Pere Lachaise Cemetery",
+        "Eglise Notre-Dame de la Croix",
+        "La Maison des Metallos"
+      ],
+      "beats_created": 13,
+      "beats_matched": 0,
+      "has_beat_edges": 13,
+      "tagged_with_edges": 13,
+      "errors": []
+    },
+    {
+      "chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "pois_created": [
+        "Parc de la Villette",
+        "Parc de Belleville",
+        "Jardin Naturel",
+        "Cemetery of Eglise Saint-Germain de Charonne"
+      ],
+      "pois_matched": [
+        "Parc des Buttes-Chaumont",
+        "Pere Lachaise Cemetery"
+      ],
+      "beats_created": 19,
+      "beats_matched": 0,
+      "has_beat_edges": 19,
+      "tagged_with_edges": 19,
+      "errors": []
+    }
+  ],
+  "totals": {
+    "pois_created": 11,
+    "pois_matched": 119,
+    "beats_created": 277,
+    "beats_matched": 0,
+    "has_beat_created": 277,
+    "tagged_with_created": 277,
+    "tagged_with_skipped_no_lens": 0,
+    "errors": []
+  },
+  "completed_at": "2026-05-01T16:02:09.934728+00:00"
+}

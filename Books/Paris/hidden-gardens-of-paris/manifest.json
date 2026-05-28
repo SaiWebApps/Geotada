@@ -1,0 +1,171 @@
+{
+  "book_title": "Hidden Gardens of Paris",
+  "subtitle": "A Guide to the Parks, Squares, and Woodlands of the City of Light",
+  "author": "Susan Cahill",
+  "photographer": "Marion Ranoux",
+  "publisher": "St. Martin's Griffin",
+  "publication_year": 2012,
+  "isbn": "978-0-312-67333-8",
+  "source_file": "Hidden Gardens of Paris- A Guide to the Parks, Squares, and -- Cahill, Susan Neunzig, Ranoux, Marion -- Illustrated, 1St Edition, First Edition, PT, -- 9780312673338 -- ce396ea4be28f32668698832bec2b039 -- Anna's Archive.pdf",
+  "total_extracted_lines": 6113,
+  "body_end_line": 5291,
+  "total_chunks": 17,
+  "extractable_chunks": 16,
+  "chunked_at": "2026-05-01T03:32:19.488884+00:00",
+  "notes": "Re-split 2026-04-29 to keep every extraction sub-chunk under the ~500-line Sonnet stall threshold (Phase 3 wave 2 lost a 646-line chunk to that exact failure mode). Chunk-01 (front matter) is excluded from extraction. Chunks 02-08 each split into 2-3 sub-chunks at chapter boundaries; chunk-06a and chunk-08a were prepended with clean section headers because the original OCR banners were unreadable. Page numbers in source flow are unreliable; source_line_range refers to the form-feed-stripped extracted text.",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-front-matter.txt",
+      "section_title": "Front Matter & Introduction",
+      "source_line_range": "1-453",
+      "line_count": 453,
+      "summary": "Cover, table of contents, dedication, copyright, and Susan Cahill's introduction. No POIs/beats \u2014 exclude from extraction.",
+      "extract": false
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02a-vert-galant-jean-xxiii-rene-viviani.txt",
+      "section_title": "\u00cele de la Cit\u00e9 & Saint-S\u00e9verin",
+      "source_line_range": "454-782",
+      "line_count": 329,
+      "summary": "Square du Vert Galant (Pont Neuf, Henri IV); Square Jean-XXIII (Notre-Dame cathedral gardens); Square Ren\u00e9-Viviani (Saint-Julien-le-Pauvre, oldest tree in Paris).",
+      "extract": true
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-02b-cluny-paul-langevin-ecole-normale.txt",
+      "section_title": "Latin Quarter \u2014 Cluny to \u00c9cole Normale",
+      "source_line_range": "783-1115",
+      "line_count": 333,
+      "summary": "Jardins du Mus\u00e9e de Cluny (medieval Roman thermae); Square Paul-Langevin; L'\u00c9cole Normale Sup\u00e9rieure (students' garden, rue d'Ulm).",
+      "extract": true
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-02c-arenes-jardin-des-plantes.txt",
+      "section_title": "Latin Quarter \u2014 Ar\u00e8nes to Jardin des Plantes",
+      "source_line_range": "1116-1293",
+      "line_count": 178,
+      "summary": "Square des Ar\u00e8nes de Lut\u00e8ce (Roman amphitheater); Jardin des Plantes \u2014 Alpine Garden; nearby Mosque Garden, Institut du Monde Arabe, Jardin Tino Rossi.",
+      "extract": true
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-03a-luxembourg-delacroix.txt",
+      "section_title": "Jardin du Luxembourg & Mus\u00e9e Eug\u00e8ne Delacroix",
+      "source_line_range": "1294-1623",
+      "line_count": 330,
+      "summary": "Jardin du Luxembourg (Marie de' Medici palace and gardens, Medici Fountain); Mus\u00e9e Eug\u00e8ne Delacroix (place de Furstemberg).",
+      "extract": true
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-03b-boucicaut-clinique-rodin.txt",
+      "section_title": "Saint-Germain-des-Pr\u00e9s \u2014 Boucicaut to Rodin",
+      "source_line_range": "1624-1950",
+      "line_count": 327,
+      "summary": "Square Boucicaut (Bon March\u00e9 founder); Jardin de la Clinique Saint-Jean de Dieu; Mus\u00e9e Rodin (H\u00f4tel Biron rue de Varenne).",
+      "extract": true
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-04a-recamier-champ-de-mars-santiago.txt",
+      "section_title": "Square R\u00e9camier, Champ de Mars, Square Santiago du Chili",
+      "source_line_range": "1951-2332",
+      "line_count": 382,
+      "summary": "Square R\u00e9camier (rue de S\u00e8vres); Champ de Mars (Eiffel Tower, \u00c9cole Militaire); Square Santiago du Chili (7th arr.).",
+      "extract": true
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-04b-zadkine-atlantique-brassens-montsouris.txt",
+      "section_title": "Montparnasse & Southern Paris",
+      "source_line_range": "2333-2663",
+      "line_count": 331,
+      "summary": "Mus\u00e9e Zadkine (rue d'Assas); Jardin Atlantique (rooftop of Gare Montparnasse); Parc Georges-Brassens (former Vaugirard abattoirs); Parc Montsouris.",
+      "extract": true
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-05a-bagatelle-balzac.txt",
+      "section_title": "Western Paris \u2014 Bagatelle & Maison de Balzac",
+      "source_line_range": "2664-2912",
+      "line_count": 249,
+      "summary": "Bois de Boulogne / Parc de Bagatelle (Comte d'Artois 1777 wager); Maison de Balzac (Passy, rue Raynouard).",
+      "extract": true
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-05b-tuileries-palais-royal.txt",
+      "section_title": "Tuileries & Palais-Royal",
+      "source_line_range": "2913-3214",
+      "line_count": 302,
+      "summary": "Jardin des Tuileries (Catherine de' Medici, Le N\u00f4tre); Palais-Royal (Cardinal Richelieu, Camille Desmoulins, Colette).",
+      "extract": true
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-06a-vallee-suisse-vosges-carnavalet.txt",
+      "section_title": "Vall\u00e9e Suisse, Place des Vosges & Carnavalet",
+      "source_line_range": "3215-3583",
+      "line_count": 369,
+      "summary": "La Vall\u00e9e Suisse (Champs-\u00c9lys\u00e9es rond-point hidden valley); Place des Vosges (Henri IV's Place Royale, Hugo at no. 6); Jardin du Mus\u00e9e Carnavalet (H\u00f4tel de Carnavalet).",
+      "extract": true
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-06b-georges-cain-temple.txt",
+      "section_title": "Marais \u2014 Square Georges-Cain & Square du Temple",
+      "source_line_range": "3584-3766",
+      "line_count": 183,
+      "summary": "Square Georges-Cain (Marais sculpture garden); Square du Temple (Knights Templar precinct, Louis XVI prison).",
+      "extract": true
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-07a-monceau-vie-romantique-batignolles.txt",
+      "section_title": "Northern Paris \u2014 Monceau, Vie Romantique, Batignolles",
+      "source_line_range": "3767-4176",
+      "line_count": 410,
+      "summary": "Parc Monceau (Philippe d'Orl\u00e9ans / Carmontelle's anglo-chinois folly park); Mus\u00e9e de la Vie Romantique (rue Chaptal); Square des Batignolles (Manet, Verlaine, Mallarm\u00e9).",
+      "extract": true
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-07b-suzanne-buisson-montmartre.txt",
+      "section_title": "Montmartre \u2014 Suzanne-Buisson & Mus\u00e9e de Montmartre",
+      "source_line_range": "4177-4440",
+      "line_count": 264,
+      "summary": "Square Suzanne-Buisson (Saint-Denis legend, place Casadesus); Mus\u00e9e de Montmartre (12 rue Cortot, Renoir / Suzanne Valadon / Utrillo).",
+      "extract": true
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-08a-promenade-plantee-parc-floral.txt",
+      "section_title": "Promenade Plant\u00e9e & Parc Floral",
+      "source_line_range": "4441-4692",
+      "line_count": 254,
+      "summary": "La Promenade Plant\u00e9e (former Vincennes railway viaduct, Bastille opera); Bois de Vincennes \u2014 Parc Floral (Vincennes ch\u00e2teau, four-season gardens).",
+      "extract": true
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-08b-maurice-gardette-roquette.txt",
+      "section_title": "Bastille \u2014 Square Maurice-Gardette & Square de la Roquette",
+      "source_line_range": "4693-4980",
+      "line_count": 288,
+      "summary": "Square Maurice-Gardette (11th arr. Resistance councilman); Square de la Roquette (former women's prison, Communard executions).",
+      "extract": true
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-08c-buttes-chaumont-pere-lachaise.txt",
+      "section_title": "Northeastern Paris \u2014 Buttes-Chaumont & P\u00e8re-Lachaise",
+      "source_line_range": "4981-5291",
+      "line_count": 311,
+      "summary": "Parc des Buttes-Chaumont (Haussmann/Alphand 1867 quarry transformation); P\u00e8re-Lachaise Cemetery (Colette, Wilde, Morrison, Mur des F\u00e9d\u00e9r\u00e9s).",
+      "extract": true
+    }
+  ]
+}

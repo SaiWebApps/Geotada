@@ -632,7 +632,7 @@
     "short_description": "Historic library in the former Royal Arsenal, with magnificent Louis XIII interiors and a rich literary heritage.",
     "latitude": 48.849,
     "longitude": 2.365,
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 75,
     "typical_duration_min": 25,
     "kid_friendly": "yes",

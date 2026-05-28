@@ -1051,6 +1051,244 @@
           "phase_b_fixup": true
         }
       ]
+    },
+    {
+      "book_title": "Hidden Gardens of Paris",
+      "author": "Susan Cahill",
+      "book_slug": "hidden_gardens_of_paris",
+      "chunks_processed": [
+        {
+          "chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+          "processed_at": "2026-05-01T03:57:55.332509+00:00",
+          "beats_extracted": 16,
+          "beats_committed": 0,
+          "pois_touched": 9,
+          "pois_created": 0,
+          "review_queue_items": 5,
+          "phase_b_fixup": {
+            "subject_tag_fixed": 5,
+            "beat_length_class_reclassed": 7,
+            "beat_type_corrected": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-02b-cluny-paul-langevin-ecole-normale",
+          "processed_at": "2026-05-01T03:57:55.333180+00:00",
+          "beats_extracted": 14,
+          "beats_committed": 0,
+          "pois_touched": 4,
+          "pois_created": 0,
+          "review_queue_items": 11,
+          "phase_b_fixup": {
+            "subject_tag_fixed": 5,
+            "beat_length_class_reclassed": 3,
+            "beat_type_corrected": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-02c-arenes-jardin-des-plantes",
+          "processed_at": "2026-05-01T03:57:55.333811+00:00",
+          "beats_extracted": 16,
+          "beats_committed": 0,
+          "pois_touched": 9,
+          "pois_created": 0,
+          "review_queue_items": 6,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 6,
+            "beat_type_corrected": 1,
+            "subject_tag_fixed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-03a-luxembourg-delacroix",
+          "processed_at": "2026-05-01T03:57:55.334540+00:00",
+          "beats_extracted": 21,
+          "beats_committed": 0,
+          "pois_touched": 9,
+          "pois_created": 0,
+          "review_queue_items": 7,
+          "phase_b_fixup": {
+            "subject_tag_fixed": 2,
+            "beat_length_class_reclassed": 2
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-03b-boucicaut-clinique-rodin",
+          "processed_at": "2026-05-01T03:57:55.335121+00:00",
+          "beats_extracted": 14,
+          "beats_committed": 0,
+          "pois_touched": 7,
+          "pois_created": 0,
+          "review_queue_items": 10,
+          "phase_b_fixup": {
+            "beat_type_corrected": 2,
+            "beat_length_class_reclassed": 2,
+            "subject_tag_fixed": 2
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-04a-recamier-champ-de-mars-santiago",
+          "processed_at": "2026-05-01T03:57:55.335764+00:00",
+          "beats_extracted": 20,
+          "beats_committed": 0,
+          "pois_touched": 4,
+          "pois_created": 0,
+          "review_queue_items": 9,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 3,
+            "subject_tag_fixed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-04b-zadkine-atlantique-brassens-montsouris",
+          "processed_at": "2026-05-01T03:57:55.336540+00:00",
+          "beats_extracted": 19,
+          "beats_committed": 0,
+          "pois_touched": 9,
+          "pois_created": 0,
+          "review_queue_items": 14,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 4,
+            "subject_tag_fixed": 4
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-05a-bagatelle-balzac",
+          "processed_at": "2026-05-01T03:57:55.337137+00:00",
+          "beats_extracted": 18,
+          "beats_committed": 0,
+          "pois_touched": 5,
+          "pois_created": 0,
+          "review_queue_items": 7,
+          "phase_b_fixup": {
+            "subject_tag_fixed": 1,
+            "beat_length_class_reclassed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-05b-tuileries-palais-royal",
+          "processed_at": "2026-05-01T03:57:55.337853+00:00",
+          "beats_extracted": 22,
+          "beats_committed": 0,
+          "pois_touched": 9,
+          "pois_created": 0,
+          "review_queue_items": 5,
+          "phase_b_fixup": {
+            "subject_tag_fixed": 5,
+            "beat_length_class_reclassed": 14
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+          "processed_at": "2026-05-01T03:57:55.338957+00:00",
+          "beats_extracted": 20,
+          "beats_committed": 0,
+          "pois_touched": 10,
+          "pois_created": 0,
+          "review_queue_items": 7,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 6,
+            "subject_tag_fixed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-06b-georges-cain-temple",
+          "processed_at": "2026-05-01T03:57:55.339455+00:00",
+          "beats_extracted": 15,
+          "beats_committed": 0,
+          "pois_touched": 4,
+          "pois_created": 0,
+          "review_queue_items": 7,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 8,
+            "subject_tag_fixed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-07a-monceau-vie-romantique-batignolles",
+          "processed_at": "2026-05-01T03:57:55.340197+00:00",
+          "beats_extracted": 15,
+          "beats_committed": 0,
+          "pois_touched": 7,
+          "pois_created": 0,
+          "review_queue_items": 8,
+          "phase_b_fixup": {
+            "beat_type_corrected": 1,
+            "beat_length_class_reclassed": 3,
+            "subject_tag_fixed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-07b-suzanne-buisson-montmartre",
+          "processed_at": "2026-05-01T03:57:55.341209+00:00",
+          "beats_extracted": 17,
+          "beats_committed": 0,
+          "pois_touched": 9,
+          "pois_created": 0,
+          "review_queue_items": 13,
+          "phase_b_fixup": {
+            "beat_type_corrected": 1,
+            "beat_length_class_reclassed": 5,
+            "subject_tag_fixed": 4
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-08a-promenade-plantee-parc-floral",
+          "processed_at": "2026-05-01T03:57:55.341809+00:00",
+          "beats_extracted": 18,
+          "beats_committed": 0,
+          "pois_touched": 12,
+          "pois_created": 0,
+          "review_queue_items": 12,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 6,
+            "subject_tag_fixed": 2
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-08b-maurice-gardette-roquette",
+          "processed_at": "2026-05-01T03:57:55.342303+00:00",
+          "beats_extracted": 13,
+          "beats_committed": 0,
+          "pois_touched": 6,
+          "pois_created": 0,
+          "review_queue_items": 8,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 1,
+            "subject_tag_fixed": 1
+          },
+          "model": "sonnet"
+        },
+        {
+          "chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+          "processed_at": "2026-05-01T03:57:55.342909+00:00",
+          "beats_extracted": 19,
+          "beats_committed": 0,
+          "pois_touched": 6,
+          "pois_created": 0,
+          "review_queue_items": 6,
+          "phase_b_fixup": {
+            "beat_length_class_reclassed": 8,
+            "beat_type_corrected": 1,
+            "subject_tag_fixed": 4
+          },
+          "model": "sonnet"
+        }
+      ]
     }
   ]
 }

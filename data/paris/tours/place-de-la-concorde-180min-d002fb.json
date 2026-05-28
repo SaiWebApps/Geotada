@@ -1,0 +1,1041 @@
+{
+  "city_slug": "paris",
+  "generated_at": "2026-05-20T23:16:32.694627+00:00",
+  "inputs": {
+    "start": [
+      48.865608,
+      2.321038
+    ],
+    "duration_min": 180,
+    "city_slug": "paris",
+    "lenses": null,
+    "round_trip": false,
+    "theme_hint": "Concorde through Tuileries and Louvre to Notre-Dame",
+    "start_label": "Place de la Concorde"
+  },
+  "total_audio_seconds": 1331,
+  "total_walking_seconds": 3379,
+  "total_walk_distance_m": 2086,
+  "total_planned_seconds": 8964,
+  "selected_pois": [
+    {
+      "id": "729a3a8f-19d1-4f90-a8d8-48f5d2c7b288",
+      "name": "Place de la Concorde",
+      "tier": 4,
+      "lat": 48.865608,
+      "lng": 2.321038,
+      "area": "Paris",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "9ccbcdfe-a06f-4939-b0c5-2430d5b9b2fe",
+        "4b3a8cff-8c1f-4ca4-9f7f-b8ee8b9b562c",
+        "5d66f459-2395-4890-9e70-f9b283c03150"
+      ]
+    },
+    {
+      "id": "5b888e47-d01e-44d0-abc1-457cbfa1aacc",
+      "name": "Pont de la Concorde",
+      "tier": 4,
+      "lat": 48.863378,
+      "lng": 2.319598,
+      "area": "Paris",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "c722573d-9b93-404d-af58-4a372f9c1eab",
+        "7a6073ae-42c5-419b-800f-1a90634f3411"
+      ]
+    },
+    {
+      "id": "1b1f81fd-29ca-4d17-86c2-b57b5fb6a9bf",
+      "name": "Musee d'Orsay",
+      "tier": 5,
+      "lat": 48.859962,
+      "lng": 2.326561,
+      "area": "Paris",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "dc973343-7263-4d3c-98da-65a8ee663c51",
+        "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+        "5ec67811-3d15-47eb-8ea7-ca0e87dd4850",
+        "7cb3fbb7-9b04-4c2a-817e-c670e394a8ea",
+        "f2555f38-b6e9-4c9c-b8bf-593f711ec657"
+      ]
+    },
+    {
+      "id": "0ed5fea7-01a2-4692-8ec5-db45c086247e",
+      "name": "Jardin des Tuileries",
+      "tier": 5,
+      "lat": 48.8636,
+      "lng": 2.3274,
+      "area": "Paris",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "9f998183-e6fa-4aef-baf8-2e6f6782e46b",
+        "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+        "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+        "72dca2a6-8582-4412-b7d7-083b55790071",
+        "46d28f0e-a893-4734-a533-f8aafa0d49d4",
+        "18dccb3e-ee85-4d87-ac13-31e5d8695d1f"
+      ]
+    },
+    {
+      "id": "9e3ec05a-6ab2-47c7-a7cb-40e050a41b90",
+      "name": "Hotel Le Meurice",
+      "tier": 4,
+      "lat": 48.8651,
+      "lng": 2.3283,
+      "area": "Paris",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "c9c90a74-c2c8-4551-89f6-a8e492f030cb",
+        "2c4df617-e3b1-4f4b-bace-d717d9e65e1b",
+        "4810e1f1-9561-42a9-95fe-3c4a6db59c1d",
+        "71563708-c190-4e23-a934-bcbdf0dccf71"
+      ]
+    },
+    {
+      "id": "9ae962bf-c17e-4447-a5b5-0f405e9bab0a",
+      "name": "Place Vendome",
+      "tier": 5,
+      "lat": 48.8677,
+      "lng": 2.3292,
+      "area": "Paris",
+      "dwell_seconds": 300,
+      "beat_ids": [
+        "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+        "0efa36f1-c48b-43aa-b939-743245f91fd6",
+        "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+        "61cbbc50-a8cb-4ef7-8ed4-c9ce577bd8d4",
+        "01ff8a74-286f-4059-b164-eb6e8d6ae4fe",
+        "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+        "5aca63d2-37ba-4de8-bb10-ff46d16c6545"
+      ]
+    },
+    {
+      "id": "63178c01-0a1f-4089-ae66-78aaceb0222b",
+      "name": "Rue de la Paix",
+      "tier": 3,
+      "lat": 48.8693,
+      "lng": 2.3312,
+      "area": "Paris",
+      "dwell_seconds": 150,
+      "beat_ids": [
+        "c0c2c8ff-b8fa-4f8b-8e3f-6f4d2c1c4427",
+        "28cc729a-48c1-4fcf-b434-6442d8798b3b",
+        "22d717ec-a199-4cc7-b2db-ee51b81b3494"
+      ]
+    },
+    {
+      "id": "0d9f1ef3-26b9-4b3c-a80c-3248aa7324ec",
+      "name": "Harry's New York Bar",
+      "tier": 3,
+      "lat": 48.8692,
+      "lng": 2.3321,
+      "area": "Paris",
+      "dwell_seconds": 150,
+      "beat_ids": [
+        "06a6be09-9f24-4283-b46b-524d2be9461b"
+      ]
+    }
+  ],
+  "lens_coverage": {
+    "hidden_history": 7,
+    "dark_history": 2,
+    "historic_arch": 6,
+    "waterways_views": 1,
+    "literary_heritage": 3,
+    "visual_art": 2,
+    "parks_gardens": 2,
+    "famous_residents": 6,
+    "historic_cuisine": 1,
+    "war_conflict": 1
+  },
+  "script": [
+    {
+      "text": "Settle in.",
+      "source_id": "GLUE_PACING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "You're starting in Champs-\u00c9lys\u00e9es.",
+      "source_id": "SYNTHESIZED_OPENER",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Look up at The obelisk as the center point \u2014 look up the Champs-\u00c9lys\u00e9es toward the Arc de Triomphe, and see the Grande Arche beyond.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "Take a moment to take it in.",
+      "source_id": "GLUE_STAGING",
+      "source_type": "glue",
+      "stop_idx": 0
+    },
+    {
+      "text": "The 3,300-year-old, 72-foot, 220-ton, red granite, hieroglyph-inscribed obelisk of Luxor now forms the centerpiece of Place de la Concorde.",
+      "source_id": "9ccbcdfe-a06f-4939-b0c5-2430d5b9b2fe",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Here \u2014 on the very spot where Louis XVI was beheaded \u2014 his brother Charles X erected this obelisk to honor those who'd been executed.",
+      "source_id": "9ccbcdfe-a06f-4939-b0c5-2430d5b9b2fe",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Charles became king when the monarchy was restored after Napoleon.",
+      "source_id": "9ccbcdfe-a06f-4939-b0c5-2430d5b9b2fe",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The obelisk was carted here from Egypt in the 1830s, and the gold pictures on the pedestal tell the story of its incredible two-year journey: pulled down from the entrance to Ramses II's Temple of Amon in Luxor; encased in wood; loaded onto a boat built to navigate both shallow rivers and open seas; floated down the Nile, across the Mediterranean, along the Atlantic coast, and up the Seine; and unloaded here, where it was re-erected in 1836.",
+      "source_id": "9ccbcdfe-a06f-4939-b0c5-2430d5b9b2fe",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Its glittering gold-leaf cap is a recent addition from 1998 \u2014 replacing the original, which was stolen 2,500 years ago.",
+      "source_id": "9ccbcdfe-a06f-4939-b0c5-2430d5b9b2fe",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "During the Revolution, this was the Place de la R\u00e9volution.",
+      "source_id": "4b3a8cff-8c1f-4ca4-9f7f-b8ee8b9b562c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The guillotine sat on this square, and 2,780 people were beheaded here during the Reign of Terror.",
+      "source_id": "4b3a8cff-8c1f-4ca4-9f7f-b8ee8b9b562c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "A bronze plaque in the ground in front of the obelisk memorializes the spot where Louis XVI, Marie-Antoinette, Georges Danton, Charlotte Corday, and Maximilien de Robespierre, among about 1,200 others, were made \"a foot shorter on top.\" Three people worked the guillotine: one managed the blade, one held the blood bucket, and one caught the head, raising it high to the roaring crowd.",
+      "source_id": "4b3a8cff-8c1f-4ca4-9f7f-b8ee8b9b562c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "France abolished the death penalty in 1981 \u2014 one of many preconditions for membership in today's European Union.",
+      "source_id": "4b3a8cff-8c1f-4ca4-9f7f-b8ee8b9b562c",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Looking up the Champs-\u00c9lys\u00e9es from the obelisk, you're standing on the center point of what locals call the \"royal perspective\" \u2014 a straight line strung with French history.",
+      "source_id": "5d66f459-2395-4890-9e70-f9b283c03150",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The Louvre symbolizes the old regime, the divine right of kings.",
+      "source_id": "5d66f459-2395-4890-9e70-f9b283c03150",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The obelisk and Place de la Concorde symbolize the people's Revolution \u2014 the cutting off of the king's head.",
+      "source_id": "5d66f459-2395-4890-9e70-f9b283c03150",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "The Arc de Triomphe calls to mind the triumph of nationalism: victorious armies carrying national flags under the arch.",
+      "source_id": "5d66f459-2395-4890-9e70-f9b283c03150",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "And the huge modern Grande Arche in the distance, surrounded by multinational corporate headquarters, heralds a future in which business entities are more powerful than nations.",
+      "source_id": "5d66f459-2395-4890-9e70-f9b283c03150",
+      "source_type": "beat",
+      "stop_idx": 0
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 1
+    },
+    {
+      "text": "Until the beginning of the 18th century, the river could only be crossed by boat at this point.",
+      "source_id": "c722573d-9b93-404d-af58-4a372f9c1eab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The much-needed bridge was built during the Revolution, re-using blocks of cut stone that were rescued from the demolition of the Bastille.",
+      "source_id": "c722573d-9b93-404d-af58-4a372f9c1eab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "The bridge was widened in 1931 and offers breathtaking views both east and west along the river.",
+      "source_id": "c722573d-9b93-404d-af58-4a372f9c1eab",
+      "source_type": "beat",
+      "stop_idx": 1
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 2
+    },
+    {
+      "text": "Paris loves novelty \u2014 and converting a railway station into a museum was bound to create a sensation.",
+      "source_id": "dc973343-7263-4d3c-98da-65a8ee663c51",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The Gare d'Orsay opened on the symbolic date of 14 July 1900, so beautiful that the painter \u00c9douard Detaille suggested even then that it should become a museum.",
+      "source_id": "dc973343-7263-4d3c-98da-65a8ee663c51",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "At its heart, the enormous Belle \u00c9poque dining room \u2014 with extravagant candelabras and an allegorical mural \u2014 has been preserved on the first floor, complete, while the magnificent vaulted glass-and-iron ceiling and the great station clock still preside over the converted nave below.",
+      "source_id": "dc973343-7263-4d3c-98da-65a8ee663c51",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "This building had a long and chequered history before becoming one of the city's best-loved museums.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Plans were drawn up for the site in 1900.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The building was initially intended as an exhibition hall for the arts during the 1900 World Trade Fair.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The sculptor Rodin was commissioned to make a grand entrance to this Palais des Beaux Arts, for which he created his now famous Gates of Hell.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The project was abandoned and a railway station, fronted by a luxurious hotel, was built instead.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The Orsay station was built and designed for steam trains, but when electric trains replaced them the platforms were not long enough and there was no room to extend the station.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The station remained more or less abandoned until the decision was taken in 1977 to create a museum dedicated to the 19th century, thus filling the gap between the collections of the Louvre and the Centre Pompidou.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Rather ironically Rodin's Gates of Hell eventually found their home in the place for which they were originally intended.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Manet's Olympia, Renoir's Moulin de la Galette, Degas' little dancer sculpture La Petite Danseuse de 14 Ans, Whistler's Portrait of the Painter's Mother and Van Gogh's Self-Portrait are among the many masterpieces on display here.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "The restaurant, located in the sumptuously decorated dining hall of the old hotel, is delightful.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "If visiting the museum, don't miss the exuberantly decorated ballroom.",
+      "source_id": "e2d40e6a-6477-42b3-980d-fd28f84d7cde",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Around the corner from the museum, at 31 rue de Bellechasse, Alphonse Daudet lived from 1885 to 1897.",
+      "source_id": "5ec67811-3d15-47eb-8ea7-ca0e87dd4850",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Proust visited his widow here and wrote that he knew of no place 'so filled with the past, with thought, so piously consecrated by memory.' The building's dead include the mathematician Monge, the physician Villemin, and the historian Bainville.",
+      "source_id": "5ec67811-3d15-47eb-8ea7-ca0e87dd4850",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Around the corner at number 27, Gustave Dor\u00e9 had his studio \u2014 the building still bears his initials GD.",
+      "source_id": "5ec67811-3d15-47eb-8ea7-ca0e87dd4850",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Although the Mus\u00e9e d'Orsay is devoted to all art forms developed in France in the second half of the 19th century \u2014 and hosts chamber-music concerts too \u2014 most visitors come for the Impressionist collection on the upper floors.",
+      "source_id": "7cb3fbb7-9b04-4c2a-817e-c670e394a8ea",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Its fame is built on those galleries, though the building itself is equally extraordinary: a temple to modernity from the age of steam, echoing Monet's paintings of the Gare Saint-Lazare and Zola's novel 'La B\u00eate humaine.'",
+      "source_id": "7cb3fbb7-9b04-4c2a-817e-c670e394a8ea",
+      "source_type": "beat",
+      "stop_idx": 2
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 3
+    },
+    {
+      "text": "Whether you walk west to east or east to west \u2014 the preferable route, along the 'grand axis' in the direction of the obelisk in Place de la Concorde, the Champs-Elys\u00e9es, and the Arc de Triomphe \u2014 the garden of the Tuileries of central Paris has survived a history of violence such as you would never imagine from the perspective of today's fastidiously groomed flower beds and treescapes.",
+      "source_id": "9f998183-e6fa-4aef-baf8-2e6f6782e46b",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Once the private preserve of royal families, the garden displays a dazzling formal design decorated with gleaming white sculptures of mythological and historical celebrities.",
+      "source_id": "9f998183-e6fa-4aef-baf8-2e6f6782e46b",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The more than one thousand trees \u2014 linden, sycamore, pine, palm, maple, clipped horse chestnut, boxed orange \u2014 provide ample shade and breezes.",
+      "source_id": "9f998183-e6fa-4aef-baf8-2e6f6782e46b",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The basins are ringed with chairs.",
+      "source_id": "9f998183-e6fa-4aef-baf8-2e6f6782e46b",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The central pool was the departure point of the Revolutionary ceremony for the Supreme Being, orchestrated by a thickly powdered Robespierre dressed in blue, a bouquet of flowers in one hand, a torch in the other, haranguing the crowds.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The master of ceremony, the painter David, fretted at the head of a red-painted float drawn by eight oxen, surmounted by a Liberty figure.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Two thousand four hundred singers and a thousand musicians accompanied the procession into the Place de la R\u00e9volution \u2014 today's Concorde \u2014 where they skirted the guillotine before heading for the Champ-de-Mars.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Meanwhile, a monster emerged from the pool in the shape of a pyramid, representing atheism, egoism, false modesty, discord, and ambition.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Set alight, the monster was reduced to ashes, and Wisdom appeared in her splendour.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "All that survives of this inflamed idealism are some marble benches in a semicircle on either side of the entrance to the central alley \u2014 placed by the well-intentioned Robespierre for the aged participants.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "On 10 October 1794, the remains of J.J.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Rousseau, wrapped in a gold-studded azure flag, were deposited by this same pool on their way from Ermenonville to the Panth\u00e9on.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Robespierre was not present: the guillotine had disposed of him too, a couple of months before.",
+      "source_id": "6807db5b-b694-433f-ac1f-c6a1058b5fb7",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Catherine de Medici laid out the original Tuileries Gardens in 1564 in the Italian style, her native taste \u2014 and forbade access to the ramparts on the east side to protect her privacy in the small garden beside the palace.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Henri IV had Jean Le N\u00f4tre restore them after the wars of religion and planted mulberry trees, hoping to develop a French silk industry and break the Milanese monopoly.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "In 1664 Colbert commissioned Jean's grandson Andr\u00e9 to redesign the gardens west of the palace into a perfect jardin \u00e0 la fran\u00e7aise.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "And in June 1662, Louis XIV \u2014 to celebrate the birth of his first son \u2014 held a spectacle of equestrian evolutions called a carousel.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Fifteen thousand spectators packed the grandstand on the 2nd and 3rd.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Dressed as a Roman Emperor, the Sun King caracoled and strutted, playing to his future favourite Louise de la Valli\u00e8re.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The name of the garden has stuck ever since \u2014 though today's visitor usually associates it with Napoleon's 1805 Arc du Carrousel at its eastern edge.",
+      "source_id": "b0d19583-5335-4b5b-a4dc-a60d803bf4a3",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Just inside the entrance at Place de la Concorde \u2014 'one of the true wonders of the world,' in the words of Ina Caro's Paris to the Past \u2014 to the left of the large octagonal basin, the statue of Le Silence stands out from the crowd, as if coolly contemplating the passage of time.",
+      "source_id": "72dca2a6-8582-4412-b7d7-083b55790071",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "A sensual and graceful figure, her dispassionate gaze registers the garden's mortal haunted beauty, its bloody history buried under the linden trees.",
+      "source_id": "72dca2a6-8582-4412-b7d7-083b55790071",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "In the southwestern corner of the 'riverside' terrace overlooking the Seine \u2014 where the imprisoned Marie Antoinette and the dauphin used to walk \u2014 the Orangerie displays Monet's Water Lilies, a kind of homage to the beauty of the city and of the world.",
+      "source_id": "46d28f0e-a893-4734-a533-f8aafa0d49d4",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The name Tuileries comes from tuileries, the French word for tile works \u2014 the site was originally owned and occupied by the city's tile manufacturers in the thirteenth century, and bought by Fran\u00e7ois I in 1517.",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "It was his daughter-in-law, Catherine de M\u00e9dicis, who, as the grieving widow of Henri II, claimed the property for herself.",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "The niece of a pope and daughter of a Florentine banker, Catherine loved elaborate gardens in the style of the Italian Renaissance popular in sixteenth-century Florence.",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Although the Tuileries Garden has since known many different configurations \u2014 Andr\u00e9 Le N\u00f4tre (1633\u20131700), the great landscape artist, designed both Versailles and the Tuileries we see today \u2014 it was a grieving Medici queen mother who first established the lavish garden, with a palace thrown in on the side, in the heart of the capital.",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Paris disliked her extravagance: Ronsard (1524\u20131585), the 'prince of poets,' put it this way: 'The queen must cease building; Her lime must stop swallowing our wealth. . . .",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Of what use is her Tuileries to us!",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Of none, Moreau: it is but vanity.'",
+      "source_id": "18dccb3e-ee85-4d87-ac13-31e5d8695d1f",
+      "source_type": "beat",
+      "stop_idx": 3
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 4
+    },
+    {
+      "text": "When the Tuileries was still the seat of power, the ladies of the Napoleonic nobility drew an English clientele to this stretch of rue de Rivoli: the prestigious Meurice at no. 228 faced the Tuileries Gardens, the English bookshop Galignani at 224 kept the daily papers of home, and WH Smith opened its Paris branch at 248 for their convenience.",
+      "source_id": "c9c90a74-c2c8-4551-89f6-a8e492f030cb",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "The jewellery and clothes shops of rue de Castiglione and Place Vend\u00f4me catered to the same set.",
+      "source_id": "c9c90a74-c2c8-4551-89f6-a8e492f030cb",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "It was here, serving Empress Eug\u00e9nie and the other ladies of the Napoleonic court, that French haute couture was born in the second half of the 19th century \u2014 pioneered by Charles Worth, the Empress's English couturier.",
+      "source_id": "c9c90a74-c2c8-4551-89f6-a8e492f030cb",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "A century later its centre of gravity drifted westward to the 8th arrondissement.",
+      "source_id": "c9c90a74-c2c8-4551-89f6-a8e492f030cb",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "On the corner of rue de Castiglione and rue de Rivoli stands the hotel le Meurice.",
+      "source_id": "2c4df617-e3b1-4f4b-bace-d717d9e65e1b",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Charles Dickens stayed here in the 19th century while researching his novel about the years leading up to the French Revolution, A Tale of Two Cities.",
+      "source_id": "2c4df617-e3b1-4f4b-bace-d717d9e65e1b",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "It was also where the German General von Choltitz was quartered when he saved Paris from destruction at the end of World War II.",
+      "source_id": "2c4df617-e3b1-4f4b-bace-d717d9e65e1b",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "At 228 rue de Rivoli is the discreet entrance to the Meurice, where Thackeray and Dickens once stayed and where a penniless George Orwell was worked to the bone as a plongeur \u2014 \"the slave of the slave,\" as he puts it in Down and Out in London and Paris.",
+      "source_id": "4810e1f1-9561-42a9-95fe-3c4a6db59c1d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "He never names the hotel; it is \"a vast, grandiose place with a classical fa\u00e7ade, and at one side a little, dark doorway like a rat hole, which was the service entrance.\" The kitchens were the kingdom of hell: \"stifling low-ceilinged inferno of a cellar, red-lit from the fires, and deafening with oaths and clanging of pots and pans.\" Only a double door separated the squalid scullery from the dining room.",
+      "source_id": "4810e1f1-9561-42a9-95fe-3c4a6db59c1d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "\"There sat the customers in all their splendour and spotless table-cloths, bowls of flowers, mirrors and gilt cornices and painted cherubims; and here, just a few feet away we in our disgusting filth.\" A generation later, the German High Command of the Paris garrison took up residence at the lavish Meurice.",
+      "source_id": "4810e1f1-9561-42a9-95fe-3c4a6db59c1d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "One wonders whether any of them had read Down and Out.",
+      "source_id": "4810e1f1-9561-42a9-95fe-3c4a6db59c1d",
+      "source_type": "beat",
+      "stop_idx": 4
+    },
+    {
+      "text": "Leave place Vendome via rue de Castiglione.",
+      "source_id": "71563708-c190-4e23-a934-bcbdf0dccf71",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Luxury shops are the hallmark of this street.",
+      "source_id": "71563708-c190-4e23-a934-bcbdf0dccf71",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The famous chocolatier Godiva is on the right.",
+      "source_id": "71563708-c190-4e23-a934-bcbdf0dccf71",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Opposite on the left at No. 14 are the attractive displays of perfumes and soaps created by artisan perfumier Annick Goutal.",
+      "source_id": "71563708-c190-4e23-a934-bcbdf0dccf71",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Place Vend\u00f4me sums up the switchback history of 19th-century France in a single column.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Girardon's original equestrian statue of the Sun King was disposed of during the Revolution.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Napoleon's Colonne d'Austerlitz replaced it in 1810.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "With the Restoration, it was swapped for an equestrian Henri IV, le Vert Galant.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "When the bourgeois Louis-Philippe took the throne, the Vert Galant was dispatched to the Pont-Neuf and a Napoleon in a frock coat was set up instead \u2014 which his nephew Napoleon III later substituted with an imperial Napoleon as a Roman Caesar.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In 1871 the Commune, led by the painter Courbet, toppled the column to the sound of the Marseillaise as thousands of patriots cheered.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Emperor regained his lofty position the following year when the bourgeois National Assembly sent him back to the top.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "He has been dominating this mecca of luxury ever since.",
+      "source_id": "e9ce8fbb-9a01-4558-8075-ec86abd9f3eb",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "This elegant square is the work of the architect Jules Hardouin Mansart (1646\u20131706), who also designed the church at the Invalides and the hall of mirrors at Versailles.",
+      "source_id": "0efa36f1-c48b-43aa-b939-743245f91fd6",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Originally it was built to glorify Louis XIV, the Sun King, and a statue of him on horseback stood in the middle.",
+      "source_id": "0efa36f1-c48b-43aa-b939-743245f91fd6",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "This statue was melted down during the Revolution and later replaced by the column we see today.",
+      "source_id": "0efa36f1-c48b-43aa-b939-743245f91fd6",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The column, inspired by Trajan's column in Rome, has a statue of Napoleon I on the top.",
+      "source_id": "0efa36f1-c48b-43aa-b939-743245f91fd6",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "It is rather too tall and spoils the original harmony of the square.",
+      "source_id": "0efa36f1-c48b-43aa-b939-743245f91fd6",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Look for the sunbursts \u2014 symbol of Louis XIV \u2014 on the balconies of the houses.",
+      "source_id": "0efa36f1-c48b-43aa-b939-743245f91fd6",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "French haute couture was born not on the grand boulevards of the 8th arrondissement where it lives today, but right here in the 1st \u2014 in the second half of the 19th century.",
+      "source_id": "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The world of fashion concentrated around Place Vendome and the Tuileries to serve Empress Eugenie and the ladies of the Napoleonic nobility.",
+      "source_id": "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Its illustrious forerunner was Charles Worth, the Empress's English couturier \u2014 a fitting irony that the most French of industries was pioneered by an Englishman.",
+      "source_id": "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The legendary Ritz hotel opened on Place Vendome catering predominantly to affluent English visitors, who also frequented the fabulous jewellery shops on rue de Castiglione and rue de la Paix.",
+      "source_id": "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "For their convenience, WH Smith opened a Parisian branch at no. 248 rue de Rivoli.",
+      "source_id": "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "It would take another century for haute couture's centre of gravity to shift westward to the 8th arrondissement.",
+      "source_id": "77a2de3c-fda6-4cd2-a226-8aab0c138009",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The legendary Ritz opened on Place Vend\u00f4me in 1898 as the first hotel in Paris to install private bathtubs.",
+      "source_id": "61cbbc50-a8cb-4ef7-8ed4-c9ce577bd8d4",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "It was the headquarters of the golden couple, the Fitzgeralds, through the 1920s \u2014 they made it their home but moved about Paris for the fun.",
+      "source_id": "61cbbc50-a8cb-4ef7-8ed4-c9ce577bd8d4",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Hemingway, by contrast, could only afford to come for a drink at the bar.",
+      "source_id": "61cbbc50-a8cb-4ef7-8ed4-c9ce577bd8d4",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "That drink is still a worthwhile experience.",
+      "source_id": "61cbbc50-a8cb-4ef7-8ed4-c9ce577bd8d4",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Ritz has since adjusted to modern demands \u2014 a cordon bleu cooking school, a basement health club.",
+      "source_id": "61cbbc50-a8cb-4ef7-8ed4-c9ce577bd8d4",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "On the right is the Ritz Hotel, owned by Mohamed Al Fayed.",
+      "source_id": "01ff8a74-286f-4059-b164-eb6e8d6ae4fe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The hotel has been associated with many famous names including Ernest Hemingway and Coco Chanel, whose shop is just behind on rue Cambon.",
+      "source_id": "01ff8a74-286f-4059-b164-eb6e8d6ae4fe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Princess Diana and Dodie Al Fayed left from the back door of the Ritz for their fatal car journey in 1997.",
+      "source_id": "01ff8a74-286f-4059-b164-eb6e8d6ae4fe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Place Vend\u00f4me is French classical architecture at its most polished \u2014 and its switchback statue sums up nineteenth-century France in a single column.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Girardon's original equestrian Louis XIV went in the Revolution.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Napoleon's Colonne d'Austerlitz replaced it in 1810.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "With the Restoration came an equestrian Henri IV, le Vert Galant.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Then Louis-Philippe ousted the Bourbons and dispatched the Vert Galant to the Pont-Neuf; a bourgeois Napoleon in frock coat and low hat went up instead.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Napoleon III substituted an imperial Napoleon dressed as a Roman Caesar.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "In 1871 the Commune \u2014 led on the square by the painter Gustave Courbet \u2014 sang the Marseillaise and le Chant de la Patrie as thousands of patriots pulled the column down.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "The Emperor, however, regained his lofty position the following year, when the victorious bourgeois Versaillais sent him back to the top.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "He has been dominating this Mecca of luxury ever since.",
+      "source_id": "69031b29-1b08-42b0-8ac1-8380638b7fbe",
+      "source_type": "beat",
+      "stop_idx": 5
+    },
+    {
+      "text": "Cross the boulevard and go down rue des Capucines.",
+      "source_id": "5aca63d2-37ba-4de8-bb10-ff46d16c6545",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Turn right into rue de la Paix and go into place Vendome.",
+      "source_id": "5aca63d2-37ba-4de8-bb10-ff46d16c6545",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "At no. 7 was the house of Charles Frederick Worth, rightly claimed to be the first haute couture designer, who raised dressmaking from craft to art.",
+      "source_id": "c0c2c8ff-b8fa-4f8b-8e3f-6f4d2c1c4427",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "When Worth arrived from England in 1845, aged 20, he had just 117 francs in his pocket and knew not a word of French.",
+      "source_id": "c0c2c8ff-b8fa-4f8b-8e3f-6f4d2c1c4427",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "He had served seven years apprenticed to the drapers Swan and Edgar, and after 12 years of hard work in Paris opened his own house on rue de la Paix in 1858.",
+      "source_id": "c0c2c8ff-b8fa-4f8b-8e3f-6f4d2c1c4427",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "His timing was perfect: this was the heyday of the glamorous Second Empire, where multitudes of social upstarts, ready to squander unlimited sums, accepted Worth's tyranny because they could not claim to be his social betters.",
+      "source_id": "c0c2c8ff-b8fa-4f8b-8e3f-6f4d2c1c4427",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The reign of the haute couture designer thus began.",
+      "source_id": "c0c2c8ff-b8fa-4f8b-8e3f-6f4d2c1c4427",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The head office of Cartier is still at no. 13 rue de la Paix.",
+      "source_id": "28cc729a-48c1-4fcf-b434-6442d8798b3b",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "The house was founded in 1847 by Louis-Fran\u00e7ois Cartier, who until then had been working for another famous jeweller, Adolphe Picard.",
+      "source_id": "28cc729a-48c1-4fcf-b434-6442d8798b3b",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "He first set up shop near the Palais-Royal, then moved to the fashionable Boulevard des Italiens, where his customers included the Empress Eug\u00e9nie and Napoleon III's cousin, la Princesse Mathilde.",
+      "source_id": "28cc729a-48c1-4fcf-b434-6442d8798b3b",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "In 1899 his grandson Louis moved to rue de la Paix, by then the centre of luxury of the capital.",
+      "source_id": "28cc729a-48c1-4fcf-b434-6442d8798b3b",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Cartier's international clientele included Edward VII of England, Alfonso XIII of Spain, and the Duchess of Windsor.",
+      "source_id": "28cc729a-48c1-4fcf-b434-6442d8798b3b",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Rue de la Paix was once the site of the beautiful convent of the Capucines, closed during the Revolution and converted into a theatre.",
+      "source_id": "22d717ec-a199-4cc7-b2db-ee51b81b3494",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "A popular funfair was held in its gardens and the famous Franconi moved his circus there.",
+      "source_id": "22d717ec-a199-4cc7-b2db-ee51b81b3494",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "In 1806, Napoleon razed everything to make room for a glorious thoroughfare to honour his name, entrusting the project to his architects Percier and Fontaine.",
+      "source_id": "22d717ec-a199-4cc7-b2db-ee51b81b3494",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "After his defeat in 1814, however, the street was renamed rue de la Paix to commemorate the Peace of Amiens.",
+      "source_id": "22d717ec-a199-4cc7-b2db-ee51b81b3494",
+      "source_type": "beat",
+      "stop_idx": 6
+    },
+    {
+      "text": "Walk to the next stop.",
+      "source_id": "GLUE_NAV",
+      "source_type": "glue",
+      "stop_idx": 7
+    },
+    {
+      "text": "At no. 5 rue Daunou, the red neon sign of Harry's Bar still beckons from a quiet, deserted street.",
+      "source_id": "06a6be09-9f24-4283-b46b-524d2be9461b",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "This was a favourite haunt of Hemingway, whose photograph hangs on the wall, and of his friend Fitzgerald, who would drop in from the Ritz just round the corner.",
+      "source_id": "06a6be09-9f24-4283-b46b-524d2be9461b",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "Opened in 1911, Harry's New York Bar was the heart of American expatriate Paris in the 1920s \u2014 and the birthplace of the Bloody Mary cocktail, mixed here by bartender Fernand Petiot in 1921.",
+      "source_id": "06a6be09-9f24-4283-b46b-524d2be9461b",
+      "source_type": "beat",
+      "stop_idx": 7
+    },
+    {
+      "text": "End the walk here, or carry on at your own pace.",
+      "source_id": "GLUE_CLOSING",
+      "source_type": "glue",
+      "stop_idx": 7
+    }
+  ],
+  "validation": {
+    "untraceable_sentences": [],
+    "forbidden_phrase_hits": []
+  }
+}

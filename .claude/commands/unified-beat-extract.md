@@ -131,7 +131,21 @@ Each beat commits to a `beat_length_class` based on what the source material *is
 - `seasoning` (20–80w, ~10–30s audio) — an address-level vignette or walk-by callout. Threaded along a walking path.
 - `micro` (<20w, <10s audio) — a walk-by factoid, one sentence max.
 
-Pick the class first based on the source role, then write to that length. If word count falls outside the class's range:
+**Source-span gate (B12 — applied BEFORE prose-feel calibration):**
+
+Programmatic helper: `scripts.extract_validators.source_span_gate(source_passage)` returns the max allowed class for a given span — call it instead of counting by eye.
+
+Count the contiguous source-text sentences your beat derives from at this stop. A "sentence" is a full source-text sentence in the chunk, not a clause — but a semicolon-joined clause carrying an independent factual claim (a Robb-style construction: *"X happened in 1789; Y happened in 1791; Z, who had been there, said…"*) counts as a sentence for this gate. Don't be fooled by punctuation density: the gate measures *factual span*, not period count. Then:
+
+- **≤2 source sentences for the stop** → cap at `seasoning` (≤80w). If the story still won't fit honestly, drop to `micro` (≤20w) — or skip the beat entirely. Do NOT inflate to `mid` by importing world knowledge, contemporary context, or tour-guide framing the source doesn't carry.
+- **3–5 source sentences** → `mid` is the ceiling. `anchor` is off the table.
+- **6+ source sentences with a coherent arc** → `anchor` is in play. Use the prose-feel calibration below to choose between `anchor` and `mid`.
+
+This gate exists because narrative-history sources (Robb's *Parisians*-type prose) often handle a stop in one or two sentences. The pre-gate prompt's `mid` budget (80–200w) drove fabrication on those stops — extractors filled space with imported facts to hit length. The fix: recognize that one source sentence = a `seasoning` beat at most, not a `mid` beat. Five clean `seasoning` beats beat five fabricated `mid`s every time.
+
+Failure mode this prevents (observed, 2026-05-01 Parisians chunk-13 run): a one-sentence Place Vendôme passage (*"the Place Vendôme … still proclaimed the undying glory of the Emperor"*) inflated into a 90-word `mid` beat that imported the Communard column-pulldown, a brass-band Marseillaise, and the Austrian-and-Russian-cannon bronze detail — none of which Robb wrote. The honest output is a ≤25-word `seasoning` beat that says only what Robb said.
+
+Pick the class first based on the source-span gate AND the source role, then write to that length. If word count falls outside the class's range:
 - **Over-length in any class** → re-class up. An 85-word beat tagged `seasoning` is actually `mid`. Don't truncate the prose; the extractor mis-identified the source's scope.
 - **Under-length in `anchor`** → re-scan the source. A 150-word "anchor" from a passage the source clearly treats as a deep stationary stop is evidence the extractor compressed too aggressively. Go back to the source passage and recover the missing narrative before committing the class down to `mid`.
 - **Under-length in `mid`/`seasoning`** → re-class down. A 40-word beat tagged `mid` is actually `seasoning`; a 15-word beat tagged `seasoning` is actually `micro`.
@@ -148,6 +162,20 @@ The asymmetry matters: demoting an anchor you under-wrote is quiet data loss. Re
 - Do NOT add transitions: "Moving on to...", "Next we'll see..."
 - Do NOT invent sensory details the source doesn't provide.
 - DO use the source text's own vivid language and narrative details.
+
+**Fact-check honesty on emission (B11):**
+
+Programmatic helper: `scripts.extract_validators.fabrication_probe(...)` extracts concrete claim candidates (years, multi-word proper nouns, red-flag phrases) from `script_body` + `physical_cues` and checks each against the cited source plus the broader chunk text. Run it on every beat before commit. If `has_fabrication` is true, EITHER drop the unsourced clauses from body/cues OR set `extractor_state: "imported_context"` and merge the verdict's `unsourced_claims` into `flagged_claims`. The 40 % ceiling applies to the chunk total (see `extractor_state_summary.over_40pct_ceiling` in `audit_chunk`'s output).
+
+Every beat carries an `extractor_state` field inside its `fact_check` block, populated AT EXTRACTION TIME. This is a NEW field, orthogonal to `fact_check.status` (which stays on the existing `verified | corrected | disputed | unverified` enum that `/fact-check` controls — never write those values from this skill; let `/fact-check` decide them on its own pass). The contract:
+
+- If every concrete claim in `script_body` (every name, date, year, action, quote, place-relation) traces literally to the cited `source_passage`, set `fact_check.extractor_state: "clean"` and leave `flagged_claims` empty. Set `fact_check.status: "unverified"` (the `/fact-check` skill will upgrade this to `verified` later).
+- If the extractor knowingly imported context not in the source — even if world-true, even if "obvious" — set `fact_check.extractor_state: "imported_context"` and populate `flagged_claims` with each unsourced concrete claim, one entry per claim. Leave `fact_check.status: "unverified"` (again, `/fact-check` decides). Don't hide behind paraphrase. The downstream `/fact-check` skill reads `flagged_claims` to know what to verify; un-flagged fabrications are silent failures the audit will miss.
+- `physical_cues` text is subject to the same rule. A cue that reads "the original is now in Musée d'Orsay", "1957 replacement statue", "324 m above the Champ de Mars", or "Henri IV's 1605 pavillons" carries concrete claims the source didn't make. Either drop those clauses from the cue text (cues should describe what the listener can SEE at the stop, not import provenance/dates the source omitted), or list each as a flagged claim and mark the beat `extractor_state: "imported_context"`.
+
+The legacy emission pattern (`status: "unverified"` + `flagged_claims: []` + no `extractor_state`) is now treated as a violation by omission: it leaves fabrication un-audited. Always emit `extractor_state` explicitly.
+
+Failure mode this prevents (observed, 2026-05-01 Parisians chunk-13 run): 9 of 30 emitted beats carried unsourced concrete claims (Mangin "1957 replacement", Reichstadt "December centenary", Hôtel de Ville "burned by Communards in 1871", Institut "during the Revolution", Vendôme "Communard pulldown") — every one shipped with `flagged_claims: []` and no extractor self-flag. Under the new rule, each of those becomes an `extractor_state: "imported_context"` beat with the unsourced claims listed, which `/fact-check` can then resolve.
 
 **Preserve-don't-paraphrase on inline foreign phrases (B3):**
 
@@ -400,6 +428,64 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
 
 ---
 
+## HELPERS — call these, don't hand-roll
+
+Three helper modules in `scripts/` carry the mechanical work the prompt used to leave on the honor system. Use them; do NOT duplicate their logic in extraction-time Python.
+
+### `scripts.beat_builder`
+
+Construct each beat via `make_beat(...)` (instead of building the dict literal yourself). One `BookContext` per run carries `book_title`, `author`, `book_slug`, `chunk_slug`, `chapter`, `page`, `city_name`, `prompt_version`. `make_beat` then auto-fills:
+
+- `script_body_hash` (validator-required SHA-256 of the normalised body)
+- `duration_sec` (computed at 2.5 wps, never AI-set)
+- `beat_id` (`{city}_{poi_slug}_{lens}_{book_slug}_{topic_slug}`)
+- `source_attribution`, `_meta`, default `fact_check` block
+
+Slug normalisation (`slugify`) folds accents to ASCII (`Étoile` → `etoile`), stable across runs.
+
+```python
+from scripts.beat_builder import BookContext, make_beat
+
+ctx = BookContext(book_title=..., author=..., book_slug="parisians", chunk_slug="chunk-13-...", chapter=..., page=...)
+beat = make_beat(ctx=ctx, poi_name="Palais Garnier", lens="war_conflict",
+                 topic_slug="staircase", script_body=..., source_passage=...,
+                 beat_length_class="mid", beat_type="event",
+                 narrative_function="climax", emotional_register="dramatic",
+                 subject_tag="hitler opera staircase", entities=[...],
+                 sensory_anchor=True, physical_cues=[...])
+```
+
+### `scripts.extract_validators`
+
+Three programmatic gates that USED to live in the prompt as honor-system rules:
+
+- `count_source_sentences(source_passage)` — counts factual-sentence units (semicolon-joined clauses count separately per the B12 rule).
+- `source_span_gate(source_passage)` — returns the maximum allowed `beat_length_class` for the cited span: ≤2 sentences = `"seasoning"`, 3–5 = `"mid"`, 6+ = `"anchor"`.
+- `check_length_class(script_body, beat_length_class)` — `(in_range, suggested_reclass)` for the word-count vs class-range check.
+- `fabrication_probe(script_body, physical_cues, source_passage, chunk_text)` — extracts concrete claim candidates (years, multi-word proper nouns, red-flag phrases like "replica" / "1957 replacement" / "now in") from body and cues, checks each against the cited source AND the broader chunk_text. Returns a `FabricationVerdict` with `unsourced_claims` + `cue_unsourced` lists. **If `has_fabrication` is true, you MUST set `extractor_state: "imported_context"` and merge the verdict's claims into `flagged_claims` — or strip the unsourced clauses from the body/cues and re-run the probe.**
+- `validate_beat(beat, chunk_text)` — orchestrates all three gates and returns a `BeatVerdict` with `errors`, `warnings`, `suggested_class`, and the fabrication finding. **Run this on every beat before commit.** A `BeatVerdict.ok=False` means a B12 violation; warnings are advisory but should be triaged before emission.
+
+The probe is heuristic — false positives are fine (you can drop the clause) but false negatives are silent fabrication. Trust it.
+
+### `scripts.audit_extraction.audit_chunk`
+
+Builds the §PIPELINE REPORT dict programmatically — every section the report calls for is a key in the returned dict (`extraction_summary`, `length_class_distribution`, `extractor_state_summary` with the 40 % `imported_context` ceiling, `fabrication_audit`, `new_coverage` against `live_beats`, etc.). Print this report to the user at the end of the run; do NOT re-compute its sections by hand.
+
+```python
+from scripts.audit_extraction import audit_chunk
+
+report = audit_chunk(beats=new_beats, chunk_text=chunk, poi_index=poi_by_name, live_beats=live_beats_or_None)
+# Hand `report` straight to the user as the §PIPELINE REPORT, not a hand-tallied summary.
+```
+
+The `fabrication_audit.self_flag_failures` key is the second line of defence: it re-runs the probe across the whole chunk after emission and flags any beat that still carries unsourced claims with `extractor_state: clean`. If non-empty, you have a still-uncaught fabrication — fix and re-commit before reporting done.
+
+### Tests
+
+Helper behaviour is pinned in [tests/test_extract_helpers.py](tests/test_extract_helpers.py) (38 tests). Run `pytest tests/test_extract_helpers.py` if you change the helpers or the rules they encode.
+
+---
+
 ## OUTPUT FORMAT
 
 ### Beat JSON structure
@@ -438,6 +524,7 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
   "fact_check": {
     "flagged_claims": [],
     "status": "unverified",
+    "extractor_state": "clean",
     "notes": ""
   },
   "new_poi": false,
@@ -448,6 +535,33 @@ Example: `paris_louvre_museum_hidden_history_around_and_about_paris_charles_v_ro
   }
 }
 ```
+
+### Honesty-flagged beat example (extractor imported context — `imported_context`)
+
+```json
+{
+  "beat_id": "paris_place_vendome_war_conflict_parisians_an_adventure_history_of_paris_hitler_undying_glory",
+  "city_name": "paris",
+  "poi_name": "Place Vendome",
+  "lens": "war_conflict",
+  "topic_slug": "hitler_undying_glory",
+  "beat_length_class": "seasoning",
+  "script_body": "A few moments later, looping back through the 1st arrondissement, Hitler was just as impressed by Place Vendôme — a square that, despite the vandalism of anarchists, still proclaimed the undying glory of the Emperor. He was thinking of the Communards of 1871, who had pulled down Napoleon's bronze column with ropes and a pulley.",
+  "source_passage": "A few moments later, he was just as impressed by the Place Vendôme, which, despite the vandalism of anarchists, still proclaimed the undying glory of the Emperor.",
+  "fact_check": {
+    "flagged_claims": [
+      "the 'anarchists' were the Communards of 1871",
+      "the column was pulled down with ropes and a pulley"
+    ],
+    "status": "unverified",
+    "extractor_state": "imported_context",
+    "notes": "Robb writes only 'vandalism of anarchists' — the Commune attribution and the rope-and-pulley detail are extractor-imported world knowledge. /fact-check should resolve."
+  },
+  "_meta": {"prompt_version": "unified_v2", "generated_at": "ISO 8601", "city_name": "paris"}
+}
+```
+
+The honest fix on this particular beat is to drop both flagged clauses and re-emit a clean ≤25-word `seasoning` beat (the source span gives one sentence). The example above shows the *shape* of an `imported_context` beat for cases where the extractor genuinely judges the imported clauses are worth keeping pending verification.
 
 ### Sensory-anchored sub_location beat example (tier-5 POI, anchor-class)
 
@@ -601,10 +715,12 @@ After writing the output, tell the user what to run next:
 
 ## SELF-VERIFICATION
 
+The mechanical rules below are now backed by `scripts.extract_validators.validate_beat(beat, chunk_text)` — call it on every beat before commit. The `BeatVerdict` it returns covers rules 2 (fabrication probe), 5 (length-class + B12 source-span gate). The list below is what to do when the helper flags a violation, plus the rules the helper can't mechanise (judgment calls).
+
 Before writing output:
 
 1. **Every beat has a source_passage** — verbatim sentence(s) from the book, not a snippet (B7).
-2. **No hallucinated content** — every fact in every beat traces to source text.
+2. **No hallucinated content, and self-flagged when present (B11)** — every concrete fact in every beat (every name, date, year, action, quote, place-relation) traces to the cited `source_passage`. When the extractor knowingly imports context the source did not carry — even world-true context — set `fact_check.extractor_state: "imported_context"` and list every unsourced concrete claim in `flagged_claims`. Leave `fact_check.status: "unverified"` (the `/fact-check` skill owns that field; never write `verified`/`corrected`/`disputed` from this skill). Same rule for `physical_cues` text. Emitting a beat with no `extractor_state` field, or with empty `flagged_claims` while body or cues carry unsourced claims, is a silent failure. **Ceiling:** if more than 40 % of a chunk's beats land as `extractor_state: "imported_context"`, the extractor is over-importing — re-run the chunk with tighter source adherence (drop to `seasoning`/`micro` or skip beats outright instead of inflating).
 3. **Beat IDs are unique within this run** — no two beats share the same beat_id.
 4. **Every beat has all required fields:**
    - `beat_id`, `city_name`, `poi_name`, `lens`, `topic_slug`, `script_body`
@@ -618,7 +734,7 @@ Before writing output:
    - `beat_length_class` (one of `anchor`, `mid`, `seasoning`, `micro`)
    - `sub_location` (string or null), `trigger_address` (string or null)
    - `inline_foreign_phrases` (list, possibly empty), `pronunciation` (string or null)
-5. **Word count falls inside `beat_length_class` range** — anchor 200–400w, mid 80–200w, seasoning 20–80w, micro <20w. If a beat drifts outside, **re-class it, don't re-write.** An out-of-range count means the extractor mis-identified the source's role.
+5. **Word count AND source-span gate (B12) both respected** — anchor 200–400w, mid 80–200w, seasoning 20–80w, micro <20w; AND the source-span gate (≤2 source sentences = max `seasoning`; 3–5 = max `mid`; 6+ allows `anchor`) takes precedence over prose feel. If either rule fails, re-class down. Don't re-write up by importing world knowledge — that's the fabrication failure mode the gate exists to prevent.
 6. **Inline foreign phrases are consistent with script_body** — every `inline_foreign_phrases[].phrase` value must literally appear in `script_body`. If the structured entry exists but the word is missing from prose, the extractor paraphrased it away — restore the verbatim form (B3).
 7. **Tier-3+ physical_cues are populated when the source has a visible feature** — if a beat at an `importance_tier >= 3` POI cites plaques, façade details, views, interiors, or adjacent landmarks in its `source_passage`, `physical_cues` must not be empty. **Separate rule (Fix 2):** every beat with a non-null `trigger_address` must have `physical_cues` non-empty — at minimum, a cue pointing to the façade/door/plaque at that address. The listener can always look at the building.
 8. **poi_name is location-anchored (B9)** — for each non-transit beat, ask "if a listener geofences this `poi_name` (+ `trigger_address` if set), will they be standing where this story happened?" If no, re-assign. For `beat_type: transit` beats, verify the carve-out instead: `trigger_address` is the origin (required, non-null), `poi_name` is the destination (next stop), and origin ≠ destination.
@@ -632,6 +748,8 @@ Before writing output:
 ---
 
 ## PIPELINE REPORT
+
+Build the report dict by calling `scripts.audit_extraction.audit_chunk(beats=new_beats, chunk_text=chunk, poi_index=poi_by_name, live_beats=live_beats_or_None)`. Print its keys in the order below — every section corresponds to a returned dict key. Do NOT re-compute by hand; the helper guarantees consistency across runs.
 
 After processing, report:
 

@@ -1,0 +1,1314 @@
+[
+  {
+    "name": "Parc des Buttes-Chaumont",
+    "short_description": "Dramatic 61-acre park built on a former gypsum quarry with waterfalls, a grotto, and a Roman temple on a rocky island",
+    "latitude": 48.879288,
+    "longitude": 2.384246,
+    "importance_tier": 3,
+    "trigger_radius": 150,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Buttes-Chaumont"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_parc_des_buttes_chaumont_dark_history_hidden_gardens_of_paris_gibbet_of_montfaucon",
+        "city_name": "paris",
+        "poi_name": "Parc des Buttes-Chaumont",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "gibbet_of_montfaucon",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Beneath the pleasant lawns of Buttes-Chaumont lies a history of medieval horror. In the Middle Ages, as far to the west as Place du Colonel-Fabien, this land was the site of the gibbet of Montfaucon — established by Saint Louis (1223–70) as a sign of royal justice over the city. It was an elaborate stone structure with some 16 columns, each ten meters high. From it literally scores of decaying criminals' bodies could be hanging at any time. The gibbet was a place of execution in its own right, but also the place of exhibition of the remains of individuals tortured and executed in one of the many execution sites in Paris. Bodies could be left there for two or three years or more, at the end of which time, crows and — in bad times — wolves having done their worst — they were a gruesome sight, and their noisome stench wafted towards the Faubourg du Temple. In its garbage dump years, this landscape also fed a plump army of rats, who could strip a corpse to its skeleton within 24 hours.",
+        "beat_length_class": "mid",
+        "duration_sec": 89,
+        "kid_friendly": "no",
+        "entities": [
+          "Montfaucon gibbet",
+          "Saint Louis",
+          "Place du Colonel-Fabien",
+          "Faubourg du Temple"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "medieval gibbet horror",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Gibbet of Montfaucon established by Saint Louis (1223–70)",
+          "16 columns, each ten meters high",
+          "Scores of bodies hanging at any time, left 2–3 years",
+          "Rats could strip a corpse to skeleton within 24 hours"
+        ],
+        "source_passage": "Historian Colin Jones evokes the long-ago horror of the countryside around what is now Buttes-Chaumont: in the Middle Ages, as far to the west as Place du Colonel-Fabien, this land was the site of the gibbet of Montfaucon: Established by Saint Louis (1223—yo) as a sign of royal justice over the city, . . . the gibbet was ... an elaborate stone structure with some 16 columns, each ten meters high. From it literally scores of decaying criminals' bodies could be hanging at any time. The gibbet was a place of execution in its own right, but also the place of exhibition of the remains of individuals tortured and executed in one of the many execution sites in Paris. . . . Bodies could be left therefor two or three years or more, at the end of which time, crows and (in bad times) wolves having done their worst— they were a gruesome sight, and their noisome stench wafted towards the Faubourg du Temple. ... In its garbage dump years, this landscape also fed a plump army of rats, who could strip a corpse to its skeleton within 24 hours.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "192–193"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Claim attributed to Colin Jones, Paris: The Biography of a City — footnoted in source."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris",
+          "beat_type_fixup_from": "dark_history"
+        },
+        "_word_count": 182
+      },
+      {
+        "beat_id": "paris_parc_des_buttes_chaumont_hidden_history_hidden_gardens_of_paris_quarry_transformation",
+        "city_name": "paris",
+        "poi_name": "Parc des Buttes-Chaumont",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "quarry_transformation",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Monsieur Alphand had his work cut out for him when Haussmann and Napoleon III directed him to transform the foul terrain in eastern Paris into a scenic garden that would become Buttes-Chaumont. Some visitors are aware that in an earlier life the park served as a quarry for gypsum — plaster of Paris — as well as a garbage dump. But the genius landscape engineer and architect pulled off an inspired metamorphosis: today Buttes-Chaumont is one of the city's most popular parks, where sprawling and picnicking on the grass is permitted to weekending crowds from all over the city.",
+        "beat_length_class": "mid",
+        "duration_sec": 63,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alphand",
+          "Haussmann",
+          "Napoleon III"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "quarry park transformation",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "plaster of Paris",
+            "gloss": "gypsum — the building material whose name derives from the Paris quarries"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Park created by Alphand under Haussmann and Napoleon III",
+          "Former quarry for gypsum (plaster of Paris) and garbage dump"
+        ],
+        "source_passage": "Monsieur Alphand had his work cut out for him when Haussmann and Napoleon III directed him to transform the foul terrain in eastern Paris into a scenic garden that would become Buttes-Chaumont. And once again the genius landscape engineer/architect pulled off an inspired metamorphosis. Today Buttes-Chaumont is one of the city's most popular parks, where sprawling and picnicking on the grass is permitted to weekending crowds from all over the city. Some visitors are aware that in an earlier life the park served as a quarry for gypsum—plaster of Paris—as well as a garbage dump.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "192"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 100
+      },
+      {
+        "beat_id": "paris_parc_des_buttes_chaumont_historic_arch_hidden_gardens_of_paris_temple_lake_features",
+        "city_name": "paris",
+        "poi_name": "Parc des Buttes-Chaumont",
+        "parent_poi": null,
+        "lens": "historic_arch",
+        "topic_slug": "temple_lake_features",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Wandering the three miles of walking paths at Buttes-Chaumont — up and down the gentle hills beneath the cedars of Lebanon, past a grotto with a waterfall — you'll come to a lake with a huge rock above it, which in turn is topped by a mock Corinthian temple. There are good views of Montmartre and Saint-Denis from up here. You can cross the lake on a suspension bridge or on the Pont des Suicides.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Pont des Suicides",
+          "Montmartre",
+          "Saint-Denis"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "mock temple lake",
+        "physical_cues": [
+          {
+            "cue": "Mock Corinthian temple atop the rock island in the lake, visible from the walking paths",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "View of Montmartre and Saint-Denis from the top of the cliff island",
+            "direction": "north",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Suspension bridge and Pont des Suicides crossing the lake below the cliff",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Three miles of walking paths, cedars of Lebanon, grotto with waterfall",
+          "Lake with cliff island topped by mock Corinthian temple",
+          "Views of Montmartre and Saint-Denis",
+          "Pont des Suicides crosses the lake"
+        ],
+        "source_passage": "Wandering the three miles of walking paths, up and down the gentle hills beneath the cedars of Lebanon, past a grotto with a waterfall, you'll come to a lake with a huge rock above it, which in turn is topped by a mock Corinthian temple: there are good views of Montmartre and Saint-Denis from up here. You can cross the lake on a suspension bridge or on the Pont des Suicides.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "193"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 76
+      },
+      {
+        "beat_id": "paris_parc_des_buttes_chaumont_famous_residents_hidden_gardens_of_paris_rosa_bonheur_painter",
+        "city_name": "paris",
+        "poi_name": "Parc des Buttes-Chaumont",
+        "parent_poi": null,
+        "lens": "famous_residents",
+        "topic_slug": "rosa_bonheur_painter",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The popular Rosa Bonheur restaurant and guinguette — open for dancing, eating, and drinking Wednesday through Sunday until midnight, even when the park is closed — is named for Rosa Bonheur (1822–1899), the most famous female French painter of the nineteenth century. Her painting The Horse Fair hangs in the Metropolitan Museum of Art in New York City. She was scorned in her day for wearing pants, smoking cigarettes, and enjoying the company of women.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "entities": [
+          "Rosa Bonheur",
+          "The Horse Fair",
+          "Metropolitan Museum of Art"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Rosa Bonheur artist",
+        "physical_cues": [
+          {
+            "cue": "Rosa Bonheur restaurant and guinguette in the park, named for the painter",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "guinguette",
+            "gloss": "open-air restaurant and dance venue"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Rosa Bonheur (1822–1899) most famous female French painter of the 19th century",
+          "The Horse Fair hangs in the Met in New York",
+          "Scorned for wearing pants, smoking, enjoying company of women"
+        ],
+        "source_passage": "There's also a children's carousel, a few cafes and the popular Rosa Bonheur restaurant/ginguette, open for dancing, eating, and drinking (Wed—Sun until midnight), even when the park is closed. Rosa Bonheur (1822—1899) was the most famous female French painter of the nineteenth century (The Horse Fair hangs in the Metropolitan Museum of Art in New York City), scorned in her day for wearing pants, smoking cigarettes, and enjoying the company of women.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "193"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 74
+      },
+      {
+        "beat_id": "paris_parc_des_buttes_chaumont_literary_heritage_hidden_gardens_of_paris_julia_child_visit",
+        "city_name": "paris",
+        "poi_name": "Parc des Buttes-Chaumont",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "julia_child_visit",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The robust and exuberant Julia Child, early in her time as a Parisian, found her way to Buttes-Chaumont on foot with her husband Paul: \"Paris was wonderfully walkable. . . . one could easily hike from the Place de la Concorde to the top of Montmartre in a half-hour. . . . One cold afternoon just before New Year's, Paul and I strolled up to the Buttes-Chaumont park. At the top of the hill, by the little Greek temple, we looked back at Sacré-Coeur on Montmartre, now silhouetted through layers of mist by the declining sun.\" Then they retired to a nearby cozy bistro, complete with cats, dogs, neighborhood characters, and two monkeys squealing and chattering.",
+        "beat_length_class": "mid",
+        "duration_sec": 82,
+        "kid_friendly": "yes",
+        "entities": [
+          "Julia Child",
+          "Paul Child",
+          "Sacré-Coeur",
+          "Place de la Concorde"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "Julia Child walk",
+        "physical_cues": [
+          {
+            "cue": "The hilltop with the little Greek/Corinthian temple, looking back toward Sacré-Coeur on Montmartre",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Julia Child walked to Buttes-Chaumont with husband Paul",
+          "Viewed Sacré-Coeur silhouetted through mist from temple hilltop"
+        ],
+        "source_passage": "Many tourists do not make it out this far from the city center, but the robust and exuberant Julia Child (with her husband, Paul) found her way, on foot, early in her time as a Parisian: Paris was wonderfully walkable. . . . one could easily hike from the Place de la Concorde to the top of Montmartre in a half-hour. . . . One cold afternoon just before New Year's, Paul and I strolled up to the Buttes-Chaumont park. At the top of the hill, by the little Greek temple, we looked back at Sacre-Coeur on Montmartre, now silhouetted through layers of mist by the declining sun. ... Then they retired to a nearby cozy bistro, complete with cats, dogs, neighborhood characters, and two monkeys squealing and chattering.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "193"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Quote from Julia Child, My Life in France — footnoted in source."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 115
+      },
+      {
+        "beat_id": "paris_parc_des_buttes_chaumont_local_legends_hidden_gardens_of_paris_mouzaia_pedestrian_streets",
+        "city_name": "paris",
+        "poi_name": "Parc des Buttes-Chaumont",
+        "parent_poi": null,
+        "lens": "local_legends",
+        "topic_slug": "mouzaia_pedestrian_streets",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "In the streets bordering the park today, there are a number of ethnic bistros and cafes, including L'Estampe at 74, rue de Botzaris. In the picturesque Mouzaia District — named for a place in Algeria — between Buttes-Chaumont and Square de la Butte-du-Chapeau-Rouge, in the streets around rue Miguel-Hidalgo and rue de Mouzaia, you can wander the pedestrian cobbled streets of terraced villas and small gardens of fruit trees and flowers, perhaps en route to the Danube metro.",
+        "beat_length_class": "mid",
+        "duration_sec": 58,
+        "kid_friendly": "yes",
+        "entities": [
+          "Mouzaia District",
+          "Square de la Butte-du-Chapeau-Rouge"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "Mouzaia district villas",
+        "physical_cues": [
+          {
+            "cue": "Pedestrian cobbled streets of terraced villas and small gardens around rue de Mouzaia",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Mouzaia District named for a place in Algeria",
+          "Between Buttes-Chaumont and Square de la Butte-du-Chapeau-Rouge",
+          "Pedestrian cobbled streets of terraced villas and small gardens"
+        ],
+        "source_passage": "In the streets bordering the park today, there are a number of ethnic bistros and cafes, including L'Estampe at 74, rue de Botzaris. In the picturesque Mouzaia District (named for a place in Algeria)—between Buttes-Chaumont and Square de la Butte-du- Chapeau-Rouge—in the streets around rueMiguel-Hidalgo and rue de Mouzaia, you can imitate the indefatigable Julia, who loved to \"intentionally wander off the beaten path\" all over the city and no doubt discovered these pedestrian cobbled streets of terraced villas and small gardens of fruit trees and flowers, perhaps en route to the Danube metro.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "193"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 82
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Pere Lachaise Cemetery",
+    "short_description": "World's most visited cemetery with over 3 million annual visitors and graves of Chopin, Jim Morrison, Oscar Wilde, and Edith Piaf",
+    "latitude": 48.860764,
+    "longitude": 2.393646,
+    "importance_tier": 4,
+    "trigger_radius": 100,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Cimetiere du Pere-Lachaise"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_sensory_observation_hidden_gardens_of_paris_colette_opening_nature",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "colette_opening_nature",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Colette (1873–1954), ecstatic lover of nature, would approve mightily of her final resting place. There are twelve thousand trees in Père-Lachaise Cemetery, avenues of cypresses, sycamores, tall, ancient chestnuts, a thick sheltering green roof over the cemetery's 105 acres of unspoiled beauty. Flowers are planted around the graves, some garlanding the monuments, symbolizing perpetual affection for the dead. \"Throughout my existence,\" Colette wrote not long before she died, \"I have studied flowering more than any other manifestation of life. It is there, for me, that the essential drama resides, and not in death, which is just a banal defeat.\"",
+        "beat_length_class": "mid",
+        "duration_sec": 80,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colette"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "Colette nature grave",
+        "physical_cues": [
+          {
+            "cue": "Twelve thousand trees — cypresses, sycamores, chestnuts — forming a thick green canopy over 105 acres",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Flowers garlanding the grave monuments throughout the cemetery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "12,000 trees in Père-Lachaise",
+          "105 acres",
+          "Colette (1873–1954) buried here"
+        ],
+        "source_passage": "Colette (1873—1954), ecstatic lover of nature, would approve mightily of her final resting place. There are twelve thousand trees in Pere-Lachaise Cemetery, avenues of cypresses, sycamores, tall, ancient chestnuts, a thick sheltering green roof over the cemetery's 105 acres of unspoiled beauty. Flowers are planted around the graves, some garlanding the monuments, symbolizing perpetual affection for the dead. \"Throughout my existence,\" Colette wrote not long before she died, \"I have studied flowering more than any other manifestation of life. It is there, for me, that the essential drama resides, and not in death, which is just a banal defeat.\"",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "197–198"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Colette quote attributed to 'The Ripening Seed', cited in Judith Thurman, Secrets of the Flesh: A Life of Colette."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 102
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_literary_heritage_hidden_gardens_of_paris_300000_buried_icons",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "300000_buried_icons",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Among the 300,000 men and women buried in Paris's largest cemetery are icons of a prodigious flowering of French civilization — writers, painters, sculptors, singers, composers, and cineastes who make us love life more. You can stroll the silent hillsides, follow the long winding cobbled paths, stirred to your depths as you suddenly come upon the graves of Proust and Wilde, Delescluze, Daumier, and Poulenc. Memory, said Gertrude Stein: the only true immortality. Her grave is at the eastern edge of avenue Circulaire.",
+        "beat_length_class": "mid",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "entities": [
+          "Marcel Proust",
+          "Oscar Wilde",
+          "Delescluze",
+          "Honoré Daumier",
+          "Francis Poulenc",
+          "Gertrude Stein",
+          "avenue Circulaire"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "icons of French",
+        "physical_cues": [
+          {
+            "cue": "Long winding cobbled paths through the silent hillsides",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Gertrude Stein's grave at the eastern edge of avenue Circulaire",
+            "direction": "east",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "300,000 buried in Paris's largest cemetery",
+          "Proust, Wilde, Delescluze, Daumier, Poulenc among the buried",
+          "Gertrude Stein at eastern edge of avenue Circulaire"
+        ],
+        "source_passage": "Among the 300,000 men and women buried in Paris's largest cemetery are icons of a prodigious flowering of French civilization who inspired a cultural reverence for that flowering in science, philosophy, politics, and especially the arts—the writers, painters, sculptors, singers, composers, and cineastes who make us love life more. Time spent in Pere-Lachaise quickens that love. There's no hurry here, no distractions. You can stroll the silent hillsides, follow the long, winding cobbled paths, stirred to your depths as you suddenly come upon the graves of Proust and Wilde, Delescluze, Daumier, and Poulenc. You can stop midway at a bench along a steep avenue to contemplate this landscape of memory. Memory, said Gertrude Stein: the only true immortality. (Her grave is at the eastern edge of avenue Circulaire?)",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "198"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 84
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_literary_heritage_hidden_gardens_of_paris_chopin_delacroix_balzac_cluster",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "chopin_delacroix_balzac_cluster",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "From the heights of Père-Lachaise you can trace a remarkable cluster of nineteenth-century genius on your map. Chopin lies down the hill near the center, not far from Colette, or from another of George Sand's lovers, Alfred de Musset. Delacroix, buried under black lava to the west, was the romantic painter's version of his beloved Chopin's romantic music — his artistic style a striving for a surprising violent exotic beauty. Balzac, another friend of Delacroix and another genius of that great nineteenth-century artistic explosion, rests in the same section.",
+        "beat_length_class": "mid",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frédéric Chopin",
+          "Eugène Delacroix",
+          "Honoré de Balzac",
+          "Alfred de Musset",
+          "George Sand",
+          "Colette"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Romantic era graves",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Chopin near center of cemetery, near Colette and Alfred de Musset",
+          "Delacroix buried under black lava to the west",
+          "Balzac in the same section as Delacroix"
+        ],
+        "source_passage": "From the heights of Pere-Lachaise, you see on your map that Chopin lies down the hill, near the center, not far from Colette, or from another of George Sand's lovers, Alfred de Musset. Delacroix (under black lava) is to the west, his artistic style—a striving for a surprising violent exotic beauty—the romantic painter's version of his beloved Chopin's romantic music. Balzac, another friend of Delacroix, and another genius of that great nineteenth-century artistic explosion, rests in the same section.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "198"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Delacroix description attributed to Umberto Eco, ed. History of Beauty — footnoted in source."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 94
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_literary_heritage_hidden_gardens_of_paris_heloise_abelard_eternal_reunion",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "heloise_abelard_eternal_reunion",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "In the vicinity of Colette's flower-strewn black granite grave are the lovers Héloïse (1101–1164) and Abélard (1079–1142), together in death in eternal defiance of the ecclesiastical powers that forced them apart in life. Their bodies were moved into Père-Lachaise — along with Molière and La Fontaine — in an effort to attract the important dead to what was a remote section of Paris when the cemetery was opened by Napoleon in 1804.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Héloïse",
+          "Abélard",
+          "Molière",
+          "La Fontaine",
+          "Napoleon"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Héloïse Abélard reunion",
+        "physical_cues": [
+          {
+            "cue": "Joint tomb of Héloïse and Abélard near Colette's flower-strewn black granite grave",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Héloïse (1101–1164) and Abélard (1079–1142) together in death",
+          "Bodies moved into Père-Lachaise along with Molière and La Fontaine",
+          "Cemetery opened by Napoleon in 1804"
+        ],
+        "source_passage": "Again in the vicinity of Colette's flower-strewn black granite are the lovers Heloise (1101—1164) and Abelard (1079—1142), together in death, in eternal defiance of the ecclesiastical powers that forced them apart in life. Their bodies were moved into Pere-Lachaise—along with Moliere and La Fontaine—in an effort to attract the important dead to what was a remote section of Paris when the cemetery was opened by Napoleon in 1804.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "198"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 75
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_hidden_history_hidden_gardens_of_paris_mont_louis_jesuits_louis_xiv",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "mont_louis_jesuits_louis_xiv",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "In the seventeenth century the land of what is now Père-Lachaise had belonged to the Jesuits, who called it Mont Louis. The prominent Jesuit Francis de la Chaise d'Aix, confessor to Louis XIV, lived here and retired to a splendid country house on Mont Louis. Supposedly, the simpatico confessor and the young king-to-be watched the civil revolt called the Fronde (1649–1652) from here — \"the hill of Charonne\" — that traumatic vigil the source of the Sun King's lifelong fear and hatred of the mob, the frondeurs, which would eventually drive him to abandon Paris and move the royal court to Versailles.",
+        "beat_length_class": "mid",
+        "duration_sec": 82,
+        "kid_friendly": "yes",
+        "entities": [
+          "Francis de la Chaise d'Aix",
+          "Louis XIV",
+          "Fronde",
+          "Jesuits",
+          "Versailles"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic",
+        "subject_tag": "Fronde vigil Versailles",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "frondeurs",
+            "gloss": "the rebellious mob participants in the Fronde civil revolt (1649–1652)"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Land belonged to Jesuits in 17th century, called Mont Louis",
+          "Francis de la Chaise d'Aix, confessor to Louis XIV, lived here",
+          "Louis XIV watched the Fronde (1649–1652) from this hill",
+          "The traumatic experience drove Louis XIV to eventually move court to Versailles"
+        ],
+        "source_passage": "In the seventeenth century the land had belonged to the Jesuits, who called it Mont Louis-, the prominent Jesuit Francis de la Chaise d'Aix, confessor to Louis XIV, lived here and retired to a splendid country house on Mont Louis. Supposedly, the simpatico confessor and the young king-to-be watched the civil revolt called the Fronde (1649-1652) from here (\"the hill of Charonne\"), that traumatic vigil the source of the Sun King's lifelong fear and hatred of the mob (the frondeurs), which would eventually drive him to abandon Paris and move the royal court to Versailles.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "198–199"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Louis XIV watched the Fronde from 'the hill of Charonne'",
+              "issue": "Source says 'supposedly' — unverified claim about the young Louis XIV's presence; the Fronde dates (1649–1652) are accurate. The confessor Francis de la Chaise d'Aix giving his name to the cemetery is well established.",
+              "status": "FLAGGED",
+              "correction": "None — source itself hedges with 'supposedly'. Preserved as-is.",
+              "sources": []
+            }
+          ],
+          "status": "flagged",
+          "notes": "Source uses 'supposedly' — beat preserves this hedge."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 106
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_dark_history_hidden_gardens_of_paris_mur_des_federes_communards",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "mur_des_federes_communards",
+        "sub_location": "mur-des-federes",
+        "trigger_address": null,
+        "script_body": "Two hundred years after Louis XIV's Fronde vigil, the Paris Communards made their last stand here among the tombstones — and in the nearby streets of Ménilmontant, Charonne, and Belleville. Finally subdued on May 28, 1871, 147 rebels were rounded up and shot against the eastern perimeter wall; the corpses of another thousand Communards were dumped in pits against the same wall. Today the Mur des Fédérés — the Wall of the Communards — to the right and down a few steps off avenue Circulaire — is a site of annual pilgrimage to commemorate the bravery of the working classes and the savagery of a government terrified of popular revolt. Now classified as a national historical monument, the Wall is always decorated with the flowers and wreaths left by pilgrims who arrive in all seasons.",
+        "beat_length_class": "mid",
+        "duration_sec": 100,
+        "kid_friendly": "no",
+        "entities": [
+          "Paris Commune",
+          "Mur des Fédérés",
+          "avenue Circulaire"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "Communards last stand",
+        "physical_cues": [
+          {
+            "cue": "Mur des Fédérés — the Wall of the Communards — to the right and down a few steps off avenue Circulaire",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          },
+          {
+            "cue": "Flowers and wreaths on the Wall left by pilgrims in all seasons",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Mur des Fédérés",
+            "gloss": "Wall of the Communards, where 147 rebels were shot on May 28, 1871"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "147 rebels shot against the eastern perimeter wall on May 28, 1871",
+          "Corpses of another thousand Communards dumped in pits at the same wall",
+          "Mur des Fédérés is a site of annual pilgrimage",
+          "Classified as a national historical monument"
+        ],
+        "source_passage": "Two hundred years later, the Paris Communards, in rebellion against the remnant Versailles government of Napoleon Ill's autocratic regime, made their last stand here among the tombstones (and in the nearby streets of Menilmontant, Charonne, and Belleville). Finally subdued on May 28, 1871, 147 rebels were rounded up and shot against the eastern perimeter wall; the corpses of another thousand Communards were dumped in pits against the same wall. Today the Mur des Federes—the Wall of the Communards—to the right and down a few steps off avenue Circulaire—is a site of annual pilgrimage to commemorate the bravery of the working classes and the savagery of a government terrified of popular revolt. Now classified as a national historical monument, the Wall is always decorated with the flowers and wreaths left by pilgrims who arrive in all seasons.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "199"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Claim attributed to Colin Jones, Paris: The Biography of a City — footnoted in source."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 132
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_dark_history_hidden_gardens_of_paris_wwii_resistants_deportation_memorials",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "wwii_resistants_deportation_memorials",
+        "sub_location": "wwii-memorials-corner",
+        "trigger_address": null,
+        "script_body": "In the same corner of the cemetery, opposite the Wall of the Communards, are the memorials to the murdered Resistants and the victims of the deportations to the Nazi labor and death camps in World War II.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 22,
+        "kid_friendly": "no",
+        "entities": [
+          "French Resistance",
+          "WWII deportations"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "WWII memorials corner",
+        "physical_cues": [
+          {
+            "cue": "Memorials to murdered Resistants and deportation victims in the same corner as the Mur des Fédérés",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Memorials to murdered Resistants and WWII deportation victims in same corner as the Mur des Fédérés"
+        ],
+        "source_passage": "In the same corner of the cemetery, opposite the Wall, are the memorials to the murdered Resistants and the victims of the deportations to the Nazi labor and death camps in World War II.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "199"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 37
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_famous_residents_hidden_gardens_of_paris_edith_piaf_most_visited_grave",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "famous_residents",
+        "topic_slug": "edith_piaf_most_visited_grave",
+        "sub_location": "edith-piaf-grave",
+        "trigger_address": null,
+        "script_body": "Buried close to the Resistants is Edith Piaf (1915–1963), native of Belleville, where she grew up homeless and starving until her voice reached her natural audience, the ordinary workers and marginalized poor of Paris. Hers is the most visited grave in this campo santo.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edith Piaf",
+          "Belleville"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Piaf grave most",
+        "physical_cues": [
+          {
+            "cue": "Edith Piaf's grave — most visited in the cemetery — close to the WWII Resistants memorials",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "campo santo",
+            "gloss": "sacred ground / holy field (Italian term for cemetery)"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Edith Piaf (1915–1963) native of Belleville, grew up homeless and starving",
+          "Her grave is the most visited in Père-Lachaise"
+        ],
+        "source_passage": "Buried close to the Resistants is Edith Piaf (1915—1963), native of Belleville, where she grew up homeless and starving until her voice reached her natural audience, the ordinary workers and marginalized poor of Paris. Hers is the most visited grave in this campo santo.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "199"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Piaf's grave is the most visited in Père-Lachaise",
+              "issue": "Contested superlative — Jim Morrison's grave is frequently cited as the most visited. Auto-correct blocked per never-auto-resolve rule on superlatives.",
+              "status": "DISPUTE",
+              "correction": "None — superlative claim; cannot auto-correct per pipeline guardrail. Flag for editorial review.",
+              "sources": [
+                "https://en.wikipedia.org/wiki/P%C3%A8re_Lachaise_Cemetery — notes Morrison's grave as 'one of the most visited'; Piaf also frequently cited",
+                "https://www.pere-lachaise.com — cemetery guides list both as top-visited"
+              ]
+            }
+          ],
+          "status": "disputed",
+          "notes": "Piaf vs Morrison 'most visited' is contested. Source author may be expressing personal view or using different data. Cannot auto-correct superlative per guardrail."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 45
+      },
+      {
+        "beat_id": "paris_pere_lachaise_cemetery_literary_heritage_hidden_gardens_of_paris_colette_final_quote_film",
+        "city_name": "paris",
+        "poi_name": "Pere Lachaise Cemetery",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "colette_final_quote_film",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The Dutch filmmaker Heddy Honigmann's documentary Forever unfolds an elegiac profile of the consoling beauty of Père-Lachaise. Some last words of Colette's resonate with the film's muted joy: \"What a wonderful life I've had. I only wish I'd realized it sooner.\"",
+        "beat_length_class": "seasoning",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Heddy Honigmann",
+          "Forever",
+          "Colette"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "callback",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Colette final words",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Heddy Honigmann (Dutch filmmaker) directed documentary Forever about Père-Lachaise",
+          "Colette's last words: 'What a wonderful life I've had. I only wish I'd realized it sooner.'"
+        ],
+        "source_passage": "The Dutch filmmaker Heddy Honigmann's documentary Forever unfolds an elegaic profile of the consoling beauty of Pere-Lachaise. Some last words of Colette's resonate with the film's muted joy: \"What a wonderful life I've had. I only wish I'd realized it sooner.\"",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "200"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 47
+      }
+    ],
+    "poi_role": "setting",
+    "_meta": {
+      "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Parc de la Villette",
+    "short_description": null,
+    "latitude": 48.8948898,
+    "longitude": 2.3884384,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_parc_de_la_villette_hidden_history_hidden_gardens_of_paris_slaughterhouse_origins",
+        "city_name": "paris",
+        "poi_name": "Parc de la Villette",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "slaughterhouse_origins",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The huge Cité des Sciences et de l'Industrie, like a number of the other buildings at La Villette, rises above abandoned abattoirs: La Villette was originally the site of the city's main slaughterhouse. The park goes on and on for miles, past one innovative themed garden after another — the Garden of Mirrors, of Dunes, of Winds, of Shadows, of Dragons (with a dragon slide) — all joined together by the Promenade des Jardins. Other highlights near the southern entrance include the Conservatoire de Paris, the Musée de la Musique with five floors of instruments, and the Cité de la Musique auditorium.",
+        "beat_length_class": "mid",
+        "duration_sec": 69,
+        "kid_friendly": "yes",
+        "entities": [
+          "Cité des Sciences et de l'Industrie",
+          "Conservatoire de Paris",
+          "Musée de la Musique",
+          "Cité de la Musique",
+          "Promenade des Jardins"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "slaughterhouse park",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "abattoirs",
+            "gloss": "slaughterhouses"
+          },
+          {
+            "phrase": "Promenade des Jardins",
+            "gloss": "promenade of gardens, the connecting walkway linking all themed gardens at La Villette"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "La Villette was originally site of city's main slaughterhouse",
+          "Buildings rise above abandoned abattoirs",
+          "Themed gardens: Mirrors, Dunes, Winds, Shadows, Dragons"
+        ],
+        "source_passage": "The park goes on and on for miles, past one innovative themed garden after another—the Garden of Mirrors, of Dunes, of Winds, of Shadows, of Dragons (with a dragon slide), all joined together by the Promenade des Jardins. Other highlights (near the southern entrance) include the Conservatoire de Paris,- the Musee de la Musique, with five floors of instruments, an overview of the history of Western music, and special exhibits ... The huge Cite des Sciences et de VIndustrie, like a number of the other buildings, rises above abandoned abattoirs: La Villette was originally the site of the city's main slaughterhouse.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "194"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 102
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Parc de Belleville",
+    "short_description": null,
+    "latitude": 48.8715484,
+    "longitude": 2.384229,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_parc_de_belleville_famous_residents_hidden_gardens_of_paris_piaf_birthplace_panorama",
+        "city_name": "paris",
+        "poi_name": "Parc de Belleville",
+        "parent_poi": null,
+        "lens": "famous_residents",
+        "topic_slug": "piaf_birthplace_panorama",
+        "sub_location": null,
+        "trigger_address": "no. 72 rue de Belleville",
+        "script_body": "Walk from boulevard de Belleville, the bustling, gritty hub of artists, students, and immigrant residents from the Middle East, Africa, and Asia, up the hill of rue de Belleville — no. 72 is the legendary birthplace of Edith Piaf — then turn right into rue Piaf, and keep climbing. Bear right at the top toward the park's welcoming panorama: a higher overview of Paris than from Montmartre. Descending the steep paths and steps, beneath arches of wisteria, you'll come into the lower park meadow, unforgettable in June when the roses are in bloom.",
+        "beat_length_class": "mid",
+        "duration_sec": 68,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edith Piaf",
+          "boulevard de Belleville",
+          "rue Piaf"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Piaf birthplace climb",
+        "physical_cues": [
+          {
+            "cue": "No. 72 rue de Belleville — legendary birthplace of Edith Piaf",
+            "direction": "here",
+            "feature_type": "plaque"
+          },
+          {
+            "cue": "Panoramic view from hilltop — higher overview of Paris than from Montmartre",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "No. 72 rue de Belleville is the legendary birthplace of Edith Piaf",
+          "View higher than from Montmartre"
+        ],
+        "source_passage": "Walk from boulevard de Belleville, the bustling, gritty hub of artists, students, and immigrant residents from the Middle East, Africa, and Asia, up the hill of rue de Belleville (no 12 is the legendary birthplace of Edith Piaf), turn right into rue Piaf, and keep climbing, bearing right at the top toward the park's welcoming panorama, a higher overview of Paris than from Montmartre. Descending the steep paths and steps, beneath arches of wisteria, you'll come into the lower park meadow, unforgettable in June when the roses are in bloom, the neighborhood children run free, and people relax on the grass.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "194"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "No. 72 rue de Belleville as Piaf's birthplace",
+              "issue": "Source text reads 'no 12' but Piaf's birthplace is widely reported as no. 72 rue de Belleville; the printed '12' appears to be a PDF extraction artifact (hyphen or formatting error producing '72' as 'no J2' then rendered as '12'). The standard historical record places it at no. 72.",
+              "status": "AUTO_CORRECTED",
+              "correction": "Changed '12' to '72' in script_body and trigger_address",
+              "sources": [
+                "https://en.wikipedia.org/wiki/Édith_Piaf — 'born at 72 rue de Belleville'",
+                "https://www.paris.fr/lieux/maison-natale-edith-piaf-25869 — official Paris registry lists no. 72"
+              ],
+              "confidence": "HIGH"
+            }
+          ],
+          "status": "auto_corrected",
+          "notes": "PDF extraction produced 'no J2' which pipeline rendered as '12'; correct address is 72 rue de Belleville per 2+ independent sources."
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 93
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Jardin Naturel",
+    "short_description": null,
+    "latitude": 48.85882,
+    "longitude": 2.3989622,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_jardin_naturel_hidden_history_hidden_gardens_of_paris_city_nature_reserve",
+        "city_name": "paris",
+        "poi_name": "Jardin Naturel",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "city_nature_reserve",
+        "sub_location": null,
+        "trigger_address": "120 rue de la Réunion",
+        "script_body": "A few steps from the Réunion exit from the cemetery, the city created this nature reserve as an educational resource for neighborhood schoolchildren who study the ecosystem here. There are woods, a pond with water lilies, fish, dragonflies, frogs, all sorts of insects. With two hundred varieties of plants and singing birds fluttering through woods dense with laurel and spirea, this is a man-made haven for nature lovers and people watchers.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "urban nature reserve",
+        "physical_cues": [
+          {
+            "cue": "Entrance at 120 rue de la Réunion, a few steps from the Réunion exit of Père-Lachaise Cemetery",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Jardin Naturel at 120 rue de la Réunion",
+          "200 varieties of plants",
+          "Created by the city as educational resource for schoolchildren"
+        ],
+        "source_passage": "At 120, rue de la Reunion and a few steps from the Reunion exit from the cemetery; metro, Alexandre Dumas; open 7:jo—5:jo. The city created this nature reserve as an educational resource for neighborhood schoolchildren who study the ecosystem here. There are woods, a pond with water lilies, fish, dragonflies, frogs, all sorts of insects. With two hundred varieties of plants and singing birds fluttering through woods dense with laurel and spirea, this is a man-made haven for nature lovers and people watchers.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "200"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 72
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Cemetery of Eglise Saint-Germain de Charonne",
+    "short_description": null,
+    "latitude": 48.860511,
+    "longitude": 2.404021,
+    "importance_tier": 2,
+    "trigger_radius": 40,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_cemetery_of_eglise_saint_germain_de_charonne_hidden_history_hidden_gardens_of_paris_ancient_village_charonne",
+        "city_name": "paris",
+        "poi_name": "Cemetery of Eglise Saint-Germain de Charonne",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "ancient_village_charonne",
+        "sub_location": null,
+        "trigger_address": "111 rue de Bagnolet",
+        "script_body": "From place Gambetta, walk down rue Stendhal and descend the staircase alongside pretty houses; from the square in front of the fifteenth-century church — though the first church on this site dates from the ninth century — you will see the entrance to the cemetery, a bucolic sanctuary on a hill of cherry trees in April as well as flowering shrubbery. You're in the ancient village of Charonne, still a countryside-within-the-city.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 56,
+        "kid_friendly": "yes",
+        "entities": [
+          "Église Saint-Germain de Charonne",
+          "Charonne"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "village Charonne sanctuary",
+        "physical_cues": [
+          {
+            "cue": "Entrance to the cemetery via a staircase alongside pretty houses off rue Stendhal",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          },
+          {
+            "cue": "Fifteenth-century church square at 111 rue de Bagnolet / Place Saint-Blaise",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Church dates to 15th century; first church on site from 9th century",
+          "Cemetery is a bucolic sanctuary on a hill of cherry trees",
+          "Ancient village of Charonne — countryside-within-the-city"
+        ],
+        "source_passage": "in, rue de Bagnolet (on Place Saint-Blaise); metro, Gambetta. From place Gambetta walk down rue Stendhal and descend the staircase alongside pretty houses; from the square in front of the church (fifteenth century, though the first church on this site dates from the ninth), you will see the entrance to the cemetery, a bucolic sanctuary on a hill of cherry trees in April as well as flowering shrubbery. You're in the ancient village of Charonne, still a countryside-within-the-city.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "201"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08c-buttes-chaumont-pere-lachaise",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 74
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08c-buttes-chaumont-pere-lachaise",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  }
+]

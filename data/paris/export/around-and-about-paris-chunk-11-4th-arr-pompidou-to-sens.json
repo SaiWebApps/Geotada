@@ -114,7 +114,7 @@
     "short_description": "Playful pop-art fountain with kinetic sculptures by Tinguely and Niki de Saint Phalle, inaugurated in 1983.",
     "latitude": 48.8595,
     "longitude": 2.3515,
-    "importance_tier": 3,
+    "importance_tier": 4,
     "trigger_radius": 30,
     "typical_duration_min": 10,
     "kid_friendly": "yes",

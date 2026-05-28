@@ -1,0 +1,1122 @@
+{
+  "Passage de la Trinite": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Niche passage opened 1827; only French travel blogs cover it; no English Wikipedia article found; no published visitor stats."
+    ]
+  },
+  "Tour Jean sans Peur": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia article exists for Tour Jean-sans-Peur; no annual visitor count published; managed by Friends association since 1999; admission €6."
+    ]
+  },
+  "Place du Caire": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor listing exists for Place du Caire; mostly textile/wholesale district; Egyptian facade noted in travel sites; no Wikipedia article in English found."
+    ]
+  },
+  "Rue de Clery": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia article for Rue de Cléry exists; Corneille lived here 1665-1681 per search results; no English guidebook mentions found; no visitor stats."
+    ]
+  },
+  "Place de Louvois": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Historical record of Duc de Berry assassination on this site 1820; no English Wikipedia article found for the square; no visitor stats."
+    ]
+  },
+  "Synagogue Notre-Dame-de-Nazareth": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia article 'Synagogue de Nazareth' exists with good detail; built 1822, rebuilt 1852; registered monument historique 1993; no visitor stats."
+    ]
+  },
+  "3 Rue Volta": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Multiple English travel sites cover it; half-timbered house dated to 1644-1654; now Vietnamese restaurant; no dedicated English Wikipedia article found."
+    ]
+  },
+  "Convent of the Madelonnettes": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "English Wikipedia article 'Madelonnettes Convent' exists but very brief; demolished 1865-66; site now Lycée Turgot; no visitor stats (no longer a physical site)."
+    ]
+  },
+  "Wallace Fountain (Passage du Pont-aux-Biches)": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia article on 'Wallace fountain' is extensive; this specific Passage du Pont-aux-Biches fountain is one of ~100 in Paris; no individual visitor stats."
+    ]
+  },
+  "La Force Prison Site": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia article 'La Force Prison' exists; only fragments of walls remain in Marais; no physical site to visit; no visitor stats."
+    ]
+  },
+  "Rue de la Verrerie": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "No English Wikipedia article found; Charles VI playing-cards legend attached to this street largely debunked by historians; no visitor stats."
+    ]
+  },
+  "Hotel Chalons de Luxembourg": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia 'Hôtel de Chalon-Luxembourg' exists; 26 rue Geoffroy-l'Asnier; city of Paris property; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Verlaine's Garret": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Lonely Planet lists it; building now restaurant 'La Maison de Verlaine'; not open to public; no Wikipedia article for the garret itself; no visitor stats."
+    ]
+  },
+  "Rue de l'Hirondelle": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia article exists; Hôtel de la Salamandre at no. 20; opened 1170; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Caveau de la Bolee": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Now operating as L'Hirondelle wine bar/venue; historically frequented by Baudelaire/Verlaine; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Marché Saint-Germain": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "TripAdvisor listing exists with multiple reviews; upscale covered market; open Tue-Sat; no Wikipedia article in English; no visitor count stats."
+    ]
+  },
+  "Café de la Mairie": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "No Wikipedia article found; referenced in literary travel guides (Hemingway, Beckett, Sartre-Camus); TripAdvisor listing exists; no published visitor stats."
+    ]
+  },
+  "Palais du Luxembourg": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "high",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "English Wikipedia 'Luxembourg Palace' is extensive; Senate seat; limited public access (one Saturday/month); Lonely Planet listed; no published annual visitor count for palace interior."
+    ]
+  },
+  "Musée du Luxembourg": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Official site museeduluxembourg.fr; two exhibitions per year; no published annual visitor stats found; WhichMuseum listing; no dedicated Wikipedia article found."
+    ]
+  },
+  "27 Rue de Fleurus": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia '27 rue de Fleurus' exists; plaque marks the address; not open to public; Yelp listing as 'Gertrude Stein Apartment'; no visitor stats."
+    ]
+  },
+  "Rue Férou": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Multiple travel sites cover Hemingway at no. 6 (1926-28) and Man Ray at no. 2 bis (from 1951); no English Wikipedia article for the street; no visitor stats."
+    ]
+  },
+  "Fontaine Médicis": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "English Wikipedia 'Medici Fountain' exists with moderate detail; TripAdvisor listing; restored 2020-21; covered in Rick Steves/Frommer's as part of Jardin du Luxembourg; no standalone visitor count."
+    ]
+  },
+  "Statue of Marshal Ney": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "TripAdvisor listing 'Michel Ney Monument'; by François Rude 1853; on Avenue de l'Observatoire; no Wikipedia article for the statue itself; some guidebook mention."
+    ]
+  },
+  "Fontaine des Quatre-Parties-du-Monde": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Fontaine de l'Observatoire' exists; Carpeaux sculpture 1874; Jardin Marco Polo; Musée d'Orsay holds study model; no visitor stats."
+    ]
+  },
+  "Rue Notre-Dame-des-Champs": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Hemingway at no. 113; Ezra Pound at no. 70; multiple travel guides reference it; no English Wikipedia article for street; no visitor stats."
+    ]
+  },
+  "Ecole Alsacienne": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'École alsacienne' exists; founded 1871; TripAdvisor listing; Gide alumnus; ranked 7th in Paris schools; no visitor stats (active school)."
+    ]
+  },
+  "College Stanislas": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Collège Stanislas de Paris' exists; founded 1804; largest private school in France (~3,000 students); TripAdvisor listing; de Gaulle alumnus; no visitor stats."
+    ]
+  },
+  "3 Rue Joseph-Bara": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "French Wikipedia 'Rue Joseph-Bara' exists; Kisling studio 1913-1939; Modigliani/Pascin connection confirmed; no English Wikipedia article for this address; no visitor stats."
+    ]
+  },
+  "Musee Zadkine": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Musée Zadkine' exists; 100 bis rue d'Assas; inaugurated 1982; ~300 sculptures; free city museum; TripAdvisor listing; no annual visitor count published."
+    ]
+  },
+  "Reid Hall": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Reid Hall' exists; 4 rue de Chevreuse; Columbia University global centre; study abroad reviews on studyabroad101.com; no visitor stats."
+    ]
+  },
+  "Academie de la Grande-Chaumiere": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Académie de la Grande Chaumière' exists; founded 1904; closed in 2025; alumni include Miró, Lempicka, Giacometti; no visitor stats."
+    ]
+  },
+  "26 Rue Vavin (Sauvage Building)": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Henri Sauvage Wikipedia article covers the building; 1912-14; white/blue ceramic tile facade; featured in Last Tango in Paris; no dedicated Wikipedia article for the building; no visitor stats."
+    ]
+  },
+  "La Rotonde": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "English Wikipedia 'Café de la Rotonde' exists; 105 Blvd du Montparnasse; founded 1911; TripAdvisor and Yelp listings with 200+ reviews; Rick Steves/guidebook staple."
+    ]
+  },
+  "Quai Voltaire": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Quai Voltaire' exists; 308m quay in 7th arr; Voltaire died at no. 27; antique dealers; Hotel du Quai Voltaire has 484 reviews on TripAdvisor; no visitor stats for the quay itself."
+    ]
+  },
+  "Fontaine des Quatre Saisons": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Fontaine des Quatre-Saisons' exists; 57-59 rue de Grenelle; by Bouchardon 1739-45; poor maintenance noted; no visitor stats."
+    ]
+  },
+  "Saint-Thomas-d'Aquin": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Saint-Thomas-d'Aquin, Paris' exists; 7th arr.; built 1682; Historic Monument 1982; TripAdvisor listing; no visitor stats."
+    ]
+  },
+  "Le Bon Marché": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "high",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "English Wikipedia 'Le Bon Marché' is extensive; world's first modern department store; Yelp 180+ reviews; TripAdvisor listed; LVMH-owned; no annual visitor count published."
+    ]
+  },
+  "La Pagode": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "French Wikipedia 'La Pagode' exists; cinema closed Nov 2015; renovation underway; Yelp 40 reviews; TripAdvisor listing; no visitor stats (currently closed)."
+    ]
+  },
+  "Hotel Matignon": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Hôtel Matignon' is extensive; PM residence since 1935; limited garden access (1x/month + Heritage Days); Lonely Planet listed; no annual visitor count."
+    ]
+  },
+  "Musee de la Legion d'Honneur": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Musée de la Légion d'honneur' exists; free entry; open Wed-Sun 1-6pm; TripAdvisor listing; Fodor's listed; no annual visitor count published."
+    ]
+  },
+  "Eglise Sainte-Clotilde": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Sainte-Clotilde, Paris' exists; first neo-Gothic church in Paris; César Franck organist; minor basilica; no visitor stats."
+    ]
+  },
+  "Hotel de Gallifet": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Hôtel de Galliffet' exists; 73 rue de Grenelle; now Italian Cultural Institute; limited public access for exhibitions; no visitor stats."
+    ]
+  },
+  "Fontaine de Mars": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Restaurant 'La Fontaine de Mars' at 129 rue Saint-Dominique is the famous Obama-dining bistro (4.3★ TripAdvisor, 384 Yelp reviews); the fountain itself is a street landmark; Rick Steves area; no Wikipedia article for the fountain; no visitor stats."
+    ]
+  },
+  "Église Saint-Pierre du Gros Caillou": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia article exists; 92 rue Saint-Dominique; built 1822-26; TripAdvisor listing; no visitor stats."
+    ]
+  },
+  "Rue Cler": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "high",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "Rick Steves' 'favourite street in Paris'; TripAdvisor listed; multiple guidebook features; no English Wikipedia article found; no visitor stats."
+    ]
+  },
+  "Ecole Militaire": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'École Militaire' is extensive; Napoleon attended 1784; open Heritage Days (September); TripAdvisor listed; no annual visitor count."
+    ]
+  },
+  "UNESCO Headquarters Paris": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'UNESCO Headquarters' extensive; 1958 Breuer/Nervi/Zehrfuss building; guided tours require reservation; open for Museum Night (May) and Heritage Days (Sept); TripAdvisor listed; no visitor stats."
+    ]
+  },
+  "Champ de Mars": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "dominant",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "English Wikipedia 'Champ de Mars' extensive; 25 hectares flanking Eiffel Tower; TripAdvisor top-ranked; ubiquitous in all guidebooks; no separate annual visitor count (part of Eiffel Tower district)."
+    ]
+  },
+  "Square Jean XXIII": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "TripAdvisor and Yelp listings; closed since Notre-Dame fire April 2019; behind Notre-Dame; no English Wikipedia article found; no visitor stats."
+    ]
+  },
+  "Square Rene Viviani": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Square René-Viviani' and separate 'Locust of Square René-Viviani' articles; oldest tree in Paris (Robinia 1601); TripAdvisor listing; multiple guidebook mentions."
+    ]
+  },
+  "Square Paul-Painleve": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor listing; 758 m²; medieval-themed redesign 2000; Montaigne statue; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Paul-Langevin": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor review mentions it as 'charming square'; 4,328 m²; François Villon statue; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Jardin Carre": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia 'Jardin Carré' exists; 9,083 m²; former Ecole Polytechnique courtyard; open weekends only; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Jardin Alpin": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Official Jardin des Plantes website covers it; 2,000+ alpine species; accessed via tunnel; seasonal opening; no visitor stats; no English Wikipedia article."
+    ]
+  },
+  "Jardin Tino Rossi": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia 'Jardin Tino-Rossi' exists; quai Saint-Bernard; open-air sculpture museum; summer dancing; 4-star Google Maps rating noted; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Institut Catholique": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Catholic University of Paris' exists; 74 rue de Vaugirard; ~10,000 students; no visitor stats (active university); no tourist-oriented review count."
+    ]
+  },
+  "9 Quai Malaquais (George Sand)": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Historical marker documents George Sand 1831-1836; Raymond Duncan Akademia 1929-1966; no Wikipedia article for this address; private building; no visitor stats."
+    ]
+  },
+  "Square Récamier": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Now officially named Square Roger-Stéphane (renamed 2008); 7 rue Récamier; Chateaubriand's favourite; fig tree at entrance; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Santiago du Chili": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia 'Square Santiago-du-Chili' exists; 3,826 m²; 7th arr.; created 1865; Saint-Exupéry statue; TripAdvisor listing; no visitor stats."
+    ]
+  },
+  "Musee Bourdelle": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Musée Bourdelle' exists; 18 rue Antoine Bourdelle; 2,000+ plasters/bronzes; free permanent collection; reopened fully Mar 2023; TripAdvisor/VisitParisRegion listed; no visitor stats."
+    ]
+  },
+  "Parc Georges-Brassens": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Parc Georges-Brassens' exists; 7.74 hectares; former slaughterhouse; opened 1984; weekend book market; Isidore Bonheur bull sculptures; no visitor stats."
+    ]
+  },
+  "La Ruche": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'La Ruche (residence)' exists; Passage Dantzig 15th arr.; founded 1900 by Boucher; Chagall/Léger/Modigliani residents; not open to public; no visitor stats."
+    ]
+  },
+  "Parc Montsouris": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Parc Montsouris' exists; 14th arr.; 15.5 ha; English landscape garden; inaugurated 1875; TripAdvisor/AllTrails listings; no annual visitor count."
+    ]
+  },
+  "Villa Santos-Dumont": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia 'Villa Santos-Dumont' exists; private street 15th arr.; Zadkine/Léger/Brassens residents; no English Wikipedia article; no visitor stats (private street)."
+    ]
+  },
+  "Parc de Bagatelle": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Parc de Bagatelle' exists; 24 ha in Bois de Boulogne; 10,000 rose bushes; annual rose competition since 1907; TripAdvisor listed; no annual visitor count published."
+    ]
+  },
+  "Maison de Balzac": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Maison de Balzac' exists; 47 rue Raynouard 16th arr.; free entry permanent collection; TripAdvisor/WhichMuseum listed; no annual visitor count published."
+    ]
+  },
+  "Allée des Cygnes": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Île aux Cygnes' exists; mini Statue of Liberty (11.5m); inaugurated 1889; 15th arr.; TripAdvisor listed; no visitor stats."
+    ]
+  },
+  "Parc des Serres d'Auteuil": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Official Paris city page exists; 6.5 ha; free admission; 5,000 plant varieties; created 1898; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "La Vallée Suisse": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "Traveling Gardener blog covers it; also known as Jardin de la Nouvelle France; canyon-like garden near Champs-Elysées; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Jardin Saint-Gilles Grand Veneur": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "Sortiraparis and Un Jour de Plus à Paris cover it; smallest garden of 3rd arr. (<1,000 m²); opened 1989; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "La Tartine": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor listing; 24 rue de Rivoli; Art Deco bistro from 1924; Restaurant Guru 4/5 with 1,014 reviews; Yelp 40 reviews; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Georges-Cain": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor and Yelp listings; rue Payenne Marais; opened 1931; sculptural depository; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Léopold-Achille": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "TripAdvisor listing; Marais; opened 1913; playground; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Clos des Blancs-Manteaux": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "Paris.fr and parisjetaime.com listings; 21 rue des Blancs-Manteaux; 1,000 m²; 250 plant species; inaugurated 2010; open weekends only; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Musée de la Vie Romantique": {
+    "official_visitors": 145000,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Musée de la Vie romantique' exists; grew from 18,000 visitors/year (1998) to 145,000 (2010); free permanent collection; TripAdvisor/WhichMuseum listed."
+    ]
+  },
+  "Square des Batignolles": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Square des Batignolles' exists; 16,615 m²; 17th arr.; designed 1862 by Alphand; TripAdvisor listed; no visitor stats."
+    ]
+  },
+  "Square d'Orléans": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Square d'Orléans' exists; 80 rue Taitbout 9th arr.; Chopin at no. 9, George Sand at no. 5; open weekdays only; no visitor stats."
+    ]
+  },
+  "Place Saint-Georges": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia 'Place Saint-Georges (Paris)' exists; 9th arr.; Paul Gavarni bust; laid out 1824; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Suzanne-Buisson": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia 'Square Suzanne-Buisson' exists; Montmartre 18th arr.; Saint Denis statue/fountain; TripAdvisor listing; boules pitches; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Musée de Montmartre": {
+    "official_visitors": 180000,
+    "google_review_count": null,
+    "google_trends": "high",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "France museum boom article: Musée de Montmartre recorded 180,000 visitors (2023, 44% annual increase); WhichMuseum/TripAdvisor/VisitParisRegion listed; all major guidebooks."
+    ]
+  },
+  "Square Carpeaux": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "TripAdvisor listing; 18th arr.; created 1907; tribute to sculptor Carpeaux; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Léon-Serpollet": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia 'Square Léon-Serpollet' exists; 15,800 m²; 18th arr.; Holocaust memorial for Jewish children; sports facilities; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Parc Turlure": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "Now named Square Marcel-Bleustein-Blanchet (renamed 2004); Montmartre; views of Sacré-Coeur; TripAdvisor listing under former name; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Louise-Michel": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor listing; below Sacré-Coeur; built 1927; terraced views of Paris; parisjetaime.com listing; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square des Abbesses": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Also known as Square Jehan Rictus; 'Wall of I Love You' fresco (2000) draws tourists worldwide; TripAdvisor listed as popular; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Parc Floral": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Parc floral de Paris' exists; 28 ha Bois de Vincennes; botanical site since 1998; annual jazz festival; TripAdvisor listed; no visitor count published."
+    ]
+  },
+  "Jardin de Reuilly": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia 'Jardin de Reuilly - Paul-Pernin' exists; 15,200 m²; 12th arr.; created 1992-98 on former freight station; TripAdvisor listing; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Bistro du Peintre": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor listing; 116 av. Ledru-Rollin 11th arr.; 1902 Art Nouveau interior registered Historic Monument; Secret Food Tours feature; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Raoul Nordling": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia 'Square Raoul-Nordling' exists; 11th arr.; honors WWII Swedish consul; Ecocert-certified; TripAdvisor listing; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Parc de Bercy": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Parc de Bercy' exists; 14 ha; 12th arr.; former wine depot; opened 1997; nine themed gardens; TripAdvisor listed; no annual visitor count published."
+    ]
+  },
+  "Cinematheque Française": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Cinémathèque française' is extensive; founded 1936; Frank Gehry building since 2005; 1,300 films screened annually; TripAdvisor/WhichMuseum listed; no visitor stats."
+    ]
+  },
+  "Buddhist Temple Lac Daumesnil": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Pagode de Vincennes' exists; 40 route de ceinture du Lac-Daumesnil; largest Buddha in Europe (9m); inaugurated 1977; open during Buddhist festivals only; no visitor stats."
+    ]
+  },
+  "Square Maurice-Gardette": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "TripAdvisor listing; 2.43 acres; 11th arr.; established 1979 on former slaughterhouse site; playground/skating rink; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square de la Roquette": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "TripAdvisor listing; 11th arr.; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Eglise Notre-Dame de la Croix": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "French Wikipedia 'Église Notre-Dame-de-la-Croix de Ménilmontant' exists; 20th arr.; 97m long neo-Romanesque; 4th largest church in Paris by volume; Historic Monument 2017; TripAdvisor listing; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "La Maison des Metallos": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "French Wikipedia 'Maison des Métallos' exists; 94 rue Jean-Pierre-Timbaud 11th arr.; cultural institution since 2001; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Parc de la Villette": {
+    "official_visitors": 10000000,
+    "google_review_count": null,
+    "google_trends": "high",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Lavillette.com official site states 10 million annual visitors; English Wikipedia 'Parc de la Villette' extensive; 55 ha; Cité des Sciences; TripAdvisor listed."
+    ]
+  },
+  "Parc de Belleville": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Parc de Belleville' exists; 45,000 m²; 108m elevation; highest park in Paris; inaugurated 1988; TripAdvisor listed; 4.3★ Google Maps rating noted; no annual visitor count."
+    ]
+  },
+  "Jardin Naturel": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "No search results found; likely very niche Paris garden; null across all signals."
+    ]
+  },
+  "Cemetery of Eglise Saint-Germain de Charonne": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Saint-Germain de Charonne, Paris' exists; one of only 2 Paris churches with original cemetery; 20th arr.; Historic Monument 1964; TripAdvisor listing; no visitor stats."
+    ]
+  },
+  "Jardin Catherine-Laboure": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Jardin Catherine-Labouré' exists; 7,000 m²; 7th arr.; open since 1977; former convent potager; TripAdvisor listing; parisjetaime.com listed; no visitor stats."
+    ]
+  },
+  "Hotel Lutetia": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "extensive",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Hôtel Lutetia' extensive; 45 blvd Raspail; 1910 Art Nouveau; WWII Abwehr HQ then repatriation centre; rebranded Mandarin Oriental Lutetia April 2025; Points Guy review; no visitor stats."
+    ]
+  },
+  "Musée Eugène Delacroix": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Musée national Eugène Delacroix' exists; 6 place de Furstemberg; affiliated with Louvre; closed Sept 2023-Mar 2024 for work; TripAdvisor/VisitParisRegion listed; no annual visitor count."
+    ]
+  },
+  "Jardin Atlantique": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "English Wikipedia 'Jardin Atlantique' exists; 3.4 ha on roof of Gare Montparnasse; opened 1994; free, open daily dawn-dusk; TripAdvisor listed; no visitor stats."
+    ]
+  },
+  "Jardin de la Clinique Saint-Jean de Dieu": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "Paris Zigzag and paris-promeneurs.com cover it; 19 rue Oudinot / accessible via rue Rousselet; rose garden; private hospital garden; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Galignani": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "Oldest English bookshop on continent (224 rue de Rivoli, since 1801); Yelp listing with 10 reviews; ILAB member; guidebook standard; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Square Boucicaut": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "RARE",
+    "evidence": [
+      "TripAdvisor listing; 7th arr.; 7,202 m²; Mme Boucicaut marble statue 1914; near Sèvres-Babylone metro; no Wikipedia article; no visitor stats."
+    ]
+  },
+  "Théâtre du Vieux-Colombier": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "low",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Théâtre du Vieux-Colombier' exists; 21 rue du Vieux-Colombier; founded 1913; 2nd stage of Comédie-Française since 1993; Huis Clos premiere 1944; no visitor stats."
+    ]
+  },
+  "Angelina Paris": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "high",
+    "wikipedia_depth": "stub",
+    "guidebook_presence": "UBIQUITOUS",
+    "evidence": [
+      "Yelp 1,734 reviews; TripAdvisor listed; founded 1903; 226 rue de Rivoli; famous hot chocolate and Mont Blanc; summer queues; all major guidebooks; no English Wikipedia article; no visitor stats."
+    ]
+  },
+  "Jardins du Musee de Cluny": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "French Wikipedia 'Jardin médiéval du musée de Cluny' exists; 5,000 m²; opened 2000; closed for rehabilitation Nov 2024-Jun 2025; free admission; TripAdvisor listing; no visitor stats."
+    ]
+  },
+  "Montagne Sainte-Genevieve": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "moderate",
+    "wikipedia_depth": "moderate",
+    "guidebook_presence": "COMMON",
+    "evidence": [
+      "English Wikipedia 'Montagne Sainte-Geneviève' exists; 5th arr.; 61m hill; Panthéon atop; TripAdvisor listed; multiple guidebook references for Latin Quarter; no visitor stats."
+    ]
+  },
+  "Librairie Michael Seksik": {
+    "official_visitors": null,
+    "google_review_count": null,
+    "google_trends": "minimal",
+    "wikipedia_depth": "none",
+    "guidebook_presence": "ABSENT",
+    "evidence": [
+      "Bookshop at 16 rue du Cardinal Lemoine; member of SLAM; expert to Paris Court of Appeal; ILAB listing; no Wikipedia article; no visitor stats; very niche antiquarian."
+    ]
+  }
+}

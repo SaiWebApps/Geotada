@@ -1,0 +1,1616 @@
+[
+  {
+    "name": "La Vallée Suisse",
+    "short_description": null,
+    "latitude": 48.8653911,
+    "longitude": 2.3112134,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_la_vallee_suisse_hidden_history_hidden_gardens_of_paris_hidden_valley_discovery",
+        "city_name": "paris",
+        "poi_name": "La Vallée Suisse",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "hidden_valley_discovery",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Immediately to the right of a melodramatic sculpture of romantic poet Alfred Musset — his 'male gaze' resting upon an assortment of his swooning naked lovers and muses (George Sand, the best known) — some narrow, cracked stone stairs lead down into the hidden 'valley.' What you find at the bottom comes as a surprise and delight: utter quiet and simple beauty to the accompaniment of the sound of water flowing from a small waterfall into a pond shaped by rocks and shaded by an old weeping beech tree. There's a surround of tall evergreens and maples rising toward the sky, bushes thick with lilacs and jasmine, roses in bloom in late October. The wooden footbridge has the look of a set design. Journalist Elaine Sciolino, former Paris correspondent for The New York Times, describes the place, aptly, as 'a tiny stage-set.' It's an enchanting and comforting place, a sanctuary that's part of the larger and more public Champs-Élysées gardens where you can be completely alone — or not — in the middle of a great metropolis.",
+        "beat_length_class": "mid",
+        "duration_sec": 88,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alfred Musset",
+          "George Sand",
+          "Elaine Sciolino",
+          "The New York Times",
+          "Champs-Élysées"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "hidden valley sanctuary",
+        "physical_cues": [
+          {
+            "cue": "Narrow, cracked stone stairs to the right of the Alfred Musset sculpture leading down into the valley",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Small waterfall flowing into a pond, shaded by an old weeping beech tree",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Wooden footbridge over the pond",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Hidden valley accessible via stairs to the right of the Alfred Musset sculpture",
+          "Waterfall flows into a pond shaded by a weeping beech tree",
+          "Elaine Sciolino described it as 'a tiny stage-set'",
+          "Part of the Champs-Élysées gardens"
+        ],
+        "source_passage": "Immediately to the right of a melodramatic sculpture of romantic poet Alfred Musset—his \"male gaze\" resting upon an assortment of his swooning naked lovers and muses (George Sand, the best known)—some narrow, cracked stone stairs lead down into the hidden \"valley.\" What ypu find at the bottom comes as a surprise and delight: utter quiet and simple beauty to the accompaniment of the sound of water flowing from a small waterfall into a pond shaped by rocks and shaded by an old weeping beech tree. There's a surround of tall evergreens and maples rising toward the sky, bushes thick with lilacs and jasmine, roses in bloom in late October. The wooden footbridge has the look of a set design. (Sciolino describes the place, aptly, as \"a tiny stage-set.\") It's an enchanting and comforting place, a sanctuary that's part of the larger and more public Champs-Elysees gardens where you can be completely alone—or not—in the middle of a great metropolis.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "La Vallée Suisse",
+          "page": "119-120"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Elaine Sciolino as former Paris correspondent for NYT is easily verifiable. The 'tiny stage-set' quote attributed to her is presented as from her NYT article."
+        },
+        "new_poi": true,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 178
+      },
+      {
+        "beat_id": "paris_la_vallee_suisse_local_legends_hidden_gardens_of_paris_musset_sculpture_humor",
+        "city_name": "paris",
+        "poi_name": "La Vallée Suisse",
+        "parent_poi": null,
+        "lens": "local_legends",
+        "topic_slug": "musset_sculpture_humor",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Returning to the street above, you encounter some humor on the corner of the intersection of avenue Franklin Roosevelt and Cours la Reine: the sternly heroic sculptures of Jacques Cartier and Samuel Champlain, seventeenth-century explorers in the New World, who appear just next to the swoony lyricism of the nineteenth-century Musset tableau.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jacques Cartier",
+          "Samuel Champlain",
+          "Alfred Musset",
+          "avenue Franklin Roosevelt",
+          "Cours la Reine"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "contrasting sculptures",
+        "physical_cues": [
+          {
+            "cue": "Sternly heroic sculptures of Jacques Cartier and Samuel Champlain at the corner of avenue Franklin Roosevelt and Cours la Reine, beside the Musset tableau",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Heroic sculptures of Jacques Cartier and Samuel Champlain stand near the Musset tableau",
+          "Cartier and Champlain were seventeenth-century New World explorers"
+        ],
+        "source_passage": "Returning to the street above, you encounter some humor on the corner of the intersection of avenue Franklin Roose¬velt and Cours la Reine: the sternly heroic sculptures of Jacques Cartier and Samuel Champlain, seventeenth-century explorers in the New World, who appear just next to the swoony lyricism of the nineteenth-century Musset tableau.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "La Vallée Suisse",
+          "page": "120"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Jacques Cartier and Samuel Champlain described as 'seventeenth-century' explorers",
+              "note": "Jacques Cartier (1491–1557) was a sixteenth-century explorer; Samuel Champlain (c.1567–1635) spanned the late sixteenth and early seventeenth centuries. The book's 'seventeenth-century' label is inaccurate for Cartier at minimum. Flagged for fact-check — auto-correct NOT applied (would require 2+ source agreement; this is a book text error, not a correction target requiring two sources to confirm — leave as flag).",
+              "status": "DISPUTE",
+              "sources": [
+                "https://en.wikipedia.org/wiki/Jacques_Cartier",
+                "https://en.wikipedia.org/wiki/Samuel_de_Champlain"
+              ]
+            }
+          ],
+          "status": "flagged",
+          "notes": "Cartier was 16th century, not 17th. Champlain bridged both. Beat retains book's language verbatim per zero-hallucination policy; fact-check flag added."
+        },
+        "new_poi": true,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 54
+      },
+      {
+        "beat_id": "paris_la_vallee_suisse_hidden_history_hidden_gardens_of_paris_sciolino_guide",
+        "city_name": "paris",
+        "poi_name": "La Vallée Suisse",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "sciolino_guide",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Thanks to Elaine Sciolino, former correspondent for the Paris bureau of The New York Times, who wrote about her adopted city's out-of-the-way green spaces, you can find your way to the Swiss Valley. It's easy to miss. The entrance is at the corner of avenue Franklin D. Roosevelt and Cours la Reine.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Elaine Sciolino",
+          "The New York Times",
+          "avenue Franklin D. Roosevelt",
+          "Cours la Reine"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Sciolino discovery",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Elaine Sciolino was Paris correspondent for the New York Times",
+          "She wrote about the city's hidden green spaces",
+          "Entrance to La Vallée Suisse is at corner of avenue Franklin D. Roosevelt and Cours la Reine"
+        ],
+        "source_passage": "Thanks to Sciolino, the former correspondent for the Paris bureau of The New York Times, who wrote about her adopted city's out-of-the-way green spaces, you can find your way to the Swiss Valley. It's easy to miss.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "La Vallée Suisse",
+          "page": "119"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 57
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Petit Palais",
+    "short_description": "Free Beaux-Arts museum built for the 1900 World Fair with the city's fine art collection and a hidden interior garden cafe",
+    "latitude": 48.86595,
+    "longitude": 2.3143,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Musee des Beaux-Arts de la Ville de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_petit_palais_hidden_history_hidden_gardens_of_paris_interior_garden_pont_alexandre",
+        "city_name": "paris",
+        "poi_name": "Petit Palais",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "interior_garden_pont_alexandre",
+        "sub_location": "interior-garden",
+        "trigger_address": null,
+        "script_body": "The most dramatic approach to the Petit Palais is from the Left Bank, across the Pont Alexandre III — the most extravagant of the Seine bridges, named to please Russia in 1900 at a time of expanding German domination. The Petit Palais itself has a pretty interior garden and indoor-outdoor café. The outdoor tables face the wonderful dome of the palais and a garden dense with palm and banana trees and pools decorated with gold and blue mosaics. The design of the tile floor of the main lobby is another highlight of this delightful free museum, which also offers concerts and lectures about Parisian culture.",
+        "beat_length_class": "mid",
+        "duration_sec": 56,
+        "kid_friendly": "yes",
+        "entities": [
+          "Pont Alexandre III",
+          "Petit Palais"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "interior garden approach",
+        "physical_cues": [
+          {
+            "cue": "Interior garden of the Petit Palais with outdoor café tables facing the dome",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Garden dense with palm and banana trees, pools with gold and blue mosaics",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Tile floor design of the main lobby",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Pont Alexandre III visible from the Left Bank approach — most extravagant Seine bridge",
+            "direction": "west",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Pont Alexandre III named to please Russia in 1900 during expanding German domination",
+          "Petit Palais has interior garden with café, palm and banana trees, gold and blue mosaic pools",
+          "The museum is free and offers concerts and lectures"
+        ],
+        "source_passage": "The most dramatic ap¬proach is from the Left Bank, across the Pont Alexandre III, the most extravagant of the Seine bridges, named to please Rus¬sia in 1900 at a time of expanding German domination. The Petit Palais, on the right, has a pretty interior garden and indoor-outdoor cafe. The outdoor tables face the wonderful dome of the palais and a garden dense with palm and banana trees and pools decorated with gold and blue mosaics. The design of the tile floor of the main lobby is another among many highlights of this de¬lightful free museum, which also offers concerts and lectures about Parisian culture.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Petit Palais, the Interior Garden",
+          "page": "121"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Named to please Russia in 1900: Pont Alexandre III was inaugurated in 1900 for the Exposition Universelle, named after Tsar Alexander III — consistent with context of Franco-Russian alliance as counterweight to Germany. Plausible."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 105
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Grand Palais",
+    "short_description": "Monumental exhibition hall with the largest glass roof in Europe, built for the 1900 World Fair and renovated for the 2024 Olympics",
+    "latitude": 48.866096,
+    "longitude": 2.312156,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Grand Palais des Champs-Elysees"
+    ],
+    "parent_poi": null,
+    "beats": [],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Champs-Elysees",
+    "short_description": "Grand 1.9 km avenue from Place de la Concorde to the Arc de Triomphe, hosting the Bastille Day parade and Tour de France finish",
+    "latitude": 48.86975,
+    "longitude": 2.3074,
+    "importance_tier": 5,
+    "trigger_radius": 100,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Avenue des Champs-Elysees",
+      "The Most Beautiful Avenue in the World"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_champs_elysees_hidden_history_hidden_gardens_of_paris_gardens_walk_dufy",
+        "city_name": "paris",
+        "poi_name": "Champs-Elysees",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "gardens_walk_dufy",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Walking west from the Place de la Concorde along avenue Gabriel under a canopy of sycamores, plane trees, pines, magnolias, chestnut trees, with bleeding hearts still blooming in November, you reach the Rond Point des Champs-Élysées. From there, the long walk along opulent avenue Montaigne leads to 11, avenue du Président Wilson and the Museum of Modern Art of the City of Paris, located in one of the two wings of the Palais de Tokyo. The permanent exhibits are superb — especially Dufy's La Fée Électricité (The Good Fairy Electricity), at 250 panels the largest painting in the world, alongside Matisse, Picasso, and Chagall. There's a spacious terrace with palm trees and café service, overlooking the Seine through a screen of plane trees.",
+        "beat_length_class": "mid",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Place de la Concorde",
+          "avenue Gabriel",
+          "Rond Point des Champs-Élysées",
+          "avenue Montaigne",
+          "Palais de Tokyo",
+          "Raoul Dufy",
+          "La Fée Électricité",
+          "Matisse",
+          "Picasso",
+          "Chagall"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "garden walk art",
+        "physical_cues": [
+          {
+            "cue": "Avenue Gabriel canopy of sycamores, plane trees, pines, magnolias, chestnut trees",
+            "direction": "west",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Terrace of Palais de Tokyo overlooking the Seine through plane trees",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "La Fée Électricité",
+            "gloss": "The Good Fairy Electricity — Dufy's painting at 250 panels, described as the largest painting in the world"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Avenue Gabriel lined with sycamores, plane trees, pines, magnolias, chestnut trees",
+          "Élysée palace is to the right on this walk, protected by high hedges",
+          "Dufy's La Fée Électricité at 250 panels is described as the largest painting in the world",
+          "Museum of Modern Art of the City of Paris is in a wing of the Palais de Tokyo at 11 avenue du Président Wilson"
+        ],
+        "source_passage": "Walk west from the Place de la Concorde, called \"the Heart of Paris, \" along avenue Gabriel under a canopy of sycamores, plane trees, pines, magnolias, chestnut trees, with bleeding hearts still blooming in November. The Elysees palace is to your right, protected—and inaccessible—by high hedges. At the circle—Rond Point des Champs-Elysees—there's a taxi stand. Or you can take the long walk along opulent avenue Montaigne to n, avenue du President Wilson, where you'll find the Museum of Modern Art of the City of Paris, located in one of the two wings of the Palais de Tokyo. The per¬manent exhibits—especially Dufy's La Fee Electricite (The Good Fairy Electricity), at 25o panels the largest painting in the world—are superb (Matisse, Picasso, Chagall). There's a spacious terrace with palm trees and cafe service, overlooking the Seine through a screen of plane trees.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Gardens of the Champs-Élysées",
+          "page": "121"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Dufy's La Fée Électricité at 250 panels is the largest painting in the world",
+              "note": "This is a commonly cited claim for La Fée Électricité (actually 600 sq meters, 250 panels). Widely repeated; plausible superlative. NEVER auto-correct superlatives — flagged for user review.",
+              "status": "flagged_superlative",
+              "sources": [
+                "https://en.wikipedia.org/wiki/La_F%C3%A9e_%C3%89lectricit%C3%A9"
+              ]
+            }
+          ],
+          "status": "flagged",
+          "notes": "Superlative 'largest painting in the world' — never auto-correct per guardrail. Left as extracted."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 125
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Place des Vosges",
+    "short_description": "Oldest planned square in Paris built in 1612 with 36 uniform red-brick houses and Victor Hugo's former home at No. 6",
+    "latitude": 48.8555,
+    "longitude": 2.3656,
+    "importance_tier": 5,
+    "trigger_radius": 40,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Place Royale"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_place_des_vosges_hidden_history_hidden_gardens_of_paris_henri_iv_founding",
+        "city_name": "paris",
+        "poi_name": "Place des Vosges",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "henri_iv_founding",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Paris remembers this open-air square in the heart of the Marais as the inspiration of its best-loved king and urban planner, Henri IV. The lovely harmony of its proportions — the border of thirty-six mansions of warm red brick and white limestone around the quadrangle, the tall fountains watering each of the four corners, the arches and arcades lining the perimeter, the rows of linden trees bordering the arcades — Place des Vosges has a graciousness resonant with the memory of the Vert Galant. Long before it became politically correct, Henri IV made religious tolerance the ideal of his reign, and this square, his masterpiece, reflects the sophistication and magnanimity of that ideal.",
+        "beat_length_class": "mid",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Henri IV",
+          "Vert Galant",
+          "Marais"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "Henri IV founding",
+        "physical_cues": [
+          {
+            "cue": "Thirty-six mansions of warm red brick and white limestone around the quadrangle",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Tall fountains at each of the four corners of the square",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Arches and arcades lining the perimeter, rows of linden trees",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Vert Galant",
+            "gloss": "The 'Green Gallant' — affectionate nickname for Henri IV, suggesting his youthful charm and romantic nature"
+          }
+        ],
+        "pronunciation": "plass-day-voge",
+        "key_claims": [
+          "Henri IV is remembered as inspiration for Place des Vosges",
+          "Thirty-six mansions of warm red brick and white limestone",
+          "Four fountains at corners, arcades, linden trees",
+          "Henri IV made religious tolerance the ideal of his reign"
+        ],
+        "source_passage": "Paris remembers this open-air square in the heart of the Marais as the inspiration of its best-loved king and urban planner, Henri IV. The lovely harmony of its proportions—the border of thirty-six mansions of warm red brick and white limestone around the quadrangle, the tall fountains watering each of the four corners, the arches and arcades lining the perimeter, the rows of linden trees bordering the arcades—Place des Vosges has a graciousness resonant with the memory of the Vert Galant. Long before it became po¬litically correct, Henri IV made religious tolerance the ideal of his reign, and this square, his masterpiece, reflects the sophistication and magnanimity of that ideal.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place des Vosges",
+          "page": "123-124"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 114
+      },
+      {
+        "beat_id": "paris_place_des_vosges_dark_history_hidden_gardens_of_paris_henri_ii_death_jousting",
+        "city_name": "paris",
+        "poi_name": "Place des Vosges",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "henri_ii_death_jousting",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The site of Place des Vosges was originally the royal grounds — Château des Tournelles — of Henri II, near the scene of his accidental death in 1559 from wounds received in a jousting tournament on what is now rue Saint-Antoine. In mad reaction, his widow, Queen Catherine de Médicis, had Tournelles razed, sent Henri II's mistress, Diane de Poitiers, packing, and moved her own entourage west, where she built herself another palace in the Tuileries. But a few kings later, in 1605, Henri of Navarre — or Henri IV — wanting a new palace and a neighborhood free of the Valois dynasty's taint, looked east to the medieval Marais: it had been a quartier of watered gardens (maraîchers) rather than an actual marsh. There he began Place des Vosges (originally called Place Royale) but didn't survive to savor its finished glory.",
+        "beat_length_class": "mid",
+        "duration_sec": 88,
+        "kid_friendly": "no",
+        "entities": [
+          "Henri II",
+          "Château des Tournelles",
+          "Catherine de Médicis",
+          "Diane de Poitiers",
+          "Tuileries",
+          "Henri IV",
+          "Valois dynasty",
+          "rue Saint-Antoine"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Tournelles royal death",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "maraîchers",
+            "gloss": "market gardeners — the Marais was a quartier of watered gardens rather than an actual marsh"
+          },
+          {
+            "phrase": "quartier",
+            "gloss": "neighborhood or district"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Site was originally Château des Tournelles, royal grounds of Henri II",
+          "Henri II died in 1559 from wounds in a jousting tournament on what is now rue Saint-Antoine",
+          "Catherine de Médicis had Tournelles razed and moved to the Tuileries",
+          "Henri IV began Place des Vosges in 1605, originally called Place Royale",
+          "The Marais name came from maraîchers (market gardens), not from a marsh"
+        ],
+        "source_passage": "The site, originally the royal grounds—Chateau des Tournelles—of Henri II, was near the scene of his accidental death in 1559 from wounds received in a jousting tourna¬ment on what is now rue Saint-Antoine. In mad reaction, his widow, Queen Catherine de Medicis, had Tournelles razed, sent Henri II's mistress, Diane de Poitiers, packing, and moved her own entourage west, where she built herself another pal¬ace in the Tuileries. But a few kings later, in 1605, Henry of Navarre—or Henri IV—wanting a new palace and a neigh¬borhood free of the Valois dynasty's taint, looked east to the medieval Marais: it had been a quartier of watered gardens (maraichers) rather than an actual marsh. There he began Place des Vosges (originally called Place Royale) but didn't survive to savor its finished glory.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place des Vosges",
+          "page": "123-124"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Henri II's death in 1559 from jousting wound is well-established historical fact. Catherine de Médicis moving to Tuileries is consistent with sources."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 142
+      },
+      {
+        "beat_id": "paris_place_des_vosges_literary_heritage_hidden_gardens_of_paris_salon_culture_moliere",
+        "city_name": "paris",
+        "poi_name": "Place des Vosges",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "salon_culture_moliere",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "From the outset this enclave observed rituals of luxurious pleasure among the resident aristocrats: weddings, tournaments, balls, fairs, duels, and the speciality of le grand siècle — the great age of the seventeenth century — the salon, an elite cultural gathering presided over by women. Effervescent with conversation and political debate as well as news of the amours of Paris, the elegant houses (or hôtels) on the great square entertained the city's most original wits in their salons. Molière, his rival Racine, La Fontaine, La Rochefoucauld, Boileau, Madame de Sévigné, who was born at 1 bis, place des Vosges, and her best friend, Madame de Lafayette, all became regulars.",
+        "beat_length_class": "mid",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Molière",
+          "Racine",
+          "La Fontaine",
+          "La Rochefoucauld",
+          "Boileau",
+          "Madame de Sévigné",
+          "Madame de Lafayette"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "salon grand siècle",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "le grand siècle",
+            "gloss": "the great age — referring to the seventeenth century in France"
+          },
+          {
+            "phrase": "hôtels",
+            "gloss": "elegant private houses or mansions (not hotels in the modern sense)"
+          },
+          {
+            "phrase": "amours",
+            "gloss": "love affairs, romantic news"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Place des Vosges hosted salons, weddings, tournaments, duels",
+          "The salon was the speciality of le grand siècle — presided over by women",
+          "Molière, Racine, La Fontaine, La Rochefoucauld, Boileau, Madame de Sévigné, Madame de Lafayette were regulars",
+          "Madame de Sévigné was born at 1 bis, place des Vosges"
+        ],
+        "source_passage": "From the outset this enclave ob¬served rituals of luxurious pleasure among the resident aris¬tocrats: weddings, tournaments (more jousting), balls, fairs, duels, and, the speciality of le grand siecle—the great age of the seventeenth century—the salon, an elite cultural gather¬ing presided over by women* Effervescent with conversation and political debate as well as news of the amours of Parts, the elegant houses (or hotels) on the great square entertained the city's most original wits in their salons. Moliere, his rival Racine, La Fontaine, La Rochefoucauld, Boileau, Madame de Sevigne, who was born at i bis, place des Vosges, and her best friend, Madame de Lafayette, all became regulars.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place des Vosges",
+          "page": "124"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Madame de Sévigné birth at 1 bis place des Vosges is widely cited. Consistent with other sources."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 108
+      },
+      {
+        "beat_id": "paris_place_des_vosges_literary_heritage_hidden_gardens_of_paris_ninon_de_lenclos_salon",
+        "city_name": "paris",
+        "poi_name": "Place des Vosges",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "ninon_de_lenclos_salon",
+        "sub_location": null,
+        "trigger_address": "36, rue des Tournelles",
+        "script_body": "One salon to which the richest and sexiest were most faithful was presided over by Ninon de l'Enclos (1620–1705). Like all Frenchwomen of the seventeenth century, Ninon in her youth had four vocational choices: wife, nun, prostitute, or governess. Her career as a nun fell to ground after a year in the convent. Returning home — to 36, rue des Tournelles just off the northeast corner of Place des Vosges — she settled in to host what became a fabled literary salon. As a fabled courtesan (she was determined not to marry), she entertained many lovers, famous nobles as well as the priests and bishops who denounced her from the Sunday pulpit, objecting more to the woman and author who scorned organized religion than to Ninon the courtesan. Molière wrote that 'she has the keenest sense of the absurd of anyone I know.' His Les Précieuses Ridicules (The Pretentious Young Ladies) mocked the idle chitchat of the salons and their salonnards (sycophants). The pious Queen Anne of Austria, mother of King Louis XIV, had Ninon locked up in a convent for a few months — more for her influence than her transgressive sexual mores. 'Feminine virtue is nothing but a convenient masculine invention,' Ninon observed. Her guests listened to her unconventional bon mots, including the memoirist Saint-Simon, who took notes. When Ninon died, she left money to Voltaire, whom she'd met when he was a nine-year-old boy, to buy books.",
+        "beat_length_class": "anchor",
+        "duration_sec": 140,
+        "kid_friendly": "no",
+        "entities": [
+          "Ninon de l'Enclos",
+          "Molière",
+          "Les Précieuses Ridicules",
+          "Queen Anne of Austria",
+          "Louis XIV",
+          "Saint-Simon",
+          "Voltaire"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Ninon courtesan salon",
+        "physical_cues": [
+          {
+            "cue": "Façade of 36, rue des Tournelles — northeast corner of Place des Vosges — where Ninon de l'Enclos held her salon",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Les Précieuses Ridicules",
+            "gloss": "The Pretentious Young Ladies — Molière's play mocking the idle chitchat of salons"
+          },
+          {
+            "phrase": "salonnards",
+            "gloss": "sycophants — the hangers-on of the salons"
+          },
+          {
+            "phrase": "bon mots",
+            "gloss": "witty sayings or clever remarks"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Ninon de l'Enclos (1620–1705) presided over a famous literary salon at 36, rue des Tournelles",
+          "Molière said she had 'the keenest sense of the absurd of anyone I know'",
+          "His Les Précieuses Ridicules mocked salons and their salonnards (sycophants)",
+          "Queen Anne of Austria had Ninon locked in a convent for a few months",
+          "Ninon left money to Voltaire, whom she met when he was nine, to buy books"
+        ],
+        "source_passage": "One salon to which the richest and sexiest were most faithful was presided over by Ninon de PEnclos (1620—1705). Like all Frenchwomen of the seventeenth century, Ninon in her youth had had four vocational choices: wife, nun, prosti¬tute, or governness. Her career as a nun fell to ground after a year in the convent. Returning home—to 36, rue des Tour-nelles just off the northeast corner of Place des Vosges—she settled in to host what became a fabled literary salon. And as a fabled courtesan (she was determined not to marry), she entertained many lovers, famous nobles as well as the priests and bishops who denounced her from the Sunday pulpit, ob-jecting more to the woman (and author, in her private hours) who scorned organized religion than to Ninon the courte¬san. Moliere wrote that \"she has the keenest sense of the ab¬surd of anyone I know.\" His Les Precieuses Ridicules (The Pretentious Young Ladies) mocked the idle chitchat of the sa¬lons and their salonnards (sycophants). The pious Queen Anne of Austria, mother of King Louis XIV, had Ninon locked up in jail for a few months—actually, a convent—more for her influence than her transgressive sexual mores. \"Feminine vir¬tue is nothing but a convenient masculine invention,\" Ninon observed. Her guests listened to her unconventional bon mots, including the memoirist Saint-Simon, who took notes. When Ninon died, she left money to Voltaire, whom she'd met when he was a nine-year-old boy, to buy books.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place des Vosges",
+          "page": "124-125"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Ninon de l'Enclos dates (1620–1705) and Voltaire connection are widely documented. The Voltaire bequest (money for books when he was a boy) is a famous anecdote from multiple sources."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 243
+      },
+      {
+        "beat_id": "paris_place_des_vosges_local_legends_hidden_gardens_of_paris_sunday_families_reading",
+        "city_name": "paris",
+        "poi_name": "Place des Vosges",
+        "parent_poi": null,
+        "lens": "local_legends",
+        "topic_slug": "sunday_families_reading",
+        "sub_location": "square-center-park",
+        "trigger_address": null,
+        "script_body": "On late Sunday afternoons in all seasons, Parisian families gather and stroll in Place des Vosges, in summer finding shade under the trees that surround the statue of Louis XIII, the son of Henri IV. Dusk moves in and the cafés under the arcades fill up. On weekday mornings, the square is almost empty, except for the twittering swallows. It's a lovely place to sit and read Madame de Lafayette's La Princesse de Clèves (1678), the first significant French novel, its subject the adulterous passion of a young Frenchwoman for another man, set in the court of King Henry II, at Tournelles, before and after his fatal jousting. Or for less serious history, the 1,500 letters of Madame de Sévigné take you back to the heyday of the gossipy and promiscuous salons — both her husband and son were lovers of Ninon — when the intelligentsia and artists of Paris first looked out over the magical square. Its founding bon vivant would have adored it.",
+        "beat_length_class": "mid",
+        "duration_sec": 108,
+        "kid_friendly": "yes",
+        "entities": [
+          "Louis XIII",
+          "Henri IV",
+          "Madame de Lafayette",
+          "La Princesse de Clèves",
+          "Madame de Sévigné",
+          "Ninon de l'Enclos"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "Sunday stroll reading",
+        "physical_cues": [
+          {
+            "cue": "Statue of Louis XIII at the center of the square, surrounded by trees",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Cafés under the arcades filling at dusk",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "La Princesse de Clèves",
+            "gloss": "The Princess of Clèves (1678) — described as the first significant French novel, about the adulterous passion of a young Frenchwoman set in the court of Henri II"
+          },
+          {
+            "phrase": "bon vivant",
+            "gloss": "a person who enjoys good living, pleasures, and society — referring to Henri IV"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "La Princesse de Clèves (1678) described as the first significant French novel",
+          "Madame de Sévigné wrote 1,500 letters",
+          "Both Madame de Sévigné's husband and son were lovers of Ninon",
+          "The statue at the center of the square is of Louis XIII, son of Henri IV"
+        ],
+        "source_passage": "On late Sunday afternoons in all seasons, Parisian fami¬lies gather and stroll in Place des Vosges, in summer finding shade under the trees that surround the statue of Louis XIII, the son of Henri IV. Dusk moves in and the cafes under the arcades fill up. On weekday mornings, the square is almost empty, except for the twittering swallows. It's a lovely place to sit and read Madame de Lafayette's La Princesse de Cleves (1678), the first significant French novel, its subject the adul¬terous passion of a young Frenchwoman for another man, set in the court of King Henry II, at Tournelles, before and after his fatal jousting. Or for less serious history, the 1,500 letters of Madame de Sevigne take you back to the heyday of the gossipy and promiscuous salons (both her husband and son were lovers of Ninon) when the intelligentsia and artists of Paris first looked out over the magical square. Its founding bon vivant would have adored it.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place des Vosges",
+          "page": "125"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "La Princesse de Clèves (1678) described as 'the first significant French novel'",
+              "note": "This is a literary superlative — never auto-correct. Widely attributed to Madame de Lafayette and considered a landmark of French literature, though 'first significant' is subjective. Flagged per guardrail.",
+              "status": "flagged_superlative",
+              "sources": [
+                "https://en.wikipedia.org/wiki/La_Princesse_de_Cl%C3%A8ves"
+              ]
+            }
+          ],
+          "status": "flagged",
+          "notes": "Superlative retained as extracted."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 166
+      },
+      {
+        "beat_id": "paris_place_des_vosges_literary_heritage_hidden_gardens_of_paris_sevigne_born_1bis",
+        "city_name": "paris",
+        "poi_name": "Place des Vosges",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "sevigne_born_1bis",
+        "sub_location": null,
+        "trigger_address": "1 bis, place des Vosges",
+        "script_body": "Madame de Sévigné, celebrated letter-writer of le grand siècle, was born at 1 bis, place des Vosges. Her 1,500 letters to friends and family, written over three centuries ago, are still praised for their unusual mix of elegant and natural style — covering the intrigues and comedy of Paris under Louis XIV, as well as her obsessive love for her married daughter in Provence.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "entities": [
+          "Madame de Sévigné",
+          "Louis XIV"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Sévigné birthplace",
+        "physical_cues": [
+          {
+            "cue": "Façade of 1 bis, place des Vosges — birthplace of Madame de Sévigné",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "le grand siècle",
+            "gloss": "the great age — the seventeenth century in France under Louis XIV"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Madame de Sévigné was born at 1 bis, place des Vosges",
+          "She wrote 1,500 letters praised for their elegant and natural style"
+        ],
+        "source_passage": "Madame de Sevigne, who was born at i bis, place des Vosges, and her best friend, Madame de Lafayette, all became regulars. [...] the 1,500 letters of Madame de Sevigne take you back to the heyday of the gossipy and promiscuous salons",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place des Vosges",
+          "page": "124-125"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Birth at 1 bis place des Vosges is well-documented."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 65
+      }
+    ],
+    "poi_role": "setting",
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Jardin Saint-Gilles Grand Veneur",
+    "short_description": null,
+    "latitude": 48.8592366,
+    "longitude": 2.3668079,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_jardin_saint_gilles_grand_veneur_hidden_history_hidden_gardens_of_paris_secret_garden_pauline_roland",
+        "city_name": "paris",
+        "poi_name": "Jardin Saint-Gilles Grand Veneur",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "secret_garden_pauline_roland",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Via rue des Arquebusiers or rue Villehardouin, through an archway, a two-minute walk from Place des Vosges to the northeast, this secret garden in spring and summer is framed by trellises of roses against a background of elegant tall apartments. The crowds of travelers afoot in the Marais are within neither sight nor sound. There is a plaque in honor of Pauline Roland (1805–1852), socialist, teacher, and feminist, who was imprisoned in Algeria for resisting Napoléon III's coup d'état in 1851.",
+        "beat_length_class": "mid",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Pauline Roland",
+          "Napoléon III",
+          "Marais"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "somber",
+        "subject_tag": "Pauline Roland plaque",
+        "physical_cues": [
+          {
+            "cue": "Plaque in honor of Pauline Roland on the garden wall",
+            "direction": "here",
+            "feature_type": "plaque"
+          },
+          {
+            "cue": "Trellises of roses against elegant tall apartment buildings",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Garden accessible via rue des Arquebusiers or rue Villehardouin, through an archway",
+          "Two-minute walk from Place des Vosges to the northeast",
+          "Plaque honors Pauline Roland (1805–1852), socialist, teacher, feminist",
+          "Roland was imprisoned in Algeria for resisting Napoléon III's 1851 coup d'état"
+        ],
+        "source_passage": "Via rue des Arque-busiers or rue Villehardouin, through an archway, a two-minute walk from Place des Vosges, to the northeast. In spring and sum¬mer, this secret garden is framed by trellises of roses against a background of elegant tall apartments. The crowds of travelers afoot in the Marais are within neither sight nor sound. There is a plaque in honor of Pauline Roland (i8o5—i852), socialist, teacher, and feminist, who was imprisoned in Algeria for resisting Napo¬leon Ill's coup d'etat in i85i.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin Saint-Gilles Grand Veneur",
+          "page": "212"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Pauline Roland's imprisonment in Algeria after the 1851 coup is historically documented."
+        },
+        "new_poi": true,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 85
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Hotel de Sully",
+    "short_description": "Magnificent 17th-century mansion with a storied past, from its gambler builder to Voltaire's beating.",
+    "latitude": 48.8545,
+    "longitude": 2.3647,
+    "importance_tier": 4,
+    "trigger_radius": 30,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Hôtel de Sully"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_hotel_de_sully_hidden_history_hidden_gardens_of_paris_garden_bookstore",
+        "city_name": "paris",
+        "poi_name": "Hotel de Sully",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "garden_bookstore",
+        "sub_location": null,
+        "trigger_address": "2, rue Saint-Antoine",
+        "script_body": "The main entrance to Hôtel Sully is at 2, rue Saint-Antoine. The mansion, once the residence of Henri IV's finance minister, the duc de Sully, has a pretty garden with benches and orange trees and no sound of the traffic on Saint-Antoine. In the southwest corner is an excellent bookstore — Librairie des Monuments Historiques — well-stocked with books about Paris. Through an archway in the northeast corner is another entrance to Place des Vosges.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "duc de Sully",
+          "Henri IV",
+          "Librairie des Monuments Historiques",
+          "Place des Vosges"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "Sully garden passage",
+        "physical_cues": [
+          {
+            "cue": "Façade of Hôtel Sully at 2, rue Saint-Antoine — main entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Garden with benches and orange trees in the courtyard",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Librairie des Monuments Historiques bookstore in the southwest corner of the garden",
+            "direction": "south",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Archway in the northeast corner leading to Place des Vosges",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Librairie des Monuments Historiques",
+            "gloss": "Bookstore of Historic Monuments — specializing in books about Paris"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Hôtel Sully was the residence of Henri IV's finance minister, the duc de Sully",
+          "Garden has benches and orange trees",
+          "Southwest corner houses Librairie des Monuments Historiques bookstore",
+          "Northeast archway connects to Place des Vosges"
+        ],
+        "source_passage": "The main entrance is at 2, rue Saint-Antoine. The mansion, the residence of Henri IV's finance minister, the due de Sully, has a pretty garden, with benches and orange trees and no sound of the traffic on Saint-Antoine. In the southwest corner is an excellent bookstore—Librairie des Monuments Historiques—well-stocked with books about Paris (for ex¬ample, Le Monde de Colette au Palais-Royal^. Open Tues—Sun. Through an archway in the northeast corner is another entrance to Place des Vosges.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Hotel Sully",
+          "page": "221-229"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 77
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Place du Marché Sainte-Catherine",
+    "short_description": "Quiet rectangular Marais square laid out in 1784 on the site of a demolished 13th-century priory and used as an open-air market until 1939.",
+    "latitude": 48.855383,
+    "longitude": 2.362813,
+    "importance_tier": 3,
+    "trigger_radius": 40,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Place du Marché Ste Catherine",
+      "Place du Marche Ste Catherine",
+      "Place du Marché-Sainte-Catherine",
+      "Place Sainte-Catherine"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_place_du_marche_sainte_catherine_hidden_history_hidden_gardens_of_paris_neighborhood_square",
+        "city_name": "paris",
+        "poi_name": "Place du Marché Sainte-Catherine",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "neighborhood_square",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Walking west along rue Saint-Antoine, almost opposite the Church of Saint-Louis–Saint-Paul, turn right into rue Caron, which leads straight into this small neighborhood square facing rue d'Ormesson. Nice bistros and benches under the trees.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Saint-Paul-Saint-Louis",
+          "rue Saint-Antoine",
+          "rue Caron"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "stop_orientation",
+        "emotional_register": "neutral",
+        "subject_tag": "market square approach",
+        "physical_cues": [
+          {
+            "cue": "Small square facing rue d'Ormesson, reached via rue Caron off rue Saint-Antoine",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Square accessible via rue Caron off rue Saint-Antoine",
+          "Faces rue d'Ormesson",
+          "Has bistros and benches under trees"
+        ],
+        "source_passage": "Walking west along rue Saint-Antoine, almost opposite the Church of Saint-Louis—Saint-Paul, turn right into rue Caron, which leads straight into this small neighborhood square facing rue d'Ormesson. Nice bistros and benches, under the trees.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Place du Marché Sainte-Catherine",
+          "page": "239"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 39
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Musee Carnavalet",
+    "short_description": "Free museum in two Marais mansions chronicling the history of Paris from prehistory to present with 618,000 objects",
+    "latitude": 48.855076,
+    "longitude": 2.361661,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Carnavalet Museum",
+      "Musee Carnavalet - Histoire de Paris"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_musee_carnavalet_architectural_detail_hidden_gardens_of_paris_jean_goujon_seasons_facade",
+        "city_name": "paris",
+        "poi_name": "Musee Carnavalet",
+        "parent_poi": null,
+        "lens": "historic_arch",
+        "topic_slug": "jean_goujon_seasons_facade",
+        "sub_location": "main-facade",
+        "trigger_address": null,
+        "script_body": "Once inside the courtyard of Carnavalet you're surrounded by one of the most formidable historic buildings in the Marais. Hôtel Carnavalet (now a museum), built in 1546 under the influence of the Italian Renaissance, overlooks the highly formal and symmetrical design of the small French garden. The mansion has two wings at right angles to it. The four reliefs on the main façade opposite the entrance — The Seasons — are the work of the Renaissance sculptor Jean Goujon (1510–1564), admired by Bernini, who also carved the decorations on the southwest side of the Cour Carré — the 'square courtyard' part of the Louvre palace — and on the façade of the salle — the reception room — on the ground floor of the Louvre.",
+        "beat_length_class": "mid",
+        "duration_sec": 76,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jean Goujon",
+          "Bernini",
+          "Hôtel Carnavalet",
+          "Cour Carré",
+          "Louvre"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Jean Goujon Seasons",
+        "physical_cues": [
+          {
+            "cue": "Four reliefs of The Seasons by Jean Goujon on the main façade opposite the entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Symmetrical formal French garden in the courtyard",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Cour Carré",
+            "gloss": "the square courtyard — the medieval part of the Louvre palace"
+          },
+          {
+            "phrase": "salle",
+            "gloss": "the reception room — on the ground floor of the Louvre"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Hôtel Carnavalet built in 1546, Italian Renaissance influence",
+          "Four reliefs 'The Seasons' on main façade by Jean Goujon (1510–1564)",
+          "Goujon was admired by Bernini",
+          "Goujon also carved decorations on Cour Carré (southwest side) and Louvre's salle ground floor façade"
+        ],
+        "source_passage": "Once inside the courtyard of Carnavalet you're sur¬rounded by one of the most formidable historic build¬ings in the Marais. Hotel Carnavelet (now a museum), built in 1546 under the influence of the Italian Renaissance, over¬looks the highly formal and symmetrical design of the small French garden. The mansion has two wings at right angles to it. The four reliefs on the main fa§ade opposite the entrance—The Seasons—are the work of the Renaissance sculptor Jean Goujon (1510—1564), admired by Bernini, who also carved the decorations on the southwest side of the Corn Carree—the \"square courtyard\" part of the Louvre palace—and on the fafade of the salle—the reception room—on the ground floor of the Louvre.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin du Musée Carnavalet",
+          "page": "129"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Jean Goujon (1510–1564) admired by Bernini, carved decorations on the southwest side of the Cour Carré",
+              "note": "Jean Goujon's work on the Louvre's Cour Carré (Lescot wing) is documented. Bernini's admiration: Bernini visited Paris in 1665 — over a century after Goujon — and is recorded as having admired earlier French sculptors. Plausible but book-sourced only.",
+              "status": "unverified",
+              "sources": []
+            }
+          ],
+          "status": "unverified",
+          "notes": "Bernini admiration claim retained as extracted per zero-hallucination policy."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 121
+      },
+      {
+        "beat_id": "paris_musee_carnavalet_literary_heritage_hidden_gardens_of_paris_sevigne_garden_letters",
+        "city_name": "paris",
+        "poi_name": "Musee Carnavalet",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "sevigne_garden_letters",
+        "sub_location": "garden-courtyard",
+        "trigger_address": null,
+        "script_body": "The grounds of Carnavalet delighted Madame de Sévigné (1626–1696), one of the greatest letter writers in French literature, who lived in the hôtel for the last twenty years of her life and wrote many of her letters here, outdoors, in the shadow of her residence. She wrote: 'It is an admirable affair, we shall all stay here and enjoy the fine air. Since it is impossible to have everything, we shall have to dispense with parquet floors and fashionable little stoves; but at least we have a fine courtyard, a beautiful garden, and nice little blue girls who are most convenient.' The 'blue girls' were nuns who lived in a convent in rue Sévigné — then called rue Sainte-Catherine — where the Lycée Victor-Hugo now stands. They wore a blue habit.",
+        "beat_length_class": "mid",
+        "duration_sec": 96,
+        "kid_friendly": "yes",
+        "entities": [
+          "Madame de Sévigné",
+          "Lycée Victor-Hugo"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "Sévigné garden writing",
+        "physical_cues": [
+          {
+            "cue": "The formal garden courtyard where Madame de Sévigné wrote her letters outdoors",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Madame de Sévigné (1626–1696) lived in Hôtel Carnavalet for the last twenty years of her life",
+          "She wrote many letters outdoors in the garden",
+          "Her quoted letter mentions 'blue girls' — nuns in a blue habit from a nearby convent in rue Sévigné (formerly rue Sainte-Catherine)",
+          "The Lycée Victor-Hugo now stands where the convent was"
+        ],
+        "source_passage": "The grounds of Carnavalet delighted Madame de Sevigne (1626—1696), one of the greatest letter writers in French lit¬erature, who lived in the hotel for the last twenty years of her life and wrote many of her letters here, outdoors, in the shadow of her residence.* \"It is an admirable affair, we shall all stay here and enjoy the fine air. Since it is impossible to have everything, we shall have to dispense with parquet floors and fashionable little stoves; but at least we have a fine court¬yard, a beautiful garden, and nice little blue girls who are most convenient.\" (The \"blue girls\" were nuns who lived in a convent in rue Sevigne—then called rue Sainte-Catherine—where the Lycee Victor-Hugo now stands. They wore a blue habit.)",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin du Musée Carnavalet",
+          "page": "129-130"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Madame de Sévigné's residence at Carnavalet and her letters are well-documented historical fact."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 132
+      },
+      {
+        "beat_id": "paris_musee_carnavalet_literary_heritage_hidden_gardens_of_paris_sevigne_letters_character",
+        "city_name": "paris",
+        "poi_name": "Musee Carnavalet",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "sevigne_letters_character",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Madame de Sévigné's correspondence has, for more than three centuries, received high praise for its range as well as its style — an unusual mix of elegant and natural. An educated woman, widely read in history, philosophy, religion, and theology as well as the French moralists Montaigne, Rabelais, and her contemporaries Corneille, Molière, La Fontaine, and Pascal, she wrote to friends and family about the intrigues and comedy of le grand siècle, Paris under Louis XIV. But her main subject was her obsessive love for her married daughter, who lived in Provence — that distance the cause of her mother's mournful confessions of love and longing. Because she grew up in the Marais as an orphan — her parents were dead by the time she was seven — one biographer believes these childhood losses fueled her morbid attachment to her own maternity. Another of her pet subjects was health: recommending chocolate and coffee to keep the bowels open; getting enough sleep; not getting pregnant too often. Although Saint-Simon found her 'lovable' and 'such excellent company,' to her daughter's husband, the opinionated Madame de Sévigné was a mother-in-law from hell.",
+        "beat_length_class": "mid",
+        "duration_sec": 128,
+        "kid_friendly": "yes",
+        "entities": [
+          "Madame de Sévigné",
+          "Montaigne",
+          "Rabelais",
+          "Corneille",
+          "Molière",
+          "La Fontaine",
+          "Pascal",
+          "Louis XIV",
+          "Saint-Simon"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Sévigné letters character",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "le grand siècle",
+            "gloss": "the great age — Paris under Louis XIV, seventeenth century"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Sévigné grew up an orphan in the Marais — parents dead by age seven",
+          "Biographer connects childhood losses to her obsessive maternal attachment",
+          "She recommended chocolate and coffee for digestive health; sleeping enough; avoiding frequent pregnancy",
+          "Saint-Simon called her 'lovable' and 'excellent company'",
+          "She was a mother-in-law from hell to her son-in-law"
+        ],
+        "source_passage": "Madame de Sevigne's correspondence has, for more than three centuries, received high praise for its range as well as its style, an unusual mix of elegant and natural. An educated woman, widely read in history, philosophy, religion, and the¬ology as well as the French moralists Montaigne, Rabelais, and her contemporaries Corneille, Moliere, La Fontaine, and Pascal, she wrote to friends and family about the intrigues and comedy of le grandsiecle, Paris under Louis XIV. But her main subject was her obsessive love for her married daughter, who lived in Provence, that distance the cause of her mother's mournful and repetitious confessions of love and longing. Be¬cause she grew up in the Marais as an orphan—her parents were dead by the time she was seven—one Madame de Sevi¬gne biographer believes these childhood losses fueled her morbid attachment to her own maternity. Another of her pet subjects was health, protecting it, defending oneself against inevitable hateful death as well as the horror of getting fat. A regular at the spa at Vichy where she purged and sweated, she had strong opinions on the importance of keeping the bow¬els open—chocolate and coffee are recommended; of get¬ting enough sleep; of not getting pregnant too often. Although Saint-Simon found her \"lovable\" and \"such excellent com¬pany,\" to her daughter's husband, the opinionated Madame de Sevigne, who also offered contraceptive advice, was a mother-in-law from hell.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin du Musée Carnavalet",
+          "page": "130-131"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 191
+      },
+      {
+        "beat_id": "paris_musee_carnavalet_literary_heritage_hidden_gardens_of_paris_sevigne_apartment_voltaire_edit",
+        "city_name": "paris",
+        "poi_name": "Musee Carnavalet",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "sevigne_apartment_voltaire_edit",
+        "sub_location": "sevigne-apartment-room-21",
+        "trigger_address": null,
+        "script_body": "The interior of Musée Carnavalet and the adjoining Hôtel le Peletier de Fargeau offer excellent exhibits about the history of Paris. Madame de Sévigné's apartments are reconstructed on the first floor, in room 21, with her writing desk as well as portraits of her and her literary friends. After her death, her uptight descendants sugarcoated some of her letters before their publication — just as the prissy English daughter of Lady Mary Wortley Montagu would 'edit' her mother's brilliant Embassy Letters (1763), a correspondence Voltaire rated superior to Madame de Sévigné's.",
+        "beat_length_class": "mid",
+        "duration_sec": 64,
+        "kid_friendly": "yes",
+        "entities": [
+          "Madame de Sévigné",
+          "Hôtel le Peletier de Fargeau",
+          "Lady Mary Wortley Montagu",
+          "Voltaire"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Sévigné apartment censored",
+        "physical_cues": [
+          {
+            "cue": "Madame de Sévigné's reconstructed apartment on the first floor, room 21, with her writing desk",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Sévigné's apartments reconstructed on first floor, room 21, with her writing desk",
+          "After her death, descendants sugarcoated some letters before publication",
+          "Parallel drawn with Lady Mary Wortley Montagu's Embassy Letters (1763) edited by her daughter",
+          "Voltaire rated Lady Mary's Embassy Letters superior to Madame de Sévigné's"
+        ],
+        "source_passage": "The interior of Musee Carnavalet and the adjoining Ho¬tel le Peletier de Fargeau offer excellent exhibits about the history of Paris. Madame de Sevigne's apartments are re¬constructed on the first floor, in room 21, with her writing desk as well as portraits of her and her literary friends. After her death, her uptight descendents sugarcoated some of her letters before their publication, just as the prissy English daughter of Lady Mary Wortley Montagu would \"edit\" her mother's brilliant Embassy Letters (1763), a correspondence Voltaire rated superior to Madame de Sevigne's.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin du Musée Carnavalet",
+          "page": "131"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Embassy Letters (1763) by Lady Mary Wortley Montagu published posthumously and edited by her daughter — consistent with historical record."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 93
+      },
+      {
+        "beat_id": "paris_musee_carnavalet_dark_history_hidden_gardens_of_paris_sevigne_religion_saint_paul",
+        "city_name": "paris",
+        "poi_name": "Musee Carnavalet",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "sevigne_religion_saint_paul",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "A practicing Catholic, Madame de Sévigné worshipped close to home at Saint-Paul-Saint-Louis, 99, rue Saint-Antoine — a Jesuit church modeled on the Gesù in Rome.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Madame de Sévigné",
+          "Saint-Paul-Saint-Louis",
+          "Gesù"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Sévigné church worship",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Gesù",
+            "gloss": "the mother church of the Jesuit order in Rome — the model for Saint-Paul-Saint-Louis"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Madame de Sévigné worshipped at Saint-Paul-Saint-Louis, 99 rue Saint-Antoine",
+          "Saint-Paul-Saint-Louis is a Jesuit church modeled on the Gesù in Rome"
+        ],
+        "source_passage": "A practicing Catholic, she worshipped close to home, at Saint-Paul-Saint-Louis, 99, rue Saint-Antoine, a Jesuit church modeled on the Gesu in Rome.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin du Musée Carnavalet",
+          "page": "131"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Saint-Paul-Saint-Louis as a Jesuit church modeled on the Gesù is well-documented."
+        },
+        "new_poi": false,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 28
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "La Tartine",
+    "short_description": null,
+    "latitude": 48.8560492,
+    "longitude": 2.3584052,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_la_tartine_dark_history_hidden_gardens_of_paris_politburo_radical_marais",
+        "city_name": "paris",
+        "poi_name": "La Tartine",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "politburo_radical_marais",
+        "sub_location": null,
+        "trigger_address": "24, rue de Rivoli",
+        "script_body": "La Tartine — at rue du Roi de Sicile (rear entrance) or 24, rue de Rivoli — is a good old 1900s café with political associations: the Politburo met here, in this once radical neighborhood of artisans and workers. Rue du Roi de Sicile figures in a first-rate novel set in pre-gentrification Marais during the Algerian War, The Mark of the Angel by Nancy Huston (1999).",
+        "beat_length_class": "seasoning",
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "entities": [
+          "La Tartine",
+          "Politburo",
+          "Nancy Huston",
+          "The Mark of the Angel",
+          "rue du Roi de Sicile"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Politburo café radical",
+        "physical_cues": [
+          {
+            "cue": "Façade of La Tartine at 24, rue de Rivoli (or rue du Roi de Sicile rear entrance)",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "La Tartine is a café dating to the 1900s",
+          "The Politburo met at this café",
+          "Once a radical neighborhood of artisans and workers",
+          "Rue du Roi de Sicile featured in Nancy Huston's The Mark of the Angel (1999), set during the Algerian War"
+        ],
+        "source_passage": "A good old (\\90c) cafe with political associations—the Politburo met here—in this once radical neighborhood of arti¬sans and workers. Rue du Roi de Sidle figures in a first-rate novel set in pregentrification Marais during the Algerian War, The Mark of the Angel by Nancy Huston ('999).",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "La Tartine",
+          "page": "351-357"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "The Politburo met at La Tartine",
+              "note": "This likely refers to the French Communist Party's Politburo, not the Soviet Politburo. La Tartine is known as a left-wing café. The claim is plausible in that context but cannot be auto-corrected — flagged for verification.",
+              "status": "flagged",
+              "sources": []
+            }
+          ],
+          "status": "flagged",
+          "notes": "Politburo claim retained as extracted. Likely PCF (French Communist Party) Politburo. Cannot auto-correct without 2+ sources."
+        },
+        "new_poi": true,
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "source_chunk_slug": "chunk-06a-vallee-suisse-vosges-carnavalet",
+        "book_slug": "hidden_gardens_of_paris",
+        "_word_count": 66
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-06a-vallee-suisse-vosges-carnavalet",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  }
+]

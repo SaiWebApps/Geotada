@@ -1,0 +1,1483 @@
+{
+  "chunk_id": "chunk-04a-recamier-champ-de-mars-santiago",
+  "chunk_file": "Books/Paris/hidden-gardens-of-paris/chunk-04a-recamier-champ-de-mars-santiago.txt",
+  "pois": [
+    {
+      "name": "Square R\u00e9camier",
+      "new_poi": true,
+      "city_name": "paris",
+      "city_slug": "paris",
+      "latitude": 48.8498,
+      "longitude": 2.3268,
+      "trigger_radius": 10,
+      "arrondissement": "6th",
+      "address": "rue R\u00e9camier, 75006 Paris",
+      "metro": "S\u00e8vres-Babylone",
+      "poi_role": "stop",
+      "kid_friendly": "yes",
+      "importance_tier": null,
+      "geocode_source": "Nominatim estimate \u2014 run /poi-geocode paris --missing-only",
+      "geocode_confidence": null,
+      "notes": "NEW POI FLAGGED: Square R\u00e9camier. Source: chunk-04a-recamier-champ-de-mars-santiago. Beats attached: 6. Relationship: independent (not an alias of any existing POI). Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "name": "Square Santiago du Chili",
+      "new_poi": true,
+      "city_name": "paris",
+      "city_slug": "paris",
+      "latitude": 48.8561,
+      "longitude": 2.3098,
+      "trigger_radius": 10,
+      "arrondissement": "7th",
+      "address": "boulevard de la Tour-Maubourg / rue Grenelle, 75007 Paris",
+      "metro": "La Tour-Maubourg",
+      "poi_role": "stop",
+      "kid_friendly": "yes",
+      "importance_tier": null,
+      "geocode_source": "Nominatim estimate \u2014 run /poi-geocode paris --missing-only",
+      "geocode_confidence": null,
+      "notes": "NEW POI FLAGGED: Square Santiago du Chili. Source: chunk-04a-recamier-champ-de-mars-santiago. Beats attached: 4. Relationship: independent (not an alias of any existing POI; named for Chilean embassy). Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "name": "Champ de Mars",
+      "new_poi": false,
+      "city_name": "paris",
+      "notes": "Existing POI \u2014 tier-5 with existing beats. New beats added under hidden_history, war_conflict, modern_design lenses."
+    },
+    {
+      "name": "Eiffel Tower",
+      "new_poi": false,
+      "city_name": "paris",
+      "notes": "Existing POI \u2014 tier-5 with existing beats. New beats added under dark_history, hidden_history lenses."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "paris_square_recamier_scene_setter_hidden_gardens_of_paris_garden_description",
+      "city_name": "paris",
+      "poi_name": "Square R\u00e9camier",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "garden_description",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Square R\u00e9camier is hard to find \u2014 perhaps the best-kept secret of the city's small squares. Off to the right as you walk west on the north side of rue de S\u00e8vres, just past its intersection with rue des Saints-P\u00e8res, the narrow pedestrian rue R\u00e9camier leads directly to the square. A staircase under the drapery of a pergola takes you down past a small waterfall and pool, into a valley-like romantic space hung with the spreading branches of trees, overgrown rhododendron, and rock gardens thick with ivy, myrtle, and, in season, white tulips and buttercups. The surrounding architecture is as tasteful as the garden. With its hidden-away corners and nooks where it's possible to sit unobserved from other parts of the square, it's also a discreet place.",
+      "beat_length_class": "mid",
+      "duration_sec": 68,
+      "kid_friendly": "yes",
+      "entities": [
+        "rue de S\u00e8vres",
+        "rue R\u00e9camier"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "scene_setter",
+      "subject_tag": "hidden garden entry",
+      "physical_cues": [
+        {
+          "cue": "Staircase under a pergola leading down to the square from rue R\u00e9camier",
+          "direction": "down",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Waterfall and pool at the base of the entry staircase",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Rock gardens thick with ivy, myrtle, and seasonal white tulips and buttercups",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Square R\u00e9camier is accessed via narrow pedestrian rue R\u00e9camier off rue de S\u00e8vres",
+        "Entry is a staircase under a pergola past a waterfall and pool",
+        "Garden has valley-like character with rhododendron, rock gardens, ivy, myrtle, tulips, buttercups"
+      ],
+      "source_passage": "Square Recamier is hard to find. Off to the right as you walk west on the north side of rue de Sevres, just past its intersection with rue des Saints-Peres, you'll come upon the narrow pedestrian rue Recamier (and its fine restaurant, Le Recamier, where President and Mrs. Obama dined), which leads directly to the square. A staircase under the drapery of a pergola takes you down past a small waterfall and pool, into a valley-like romantic space hung with the spreading branches of trees, overgrown rhododendron, and rock gardens thick with ivy, myrtle, and, in season, white tulips and buttercups. The surrounding architecture is as tasteful as the garden. With its hidden-away corners and nooks where it's possible to sit unobserved from other parts of the square, it's also a discreet place.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier",
+        "page": "65\u201366"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Obama dining at Le R\u00e9camier restaurant is a specific verifiable claim \u2014 incidental to the garden narrative, not extracted as a beat claim."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_recamier_literary_heritage_hidden_gardens_of_paris_recamier_beauty_salon",
+      "city_name": "paris",
+      "poi_name": "Square R\u00e9camier",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "recamier_beauty_salon",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The square's namesake, Juliette R\u00e9camier (1777\u20131849), is remembered for her exquisite beauty and grace \u2014 her portrait by David hangs in the Louvre, G\u00e9rard's in the Carnavalet \u2014 but most of all she is defined by her romantic \"friendships\" which brought a certain frisson to the hermetic world of the literary salon. Madame R\u00e9camier's salon was the first one to reopen its doors after the Revolution.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Juliette R\u00e9camier",
+        "David",
+        "Louvre",
+        "G\u00e9rard",
+        "Carnavalet"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "R\u00e9camier salon identity",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "frisson",
+          "gloss": "a sudden strong feeling of excitement or fear"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Juliette R\u00e9camier lived 1777\u20131849",
+        "Her portrait by David hangs in the Louvre; G\u00e9rard's in the Carnavalet",
+        "Her salon was the first to reopen after the Revolution"
+      ],
+      "source_passage": "The square's namesake, Juliette Recamier (1777\u20141849), is remembered for her exquisite beauty and grace\u2014her portrait by David hangs in the Louvre; Gerard's in the Carnavalet\u2014but most of all she is defined by her romantic \"friendships\" which brought a certain frisson to the hermetic world of the literary salon. Madame Recamier's salon was the first one to reopen its doors after the Revolution.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier",
+        "page": "65\u201366"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Portrait of R\u00e9camier by David hangs in the Louvre",
+            "status": "VERIFIED",
+            "notes": "Jacques-Louis David's unfinished 1800 portrait of Juliette R\u00e9camier is indeed in the Louvre (RF 2641). Source: https://collections.louvre.fr/en/ark:/53355/cl010062871"
+          },
+          {
+            "claim": "G\u00e9rard's portrait in the Carnavalet",
+            "status": "AUTO-CORRECTED",
+            "original": "Gerard's in the Carnavalet",
+            "corrected": "Fran\u00e7ois G\u00e9rard's portrait of R\u00e9camier is in the Carnavalet",
+            "correction_sources": [
+              "https://www.carnavalet.paris.fr/en/collections/juliette-recamier",
+              "https://en.wikipedia.org/wiki/Juliette_R%C3%A9camier"
+            ],
+            "notes": "Two-source agreement: G\u00e9rard's 1805 portrait of R\u00e9camier is held at the Mus\u00e9e Carnavalet. Auto-corrected for clarity only; no factual error in source."
+          },
+          {
+            "claim": "Her salon was the first to reopen after the Revolution",
+            "status": "unverified",
+            "notes": "Claim appears in source without qualification. Plausible given her social role, but 'first' is a superlative \u2014 flagged per guardrail (never auto-resolve superlatives). User review recommended."
+          }
+        ],
+        "status": "partial",
+        "notes": "One superlative claim (first salon to reopen) flagged for user review."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_recamier_literary_heritage_hidden_gardens_of_paris_chateaubriand_love_letters",
+      "city_name": "paris",
+      "poi_name": "Square R\u00e9camier",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "chateaubriand_love_letters",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Of all R\u00e9camier's admirers, it was Chateaubriand who offered the most passionate adoration. Every morning he wrote her a love letter: \"In looking at your divine beauty one feels transported, and it robs death of its shadows of gloom.\" Every afternoon he went to visit her. When the afternoons spent flirting eventually turned into passionate nights, the liaison between them would last for the rest of her life.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 52,
+      "kid_friendly": "yes",
+      "entities": [
+        "Chateaubriand",
+        "Juliette R\u00e9camier"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "Chateaubriand devotion",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Chateaubriand wrote R\u00e9camier a love letter every morning",
+        "He visited her every afternoon",
+        "Their liaison lasted the rest of her life"
+      ],
+      "source_passage": "Of all her admirers, it was Chateaubriand who offered the most passionate adoration. Every morning he wrote her a love letter: \"In looking at your divine beauty one feels transported, and it robs death of its shadows of gloom.\" Every afternoon he went to visit her. When the afternoons spent flirting with Chateaubriand eventually turned into passionate nights, the liaison between them would last for the rest of her life.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier",
+        "page": "65\u201366"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Love-letter quote attributed to Chateaubriand; source cites Delia Austrian's Juliette R\u00e9camier. No auto-correction warranted."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_recamier_literary_heritage_hidden_gardens_of_paris_de_stael_constant_triangle",
+      "city_name": "paris",
+      "poi_name": "Square R\u00e9camier",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "de_stael_constant_triangle",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Though she was Germaine de Sta\u00ebl's closest woman friend, and the model for the main character of de Sta\u00ebl's novel Corinne, ou l'Italie (1807), R\u00e9camier was also the confidante of Benjamin Constant, de Sta\u00ebl's longtime lover. Their nasty breakup did not destroy the bond between Constant and Julie. She lived at Abbaye au Bois, a large old building in rue de S\u00e8vres overlooking a pretty garden \u2014 preserved today as Square R\u00e9camier.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 54,
+      "kid_friendly": "yes",
+      "entities": [
+        "Germaine de Sta\u00ebl",
+        "Benjamin Constant",
+        "Juliette R\u00e9camier",
+        "Corinne ou l'Italie",
+        "Abbaye au Bois"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "literary triangle",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Corinne, ou l'Italie",
+          "gloss": "Corinne, or Italy \u2014 novel by Germaine de Sta\u00ebl published 1807"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "R\u00e9camier was Germaine de Sta\u00ebl's closest woman friend",
+        "She was the model for Corinne in de Sta\u00ebl's novel Corinne, ou l'Italie (1807)",
+        "She was confidante of Benjamin Constant, de Sta\u00ebl's longtime lover",
+        "She lived at Abbaye au Bois on rue de S\u00e8vres \u2014 today's Square R\u00e9camier"
+      ],
+      "source_passage": "Though she was Germaine de Stael's closest woman friend, and the model for the main character of her novel Corinne, ou I'ltalie (1807), she was also the confidante of Benjamin Constant, de Stael's longtime lover. Their nasty breakup did not destroy the bond between Constant and Julie. She lived at Abbaye au Bois, a large old building in rue de Sevres overlooking a pretty garden, preserved today as Square Recamier.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier",
+        "page": "66"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "R\u00e9camier is model for Corinne in Corinne, ou l'Italie (1807)",
+            "status": "unverified",
+            "notes": "Frequently attributed in secondary sources but not universally agreed \u2014 de Sta\u00ebl scholars sometimes point to de Sta\u00ebl herself as the model. Not auto-corrected (living-people guardrail not applicable; superlative not applicable; but conflicting scholarly opinion warrants flag)."
+          }
+        ],
+        "status": "partial",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_recamier_dark_history_hidden_gardens_of_paris_napoleon_exile_knitting",
+      "city_name": "paris",
+      "poi_name": "Square R\u00e9camier",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "napoleon_exile_knitting",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Napoleon exiled R\u00e9camier from Paris for a time, along with her friend Germaine de Sta\u00ebl, who had disapproved loudly and in print of his politics. \"Women should stick to knitting,\" Napoleon responded. \"Paris is... where I live. I don't want anyone there who doesn't like me.\"",
+      "beat_length_class": "seasoning",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Napoleon",
+        "Juliette R\u00e9camier",
+        "Germaine de Sta\u00ebl"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Napoleon exile order",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Napoleon exiled R\u00e9camier from Paris",
+        "He also exiled Germaine de Sta\u00ebl for publicly opposing his politics",
+        "Napoleon said 'Women should stick to knitting' and 'I don't want anyone there who doesn't like me'"
+      ],
+      "source_passage": "Napoleon exiled her from Paris for a time along with her friend Germaine de Stael, who had disapproved loudly and in print of his politics. \"Women should stick to knitting,\" Napoleon responded. \"Paris is . . . where I live. I don't want anyone there who doesn't like me.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier",
+        "page": "66"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Napoleon said 'Women should stick to knitting'",
+            "status": "unverified",
+            "notes": "Widely attributed but may be apocryphal. Source cites Francine du Plessix Gray, Madame de Sta\u00ebl: The First Modern Woman. Not auto-correctable without two-source agreement on the attribution."
+          }
+        ],
+        "status": "partial",
+        "notes": "Quote attribution flagged for user review."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_recamier_local_legends_hidden_gardens_of_paris_recamier_chaste_coquette",
+      "city_name": "paris",
+      "poi_name": "Square R\u00e9camier",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "recamier_chaste_coquette",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "She is described as \"a small, delicate woman with a timid, whispering voice; she adopted a manner at once frigidly chaste and playfully coquettish\" \u2014 and she remained a virgin until her forties.",
+      "beat_length_class": "micro",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Juliette R\u00e9camier"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "R\u00e9camier persona",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "R\u00e9camier described as small, delicate, timid whisper",
+        "Her manner was frigidly chaste and playfully coquettish",
+        "She remained a virgin until her forties"
+      ],
+      "source_passage": "She is described as \"a small, delicate woman with a timid, whispering voice; she adopted a manner at once frigidly chaste and playfully coquettish.\" she remained a virgin until her forties.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier",
+        "page": "66"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Description from source citing Francine du Plessix Gray."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_theatre_vieux_colombier_literary_heritage_hidden_gardens_of_paris_sartre_no_exit_premiere",
+      "city_name": "paris",
+      "poi_name": "Th\u00e9\u00e2tre du Vieux-Colombier",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "sartre_no_exit_premiere",
+      "sub_location": null,
+      "trigger_address": "21, rue Vieux-Colombier",
+      "script_body": "Part of the Com\u00e9die Fran\u00e7aise, this popular theater \u2014 dedicated to contemporary repertoire, with an inviting bar and old stage sets \u2014 is where Sartre's No Exit was first performed in 1944.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jean-Paul Sartre",
+        "No Exit",
+        "Com\u00e9die Fran\u00e7aise",
+        "Th\u00e9\u00e2tre du Vieux-Colombier"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "factoid",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "No Exit premiere",
+      "physical_cues": [
+        {
+          "cue": "Fa\u00e7ade of Th\u00e9\u00e2tre du Vieux-Colombier at 21 rue Vieux-Colombier",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Th\u00e9\u00e2tre Vieux-Colombier is part of the Com\u00e9die Fran\u00e7aise",
+        "Sartre's No Exit was first performed here in 1944"
+      ],
+      "source_passage": "THEATRE vieux-colombier 21, rue Vieux-Colombier. Part of the Comedie Francaise, a popular theater\u2014where Sartre's No Exit was first performed in 1944\u2014dedicated to contemporary repertoire, with an inviting bar and old stage sets located in the trliW",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square R\u00e9camier (sidebar entry)",
+        "page": "67"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Sartre's No Exit was first performed at Th\u00e9\u00e2tre Vieux-Colombier in 1944",
+            "status": "AUTO-CORRECTED",
+            "original": "No Exit was first performed in 1944 at Th\u00e9\u00e2tre Vieux-Colombier",
+            "corrected": "No Exit (Huis clos) premiered on 27 May 1944 at Th\u00e9\u00e2tre du Vieux-Colombier",
+            "correction_sources": [
+              "https://en.wikipedia.org/wiki/No_Exit",
+              "https://www.comedie-francaise.fr/en/the-company/theatres/theatre-du-vieux-colombier"
+            ],
+            "notes": "Two-source agreement confirms venue and year. The source is accurate."
+          }
+        ],
+        "status": "verified",
+        "notes": "Claim confirmed. Source text was truncated in PDF (ends 'trliW') \u2014 note PDF artifact but narrative claim is complete."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_champ_de_mars_war_conflict_hidden_gardens_of_paris_revolution_fete_supreme_being",
+      "city_name": "paris",
+      "poi_name": "Champ de Mars",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "revolution_fete_supreme_being",
+      "sub_location": "central-lawn",
+      "trigger_address": null,
+      "script_body": "The Revolution's first anniversary was celebrated here on the vast expanse of Champ de Mars \u2014 the \"Martial Fields\" \u2014 also the setting, in 1794, for Robespierre's first and only festival of the Supreme Being: the F\u00eate de l'\u00catre Supr\u00eame. Having outlawed Catholicism, the Revolutionary Convention proclaimed \"a deistic substitute for the Christian God\" and assembled a procession of thousands to worship the \"Author of Nature.\" Citizens, soldiers, cavalry, politicians \u2014 starting at the Tuileries \u2014 marched across the Seine and down the Left Bank behind floats and bands and choruses to climb an artificial mountain and declaim their patriotism at the altar to the Supreme Being.",
+      "beat_length_class": "mid",
+      "duration_sec": 82,
+      "kid_friendly": "yes",
+      "entities": [
+        "Robespierre",
+        "Revolutionary Convention",
+        "F\u00eate de l'\u00catre Supr\u00eame",
+        "Tuileries"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "Robespierre supreme being",
+      "physical_cues": [
+        {
+          "cue": "The vast central lawn of the Champ de Mars where the procession gathered",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "F\u00eate de l'\u00catre Supr\u00eame",
+          "gloss": "Festival of the Supreme Being \u2014 Robespierre's 1794 deistic state ceremony"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Revolution's first anniversary celebrated on the Champ de Mars",
+        "Robespierre held F\u00eate de l'\u00catre Supr\u00eame here in 1794",
+        "Convention proclaimed a deistic substitute for the Christian God",
+        "Procession marched from the Tuileries to an artificial mountain on the field"
+      ],
+      "source_passage": "The Revolution's first anniversary was celebrated here on the vast expanse of Champ deMars\u2014the \"Martial Fields\"\u2014also the setting, in 1794, for Robespierre's first and only festival of the Supreme Being\u2014Fete de lEtre Supreme. Having outlawed Catholicism, the Revolutionary Convention proclaimed \"a deistic substitute for the Christian God\" and assembled a procession of thousands to worship the \"Author of Nature.\" Citizens, soldiers, cavalry, politicians, starting at the Tuileries, marched across the Seine and down the Left Bank behind floats and bands and choruses to climb an artificial mountain and declaim their patriotism at the altar to the Supreme Being.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Champ de Mars",
+        "page": "69\u201370"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "The Revolution's first anniversary was celebrated on the Champ de Mars",
+            "status": "AUTO-CORRECTED",
+            "original": "first anniversary celebrated here",
+            "corrected": "The F\u00eate de la F\u00e9d\u00e9ration (July 14, 1790 \u2014 the first anniversary of the Bastille) was celebrated on the Champ de Mars; the F\u00eate de l'\u00catre Supr\u00eame was a separate 1794 event",
+            "correction_sources": [
+              "https://en.wikipedia.org/wiki/F%C3%AAte_de_la_F%C3%A9d%C3%A9ration",
+              "https://en.wikipedia.org/wiki/Festival_of_the_Supreme_Being"
+            ],
+            "notes": "Two-source agreement: the 1790 F\u00eate de la F\u00e9d\u00e9ration did occur on the Champ de Mars. Source conflates the 1790 anniversary with the 1794 F\u00eate de l'\u00catre Supr\u00eame; both are real events on the same site. No factual error in placing either on the Champ de Mars. Beat preserves source text verbatim; fact_check flags the distinction."
+          }
+        ],
+        "status": "partial",
+        "notes": "Both events (1790 and 1794) did take place on the Champ de Mars. No beat text changed. Distinction flagged for user awareness."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_eiffel_tower_hidden_history_hidden_gardens_of_paris_1889_centenary_revolution",
+      "city_name": "paris",
+      "poi_name": "Eiffel Tower",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "1889_centenary_revolution",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Eiffel Tower, rising over the Seine at the western edge of Champ de Mars, commemorates the shock heard round the world in 1789 \u2014 the storming of the Bastille on July 14. Gustave Eiffel opened his Tower in 1889 in honor of the centenary of the French Revolution, the most radical and transformative political event in modern Western history. Four generations after Robespierre's festival, Gustave Eiffel, an engineer of genius, \"wrought a monument to the god of scientific progress. Where the mountain had stood, a tower rose.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 70,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gustave Eiffel",
+        "French Revolution",
+        "Bastille"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "tower revolutionary centenary",
+      "physical_cues": [
+        {
+          "cue": "The Eiffel Tower rising over the Seine at the western end of Champ de Mars",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Eiffel Tower commemorates the French Revolution centenary (1789)",
+        "Gustave Eiffel opened the Tower in 1889",
+        "The tower stands where an artificial mountain stood during Robespierre's 1794 festival"
+      ],
+      "source_passage": "The Eiffel Tower, rising over the Seine at the western edge of this long slice of green, commemorates the shock heard round the world in 1789, the storming of the Bastille on July 14. Gustave Eiffel opened his Tower in 1889 in honor of the centenary of the French Revolution, the most radical and transformative political event in modern Western history. Four generations later, in the same place, Gustave Eiffel, an engineer of genius, \"wrought a monument to the god of scientific progress. Where the mountain had stood, a tower rose.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Champ de Mars",
+        "page": "69\u201370"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Dates and context verified as widely accepted historical record."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_champ_de_mars_modern_design_hidden_gardens_of_paris_bicentenary_rights_monument",
+      "city_name": "paris",
+      "poi_name": "Champ de Mars",
+      "parent_poi": null,
+      "lens": "modern_design",
+      "topic_slug": "bicentenary_rights_monument",
+      "sub_location": "east-end",
+      "trigger_address": null,
+      "script_body": "The Revolution's bicentenary was commemorated by the sculpture Monument des Droits de l'Homme et du Citoyen \u2014 Monument to the Rights of Man and Citizens \u2014 near the small caf\u00e9 behind the children's carousel toward the east end of the field.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Monument des Droits de l'Homme et du Citoyen"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "factoid",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "bicentenary monument",
+      "physical_cues": [
+        {
+          "cue": "Monument des Droits de l'Homme et du Citoyen sculpture near the children's carousel at the east end of the field",
+          "direction": "east",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Monument des Droits de l'Homme et du Citoyen",
+          "gloss": "Monument to the Rights of Man and Citizens \u2014 sculpture commemorating the Revolution's bicentenary"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Monument des Droits de l'Homme et du Citoyen commemorates the Revolution's bicentenary",
+        "Located near a children's carousel at the east end of the Champ de Mars"
+      ],
+      "source_passage": "The Revolution's bicentenary was commemorated by the sculpture Monument des Droits de VHomme et du Citoyen (.Monument to the Rights of Man and Citizens) in the vicinity of La Bonbonniere de Laura et Marie and the small cafe behind the children's carousel toward the east end of the field.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Champ de Mars",
+        "page": "70"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_champ_de_mars_local_legends_hidden_gardens_of_paris_peace_wall",
+      "city_name": "paris",
+      "poi_name": "Champ de Mars",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "peace_wall",
+      "sub_location": "ecole-militaire-end",
+      "trigger_address": null,
+      "script_body": "Across from l'\u00c9cole Militaire on the eastern end \u2014 directly opposite the Eiffel Tower \u2014 the magnificent glass Peace Wall, incised with messages of peace from all over the world in many languages, expresses hope for the world's future. Created by Clara Halter and Jean-Michel Wilmotte, it faces the tower that bears witness to one man's imagination and his century's dream of progress.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": [
+        "Clara Halter",
+        "Jean-Michel Wilmotte",
+        "Ecole Militaire",
+        "Eiffel Tower"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "peace wall",
+      "physical_cues": [
+        {
+          "cue": "Glass Peace Wall inscribed with peace messages in many languages, across from l'\u00c9cole Militaire",
+          "direction": "east",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Glass Peace Wall faces l'\u00c9cole Militaire at the eastern end of Champ de Mars",
+        "Incised with messages of peace from all over the world in many languages",
+        "Created by Clara Halter and Jean-Michel Wilmotte"
+      ],
+      "source_passage": "Across from l'Ecole Militaire on the eastern end\u2014directly opposite the Eiffel Tower\u2014-the magnificent glass Peace Wall, incised with messages of peace from all over the world, in many languages, expresses hope for the world's future. In the far distance, more than a kilometer away, its lattice sides twinkling with champagne lights after dusk, the Tower bears witness to one man's imagination and his century's dream of progress.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Champ de Mars",
+        "page": "70"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Peace Wall created by Clara Halter and Jean-Michel Wilmotte",
+            "status": "AUTO-CORRECTED",
+            "original": "Clara Halter and Jean-Michel Wilmotte, Peace Wall, www.murpourlapaix.org",
+            "corrected": "The Wall for Peace (Mur pour la Paix) was designed by Clara Halter (concept) and architect Jean-Michel Wilmotte, inaugurated in 2000",
+            "correction_sources": [
+              "https://en.wikipedia.org/wiki/Wall_for_Peace",
+              "https://www.murpourlapaix.org"
+            ],
+            "notes": "Two-source agreement confirms creator attribution and 2000 inauguration. Note: the source text's footnote cites www.murpourlapaix.org directly."
+          }
+        ],
+        "status": "verified",
+        "notes": "Creator attribution confirmed."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_eiffel_tower_dark_history_hidden_gardens_of_paris_odious_column_protest",
+      "city_name": "paris",
+      "poi_name": "Eiffel Tower",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "odious_column_protest",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The day his Tower opened, Eiffel climbed the 2,731 steps to the top and unfurled the French flag. But the protest against him and his iron marvel was bitter: la Tour Eiffel was denounced as an \"odious column of bolted metal.\" The protesting Parisians, artists in the main, preferred their monuments carved in stone.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gustave Eiffel",
+        "Eiffel Tower"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "tower artistic opposition",
+      "physical_cues": [
+        {
+          "cue": "The tower's iron lattice structure \u2014 what protesters called an 'odious column of bolted metal'",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "la Tour Eiffel",
+          "gloss": "the Eiffel Tower"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Eiffel climbed 2,731 steps to the top on the day the Tower opened",
+        "He unfurled the French flag at the summit",
+        "Critics denounced la Tour Eiffel as an 'odious column of bolted metal'",
+        "Protesters were mainly artists who preferred stone monuments"
+      ],
+      "source_passage": "The day his Tower opened, he climbed the 2,731 steps to the top and unfurled the French flag. But the protest against him and his iron marvel was bitter: la Tour Eiffel was denounced as an \"odious column of bolted metal.\" The protesting Parisians, artists in the main, preferred their monuments carved in stone.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Champ de Mars",
+        "page": "70\u201371"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Eiffel climbed 2,731 steps on opening day",
+            "status": "unverified",
+            "notes": "The tower has approximately 1,665 steps to the top (third floor). 2,731 may refer to a total including service stairs. Source cites Frederick Brown, For the Soul of France. Flagged for user review \u2014 not auto-corrected as step count sources conflict."
+          }
+        ],
+        "status": "partial",
+        "notes": "Step count flagged. 'Odious column of bolted metal' quote is well-documented in multiple sources."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_champ_de_mars_sensory_observation_hidden_gardens_of_paris_daily_life_lawn",
+      "city_name": "paris",
+      "poi_name": "Champ de Mars",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "daily_life_lawn",
+      "sub_location": "central-lawn",
+      "trigger_address": null,
+      "script_body": "Originally a local market garden, and later used for military exercises from the time of Louis XV to Napoleon, Champ de Mars now serves as a place to relax. Couples lie in the grass, people read and sleep, children run, polite French poodles jump, gardeners prune rosebushes \u2014 still blooming in November. In the bright pink light of an evening in June, joggers jog along the bordering tree-lined paths. There's music on hot summer nights when the grass is crowded with picnickers and the park stays open round the clock.",
+      "beat_length_class": "mid",
+      "duration_sec": 72,
+      "kid_friendly": "yes",
+      "entities": [
+        "Louis XV",
+        "Napoleon"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "park daily life",
+      "physical_cues": [
+        {
+          "cue": "Central lawn of Champ de Mars \u2014 tree-lined paths on the borders, rosebushes still blooming in November",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Champ de Mars was originally a market garden, then used for military exercises from Louis XV to Napoleon",
+        "Now used for leisure; music on summer nights; open 24 hours"
+      ],
+      "source_passage": "Originally a local market garden, and later used for military exercises from the time of Louis XV to Napoleon, Champ deMars now serves as a place to relax. Couples lie in the grass, people read and sleep, children run, polite French poodles jump, gardeners prune rosebushes\u2014still blooming in November\u2014and in the bright pink light of an evening in June, joggers jog along the bordering tree-lined paths. There's music on hot summer nights when the grass is crowded with picnickers and the park stays open round the clock.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Champ de Mars",
+        "page": "70"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Historical uses of the field are widely documented. No correction required."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_santiago_du_chili_local_legends_hidden_gardens_of_paris_garden_atmosphere",
+      "city_name": "paris",
+      "poi_name": "Square Santiago du Chili",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "garden_atmosphere",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Perhaps the greenest and sweetest-smelling grass in Paris early on a June morning after a night of steady rain covers this small triangle of a square; on such a morning it feels almost preternaturally alive. It's surrounded by the wide lawns of the Esplanade of Les Invalides, and from its benches you face the gleaming and elegant \u00c9glise du D\u00f4me. Though it's bordered by boulevard de la Tour-Maubourg and rue Grenelle and a few bistros, somehow the square is an oasis of peace. The particular brightness of the summer morning light \u2014 the feeling of sky and openness \u2014 tells you the Seine is near, even if you don't know it from a map. The square is named for the Chilean embassy, which is nearby.",
+      "beat_length_class": "mid",
+      "duration_sec": 94,
+      "kid_friendly": "yes",
+      "entities": [
+        "Les Invalides",
+        "\u00c9glise du D\u00f4me"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "reverent",
+      "subject_tag": "square atmosphere identity",
+      "physical_cues": [
+        {
+          "cue": "Bench in the small triangular square facing the \u00c9glise du D\u00f4me of Les Invalides",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Wide lawns of the Esplanade of Les Invalides surrounding the square",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Square Santiago du Chili is a small triangle surrounded by Esplanade of Les Invalides",
+        "From its benches you face the \u00c9glise du D\u00f4me",
+        "Named for the Chilean embassy nearby"
+      ],
+      "source_passage": "Perhaps the greenest and sweetest-smelling grass in Paris early on a June morning after a night of steady rain covers this small triangle of a square; on such a morning it feels almost preternaturally alive. It's surrounded by the wide lawns of the Esplanade of Les Invalides, and from its benches you face the gleaming and elegant Eglise du Dome. Though it's bordered by boulevard de la Tour-Maubourg and rue Grenelle and a few bistros, somehow the square is an oasis of peace. The particular brightness of the summer morning light\u2014the feeling of sky and openness\u2014tells you the Seine is near, even if you don't know it from a map. To sit in this pretty square (named for the Chilean embassy, which is nearby)",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Santiago du Chili",
+        "page": "73\u201374"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_santiago_du_chili_literary_heritage_hidden_gardens_of_paris_saint_exupery_bust",
+      "city_name": "paris",
+      "poi_name": "Square Santiago du Chili",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "saint_exupery_bust",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The most compelling attraction is the sculpted bust of Antoine de Saint-Exup\u00e9ry (1900\u20131944). One of the first professional airplane pilots at the age of twenty-six, Saint-Exup\u00e9ry's renowned, most indelible gift to France was his writing. His books are now classics of French and world literature \u2014 among them Southern Mail, Wind Sand and Stars, Night Flight, and Flight to Arras, which draw on his flying experiences. He wrote his best-known work, The Little Prince, in New York while in exile during the German Occupation.",
+      "beat_length_class": "mid",
+      "duration_sec": 72,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antoine de Saint-Exup\u00e9ry",
+        "The Little Prince",
+        "Southern Mail",
+        "Wind Sand and Stars",
+        "Night Flight",
+        "Flight to Arras"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Saint-Exup\u00e9ry writer pilot",
+      "physical_cues": [
+        {
+          "cue": "Sculpted bust of Antoine de Saint-Exup\u00e9ry in the center of the square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Sculpted bust of Antoine de Saint-Exup\u00e9ry (1900\u20131944) is the square's main attraction",
+        "He was one of the first professional airplane pilots, starting at age 26",
+        "The Little Prince was written in New York during exile in the German Occupation"
+      ],
+      "source_passage": "The most compelling attraction is the sculpted bust of Antoine de Saint-Exupery (1900\u20141944). One of the first professional airplane pilots at the age of twenty-six, Saint-Exuperys renowned, most indelible gift to France was his writing. His books are now classics of French and world literature. Some draw on his flying experiences: Southern Mail, Wind, Sand and Stars, Night Flight, Flight to Arras. He wrote his best-known work, The Little Prince, in New York while in exile during the German Occupation.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Santiago du Chili",
+        "page": "73\u201374"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Saint-Exup\u00e9ry was one of the first professional airplane pilots at age twenty-six",
+            "status": "unverified",
+            "notes": "Saint-Exup\u00e9ry began his commercial flying career c.1926. 'One of the first' is a relative claim. Source cites Anne Morrow Lindbergh's introduction to Wartime Writings. Flagged as superlative-adjacent \u2014 not auto-corrected."
+          }
+        ],
+        "status": "partial",
+        "notes": "Superlative-adjacent claim about 'one of the first professional airplane pilots' flagged."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_santiago_du_chili_literary_heritage_hidden_gardens_of_paris_saint_exupery_local_residence",
+      "city_name": "paris",
+      "poi_name": "Square Santiago du Chili",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "saint_exupery_local_residence",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The bust is placed here because when he wasn't in the air or in the African desert, Saint-Exup\u00e9ry lived nearby \u2014 in rue de Chanaleilles, and later in an art deco apartment at 15, place Vauban (marked with a plaque), at the rear of Les Invalides. According to biographer Stacy Schiff, he was about as unconventional as only a great man can be: an adventurer who loved the natural world, a visionary for whom the interior life \u2014 private, mysterious, inexhaustible \u2014 was the most significant of all human experiences. He \"lived so much tangled up in paradox.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 80,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antoine de Saint-Exup\u00e9ry",
+        "Stacy Schiff",
+        "Les Invalides"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Saint-Exup\u00e9ry paradox outsider",
+      "physical_cues": [
+        {
+          "cue": "Plaque marking Saint-Exup\u00e9ry's art deco apartment at 15, place Vauban, near the rear of Les Invalides",
+          "direction": "south",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Saint-Exup\u00e9ry lived in rue de Chanaleilles, then at 15 place Vauban (plaque), near Les Invalides",
+        "Biographer Stacy Schiff: 'he lived so much tangled up in paradox'"
+      ],
+      "source_passage": "The bust is placed here because when he wasn't in the air or in the African desert, Saint-Exupery lived nearby, in rue de Chanaleilles, and later in an art deco apartment at 15, place Vauban (marked with a plaque), at the rear of Les Invalides, near the entrance to the museum\u2014a short walk south along boulevard de la Tour-Maubourg and left into avenue de Tourville. According to biographer Stacy Schiff, he was about as unconventional as only a great man can be: an adventurer who loved the natural world and discovering new places despite the danger. He was also a visionary for whom the interior life, private, mysterious, inexhaustible, was the most significant of all human experiences. To sit in this pretty square (named for the Chilean embassy, which is nearby) and read Schiff's superb book about this brave and complicated man\u2014\"he lived so much tangled up in paradox\"\u2014is to come close to an enigmatic pilgrim soul and thereby to the interior heart of the city he both loved and hated.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Santiago du Chili",
+        "page": "74"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Plaque at 15 place Vauban noted as verifiable; street addresses from source (rue de Chanaleilles, place Vauban) are specific and attributable."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_santiago_du_chili_dark_history_hidden_gardens_of_paris_saint_exupery_outsider_paris",
+      "city_name": "paris",
+      "poi_name": "Square Santiago du Chili",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "saint_exupery_outsider_paris",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Though he belonged to the literary community of Saint-Germain, drinking and talking and writing at Chez Lipp and Deux Magots, Saint-Exup\u00e9ry felt himself an outsider in Paris and disliked what he considered the \"small world\" of the capital's cultural elites.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antoine de Saint-Exup\u00e9ry",
+        "Brasserie Lipp",
+        "Les Deux Magots"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "Saint-Exup\u00e9ry cultural outsider",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Saint-Exup\u00e9ry frequented Chez Lipp and Deux Magots in the Saint-Germain literary community",
+        "He felt an outsider and disliked the 'small world' of Parisian cultural elites"
+      ],
+      "source_passage": "Though he belonged to the literary community of Saint-Germain, drinking and talking and writing at Che^Lipp and Deux Magots, he felt himself an outsider in Paris and disliked what he considered the \"small world\" of the capital's cultural elites.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Santiago du Chili",
+        "page": "74"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Source text has 'Che^Lipp' \u2014 PDF OCR artifact for 'Chez Lipp.' Beat uses corrected form."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_atlantique_hidden_history_hidden_gardens_of_paris_roof_garden_atlantic_theme",
+      "city_name": "paris",
+      "poi_name": "Jardin Atlantique",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "roof_garden_atlantic_theme",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "A garden has been planted on the roof of one of the largest train stations in Paris, Gare Montparnasse. It's laid out on a long concrete slab transformed into an ingenious green oasis with a maritime theme, since the trains from Gare Montparnasse run to the Atlantic coast and Brittany. Walking south down the central lawn, you can choose between a forest of five hundred trees \u2014 weeping willows, pines, oaks, and evergreens \u2014 or time in a sand dunes area among reeds and tall wild grasses moving in the wind, just as you'd find on the French Atlantic coast. There's a Room of Silence, a Garden for Meditation, a Room of Moisture with small waterfalls and fountains, and a sun deck with tennis courts and Ping-Pong tables. Architects Francis Brun and Michel Pena opened the 8.5 acres of Jardin Atlantique in 1994.",
+      "beat_length_class": "mid",
+      "duration_sec": 104,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gare Montparnasse",
+        "Francis Brun",
+        "Michel Pena",
+        "Jardin Atlantique"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "rooftop garden concept",
+      "physical_cues": [
+        {
+          "cue": "Roof garden of Gare Montparnasse, entered from place des Cinq Martyrs du Lyc\u00e9e Buffon or Gare Montparnasse",
+          "direction": "up",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Forest of 500 trees and sand dunes area on the rooftop lawn",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jardin Atlantique is built on the roof of Gare Montparnasse",
+        "Maritime theme because trains run to Atlantic coast and Brittany",
+        "Architects Francis Brun and Michel Pena; 8.5 acres; opened 1994",
+        "Contains forest of 500 trees, sand dunes area, Room of Silence, Room of Moisture"
+      ],
+      "source_passage": "A garden has been planted on the roof of one of the largest train stations in Paris. It's laid out on a long concrete slab that has been transformed into an ingenious green oasis with a maritime theme, since the trains from Gare Montparnasse run to the Atlantic coast and Brittany. Walking south down the central lawn, you have the choice of spending time in a forest of five hundred trees\u2014weeping willows, pines, oaks, and evergreens\u2014and plants\u2014holly, yew, ferns, and hostas\u2014or sitting inside the sand dunes area, among the reeds and tall wild grasses moving in the wind, just as you'd find on the French Atlantic coast. Most incredible\u2014since the tracks of a huge train station are just below\u2014is the Room of Silence or the Garden for Meditation. Or if you prefer the sounds of nature, there are small waterfalls and fountains in the Room of Moisture. Teenagers hang out on the sun deck, near a few tennis courts and Ping-Pong tables. Each of the thematic gardens has an originality sparked by the imagination and boldness of architects Francis Brun and Michel Pena, who opened the 8.5 acres of Jardin Atlantique in 1994.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Jardin Atlantique",
+        "page": "77\u201378"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "NEW POI FLAGGED: Jardin Atlantique (Gare Montparnasse rooftop garden). Source: chunk-04a-recamier-champ-de-mars-santiago. 1 beat attached. Relationship: independent. Status: do not auto-create \u2014 user decides at poi-generate time."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_atlantique_dark_history_hidden_gardens_of_paris_jean_moulin_resistance",
+      "city_name": "paris",
+      "poi_name": "Jardin Atlantique",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "jean_moulin_resistance",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At the north end of the Jardin Atlantique, back toward the stairway to the station, the Mus\u00e9e Jean-Moulin covers the French Resistance to the German Occupation (1940\u20131944), using documentary evidence connected with its greatest hero, Jean Moulin (1899\u20131943). An agent from Charles de Gaulle's London-based Free French, Moulin unified the many secret networks into the ragged army of the French Resistance. In 1943, he was captured and tortured by the notorious Klaus Barbie, who beat him to death. \"He who knew everything betrayed nothing,\" as his sister put it. Andr\u00e9 Malraux's speech upon the transfer of Moulin's ashes to the Panth\u00e9on in 1964 is one of the most famous and powerful in French history. The museum is located in Montparnasse because it was Moulin's favorite quartier \u2014 an artist himself who had an apartment and many artist-friends in the neighborhood.",
+      "beat_length_class": "anchor",
+      "duration_sec": 108,
+      "kid_friendly": "no",
+      "entities": [
+        "Jean Moulin",
+        "Charles de Gaulle",
+        "Klaus Barbie",
+        "Andr\u00e9 Malraux",
+        "Panth\u00e9on",
+        "Mus\u00e9e Jean-Moulin",
+        "Free French"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "Jean Moulin resistance hero",
+      "physical_cues": [
+        {
+          "cue": "Mus\u00e9e Jean-Moulin at the north end of the Jardin Atlantique, near the stairway to the station",
+          "direction": "north",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "quartier",
+          "gloss": "neighborhood, quarter of the city"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Mus\u00e9e Jean-Moulin documents the French Resistance 1940\u20131944",
+        "Jean Moulin (1899\u20131943) unified the secret resistance networks under de Gaulle's Free French",
+        "Moulin was captured and tortured to death by Klaus Barbie in 1943",
+        "His sister said: 'He who knew everything betrayed nothing'",
+        "Malraux's 1964 speech at the Panth\u00e9on transfer is one of the most powerful in French history"
+      ],
+      "source_passage": "First, the Musee Jean-Moulin covers the French Resistance to the German Occupation (1940\u20141944), using documentary evidence connected with its greatest hero, Jean Moulin (1899\u20141943), an agent from Charles de Gaulle's London-based Free French, who unified the many secret networks into the ragged army of the French Resistance. In 1943, he was captured and tortured by the notorious Klaus Barbie, who beat him to death. \"He who knew everything betrayed nothing,\" as his sister put it. Andre Malraux's speech upon the transfer of Moulin's ashes to the Pantheon in 1964 is one of the most famous and powerful in French history. The museum is located in Montparnasse because it was Moulin's favorite quartier. an artist himself who had an apartment and many artist-friends in the neighborhood, he spent a lot of time in its cafes and his friends' homes.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Jardin Atlantique",
+        "page": "77\u201378"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Malraux's speech is 'one of the most famous and powerful in French history'",
+            "status": "unverified",
+            "notes": "Superlative claim \u2014 not auto-corrected per guardrail. Malraux's 1964 Panth\u00e9on speech is widely regarded as exceptional. User review recommended."
+          }
+        ],
+        "status": "partial",
+        "notes": "Superlative about Malraux speech flagged."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_atlantique_war_conflict_hidden_gardens_of_paris_liberation_leclerc_gare",
+      "city_name": "paris",
+      "poi_name": "Jardin Atlantique",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "liberation_leclerc_gare",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Memorial of the Liberation of Paris focuses on Mar\u00e9chal Philippe Leclerc, the leader of the French Second Armored Division, who, with his American allies, won the fight for the Liberation of Paris in 1944. Leclerc made Gare Montparnasse his headquarters during the days before the final victory on August 25. It was here, too, that General von Choltitz, commander of the German army of Occupation, signed the cease-fire agreement.",
+      "beat_length_class": "mid",
+      "duration_sec": 58,
+      "kid_friendly": "yes",
+      "entities": [
+        "Philippe Leclerc",
+        "French Second Armored Division",
+        "General von Choltitz",
+        "Gare Montparnasse",
+        "Memorial of the Liberation of Paris"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "Paris liberation cease-fire",
+      "physical_cues": [
+        {
+          "cue": "Memorial of the Liberation of Paris inside the Jardin Atlantique complex at Gare Montparnasse",
+          "direction": "north",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Memorial of the Liberation of Paris is located here at Gare Montparnasse",
+        "Leclerc made Gare Montparnasse his HQ before the final victory August 25, 1944",
+        "German commander von Choltitz signed the cease-fire at Gare Montparnasse"
+      ],
+      "source_passage": "The highly informative Memorial of the Liberation of Paris focuses on Marechal Philippe Leclerc, the leader of the French Second Armored Division, who, with his American allies, won the fight for the Liberation of Paris in 1944 and made Gare Montparnasse his headquarters during the days before the final victory on August 25. It was here, too, that General von Choltitz, commander of the German army of Occupation, signed the cease-fire agreement.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Jardin Atlantique",
+        "page": "78"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "von Choltitz signed the cease-fire at Gare Montparnasse",
+            "status": "AUTO-CORRECTED",
+            "original": "It was here, too, that General von Choltitz... signed the cease-fire agreement",
+            "corrected": "General Dietrich von Choltitz signed the German capitulation on August 25, 1944, at Gare Montparnasse \u2014 this is historically documented",
+            "correction_sources": [
+              "https://en.wikipedia.org/wiki/Dietrich_von_Choltitz",
+              "https://en.wikipedia.org/wiki/Liberation_of_Paris"
+            ],
+            "notes": "Two-source agreement: the surrender was indeed signed at Gare Montparnasse on August 25, 1944. No correction to beat content required \u2014 source is accurate."
+          }
+        ],
+        "status": "verified",
+        "notes": "Historical facts confirmed by multiple sources."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "superlative_claim",
+      "beat_id": "paris_square_recamier_literary_heritage_hidden_gardens_of_paris_recamier_beauty_salon",
+      "claim": "Madame R\u00e9camier's salon was the first one to reopen its doors after the Revolution",
+      "action_required": "User review \u2014 superlative 'first' not auto-resolvable"
+    },
+    {
+      "type": "quote_attribution",
+      "beat_id": "paris_square_recamier_dark_history_hidden_gardens_of_paris_napoleon_exile_knitting",
+      "claim": "Napoleon said 'Women should stick to knitting'",
+      "action_required": "User review \u2014 quote may be apocryphal; source is secondary (Francine du Plessix Gray)"
+    },
+    {
+      "type": "superlative_adjacent",
+      "beat_id": "paris_square_santiago_du_chili_literary_heritage_hidden_gardens_of_paris_saint_exupery_bust",
+      "claim": "One of the first professional airplane pilots at age twenty-six",
+      "action_required": "User review \u2014 superlative-adjacent claim"
+    },
+    {
+      "type": "superlative_claim",
+      "beat_id": "paris_jardin_atlantique_dark_history_hidden_gardens_of_paris_jean_moulin_resistance",
+      "claim": "Malraux's speech is one of the most famous and powerful in French history",
+      "action_required": "User review \u2014 superlative claim"
+    },
+    {
+      "type": "step_count_discrepancy",
+      "beat_id": "paris_eiffel_tower_dark_history_hidden_gardens_of_paris_odious_column_protest",
+      "claim": "Eiffel climbed 2,731 steps to the top",
+      "action_required": "User review \u2014 tower has ~1,665 public steps; 2,731 may include service stairs or be erroneous. Source: Frederick Brown, For the Soul of France."
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Square R\u00e9camier",
+      "beats_attached": 6,
+      "action_required": "Triage via /poi-generate \u2014 do not auto-create"
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Square Santiago du Chili",
+      "beats_attached": 4,
+      "action_required": "Triage via /poi-generate \u2014 do not auto-create"
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Jardin Atlantique",
+      "beats_attached": 3,
+      "action_required": "Triage via /poi-generate \u2014 do not auto-create"
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Th\u00e9\u00e2tre du Vieux-Colombier",
+      "beats_attached": 1,
+      "action_required": "Triage via /poi-generate \u2014 sidebar entry. Note: may already exist in corpus under Com\u00e9die-Fran\u00e7aise."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 19,
+    "pois_touched": 6,
+    "new_pois": 4,
+    "corrections_applied": 3,
+    "disputes": 0,
+    "anomalies": 1,
+    "lenses_hit": [
+      "local_legends",
+      "literary_heritage",
+      "dark_history",
+      "war_conflict",
+      "hidden_history",
+      "modern_design"
+    ],
+    "lenses_missed": [
+      "science_tech",
+      "visual_art",
+      "music_heritage",
+      "social_change",
+      "historic_arch",
+      "famous_residents",
+      "street_art",
+      "historic_cuisine",
+      "historic_markets"
+    ],
+    "confidence_counts": {
+      "HIGH": 8,
+      "MEDIUM": 8,
+      "LOW": 3
+    },
+    "anomalies_detail": [
+      "Eiffel Tower step count (2,731) discrepancy vs. known ~1,665 public steps \u2014 flagged for user review"
+    ],
+    "new_poi_pipeline_notes": [
+      "NEW POI FLAGGED: Square R\u00e9camier \u2014 Source: chunk-04a-recamier-champ-de-mars-santiago. 6 beats. Relationship: independent. Do not auto-create.",
+      "NEW POI FLAGGED: Square Santiago du Chili \u2014 Source: chunk-04a-recamier-champ-de-mars-santiago. 4 beats. Relationship: independent. Do not auto-create.",
+      "NEW POI FLAGGED: Jardin Atlantique \u2014 Source: chunk-04a-recamier-champ-de-mars-santiago. 3 beats. Relationship: independent (rooftop garden atop Gare Montparnasse). Do not auto-create.",
+      "NEW POI FLAGGED: Th\u00e9\u00e2tre du Vieux-Colombier \u2014 Source: chunk-04a-recamier-champ-de-mars-santiago. 1 beat. May be child/alias of existing Com\u00e9die-Fran\u00e7aise POI. User review required."
+    ],
+    "establishing_beat_coverage": {
+      "Square R\u00e9camier": "establishing beat present (garden_description beat, narrative_function: establishing)",
+      "Square Santiago du Chili": "establishing beat present (garden_atmosphere beat, narrative_function: establishing)",
+      "Champ de Mars": "existing establishing beats in corpus \u2014 new beats add lenses",
+      "Eiffel Tower": "new establishing beat added (1889_centenary_revolution, narrative_function: establishing)",
+      "Jardin Atlantique": "establishing beat present (roof_garden_atlantic_theme, narrative_function: establishing)"
+    },
+    "sub_location_coverage": {
+      "Champ de Mars": [
+        "central-lawn",
+        "east-end",
+        "ecole-militaire-end"
+      ],
+      "Eiffel Tower": []
+    },
+    "length_class_distribution": {
+      "anchor": 1,
+      "mid": 9,
+      "seasoning": 7,
+      "micro": 2
+    },
+    "inline_foreign_phrases_captured": [
+      {
+        "phrase": "frisson",
+        "gloss": "a sudden strong feeling of excitement or fear"
+      },
+      {
+        "phrase": "Corinne, ou l'Italie",
+        "gloss": "Corinne, or Italy \u2014 novel by Germaine de Sta\u00ebl published 1807"
+      },
+      {
+        "phrase": "F\u00eate de l'\u00catre Supr\u00eame",
+        "gloss": "Festival of the Supreme Being \u2014 Robespierre's 1794 deistic state ceremony"
+      },
+      {
+        "phrase": "Monument des Droits de l'Homme et du Citoyen",
+        "gloss": "Monument to the Rights of Man and Citizens \u2014 sculpture commemorating the Revolution's bicentenary"
+      },
+      {
+        "phrase": "la Tour Eiffel",
+        "gloss": "the Eiffel Tower"
+      },
+      {
+        "phrase": "quartier",
+        "gloss": "neighborhood, quarter of the city"
+      }
+    ]
+  }
+}

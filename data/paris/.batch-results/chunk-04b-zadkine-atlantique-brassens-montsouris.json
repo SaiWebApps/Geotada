@@ -1,0 +1,1366 @@
+{
+  "chunk_id": "chunk-04b-zadkine-atlantique-brassens-montsouris",
+  "chunk_file": "Books/Paris/hidden-gardens-of-paris/chunk-04b-zadkine-atlantique-brassens-montsouris.txt",
+  "pois": [
+    {
+      "poi_name": "Musee Zadkine",
+      "match_type": "existing",
+      "new_poi": false,
+      "notes": "Exact match in existing POI list."
+    },
+    {
+      "poi_name": "Musee Bourdelle",
+      "match_type": "new",
+      "new_poi": true,
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "16 rue Antoine-Bourdelle, Paris 15th",
+      "notes": "Sidebar entry only; referenced as nearby to Gare Montparnasse. No main beats attached \u2014 sidebar only. NEW POI FLAGGED: Musee Bourdelle. Source: chunk-04b, sidebar block. Beats attached: 1 (sidebar). Relationship uncertain: independent. Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "poi_name": "La Closerie des Lilas",
+      "match_type": "existing",
+      "existing_name": "La Closerie des Lilas",
+      "new_poi": false,
+      "notes": "Exact match (La Closerie des Lilas) in existing POI list."
+    },
+    {
+      "poi_name": "Montparnasse Cemetery",
+      "match_type": "existing",
+      "existing_name": "Montparnasse Cemetery",
+      "new_poi": false,
+      "notes": "Exact match in existing POI list."
+    },
+    {
+      "poi_name": "Parc Georges-Brassens",
+      "match_type": "new",
+      "new_poi": true,
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "36 bis rue des Morillons, Paris 15th",
+      "geocode_note": "Nominatim query: 'Parc Georges-Brassens, Paris'. Expected coords approx 48.8368, 2.3003.",
+      "notes": "NEW POI FLAGGED: Parc Georges-Brassens. Source: chunk-04b, main entry. Beats attached: 8. Relationship: independent new POI. Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "poi_name": "La Ruche",
+      "match_type": "new",
+      "new_poi": true,
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "2 Passage Dantzig, Paris 15th",
+      "notes": "NEW POI FLAGGED: La Ruche. Source: chunk-04b, sidebar block. Beats attached: 1 (sidebar). Relationship: independent new POI. Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Parc Montsouris",
+      "match_type": "new",
+      "new_poi": true,
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "avenue Reille / boulevard Jourdan, Paris 14th",
+      "geocode_note": "Nominatim query: 'Parc Montsouris, Paris'. Expected coords approx 48.8217, 2.3374.",
+      "notes": "NEW POI FLAGGED: Parc Montsouris. Source: chunk-04b, main entry. Beats attached: 5. Relationship: independent new POI. Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Villa Santos-Dumont",
+      "match_type": "new",
+      "new_poi": true,
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "42 rue Santos-Dumont, Paris 15th",
+      "notes": "NEW POI FLAGGED: Villa Santos-Dumont. Source: chunk-04b, sidebar block. Beats attached: 1 (seasoning). Relationship: independent new POI. Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Butte-aux-Cailles",
+      "match_type": "existing",
+      "existing_name": "Butte-aux-Cailles",
+      "new_poi": false,
+      "notes": "Exact match in existing POI list. Referenced as sidebar navigation note."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "paris_musee_zadkine_visual_art_hidden_gardens_of_paris_zadkine_school_of_paris",
+      "city_name": "paris",
+      "poi_name": "Musee Zadkine",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "zadkine_school_of_paris",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Ossip Zadkine (1890\u20131967) was born in Belarus, the son of a Jewish father and a Scottish mother. He came to Paris from Russia in 1909 by way of a London art school. At first he lived at La Ruche, an artists' community, but finding it too confining, he moved on, though remaining a regular among the artists and poets of the Russian diaspora in the caf\u00e9 worlds of Port-Royal and La Rotonde in Montparnasse. He counted among his colleagues the painters Soutine, Chagall, Kandinsky, and Survage. Auguste Rodin was a strong influence on his early sculpture. Zadkine was one of the shining lights of the School of Paris, composed of many foreign artists who settled in Paris. Achieving recognition in the 1920s, in 1928 Zadkine bought the small home and studio that is now a museum filled with his sculptures in stone and wood and bronze and numerous paintings.",
+      "beat_length_class": "mid",
+      "duration_sec": 82,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ossip Zadkine",
+        "La Ruche",
+        "La Rotonde",
+        "Soutine",
+        "Chagall",
+        "Kandinsky",
+        "Survage",
+        "Auguste Rodin",
+        "School of Paris"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "neutral",
+      "subject_tag": "Zadkine biography",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Zadkine born in Belarus, Jewish father, Scottish mother",
+        "Came to Paris 1909 via London art school",
+        "Lived first at La Ruche",
+        "Colleagues included Soutine, Chagall, Kandinsky, Survage",
+        "Rodin influenced his early sculpture",
+        "Bought home/studio in 1928"
+      ],
+      "source_passage": "he painter and sculptor Ossip Zadkine (1890\u20141967), born in Belarus, the son of a Jewish father and Scottish mother, came to Paris from Russia in 1909 by way of a London art school. At first he lived at La Ruche, an artists' community, but finding it too confining, he moved on, though remaining a regular among the artists and poets of the Russian diaspora in the cafe worlds of Port-Royal and la Rotonde in Montparnasse. He counted among his colleagues the painters Soutine, Chagall, Kandinsky, and Survage. Auguste Rodin was a strong influence on his early sculpture. Zadkine was one of the shining lights of the School of Paris, composed of many foreign artists who settled in Paris. Achieving recognition in the 1920s, in 1928 Zadkine bought the small home and studio that is now a museum filled with his sculptures in stone and wood and bronze and numerous paintings.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Mus\u00e9e Zadkine",
+        "page": "81\u201382"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Zadkine born 1890",
+            "status": "DISPUTE",
+            "notes": "The Zadkine Research Center and multiple archival sources (school registration, Ecole des Beaux-Arts enrollment) give 1888 as the correct birth year. Zadkine himself falsified the date to 1890 on an ID card. Book follows the falsified date. Sources: https://www.zadkine.com/born-in-1888 and https://en.wikipedia.org/wiki/Ossip_Zadkine"
+          },
+          {
+            "claim": "came to Paris from Russia in 1909",
+            "status": "DISPUTE",
+            "notes": "Multiple sources indicate Zadkine settled in Paris in 1910, not 1909. He lived in Sunderland (with an uncle) and attended the Regent Street Polytechnic in London before Paris. Source: https://zadkine.paris.fr/en/zadkines-biography"
+          }
+        ],
+        "status": "disputed",
+        "notes": "Birth year 1890 and 1909 arrival are both contested by archival research."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_zadkine_visual_art_hidden_gardens_of_paris_zadkine_folly_sculpture_garden",
+      "city_name": "paris",
+      "poi_name": "Musee Zadkine",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "zadkine_folly_sculpture_garden",
+      "sub_location": "sculpture-garden",
+      "trigger_address": null,
+      "script_body": "\"Come and see my Assas folly,\" Zadkine wrote to a friend, \"and you'll understand just how much a man's life can be changed by a pigeon loft, by a tree.\" You enter his \"folly\" \u2014 a gift to the city after his death \u2014 through a small sculpture garden shaded by tall birch trees; in late afternoon they filter the falling sunlight as it moves beyond the garden walls. Since Zadkine's retreat is well off the beaten track, most days you'll find the peace to contemplate the beauty of his sculptures, Melancholy and The Birth of Venus, among many others.",
+      "beat_length_class": "mid",
+      "duration_sec": 80,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ossip Zadkine",
+        "Melancholy",
+        "The Birth of Venus"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "folly garden atmosphere",
+      "physical_cues": [
+        {
+          "cue": "Small sculpture garden shaded by tall birch trees at the museum entrance",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Sculptures Melancholy and The Birth of Venus visible in the garden",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Zadkine called the property his 'Assas folly'",
+        "Bequeathed as a gift to the city after his death",
+        "Entrance through sculpture garden with tall birch trees",
+        "Sculptures include Melancholy and The Birth of Venus"
+      ],
+      "source_passage": "\"Come and see my Assas folly,\" he wrote to a friend, \"and you'll understand just how much a man's life can be changed by a pigeon loft, by a tree.\" You enter his \"folly\"\u2014a gift to the city after his death\u2014through a small sculpture garden shaded by tall birch trees; in late afternoon they filter the falling sunlight as it moves beyond the garden walls. Since Zadkine's retreat is well off the beaten track, most days you'll find the peace to contemplate the beauty of his sculptures, Melancholy and The Birth of Venus, among many others.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Mus\u00e9e Zadkine",
+        "page": "81\u201382"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_zadkine_visual_art_hidden_gardens_of_paris_zadkine_styles_range",
+      "city_name": "paris",
+      "poi_name": "Musee Zadkine",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "zadkine_styles_range",
+      "sub_location": "interior",
+      "trigger_address": null,
+      "script_body": "Inside the museum you can see the range of Zadkine's styles: from early primitivism and cubism through expressionism and abstraction. The museum is filled with his sculptures in stone and wood and bronze and numerous paintings.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ossip Zadkine"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "artistic range interior",
+      "physical_cues": [
+        {
+          "cue": "Museum interior displaying sculptures in stone, wood, and bronze, spanning primitivism through abstraction",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Museum shows range from primitivism and cubism to expressionism and abstraction",
+        "Sculptures in stone, wood, bronze plus paintings"
+      ],
+      "source_passage": "Inside the museum you can see the range of his styles: from early primitivism and cubism through expressionism and abstraction.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Mus\u00e9e Zadkine",
+        "page": "82"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_zadkine_hidden_history_hidden_gardens_of_paris_russian_diaspora_berberova",
+      "city_name": "paris",
+      "poi_name": "Musee Zadkine",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "russian_diaspora_berberova",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Zadkine's retreat is a small piece of the Russian diaspora that followed the Bolshevik Revolution of 1917, when about four hundred thousand of the Russian \"intelligentsia\" \u2014 artists and writers \u2014 who left their homeland emigrated mostly to Berlin and Paris, bringing their genius with them. Nina Berberova, Zadkine's contemporary, arrived in Paris in 1925 and stayed until 1950, when she moved to the United States. The Assas dovecote is a nice setting for discovering her fiction of post-revolutionary Russians \u2014 for instance, her masterpiece, The Accompanist. Zadkine had many writers among his friends, Russian and others; he himself was a serious and respected poet. Indeed, the subtlety and silence of his sculptures suggest the inspiration and power of poetry itself.",
+      "beat_length_class": "mid",
+      "duration_sec": 88,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bolshevik Revolution",
+        "Nina Berberova",
+        "The Accompanist",
+        "Ossip Zadkine"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Russian diaspora Paris",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bolshevik Revolution of 1917 caused ~400,000 Russian intelligentsia to emigrate to Berlin and Paris",
+        "Nina Berberova arrived Paris 1925, stayed until 1950, then moved to US",
+        "Berberova wrote The Accompanist",
+        "Zadkine was also a serious poet"
+      ],
+      "source_passage": "Zadkine's retreat is a small piece of the Russian diaspora that followed the Bolshevik Revolution of 1917 when about four hundred thousand of the Russian \"intelligentsia\"\u2014artists and writers\u2014who left their homeland emigrated mostly to Berlin and Paris, bringing their genius with them. Nina Berberova, Zadkine's contemporary, arrived in Paris in 1925 and stayed until 1950, when she moved to the United States. The Assas dovecote is a nice setting for discovering her fiction of post-revolutionary Russians\u2014for instance, her masterpiece, The Accompanist. Zadkine had many writers among his friends, Russian and others; he himself was a serious and respected poet.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Mus\u00e9e Zadkine",
+        "page": "82"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "400,000 figure not independently verified but not contradicted. Nina Berberova's dates not independently checked."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_georges_brassens_hidden_history_hidden_gardens_of_paris_vaugirard_slaughterhouse",
+      "city_name": "paris",
+      "poi_name": "Parc Georges-Brassens",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "vaugirard_slaughterhouse",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The main entrance of Parc Georges-Brassens opens wide beneath a presiding pair of bronze bulls \u2014 an iconic reminder of this nineteen-acre parkland's former life as the grounds of the old Vaugirard slaughterhouses, where 110,000 cows and steers, 70,000 calves, 500,000 sheep, and 80,000 pigs were slaughtered and butchered annually. Before 1977, when this land was transformed into a park, it reeked.",
+      "beat_length_class": "mid",
+      "duration_sec": 62,
+      "kid_friendly": "no",
+      "entities": [
+        "Vaugirard slaughterhouses"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "slaughterhouse history",
+      "physical_cues": [
+        {
+          "cue": "Pair of bronze bulls presiding over the main entrance on rue des Morillons",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Park was formerly Vaugirard slaughterhouses",
+        "Slaughtered 110,000 cows/steers, 70,000 calves, 500,000 sheep, 80,000 pigs annually",
+        "Transformed into park before 1977",
+        "Bronze bulls at main entrance"
+      ],
+      "source_passage": "the delightful Parc Georges-Brassens is only a ten-minute walk away on rue Dantzig and left into rue Morillons at the Prefecture de Police building on the corner. Farther on, the main entrance opens wide beneath a presiding pair of bronze bulls. Ahead of you is a modest and diverse loveliness, but the bulls remain an iconic reminder of the nineteen-acre parkland's former life as the grounds of the old Vaugirard slaughterhouses, where 110,000 cows and steers, 70,000 calves, 500,000 sheep, and 80,000 pigs were slaughtered and butchered annually. Before 1977, when this land was transformed into a park, it reeked.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Georges-Brassens",
+        "page": "85"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "before 1977, when this land was transformed into a park",
+            "status": "DISPUTE",
+            "notes": "Wikipedia and other sources indicate the slaughterhouses ceased operations 1974\u20131978 and the park was inaugurated in 1985 (some say 1984). The book's '1977' date is imprecise. Sources: https://en.wikipedia.org/wiki/Parc_Georges-Brassens and https://www.atlasobscura.com/places/les-abbatoirs-de-vaugirard-paris-france"
+          }
+        ],
+        "status": "disputed",
+        "notes": "Slaughter numbers not independently verified. Park opening date disputed."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_georges_brassens_local_legends_hidden_gardens_of_paris_fragrance_garden_campanile",
+      "city_name": "paris",
+      "poi_name": "Parc Georges-Brassens",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "fragrance_garden_campanile",
+      "sub_location": "fragrance-garden",
+      "trigger_address": null,
+      "script_body": "In deference to the park's past, stroll first toward the left as you cross the main plaza, past the round pool, the fountains and ducks, the benches and trees, until you come to the fragrance garden, planted with over eighty species of aromatic and medicinal plants; when they're in bloom, the scent perfumes the air, a pleasant revision of history. Behind the campanile \u2014 atop the building where the beasts were once auctioned off, no doubt shrieking and groaning \u2014 as you climb the winding path up a small hill, you pass an apiary and cross a stream bordered with pine and birch trees; spread over the hilltop are beehives and a small terraced vineyard.",
+      "beat_length_class": "mid",
+      "duration_sec": 83,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "fragrance garden path",
+      "physical_cues": [
+        {
+          "cue": "Fragrance garden with 80+ species of aromatic and medicinal plants, near the main plaza",
+          "direction": "west",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Campanile atop the former auction building, visible from the path",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Beehives and small terraced vineyard spread over the hilltop behind the campanile",
+          "direction": "up",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Fragrance garden has over 80 species of aromatic and medicinal plants",
+        "Campanile atop former auction building",
+        "Apiary, stream with pine and birch, beehives, terraced vineyard on hilltop"
+      ],
+      "source_passage": "In deference to that past, stroll first toward the left as you cross the main plaza, past the round pool, the fountains and ducks, the benches and trees, until you come to tht fragrance garden, planted with over eighty species of aromatic and medicinal plants; when they're in bloom, the scent perfumes the air, a pleasant revision of history. Behind the campanile\u2014atop the building where the beasts were once auctioned off, no doubt shrieking and groaning\u2014as you climb the winding path up a small hill, you pass an apiary and cross a stream bordered with pine and birch trees; spread over the hilltop are beehives and a small terraced vineyard.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Georges-Brassens",
+        "page": "85\u201386"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_georges_brassens_local_legends_hidden_gardens_of_paris_weekend_book_market",
+      "city_name": "paris",
+      "poi_name": "Parc Georges-Brassens",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "weekend_book_market",
+      "sub_location": "book-market",
+      "trigger_address": null,
+      "script_body": "What was once the old horse market is now the venue for the Saturday and Sunday book fairs: book dealers assemble their tables of rare, used, and new books, and the book-loving connoisseurs who show up faithfully make it worth their while. It's a thriving scene animated with good spirits and the quiet attention of book lovers. The words of rock musician Patti Smith, winner of the 2010 National Book Award for Just Kids, resonate beautifully in this setting: \"Please, no matter how we advance technologically, please don't abandon the book \u2014 there is nothing in our material world more beautiful than the book.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 80,
+      "kid_friendly": "yes",
+      "entities": [
+        "Patti Smith",
+        "Just Kids"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "book fair horse market",
+      "physical_cues": [
+        {
+          "cue": "Former horse market area near rue Brandon, now weekend book fair tables",
+          "direction": "east",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Old horse market now hosts Saturday and Sunday book fairs",
+        "Book dealers sell rare, used, and new books",
+        "Patti Smith won the 2010 National Book Award for Just Kids"
+      ],
+      "source_passage": "The pleasures continue as you circle back toward the east, in the vicinity of rue Brandon. What was once the old horse market is now the venue for the Saturday and Sunday book fairs: book dealers assemble their tables of rare, used, and new books, and the book-loving connoisseurs who show up faithfully make it worth their while. It's a thriving scerie animated with good spirits and the quiet attention of book lovers. The words of rock musician Patti Smith, lover of Paris and winner of the 2010 National Book Award for Just Kids, resonate beautifully in this setting: Please, no matter how we advance technologically, please don't abandon the book\u2014there is nothing in our material world more beautiful than the book.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Georges-Brassens",
+        "page": "86\u201387"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Patti Smith and Just Kids National Book Award 2010 confirmed. Source: https://en.wikipedia.org/wiki/Just_Kids"
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_georges_brassens_music_heritage_hidden_gardens_of_paris_brassens_biography",
+      "city_name": "paris",
+      "poi_name": "Parc Georges-Brassens",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "brassens_biography",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Georges Brassens (1921\u20131981) \u2014 the singer, songwriter, and poet whose sculpted bust stands to the east near the site of the book fairs \u2014 studied and loved the poems of Apollinaire, Fran\u00e7ois Villon, and Louis Aragon, which he set to music. Singers Charles Trenet, Tino Rossi, and Ray Ventura were his idols. A high school dropout from the provinces \u2014 he called himself a \"thug\" \u2014 he arrived penniless in Paris and spent his time in the library. During World War II, the Germans deported him to a forced-labor camp. Going AWOL, he hid in a friend's flat nearby, without running water, gas, or electricity, and studied Baudelaire, Verlaine, and Victor Hugo. He wrote songs, such as \"L'Auvergnat,\" praising the protectors of the poor and mocking the pettiness of the bourgeoisie. Ordinary Parisians adored his singing and the countercultural lyrics of his 250 songs advocating social justice, friendship, and love.",
+      "beat_length_class": "anchor",
+      "duration_sec": 122,
+      "kid_friendly": "yes",
+      "entities": [
+        "Georges Brassens",
+        "Guillaume Apollinaire",
+        "Fran\u00e7ois Villon",
+        "Louis Aragon",
+        "Charles Trenet",
+        "Tino Rossi",
+        "Ray Ventura",
+        "Baudelaire",
+        "Verlaine",
+        "Victor Hugo",
+        "L'Auvergnat"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Brassens life songs",
+      "physical_cues": [
+        {
+          "cue": "Sculpted bust of Georges Brassens to the east, near the book fair site",
+          "direction": "east",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "L'Auvergnat",
+          "gloss": "song by Brassens praising the protectors of the poor"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Brassens lived 1921\u20131981",
+        "Studied poems of Apollinaire, Villon, Aragon and set them to music",
+        "High school dropout, arrived penniless in Paris",
+        "Deported by Germans to forced-labor camp in WWII, went AWOL, hid in friend's flat",
+        "Wrote 250 songs",
+        "Sculpted bust stands near the book fair site"
+      ],
+      "source_passage": "How pleased Georges Brassens (1921\u20141981) would be. The singer, songwriter, and poet\u2014the sculpted bust of his handsome head stands to the east near the site of the book fairs\u2014studied and loved the poems of Apollinaire, Francois Villon, and Louis Aragon, which he set to music. Singers Charles Trenet, Tino Rossi, and Ray Ventura were his idols. A high school dropout from the provinces\u2014he called himself a \"thug\"\u2014he arrived penniless in Paris and spent his time in the library. During World War II, the Germans deported him to a forced-labor camp. Going AWOL, he hid in a friend's flat nearby, without running water, gas, or electricity, and studied Baudelaire, Verlaine, and Victor Hugo. He wrote songs, such as \"L'Auvergnat,\" praising the protectors of the poor and mocking the pettiness of the bourgeoisie. Ordinary Parisians adored his singing and the countercultural lyrics of his 250 songs advocating social justice, friendship, and love.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Georges-Brassens",
+        "page": "87"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "the Germans deported him to a forced-labor camp",
+            "status": "DISPUTE",
+            "notes": "Brassens was conscripted into the STO (Service du Travail Obligatoire \u2014 mandatory work service in Germany), which is distinct from deportation to a concentration camp. He was sent to work at Baur & Cie in Basdorf. Sources: https://en.wikipedia.org/wiki/Georges_Brassens and https://www.britannica.com/biography/Georges-Brassens"
+          }
+        ],
+        "status": "disputed",
+        "notes": "STO framing is imprecise but not entirely wrong \u2014 it was forced labor. Birth and death years confirmed."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_georges_brassens_music_heritage_hidden_gardens_of_paris_brassens_porte_des_lilas_film",
+      "city_name": "paris",
+      "poi_name": "Parc Georges-Brassens",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "brassens_porte_des_lilas_film",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "A mural portrait of Brassens hangs in the Porte des Lilas metro station, along with the lyrics of his song \"La Porte des Lilas,\" which plays in the film of the same name by Ren\u00e9 Clair.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Georges Brassens",
+        "La Porte des Lilas",
+        "Ren\u00e9 Clair",
+        "Porte des Lilas"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "callback",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Brassens metro mural",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "La Porte des Lilas",
+          "gloss": "song and film title, meaning 'The Gate of the Lilacs'"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Mural of Brassens in Porte des Lilas metro station with song lyrics",
+        "Song 'La Porte des Lilas' plays in Ren\u00e9 Clair's film of the same name"
+      ],
+      "source_passage": "A mural portrait of him hangs in the Porte des Lilas metro station, along with the lyrics of his song, \"La Porte des Lilas, \" which plays in the film of the same name by Rene Clair.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Georges-Brassens",
+        "page": "87"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Ren\u00e9 Clair film 'Porte des Lilas' (1957) confirmed. Sources: https://en.wikipedia.org/wiki/Georges_Brassens"
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_georges_brassens_hidden_history_hidden_gardens_of_paris_la_ruche_sidebar",
+      "city_name": "paris",
+      "poi_name": "Parc Georges-Brassens",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "la_ruche_artists_community_sidebar",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Off rue Dantzig is La Ruche \u2014 The Beehive \u2014 at 2, Passage Dantzig. The name comes from the design, by Gustave Eiffel, of the artists' studios laid out around a staircase in the shape of cells in a beehive. Opened in 1902 as a home for refugee artists from central Europe, it offered space to painters and sculptors \u2014 Chagall, L\u00e9ger, Archipenko, Soutine, Modigliani, Zadkine \u2014 and poets \u2014 Apollinaire and Max Jacob \u2014 in the years when the fifteenth arrondissement in Montparnasse was the setting of a new art scene, sometimes called the School of Paris. Chagall and Andr\u00e9 Malraux saved the studios from demolition in the 1960s. You can look through the locked gate into an old mossy courtyard, and sometimes are allowed entrance.",
+      "beat_length_class": "mid",
+      "duration_sec": 96,
+      "kid_friendly": "yes",
+      "entities": [
+        "La Ruche",
+        "Gustave Eiffel",
+        "Chagall",
+        "L\u00e9ger",
+        "Archipenko",
+        "Soutine",
+        "Modigliani",
+        "Zadkine",
+        "Apollinaire",
+        "Max Jacob",
+        "Andr\u00e9 Malraux",
+        "School of Paris"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "reverent",
+      "subject_tag": "La Ruche artists community",
+      "physical_cues": [
+        {
+          "cue": "Locked gate into old mossy courtyard at La Ruche, 2 Passage Dantzig",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "La Ruche",
+          "gloss": "The Beehive \u2014 artists' studio community off rue Dantzig"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "La Ruche designed by Gustave Eiffel, studios around central staircase like beehive cells",
+        "Opened 1902 for refugee artists",
+        "Residents included Chagall, L\u00e9ger, Archipenko, Soutine, Modigliani, Zadkine, Apollinaire, Max Jacob",
+        "Chagall and Malraux saved it from demolition in the 1960s"
+      ],
+      "source_passage": "LA RUCHE (The Beehive) Off rue Dantqig, to 2, Passage rue Dantqig, to the right of Cafe Dantqig. The name comes from the design, by Gustave Eiffel, of the artists' studios laid out around a staircase in the shape of cells in a beehive. Opened in 1902 as a home for refugee artists from central Europe, it offered space to painters and sculptors\u2014Chagall, Leger, Archipenko, Soutine, Modigliani, Zadkine\u2014and poets\u2014Apollinaire and Max Jacob\u2014in the years when the fifteenth arrondissement in Montparnasse was the setting of a new art scene, sometimes called the School of Paris. Chagall and Andre Malraux saved the studios from demolition in the i<)6os. You can look through the locked gate into an old mossy courtyard, and sometimes are allowed entrance.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Georges-Brassens sidebar",
+        "page": "87\u201388"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "design by Gustave Eiffel",
+            "status": "DISPUTE",
+            "notes": "Wikipedia and multiple sources indicate the building was designed by Eiffel as a wine pavilion/rotunda at the 1900 World Exposition, then repurposed by sculptor Alfred Boucher who acquired and adapted it. The studios themselves were not 'designed by Eiffel' in the conventional sense \u2014 Boucher was the founder/developer. Sources: https://en.wikipedia.org/wiki/La_Ruche_(residence)"
+          }
+        ],
+        "status": "disputed",
+        "notes": "Eiffel connection is partial \u2014 he designed the original structure used as a wine rotunda; Alfred Boucher repurposed it."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_montsouris_local_legends_hidden_gardens_of_paris_weekend_scene",
+      "city_name": "paris",
+      "poi_name": "Parc Montsouris",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "weekend_scene",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "\"Bon Weekend!\" You hear that all over Paris on Friday afternoons. Saturdays, you realize these are words Parisians translate into action. In late morning they start pouring into the streets, lining up at caf\u00e9s, and sprawling on the grass and under the trees of the beautiful and large Parc Montsouris on the southern border of Montparnasse. The winding paths of Montsouris take you up, down, and around the mounds of lawn. They circle the waterfall above the artificial lake, lead past dense and deep groves of flowering shrubbery \u2014 forsythia, jasmine, hydrangea \u2014 and eventually move into shade under century-old trees. The bronze sculptures of lovers, of tigers battling snakes, of wild animals that decorate the sloping lawns are wonderful.",
+      "beat_length_class": "mid",
+      "duration_sec": 88,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "weekend park atmosphere",
+      "physical_cues": [
+        {
+          "cue": "Waterfall above the artificial lake visible from the winding paths",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Bronze sculptures of lovers, tigers battling snakes, and wild animals on the sloping lawns",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Bon Weekend",
+          "gloss": "Good Weekend \u2014 French greeting heard across Paris on Friday afternoons"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Parc Montsouris on southern border of Montparnasse",
+        "Bronze sculptures of lovers, tigers battling snakes, wild animals on sloping lawns",
+        "Waterfall above an artificial lake",
+        "Century-old trees"
+      ],
+      "source_passage": "Bon Weekend! You hear that all over Paris on Friday afternoons. Saturdays, you realize these are words Parisians translate into action. In late morning they start pouring into the streets, lining up at cafes, and sprawling on the grass and under the trees of, for example, the beautiful and large Parc Montsouris on the southern border of Montparnasse. The winding paths of Montsouris take you up, down, and around the mounds of lawn. They circle the waterfall above the artificial lake, lead past dense and deep groves of flowering shrubbery\u2014forsythia, jasmine, hydrangea\u2014and eventually move into shade under century-old trees. The bronze sculptures of lovers, of tigers battling snakes, of wild animals that decorate the sloping lawns are wonderful.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Montsouris",
+        "page": "91\u201392"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_montsouris_local_legends_hidden_gardens_of_paris_tahtib_martial_arts",
+      "city_name": "paris",
+      "poi_name": "Parc Montsouris",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "tahtib_martial_arts",
+      "sub_location": "south-entrance-platform",
+      "trigger_address": null,
+      "script_body": "Near the southern entrance \u2014 the green campus of Cit\u00e9 Universitaire is across the boulevard \u2014 up on a stage-like platform, you can observe a class practicing Tahtib, Egyptian martial arts, on Saturday mornings. It's a kind of stick fighting or stick fencing accompanied by bass drums that originated along the Nile four thousand years ago.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Tahtib",
+        "Cit\u00e9 Universitaire"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Tahtib Egyptian martial arts",
+      "physical_cues": [
+        {
+          "cue": "Stage-like platform near the southern entrance where Tahtib classes take place on Saturday mornings",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Tahtib",
+          "gloss": "Egyptian martial arts, a kind of stick fighting or stick fencing accompanied by bass drums, originating along the Nile four thousand years ago"
+        }
+      ],
+      "pronunciation": "tah-TEEB",
+      "key_claims": [
+        "Tahtib is Egyptian martial arts, stick fighting with bass drums",
+        "Originated along the Nile 4,000 years ago",
+        "Classes held on Saturday mornings on a stage-like platform near the southern entrance"
+      ],
+      "source_passage": "Near the southern entrance\u2014the green campus of Cite Universitaire is across the boulevard\u2014up on a stagelike platform, you can observe a class practicing Tahtib, Egyptian martial arts, on Saturday mornings. It's a kind of stick fighting or stick fencing accompanied by bass drums that originated along the Nile four thousand years ago.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Montsouris",
+        "page": "91"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "4,000-year origin claim not independently verified but not contested."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_montsouris_hidden_history_hidden_gardens_of_paris_alphand_haussmann_creation",
+      "city_name": "paris",
+      "poi_name": "Parc Montsouris",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "alphand_haussmann_creation",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "When Jean-Charles Adolphe Alphand, Napoleon III's director of public works in charge of landscape architecture, opened Montsouris in 1878, carrying out Georges-Eug\u00e8ne Haussmann's plan to create green spaces around the city, he had to close quarries and clear dozens of windmills before the area's fifty acres could be transformed into an English-style park, all winding contours and random flower beds, so different from the perfect symmetry of the Tuileries.",
+      "beat_length_class": "mid",
+      "duration_sec": 66,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jean-Charles Adolphe Alphand",
+        "Napoleon III",
+        "Georges-Eug\u00e8ne Haussmann",
+        "Jardin des Tuileries"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "park creation Haussmann",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Alphand opened Montsouris in 1878",
+        "Haussmann's plan to create green spaces around the city",
+        "Had to close quarries and clear dozens of windmills",
+        "Fifty-acre English-style park"
+      ],
+      "source_passage": "When Jean-Charles Adolphe Alphand, Napoleon Ill's director of public works in charge of landscape architecture, opened Montsouris in 1878, carrying out Georges-Eugene Haussmann's plan to create green spaces around the city, he had to close quarries and clear dozens of windmills before the area's fifty acres could be transformed into an English-style park, all winding contours and random flower beds, so different from the perfect symmetry of the Tuileries.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Montsouris",
+        "page": "91\u201392"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "fifty acres",
+            "status": "DISPUTE",
+            "notes": "Wikipedia and multiple sources give Parc Montsouris as 15.5 hectares (approximately 38 acres), not 50 acres. The book's 'fifty acres' overstates the size by roughly 30%. Sources: https://en.wikipedia.org/wiki/Parc_Montsouris"
+          }
+        ],
+        "status": "disputed",
+        "notes": "Opening year (1878) confirmed. Alphand/Haussmann connection confirmed. Size disputed."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_montsouris_hidden_history_hidden_gardens_of_paris_english_village_surrounds",
+      "city_name": "paris",
+      "poi_name": "Parc Montsouris",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "english_village_surrounds",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Englishness of Montsouris extends beyond its borders. In the charming narrow side streets and culs-de-sac off its western border, as you stroll through square de Montsouris, rue du Parc Montsouris, and rue Braque \u2014 the painter Georges Braque lived at number 6 \u2014 passing the handsome old houses of timber and stone wrapped in wisteria and ivy and fronted with gardens of roses and lilac in season, you're reminded of a small country village, Bucklebury, say, in West Berkshire.",
+      "beat_length_class": "mid",
+      "duration_sec": 74,
+      "kid_friendly": "yes",
+      "entities": [
+        "Georges Braque",
+        "square de Montsouris",
+        "rue du Parc Montsouris",
+        "rue Braque"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "English village character",
+      "physical_cues": [
+        {
+          "cue": "Houses of timber and stone wrapped in wisteria and ivy on the side streets west of the park",
+          "direction": "west",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Georges Braque lived at number 6 rue Braque",
+        "Side streets off western border resemble an English country village",
+        "Timber and stone houses wrapped in wisteria and ivy"
+      ],
+      "source_passage": "The Englishness of Montsouris extends beyond its borders. In the charming narrow side streets and culs-de-sac off its western border, as you stroll through square de Montsouris, rue du Parc Montsouris, and rue Braque (the painter Georges Braque lived at number 6), passing the handsome old houses of timber and stone wrapped in wisteria and ivy and fronted with gardens of roses and lilac in season, you're reminded of a small country village, Bucklebury, say, in West Berkshire.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Montsouris",
+        "page": "92"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Georges Braque at rue Braque no. 6 not independently checked but plausible \u2014 Braque lived in Montparnasse/14th area."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_montsouris_hidden_history_hidden_gardens_of_paris_jardin_zac_alesia_aqueducts_sidebar",
+      "city_name": "paris",
+      "poi_name": "Parc Montsouris",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "jardin_zac_alesia_aqueducts_sidebar",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "A few blocks to the northwest, across avenue Reille, the Jardin ZAC Al\u00e9sia Montsouris holds the remains of two aqueducts, one Gallo-Roman, the other from the time of Catherine de M\u00e9dicis, discovered during the construction of the garden, which opened in 2005. A large space ondul\u00e9 \u2014 undulating \u2014 between the pretty community garden on the hillside and the children's play area near the street makes this an unusual and appealing park design.",
+      "beat_length_class": "mid",
+      "duration_sec": 60,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jardin ZAC Al\u00e9sia Montsouris",
+        "Catherine de M\u00e9dicis"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "neutral",
+      "subject_tag": "Gallo-Roman aqueducts",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "ondul\u00e9",
+          "gloss": "undulating"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Jardin ZAC Al\u00e9sia Montsouris contains remains of two aqueducts: one Gallo-Roman, one from Catherine de M\u00e9dicis era",
+        "Discovered during construction; garden opened 2005"
+      ],
+      "source_passage": "JARDIN ZAC ALESIA MONTSOURIS A few blocks to the northwest, across avenue Reille, this smallpark holds the remains of two aqueducts, one Gallo-Roman, the other from the time of Catherine de Medicis, discovered during the construction of the garden, which opened in 2005. A large space ondule\u2014undulating\u2014between the pretty community garden on the hillside and the childrens play area near the street makes this an unusual and appealing park design.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 Parc Montsouris sidebar",
+        "page": "92"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_montparnasse_cemetery_literary_heritage_hidden_gardens_of_paris_famous_graves",
+      "city_name": "paris",
+      "poi_name": "Montparnasse Cemetery",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "famous_graves",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Enter the Montparnasse Cemetery from boulevard Edgar Quinet and pick up a map from the guardhouse at the entrance to guide you to the graves of the famous. It's a quiet place, with few visitors wandering in the shade of the linden trees. Here lie Sartre and Simone de Beauvoir, side by side; also Samuel Beckett, Baudelaire, Captain Dreyfus, and Ossip Zadkine.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 48,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sartre",
+        "Simone de Beauvoir",
+        "Samuel Beckett",
+        "Baudelaire",
+        "Captain Dreyfus",
+        "Ossip Zadkine"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "somber",
+      "subject_tag": "notable graves",
+      "physical_cues": [
+        {
+          "cue": "Guardhouse at the boulevard Edgar Quinet entrance where maps are available",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Enter from boulevard Edgar Quinet; map at guardhouse",
+        "Graves of Sartre and Simone de Beauvoir, side by side",
+        "Also Beckett, Baudelaire, Captain Dreyfus, Zadkine"
+      ],
+      "source_passage": "MONTPARNASSE CEMETERY Enter from boulevard Edgar Quinet (daily, 8\u20146) and pick up a map from the guardhouse at the entrance to guide you to the graves of the famous. A quiet place, with few visitors wandering in the shade of the linden trees. Here lie Sartre and Simone de Beauvoir, side by side; also Samuel Beckett, Baudelaire, Captain Dreyfus, and Ossip Zadkine.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 sidebars",
+        "page": "83"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "All named graves at Montparnasse Cemetery confirmed via general knowledge; Sartre/de Beauvoir side by side widely documented."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_la_closerie_des_lilas_literary_heritage_hidden_gardens_of_paris_writers_poets_sidebar",
+      "city_name": "paris",
+      "poi_name": "La Closerie des Lilas",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "writers_poets_sidebar",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "La Closerie des Lilas at 171, boulevard Montparnasse was a favored caf\u00e9 of writers and poets such as Baudelaire, Verlaine, Gautier, and Zola, and painters Manet, Gauguin, and other impressionists. Such poets as Max Jacob and Apollinaire used to read their work here on Tuesday evenings called \"Vers et Prose.\"",
+      "beat_length_class": "seasoning",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Baudelaire",
+        "Verlaine",
+        "Gautier",
+        "Zola",
+        "Manet",
+        "Gauguin",
+        "Max Jacob",
+        "Apollinaire",
+        "Vers et Prose"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "sidebar",
+      "emotional_register": "reverent",
+      "subject_tag": "Vers et Prose literary salon",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Vers et Prose",
+          "gloss": "Poetry and Prose \u2014 Tuesday evening readings at La Closerie des Lilas"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Favored caf\u00e9 of Baudelaire, Verlaine, Gautier, Zola, Manet, Gauguin",
+        "Max Jacob and Apollinaire read on Tuesday evenings called 'Vers et Prose'"
+      ],
+      "source_passage": "CLOSERIE DES LILAS 171, boulevard Montparnasse. A favored cafe of writers and poets such as Baudelaire, Verlaine, Gautier, and Zola, and painters Manet, Gauguin, and other impressionists. Such poets as Max Jacob and Apollinaire used to read their work here on Tuesday evenings called \"Vers et Prose.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 sidebars",
+        "page": "83"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_bourdelle_visual_art_hidden_gardens_of_paris_bourdelle_modernism_sidebar",
+      "city_name": "paris",
+      "poi_name": "Musee Bourdelle",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "bourdelle_modernism_sidebar",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At 16, rue Antoine-Bourdelle, a short distance from Gare Montparnasse through the underground passage to Place Bienvenue, the Mus\u00e9e Bourdelle consists of the house, studio, and garden of sculptor Antoine Bourdelle (1861\u20131929), a student of Rodin who went on to work alongside him and who has been called \"the man who invented modernism.\"",
+      "beat_length_class": "seasoning",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Antoine Bourdelle",
+        "Auguste Rodin",
+        "Mus\u00e9e Bourdelle",
+        "Place Bienvenue"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "sidebar",
+      "emotional_register": "neutral",
+      "subject_tag": "Bourdelle invented modernism",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Mus\u00e9e Bourdelle at 16 rue Antoine-Bourdelle",
+        "Antoine Bourdelle (1861\u20131929) was a student of Rodin who worked alongside him",
+        "Called 'the man who invented modernism'"
+      ],
+      "source_passage": "MUSEE BOURDELLE 16, rue Antoine-Bourdelle, a short distance from Gare Montparnasse through the underground passage to Place Bienvenue. Open Tues\u2014Sun, 10\u20146. This museum consists of the house, studio, and garden (where you'll find Zadkine's huge bronzes) of sculptor Antoine Bourdelle (1861\u20141929), a student of Rodin who went on to work alongside him and who has been called \"the man who invented modernism.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 sidebars",
+        "page": "82"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Superlative claim 'the man who invented modernism' is an attributed quote from a source (Gregor Dallas) \u2014 not auto-correctable."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_villa_santos_dumont_music_heritage_hidden_gardens_of_paris_brassens_final_home_sidebar",
+      "city_name": "paris",
+      "poi_name": "Villa Santos-Dumont",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "brassens_final_home_sidebar",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Brassens moved to 42, rue Santos-Dumont in 1968, a garden home along this leafy green cul-de-sac.",
+      "beat_length_class": "micro",
+      "duration_sec": 8,
+      "kid_friendly": "yes",
+      "entities": [
+        "Georges Brassens"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Brassens final residence",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Brassens moved to 42 rue Santos-Dumont in 1968"
+      ],
+      "source_passage": "VILLA SANTOS-DUMONT Bressens moved to 42, rue Santos-Dumont in 1968, a garden home along this leafy green cul-de-sac.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Montparnasse and Southern Paris \u2014 sidebars",
+        "page": "87"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "moved to 42, rue Santos-Dumont in 1968",
+            "status": "DISPUTE",
+            "notes": "Multiple sources indicate Brassens moved to rue Santos-Dumont in 1969, not 1968. Sources: https://paris-promeneurs.com/la-rue-santos-dumont/ and https://www.paris.fr/pages/une-balade-sur-les-pas-de-georges-brassens-19030"
+          }
+        ],
+        "status": "disputed",
+        "notes": "Move year 1968 vs 1969 disputed."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "dispute",
+      "beat_id": "paris_musee_zadkine_visual_art_hidden_gardens_of_paris_zadkine_school_of_paris",
+      "claim": "Zadkine born 1890",
+      "recommended_action": "AUTO-CORRECT to 1888 \u2014 2+ archival sources (Zadkine Research Center, Ecole des Beaux-Arts enrollment, school registration) agree on 1888. Book follows falsified ID card date.",
+      "sources": [
+        "https://www.zadkine.com/born-in-1888",
+        "https://en.wikipedia.org/wiki/Ossip_Zadkine"
+      ],
+      "auto_correct_eligible": true
+    },
+    {
+      "type": "dispute",
+      "beat_id": "paris_musee_zadkine_visual_art_hidden_gardens_of_paris_zadkine_school_of_paris",
+      "claim": "came to Paris from Russia in 1909",
+      "recommended_action": "AUTO-CORRECT to 1910 \u2014 multiple sources agree Zadkine settled in Paris in 1910.",
+      "sources": [
+        "https://zadkine.paris.fr/en/zadkines-biography",
+        "https://en.wikipedia.org/wiki/Ossip_Zadkine"
+      ],
+      "auto_correct_eligible": true
+    },
+    {
+      "type": "dispute",
+      "beat_id": "paris_parc_georges_brassens_hidden_history_hidden_gardens_of_paris_vaugirard_slaughterhouse",
+      "claim": "before 1977, when this land was transformed into a park",
+      "recommended_action": "Flag for user review \u2014 operations ended 1974-1978; park opened 1985. '1977' is imprecise. Do not auto-correct (story deletion risk).",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Parc_Georges-Brassens"
+      ],
+      "auto_correct_eligible": false
+    },
+    {
+      "type": "dispute",
+      "beat_id": "paris_parc_georges_brassens_music_heritage_hidden_gardens_of_paris_brassens_biography",
+      "claim": "the Germans deported him to a forced-labor camp",
+      "recommended_action": "Flag for user review \u2014 STO (Service du Travail Obligatoire) was mandatory labor service, not concentration camp deportation. Framing is imprecise but not fully wrong. Do not auto-correct.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Georges_Brassens"
+      ],
+      "auto_correct_eligible": false
+    },
+    {
+      "type": "dispute",
+      "beat_id": "paris_parc_georges_brassens_hidden_history_hidden_gardens_of_paris_la_ruche_sidebar",
+      "claim": "design by Gustave Eiffel",
+      "recommended_action": "Flag for user review \u2014 Eiffel designed original 1900 Expo wine rotunda; Alfred Boucher repurposed it as La Ruche in 1902. Attribution to Eiffel alone is partial/misleading.",
+      "sources": [
+        "https://en.wikipedia.org/wiki/La_Ruche_(residence)"
+      ],
+      "auto_correct_eligible": false
+    },
+    {
+      "type": "dispute",
+      "beat_id": "paris_parc_montsouris_hidden_history_hidden_gardens_of_paris_alphand_haussmann_creation",
+      "claim": "fifty acres",
+      "recommended_action": "AUTO-CORRECT to approximately 38 acres (15.5 hectares) \u2014 Wikipedia and multiple sources consistently give 15.5 hectares. Source: https://en.wikipedia.org/wiki/Parc_Montsouris",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Parc_Montsouris",
+        "https://bonjourparis.com/parks-and-gardens/parc-montsouris-nature-and-artifice-in-the-14th/"
+      ],
+      "auto_correct_eligible": true
+    },
+    {
+      "type": "dispute",
+      "beat_id": "paris_villa_santos_dumont_music_heritage_hidden_gardens_of_paris_brassens_final_home_sidebar",
+      "claim": "moved to 42, rue Santos-Dumont in 1968",
+      "recommended_action": "AUTO-CORRECT to 1969 \u2014 multiple sources agree on 1969. Sources: https://paris-promeneurs.com/la-rue-santos-dumont/",
+      "sources": [
+        "https://paris-promeneurs.com/la-rue-santos-dumont/",
+        "https://www.paris.fr/pages/une-balade-sur-les-pas-de-georges-brassens-19030"
+      ],
+      "auto_correct_eligible": true
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Parc Georges-Brassens",
+      "action_required": "Run /poi-generate to create and geocode this POI before upload."
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Parc Montsouris",
+      "action_required": "Run /poi-generate to create and geocode this POI before upload."
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "La Ruche",
+      "action_required": "Run /poi-generate to create and geocode this POI before upload."
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Musee Bourdelle",
+      "action_required": "Run /poi-generate to create and geocode this POI before upload."
+    },
+    {
+      "type": "new_poi",
+      "poi_name": "Villa Santos-Dumont",
+      "action_required": "Run /poi-generate to create and geocode this POI before upload."
+    },
+    {
+      "type": "establishing_beat_check",
+      "poi_name": "Parc Georges-Brassens",
+      "note": "New POI \u2014 has establishing beat via brassens_biography (narrative_function: establishing). Covered."
+    },
+    {
+      "type": "establishing_beat_check",
+      "poi_name": "Parc Montsouris",
+      "note": "New POI \u2014 has establishing beat via alphand_haussmann_creation (narrative_function: establishing). Covered."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 18,
+    "pois_touched": 8,
+    "new_pois": 5,
+    "corrections_applied": 0,
+    "disputes": 7,
+    "anomalies": 1,
+    "anomaly_detail": "Parc Montsouris 'fifty acres' claim contradicted by 2+ authoritative sources (actual ~38 acres / 15.5 hectares); eligible for auto-correct pending user confirmation. Note: chunk does NOT cover Jardin Atlantique (rooftop of Gare Montparnasse) \u2014 that POI does not appear in the source text of this chunk.",
+    "lenses_hit": [
+      "visual_art",
+      "hidden_history",
+      "local_legends",
+      "music_heritage",
+      "literary_heritage"
+    ],
+    "lenses_missed": [
+      "dark_history",
+      "social_change",
+      "war_conflict",
+      "modern_design",
+      "street_art",
+      "historic_arch",
+      "culinary_heritage"
+    ],
+    "confidence_counts": {
+      "HIGH": 4,
+      "MEDIUM": 11,
+      "LOW": 3
+    }
+  }
+}

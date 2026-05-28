@@ -254,7 +254,7 @@
     "short_description": "Largest square in Paris where over 1,300 people were guillotined in a single month during the 1794 Reign of Terror",
     "latitude": 48.865608,
     "longitude": 2.321038,
-    "importance_tier": 4,
+    "importance_tier": 5,
     "trigger_radius": 50,
     "typical_duration_min": 10,
     "kid_friendly": "yes",

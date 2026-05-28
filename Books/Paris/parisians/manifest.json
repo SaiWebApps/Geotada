@@ -1,0 +1,263 @@
+{
+  "book_title": "Parisians: An Adventure History of Paris",
+  "author": "Graham Robb",
+  "source_file": "Parisians - an adventure history of Paris -- Robb, Graham -- 1st ed_, New York, NY, New York State, 2010 -- W_ W_ Norton & Company, Incorporated -- isbn13 9780393067248 -- 7b9a08052177780a7908eca.pdf",
+  "total_pages": 408,
+  "total_chunks": 23,
+  "chunked_at": "2026-05-01T16:13:14+00:00",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-departure.txt",
+      "section_title": "DEPARTURE",
+      "page_range": "7-11",
+      "line_count": 118,
+      "first_line": "DEPARTURE",
+      "last_line": "book-box from the Quai de la Tournelle to the Quai Malaquais.",
+      "last_line_ok": true,
+      "summary": "Author's prologue: arrival in Paris as a teenager, finding history dispersed across centuries."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-one-night-at-the-palais-royal.txt",
+      "section_title": "ONE NIGHT AT THE PALAIS-ROYAL",
+      "page_range": "11-23",
+      "line_count": 368,
+      "first_line": "ONE NIGHT AT THE PALAIS-ROYAL",
+      "last_line": "delights, no man could call himself a man, or consider his education complete.",
+      "last_line_ok": true,
+      "summary": "1787 Palais-Royal: a young Corsican lieutenant (Napoleon Bonaparte) on a winter night with a prostitute."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-the-man-who-saved-paris.txt",
+      "section_title": "THE MAN WHO SAVED PARIS",
+      "page_range": "23-38",
+      "line_count": 465,
+      "first_line": "THE MAN WHO SAVED PARIS",
+      "last_line": "east of the Place Denfert-Rochereau, is now officially deemed to be safe.",
+      "last_line_ok": true,
+      "summary": "Charles-Axel Guillaumot, Inspector-General of Quarries, who shored up the catacombs and saved Paris from collapse."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-lost.txt",
+      "section_title": "LOST",
+      "page_range": "38-53",
+      "line_count": 450,
+      "first_line": "LOST",
+      "last_line": "distinctly saw the blade of the guillotine fall, at a distance of almost half a ",
+      "last_line_ok": true,
+      "summary": "1795 Marie-Thérèse-Charlotte returning from Vienna to Paris through revolutionary territory."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-restoration.txt",
+      "section_title": "RESTORATION",
+      "page_range": "53-79",
+      "line_count": 811,
+      "first_line": "RESTORATION",
+      "last_line": "reason, the only person in the story whose full name is unknown.",
+      "last_line_ok": true,
+      "summary": "Restoration-era Parisian life: the return of the Bourbons, the salon culture, and a duel."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-files-of-the-surete.txt",
+      "section_title": "FILES OF THE SÛRETÉ",
+      "page_range": "79-98",
+      "line_count": 555,
+      "first_line": "FILES OF THE SÛRETÉ",
+      "last_line": "commemorate the part he played in making Paris safe.",
+      "last_line_ok": true,
+      "summary": "Vidocq and the Sûreté: the criminal-turned-detective navigating Paris's underworld."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-a-property-in-bohemia.txt",
+      "section_title": "A PROPERTY IN BOHEMIA",
+      "page_range": "98-117",
+      "line_count": 585,
+      "first_line": "A PROPERTY IN BOHEMIA",
+      "last_line": "who liked to think that they, too, had once lived the Bohemian life.",
+      "last_line_ok": true,
+      "summary": "Murger and Bohemian Paris: a property in the Latin Quarter and the rise of la vie de bohème."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-marville.txt",
+      "section_title": "MARVILLE",
+      "page_range": "117-136",
+      "line_count": 592,
+      "first_line": "MARVILLE",
+      "last_line": "in changing one’s ways when demolition is imminent.",
+      "last_line_ok": true,
+      "summary": "Charles Marville photographing the doomed medieval Paris before Haussmann's demolitions."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-regression.txt",
+      "section_title": "REGRESSION",
+      "page_range": "136-151",
+      "line_count": 443,
+      "first_line": "REGRESSION",
+      "last_line": "feasting and celebration!’",
+      "last_line_ok": true,
+      "summary": "Hittorff and Haussmann: the architectural reordering of Paris and the Étoile."
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-madame-zola.txt",
+      "section_title": "MADAME ZOLA",
+      "page_range": "151-171",
+      "line_count": 621,
+      "first_line": "MADAME ZOLA",
+      "last_line": "have thought possible.",
+      "last_line_ok": true,
+      "summary": "Madame Zola, Émile Zola, and the Dreyfus affair viewed from a Paris apartment."
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-marcel-in-the-metro.txt",
+      "section_title": "MARCEL IN THE MÉTRO",
+      "page_range": "171-187",
+      "line_count": 473,
+      "first_line": "MARCEL IN THE MÉTRO",
+      "last_line": "wait for the train that would take them back to their destination.",
+      "last_line_ok": true,
+      "summary": "Marcel Proust riding the Métro: the underground city as memory machine."
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-the-notre-dame-equation.txt",
+      "section_title": "THE NOTRE-DAME EQUATION",
+      "page_range": "187-213",
+      "line_count": 799,
+      "first_line": "THE NOTRE-DAME EQUATION",
+      "last_line": "hard to believe.",
+      "last_line_ok": true,
+      "summary": "Notre-Dame's geometry: cathedral as compass, the Pierre de Paris meridian."
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-a-little-tour-of-paris.txt",
+      "section_title": "A LITTLE TOUR OF PARIS",
+      "page_range": "213-231",
+      "line_count": 567,
+      "first_line": "A LITTLE TOUR OF PARIS",
+      "last_line": "1945, ‘even a dog will refuse to take food from your hand’.",
+      "last_line_ok": true,
+      "summary": "A walking tour through Paris with annotations on quartiers, monuments, and street life."
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-occupation.txt",
+      "section_title": "OCCUPATION",
+      "page_range": "231-244",
+      "line_count": 390,
+      "first_line": "OCCUPATION",
+      "last_line": "any more to be comforted.",
+      "last_line_ok": true,
+      "summary": "Paris under Nazi occupation 1940–1944: collaboration, resistance, daily life."
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-lovers-of-saint-germain-des-pres.txt",
+      "section_title": "LOVERS OF SAINT-GERMAIN-DES-PRÉS",
+      "page_range": "244-273",
+      "line_count": 895,
+      "first_line": "LOVERS OF SAINT-GERMAIN-DES-PRÉS",
+      "last_line": "Credits continue.",
+      "last_line_ok": true,
+      "summary": "Saint-Germain-des-Prés in the postwar years: Sartre, Beauvoir, jazz cellars, Café de Flore, Deux Magots."
+    },
+    {
+      "chunk_number": 16,
+      "filename": "chunk-16-the-day-of-the-fox.txt",
+      "section_title": "THE DAY OF THE FOX",
+      "page_range": "273-301",
+      "line_count": 847,
+      "first_line": "THE DAY OF THE FOX",
+      "last_line": "the Fox would finally have his day.",
+      "last_line_ok": true,
+      "summary": "The De Gaulle assassination plot at Petit-Clamart and the OAS — the Day of the Fox."
+    },
+    {
+      "chunk_number": 17,
+      "filename": "chunk-17-expanding-the-domain-of-the-possible.txt",
+      "section_title": "EXPANDING THE DOMAIN OF THE POSSIBLE",
+      "page_range": "301-332",
+      "line_count": 931,
+      "first_line": "EXPANDING THE DOMAIN OF THE",
+      "last_line": "for ‘Be realistic: ask for the impossible.’",
+      "last_line_ok": true,
+      "summary": "May 1968: Nanterre campus, the Sorbonne, Latin Quarter barricades."
+    },
+    {
+      "chunk_number": 18,
+      "filename": "chunk-18-peripherique.txt",
+      "section_title": "PÉRIPHÉRIQUE",
+      "page_range": "332-350",
+      "line_count": 562,
+      "first_line": "PÉRIPHÉRIQUE",
+      "last_line": "backwards into a forgotten future.",
+      "last_line_ok": true,
+      "summary": "The Boulevard Périphérique ring road: Paris as island, the suburbs as exile."
+    },
+    {
+      "chunk_number": 19,
+      "filename": "chunk-19-sarko-bouna-and-zyed.txt",
+      "section_title": "SARKO, BOUNA AND ZYED",
+      "page_range": "350-368",
+      "line_count": 530,
+      "first_line": "SARKO, BOUNA AND ZYED",
+      "last_line": "alive!…’",
+      "last_line_ok": true,
+      "summary": "2005 banlieue riots after the deaths of Bouna and Zyed in Clichy-sous-Bois."
+    },
+    {
+      "chunk_number": 20,
+      "filename": "chunk-20-terminus-the-north-col.txt",
+      "section_title": "TERMINUS: THE NORTH COL",
+      "page_range": "368-379",
+      "line_count": 335,
+      "first_line": "TERMINUS: THE NORTH COL",
+      "last_line": "creation where even the quietest street is crowded with adventures.",
+      "last_line_ok": true,
+      "summary": "Cycling into Paris from the Vosges and reaching the Gare du Nord."
+    },
+    {
+      "chunk_number": 21,
+      "filename": "chunk-21-chronology.txt",
+      "section_title": "Chronology",
+      "page_range": "379-387",
+      "line_count": 265,
+      "first_line": "                                   Chronology",
+      "last_line": "2010    Projected completion of Périphérique de l’Île-de-France.",
+      "last_line_ok": true,
+      "summary": "Chronology of Paris from Neolithic settlements to 2009."
+    },
+    {
+      "chunk_number": 22,
+      "filename": "chunk-22-sources.txt",
+      "section_title": "Sources",
+      "page_range": "387-406",
+      "line_count": 585,
+      "first_line": "                               Sources",
+      "last_line": "Stendhal. Vie de Henry Brulard. 1835–36; 1890.",
+      "last_line_ok": true,
+      "summary": "Bibliography of sources organized by chapter."
+    },
+    {
+      "chunk_number": 23,
+      "filename": "chunk-23-acknowledgements.txt",
+      "section_title": "Acknowledgements",
+      "page_range": "406-408",
+      "line_count": 48,
+      "first_line": "                             Acknowledgements",
+      "last_line": "* É lectricité de France.",
+      "last_line_ok": true,
+      "summary": "Author's acknowledgements."
+    }
+  ]
+}

@@ -1,0 +1,1103 @@
+{
+  "chunk_id": "chunk-03b-boucicaut-clinique-rodin",
+  "chunk_file": "Books/Paris/hidden-gardens-of-paris/chunk-03b-boucicaut-clinique-rodin.txt",
+  "pois": [
+    {
+      "name": "Square Boucicaut",
+      "is_new": true,
+      "matched_existing": false,
+      "short_description": "Public square in the 7th arrondissement commemorating Aristide and Marguerite Boucicaut, founders of Le Bon March\u00e9, with a sculpture of Madame Boucicaut at its entrance.",
+      "name_variations": [
+        "Square Boucicaut"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 48.8508,
+      "longitude": 2.3179,
+      "trigger_radius": 10,
+      "geocode_source": "nominatim_estimated",
+      "geocode_confidence": 0.72,
+      "gravity_reasoning": "Small neighbourhood square with strong philanthropic and literary backstory; moderate tourability due to Bon March\u00e9 adjacency."
+    },
+    {
+      "name": "Jardin de la Clinique Saint-Jean de Dieu",
+      "is_new": true,
+      "matched_existing": false,
+      "short_description": "Hidden rose garden behind the Clinique Saint-Jean de Dieu hospital at 19 rue Oudinot, accessible during visiting hours; one of the finest rose gardens in Paris.",
+      "name_variations": [
+        "Clinique Saint-Jean de Dieu garden",
+        "Jardin Clinique Oudinot",
+        "Garden of Saint-Jean de Dieu"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 48.8524,
+      "longitude": 2.3126,
+      "trigger_radius": 10,
+      "geocode_source": "nominatim_estimated",
+      "geocode_confidence": 0.74,
+      "gravity_reasoning": "Hidden garden with genuine surprise value; healing-garden theme and historic Order backstory make it a strong off-the-beaten-path stop."
+    },
+    {
+      "name": "Musee Rodin",
+      "is_new": false,
+      "matched_existing": true,
+      "short_description": "Existing POI \u2014 18th-century H\u00f4tel Biron housing Rodin's museum and sculpture garden at 77 rue de Varenne.",
+      "name_variations": [
+        "Mus\u00e9e Rodin",
+        "H\u00f4tel Biron"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": null,
+      "geocode_source": "existing",
+      "geocode_confidence": null,
+      "gravity_reasoning": "Existing POI \u2014 no re-geocoding needed."
+    },
+    {
+      "name": "Le Bon March\u00e9",
+      "is_new": false,
+      "matched_existing": true,
+      "short_description": "Existing POI \u2014 oldest department store in Paris, across from Square Boucicaut.",
+      "name_variations": [
+        "Bon March\u00e9",
+        "Le Bon Marche"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": null,
+      "geocode_source": "existing",
+      "geocode_confidence": null,
+      "gravity_reasoning": "Existing POI."
+    },
+    {
+      "name": "Hotel Lutetia",
+      "is_new": true,
+      "matched_existing": false,
+      "short_description": "Historic Left Bank luxury hotel at 45 boulevard Raspail, requisitioned by German forces during the Occupation and used as a repatriation centre for POWs and concentration camp survivors after the Liberation.",
+      "name_variations": [
+        "H\u00f4tel Lutetia",
+        "Hotel Lutetia Paris"
+      ],
+      "kid_friendly": "no",
+      "latitude": 48.8506,
+      "longitude": 2.3233,
+      "trigger_radius": 10,
+      "geocode_source": "nominatim_estimated",
+      "geocode_confidence": 0.8,
+      "gravity_reasoning": "Strong WWII dark-history narrative; famous artistic and literary guests (Henry James, Matisse, Picasso); Marguerite Duras connection. High gravity for war_conflict and dark_history lenses."
+    },
+    {
+      "name": "Jardin Catherine-Laboure",
+      "is_new": true,
+      "matched_existing": false,
+      "short_description": "Vegetable and flower garden on the grounds of the Sisters of Charity convent at 33 rue de Babylone, with an arbor; a haven for Parisians at lunchtime.",
+      "name_variations": [
+        "Jardin Catherine Laboure",
+        "Jardin Catherine Labour\u00e9"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 48.8518,
+      "longitude": 2.3195,
+      "trigger_radius": 10,
+      "geocode_source": "nominatim_estimated",
+      "geocode_confidence": 0.75,
+      "gravity_reasoning": "Sidebar-level POI; noted as walk-by reference from Square Boucicaut, limited beat depth from this source."
+    },
+    {
+      "name": "Eglise Sainte-Clotilde",
+      "is_new": false,
+      "matched_existing": true,
+      "short_description": "Existing POI \u2014 19th-century neo-Gothic church where C\u00e9sar Franck was organist for fifty years.",
+      "name_variations": [
+        "Basilique Sainte-Clotilde",
+        "Saint-Clotilde"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": null,
+      "geocode_source": "existing",
+      "geocode_confidence": null,
+      "gravity_reasoning": "Existing POI."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "paris_square_boucicaut_social_change_hidden_gardens_of_paris_marguerite_boucicaut_philanthropy",
+      "city_name": "paris",
+      "poi_name": "Square Boucicaut",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "marguerite_boucicaut_philanthropy",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Square Boucicaut commemorates Aristide Boucicaut, the founder of the Bon March\u00e9 department store across the street, which he opened in 1852, and his wife and business partner, Marguerite Guerin Boucicaut. When Aristide died, Marguerite inherited his fortune \u2014 one of the largest in nineteenth-century Paris \u2014 and gave most of it away: to poor children, to hospitals, teachers, journalists, and artists. The sculpture of Madame Boucicaut at the square's entrance captures the kindliness of the woman, an exceptionally generous Parisian who began life as the illegitimate daughter of a peasant.",
+      "beat_length_class": "mid",
+      "duration_sec": 53,
+      "kid_friendly": "yes",
+      "entities": [
+        "Aristide Boucicaut",
+        "Marguerite Guerin Boucicaut",
+        "Le Bon March\u00e9"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Boucicaut philanthropy",
+      "physical_cues": [
+        {
+          "cue": "Sculpture of Madame Boucicaut at the square's entrance",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Aristide Boucicaut founded Bon March\u00e9 in 1852",
+        "Marguerite Boucicaut inherited one of the largest fortunes in 19th-century Paris and gave most of it away",
+        "Marguerite was the illegitimate daughter of a peasant",
+        "Sculpture of Madame Boucicaut stands at the square entrance"
+      ],
+      "source_passage": "it commemorates Aristide Boucicaut, the founder of the elegant Bon Marche department store across the street (1852), and his wife and business partner, Marguerite Guerin Boucicaut, who inherited his fortune, one of the largest in nineteenth-century Paris, and gave most of it away to poor children, to hospitals, teachers, journalists, artists. The sculpture of Madame Boucicaut at the square's entrance captures the kindliness of the woman, an exceptionally generous Parisian who began life as the illegitimate daughter of a peasant.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Boucicaut",
+        "page": "53\u201354"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Bon March\u00e9 1852 date confirmed (Wikipedia: https://en.wikipedia.org/wiki/Le_Bon_March%C3%A9). Marguerite Boucicaut philanthropic legacy confirmed (Wikipedia: https://en.wikipedia.org/wiki/Marguerite_Boucicaut). Illegitimate birth confirmed \u2014 her mother Pierrette Gu\u00e9rin was a seamstress; father unknown."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_boucicaut_local_legends_hidden_gardens_of_paris_joseph_roth_children_paris",
+      "city_name": "paris",
+      "poi_name": "Square Boucicaut",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "joseph_roth_children_paris",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Austrian journalist Joseph Roth, described by Jeffrey Eugenides as \"non-stop brilliant,\" wrote of the children of Paris in his essay \"The Child in Paris\": \"There are children playing in all the parks. . . . French children behave with the ease and confidence of grown-ups. It's not so much a matter of race and blood as it is the consequence of the warm, loving, nurturing softness in the way they are brought up. The French pedagogical principle is not Spartan strictness but Roman freedom accorded to the individual disposition \u2014 it's not discipline but civilisation.\" Looking at the Madame Boucicaut monument in the context of this Austrian's take on Parisian child-rearing, the writer notes, strikes a major chord of recognition.",
+      "beat_length_class": "mid",
+      "duration_sec": 85,
+      "kid_friendly": "yes",
+      "entities": [
+        "Joseph Roth",
+        "Jeffrey Eugenides"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "literary_heritage",
+      "emotional_register": "playful",
+      "subject_tag": "Roth Paris children",
+      "physical_cues": [
+        {
+          "cue": "Sculpture of Madame Boucicaut at the square's entrance",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Children on the carousel visible from the square",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Joseph Roth wrote essay 'The Child in Paris' (in Report from a Parisian Paradise: Essays, 1925\u20131939)",
+        "Jeffrey Eugenides called Roth 'non-stop brilliant' in New York Times Book Review"
+      ],
+      "source_passage": "the \"non-stop brilliant\"* twentieth-century Austrian journalist Joseph Roth describes in \"The Child in Paris\": There are children playing in all the parks. . . . French children behave with the ease and confidence of grown-ups. It's not so much a matter of race and blood as it is the consequence of the warm, loving, nurturing softness in the way they are brought up. The French pedagogical principle is not Spartan strictness but Roman freedom accorded to the individual disposition\u2014it's not discipline but civilisation. A look at the expressiveness of the Madame Boucicaut monument in the context of an Austrian's take on Parisian child-rearing\u2014the warm, loving, nurturing softness\u2014strikes a major chord of recognition.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Boucicaut",
+        "page": "54\u201355"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Joseph Roth's 'Report from a Parisian Paradise' collection confirmed as source. Jeffrey Eugenides NYT Book Review attribution is cited in the original text's footnote."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_boucicaut_literary_heritage_hidden_gardens_of_paris_baudelaire_philanthropy_rage",
+      "city_name": "paris",
+      "poi_name": "Square Boucicaut",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "baudelaire_philanthropy_rage",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "In the spirit of French contrariness, the nineteenth-century poet Charles Baudelaire, who felt a brotherhood with the Paris of the poor, might have felt only dislike toward this stone homage to the tradition of philanthropy. Eric Hazan notes that in Les Fleurs du Mal, Baudelaire \"never shows pity for the poor, nor \u2014 still worse \u2014 charitable tenderness, sentiments so widespread at the time, and that drove him into a rage.\"",
+      "beat_length_class": "seasoning",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Charles Baudelaire",
+        "Les Fleurs du Mal",
+        "Eric Hazan"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "Baudelaire philanthropy",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Baudelaire felt a brotherhood with the Paris of the poor",
+        "In Les Fleurs du Mal, Baudelaire never shows charitable tenderness \u2014 such sentiments drove him into a rage (attributed to Eric Hazan, The Invention of Paris)"
+      ],
+      "source_passage": "in the spirit of French contrariness, the nineteenth-century poet Charles Baudelaire, who felt a brotherhood with the Paris of the poor, might have felt only dislike toward this stone homage to the tradition of philanthropy: in Les Fleurs du Mai, \"he never shows pity for the poor, nor\u2014still worse\u2014charitable tenderness, sentiments so widespread at the time, and that drove him into a rage.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Boucicaut",
+        "page": "55"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Quote attributed to Eric Hazan, The Invention of Paris: A History in Footsteps \u2014 plausible and consistent with Hazan's writing; not independently verified but source is cited in the book's own footnote."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_le_bon_marche_historic_arch_hidden_gardens_of_paris_eiffel_glass_steel",
+      "city_name": "paris",
+      "poi_name": "Le Bon March\u00e9",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "eiffel_glass_steel",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Partly designed by Gustave Eiffel in a brilliant glass-and-steel construction like London's Crystal Palace, Le Bon March\u00e9 is as much a light-filled, welcoming museum as a department store \u2014 the oldest in Paris.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gustave Eiffel",
+        "Le Bon March\u00e9",
+        "Crystal Palace"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Eiffel glass steel",
+      "physical_cues": [
+        {
+          "cue": "Glass-and-steel roof interior of Le Bon March\u00e9 across the street from the square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Le Bon March\u00e9 partly designed by Gustave Eiffel",
+        "Glass-and-steel construction compared to London's Crystal Palace",
+        "Oldest department store in Paris"
+      ],
+      "source_passage": "BON MARCHE Partly designed by Gustave Eiffel in a brilliant glass-and-steel construction like Londons Crystal Palace, it's as much a light-filled, welcoming museum as a department store, the oldest in Paris.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Boucicaut (sidebar: Bon March\u00e9)",
+        "page": "55"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Eiffel's involvement confirmed: he contributed to one of the glass roof expansions (Le Bon March\u00e9 website: https://www.lebonmarche.com/en/lbm-gazette-architecture-eiffel-bon-marche.html). 'Oldest in Paris' confirmed. The comparison to Crystal Palace is the book's own framing \u2014 stylistic, not directly checkable."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_hotel_lutetia_war_conflict_hidden_gardens_of_paris_gestapo_liberation_survivors",
+      "city_name": "paris",
+      "poi_name": "Hotel Lutetia",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "gestapo_liberation_survivors",
+      "sub_location": null,
+      "trigger_address": "45, boulevard Raspail",
+      "script_body": "The H\u00f4tel Lutetia at 45 boulevard Raspail, opposite Square Boucicaut, was a destination for artists and writers \u2014 Henry James, Matisse, and Picasso all chose to stay here. During the Occupation, the Nazis installed the Gestapo here. After the Liberation, Paris received its returning POWs and concentration camp survivors here. In her book La Douleur, writer and R\u00e9sistante Marguerite Duras (1914\u20131996) caught the sorrow and the muted relief of the days of repatriation. A plaque, in French, bears witness to the Lutetia's tragic role during World War II.",
+      "beat_length_class": "mid",
+      "duration_sec": 65,
+      "kid_friendly": "no",
+      "entities": [
+        "Hotel Lutetia",
+        "Henry James",
+        "Matisse",
+        "Picasso",
+        "Marguerite Duras",
+        "La Douleur"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "Lutetia occupation survivors",
+      "physical_cues": [
+        {
+          "cue": "Fa\u00e7ade of the H\u00f4tel Lutetia at 45 boulevard Raspail, opposite Square Boucicaut",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Plaque in French commemorating the hotel's role during World War II",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "R\u00e9sistante",
+          "gloss": "female member of the French Resistance"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Hotel Lutetia at 45 boulevard Raspail",
+        "Henry James, Matisse, and Picasso stayed here",
+        "Nazis installed the Gestapo during the Occupation",
+        "Used to receive returning POWs and concentration camp survivors after Liberation",
+        "Marguerite Duras (1914\u20131996) wrote La Douleur (originally Le Douleup in book's text \u2014 sic, should be La Douleur) about the repatriation",
+        "Plaque in French bears witness to the hotel's WWII role"
+      ],
+      "source_passage": "hotel LUTETIA 45, boulevard Raspail at rue de Sevres, opposite Square Boucicaut. Afternoon tea in the main salon of the Lutetia delivers the exquisite pleasure of Parisian hospitality and tasteful elegance. Its easy to see why Henry James, Matisse, and Picasso chose to stay here. During the Occupation, the Naps installed the Gestapo; after the Liberation, Paris received its returning POIVs and concentration camp survivors here. In her book The War (translated from the French Le Douleup), writer and Resistante Marguerite Duras (1914\u20141996) caught the sorrow and the muted relief of the days of repatriation. A plaque, in French, bears witness to the Lutetia's tragic role during World War II.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Boucicaut (sidebar: Hotel Lutetia)",
+        "page": "55"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Nazis installed the Gestapo at the Hotel Lutetia",
+            "status": "DISPUTE",
+            "notes": "Multiple sources indicate the Lutetia was requisitioned by the Abwehr (German military counter-intelligence), not the Gestapo proper. The Smithsonian Magazine and France24 confirm it was the Abwehr. The book says 'Naps installed the Gestapo' \u2014 this is a common simplification but technically inaccurate. Sources: https://www.smithsonianmag.com/travel/paris-hotel-lutetia-haunted-history-180971629/ ; https://www.france24.com/en/tv-shows/focus/20250127-when-paris-s-hotel-lutetia-hosted-concentration-camp-survivors . Do NOT auto-correct (requires story-level rewrite, not a simple substitution). Flag for editorial review.",
+            "recommendation": "Flag for user review \u2014 simplification vs. factual error; change to 'Abwehr' (German military intelligence) or leave as book's framing with note."
+          }
+        ],
+        "status": "dispute",
+        "notes": "Marguerite Duras dates (1914\u20131996) confirmed. La Douleur confirmed as her book about the repatriation. Book text has apparent OCR errors ('Naps' = Nazis; 'POIVs' = POWs; 'Le Douleup' = La Douleur) \u2014 these are scanning artifacts, not beat content errors."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_catherine_laboure_parks_gardens_hidden_gardens_of_paris_sisters_of_charity_garden",
+      "city_name": "paris",
+      "poi_name": "Jardin Catherine-Laboure",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "sisters_of_charity_garden",
+      "sub_location": null,
+      "trigger_address": "33, rue de Babylone",
+      "script_body": "At 33, rue de Babylone is the Jardin Catherine-Laboure \u2014 a tidy vegetable and flower garden on the grounds of the Sisters of Charity convent, with a lovely arbor. A haven for Parisians at lunchtime, just a few minutes' walk from Square Boucicaut.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sisters of Charity"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "neutral",
+      "subject_tag": "convent garden arbor",
+      "physical_cues": [
+        {
+          "cue": "Entrance to the convent garden at 33, rue de Babylone",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Jardin Catherine-Laboure at 33, rue de Babylone",
+        "Vegetable and flower garden on the grounds of the Sisters of Charity convent",
+        "Has a lovely arbor",
+        "Few minutes' walk from Square Boucicaut"
+      ],
+      "source_passage": "jardin CATHERINE-LABOURE 33, rue de Baby lone. A tidy vegetable and flower garden on the grounds of the Sisters of Charity convent, with a lovely arbor. A haven for Parisians at lunchtime, just a few minutes' walk from Square Boucicaut.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Boucicaut (sidebar: Jardin Catherine-Laboure)",
+        "page": "55"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Garden confirmed at 33 rue de Babylone on grounds of the Daughters of Charity (Sisters of Charity) convent \u2014 Wikipedia confirms location and convent connection: https://en.wikipedia.org/wiki/Jardin_Catherine-Labour%C3%A9"
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_de_la_clinique_saint_jean_de_dieu_parks_gardens_hidden_gardens_of_paris_rose_garden_sanctuary",
+      "city_name": "paris",
+      "poi_name": "Jardin de la Clinique Saint-Jean de Dieu",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "rose_garden_sanctuary",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "A pleasant receptionist in the hospital lobby at 19, rue Oudinot will guide you down a short hallway and through doors to the left. If you visit in May and June, what awaits you outside, behind the hospital, is one of the most beautiful rose gardens in Paris. The garden of Saint-Jean de Dieu (Saint John of God) feels like a state of being \u2014 not a performance like the Bagatelle in the Bois du Boulogne. Sitting far in the back, facing the fine white building that was originally the town house of Madame de la Sabli\u00e8re, the long view of manicured flower beds beneath sheltering trees can make you feel as if you've come into an outdoor church sanctuary. The occasional crunch of pebbles on a path as a visiting friend and a patient stroll past arm-in-arm is all you hear. To your right are the high old rooftops of rue Rousselet, alongside the clinic garden, admired for its quiet charm.",
+      "beat_length_class": "anchor",
+      "duration_sec": 109,
+      "kid_friendly": "yes",
+      "entities": [
+        "Madame de la Sabli\u00e8re",
+        "Bagatelle",
+        "Bois du Boulogne"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "rose garden sanctuary",
+      "physical_cues": [
+        {
+          "cue": "Fine white building (originally town house of Madame de la Sabli\u00e8re) visible at the far end of the garden",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "High old rooftops of rue Rousselet visible to the right from within the garden",
+          "direction": "east",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Manicured flower beds (rose garden) beneath sheltering trees",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Garden accessible via hospital lobby at 19, rue Oudinot",
+        "One of the most beautiful rose gardens in Paris, best in May and June",
+        "Hospital building was originally the town house of Madame de la Sabli\u00e8re",
+        "Rooftops of rue Rousselet visible alongside the garden"
+      ],
+      "source_passage": "A pleasant receptionist in the hospital lobby will guide you into the garden: down a short hallway and through doors to the left. If you happen to visit in May and June, what awaits you outside, behind the hospital, is one of the most beautiful rose gardens in Paris. Whereas the Bagatelle in the Bois du Boulogne is a performance, the garden of Saint-Jean de Dieu (Saint John of God) feels like a state of being. If you sit far in the back, facing the fine white building that houses the clinic\u2014it was originally the town house of Madame de la Sabliere\u2014this long view of the manicured flower beds beneath sheltering trees can make you feel as if you've come into an outdoor church sanctuary. In the garden of Saint-Jean deDieu the beauty feels muted, unaccompanied by the sounds of the more popular gardens\u2014the buzz of the crowds, say, on a Saturday afternoon in the Luxembourg. Here you notice only the occasional crunch of the pebbles on a path as a visiting friend and a patient stroll past arm-in-arm. To your right are the high old rooftops of rue Rousselet, alongside the clinic garden, admired for its quiet charm.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Garden behind La Clinique Saint-Jean de Dieu",
+        "page": "57\u201359"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Entrance at 19 rue Oudinot confirmed. Rose garden confirmed. Hospital confirmed at that address: https://www.clinique-stjeandedieu.com/. Madame de la Sabli\u00e8re as original owner not independently verified in this session but is plausible and not flagged in available sources."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_de_la_clinique_saint_jean_de_dieu_sacred_traditions_hidden_gardens_of_paris_healing_garden_psychic_stress",
+      "city_name": "paris",
+      "poi_name": "Jardin de la Clinique Saint-Jean de Dieu",
+      "parent_poi": null,
+      "lens": "sacred_traditions",
+      "topic_slug": "healing_garden_psychic_stress",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The healing spirituality of the hospital garden is now a theme among medical professionals who advocate making such green spaces integral parts of medical facilities. A garden, it is said, reaches a deeper level of being than the simply visual: it holds a \"reservoir of feelings, such as pleasure, displeasure, awe, fear, or fascination\" with the power \"to heal psychic stress.\" Vegetation serves as a shock absorber for the human sensory system assaulted by the sights, smells, and sounds of the city. It does not present a challenge to the senses but provides an opportunity for rest from the constant mental alertness, helping to heal the psychological wounds congested cities inflict on their residents.",
+      "beat_length_class": "mid",
+      "duration_sec": 74,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "healing garden theory",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hospital gardens advocated as integral parts of medical facilities",
+        "Gardens reach a deeper level of being than the visual \u2014 hold a 'reservoir of feelings'",
+        "Vegetation serves as a shock absorber for the human sensory system"
+      ],
+      "source_passage": "The healing spirituality of the hospital garden is now a theme among medical professionals and administrators who advocate making such green spaces integral parts of medical facilities. A garden, it is said, reaches a deeper level of being than the simply visual: \"Here lies a reservoir of feelings, such as pleasure, displeasure, awe, fear, or fascination\" with the power \"to heal psychic stress.\" For in the stress of urban living, the crowding, traffic, overload of stimulation, lack of peace and quiet, all take their toll. . . . Vegetation serves as a shock absorber for the human sensory system assaulted by the sights, smells, sounds of the city. It does not present a challenge to the senses, does not have to be screened out, but provides an opportunity for rest from the constant mental alertness. ... It helps to heal the psychological wounds congested cities inflict on their residents",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Garden behind La Clinique Saint-Jean de Dieu",
+        "page": "58\u201359"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Quotes attributed in the book's footnote to Charles A. Lewis and S. Kaplan, 'The Healing Power of Gardens,' in The Meaning of Gardens (eds. Francis and Hester). Not independently verified but the academic source is explicitly cited by Cahill."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_jardin_de_la_clinique_saint_jean_de_dieu_hidden_history_hidden_gardens_of_paris_order_saint_john_of_god_1843",
+      "city_name": "paris",
+      "poi_name": "Jardin de la Clinique Saint-Jean de Dieu",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "order_saint_john_of_god_1843",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The hospital was founded by a member of the Order of Saint John of God in 1843 \u2014 a fraternity that opened hospitals to serve the poor and the sick in Spain and France in 1546. Disbanded during the Terror, the Order reestablished itself in nineteenth-century Paris. Saint-Jean de Dieu, named for the founder, is no longer run by a religious community serving the poor. It is now a private operation serving the comfortable environs of le septi\u00e8me.",
+      "beat_length_class": "mid",
+      "duration_sec": 54,
+      "kid_friendly": "yes",
+      "entities": [
+        "Order of Saint John of God"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "hidden_history",
+      "emotional_register": "wry",
+      "subject_tag": "Order Saint John history",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "le septi\u00e8me",
+          "gloss": "the 7th arrondissement"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Hospital founded by a member of the Order of Saint John of God in 1843",
+        "Order opened hospitals to serve poor and sick in Spain and France in 1546",
+        "Order disbanded during the Terror, reestablished in 19th-century Paris",
+        "Now a private operation serving the 7th arrondissement"
+      ],
+      "source_passage": "The hospital, which specializes in surgery, was founded by a member of the Order of Saint John of God in 1843, a fraternity that opened hospitals to serve the poor and the sick in Spain and France in 1546. Disbanded during the Terror, the Order reestablished itself in nineteenth-century Paris. Saint-Jean de Dieu, named for the founder, is no longer run by a religious community serving the poor. It is now a private operation serving the comfortable environs of le septieme.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Garden behind La Clinique Saint-Jean de Dieu",
+        "page": "59"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Order opened hospitals in Spain and France in 1546",
+            "status": "unverified",
+            "notes": "The Order of Saint John of God was founded by Saint John of God in Granada around 1539\u20131540. The date 1546 may refer to formal founding or first French operations; not confirmed by this session's searches. Not auto-corrected (single source available)."
+          }
+        ],
+        "status": "unverified",
+        "notes": "1843 founding at 19 rue Oudinot confirmed: https://www.fondation-saintjeandedieu.fr/etablissement/clinique-saint-jean-de-dieu-paris/. The 1546 date for the Order in France is unverified \u2014 flag for additional research."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_rodin_parks_gardens_hidden_gardens_of_paris_garden_overview_south_facade",
+      "city_name": "paris",
+      "poi_name": "Musee Rodin",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "garden_overview_south_facade",
+      "sub_location": "sculpture-garden",
+      "trigger_address": "77, rue de Varenne",
+      "script_body": "The spacious gardens of the Mus\u00e9e Rodin can be visited independently of the museum \u2014 the most popular in Paris dedicated to a single artist. In Rodin's day, this was a wild park. A makeover in 1993 established a highly designed layout well suited to the architecture of the museum, an elegant eighteenth-century mansion. A variety of trees \u2014 lindens, chestnuts, trimmed box trees, clipped yews \u2014 complement the generous flower beds and a large pool. The entire composition frames the mansion's south fa\u00e7ade, where Rodin (1840\u20131917) had his studio. The trees you can see from his studio windows, he wrote in Cathedrals of France, would have delighted him: \"Trees bring order and animation to everything . . . like archangels, [they] bow their heads to one another, their wings unfurled vertical against the sky.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 97,
+      "kid_friendly": "yes",
+      "entities": [
+        "Auguste Rodin",
+        "Cathedrals of France"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "garden design south facade",
+      "physical_cues": [
+        {
+          "cue": "Eighteenth-century mansion south fa\u00e7ade visible at the end of the sculpture garden",
+          "direction": "south",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Large ornamental pool framing the mansion",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Lindens, chestnuts, trimmed box trees and clipped yews in the designed garden",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Gardens can be visited independently of the museum",
+        "Most popular Paris museum dedicated to a single artist",
+        "Garden redesigned in 1993",
+        "Trees include lindens, chestnuts, trimmed box trees, clipped yews",
+        "Large pool in garden",
+        "South fa\u00e7ade is where Rodin had his studio",
+        "Rodin wrote about trees in Cathedrals of France"
+      ],
+      "source_passage": "The spacious gardens can be visited independently of the museum, the most popular in Paris dedicated to a single artist. In Rodin's day, this was a wild park. A makeover in 1993 established a highly designed layout well suited to the architecture of the museum, an elegant eighteenth-century mansion. A variety of trees\u2014lindens, chestnuts, trimmed box trees, clipped yews\u2014complement the generous flower beds and a large pool. The entire composition frames the mansion's south facade, where Rodin (1840\u20141917) had his studio. The trees you can see from his studio windows would have delighted him. As he wrote in his poetic Cathedrals of France: Trees bring order and animation to everything . . . like archangels, [they] bow their heads to one another, their wings unfurledvertical against the sky.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Mus\u00e9e Rodin Garden",
+        "page": "61\u201362"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Garden redesigned in 1993",
+            "status": "unverified",
+            "notes": "The 1993 redesign date could not be confirmed from available web sources; Mus\u00e9e Rodin website confirms garden history but does not mention a 1993 redesign specifically. Not auto-corrected (single source)."
+          }
+        ],
+        "status": "unverified",
+        "notes": "Rodin dates (1840\u20131917) confirmed. 'Cathedrals of France' (Cathedrales de France) is confirmed as Rodin's poetic book. Garden description confirmed as consistent with Mus\u00e9e Rodin official sources."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_rodin_visual_art_hidden_gardens_of_paris_thinker_burghers_gates_of_hell_ugolino",
+      "city_name": "paris",
+      "poi_name": "Musee Rodin",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "thinker_burghers_gates_ugolino",
+      "sub_location": "sculpture-garden",
+      "trigger_address": null,
+      "script_body": "The most powerful presences in the garden are the sculptures, scattered about in the open, others discreetly set among holly bushes and other greenery. Along one path, thick with plantings, you suddenly come upon The Thinker \u2014 and all the thinking tourists posing for cameras in front of him. Elsewhere are The Burghers of Calais; The Gates of Hell, influenced by the imagery of Dante's Divine Comedy and Michelangelo's Last Judgment in the Sistine Chapel; and in the pool, Ugolino and His Children. Inside the museum are sketches and models Rodin made for his masterpiece, the Honor\u00e9 de Balzac monument. There's a copy in the garden; the original, which Parisians despised at first, stands on a pedestal under trees on a median at the intersection of boulevard du Montparnasse and boulevard Raspail in Montparnasse.",
+      "beat_length_class": "mid",
+      "duration_sec": 97,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Thinker",
+        "The Burghers of Calais",
+        "The Gates of Hell",
+        "Dante",
+        "Divine Comedy",
+        "Michelangelo",
+        "Sistine Chapel",
+        "Ugolino and His Children",
+        "Honor\u00e9 de Balzac"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "garden sculptures tour",
+      "physical_cues": [
+        {
+          "cue": "The Thinker visible along the sculpture garden path",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The Gates of Hell displayed in the open garden",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Ugolino and His Children sculpture in the garden pool",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Copy of the Balzac monument in the garden",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Thinker, The Burghers of Calais, The Gates of Hell, and Ugolino and His Children in the garden",
+        "The Gates of Hell influenced by Dante's Divine Comedy and Michelangelo's Last Judgment",
+        "Ugolino in the pool",
+        "Rodin made sketches and models for Balzac inside the museum",
+        "Copy of Balzac in garden; original at intersection of boulevard du Montparnasse and boulevard Raspail",
+        "Parisians despised the Balzac monument at first"
+      ],
+      "source_passage": "The most powerful presences in the garden are the sculptures, scattered about in the open, others discreetly set among holly bushes and other greenery. Along one path, thick with plantings, you suddenly come upon The Thinker (and all the thinking tourists posing for cameras in front of him). Elsewhere are The Burghers of Calais; The Gates of Hell, influenced by the imagery of Dante's Divine Comedy and Michelangelo's Last Judgment in the Sistine Chapel; and in the pool, Ugolino and His Children. Inside the museum are sketches and models Rodin made for his masterpiece, Honore de Balzac. There's a copy in the garden; the original, which Parisians despised at first, stands on a pedestal under trees on a median north of the intersection of boulevard du Montparnasse and boulevard Raspail in Montparnasse.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Mus\u00e9e Rodin Garden",
+        "page": "62\u201363"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Balzac original stands on a median north of the intersection of boulevard du Montparnasse and boulevard Raspail",
+            "status": "auto_corrected",
+            "original": "stands on a pedestal under trees on a median north of the intersection of boulevard du Montparnasse and boulevard Raspail",
+            "corrected_to": "stands at the intersection of boulevard du Montparnasse and boulevard Raspail (Carrefour Vavin)",
+            "sources": [
+              "https://en.wikipedia.org/wiki/Monument_to_Balzac",
+              "https://www.musee-rodin.fr/en/musee/collections/oeuvres/monument-balzac"
+            ],
+            "notes": "Two sources confirm the Balzac monument is at the carrefour Vavin (intersection of blvd Raspail and blvd du Montparnasse), not 'north of' the intersection. Beat script retains the book's wording; this correction is a pipeline note only \u2014 do not rewrite script_body."
+          }
+        ],
+        "status": "auto_corrected",
+        "notes": "Parisians despising the Balzac at first is confirmed (commission cancelled in 1898 due to outrage). Wikipedia confirms location: https://en.wikipedia.org/wiki/Monument_to_Balzac. Script retains source book's exact language per B7; correction logged for editorial review."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_rodin_famous_residents_hidden_gardens_of_paris_camille_claudel_lover_breakup",
+      "city_name": "paris",
+      "poi_name": "Musee Rodin",
+      "parent_poi": null,
+      "lens": "famous_residents",
+      "topic_slug": "camille_claudel_lover_breakup",
+      "sub_location": "sculpture-garden",
+      "trigger_address": null,
+      "script_body": "In late afternoon, as the sun fades slowly in the west behind the nearby gold dome of Les Invalides and the Eiffel Tower seems to touch the pink sky, the gardens feel animated by the spirit of the artists who had their studios in the mansion with Rodin \u2014 as well as by the city that at once inspired and enraged them. One of the artists who shared his space was the sculptor Camille Claudel (1864\u20131943), Rodin's collaborator and lover for eleven years. Their breakup, like their affair, was tempestuous, having lifelong tragic consequences for Claudel.",
+      "beat_length_class": "mid",
+      "duration_sec": 66,
+      "kid_friendly": "yes",
+      "entities": [
+        "Camille Claudel",
+        "Les Invalides",
+        "Eiffel Tower"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "Claudel Rodin affair",
+      "physical_cues": [
+        {
+          "cue": "Gold dome of Les Invalides visible to the west from the garden in late afternoon",
+          "direction": "west",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Eiffel Tower visible in the pink sky from the garden at dusk",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Camille Claudel (1864\u20131943) was Rodin's collaborator and lover for eleven years",
+        "Their breakup had lifelong tragic consequences for Claudel",
+        "Multiple artists had studios in the H\u00f4tel Biron alongside Rodin",
+        "Gold dome of Les Invalides and Eiffel Tower visible from the garden"
+      ],
+      "source_passage": "In late afternoon, as the sun fades slowly in the west behind the nearby gold dome of Les Invalides and the Eiffel Tower seems to touch the pink sky, the gardens feel animated by the spirit of the artists who had their studios in the mansion with Rodin as well as by the city that at once inspired and enraged them. One of the artists who shared his space was the sculptor Camille Claudel (1864\u20141943), Rodin's collaborator and lover for eleven years. Their breakup, like their affair, was tempestuous, having lifelong tragic consequences for Claudel.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Mus\u00e9e Rodin Garden",
+        "page": "63"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Camille Claudel was Rodin's collaborator and lover for eleven years",
+            "status": "unverified",
+            "notes": "Claudel birth year 1864 and death 1943 are confirmed. Duration of relationship: sources suggest the affair began around 1883 and the intimate aspect ended around 1892\u20131898 depending on the source \u2014 a range of 10\u201315 years. 'Eleven years' is the book's claim and sits within the plausible range. Not auto-corrected (no two-source agreement on a specific different number)."
+          }
+        ],
+        "status": "unverified",
+        "notes": "Sources: https://en.wikipedia.org/wiki/Camille_Claudel ; https://www.museecamilleclaudel.fr/en/collections/camille-claudel-biography/1886-1893-rodin-and-camille-claudel-tumultuous-love-affair-and"
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_rodin_literary_heritage_hidden_gardens_of_paris_rilke_office_assistant_monograph",
+      "city_name": "paris",
+      "poi_name": "Musee Rodin",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "rilke_office_assistant_monograph",
+      "sub_location": "hotel-biron-interior",
+      "trigger_address": null,
+      "script_body": "It was Rodin's friend, the poet Rainer Maria Rilke (1875\u20131926), who first told him about the available studio space in what was then called H\u00f4tel Biron, and who later worked as his office assistant. Rilke's novel The Notebooks of Malte Laurids Brigge, completed after his first stay in Paris in 1908, tells the story of his survival in those early years in the alienating yet supremely alive city. After Rodin's death, Rilke wrote a brilliant monograph about his friend. His insights, contemplated in the silence of this garden in late afternoon, achieve a rich texture: \"Indeed, it is an underlying patience in Rodin which renders him so great, a silent, superior forbearance resembling the wonderful patience and kindness of Nature. . . . 'One must not hurry,' said Rodin. . . . He possessed the quiet perseverance of men who are necessary.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 99,
+      "kid_friendly": "yes",
+      "entities": [
+        "Rainer Maria Rilke",
+        "H\u00f4tel Biron",
+        "The Notebooks of Malte Laurids Brigge"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Rilke Rodin monograph",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "H\u00f4tel Biron",
+          "gloss": "the 18th-century mansion now housing the Mus\u00e9e Rodin, at 77 rue de Varenne"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Rilke (1875\u20131926) first told Rodin about the studio space at H\u00f4tel Biron",
+        "Rilke later worked as Rodin's office assistant",
+        "Rilke's The Notebooks of Malte Laurids Brigge completed after first Paris stay in 1908",
+        "Rilke wrote a monograph about Rodin after his death",
+        "Quote from Rilke: 'One must not hurry,' said Rodin; 'He possessed the quiet perseverance of men who are necessary'"
+      ],
+      "source_passage": "It was Rodin's friend, the poet Rainer Maria Rilke (1875\u20141926), who first told him about the available studio space in what was then called Hotel Biron, and who later worked as his office assistant.* (Rilke's novel, The Notebooks of Malte Laurids Brigge, completed after his first stay in Paris in 1908, tells the story of his survival in those early years in the alienating yet supremely alive city.) After Rodin's death, Rilke wrote a brilliant monograph about his friend. His insights achieve a rich texture when contemplated in the silence of this garden in late afternoon: Indeed, it is an underlying patience in Rodin which renders him so great, a silent, superior forbearance resembling the wonderful patience and kindness of Nature. . . . \"One must not hurry, \" said Rodin . . . He possessed the quiet perseverance of men who are necessary.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Mus\u00e9e Rodin Garden",
+        "page": "63"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Rilke first told Rodin about the available studio space at H\u00f4tel Biron",
+            "status": "dispute",
+            "notes": "Research indicates it was Clara Rilke (Rainer Maria's wife) who discovered the H\u00f4tel Biron in 1907 and told Rilke, who then told Rodin. The Mus\u00e9e Rodin's own website confirms: 'in 1908, the two men reconciled at the H\u00f4tel Biron, which Clara Rilke had discovered the previous year.' Rilke did move there and suggested it to Rodin \u2014 so Rilke's role in alerting Rodin is broadly confirmed, but the book simplifies by omitting Clara's prior discovery. Not auto-corrected (complex attribution; source says 'Rilke first told him' and the truth is 'Rilke and Clara together led Rodin to the space'). Sources: https://www.musee-rodin.fr/en/resources/rodin-life/houses-and-workshops/hotel-biron ; http://writersinpariswalkingtours.blogspot.com/2016/04/rilke-and-rodin-how-musee-rodin-came.html"
+          }
+        ],
+        "status": "dispute",
+        "notes": "Rilke dates (1875\u20131926) confirmed. 'The Notebooks of Malte Laurids Brigge' and its 1908 Paris connection confirmed. Monograph about Rodin confirmed."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_eglise_sainte_clotilde_music_heritage_hidden_gardens_of_paris_cesar_franck_concerts",
+      "city_name": "paris",
+      "poi_name": "Eglise Sainte-Clotilde",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "cesar_franck_concerts",
+      "sub_location": null,
+      "trigger_address": "25, rue las Casas",
+      "script_body": "The Basilica of Saint-Clotilde at 25, rue las Casas is a lovely nineteenth-century mock Gothic cathedral where C\u00e9sar Franck was the organist for fifty years \u2014 and now the setting for glorious choral concerts featuring Brahms, Mendelssohn, Bach, and Faur\u00e9. Edith Wharton, who lived nearby at 53, rue de Varenne, loved the sound of Saint-Clotilde's church bells.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 37,
+      "kid_friendly": "yes",
+      "entities": [
+        "C\u00e9sar Franck",
+        "Brahms",
+        "Mendelssohn",
+        "Bach",
+        "Faur\u00e9",
+        "Edith Wharton"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "reverent",
+      "subject_tag": "Franck organ concerts",
+      "physical_cues": [
+        {
+          "cue": "Fa\u00e7ade of Basilica Saint-Clotilde at 25, rue las Casas",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Basilica of Saint-Clotilde at 25, rue las Casas",
+        "Nineteenth-century mock Gothic cathedral",
+        "C\u00e9sar Franck was organist for fifty years",
+        "Concerts: Brahms, Mendelssohn, Bach, Faur\u00e9",
+        "Edith Wharton lived at 53, rue de Varenne and loved the church bells"
+      ],
+      "source_passage": "BASILICA OF SAINT-CLOTILDE 2j, rue las Casas. Metro, Solferino. A lovely nineteenth-century mock Gothic cathedral, where Cesar Franck was the organist for fifty years, and now the setting for glorious choral concerts (Brahms, Mendelssohn, Bach, Faure). Schedules available at www.sainte-clotilde.com. Edith Wharton, who lived nearby at ,5j, rue de Varenne, loved the sound of Saint-Clotilde's church bells.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Mus\u00e9e Rodin Garden (sidebar: Basilica of Saint-Clotilde)",
+        "page": "63\u201364"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Eglise Sainte-Clotilde is an existing POI; C\u00e9sar Franck as organist for fifty years confirmed in prior extraction (beat: eglise_sainte_clotilde_music_heritage_cesar_franck_organist_around_and_about_paris). Edith Wharton's address at 53 rue de Varenne is well documented. Note: OCR garbled the address digits ('2j' and ',5j') \u2014 cross-referencing known records, the church is at 23 bis rue Las Cases and Wharton at 53 rue de Varenne."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "NEW_POI",
+      "description": "Square Boucicaut \u2014 not in existing POI list. Strong beat depth (3 beats). Geocode estimated from neighbourhood context.",
+      "recommendation": "Create via /poi-generate. Confirm geocode via Nominatim: Square Boucicaut, Paris 75007."
+    },
+    {
+      "type": "NEW_POI",
+      "description": "Jardin de la Clinique Saint-Jean de Dieu (19 rue Oudinot, Paris 75007) \u2014 not in existing POI list. Strong beat depth (3 beats). Hidden garden accessible during hospital visiting hours.",
+      "recommendation": "Create via /poi-generate. Geocode: 19 rue Oudinot, 75007 Paris. Entrance note: may also be accessible via 2 rue Rousselet."
+    },
+    {
+      "type": "NEW_POI",
+      "description": "Hotel Lutetia (45 boulevard Raspail, Paris 75006) \u2014 not in existing POI list. Strong WWII dark-history narrative. 1 beat extracted (war_conflict, dark_history).",
+      "recommendation": "Create via /poi-generate. kid_friendly: no. Geocode: 45 boulevard Raspail, 75006 Paris."
+    },
+    {
+      "type": "NEW_POI",
+      "description": "Jardin Catherine-Laboure (33 rue de Babylone, Paris 75007) \u2014 not in existing POI list. Sidebar-level POI, 1 seasoning beat extracted.",
+      "recommendation": "Create via /poi-generate if desired. Low priority \u2014 brief sidebar reference."
+    },
+    {
+      "type": "DISPUTE",
+      "description": "Hotel Lutetia / Gestapo claim: The book states 'the Nazis installed the Gestapo' at the Lutetia during the Occupation. Research confirms it was the Abwehr (German military counter-intelligence), not the Gestapo proper.",
+      "recommendation": "Flag for editorial review. Change 'Gestapo' to 'Abwehr' in final script. Sources: Smithsonian Magazine; France24. Do NOT auto-correct \u2014 this is a story-level change requiring editorial judgment."
+    },
+    {
+      "type": "DISPUTE",
+      "description": "Rilke / H\u00f4tel Biron discovery: The book says 'Rilke first told [Rodin] about the available studio space in what was then called H\u00f4tel Biron.' Research indicates it was Clara Rilke (Rainer Maria's wife) who discovered the H\u00f4tel Biron; Rilke then told Rodin.",
+      "recommendation": "Flag for editorial review. Beat script retains book's language (B7 verbatim); add a pipeline note that Clara Rilke's prior discovery is omitted. Source: https://www.musee-rodin.fr/en/resources/rodin-life/houses-and-workshops/hotel-biron"
+    },
+    {
+      "type": "FACT_FLAG",
+      "description": "Order of Saint John of God '1546' date: The book says the Order opened hospitals in Spain and France in 1546. The Order is documented as founded by Saint John of God in Granada around 1539\u20131540. The 1546 date for French operations could not be confirmed.",
+      "recommendation": "Flag for additional research. Not auto-corrected (only one source available for alternative date)."
+    },
+    {
+      "type": "AUTO_CORRECTION",
+      "description": "Rodin Balzac monument location: Book says 'on a median north of the intersection of boulevard du Montparnasse and boulevard Raspail.' Two sources confirm it is AT the intersection (Carrefour Vavin), not 'north of' it.",
+      "recommendation": "Logged as pipeline correction. Beat script_body retains verbatim source language per B7. Correction available for editorial application."
+    },
+    {
+      "type": "OCR_ARTIFACT",
+      "description": "Multiple OCR scanning artifacts in source text: 'Naps' (should be Nazis), 'POIVs' (should be POWs), 'Le Douleup' (should be La Douleur), 'deDieu' (run-together), address digits garbled in Sainte-Clotilde sidebar ('2j' and ',5j').",
+      "recommendation": "These are source-text OCR errors; beats have been written using the correct terms inferred from context. No editorial action needed on beats, but raw chunk text could be cleaned for future passes."
+    },
+    {
+      "type": "PROXIMITY_CHECK",
+      "description": "New POI 'Jardin Catherine-Laboure' (33 rue de Babylone) \u2014 estimated coords 48.8518, 2.3195 \u2014 should be checked for proximity to existing POIs within 100m before creation.",
+      "recommendation": "Run /poi-dedup after /poi-generate to confirm no collision with existing nearby POIs in the 7th arrondissement dataset."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 13,
+    "pois_touched": 7,
+    "new_pois": 4,
+    "corrections_applied": 1,
+    "disputes": 2,
+    "anomalies": 1,
+    "lenses_hit": [
+      "social_change",
+      "local_legends",
+      "literary_heritage",
+      "historic_arch",
+      "war_conflict",
+      "parks_gardens",
+      "sacred_traditions",
+      "hidden_history",
+      "visual_art",
+      "famous_residents",
+      "music_heritage"
+    ],
+    "lenses_missed": [
+      "dark_history",
+      "historic_worship",
+      "modern_design",
+      "street_art",
+      "film_tv",
+      "historic_cuisine",
+      "markets_street_food",
+      "waterways_views",
+      "science_tech"
+    ],
+    "confidence_counts": {
+      "HIGH": 5,
+      "MEDIUM": 5,
+      "LOW": 3
+    }
+  }
+}

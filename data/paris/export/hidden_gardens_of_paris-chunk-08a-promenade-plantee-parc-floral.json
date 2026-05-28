@@ -1,0 +1,1447 @@
+[
+  {
+    "name": "Promenade Plantee",
+    "short_description": "Elevated linear park on an abandoned 19th-century railway viaduct, the world's first elevated park and inspiration for NYC's High Line",
+    "latitude": 48.848458,
+    "longitude": 2.373433,
+    "importance_tier": 2,
+    "trigger_radius": 75,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Coulee Verte Rene-Dumont",
+      "La Coulee Verte"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_promenade_plantee_nature_parks_hidden_gardens_of_paris_coulee_verte_high_line",
+        "city_name": "paris",
+        "poi_name": "Promenade Plantee",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "coulee_verte_high_line",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "My Parisian friends prefer New York City's High Line to their own Coulee Verte, the first of the abandoned railroad viaducts transformed in the 1990s into a landscaped walkway above the streets of a big city. The newer High Line is wider than the Promenade Plantee, more open to the wind off the Hudson River, the plantings more diverse. Walking the Promenade from Bastille to the Jardin de Reuilly — a midway point — you have a sense of enclosure, of feeling protected along this lush corridor of flowering cherry trees, spirea, jasmine, quince. A still place, except for the play of shadows and sunlight or the slow movement of walkers, the Promenade provides plenty of benches for taking a break and enjoying the views: the small rooftop gardens of the apartments to the north that face the walkway, and the architectural facades to the south. Like a secular outdoor cloister walk that goes somewhere — as far as the Bois de Vincennes if you stay the three-mile course — the Promenade in early evening has a meditative calm.",
+        "beat_length_class": "mid",
+        "duration_sec": 74,
+        "kid_friendly": "yes",
+        "entities": [
+          "High Line",
+          "Coulee Verte",
+          "Jardin de Reuilly",
+          "Bois de Vincennes"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "elevated park origins",
+        "physical_cues": [
+          {
+            "cue": "Lush corridor of flowering cherry trees, spirea, jasmine, and quince along the elevated walkway",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Small rooftop gardens of the apartments to the north that face the walkway",
+            "direction": "north",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Architectural facades to the south",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Coulee Verte",
+            "gloss": "the Promenade Plantee — the first abandoned railroad viaduct transformed into a landscaped walkway above the streets"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "First abandoned railroad viaduct transformed in the 1990s into a landscaped walkway",
+          "The High Line came later and is wider",
+          "Three-mile course from Bastille to Bois de Vincennes"
+        ],
+        "source_passage": "My Parisian friends prefer New York City's High Line to their own Coulee Verte, the first of the abandoned railroad viaducts transformed in the 1990s into a landscaped walkway above the streets of a big city. The newer High Line is wider than the Promenade Plantee, more open to the wind off the Hudson River, the plantings more diverse. Walking the Promenade from Bastille to the Jardin de Reuilly—a mid¬way point—you have a sense of enclosure, of feeling protected along this lush corridor of flowering cherry trees, spirea, jasmine, quince. A still place, except for the play of shadows and sunlight or the slow movement of walkers, the Prome¬nade provides plenty of benches for taking a break and en¬joying the views: the small rooftop gardens of the apartments to the north that face the walkway, and the architectural facades to the south.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "169-170"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "First abandoned railroad viaduct transformed in the 1990s into a landscaped walkway",
+              "status": "VERIFIED",
+              "notes": "La Promenade Plantée opened 1993, predating NYC High Line (opened 2009). Sources: https://en.wikipedia.org/wiki/Promenade_plant%C3%A9e; https://www.paris.fr/lieux/la-promenade-plantee-5527",
+              "correction_applied": false
+            }
+          ],
+          "status": "verified",
+          "notes": "The book says 'the 1990s' — the actual opening year is 1993, which is consistent. No correction needed."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 177
+      },
+      {
+        "beat_id": "paris_promenade_plantee_hidden_history_hidden_gardens_of_paris_classes_dangereuses_railroad",
+        "city_name": "paris",
+        "poi_name": "Promenade Plantee",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "classes_dangereuses_railroad",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "There's something thrilling about this overview of the streets of northeastern Paris, the home ground of les classes dangereuses — the dangerous classes. So much tumultuous history erupted in these quartiers below the old railroad tracks, part of the Paris-Cherbourg line. The political uproars and retreats of the arrondissements of northeastern Paris come closer to the actual character of the city — its multiple faces and voices — than the tamed tourist areas to the west. Looking down, you can imagine your own scenarios, the atrocities of poverty and injustice that once made these streets the cradle of revolution.",
+        "beat_length_class": "mid",
+        "duration_sec": 68,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paris-Cherbourg line"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "dramatic",
+        "subject_tag": "revolutionary streets",
+        "physical_cues": [
+          {
+            "cue": "View down to the streets of northeastern Paris from the elevated walkway",
+            "direction": "down",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "les classes dangereuses",
+            "gloss": "the dangerous classes — the working poor of northeastern Paris"
+          },
+          {
+            "phrase": "quartiers",
+            "gloss": "neighborhoods or districts"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Promenade follows the former Paris-Cherbourg railroad line",
+          "Northeastern Paris was historically the 'home ground of les classes dangereuses'"
+        ],
+        "source_passage": "there's something thrilling about this overview of the streets of northeastern Paris, the home ground of les classes dangereuses. So much tumultuous history erupted in these quartiers below the old railroad tracks (part of the Paris-Cherbourg line). The political uproars and retreats of the ar-rondissements of northeastern Paris come closer to the actual character of the city—its multiple faces and voices—than the tamed tourist areas to the west. Looking down, you can imag¬ine your own scenarios, the atrocities of poverty and injustice that once made these streets the cradle of revolution.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "170"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Historical characterization — no factual claim requiring verification."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 98
+      },
+      {
+        "beat_id": "paris_promenade_plantee_film_heritage_hidden_gardens_of_paris_before_sunset_film",
+        "city_name": "paris",
+        "poi_name": "Promenade Plantee",
+        "parent_poi": null,
+        "lens": "film_tv",
+        "topic_slug": "before_sunset_film",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Cinephiles may recognize the Promenade as a romantic setting in Before Sunset — Julie Delpy and Ethan Hawke look-alikes appear among the couples and solo walkers in the soft exchanges and laughter floating in the air.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Before Sunset",
+          "Julie Delpy",
+          "Ethan Hawke"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "film location",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Before Sunset filmed on the Promenade Plantee"
+        ],
+        "source_passage": "(Cinephiles may recognize the Prome¬nade as a romantic setting in Before Sunset.) Like a secular outdoor cloister walk that goes somewhere—as far as the Bois de Vincennes if you stay the three-mile course—the Promenade in early evening has a meditative calm. As you pass a solo jogger, or parents pushing a stroller, or couples (Julie Delpy and Ethan Hawke look-alikes), you overhear soft ex¬changes and laughter floating in the air",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "170"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Before Sunset filmed on the Promenade Plantee",
+              "status": "VERIFIED",
+              "notes": "Before Sunset (2004, dir. Richard Linklater) does include a scene on the Promenade Plantée. Source: https://en.wikipedia.org/wiki/Before_Sunset",
+              "correction_applied": false
+            }
+          ],
+          "status": "verified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 36
+      }
+    ],
+    "poi_role": "setting",
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Viaduc des Arts",
+    "short_description": "Mid-19th-century railway viaduct converted in the 1990s into a row of artisan workshops in glass, jewellery and furniture, beneath the elevated Promenade Plantee.",
+    "latitude": 48.836182,
+    "longitude": 2.404853,
+    "importance_tier": 3,
+    "trigger_radius": 75,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Le Viaduc des Arts",
+      "Viaduc de Bastille",
+      "Bastille Viaduct"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_viaduc_des_arts_social_change_hidden_gardens_of_paris_boboisation_gentrification",
+        "city_name": "paris",
+        "poi_name": "Viaduc des Arts",
+        "parent_poi": null,
+        "lens": "social_change",
+        "topic_slug": "boboisation_gentrification",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "You're also walking above the inevitable urban gentrification — or boboisation (bourgeois bohème) — the designer cafes and arty boutiques inside the sixty arches of the Viaduc des Arts, the underbelly of Avenue Daumesnil. Patrons of these hot spots may not be aware of the uncivil past of the twelfth arrondissement.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Viaduc des Arts",
+          "Avenue Daumesnil"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "bohemian gentrification",
+        "physical_cues": [
+          {
+            "cue": "Sixty arches of the Viaduc des Arts below the walkway on Avenue Daumesnil",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "boboisation",
+            "gloss": "bourgeois bohème — the gentrification pattern of designer cafés and arty boutiques replacing working-class spaces"
+          },
+          {
+            "phrase": "bourgeois bohème",
+            "gloss": "a term for the affluent bohemian class driving urban gentrification"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Sixty arches of the Viaduc des Arts contain designer cafés and boutiques",
+          "The Viaduc des Arts is the underbelly of Avenue Daumesnil"
+        ],
+        "source_passage": "You're also walking above the inevitable urban gentrification—or boboisation (bourgeois boheme)—the designer cafes and arty boutiques inside the sixty arches of the Viaduc des Arts, the underbelly of Avenue Daumesnil. Patrons of these hot spots may not be aware of the uncivil past of the twelfth ar-rondissement.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "170"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Sixty arches of the Viaduc des Arts",
+              "status": "VERIFIED",
+              "notes": "The Viaduc des Arts has 64 arches according to official sources, not 60. Sources: https://en.wikipedia.org/wiki/Viaduc_des_Arts. Discrepancy: book says 'sixty arches' — minor rounding, not auto-correctable as the book is the source text. Flagged for fact-check.",
+              "correction_applied": false
+            }
+          ],
+          "status": "flagged",
+          "notes": "Book says 'sixty arches'; Wikipedia and official sources cite 64. Flagged for review; not auto-corrected as this may be editorial approximation."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 50
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Bois de Vincennes",
+    "short_description": "Largest park in Paris at 995 hectares — almost three times Central Park — with a medieval castle, zoo, and floral garden",
+    "latitude": 48.836671,
+    "longitude": 2.441435,
+    "importance_tier": 5,
+    "trigger_radius": 150,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Vincennes Woods"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_bois_de_vincennes_hidden_history_hidden_gardens_of_paris_louis_ix_oak_tree",
+        "city_name": "paris",
+        "poi_name": "Bois de Vincennes",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "louis_ix_oak_tree",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The Bois de Vincennes began, like the Bois de Boulogne to the west, as a royal hunting ground in the twelfth century. The thirteenth-century King — later Saint — Louis IX, as first judge of the realm, famously met his subjects and heard their cases under an oak tree in the Vincennes forest: 'Seated on a scarlet blanket, dressed in a simple coat of wool but with a cap of peacock feathers, [he] delivered decisions without concern for wealth or social rank.' The saintly Louis, canonized in 1297, walked back and forth between Vincennes and Paris, building a chapel in both places.",
+        "beat_length_class": "mid",
+        "duration_sec": 74,
+        "kid_friendly": "yes",
+        "entities": [
+          "Louis IX",
+          "Bois de Boulogne",
+          "André Maurois"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Louis IX oak",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Bois de Vincennes was a royal hunting ground in the 12th century",
+          "Louis IX heard subjects' cases under an oak tree in the Vincennes forest",
+          "Louis IX was canonized in 1297"
+        ],
+        "source_passage": "The Bois de Vincennes began, like the Bois de Boulogne to the west, as a royal hunting ground in the twelfth cen¬tury. The thirteenth-century King (later Saint) Louis IX, as first judge of the realm, famously met his subjects and heard their cases under an oak tree in the Vincennes forest: 'Seated on a scarlet blanket, dressed in a simple coat of wool but with a cap of peacock feathers, [he] delivered decisions without concern for wealth or social rank.' The saintly Louis (canonized in 1297) walked back and forth between Vincennes—in the southeast of the city—and Paris.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "175"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Louis IX canonized in 1297",
+              "status": "VERIFIED",
+              "notes": "Louis IX of France was canonized on August 11, 1297 by Pope Boniface VIII. Sources: https://en.wikipedia.org/wiki/Louis_IX_of_France",
+              "correction_applied": false
+            }
+          ],
+          "status": "verified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 101
+      },
+      {
+        "beat_id": "paris_bois_de_vincennes_local_legends_hidden_gardens_of_paris_lungs_of_paris",
+        "city_name": "paris",
+        "poi_name": "Bois de Vincennes",
+        "parent_poi": null,
+        "lens": "local_legends",
+        "topic_slug": "lungs_of_paris",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The breezes are bracing, making clear why Vincennes to the east of the city and Boulogne to the west are called 'the lungs of Paris.'",
+        "beat_length_class": "seasoning",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bois de Boulogne"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "lungs of Paris",
+        "physical_cues": [
+          {
+            "cue": "The breezes across the open forests of the Bois de Vincennes",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Vincennes (east) and Boulogne (west) are called 'the lungs of Paris'"
+        ],
+        "source_passage": "The breezes are bracing, making clear why Vincennes to the east of the city and Boulogne to the west are called 'the lungs of Paris.'",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "201"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 25
+      }
+    ],
+    "poi_role": "setting",
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Chateau de Vincennes",
+    "short_description": "Medieval royal fortress with the tallest medieval tower in Europe at 52 metres, once imprisoning the Marquis de Sade and Diderot",
+    "latitude": 48.844673,
+    "longitude": 2.438338,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_chateau_de_vincennes_dark_history_hidden_gardens_of_paris_wwii_resistance_executions",
+        "city_name": "paris",
+        "poi_name": "Chateau de Vincennes",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "wwii_resistance_executions",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The royal medieval buildings on the grounds of the château include a prison — where the Marquis de Sade dreamed of Petrarch's Laure — a castle, a fortress, ramparts, an arsenal of cannon for the defense of Paris. They were occupied by the Germans during World War II. As they withdrew from the castle in August 1944, the Germans shot twenty-six members of the Resistance and set fire to some of the ancient buildings. As you walk the long and dusty courtyard of the military grounds today, you notice there is nothing growing anywhere, not one blade of grass.",
+        "beat_length_class": "mid",
+        "duration_sec": 74,
+        "kid_friendly": "no",
+        "entities": [
+          "Marquis de Sade",
+          "Petrarch",
+          "French Resistance"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "WWII Resistance executions",
+        "physical_cues": [
+          {
+            "cue": "Long and dusty courtyard of the military grounds — nothing growing anywhere, not one blade of grass",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Ramparts and ancient buildings of the Château de Vincennes complex",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Château de Vincennes was occupied by the Germans during WWII",
+          "Germans shot twenty-six members of the Resistance in August 1944 as they withdrew",
+          "The Marquis de Sade was imprisoned in the Vincennes château"
+        ],
+        "source_passage": "Other attractions are the royal medieval buildings on the grounds of the chateau—a prison (where the Marquis de Sade dreamed of Petrarch's Laure), a castle, a fortress, ramparts, an arsenal of cannon for the defense of Paris—occupied by the Germans during World War II. As they withdrew from the castle in August 1944, they shot twenty-six members of the Resistance and set fire to some of the ancient buildings. As you walk the long and dusty courtyard of the military grounds today, you notice there is nothing growing any¬where, not one blade of grass.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "201-202"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Germans shot twenty-six members of the Resistance in August 1944",
+              "status": "VERIFIED",
+              "notes": "The execution of Resistance members at Vincennes in August 1944 is documented. The number varies by source — some cite 26, others slightly different figures. Sources: https://en.wikipedia.org/wiki/Ch%C3%A2teau_de_Vincennes; multiple historical records confirm mass executions occurred during the German withdrawal.",
+              "correction_applied": false
+            },
+            {
+              "claim": "Marquis de Sade imprisoned at Château de Vincennes",
+              "status": "VERIFIED",
+              "notes": "The Marquis de Sade was imprisoned at Vincennes from 1777-1784. Sources: https://en.wikipedia.org/wiki/Marquis_de_Sade",
+              "correction_applied": false
+            }
+          ],
+          "status": "verified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 99
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Bibliotheque Francois Mitterrand",
+    "short_description": "France's national library with four glass towers shaped like open books, anchoring the 13th arrondissement's modern waterfront",
+    "latitude": 48.834283,
+    "longitude": 2.377128,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Bibliotheque Nationale de France",
+      "BnF",
+      "Tres Grande Bibliotheque"
+    ],
+    "parent_poi": null,
+    "beats": [],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Parc Floral",
+    "short_description": null,
+    "latitude": 48.840833,
+    "longitude": 2.437923,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_parc_floral_nature_parks_hidden_gardens_of_paris_flower_garden_seasons",
+        "city_name": "paris",
+        "poi_name": "Parc Floral",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "flower_garden_seasons",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Parc Floral has been called the most beautiful flower garden in Paris. Hundreds of species flourish here: a garden of orchids from early March, a dahlia garden in fall, a garden of water lilies and lotus, a forest of camellias, a vast wavelike display of tulips from April on, fields of irises, azaleas, and rhododendrons in May. An enchanting garden, seventy-five acres of color and fragrance, with trees reaching toward the sky. Rilke's pantheistic hymn to 'the treetops, like a rising from the dead' rings true.",
+        "beat_length_class": "mid",
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "entities": [
+          "Rilke"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "seasonal flower gardens",
+        "physical_cues": [
+          {
+            "cue": "Gardens of orchids, tulips, water lilies, camellias, and irises across 75 acres",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Parc Floral described as the most beautiful flower garden in Paris",
+          "75 acres of gardens with orchids, dahlias, water lilies, lotus, camellias, tulips, irises, azaleas, rhododendrons"
+        ],
+        "source_passage": "It has been called the most beautiful flower garden in Paris. Hundreds of species flourish here: a garden of orchids from early March, a dahlia garden in fall, a garden of water lilies and lotus, a forest of camellias, a vast wavelike display of tulips from April on, fields of irises, azaleas, and rhododendrons in May. It's an enchanting garden, seventy-five acres of color and fragrance, with trees reaching toward the sky. Rilke's pantheistic hymn to 'the treetops, like a rising from the dead' rings true.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "200-201"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Most beautiful flower garden in Paris",
+              "status": "DISPUTE",
+              "notes": "Superlative claim — per pipeline guardrails, superlatives are never auto-corrected. Flagged as DISPUTE. The book phrases it passively ('has been called') which is editorial hedging.",
+              "correction_applied": false
+            }
+          ],
+          "status": "flagged",
+          "notes": "Superlative 'most beautiful flower garden' — not auto-correctable. Preserved as reported speech ('has been called')."
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 88
+      },
+      {
+        "beat_id": "paris_parc_floral_music_heritage_hidden_gardens_of_paris_jazz_concerts_lac_minimes",
+        "city_name": "paris",
+        "poi_name": "Parc Floral",
+        "parent_poi": null,
+        "lens": "music_heritage",
+        "topic_slug": "jazz_concerts_lac_minimes",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "In summer, there are free evening outdoor jazz concerts in the park, close by the lovely Lac des Minimes, where you can feed the ducks or dine in the island restaurant. Farther away you can rent boats on Lac Daumesnil. The stark pine forests of Parc Floral, shot through with flashes of sunlight across the smooth forest floor, are popular with picnickers and families.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lac des Minimes",
+          "Lac Daumesnil"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "summer jazz concerts",
+        "physical_cues": [
+          {
+            "cue": "Lac des Minimes within Parc Floral, with island restaurant",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Pine forests with flashes of sunlight across the smooth forest floor",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Free evening outdoor jazz concerts in summer near Lac des Minimes",
+          "Boat rentals on Lac Daumesnil"
+        ],
+        "source_passage": "In summer, there are free evening outdoor jazz concerts in the park, close by the lovely Lac des Minimes, where you can feed the ducks or dine in the island restaurant. Farther away you can rent boats on Lac Daumesnil. The stark pine forests of Parc Floral, shot through with flashes of sunlight across the smooth forest floor, are popular with picnickers and families.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "201"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 64
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Jardin de Reuilly",
+    "short_description": null,
+    "latitude": 48.8421861,
+    "longitude": 2.3875338,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_jardin_de_reuilly_nature_parks_hidden_gardens_of_paris_meadow_midway",
+        "city_name": "paris",
+        "poi_name": "Jardin de Reuilly",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "meadow_midway",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "An inviting meadow of grass and trees, azalea and rhododendron, midway along the Promenade Plantee, where, after work, at first sign of spring, the neighborhood takes to the lawns. A popular green space with a strong, warm pulse.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Promenade Plantee"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "neighborhood meadow",
+        "physical_cues": [
+          {
+            "cue": "Meadow of grass, azalea, and rhododendron at the midway point along the Promenade Plantee",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Jardin de Reuilly is a meadow midway along the Promenade Plantee"
+        ],
+        "source_passage": "JARDIN DE REUILLY An inviting meadow of grass and trees, azalea and rhododendron, midway along the Promenade Plantee, where, after work, at first sign of spring, the neighborhood takes to the lawns. A popular green space with a strong, warm pulse.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "171"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 38
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Bistro du Peintre",
+    "short_description": null,
+    "latitude": 48.8529881,
+    "longitude": 2.3773247,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_bistro_du_peintre_historic_arch_hidden_gardens_of_paris_art_nouveau_1902_interior",
+        "city_name": "paris",
+        "poi_name": "Bistro du Peintre",
+        "parent_poi": null,
+        "lens": "historic_arch",
+        "topic_slug": "art_nouveau_1902_interior",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The cafe-restaurant hasn't changed since it opened in 1902 to the artists and artisans — carpenters, cabinetmakers, ironworkers, blacksmiths — of the eleventh and twelfth arrondissements. Entering, what catches your eye first is the triptych of mirrors over the long fine bar; the incised glass behind it, the woodwork, its swirling carvings, the frescoes and little angels and nymphs in fields of flowers on the stucco ceiling — all of it original.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "original 1902 interior",
+        "physical_cues": [
+          {
+            "cue": "Triptych of mirrors over the long fine bar",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Incised glass and swirling woodwork carvings behind the bar",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Frescoes with angels and nymphs in fields of flowers on the stucco ceiling",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Bistro du Peintre opened in 1902",
+          "Interior unchanged: original triptych mirrors, incised glass, woodwork carvings, frescoes on stucco ceiling"
+        ],
+        "source_passage": "The cafe-restaurant hasn't changed since it opened in 1902 to the artists and artisans—carpenters, cabinetmakers, ironworkers, blacksmiths—of the elev¬enth and twelfth arrondissements. Entering, what catches your eye first is the triptych of mirrors over the long fine bar; the incised glass behind it, the woodwork, its swirling carvings, the frescoes and little angels and nymphs in fields of flowers on the stucco ceiling—all of it original.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "171"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 71
+      },
+      {
+        "beat_id": "paris_bistro_du_peintre_hidden_history_hidden_gardens_of_paris_ledru_rollin_naming",
+        "city_name": "paris",
+        "poi_name": "Bistro du Peintre",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "ledru_rollin_naming",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Bistro du Peintre stands at 116 Ledru-Rollin, named for Alexandre Ledru-Rollin, a nineteenth-century radical leftist lawyer who owned property in the area. Walter Benjamin noted the effect of glass on the city around it: 'Paris is a city of mirrors. The asphalt of its roadways smooth as glass, and at the entrance to all bistros glass partitions. A profusion of windowpanes and mirrors in cafes, so as to make the inside brighter and to give all the tiny nooks and crannies, into which Parisian taverns separate, a pleasing amplitude.'",
+        "beat_length_class": "mid",
+        "duration_sec": 74,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alexandre Ledru-Rollin",
+          "Walter Benjamin",
+          "The Arcades Project"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Ledru-Rollin Benjamin",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The street is named for Alexandre Ledru-Rollin, a 19th-century radical leftist lawyer who owned property in the area",
+          "Walter Benjamin quoted from The Arcades Project about Paris as a city of mirrors"
+        ],
+        "source_passage": "Named for Alexandre Ledru-Rollin, a nineteenth-century radical leftist law-yer who owned property in the area. [...] Walter Benjamin noted the effect of glass: 'Paris is a city of mirrors. The asphalt of its roadways smooth as glass, and at the entrance to all bistros glass partitions. A profusion of windowpanes and mirrors in cafes, so as to make the inside brighter and to give all the tiny nooks and crannies, into which Parisian taverns separate, a pleasing amplitude.'",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "171"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Alexandre Ledru-Rollin was a nineteenth-century radical leftist lawyer",
+              "status": "VERIFIED",
+              "notes": "Alexandre Auguste Ledru-Rollin (1807-1874) was a French radical republican politician and lawyer. Sources: https://en.wikipedia.org/wiki/Alexandre_Auguste_Ledru-Rollin",
+              "correction_applied": false
+            }
+          ],
+          "status": "verified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 92
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Square Raoul Nordling",
+    "short_description": null,
+    "latitude": 48.8526572,
+    "longitude": 2.38156,
+    "importance_tier": 1,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_square_raoul_nordling_war_conflict_hidden_gardens_of_paris_nordling_saves_paris",
+        "city_name": "paris",
+        "poi_name": "Square Raoul Nordling",
+        "parent_poi": null,
+        "lens": "war_conflict",
+        "topic_slug": "nordling_saves_paris",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "This melancholy space is dedicated to the memory of Raoul Nordling, the Swedish ambassador who, in 1944, persuaded the German General Choltitz to ignore Hitler's order to blow up Paris. Located next to the old Eglise Sainte-Marguerite, just off rue Charonne between rue Saint-Bernard and Charrière.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Raoul Nordling",
+          "General Choltitz",
+          "Hitler",
+          "Eglise Sainte-Marguerite"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "somber",
+        "subject_tag": "Nordling saves Paris",
+        "physical_cues": [
+          {
+            "cue": "Square dedicated to Raoul Nordling, next to the old Eglise Sainte-Marguerite off rue Charonne",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Raoul Nordling was the Swedish ambassador who persuaded German General Choltitz in 1944 to ignore Hitler's order to blow up Paris"
+        ],
+        "source_passage": "square raoul nordling Next to the old Eglise Sainte-Marguerite (metro, Charonne), just off rue Charonne between rue Saint-Bernard and Charriere. A melancholy space dedicated to the memory of Raoul Nordling, the Swedish ambassador who, in 1944, persuaded the German General Choltit% to ignore Hitler's order to blow up Paris.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "171"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Raoul Nordling was the Swedish ambassador who persuaded General Choltitz to ignore Hitler's order to blow up Paris",
+              "status": "VERIFIED",
+              "notes": "Confirmed. Raoul Nordling (1881-1962) was the Swedish consul-general in Paris. He negotiated with General Dietrich von Choltitz in August 1944 to spare Paris from destruction. Note: his correct title was consul-general, not ambassador. Sources: https://en.wikipedia.org/wiki/Raoul_Nordling; https://en.wikipedia.org/wiki/Dietrich_von_Choltitz",
+              "correction_applied": false
+            }
+          ],
+          "status": "flagged",
+          "notes": "Book says 'Swedish ambassador'; Nordling's actual title was Swedish consul-general in Paris. Single-source auto-correct not triggered; flagged for review."
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 49
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Parc de Bercy",
+    "short_description": null,
+    "latitude": 48.8356447,
+    "longitude": 2.3817168,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_parc_de_bercy_hidden_history_hidden_gardens_of_paris_wine_warehouses_origin",
+        "city_name": "paris",
+        "poi_name": "Parc de Bercy",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "wine_warehouses_origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "A newish modern park on the grounds of the old wine warehouses of the Right Bank. On the south terrace, the twenty-one sculptures by Rachid Khimoune, Les Enfants du Monde, line either side of the Simone de Beauvoir footbridge, which crosses the Seine to the Bibliothèque Nationale Mitterrand with its interior garden modeled after a pine grove.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Rachid Khimoune",
+          "Les Enfants du Monde",
+          "Simone de Beauvoir",
+          "Bibliotheque Nationale Mitterrand"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "wine warehouse park",
+        "physical_cues": [
+          {
+            "cue": "Twenty-one sculptures by Rachid Khimoune (Les Enfants du Monde) on the south terrace",
+            "direction": "south",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Simone de Beauvoir footbridge crossing the Seine to the Bibliotheque Nationale Mitterrand",
+            "direction": "south",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Les Enfants du Monde",
+            "gloss": "The Children of the World — a series of twenty-one sculptures by Rachid Khimoune"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Parc de Bercy was built on the grounds of old wine warehouses",
+          "Twenty-one sculptures by Rachid Khimoune called Les Enfants du Monde on the south terrace",
+          "The Simone de Beauvoir footbridge leads to the Bibliothèque Nationale Mitterrand"
+        ],
+        "source_passage": "PARC de bercy Metro, Bercy. A newish modern park on the grounds of the old wine warehouses of the Right Bank. On the south terrace, the twenty-one sculptures hy RachidKhimoun, Les Enfants du Monde, line either side of the Simone de Beauvoir footbridge, which crosses the Seine to the Bibliotheque Nationale Mitterand with its interior garden modeled after a pine grove.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "172"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Twenty-one sculptures by Rachid Khimoune",
+              "status": "VERIFIED",
+              "notes": "Rachid Khimoune's Les Enfants du Monde installation at Parc de Bercy confirmed. Sources: https://en.wikipedia.org/wiki/Rachid_Khimoune",
+              "correction_applied": false
+            }
+          ],
+          "status": "verified",
+          "notes": "Typo in source 'RachidKhimoun' — correct name is Rachid Khimoune. Script_body uses correct form."
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 58
+      },
+      {
+        "beat_id": "paris_parc_de_bercy_nature_parks_hidden_gardens_of_paris_rabin_gardens_design",
+        "city_name": "paris",
+        "poi_name": "Parc de Bercy",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "rabin_gardens_design",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "The gardens to the east, dedicated to the assassinated Israeli prime minister Yitzhak Rabin, are beautifully designed and varied — tulips, roses, pansies, an unearthly birch grove, an orangerie, majestic trees, rock gardens, bird sanctuaries. Don't miss the high curving staircases over the roadway at the far eastern end, leading to more gardens.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Yitzhak Rabin"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "Rabin memorial garden",
+        "physical_cues": [
+          {
+            "cue": "Eastern gardens dedicated to Yitzhak Rabin with birch grove, orangerie, and rock gardens",
+            "direction": "east",
+            "feature_type": "view"
+          },
+          {
+            "cue": "High curving staircases over the roadway at the far eastern end",
+            "direction": "east",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "orangerie",
+            "gloss": "a greenhouse or winter garden for growing orange trees"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Eastern gardens of Parc de Bercy are dedicated to assassinated Israeli prime minister Yitzhak Rabin"
+        ],
+        "source_passage": "The gardens to the east, dedicated to the assassinated Israeli prime minister Yitqhak Rabin, are beautifully designed and varied—tulips, roses, pansies, an unearthly birch grove, an orangerie, majestic trees, rock gardens, bird sanctuaries. Don't miss the high curving staircases over the roadway at the far eastern end, leading to more gardens.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "172"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 53
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Cinematheque Française",
+    "short_description": null,
+    "latitude": 48.8369987,
+    "longitude": 2.3826352,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_cinematheque_francaise_film_heritage_hidden_gardens_of_paris_forty_thousand_films",
+        "city_name": "paris",
+        "poi_name": "Cinematheque Française",
+        "parent_poi": null,
+        "lens": "film_tv",
+        "topic_slug": "forty_thousand_films",
+        "sub_location": null,
+        "trigger_address": "51 rue de Bercy",
+        "script_body": "The Cinémathèque Française at 51 rue de Bercy, the city's film institute, shows films all day, every day, except Tuesday, from its collection of forty thousand plus films, the largest in the world, on the four screens of its multiplex. There's a museum with special exhibits — a first-rate one about Georges Méliès (1861–1938), the father of special effects, ran in spring 2008 — a café, bookshop, and film library.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 58,
+        "kid_friendly": "yes",
+        "entities": [
+          "Cinematheque Française",
+          "Georges Méliès"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "film archive institute",
+        "physical_cues": [
+          {
+            "cue": "Façade of the Cinémathèque Française building at 51 rue de Bercy",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Cinémathèque Française at 51 rue de Bercy has 40,000+ films, described as the largest collection in the world",
+          "Georges Méliès (1861-1938) was the father of special effects"
+        ],
+        "source_passage": "the Cinematheque Fran^aise at 5i, rue de Bercy, the city'sfilm institute, showsfilms all day, every day, except Tues¬day, from its collection of forty thousand plus films, the largest in the world, on the four screens ofits multiplex. There's a museum, with special exhibits—a first-rate one about Georges Melies (1861—1938), the father of special effects, ran in spring 2008—a cafe, bookshop, andfilm library",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "172"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "Largest film collection in the world",
+              "status": "DISPUTE",
+              "notes": "The book describes the Cinémathèque's collection as 'the largest in the world.' However, the Library of Congress (USA) and EYE Filmmuseum (Netherlands) also claim very large collections. This is a superlative claim — per pipeline guardrails, superlatives are never auto-corrected. Flagged for user review. Sources: https://en.wikipedia.org/wiki/Cin%C3%A9math%C3%A8que_fran%C3%A7aise",
+              "correction_applied": false
+            },
+            {
+              "claim": "Georges Méliès (1861-1938) was the father of special effects",
+              "status": "VERIFIED",
+              "notes": "Georges Méliès (1861-1938) is widely credited as a pioneer of special effects in cinema. Sources: https://en.wikipedia.org/wiki/Georges_M%C3%A9li%C3%A8s",
+              "correction_applied": false
+            }
+          ],
+          "status": "flagged",
+          "notes": "Superlative claim ('largest in the world') not auto-correctable. Flagged as DISPUTE."
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 72
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Buddhist Temple Lac Daumesnil",
+    "short_description": null,
+    "latitude": 48.828489,
+    "longitude": 2.41536,
+    "importance_tier": 2,
+    "trigger_radius": 50,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_buddhist_temple_lac_daumesnil_hidden_history_hidden_gardens_of_paris_tibetan_pagoda_complex",
+        "city_name": "paris",
+        "poi_name": "Buddhist Temple Lac Daumesnil",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "tibetan_pagoda_complex",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "Southwest of Parc Floral, across several roads, on the southern side of Lac Daumesnil near the Porte Doree metro, there's a Buddhist center, with a Tibetan temple, a pagoda, and a Vietnamese chapel. Open spring and summer only. Boating on Lac Daumesnil, you think you're in the countryside. There's a café on one of the islands.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lac Daumesnil"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Buddhist temple complex",
+        "physical_cues": [
+          {
+            "cue": "Tibetan temple, pagoda, and Vietnamese chapel on the southern side of Lac Daumesnil near Porte Doree metro",
+            "direction": "south",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Buddhist center with Tibetan temple, pagoda, and Vietnamese chapel near Lac Daumesnil"
+        ],
+        "source_passage": "BUDDHIST TEMPLE Southwest of Parc Floral, across several roads, on the southern side of Lac Daumesnil near the Porte Doree metro, there's a Buddhist center, with a Tibetan temple, a pagoda, and a Vietnamese chapel. Open spring and summer only; infor¬mation: 01.43.41.54.48. Boating on Lac Daumesnil, you think you're in the countryside. There's a cafe on one of the islands.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "202"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 59
+      }
+    ],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": true
+    }
+  },
+  {
+    "name": "Sainte-Chapelle",
+    "short_description": "13th-century Gothic royal chapel with 15 stained-glass windows depicting 1,113 biblical scenes across 600 square metres",
+    "latitude": 48.855358,
+    "longitude": 2.34483,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "The Holy Chapel"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_sainte_chapelle_hidden_history_hidden_gardens_of_paris_crown_of_thorns_purchase",
+        "city_name": "paris",
+        "poi_name": "Sainte-Chapelle",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "crown_of_thorns_purchase",
+        "sub_location": null,
+        "trigger_address": null,
+        "script_body": "In both Vincennes and Paris, Louis IX built a chapel. La Sainte-Chapelle on the Ile de la Cité remains today, a reliquary shrine of blue and flaming ruby-colored glass, its relic — the Crown of Thorns — now missing. Louis had bought it after one of his enthusiastic crusades against the heretics in the East, acquiring it from a Venetian pawnbroker.",
+        "beat_length_class": "seasoning",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "entities": [
+          "Louis IX",
+          "Crown of Thorns",
+          "Ile de la Cite"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Crown of Thorns",
+        "physical_cues": [
+          {
+            "cue": "Blue and flaming ruby-colored glass of the Sainte-Chapelle — reliquary shrine that once held the Crown of Thorns",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "La Sainte-Chapelle was built as a reliquary shrine for the Crown of Thorns",
+          "The Crown of Thorns is now missing from the Sainte-Chapelle",
+          "Louis IX bought the Crown of Thorns from a Venetian pawnbroker"
+        ],
+        "source_passage": "La Sainte-Chapelle on the lie de la Cite remains today, a reliquary shrine of blue and flaming ruby-colored glass, its relic—the Crown of Thorns—now missing. (Louis had bought it after one of his enthusiastic crusades against the heretics in the East.) [...] see Ina Caro's 'Sainte Chapelle in Paris,' in Paris to the Past. [footnote: For the full story of Louis IX and his purchase of the Crown of Thorns—from a Venetian pawnbroker]",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Around Bastille and Northeastern Paris",
+          "page": "175-176"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "The Crown of Thorns is now missing from the Sainte-Chapelle",
+              "status": "VERIFIED",
+              "notes": "The Crown of Thorns was moved from Sainte-Chapelle and is now housed at Notre-Dame Cathedral (currently in temporary storage post-2019 fire). The book's claim it is 'missing' is somewhat imprecise — it was transferred, not lost. Sources: https://en.wikipedia.org/wiki/Crown_of_Thorns",
+              "correction_applied": false
+            }
+          ],
+          "status": "flagged",
+          "notes": "Book says Crown of Thorns is 'now missing' — more precisely, it was moved to Notre-Dame Cathedral (now in temporary storage). Not auto-corrected; flagged for editorial review."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 61
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  }
+]

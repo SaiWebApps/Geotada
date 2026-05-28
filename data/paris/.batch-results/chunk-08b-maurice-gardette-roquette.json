@@ -1,0 +1,1014 @@
+{
+  "chunk_id": "chunk-08b-maurice-gardette-roquette",
+  "chunk_file": "Books/Paris/hidden-gardens-of-paris/chunk-08b-maurice-gardette-roquette.txt",
+  "pois": [
+    {
+      "name": "Square Maurice-Gardette",
+      "city_name": "paris",
+      "new_poi": true,
+      "match_status": "new",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "source_note": "NEW POI FLAGGED: Square Maurice-Gardette. Source: chunk-08b-maurice-gardette-roquette, pp. 179\u2013181. Beats attached: 5. Relationship: independent. Status: do not auto-create \u2014 user decides at poi-generate time. Nominatim query: 'Square Maurice-Gardette, Paris, France'"
+    },
+    {
+      "name": "Square de la Roquette",
+      "city_name": "paris",
+      "new_poi": true,
+      "match_status": "new",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "source_note": "NEW POI FLAGGED: Square de la Roquette. Source: chunk-08b-maurice-gardette-roquette, pp. 185\u2013188. Beats attached: 5. Relationship: independent. Status: do not auto-create \u2014 user decides at poi-generate time. Nominatim query: 'Square de la Roquette, rue de la Roquette, Paris 11e'"
+    },
+    {
+      "name": "Canal Saint-Martin",
+      "city_name": "paris",
+      "match_status": "existing",
+      "match_note": "Exact match in existing POI list."
+    },
+    {
+      "name": "Pere Lachaise Cemetery",
+      "city_name": "paris",
+      "match_status": "existing",
+      "match_note": "Exact match in existing POI list. Referenced as destination for Resistance march."
+    },
+    {
+      "name": "Eglise Notre-Dame de la Croix",
+      "city_name": "paris",
+      "new_poi": true,
+      "match_status": "new",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "source_note": "NEW POI FLAGGED: Eglise Notre-Dame de la Croix. Source: chunk-08b-maurice-gardette-roquette, p. 258\u2013263. Beats attached: 1 (sidebar). Relationship: independent. Status: do not auto-create \u2014 user decides at poi-generate time."
+    },
+    {
+      "name": "La Maison des Metallos",
+      "city_name": "paris",
+      "new_poi": true,
+      "match_status": "new",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "source_note": "NEW POI FLAGGED: La Maison des Metallos, no. 94 rue Jean-Pierre Timbaud. Source: chunk-08b-maurice-gardette-roquette, p. 108\u2013121. Beats attached: 1 (sidebar). Relationship: independent. Status: do not auto-create."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "paris_square_maurice_gardette_dark_history_hidden_gardens_of_paris_communard_slaughter_1871",
+      "city_name": "paris",
+      "poi_name": "Square Maurice-Gardette",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "communard_slaughter_1871",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Square Maurice-Gardette stands on former abattoir grounds where history left its deepest stain. In the surrounding streets \u2014 rue Saint-Maur, avenue Parmentier \u2014 Communards defended their barricades in 1871, and were eventually slaughtered. Piles of corpses filled these streets. During the German Occupation, the Gestapo and gendarmes were a brutal force in this quartier. The square today sits in the eleventh arrondissement, historically the poorest, most populated, and most insurrectionary area of Paris \u2014 a neighborhood that has absorbed more violence than most cities see in a generation.",
+      "beat_length_class": "mid",
+      "duration_sec": 68,
+      "kid_friendly": "no",
+      "entities": [
+        "Communards",
+        "Gestapo"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "Communard violence",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "quartier",
+          "gloss": "neighborhood"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Square is built on former abattoir of M\u00e9nilmontant",
+        "Communards defended barricades in surrounding streets in 1871 and were slaughtered",
+        "Gestapo and gendarmes were a brutal force here during the Occupation",
+        "11th arrondissement was historically the poorest, most populated, most insurrectionary area"
+      ],
+      "source_passage": "Blood did flow here: the square is built on the former abattoir of Menilmontant, in its surrounding streets\u2014rue Saint-Maur, avenue Parmentier\u2014barricades defended by Communards, eventually slaughtered in 1871, held piles of corpses; during the Occupation, the Gestapo and the gendarmes were a brutal force in this quartier.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "179\u2013180"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Communard uprising and suppression (1871) is well-documented historical fact. Gestapo presence in 11th during Occupation is consistent with known history."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_maurice_gardette_war_conflict_hidden_gardens_of_paris_gardette_resistance_execution",
+      "city_name": "paris",
+      "poi_name": "Square Maurice-Gardette",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "gardette_resistance_execution",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The square is named for Maurice Gardette (1895\u20131941), a metalworker born and raised in poverty who lived with his wife and children in nearby rue Chemin Vert. A member of the French Communist Party elected to the city council, he was arrested for his antifascist activism. On October 22, 1941, he wrote on a plank in the barracks of a prison camp: \"Je meurs courageux, plein de foi r\u00e9volutionnaire\" \u2014 \"I die courageously, full of revolutionary faith.\" He and twenty-six comrades of the Resistance were shot at Ch\u00e2teaubriant that same day. On October 20, 2010, the mairie of the eleventh commemorated the sixty-ninth anniversary of his death. Local people and politicians gathered in the square, a few elderly Resistants among them, sang songs from World War II, then marched to P\u00e8re-Lachaise, where the bodies and ashes of Gardette and the other Fusill\u00e9s de Ch\u00e2teaubriant \u2014 including Jean-Pierre Timbaud and seventeen-year-old Guy Moquet \u2014 are buried, across from the Mur des F\u00e9d\u00e9r\u00e9s.",
+      "beat_length_class": "anchor",
+      "duration_sec": 125,
+      "kid_friendly": "yes",
+      "entities": [
+        "Maurice Gardette",
+        "French Communist Party",
+        "Ch\u00e2teaubriant",
+        "Jean-Pierre Timbaud",
+        "Guy Moquet",
+        "Fusill\u00e9s de Ch\u00e2teaubriant",
+        "Mur des F\u00e9d\u00e9r\u00e9s",
+        "P\u00e8re-Lachaise"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "Gardette resistance execution",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Je meurs courageux, plein de foi r\u00e9volutionnaire",
+          "gloss": "I die courageously, full of revolutionary faith"
+        },
+        {
+          "phrase": "Fusill\u00e9s de Ch\u00e2teaubriant",
+          "gloss": "those shot (executed by firing squad) at Ch\u00e2teaubriant"
+        },
+        {
+          "phrase": "Mur des F\u00e9d\u00e9r\u00e9s",
+          "gloss": "Wall of the Federals \u2014 the wall at P\u00e8re-Lachaise where Communard prisoners were shot and where their memory is honored"
+        }
+      ],
+      "pronunciation": "shaw-toh-BREE-ahn",
+      "key_claims": [
+        "Maurice Gardette (1895\u20131941) was a metalworker born in poverty",
+        "He lived in rue Chemin Vert and was elected to city council",
+        "He was a member of the French Communist Party",
+        "He and 26 comrades were shot at Ch\u00e2teaubriant on October 22, 1941",
+        "His last words on a plank: 'Je meurs courageux, plein de foi r\u00e9volutionnaire'",
+        "Oct 20, 2010 commemoration: march to P\u00e8re-Lachaise where Fusill\u00e9s de Ch\u00e2teaubriant are buried",
+        "Jean-Pierre Timbaud and 17-year-old Guy Moquet were among the shot"
+      ],
+      "source_passage": "On October 20, 2010, for instance, the mairie of the eleventh paid homage to Maurice Gardette and his twenty-six comrades of the Resistance who were shot at Chateaubriant on October 22, 1941. Local people and politicians crowded into the square to commemorate the sixty-ninth anniversary of the heroism of the square's namesake, Maurice Gardette (1895\u20141941), a metalworker, born and raised in poverty, who lived with his wife and children in nearby rue Chemin Vert. A member of the French Communist Party, elected to the city council, he was arrested for his antifascist activism. On October 22, 1941, he wrote on a plank in the barracks of the prison camp: \"Je meurs courageux, plein de foi revolutionnaire\"\u2014\"I die courageously, full of revolutionary faith.\" The citizens of 2010\u2014among them a few elderly Resistants\u2014listened to speeches, sang songs popular during World War II, then marched to Pere-Lachaise, where the bodies and ashes of Maurice Gardette and the other Fusilles de Chateaubriant (including Jean-Pierre Timbaud and seventeen-year-old Guy Moquet) are buried, across from the Mur des Federes.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "180"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Guy Moquet is described as seventeen years old",
+            "note": "Guy Moquet was actually 17 when arrested (October 1940) but 17 at time of execution (October 22, 1941) \u2014 multiple sources confirm he was born April 26, 1924, making him 17 at death. AUTO-CORRECTED: no correction needed, claim is accurate.",
+            "status": "verified",
+            "source_urls": [
+              "https://en.wikipedia.org/wiki/Guy_Moquet"
+            ]
+          },
+          {
+            "claim": "Shot at Ch\u00e2teaubriant on October 22, 1941",
+            "note": "The Ch\u00e2teaubriant massacre is a well-documented historical event. 27 hostages were shot on October 22, 1941 at Choisel camp near Ch\u00e2teaubriant. This matches the '26 comrades' claim (Gardette + 26 = 27 total). Sources confirm.",
+            "status": "verified",
+            "source_urls": [
+              "https://en.wikipedia.org/wiki/Ch%C3%A2teaubriant_massacre"
+            ]
+          }
+        ],
+        "status": "verified",
+        "notes": "Core facts about Maurice Gardette and the Ch\u00e2teaubriant massacre are historically accurate."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_maurice_gardette_parks_gardens_hidden_gardens_of_paris_plantings_sculpture",
+      "city_name": "paris",
+      "poi_name": "Square Maurice-Gardette",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "plantings_sculpture",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "On weekends, local families gather around Square Maurice-Gardette's music kiosk, playground, and Ping-Pong tables, filling benches, strolling gravel paths past over two thousand varieties of plantings \u2014 sycamores, magnolias, orange trees, black pine, palms, catalpa, and chestnuts forming a massive canopy above flower beds of lilies, irises, roses, and asters. Placed within this thick, colorful greenery is a bronze sculpture by Jacques Perrin: Le Botteleur, an arresting representation of a worker bending over in a field to tie the work of his hands into bunches.",
+      "beat_length_class": "mid",
+      "duration_sec": 73,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jacques Perrin",
+        "Le Botteleur"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "neutral",
+      "subject_tag": "garden plantings sculpture",
+      "physical_cues": [
+        {
+          "cue": "Bronze sculpture Le Botteleur by Jacques Perrin, placed within the garden greenery",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Music kiosk, playground, and Ping-Pong tables in the square",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Le Botteleur",
+          "gloss": "a worker bending over in a field to tie the work of his hands into bunches"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Square has over 2000 varieties of plantings including sycamores, magnolias, orange trees, black pine, palms, catalpa, chestnuts",
+        "Flower beds of lilies, irises, roses, asters",
+        "Bronze sculpture Le Botteleur by Jacques Perrin"
+      ],
+      "source_passage": "Weekends, local families gather around the square's music kiosk, playground, and Ping-Pong tables, filling the benches, strolling the gravel paths, no doubt taking for granted the over two thousand varieties of plantings, the tall healthy trees\u2014sycamores, magnolias, orange trees, black pine, palms, catalpa, and chestnuts\u2014all a graceful massive canopy rising above the flower beds of lilies, irises, roses, and asters decorating the grass. Beautifully placed within this thick and colorful greenery is a bronze sculpture by Jacques Perrin: Le Botteleur, an arresting representation of a worker bending over in a field to tie the work of his hands into bunches.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "180\u2013181"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_maurice_gardette_social_change_hidden_gardens_of_paris_memory_resistance_survival",
+      "city_name": "paris",
+      "poi_name": "Square Maurice-Gardette",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "memory_resistance_survival",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Today, the square's memory is shaped not by its violent past but by the Resistance and survival of that force. Historian Alan Riding notes that during the war years following Maurice Gardette's murder, 75 percent of French Jews were saved from deportation and death \u2014 despite the longtime anti-Semitism of the French right wing \u2014 \"owing to the courage of countless French men and women \u2014 teachers, priests, nuns, resistance fighters, doctors, farmers, and others.\" As Milan Kundera wrote, \"The struggle against power is the struggle of memory against forgetting.\" This annual fall ritual of patriotic observance keeps the historical memory of the eleventh alive.",
+      "beat_length_class": "mid",
+      "duration_sec": 80,
+      "kid_friendly": "yes",
+      "entities": [
+        "Alan Riding",
+        "Milan Kundera",
+        "Maurice Gardette"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "resistance memory legacy",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "75% of French Jews were saved from deportation during the war years",
+        "Alan Riding attributes this to courage of French men and women across professions",
+        "Kundera: 'The struggle against power is the struggle of memory against forgetting'"
+      ],
+      "source_passage": "Inspired by this annual fall ritual of patriotic observance, the historical memory of the eleventh pulses strong, its body's blood a river of gratitude. Historian Alan Riding notes that during the war years that followed Maurice Gardette's murder, 75 percent of French Jews were saved from deportation and death (despite the longtime anti-Semitism of the French right wing), \"owing to the courage of countless French men and women\u2014teachers, priests, nuns, resistance fighters, doctors, farmers, and others.\" The memory honored in Square Maurice-Gardette in October 2010 fertilizes the green heart of Paris, saves it from historical amnesia. (As Milan Kundera has said, \"The struggle against power is the struggle of memory against forgetting.\")",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "181"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "75 percent of French Jews were saved from deportation and death",
+            "note": "This statistic from Alan Riding's 'And the Show Went On' is cited accurately. However, the actual figure is debated by historians \u2014 some estimates put the survival rate higher (around 75-77%). The source attributes it correctly to Riding. No auto-correction warranted as this is a sourced statistic, not an unsourced claim.",
+            "status": "unverified",
+            "source_urls": [
+              "https://en.wikipedia.org/wiki/And_the_Show_Went_On"
+            ]
+          }
+        ],
+        "status": "unverified",
+        "notes": "Statistic sourced to Alan Riding; accepted as-is."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_maurice_gardette_war_conflict_hidden_gardens_of_paris_timbaud_sidebar",
+      "city_name": "paris",
+      "poi_name": "Square Maurice-Gardette",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "timbaud_sidebar",
+      "sub_location": null,
+      "trigger_address": "rue Jean-Pierre Timbaud",
+      "script_body": "The nearby street is named for Jean-Pierre Timbaud, another Resistant shot at Ch\u00e2teaubriant \u2014 secretary of the steelworkers' union and a strike organizer during the 1930s. He faced the firing squad singing the \"Marseillaise.\"",
+      "beat_length_class": "seasoning",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jean-Pierre Timbaud",
+        "Ch\u00e2teaubriant"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "callback",
+      "beat_type": "sidebar",
+      "emotional_register": "somber",
+      "subject_tag": "Timbaud street namesake",
+      "physical_cues": [
+        {
+          "cue": "Street sign for rue Jean-Pierre Timbaud",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Marseillaise",
+          "gloss": "the French national anthem"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Street named for Jean-Pierre Timbaud, Resistant shot at Ch\u00e2teaubriant",
+        "Timbaud was secretary of the steelworkers' union",
+        "He was a strike organizer in the 1930s",
+        "He faced the firing squad singing the 'Marseillaise'"
+      ],
+      "source_passage": "The street is named for another Resistant shot at Chateaubriant. Jean-Pierre Timbaud, the secretary of the steelworkers' union and a strike organiser during the 1930s, faced the firing squad singing the \"Marseillaise.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "181\u2013182"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Timbaud's biography and execution at Ch\u00e2teaubriant consistent with historical records."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_la_maison_des_metallos_social_change_hidden_gardens_of_paris_workers_community_center",
+      "city_name": "paris",
+      "poi_name": "La Maison des Metallos",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "workers_community_center",
+      "sub_location": null,
+      "trigger_address": "94, rue Jean-Pierre Timbaud",
+      "script_body": "La Maison des Metallos at no. 94 is a community center with a caf\u00e9, studios, and space for workers in the metal trades. It sits at Esplanade Roger-Linet \u2014 the triangle formed by rue Jean-Pierre Timbaud, rue des Trois-Couronnes, and rue Morand \u2014 where there's also a mosque, children playing under the catalpa trees, and a version of Rodin's Thinker.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "La Maison des Metallos",
+        "Rodin"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "neutral",
+      "subject_tag": "metalworkers community space",
+      "physical_cues": [
+        {
+          "cue": "Fa\u00e7ade of La Maison des Metallos at no. 94 rue Jean-Pierre Timbaud",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Version of Rodin's Thinker at Esplanade Roger-Linet",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "La Maison des Metallos is at no. 94 rue Jean-Pierre Timbaud",
+        "It is a community center with caf\u00e9, studios, space for metal-trades workers",
+        "At Esplanade Roger-Linet there is also a mosque and a version of Rodin's Thinker"
+      ],
+      "source_passage": "La Maison des Metallos (number 94), a community center with a cafe, studios, and space for workers in the metal trades, is at Esplanade Roger-Linet\u2014the triangle formed by rue Jean-Pierre Timbaud, rue des Trois-Couronnes, and rue Morand, where there's also a mosque, children playing under the catalpa trees, and a version of Rodins Thinker.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "182"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_de_la_roquette_dark_history_hidden_gardens_of_paris_prison_guillotine_history",
+      "city_name": "paris",
+      "poi_name": "Square de la Roquette",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "prison_guillotine_history",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At the square's entrance, a \"History of Paris\" plaque at the windows of the still-standing guardhouse tells a grim story. After the convent of nuns here was closed following 1789, Roquette became for centuries a site of incarceration: of women, of incorrigible children ages six to twenty, and finally of four thousand Resistantes during the German Occupation. The men's prison for murderers and death-row inmates stood across rue de la Roquette in rue de la Croix Faubin, where the guillotine \u2014 \"that shameful machine of human butchery,\" in the words of Louise Michel \u2014 operated until it was demolished in 1974. The square now occupies the footprint of this architecture of tyranny, its prisons that once \"looked like towering grim castles.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 90,
+      "kid_friendly": "no",
+      "entities": [
+        "Louise Michel",
+        "Resistantes"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "prison guillotine site",
+      "physical_cues": [
+        {
+          "cue": "'History of Paris' plaque at the windows of the still-standing guardhouse at the square's entrance",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Resistantes",
+          "gloss": "women Resistance members \u2014 four thousand were imprisoned here during the Occupation"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Still-standing guardhouse at square entrance has 'History of Paris' plaque",
+        "After 1789 the convent became a site of incarceration: women, children aged 6\u201320, four thousand Resistantes during Occupation",
+        "Men's prison with guillotine was across rue de la Roquette in rue de la Croix Faubin",
+        "Louise Michel called the guillotine 'that shameful machine of human butchery'",
+        "Guillotine demolished 1974"
+      ],
+      "source_passage": "At the square's entrance, there's a \"History of Paris\" plaque at the windows of the still-standing guardhouse. After its convent of nuns was closed after 1789, Roquette became for centuries a site of incarceration: of women, of incorrigible children ages six to twenty, and finally of four thousand Resistantes during the Occupation. The men's prison for murderers and death-row inmates was across rue de la Roquette in rue de la Croix Faubin, where the guillotine\u2014\"that shameful machine of human butchery,\" in the words of Louise Michel\u2014operated until it was demolished in 1974.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "187"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Guillotine at rue de la Croix Faubin demolished in 1974",
+            "note": "The men's prison (Grande Roquette / Saint-Maur) near this address was demolished. The guillotine was moved from public view in 1872 and executions moved indoors. The prison buildings were demolished in the 1970s. The specific claim about 1974 demolition requires verification but is consistent with the period.",
+            "status": "unverified",
+            "source_urls": []
+          }
+        ],
+        "status": "unverified",
+        "notes": "Louise Michel attribution to that specific quote not independently verified in this pass."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_de_la_roquette_parks_gardens_hidden_gardens_of_paris_butte_garden_oasis",
+      "city_name": "paris",
+      "poi_name": "Square de la Roquette",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "butte_garden_oasis",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Square de la Roquette is built on a kind of butte, its winding paths bench-lined and skirting flower beds that are glorious in spring: hyacinth, pansies, daisies, snowdrops, wildflowers, tulips all bloom beneath magnolias, palm trees, and eucalyptus. Just inside the entrance, a high cascading fountain waters the palm trees and flower gardens. Local people \u2014 there are few strangers here \u2014 sit in the companionable shade. Like so many calm green sanctuaries in Paris, this landscape bears a legacy of pain from the old world, but has been made over in the image of a more generous polity, an urban oasis replacing an architecture of tyranny.",
+      "beat_length_class": "mid",
+      "duration_sec": 83,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "garden oasis butte",
+      "physical_cues": [
+        {
+          "cue": "High cascading fountain just inside the entrance to the square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Winding paths bench-lined and skirting flower beds on the elevated butte",
+          "direction": "up",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "butte",
+          "gloss": "a small hill or elevated mound"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Square is built on a kind of butte",
+        "Spring flowers include hyacinth, pansies, daisies, snowdrops, wildflowers, tulips beneath magnolias, palms, eucalyptus",
+        "High cascading fountain just inside the entrance"
+      ],
+      "source_passage": "Square de la Roquette mirrors the neighborhood, especially in the well-designed children's playground. Above the playground\u2014Roquette is built on a kind of butte\u2014are winding paths, bench-lined of course, skirting flower beds that are glorious in spring: hyacinth, pansies, daisies, snowdrops, wildflowers, tulips all bloom beneath magnolias, palm trees, and eucalyptus. Just inside the entrance to Roquette you face a high cascading fountain that waters the palm trees and the flower gardens. Local people\u2014there are few strangers here\u2014sit in the companionable shade.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "187"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_de_la_roquette_social_change_hidden_gardens_of_paris_gentrification_return",
+      "city_name": "paris",
+      "poi_name": "Square de la Roquette",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "gentrification_return",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Since the revolution of 1968 \u2014 euphemistically referred to as les \u00e9v\u00e9nements, or \"the events\" of 1968 \u2014 this old area of insurrection, the plebeian northeast of the eleventh, twelfth, nineteenth, and twentieth arrondissements, has been reconstituted. After years of demolition and gentrification under former president Georges Pompidou (1969\u20131974), the mixed population returned. In the streets around rue de la Roquette, the Paris proletariat reestablished itself, marked by the return of immigrants, working families, artists, and \"an intellectual but nonuniversity youth.\"",
+      "beat_length_class": "mid",
+      "duration_sec": 74,
+      "kid_friendly": "yes",
+      "entities": [
+        "Georges Pompidou",
+        "les \u00e9v\u00e9nements"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "neighborhood reconstitution",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "les \u00e9v\u00e9nements",
+          "gloss": "the events \u2014 euphemism for the May 1968 revolution"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Since 1968 revolution, the northeast plebeian area has been reconstituted",
+        "Gentrification under Pompidou (1969\u20131974) was followed by return of mixed population",
+        "Immigrants, working families, artists, and 'an intellectual but nonuniversity youth' returned"
+      ],
+      "source_passage": "Since the revolution of 1968 (euphemistically referred to as les evenements, or \"the events\" of 1968) this old area of insurrection\u2014the plebeian northeast of the eleventh, twelfth, nineteenth, and twentieth arrondissements, which did not take much part in 1968\u2014has been reconstituted. After years of demolition and gentrification under former president Georges Pompidou (1969\u20141974), the mixed population has returned. In the streets around rue de la Roquette, the Paris proletariat has reestablished itself, marked by the return of immigrants, working families, artists, and \"an intellectual but nonuniversity youth.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "186"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_de_la_roquette_local_legends_hidden_gardens_of_paris_psychogeography_walking",
+      "city_name": "paris",
+      "poi_name": "Square de la Roquette",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "psychogeography_walking",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Walking from central or western Paris into the northeast enables what one theorist calls \"psychogeography\" \u2014 \"the sudden change of ambience in a street within the space of a few meters, the evident division of the city into zones of distinct psychic atmospheres.\" Walkers are, in this view, \"practitioners of the city\": \"the city is a language . . . and walking is the act of speaking that language.\" Only by using one's legs to move from one arrondissement to another does it become obvious: the City of Light speaks many languages.",
+      "beat_length_class": "mid",
+      "duration_sec": 73,
+      "kid_friendly": "yes",
+      "entities": [
+        "Rebecca Solnit"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "psychogeography walking",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Theory of 'psychogeography': sudden change of ambience in a street within a few meters",
+        "Walking = 'speaking the language' of the city"
+      ],
+      "source_passage": "\"Walkers are practitioners of the city,\" as one theorist puts it: the \"city is a language . . . and walking is the act of speaking that language.\" Only by using one's leg power to see one arrondissement after another can you get inside that language. Moving on foot from central or western Paris into the northeast enables the physical and emotional reverberations of \"psychogeography,\" the sense of \"the sudden change of ambience in a street within the space of a few meters, the evident division of the city into zones of distinct psychic atmospheres.\"",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "185\u2013186"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "The 'psychogeography' concept is attributed to the Situationist International (Guy Debord). The walking quote is attributed in the book's footnote to Rebecca Solnit, 'Paris, or Botanizing on the Asphalt,' in Wanderlust: A History of Walking."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_canal_saint_martin_waterways_views_hidden_gardens_of_paris_locks_bridges_hospital",
+      "city_name": "paris",
+      "poi_name": "Canal Saint-Martin",
+      "parent_poi": null,
+      "lens": "waterways_views",
+      "topic_slug": "locks_bridges_hospital",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Follow boulevard Richard-Lenoir and the tree-lined canal walk straight to Square Jules-Ferry \u2014 by turns idyllic and scruffy, never synthetic. The Canal Saint-Martin has nine locks, two swing bridges, and several arched footbridges. To the right, avenue Richerand leads to l'H\u00f4pital Saint-Louis, the seventeenth-century public hospital for plague victims built by order of Henri IV, its inner red brick and stone quadrangle and garden courtyard the twin of Place des Vosges \u2014 a quiet retreat on a weekday morning.",
+      "beat_length_class": "mid",
+      "duration_sec": 72,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henri IV",
+        "H\u00f4pital Saint-Louis",
+        "Place des Vosges",
+        "Square Jules-Ferry"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "canal locks hospital",
+      "physical_cues": [
+        {
+          "cue": "Nine locks, two swing bridges, and several arched footbridges along Canal Saint-Martin",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "H\u00f4pital Saint-Louis via avenue Richerand, with red brick and stone quadrangle",
+          "direction": "east",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Canal has 9 locks, 2 swing bridges, several arched footbridges",
+        "Avenue Richerand leads to H\u00f4pital Saint-Louis",
+        "Hospital is 17th-century, built by order of Henri IV for plague victims",
+        "Its inner quadrangle is the twin of Place des Vosges"
+      ],
+      "source_passage": "CANAL SAINT-MARTIN \u2014 Follow boulevard Richard-Lenoir and the tree-lined canal walk straight to Square Jules-Ferry, by turns idyllic and scruffy, never synthetic. The canal has nine locks, two swing bridges, and several arched footbridges. To the right, avenue Richerand leads to l'Hopital Saint-Louis, the seventeenth-century public hospital for plague victims built by order of Henri IV, its inner red brick and stone quadrangle and garden courtyard the twin of Place des Vosges, a quiet retreat on a weekday morning.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "148\u2013154"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "H\u00f4pital Saint-Louis was built by order of Henri IV for plague victims",
+            "note": "H\u00f4pital Saint-Louis was indeed built by Henri IV starting 1607, opened 1612, to house plague victims outside central Paris. Multiple sources confirm this. AUTO-CORRECTED: no correction needed \u2014 claim is accurate.",
+            "status": "verified",
+            "source_urls": [
+              "https://en.wikipedia.org/wiki/H%C3%B4pital_Saint-Louis"
+            ]
+          },
+          {
+            "claim": "Inner quadrangle is the twin of Place des Vosges",
+            "note": "This is a commonly noted observation in Paris guidebooks \u2014 both were Henri IV-era red brick and stone construction. The architectural similarity is documented. No correction needed.",
+            "status": "verified",
+            "source_urls": [
+              "https://en.wikipedia.org/wiki/H%C3%B4pital_Saint-Louis"
+            ]
+          }
+        ],
+        "status": "verified",
+        "notes": "Canal dimensions (9 locks, 2 swing bridges) are consistent with known facts about Canal Saint-Martin."
+      },
+      "new_poi": false,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_eglise_notre_dame_de_la_croix_film_tv_hidden_gardens_of_paris_de_palma_femme_fatale",
+      "city_name": "paris",
+      "poi_name": "Eglise Notre-Dame de la Croix",
+      "parent_poi": null,
+      "lens": "film_tv",
+      "topic_slug": "de_palma_femme_fatale",
+      "sub_location": null,
+      "trigger_address": "3, place de M\u00e9nilmontant",
+      "script_body": "Eglise Notre-Dame de la Croix stands at 3, place de M\u00e9nilmontant, on Square Maurice Chevalier at the head of rue Etienne Dolet, with stunning wooden sculptures of Christian icons by Joseph Pyrp. Kids kick a soccer ball atop the high front steps with a view \u2014 a setting in Brian De Palma's film Femme Fatale. The church bells fill the surrounding streets.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 44,
+      "kid_friendly": "yes",
+      "entities": [
+        "Joseph Pyrp",
+        "Brian De Palma",
+        "Femme Fatale",
+        "Square Maurice Chevalier"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "playful",
+      "subject_tag": "De Palma film location",
+      "physical_cues": [
+        {
+          "cue": "Fa\u00e7ade of Eglise Notre-Dame de la Croix at 3, place de M\u00e9nilmontant with high front steps",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Stunning wooden sculptures of Christian icons by Joseph Pyrp inside",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Church at 3, place de M\u00e9nilmontant, on Square Maurice Chevalier",
+        "Wooden sculptures of Christian icons by Joseph Pyrp",
+        "Setting in Brian De Palma's Femme Fatale"
+      ],
+      "source_passage": "EGLISE NOTRE-DAME DE LA CROIX \u2014 3, place de Menilmontant, on Square Maurice Chevalier, at the head of rue Etienne Dolet, with stunning wooden sculptures of Christian icons by Joseph Pyrp. Kids kick a soccer ball atop the high front steps with a view, a setting in Brian De Palmas Femme Fatale. The sound of the church bells\u2014\"Christian beauty\"\u2014fills the surrounding streets.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "258\u2013263"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Setting in Brian De Palma's Femme Fatale",
+            "note": "Brian De Palma's Femme Fatale (2002) was indeed filmed partly in Paris. The church at Place de M\u00e9nilmontant is consistent with the film's Paris locations, though I cannot verify this specific scene without secondary source.",
+            "status": "unverified",
+            "source_urls": []
+          }
+        ],
+        "status": "unverified",
+        "notes": ""
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_pere_lachaise_cemetery_war_conflict_hidden_gardens_of_paris_fusilles_chateaubriant_burial",
+      "city_name": "paris",
+      "poi_name": "Pere Lachaise Cemetery",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "fusilles_chateaubriant_burial",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At P\u00e8re-Lachaise, the bodies and ashes of the Fusill\u00e9s de Ch\u00e2teaubriant are buried across from the Mur des F\u00e9d\u00e9r\u00e9s \u2014 among them Maurice Gardette, Jean-Pierre Timbaud, and seventeen-year-old Guy Moquet. Every year on October 22, Resistance veterans and local citizens march here from Square Maurice-Gardette to commemorate the anniversary of their execution in 1941.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 45,
+      "kid_friendly": "yes",
+      "entities": [
+        "Fusill\u00e9s de Ch\u00e2teaubriant",
+        "Mur des F\u00e9d\u00e9r\u00e9s",
+        "Maurice Gardette",
+        "Jean-Pierre Timbaud",
+        "Guy Moquet"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "callback",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "Resistance burial site",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Fusill\u00e9s de Ch\u00e2teaubriant",
+          "gloss": "those shot by firing squad at Ch\u00e2teaubriant"
+        },
+        {
+          "phrase": "Mur des F\u00e9d\u00e9r\u00e9s",
+          "gloss": "Wall of the Federals \u2014 a wall at P\u00e8re-Lachaise associated with Communard executions"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Fusill\u00e9s de Ch\u00e2teaubriant (including Gardette, Timbaud, Guy Moquet) buried at P\u00e8re-Lachaise across from Mur des F\u00e9d\u00e9r\u00e9s"
+      ],
+      "source_passage": "then marched to Pere-Lachaise, where the bodies and ashes of Maurice Gardette and the other Fusilles de Chateaubriant (including Jean-Pierre Timbaud and seventeen-year-old Guy Moquet) are buried, across from the Mur des Federes.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Around Bastille and Northeastern Paris",
+        "page": "180"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "The Fusill\u00e9s de Ch\u00e2teaubriant burial at P\u00e8re-Lachaise near the Mur des F\u00e9d\u00e9r\u00e9s is consistent with known historical accounts."
+      },
+      "new_poi": false,
+      "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "new_poi",
+      "name": "Square Maurice-Gardette",
+      "reason": "Not in existing POI list. Neighborhood garden in 11th arrondissement with significant WWII Resistance history. 5 beats attached. Nominatim: 'Square Maurice-Gardette, Paris 11e'. Recommend: add as new POI, poi_role: stop, importance_tier: user to assign.",
+      "beats_attached": 5
+    },
+    {
+      "type": "new_poi",
+      "name": "Square de la Roquette",
+      "reason": "Not in existing POI list. Square built on former women's prison site, 11th arrondissement. Entrances: 147 rue de la Roquette; rue Servan; rue Merlan. 5 beats attached. Nominatim: 'Square de la Roquette, rue de la Roquette, Paris 11e'.",
+      "beats_attached": 5
+    },
+    {
+      "type": "new_poi",
+      "name": "Eglise Notre-Dame de la Croix",
+      "reason": "Not in existing POI list. Church at 3 place de M\u00e9nilmontant. 1 sidebar beat (film_tv). Low content volume \u2014 recommend user decide whether to add.",
+      "beats_attached": 1
+    },
+    {
+      "type": "new_poi",
+      "name": "La Maison des Metallos",
+      "reason": "Not in existing POI list. Community center at 94 rue Jean-Pierre Timbaud. 1 sidebar beat (social_change). Low content volume.",
+      "beats_attached": 1
+    },
+    {
+      "type": "fact_check_flag",
+      "name": "Square de la Roquette \u2014 guillotine demolished 1974",
+      "reason": "Source says guillotine 'operated until it was demolished in 1974.' The executions and guillotine at Grande Roquette prison are historically documented. The prison demolition in the 1970s is consistent but the exact year 1974 should be confirmed. No auto-correction applied \u2014 single-source, not contradicted.",
+      "beat_id": "paris_square_de_la_roquette_dark_history_hidden_gardens_of_paris_prison_guillotine_history"
+    },
+    {
+      "type": "fact_check_flag",
+      "name": "Eglise Notre-Dame de la Croix \u2014 De Palma Femme Fatale",
+      "reason": "Claim that the church steps were a setting in Brian De Palma's Femme Fatale (2002) is sourced only to this book. Not independently verified in this pass.",
+      "beat_id": "paris_eglise_notre_dame_de_la_croix_film_tv_hidden_gardens_of_paris_de_palma_femme_fatale"
+    },
+    {
+      "type": "establishing_beat_coverage",
+      "name": "Square Maurice-Gardette",
+      "reason": "No explicit establishing beat was emitted. The dark_history beat (communard_slaughter_1871) serves as de facto establishing. If importance_tier >= 3 at create time, a dedicated establishing beat should be hand-authored or sourced from additional material.",
+      "beat_id": null
+    },
+    {
+      "type": "establishing_beat_coverage",
+      "name": "Square de la Roquette",
+      "reason": "No explicit establishing beat was emitted. The social_change beat (gentrification_return) serves as closest establishing. Same note as above.",
+      "beat_id": null
+    }
+  ],
+  "summary": {
+    "beats_extracted": 13,
+    "pois_touched": 5,
+    "new_pois": 4,
+    "corrections_applied": 0,
+    "disputes": 0,
+    "anomalies": 3,
+    "lenses_hit": [
+      "dark_history",
+      "war_conflict",
+      "parks_gardens",
+      "social_change",
+      "local_legends",
+      "waterways_views",
+      "film_tv"
+    ],
+    "lenses_missed": [
+      "hidden_history",
+      "historic_arch",
+      "modern_design",
+      "music_heritage",
+      "visual_art",
+      "street_art",
+      "historic_cuisine",
+      "markets_street_food",
+      "literary_heritage",
+      "famous_residents",
+      "historic_worship",
+      "sacred_traditions",
+      "science_tech",
+      "historic_markets"
+    ],
+    "confidence_counts": {
+      "HIGH": 2,
+      "MEDIUM": 9,
+      "LOW": 2
+    },
+    "beat_length_class_distribution": {
+      "anchor": 1,
+      "mid": 8,
+      "seasoning": 4,
+      "micro": 0
+    },
+    "anomaly_detail": [
+      "New POI 'Square Maurice-Gardette' has no establishing beat \u2014 flag for manual review if tier >= 3",
+      "New POI 'Square de la Roquette' has no establishing beat \u2014 flag for manual review if tier >= 3",
+      "Fact claim about guillotine demolition year (1974) is single-sourced and unverified"
+    ]
+  }
+}

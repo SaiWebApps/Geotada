@@ -1,0 +1,1287 @@
+Now I have all the fact-checking results needed. Key findings:
+
+1. **Carpeaux dates**: Book says (1829–1875), but actual dates are 1827–1875. This is a factual error — CORRECTION needed (2+ sources agree: Wikipedia, Met Museum both say 1827).
+
+2. **Suzanne Buisson death**: Book says "date of her death not known" — partially inaccurate. Sources confirm she died on 5 July 1944 at Auschwitz (convoy 76). The book was published 2012, and this information was available. However, the plaque itself may not have shown the date — the book is describing the plaque's content, not making a general factual claim. I'll flag this as a note rather than a hard correction since the book is reporting what the plaque says.
+
+3. **Je t'aime Wall tiles**: Book says "511 tiles" — actual number is 612 tiles. This is a factual error. CORRECTION needed (2+ sources agree).
+
+4. **Je t'aime Wall languages**: Book says "250 languages" — matches sources ("250 languages"). CONFIRMED.
+
+5. **Je t'aime Wall count "311 times"**: Book says 311 — matches sources. CONFIRMED.
+
+6. **Henri IV siege**: The book says "Siege of Paris in 1589" — the main siege was actually 1590 (though a preliminary action began in November 1589). The book says "1589" which is partially supported — there was an assault in 1589 before the full siege of 1590. This is ambiguous; I'll note it.
+
+7. **Renoir's Bal du Moulin de la Galette** — 1876, Musée d'Orsay. CONFIRMED.
+
+8. **Van Gogh at 54 rue Lepic 1886-1888**. CONFIRMED.
+
+9. **Louise Michel 1830-1905**. CONFIRMED.
+
+10. **Truffaut 1932-1984**. CONFIRMED, grew up in Montmartre, buried at Montmartre Cemetery.
+
+11. **Dufy studio**: Book says "right wing in 1901." Sources say Dufy was at 12 rue Cortot from ~1900-1902. "1901" is within that range — PLAUSIBLE, not contradicted.
+
+12. **Musée de Montmartre founding**: Book says "seventeenth-century house first owned by an actor-colleague of Molière's" — this is a known fact (Claude de la Rose, called Rosimond). Not contradicted.
+
+Now let me produce the full JSON output:
+
+```json
+{
+  "chunk_id": "chunk-07b-suzanne-buisson-montmartre",
+  "chunk_file": "Books/Paris/hidden-gardens-of-paris/chunk-07b-suzanne-buisson-montmartre.txt",
+  "pois": [
+    {
+      "poi_name": "Square Suzanne-Buisson",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "Place Casadesus, 18th arrondissement, Paris",
+      "nominatim_query": "Square Suzanne-Buisson, Montmartre, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Square Suzanne-Buisson. Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 4. Relationship: independent new POI. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Musée de Montmartre",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "12 rue Cortot, 18th arrondissement, Paris",
+      "nominatim_query": "Musée de Montmartre, 12 rue Cortot, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Musée de Montmartre. Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 6. Relationship: independent new POI. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Square Carpeaux",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "Rue Carpeaux, 18th arrondissement, Paris",
+      "nominatim_query": "Square Carpeaux, rue Carpeaux, Montmartre, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Square Carpeaux. Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 2. Relationship: independent new POI. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Square Léon-Serpollet",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "Rue Cloys / Rue Marcadet, 18th arrondissement, Paris",
+      "nominatim_query": "Square Léon-Serpollet, Montmartre, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Square Léon-Serpollet. Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 1. Relationship: independent new POI. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Parc Turlure",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "Rue de la Bonne, 18th arrondissement, Paris",
+      "nominatim_query": "Parc Turlure, Montmartre, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Parc Turlure. Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 1. Relationship: independent new POI. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Square Louise-Michel",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "Base of Sacré-Coeur hill, 18th arrondissement, Paris",
+      "nominatim_query": "Square Louise-Michel, Montmartre, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Square Louise-Michel. Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 1. Relationship: independent new POI. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Square des Abbesses",
+      "new_poi": true,
+      "city_name": "paris",
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "trigger_radius": 10,
+      "address": "Near metro Abbesses, 18th arrondissement, Paris",
+      "nominatim_query": "Square des Abbesses (Jehan Rictus), Montmartre, Paris, France",
+      "kid_friendly": "yes",
+      "poi_role": "stop",
+      "parent_poi": null,
+      "pipeline_note": "NEW POI FLAGGED: Square des Abbesses (also known as Jardin du Square Jehan Rictus). Source: chunk-07b-suzanne-buisson-montmartre. Beats attached: 1. Relationship: independent new POI — distinct from Place des Abbesses. Status: do not auto-create — user decides at poi-generate time."
+    },
+    {
+      "poi_name": "Montmartre Cemetery",
+      "new_poi": false,
+      "city_name": "paris",
+      "match_note": "Exact match to existing POI 'Montmartre Cemetery'"
+    },
+    {
+      "poi_name": "Lapin Agile",
+      "new_poi": false,
+      "city_name": "paris",
+      "match_note": "Exact match to existing POI 'Lapin Agile'"
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "paris_square_suzanne_buisson_stop_orientation_hidden_gardens_of_paris_approach_place_casadesus",
+      "city_name": "paris",
+      "poi_name": "Square Suzanne-Buisson",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "approach_place_casadesus",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The most delightful approach to this corner of beauty on the hill of Montmartre is from the west: climb rue Caulaincourt from the Montmartre Cemetery, midway up take the stairs to the right onto avenue Junot, then a left into rue Simon Dereure, which ends in the charming Place-des-Quatre-Freres-Casadesus. The small steps to the right, through a rock garden, take you up to Square Suzanne-Buisson. You can sit and recover from the climb in the company of a few Parisians, pairs of friends or lovers, or grandparents keeping an eye on the children in the playground. Birds twitter and don't fly away, diving in and out of the trees, the wildflowers in the rock garden, circling the small greenhouse and the heights of the white mansions of Place Casadesus, home to generations of a family of great musicians.",
+      "beat_length_class": "mid",
+      "duration_sec": 54,
+      "kid_friendly": "yes",
+      "entities": ["Place Casadesus", "Montmartre Cemetery", "avenue Junot"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "arrival staging",
+      "physical_cues": [
+        {
+          "cue": "Rock garden and small steps approaching Square Suzanne-Buisson from Place-des-Quatre-Freres-Casadesus",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "White mansions of Place Casadesus visible above the square",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Small greenhouse within the square grounds",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Approach from Montmartre Cemetery via rue Caulaincourt, avenue Junot, rue Simon Dereure, Place-des-Quatre-Frères-Casadesus", "Place Casadesus home to generations of a family of great musicians"],
+      "source_passage": "The most delightful approach to this corner of beauty on the hill of Montmartre is from the west: climb rue Caulaincourt from the Montmartre Cemetery, midway up take the stairs to the right onto avenue Junot, then a left into rue Simon Dereure, which ends in the charming Place-des-Quatre-Freres-Casadesus. The small steps to the right, through a rock garden, take you up to Square Suzanne-Buisson. You can sit and recover from the climb in the company of a few Parisians, pairs of friends or lovers, or grandparents keeping an eye on the children in the playground. Birds twitter and don't fly away, diving in and out of the trees, the wildflowers in the rock garden, circling the small greenhouse and the heights of the white mansions of Place Casadesus, home to generations of a family of great musicians.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Suzanne-Buisson",
+        "page": "157-158"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Physical approach directions and Place Casadesus musicians family are local facts consistent with the area."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_suzanne_buisson_local_legends_hidden_gardens_of_paris_saint_denis_cephalophore",
+      "city_name": "paris",
+      "poi_name": "Square Suzanne-Buisson",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "saint_denis_cephalophore",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Near the front of the square a statue of Saint-Denis holds his severed head, overlooking the fountain and mall shaded by plane trees. According to legend, when Denis, the first bishop of Lutetia, was decapitated by the Romans, c. 258 AD — the site traditionally believed to be at the foot of the butte in rue Yvonne le Tac just east of Place des Abbesses — he carried his bloody head up to the spring that until the nineteenth century flowed here, washed it, and then continued north to the site of the Basilica of Saint-Denis, where he is buried. The origin of the name 'Montmartre' is commonly thought to be Mons Martyrum, after the story of the martyrdom of Denis and his two companions.",
+      "beat_length_class": "mid",
+      "duration_sec": 57,
+      "kid_friendly": "yes",
+      "entities": ["Saint-Denis", "Lutetia", "Basilica of Saint-Denis", "Place des Abbesses", "rue Yvonne le Tac"],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "local_legends",
+      "emotional_register": "reverent",
+      "subject_tag": "Denis cephalophore legend",
+      "physical_cues": [
+        {
+          "cue": "Statue of Saint-Denis holding his severed head near the front of the square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Fountain and mall shaded by plane trees overlooked by the statue",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "Mons Martyrum", "gloss": "Martyrs' Mountain — commonly thought to be the origin of the name Montmartre"}
+      ],
+      "pronunciation": "mohn-mar-truh",
+      "key_claims": ["Denis = first bishop of Lutetia, decapitated by Romans c. 258 AD", "Traditionally decapitated at rue Yvonne le Tac near Place des Abbesses", "Carried head to spring on butte, then continued north to Basilica of Saint-Denis", "Montmartre derives from Mons Martyrum"],
+      "source_passage": "Near the front of the square a statue of Saint-Denis holding his severed head overlooks the fountain and mall shaded by plane trees. According to legend, when Denis, the first bishop of Lutetia, was decapitated by the Romans, c. 258 AD (the site traditionally believed to be at the foot of the butte in rue Yvonne le Tac just east of Place des Abbesses), he carried his bloody head up to the spring that until the nineteenth century flowed here, washed it, and then continued north to the site of the Basilica of Saint-Denis, where he is buried. The origin of the name 'Montmartre' is commonly thought to be Mons Martyrum, after the story of the martyrdom of Denis and his two companions.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Suzanne-Buisson",
+        "page": "158"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Denis decapitated c. 258 AD",
+            "status": "VERIFIED_WITH_NOTE",
+            "note": "Traditional date is c. 258 AD but historians suggest martyrdom may have been under Decius (c. 250 AD). Book correctly cites 'c. 258 AD' as traditional dating. No auto-correction needed — source uses hedging language.",
+            "sources": ["https://en.wikipedia.org/wiki/Denis_of_Paris", "https://www.discoverwalks.com/blog/8-facts-about-saint-denis-of-paris/"]
+          }
+        ],
+        "status": "verified",
+        "notes": "Core legend details verified. Statue of Denis holding head is a known visible feature of the square. Mons Martyrum etymology confirmed."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_suzanne_buisson_dark_history_hidden_gardens_of_paris_suzanne_buisson_resistance",
+      "city_name": "paris",
+      "poi_name": "Square Suzanne-Buisson",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "suzanne_buisson_resistance",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The square is named for a victim of a modern totalitarian regime, Suzanne Levy Buisson, born in 1883. At the rue Girardin entrance, a 'Histoire de Paris' plaque identifies her as a martyr of the Resistance and secretary of the Women's Socialist Party. Arrested and tortured by the Nazis, she revealed nothing about the movement. Deported, she died in Germany, the date of her death not known. So little is known about Suzanne Buisson and the other Résistantes that her story and the near anonymity of the plaque's profile inject a dissonance into this hilltop place so filled with light.",
+      "beat_length_class": "mid",
+      "duration_sec": 55,
+      "kid_friendly": "no",
+      "entities": ["Suzanne Levy Buisson", "Women's Socialist Party"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "somber",
+      "subject_tag": "Buisson Resistance martyr",
+      "physical_cues": [
+        {
+          "cue": "'Histoire de Paris' plaque at the rue Girardin entrance to the square",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "Résistantes", "gloss": "women of the French Resistance"}
+      ],
+      "pronunciation": null,
+      "key_claims": ["Suzanne Levy Buisson born 1883", "Secretary of Women's Socialist Party", "Arrested and tortured by Nazis, revealed nothing", "Deported, died in Germany"],
+      "source_passage": "The square is named for a victim of a modern totalitarian regime, Suzanne Levy Buisson, born in 1883. At the rue Girardin entrance, a 'Histoire de Paris' plaque identifies her as a martyr of the Resistance and secretary of the Women's Socialist Party. Arrested and tortured by the Nazis, she revealed nothing about the movement. Deported, she died in Germany, the date of her death not known. So little is known about Suzanne Buisson and the other Resistantes, her story and the near anonymity of the plaque's profile inject a dissonance into this hilltop place so filled with light.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Suzanne-Buisson",
+        "page": "158-159"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "date of her death not known",
+            "status": "NOTE_ONLY",
+            "note": "Research confirms Suzanne Buisson died 5 July 1944 at Auschwitz (deported on convoy 76, 30 June 1944). However, the book is quoting the content of the plaque, which in 2012 may not have recorded the date. The plaque text itself ('date of her death not known') is the literal content being reported. No auto-correction applied — the beat describes the plaque, not world fact. Downstream editors may wish to append a note.",
+            "sources": ["https://en.wikipedia.org/wiki/Suzanne_Buisson", "https://www.cercleshoah.org/spip.php?article913=&lang=fr"]
+          }
+        ],
+        "status": "verified_with_note",
+        "notes": "Buisson's birth year 1883 confirmed. Role as secretary of Women's Socialist Party confirmed. Arrested, tortured, revealed nothing confirmed. Died in Germany (Auschwitz) confirmed. Date known to historians but apparently not on plaque at time of book's publication."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_suzanne_buisson_literary_heritage_hidden_gardens_of_paris_ravel_joy_quote",
+      "city_name": "paris",
+      "poi_name": "Square Suzanne-Buisson",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "ravel_joy_quote",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Standing at the entrance of the square, the author invokes Maurice Ravel, who knew Montmartre. In the face of a personal disaster, Ravel once said: 'I firmly believe that joy is far more fertile than pain.' In this Montmartre homage to the memory of Suzanne Buisson and Saint-Denis — in this pretty corner of Paris — there is in their courage a distinct vibration of joy.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": ["Maurice Ravel", "Suzanne Buisson", "Saint-Denis"],
+      "sensory_anchor": false,
+      "narrative_function": "callback",
+      "beat_type": "anecdote",
+      "emotional_register": "reverent",
+      "subject_tag": "Ravel joy courage",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Maurice Ravel knew Montmartre", "Ravel quote: 'I firmly believe that joy is far more fertile than pain'"],
+      "source_passage": "Again, a musical analogy comes to mind, the jangling harmonics of, say, the French composer Maurice Ravel (who knew Montmartre). In the face of a personal disaster, Ravel once said: 'I firmly believe that joy is far more fertile than pain.' In this Montmartre homage to the memory of Suzanne Buisson and Saint-Denis—in this pretty corner of Paris—there is in their courage a distinct vibration of joy.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Suzanne-Buisson",
+        "page": "159"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Ravel quote not independently verified but is a known attributed saying. No auto-correction warranted."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_montmartre_cemetery_literary_heritage_hidden_gardens_of_paris_notable_burials",
+      "city_name": "paris",
+      "poi_name": "Montmartre Cemetery",
+      "parent_poi": null,
+      "lens": "literary_heritage",
+      "topic_slug": "notable_burials",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Here lie Stendhal, Berlioz, Julie Récamier, Heinrich Heine, and Fragonard, under the linden trees, where Colette used to roam and gather flowers. German students come looking for the grave of Heine. Truffaut (1932–1984), who grew up in Montmartre, is buried here. A scene in The 400 Blows takes place on the bridge over the cemetery that leads up rue Caulaincourt to Square Suzanne-Buisson.",
+      "beat_length_class": "mid",
+      "duration_sec": 40,
+      "kid_friendly": "yes",
+      "entities": ["Stendhal", "Berlioz", "Julie Récamier", "Heinrich Heine", "Fragonard", "Colette", "François Truffaut", "The 400 Blows"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "cemetery notable graves",
+      "physical_cues": [
+        {
+          "cue": "Linden trees throughout the cemetery where Colette roamed",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Bridge over the cemetery leading up rue Caulaincourt — location of The 400 Blows scene",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Stendhal, Berlioz, Julie Récamier, Heinrich Heine, Fragonard buried here", "Colette used to roam and gather flowers here", "Truffaut 1932-1984 grew up in Montmartre, buried here", "The 400 Blows scene on bridge over cemetery"],
+      "source_passage": "Here lie Stendhal, Berliop Julie Recamier, Heinrich Heine, and Fragonard, under the linden trees, where Colette used to roam and gather flowers. Visitors include German students looking for the grave of Heine. Truffaut (1932—1984), who grew up in Montmartre, is buried here. A scene in The 400 Blows takes place on the bridge over the cemetery that leads up rue Caulaincourt to Square Suzanne-Buisson.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Montmartre Cemetery sidebar",
+        "page": "159"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "All notable burials confirmed. Truffaut (1932-1984) confirmed at Montmartre Cemetery. Note: source text has OCR artifact 'Berliop' — should read 'Berlioz'. Auto-corrected in script_body. Sources: https://en.wikipedia.org/wiki/Fran%C3%A7ois_Truffaut"
+      },
+      "new_poi": false,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_carpeaux_social_change_hidden_gardens_of_paris_peoples_park_bob_le_flambeur",
+      "city_name": "paris",
+      "poi_name": "Square Carpeaux",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "peoples_park_bob_le_flambeur",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Square Carpeaux — 'a people's park, the anti-Luxembourg,' according to one local — holds a statue of the sculptor Jean-Baptiste Carpeaux (1827–1875) surrounded by tall trees flush with singing birds, flower gardens, beds of shrubbery, a kiosk for local concerts, and a statue of a woman without an arm. A scene from Jean-Pierre Melville's Montmartre film Bob le flambeur takes place here, with the armless woman distinct in the background as Bob the compassionate crook talks business with a partner on a park bench.",
+      "beat_length_class": "mid",
+      "duration_sec": 52,
+      "kid_friendly": "yes",
+      "entities": ["Jean-Baptiste Carpeaux", "Jean-Pierre Melville", "Bob le flambeur"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "workers park cinema",
+      "physical_cues": [
+        {
+          "cue": "Statue of sculptor Jean-Baptiste Carpeaux at the center of the square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Armless woman statue — visible in background of the Bob le flambeur film scene",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Square Carpeaux called 'the anti-Luxembourg'", "Statue of Jean-Baptiste Carpeaux (1827-1875)", "Bob le flambeur (Melville) filmed here with armless statue in background"],
+      "source_passage": "SQUARE CARPE AUX "A people's park, the anti-Luxembourg," according to one local. Descend the long fight of steps upon exiting the metro at Lamarck-Caulaincourt, walk west on rue Marcadet, then left, down rue Carpeaux. The square is on the right, with a statue of the sculptor Jean-Baptiste Carpeaux (1829—1875) surrounded by tall trees flush with singing birds, flower gardens, beds of shrubbery, a kiosk for local concerts, and a statue of a woman without an arm. A scene from Jean-Pierre Melville's Montmartre film, Bob le flambeur, takes place here, with the armless woman distinct in the background as Bob the compassionate crook talks business with a partner on a park bench.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Carpeaux sidebar",
+        "page": "159-160"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Jean-Baptiste Carpeaux (1829–1875)",
+            "status": "AUTO_CORRECTED",
+            "original": "1829",
+            "corrected_to": "1827",
+            "correction_reasoning": "Multiple authoritative sources confirm Carpeaux was born 11 May 1827, not 1829. The book's date appears to be a typo or error.",
+            "sources": [
+              "https://en.wikipedia.org/wiki/Jean-Baptiste_Carpeaux",
+              "https://www.metmuseum.org/toah/hd/carp/hd_carp.htm",
+              "https://www.musee-orsay.fr/en/whats-on/exhibitions/presentation/carpeaux-1827-1875-sculptor-empire"
+            ]
+          }
+        ],
+        "status": "corrected",
+        "notes": "Birth year corrected from 1829 to 1827 per 2+ authoritative sources."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_carpeaux_social_change_hidden_gardens_of_paris_montmartre_workers_graffiti",
+      "city_name": "paris",
+      "poi_name": "Square Carpeaux",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "montmartre_workers_graffiti",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "There is graffiti on a wall: 'Le peuple n'obtient que ce qu'il prend' — 'The people only get what they take.' Montmartre was from the first a neighborhood of workers, artisans, and the poor. It's mythologised now as a paradise of the well-heeled and successful artist — Picasso and company — but parts of it were always the territory of rebels, outsiders, and students who couldn't afford the rents in other parts of Paris.",
+      "beat_length_class": "mid",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": ["Picasso"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Montmartre workers class",
+      "physical_cues": [
+        {
+          "cue": "Graffiti on a wall reading 'Le peuple n'obtient que ce qu'il prend'",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "Le peuple n'obtient que ce qu'il prend", "gloss": "The people only get what they take"}
+      ],
+      "pronunciation": null,
+      "key_claims": ["Graffiti: 'Le peuple n'obtient que ce qu'il prend' = 'The people only get what they take'", "Montmartre historically a neighborhood of workers, artisans, and the poor"],
+      "source_passage": "There is graffiti on a wall: "Le peuple n'obtient que ce qu'il prend"—"The people only get what they take." Montmartre was from the first a neighborhood of workers, artisans, and the poor. It's mythologised now as a paradise of the well-heeled and successful artist—Picasso and company—but parts of it were always the territory of rebels, outsiders, and students who couldn't afford the rents in other parts of Paris.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Carpeaux sidebar",
+        "page": "160"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Social-historical claim about Montmartre's working-class origins is well-established."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_leon_serpollet_dark_history_hidden_gardens_of_paris_vichy_deported_children",
+      "city_name": "paris",
+      "poi_name": "Square Léon-Serpollet",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "vichy_deported_children",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Square Léon-Serpollet is a people's garden built on terraces, on the former sites of artists' ateliers. It was built in memory of the children deported by the Vichy government under the German Occupation. The square opens onto the terraces through a pretty arbor and spreads out as you ascend, next to an elementary school. In nearby Place Pecqueur, a sculpted relief of an emigration scene by Steinlein stands watch.",
+      "beat_length_class": "mid",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": ["Vichy government", "Steinlein", "Place Pecqueur"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "Vichy deportation memorial",
+      "physical_cues": [
+        {
+          "cue": "Pretty arbor at the entrance to the terraces",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Sculpted relief of an emigration scene by Steinlein in nearby Place Pecqueur",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Square built on former artists' ateliers", "Built in memory of children deported by Vichy government during German Occupation", "Steinlein sculpted emigration relief in Place Pecqueur"],
+      "source_passage": "SQUARE LEON-SERPOLLET Another people's garden built on terraces, the former sites of artists' ateliers. The pretty entrance is from rue Cloys (from rue Marcadet go down rue Ruisseau and turn left). Built in memory of the children deported by the Vichy government under the German Occupation, the square opens onto the terraces through a pretty arbor and spreads out as you ascend, next to an elementary school. Exiting on rue Marcadet, walk up another long flight of steps to return to rue Caulaincourt; in Place Pecqueur, there's a sculpted relief of an emigration scene by Steinlein.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Léon-Serpollet sidebar",
+        "page": "160"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Memorial purpose confirmed by description. Steinlein relief in Place Pecqueur not independently verified in this pass."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_de_montmartre_stop_orientation_hidden_gardens_of_paris_approach_rue_cortot",
+      "city_name": "paris",
+      "poi_name": "Musée de Montmartre",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "approach_rue_cortot",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The approach to rue Cortot from the metro is an exhilarating and scenic climb up the Montmartre hill (butte): follow rue des Abbesses west, right to rue Tholoze, then right again into curvy rue Lepic — the old quarry road where Vincent Van Gogh lived with his brother Theo at number 54 in 1886–1888 and where the only windmills of Montmartre still stand — continue uphill along rue Norvins until the left downhill turn into rue des Saules of the willow trees, and, finally, right into the picturesque rue Cortot. The entrance to the garden is through the bookshop of the Musée de Montmartre.",
+      "beat_length_class": "mid",
+      "duration_sec": 61,
+      "kid_friendly": "yes",
+      "entities": ["Vincent Van Gogh", "Theo van Gogh", "rue Lepic", "Montmartre"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "butte approach route",
+      "physical_cues": [
+        {
+          "cue": "Rue Lepic — old quarry road; two surviving windmills of Montmartre visible",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Building at no. 54 rue Lepic where Van Gogh lived 1886-1888",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Entrance to Musée de Montmartre garden through the bookshop on rue Cortot",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "butte", "gloss": "hill — the name Parisians use for the Montmartre mound"}
+      ],
+      "pronunciation": "boo-tuh",
+      "key_claims": ["Rue Lepic is the old quarry road", "Van Gogh lived at no. 54 rue Lepic with brother Theo, 1886-1888", "Only windmills of Montmartre still stand on rue Lepic", "Entrance to garden through museum bookshop"],
+      "source_passage": "The approach to rue Cortot from the metro is an exhilarating and scenic climb up the Montmartre hill (butte): follow rue des Abbesses west, right to rue Tholoze, then right again into curvy rue Lepic (the old quarry road where Vincent Van Gogh lived with his brother Theo at number 54 in 1886—1888 and where the only windmills of Montmartre still stand); continue uphill along rue Norvins — there's a small garden to the left, at Cite Internationale des Art, with flowering cherry blossoms in season and a view over Place Marcel-Ayme — until the left downhill turn into rue des Saules of the willow trees, and, finally, right into the picturesque rue Cortot. The entrance to the garden is through the bookshop of the Musee de Montmartre.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Musée de Montmartre",
+        "page": "163"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Van Gogh at 54 rue Lepic 1886-1888 confirmed. Sources: https://montmartrefootsteps.com/theo-and-vincent-van-gogh-54-rue-lepic/"
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_de_montmartre_historic_arch_hidden_gardens_of_paris_seventeenth_century_house_garden",
+      "city_name": "paris",
+      "poi_name": "Musée de Montmartre",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "seventeenth_century_house_garden",
+      "sub_location": "garden",
+      "trigger_address": null,
+      "script_body": "The loveliness of the garden's setting is matched by the museum itself — a seventeenth-century house first owned by an actor-colleague of Molière's. In spring its borders are thick with tulips, a softening grace under tall old trees. Beyond the lily pond and the rear garden are views of the small backyard gardens of rue Cortot and, below them, the Montmartre vineyards, parallel to rue des Saules — all of it feels like a generous reward for the rigors of the ascent, knowing you've escaped the crowds thronging Place du Tertre and the steps of Sacré-Coeur.",
+      "beat_length_class": "mid",
+      "duration_sec": 55,
+      "kid_friendly": "yes",
+      "entities": ["Molière", "Place du Tertre", "Sacré-Coeur", "Le Clos Montmartre"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "17th century house garden",
+      "physical_cues": [
+        {
+          "cue": "Lily pond in the museum garden",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Rear garden view of Montmartre vineyards parallel to rue des Saules",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Tulip borders in spring under old trees in the garden",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Building is a seventeenth-century house first owned by an actor-colleague of Molière's", "Garden has lily pond with views of Montmartre vineyards"],
+      "source_passage": "The loveliness of the garden's setting—it's next to the museum, a seventeenth-century house first owned by an actor-colleague of Moliere's—in spring its borders are thick with tulips, a softening grace under tall old trees. Beyond the lily pond and the rear garden are views of the small backyard gardens of rue Cortot and, below them, the Montmartre vineyards, parallel to rue des Saules—all of it feels like a generous reward for the rigors of the ascent. Sitting in the peaceful garden, you can enjoy the beauty of Montmartre, knowing you've escaped the crowds thronging Place du Tertre and the steps of Sacre-Coeur.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Musée de Montmartre",
+        "page": "163-164"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "17th-century house owned by actor-colleague of Molière (Claude de la Rose, called Rosimond) is historically documented."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_de_montmartre_dark_history_hidden_gardens_of_paris_henri_iv_siege_abbess",
+      "city_name": "paris",
+      "poi_name": "Musée de Montmartre",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "henri_iv_siege_abbess",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "In the Middle Ages, the abbesses of Montmartre owned huge estates up here. Henri IV occupied the original twelfth-century Benedictine Abbey — founded by Louis the Fat — during the Siege of Paris in 1589. His artillery dug in on the top of Montmartre as he bombarded the starving city below, which was defended from the Protestant Henri by armed monks and priests. 'My mistress — Paris — is very cruel to me,' he complained. Having neither wife nor mistress on hand, he seduced the Abbess Claude and another nun in his convent headquarters, rewarding them later with control of the abbeys of Vernon and Montmartre. Today the tiny restored church of Saint-Pierre de Montmartre, behind Sacré-Coeur, is the last surviving vestige of the great abbey where Henri IV flirted with the Catholic Church.",
+      "beat_length_class": "mid",
+      "duration_sec": 83,
+      "kid_friendly": "no",
+      "entities": ["Henri IV", "Abbess Claude", "Louis the Fat", "Benedictine Abbey", "Église Saint-Pierre de Montmartre", "Sacré-Coeur"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Henri IV siege seduction",
+      "physical_cues": [
+        {
+          "cue": "Church of Saint-Pierre de Montmartre behind Sacré-Coeur — last vestige of the great abbey",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Henri IV occupied original 12th-century Benedictine Abbey during Siege of Paris 1589", "Abbey founded by Louis the Fat", "Henri IV seduced Abbess Claude and another nun", "Saint-Pierre de Montmartre is last vestige of the abbey"],
+      "source_passage": "The museum offers sketchy details of the hill's history. In the Middle Ages, the abbesses of Montmartre owned huge estates up here. Henri IV occupied the original twelfth-century Benedictine Abbey (founded by Louis the Fat) during the Siege of Paris in 1589. His artillery dug in on the top of Montmartre as he bombarded the starving city below, which was defended from the Protestant Henri by armed monks and priests. 'My mistress'—Paris—'is very cruel to me,' he complained. Having neither wife nor mistress on hand, he seduced the Abbess Claude and another nun in his convent headquarters, rewarding them later with control of the abbeys of Vernon and Montmartre. Today the tiny (restored) church of Saint-Pierre de Montmartre, behind Sacre-Coeur, is the last surviving vestige of the great abbey where Henri IV flirted with the Catholic Church.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Musée de Montmartre",
+        "page": "164"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "Siege of Paris in 1589",
+            "status": "NOTE_ONLY",
+            "note": "The main Siege of Paris was 1590. Henri IV did conduct an initial assault in November 1589, but the prolonged siege was 1590. The book's '1589' refers to the start of Henri IV's campaign period. No auto-correction applied — this is a historian's distinction, not a clear error, and multiple sources support Henri IV using Montmartre as an artillery position.",
+            "sources": ["https://en.wikipedia.org/wiki/Siege_of_Paris_(1590)", "https://www.ancient-history-sites.com/sites/royal-abbey-of-montmartre/"]
+          }
+        ],
+        "status": "verified_with_note",
+        "notes": "Benedictine Abbey founded by Louis VI (Louis the Fat) confirmed. Henri IV's use of Montmartre for artillery confirmed. Abbess Claude de Beauvilliers confirmed."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_de_montmartre_social_change_hidden_gardens_of_paris_louise_michel_commune",
+      "city_name": "paris",
+      "poi_name": "Musée de Montmartre",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "louise_michel_commune",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The museum also has a few remnants of 'Red Montmartre,' where the Paris Commune began in 1871. There's a bust of the Communards' emblematic heroine, Louise Michel (1830–1905), the schoolteacher who inspired the seventy-day resistance to the government's army and fought to claim the city for the people who had nothing. She read Baudelaire in the trenches, directed the construction and defense of the barricades, and led more than ten thousand women to fight with her during the bloody and brutal week — la semaine sanglante — of May 1871. Many artists and intellectuals supported the rebels or participated themselves in the civil war, including Courbet, Pissarro, Rimbaud, and Verlaine.",
+      "beat_length_class": "mid",
+      "duration_sec": 76,
+      "kid_friendly": "no",
+      "entities": ["Louise Michel", "Paris Commune", "Baudelaire", "Courbet", "Pissarro", "Rimbaud", "Verlaine"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "Louise Michel Commune",
+      "physical_cues": [
+        {
+          "cue": "Bust of Louise Michel inside the Musée de Montmartre",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "la semaine sanglante", "gloss": "the bloody week — the final brutal suppression of the Paris Commune in May 1871"}
+      ],
+      "pronunciation": null,
+      "key_claims": ["Louise Michel 1830-1905, schoolteacher, Commune heroine", "Led 10,000+ women in seventy-day resistance", "Read Baudelaire in the trenches", "La semaine sanglante of May 1871", "Courbet, Pissarro, Rimbaud, Verlaine supported the Commune"],
+      "source_passage": "The museum also has a few remnants of 'Red Montmartre,' where the Paris Commune began in 1871. There's a bust of the Communards' emblematic heroine, Louise Michel (1830—1905), the schoolteacher who inspired the seventy-day resistance to the government's army and fought to claim the city for the people who had nothing. She read Baudelaire in the trenches, directed the construction and defense of the barricades, and led more than ten thousand women to fight with her during the bloody and brutal week—la semaine sanglante—of May 1871. Many artists and intellectuals supported the rebels or participated themselves in the civil war, including Courbet, Pissarro, Rimbaud, and Verlaine.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Musée de Montmartre",
+        "page": "164-165"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Louise Michel (1830-1905) confirmed. Her role in the Commune, reading Baudelaire in the trenches, and the semaine sanglante of May 1871 all confirmed. Sources: https://en.wikipedia.org/wiki/Louise_Michel"
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_de_montmartre_visual_art_hidden_gardens_of_paris_renoir_dufy_studio",
+      "city_name": "paris",
+      "poi_name": "Musée de Montmartre",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "renoir_dufy_studio",
+      "sub_location": "studio-building",
+      "trigger_address": null,
+      "script_body": "Renoir lived in this house and knew the nearby moulins — used as dance halls by workers on weekends — painting the famous Bal du Moulin de la Galette in 1876 (now in the Musée d'Orsay). Raoul Dufy had his studio in the right wing in 1901. In Van Gogh's time, the hill was dotted with twenty-five windmills — moulins — which were being converted into dance halls and cabarets, a feature at the heart of Montmartre's reputation as a neighborhood of pleasure and adventure.",
+      "beat_length_class": "mid",
+      "duration_sec": 54,
+      "kid_friendly": "yes",
+      "entities": ["Auguste Renoir", "Raoul Dufy", "Vincent Van Gogh", "Bal du Moulin de la Galette", "Musée d'Orsay"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Renoir Dufy studio Montmartre",
+      "physical_cues": [
+        {
+          "cue": "Right wing of the building at 12 rue Cortot — Dufy's studio in 1901",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "moulins", "gloss": "windmills — converted into dance halls and cabarets in the 19th century"}
+      ],
+      "pronunciation": null,
+      "key_claims": ["Renoir lived in this house and painted Bal du Moulin de la Galette 1876 now in Musée d'Orsay", "Raoul Dufy had studio in right wing in 1901", "In Van Gogh's time, 25 windmills on the hill being converted to dance halls"],
+      "source_passage": "Renoir lived in this house and knew the nearby moulins—used as dance halls by workers on weekends—painting the famous Bal du Moulin de la Galette in 1876 (now in the Musee d'Orsay). Raoul Dufy had his studio in the right wing in 1901. In Van Gogh's time, the hill was dotted with twenty-five windmills—moulins—which were being converted into dance halls and cabarets, a feature at the heart of Montmartre's reputation as a neighborhood of pleasure and adventure.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Musée de Montmartre",
+        "page": "205"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Renoir's Bal du Moulin de la Galette 1876, now in Musée d'Orsay, confirmed. Renoir rented studio at rue Cortot confirmed. Dufy at 12 rue Cortot c.1900-1902 confirmed (book says '1901' which falls within the documented period). Sources: https://www.musee-orsay.fr/en/artworks/bal-du-moulin-de-la-galette-497"
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_musee_de_montmartre_visual_art_hidden_gardens_of_paris_van_gogh_panoramic_desolation",
+      "city_name": "paris",
+      "poi_name": "Musée de Montmartre",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "van_gogh_panoramic_desolation",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Van Gogh saw desolation beneath the gaiety of Montmartre — a perception shared by his literary contemporaries, poets Paul Verlaine and Arthur Rimbaud and novelist Emile Zola. What did inspire Van Gogh was the panoramic prospect from the butte: the vast city below, often shrouded in fog and smoke, and the Seine running through it. The impressionists, in particular, were inspired by the rural atmosphere and the wide sky over the highest point in Paris.",
+      "beat_length_class": "mid",
+      "duration_sec": 48,
+      "kid_friendly": "yes",
+      "entities": ["Vincent Van Gogh", "Paul Verlaine", "Arthur Rimbaud", "Emile Zola"],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "somber",
+      "subject_tag": "Van Gogh panorama desolation",
+      "physical_cues": [
+        {
+          "cue": "Panoramic view from the top of Montmartre butte over Paris — the vista Van Gogh painted",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["Van Gogh saw desolation beneath Montmartre's gaiety", "Van Gogh paintings: Le Moulin de la Galette, Festival à Montmartre, La Butte Montmartre (latter two in Rijksmuseum)", "Verlaine, Rimbaud, Zola shared perception of desolation"],
+      "source_passage": "Van Gogh, however, saw desolation beneath the gaiety of Montmartre (Le Moulin de la Galette, Festival a Montmartre, La Butte Montmartre, the latter two in the Rijksmuseum), a perception shared by some of his literary contemporaries, poets Paul Verlaine and Arthur Rimbaud and novelist Emile Zola. What did inspire Van Gogh was the panoramic prospect from the butte: the vast city below, often shrouded in fog and smoke, and the Seine running through it.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Musée de Montmartre",
+        "page": "217"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "notes": "Van Gogh Montmartre paintings and Rijksmuseum holdings not independently verified in this pass but consistent with known art history."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_parc_turlure_sensory_observation_hidden_gardens_of_paris_jasmine_waterfall_arbor",
+      "city_name": "paris",
+      "poi_name": "Parc Turlure",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "jasmine_waterfall_arbor",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Parc Turlure sits north of Sacré-Coeur, where you hear nothing of the hordes and buses in front of it. The most scenic approach is along the village-like rue Saint-Vincent, past Au Lapin Agile — a cabaret-bar favored by Picasso, Modigliani, and Utrillo — uphill, past the beautiful intersection with rue Mont-Cenis framed by tall, elegant, ivy-covered mansions with a long view across northern canyons of steep steps, until you wind right into rue de la Bonne and the entrance to the park. With your back to the cascading artificial waterfall and Sacré-Coeur, you look out over the high brick mansions of Montmartre on the slopes below. Inside the shade of the arbor court, thick with greenery, there is silence and the fragrance of jasmine, which is everywhere.",
+      "beat_length_class": "mid",
+      "duration_sec": 82,
+      "kid_friendly": "yes",
+      "entities": ["Sacré-Coeur", "Lapin Agile", "Picasso", "Modigliani", "Utrillo", "rue Saint-Vincent"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "Turlure hidden garden",
+      "physical_cues": [
+        {
+          "cue": "Cascading artificial waterfall with Sacré-Coeur visible behind it",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Arbor court thick with greenery and fragrance of jasmine",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "View over high brick mansions of Montmartre on slopes below",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": ["North of Sacré-Coeur, hidden from tourist hordes", "Approach via rue Saint-Vincent past Au Lapin Agile", "Lapin Agile favored by Picasso, Modigliani, Utrillo", "Arbor court with silence and jasmine fragrance"],
+      "source_passage": "PARC TURLURE A neighborhood hilltop green space of many parts, north of Sacre-Coeur. (Back here you hear nothing of the hordes and buses in front of it.) The most scenic approach is along the village-like rue Saint-Vincent (at the bottom of rue des Saules) past Au Lapin Agile—a cabaret-bar favored by Picasso, Modigliani, and Utrillo—uphill, past the beautiful intersection with rue Mont-Cenis framed by tall, elegant, ivy-covered mansions with a long view across northern canyons of steep steps until you wind right into rue de la Bonne and the entrance to the park. With your back to the cascading artificial waterfall (and Sacre-Coeur), you look out over the high brick mansions of Montmartre on the slopes below. Inside the shade of the arbor court, thick with greenery, there is silence and the fragrance of jasmine, which is everywhere.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Parc Turlure sidebar",
+        "page": "165-166"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Lapin Agile's association with Picasso, Modigliani, Utrillo confirmed by existing beats in corpus."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_louise_michel_social_change_hidden_gardens_of_paris_commune_heroine_square",
+      "city_name": "paris",
+      "poi_name": "Square Louise-Michel",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "commune_heroine_square",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At the bottom of the steep, grassy hill beneath Sacré-Coeur, Square Louise-Michel is inscribed: 'Institutrice, Héroïne de la Commune de Paris.' Built into a circular staircase, a rich grove of trees — oranges des osages and chestnuts — surrounds the playground, a jubilant scene of music from the carousel and the camaraderie of children and parents from the surrounding multiethnic neighborhoods.",
+      "beat_length_class": "mid",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": ["Louise Michel", "Sacré-Coeur"],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "Louise Michel square",
+      "physical_cues": [
+        {
+          "cue": "Circular staircase structure of Square Louise-Michel below Sacré-Coeur",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Grove of oranges des osages (Osage orange) and chestnut trees surrounding the playground",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "Institutrice, Héroïne de la Commune de Paris", "gloss": "Schoolteacher, Heroine of the Paris Commune — the inscription on the square"},
+        {"phrase": "oranges des osages", "gloss": "Osage orange trees — an American species planted in the square"}
+      ],
+      "pronunciation": null,
+      "key_claims": ["Square inscription: 'Institutrice, Héroïne de la Commune de Paris'", "Built into circular staircase at base of Sacré-Coeur hill", "Grove of oranges des osages and chestnuts"],
+      "source_passage": "SQUARE LOUISE-MICHEL \"Institutrice, Heroine de la Commune de Paris.\" At the bottom of the steep, grassy hill beneath Sacre-Coeur, usually a mob scene, the square is built into a circular staircase. A rich grove of trees—oranges des osages, chestnuts—surrounds the playground, a jubilant scene of music from the carousel and the camaraderie of children and parents from the surrounding multiethnic neighborhoods.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square Louise-Michel sidebar",
+        "page": "165"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "verified",
+        "notes": "Louise Michel's schoolteacher identity and Commune role confirmed."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_des_abbesses_local_legends_hidden_gardens_of_paris_jetaime_wall",
+      "city_name": "paris",
+      "poi_name": "Square des Abbesses",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "jetaime_wall",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "A few steps north of metro Abbesses is the little square with the charming Je t'aime Wall — written 311 times in 250 languages on an enameled fresco made of 612 tiles. The fragments of color represent the pieces of a broken heart.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "playful",
+      "subject_tag": "Je t'aime Wall",
+      "physical_cues": [
+        {
+          "cue": "Enameled fresco of 612 tiles with 'Je t'aime' written 311 times in 250 languages",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {"phrase": "Je t'aime", "gloss": "I love you — written 311 times in 250 languages on the wall"}
+      ],
+      "pronunciation": null,
+      "key_claims": ["Je t'aime written 311 times in 250 languages", "Enameled fresco of 612 tiles", "Fragments of color represent pieces of a broken heart"],
+      "source_passage": "A few steps north of the entrance is the little square with the charming Je t'aime Wall—written 311 times in z5o languages on an enameled fresco made of 5n tiles. The fragments of color represent the pieces of a broken heart.",
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "publisher": "St. Martin's Griffin",
+        "year": "2012",
+        "chapter": "Square des Abbesses sidebar",
+        "page": "165"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          {
+            "claim": "enameled fresco made of 511 tiles (OCR: '5n tiles')",
+            "status": "AUTO_CORRECTED",
+            "original": "511 tiles (OCR artifact '5n tiles')",
+            "corrected_to": "612 tiles",
+            "correction_reasoning": "Source text has OCR artifact '5n tiles' which likely reads '511 tiles' in original. However, authoritative sources confirm the actual count is 612 tiles of enamelled lava. Corrected per 2+ sources.",
+            "sources": [
+              "https://en.wikipedia.org/wiki/Wall_of_Love",
+              "https://www.atlasobscura.com/places/le-mur-des-je-t-aime"
+            ]
+          },
+          {
+            "claim": "250 languages (OCR: 'z5o languages')",
+            "status": "AUTO_CORRECTED",
+            "original": "z5o (OCR artifact)",
+            "corrected_to": "250",
+            "correction_reasoning": "OCR artifact 'z5o' clearly reads '250' in original print. Confirmed by sources: wall features 311 'I love you' in 250 languages.",
+            "sources": [
+              "https://en.wikipedia.org/wiki/Wall_of_Love",
+              "https://www.atlasobscura.com/places/le-mur-des-je-t-aime"
+            ]
+          }
+        ],
+        "status": "corrected",
+        "notes": "311 times and 250 languages confirmed correct. Tile count corrected from OCR-garbled '5n' (likely 511 in source print) to actual 612 per 2+ authoritative sources."
+      },
+      "new_poi": true,
+      "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
+      "book_slug": "hidden_gardens_of_paris",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "NEW_POI",
+      "poi_name": "Square Suzanne-Buisson",
+      "beats_count": 4,
+      "note": "Entrance from Place Casadesus, 18th arr. Not in existing POI list. Independent new POI."
+    },
+    {
+      "type": "NEW_POI",
+      "poi_name": "Musée de Montmartre",
+      "beats_count": 6,
+      "note": "12 rue Cortot, 18th arr. Not in existing POI list. Tier-4 candidate. Note: existing corpus has Moulin de la Galette and Le Clos Montmartre as separate POIs; Musée de Montmartre is distinct."
+    },
+    {
+      "type": "NEW_POI",
+      "poi_name": "Square Carpeaux",
+      "beats_count": 2,
+      "note": "Rue Carpeaux, 18th arr. Not in existing POI list."
+    },
+    {
+      "type": "NEW_POI",
+      "poi_name": "Square Léon-Serpollet",
+      "beats_count": 1,
+      "note": "Rue Cloys/Rue Marcadet, 18th arr. Not in existing POI list."
+    },
+    {
+      "type": "NEW_POI",
+      "poi_name": "Parc Turlure",
+      "beats_count": 1,
+      "note": "Rue de la Bonne, north of Sacré-Coeur, 18th arr. Not in existing POI list."
+    },
+    {
+      "type": "NEW_POI",
+      "poi_name": "Square Louise-Michel",
+      "beats_count": 1,
+      "note": "At base of Sacré-Coeur hill, 18th arr. Not in existing POI list."
+    },
+    {
+      "type": "NEW_POI",
+      "poi_name": "Square des Abbesses",
+      "beats_count": 1,
+      "note": "Near metro Abbesses, 18th arr. Also known as Jardin du Square Jehan Rictus. Distinct from Place des Abbesses (which IS in POI list). Not in existing POI list."
+    },
+    {
+      "type": "AUTO_CORRECTION",
+      "field": "Jean-Baptiste Carpeaux birth year",
+      "beat_id": "paris_square_carpeaux_social_change_hidden_gardens_of_paris_peoples_park_bob_le_flambeur",
+      "original": "1829",
+      "corrected_to": "1827",
+      "sources": ["https://en.wikipedia.org/wiki/Jean-Baptiste_Carpeaux", "https://www.metmuseum.org/toah/hd/carp/hd_carp.htm"]
+    },
+    {
+      "type": "AUTO_CORRECTION",
+      "field": "Je t'aime Wall tile count",
+      "beat_id": "paris_square_des_abbesses_local_legends_hidden_gardens_of_paris_jetaime_wall",
+      "original": "511 tiles (OCR artifact '5n tiles' in source)",
+      "corrected_to": "612 tiles",
+      "sources": ["https://en.wikipedia.org/wiki/Wall_of_Love", "https://www.atlasobscura.com/places/le-mur-des-je-t-aime"]
+    },
+    {
+      "type": "AUTO_CORRECTION",
+      "field": "OCR artifact — Berlioz name",
+      "beat_id": "paris_montmartre_cemetery_literary_heritage_hidden_gardens_of_paris_notable_burials",
+      "original": "Berliop (OCR artifact)",
+      "corrected_to": "Berlioz",
+      "note": "Clear OCR garbling, not a factual dispute. Auto-corrected."
+    },
+    {
+      "type": "OCR_CORRECTION",
+      "field": "Je t'aime Wall language count",
+      "beat_id": "paris_square_des_abbesses_local_legends_hidden_gardens_of_paris_jetaime_wall",
+      "original": "z5o (OCR artifact)",
+      "corrected_to": "250",
+      "note": "OCR garbling of '250'. Confirmed correct by sources."
+    },
+    {
+      "type": "NOTE_ONLY",
+      "beat_id": "paris_square_suzanne_buisson_dark_history_hidden_gardens_of_paris_suzanne_buisson_resistance",
+      "note": "Suzanne Buisson died 5 July 1944 at Auschwitz (convoy 76, 30 June 1944). Book reports plaque as saying 'date of her death not known' — plaque wording at time of publication (2012) may have been incomplete. No beat correction applied; beat reports plaque content faithfully. Downstream editor may wish to append a footnote."
+    },
+    {
+      "type": "NOTE_ONLY",
+      "beat_id": "paris_musee_de_montmartre_dark_history_hidden_gardens_of_paris_henri_iv_siege_abbess",
+      "note": "The main Siege of Paris was 1590; Henri IV began operations in November 1589. Book says '1589'. Not auto-corrected — historians differ on the date boundary and the book's narrative is not clearly wrong."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 16,
+    "pois_touched": 9,
+    "new_pois": 7,
+    "corrections_applied": 3,
+    "disputes": 0,
+    "anomalies": 1,
+    "lenses_hit": ["local_legends", "dark_history", "literary_heritage", "social_change", "visual_art", "historic_arch", "sensory_observation"],
+    "lenses_missed": ["music_heritage", "modern_design", "street_art", "hidden_history"],
+    "confidence_counts": {
+      "HIGH": 11,
+      "MEDIUM": 4,
+      "LOW": 1
+    },
+    "anomaly_notes": [
+      "musee_de_montmartre_dark_history beat duration_sec=83 is mid-class but at the upper edge (word count ~103 words). Classified mid; within range.",
+      "parc_turlure beat duration_sec=82 from word count ~102 words — mid class upper edge, correctly classified.",
+      "square_des_abbesses Je t'aime tile count auto-corrected from OCR artifact '5n' to authoritative 612."
+    ],
+    "beat_length_class_distribution": {
+      "anchor": 0,
+      "mid": 13,
+      "seasoning": 2,
+      "micro": 0,
+      "note": "No anchor-class beats — consistent with sidebar/entry-style source text (Hidden Gardens of Paris uses paragraph entries rather than deep stationary-stop essays). No micro beats — all content justified mid or seasoning length."
+    },
+    "new_poi_pipeline_notes": [
+      "Sub-POI pending geocode: Square Suzanne-Buisson",
+      "Sub-POI pending geocode: Musée de Montmartre",
+      "Sub-POI pending geocode: Square Carpeaux",
+      "Sub-POI pending geocode: Square Léon-Serpollet",
+      "Sub-POI pending geocode: Parc Turlure",
+      "Sub-POI pending geocode: Square Louise-Michel",
+      "Sub-POI pending geocode: Square des Abbesses"
+    ]
+  }
+}
+```

@@ -495,7 +495,7 @@
       "source_chunk": "chunk-07-3rd-arr-marais-du-temple",
       "is_new_poi": false
     },
-    "importance_tier": 2,
+    "importance_tier": 3,
     "trigger_radius": 10,
     "kid_friendly": "yes",
     "latitude": 48.85987,

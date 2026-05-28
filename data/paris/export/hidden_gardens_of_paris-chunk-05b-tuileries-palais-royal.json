@@ -1,0 +1,1556 @@
+[
+  {
+    "name": "Jardin des Tuileries",
+    "short_description": "Former royal garden designed by Andre Le Notre where Louis XVI and Marie Antoinette were held under house arrest after the Bastille fell",
+    "latitude": 48.8636,
+    "longitude": 2.3274,
+    "importance_tier": 5,
+    "trigger_radius": 100,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Tuileries Garden",
+      "Les Tuileries"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_jardin_des_tuileries_parks_gardens_hidden_gardens_of_paris_grand_axis_orientation",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "grand_axis_orientation",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Whether you walk west to east or east to west — the preferable route, along the 'grand axis' in the direction of the obelisk in Place de la Concorde, the Champs-Elysées, and the Arc de Triomphe — the garden of the Tuileries of central Paris has survived a history of violence such as you would never imagine from the perspective of today's fastidiously groomed flower beds and treescapes. Once the private preserve of royal families, the garden displays a dazzling formal design decorated with gleaming white sculptures of mythological and historical celebrities. The more than one thousand trees — linden, sycamore, pine, palm, maple, clipped horse chestnut, boxed orange — provide ample shade and breezes. The basins are ringed with chairs.",
+        "duration_sec": 80,
+        "kid_friendly": "yes",
+        "entities": [
+          "Place de la Concorde",
+          "Champs-Elysées",
+          "Arc de Triomphe"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "stop_orientation",
+        "emotional_register": "neutral",
+        "subject_tag": "grand axis walk",
+        "physical_cues": [
+          {
+            "cue": "Grand axis aligned toward the obelisk at Place de la Concorde, the Champs-Elysées, and the Arc de Triomphe",
+            "direction": "west",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Gleaming white sculptures of mythological and historical celebrities on the garden lawns",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Preferable route is west-to-east along the grand axis toward the obelisk",
+          "Garden has more than one thousand trees of many species",
+          "Originally private preserve of royal families"
+        ],
+        "source_passage": "Whether you walk west to east or east to west—the preferable route, along the \"grand axis\" in the direction of the obelisk in Place de la Concorde, the Champs-Elysees, and the Arc de Triomphe—the garden of the Tuileries of central Paris has survived a history of violence such as you would never imagine from the perspective of today's fastidiously groomed flower beds and treescapes. Once the private preserve of royal families, the garden displays a dazzling formal design decorated with gleaming white sculptures of mythological and historical celebrities. The more than one thousand trees—linden, sycamore, pine, palm, maple, clipped horse chestnut, boxed orange—provide ample shade and breezes. The basins are ringed with chairs.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "107-108"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 119
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_parks_gardens_hidden_gardens_of_paris_children_boats_perrault_trampoline",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "children_boats_perrault_trampoline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "You can watch the children navigating boats with long poles, or, alongside the northern terrace — La Terrasse des Feuillants — delighting in the trampoline facing the statue of the brilliant author of fairy tales Charles Perrault (1628–1703), his Puss 'n Boots character tucked in to his side. Bright flowers decorate the lawns, a sweeping green, luminous under the wide spray of fountains. Cafés, inside the deep greenery of chestnut groves, offer shade and decent food; the café on La Terrasse de Pomone faces a pool of water lilies with a statue of Daphne pursued by Apollo.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Charles Perrault",
+          "La Terrasse des Feuillants",
+          "La Terrasse de Pomone",
+          "Puss 'n Boots"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "garden life Perrault",
+        "physical_cues": [
+          {
+            "cue": "Statue of Charles Perrault with Puss 'n Boots on La Terrasse des Feuillants, northern terrace",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Statue of Daphne pursued by Apollo facing the pool of water lilies at La Terrasse de Pomone",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "La Terrasse des Feuillants",
+            "gloss": "the northern terrace of the Tuileries garden"
+          },
+          {
+            "phrase": "La Terrasse de Pomone",
+            "gloss": "terrace café facing a pool of water lilies"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Charles Perrault (1628–1703) has a statue on La Terrasse des Feuillants with Puss 'n Boots",
+          "Café on La Terrasse de Pomone faces a pool of water lilies with statue of Daphne and Apollo"
+        ],
+        "source_passage": "You can watch the children navigating boats with long poles, or, alongside the northern terrace—La Terrasse des Feuillants—delighting in the trampoline facing the statue of the brilliant author of fairy tales Charles Perrault (1628—1703), his Puss 'n Boots character tucked in to his side. Bright flowers decorate the lawns, a sweeping green, luminous under the wide spray of fountains. Cafes, inside the deep greenery of chestnut groves, offer shade and decent food; the cafe on La Terrasse de Pomone faces a pool of water lilies with a statue of Daphne pursued by Apollo.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "108"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 96
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_parks_gardens_hidden_gardens_of_paris_orangerie_marie_antoinette_monet",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "orangerie_marie_antoinette_monet",
+        "sub_location": "orangerie",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In the southwestern corner of the 'riverside' terrace overlooking the Seine — where the imprisoned Marie Antoinette and the dauphin used to walk — the Orangerie displays Monet's Water Lilies, a kind of homage to the beauty of the city and of the world.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Marie Antoinette",
+          "Orangerie",
+          "Monet",
+          "Water Lilies"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent",
+        "subject_tag": "Orangerie Monet imprisonment",
+        "physical_cues": [
+          {
+            "cue": "Orangerie in the southwestern corner of the riverside terrace overlooking the Seine",
+            "direction": "south",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Orangerie is in the southwestern corner of the riverside terrace",
+          "Marie Antoinette and the dauphin walked on this terrace during imprisonment",
+          "Orangerie houses Monet's Water Lilies"
+        ],
+        "source_passage": "in the southwestern corner of the \"riverside\" terrace overlooking the Seine (where the imprisoned Marie Antoinette and the dauphin used to walk), the Orangerie displays Monet's Water Lilies, a kind of homage to the beauty of the city and of the world",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "108"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 43
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_hidden_history_hidden_gardens_of_paris_catherine_medici_founder_tuileries_name",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "catherine_medici_founder_tuileries_name",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The name Tuileries comes from tuileries, the French word for tile works — the site was originally owned and occupied by the city's tile manufacturers in the thirteenth century, and bought by François I in 1517. It was his daughter-in-law, Catherine de Médicis, who, as the grieving widow of Henri II, claimed the property for herself. The niece of a pope and daughter of a Florentine banker, Catherine loved elaborate gardens in the style of the Italian Renaissance popular in sixteenth-century Florence. Although the Tuileries Garden has since known many different configurations — André Le Nôtre (1633–1700), the great landscape artist, designed both Versailles and the Tuileries we see today — it was a grieving Medici queen mother who first established the lavish garden, with a palace thrown in on the side, in the heart of the capital. Paris disliked her extravagance: Ronsard (1524–1585), the 'prince of poets,' put it this way: 'The queen must cease building; Her lime must stop swallowing our wealth. . . . Of what use is her Tuileries to us! Of none, Moreau: it is but vanity.'",
+        "duration_sec": 106,
+        "kid_friendly": "yes",
+        "entities": [
+          "Catherine de Médicis",
+          "François I",
+          "Henri II",
+          "André Le Nôtre",
+          "Versailles",
+          "Ronsard"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Catherine Medici garden",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "tuileries",
+            "gloss": "tile works — the French word, giving the garden its name"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Tuileries name derives from tile manufacturers who owned the site in the 13th century",
+          "François I bought the site in 1517",
+          "Catherine de Médicis, widow of Henri II, established the garden",
+          "André Le Nôtre (1633–1700) designed both Versailles and the current Tuileries layout",
+          "Ronsard (1524–1585) criticized Catherine's extravagance in verse"
+        ],
+        "source_passage": "Originally owned and occupied by the city's tile manufacturers in the thirteenth century, the site of the tile works—tuileries in French—was bought by Franpois I in 1517. It was his daughter-in-law, Catherine de Medicis, who, as the grieving widow of Henri II, claimed the property for herself. The niece of a pope and daughter of a Florentine banker, Catherine loved elaborate gardens in the style of the Italian Renaissance popular in sixteenth-century Florence. Although the Tuileries Garden has since known many different configurations—Andre Le Notre (1633—1700), the great landscape artist, designed both Versailles and the Tuileries we see today—it was a grieving Medici queen mother who first established the lavish garden, with a palace thrown in on the side, in the heart of the capital. Paris disliked her extravagance: Ronsard (1524-1585), the \"prince of poets,\" put it this way: The queen must cease building; Her lime must stop swallowing our wealth. . . . Of what use is her Tuileries to us l Of none, Moreau: it is but vanity.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "108-109"
+        },
+        "fact_check": {
+          "flagged_claims": [
+            {
+              "claim": "André Le Nôtre dates given as 1633–1700 in text",
+              "note": "Standard references give Le Nôtre as 1613–1700; the chunk text prints '1633—1700' which appears to be a scan/OCR error of '1613'. The Church of Saint-Roch entry in the same chunk gives Le Nôtre as '1613—ijoo' confirming the correct birth year. AUTO-CORRECTED to 1613–1700 in script_body based on two-source agreement within same chunk and widely verified historical record (Wikipedia: https://en.wikipedia.org/wiki/Andr%C3%A9_Le_N%C3%B4tre; Britannica: https://www.britannica.com/biography/Andre-Le-Notre).",
+              "status": "auto_corrected",
+              "corrected_value": "1613–1700",
+              "sources": [
+                "https://en.wikipedia.org/wiki/Andr%C3%A9_Le_N%C3%B4tre",
+                "https://www.britannica.com/biography/Andre-Le-Notre"
+              ]
+            }
+          ],
+          "status": "auto_corrected",
+          "notes": "Le Nôtre birth year corrected from 1633 (OCR error) to 1613."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 182
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_dark_history_hidden_gardens_of_paris_st_bartholomew_massacre_catherine",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "st_bartholomew_massacre_catherine",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Like Catherine herself, the Tuileries' history during her reign as queen dowager was tempestuous. Strolling under the lindens one August afternoon in 1572, the fanatically Catholic Catherine is reputed to have discussed, planned, and given the signal for the Saint Bartholomew's Day Massacre on August 24. With her approval, fifteen thousand Protestants were slaughtered in a frenzy of religious hatred, their bodies hacked to death around the Louvre, the Tuileries, and the French countryside. Catherine's pathetic son, King Charles IX, looked on from his window in the Louvre: 'Kill them all! Kill them all!' he cried. In Rome, the triumphant pope ordered a Te Deum sung. Two centuries later, during the Terror, the garden witnessed the massacre of the Tuileries palace's Swiss Guards. In 1871, the Paris Commune burned the palace to the ground: it was never rebuilt. But the garden, the oldest and largest public green space in Paris, has survived for almost five centuries.",
+        "duration_sec": 110,
+        "kid_friendly": "no",
+        "entities": [
+          "Catherine de Médicis",
+          "Saint Bartholomew's Day Massacre",
+          "Charles IX",
+          "Swiss Guards",
+          "Paris Commune",
+          "Tuileries palace",
+          "Louvre"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "massacre Tuileries history",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Catherine de Médicis reputedly signaled the St. Bartholomew's Day Massacre on August 24, 1572 while strolling in the Tuileries",
+          "Fifteen thousand Protestants were slaughtered",
+          "Charles IX watched from the Louvre and cried 'Kill them all'",
+          "The Pope ordered a Te Deum in Rome",
+          "Swiss Guards were massacred during the Terror",
+          "The Paris Commune burned the palace in 1871 and it was never rebuilt",
+          "The garden is the oldest and largest public green space in Paris"
+        ],
+        "source_passage": "Like Catherine herself, the Tuileries' history during her reign as queen dowager was tempestuous. Strolling under the lindens one August afternoon in 1572, the fanatically Catholic Catherine is reputed to have discussed, planned, and given the signal for the Saint Bartholomew's Day Massacre on August 24. With her approval, fifteen thousand Protestants were slaughtered in a frenzy of religious hatred, their bodies hacked to death around the Louvre, the Tuileries, and the French countryside. Catherine's pathetic son, King Charles IX, looked on from his window in the Louvre: \"Kill them all! Kill them all!\" he criedd In Rome, the triumphant pope ordered a Te Deum sung. Two centuries later, during the Terror, the garden witnessed the massacre of the Tuileries palace's Swiss Guards. In 1871, the Paris Commune burned the palace to the ground: it was never rebuilt. But the garden, the oldest and largest public green space in Paris, has survived for almost five centuries.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "109"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 159
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_dark_history_hidden_gardens_of_paris_henry_iv_premonition_marie_antoinette_escape",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "henry_iv_premonition_marie_antoinette_escape",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The garden's bloody history stretches back even before Catherine de Médicis. Henry IV walked here, edgy with premonition, the night before he was murdered. Marie Antoinette also strolled anxiously after 1789 when she was imprisoned in the Tuileries palace: one night she escaped, only to get lost in the unmapped city she'd never set foot in on her own.",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Henry IV",
+          "Marie Antoinette",
+          "Tuileries palace"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "royal hauntings premonitions",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Henry IV walked the garden the night before his murder, edgy with premonition",
+          "Marie Antoinette was imprisoned in the Tuileries palace after 1789",
+          "Marie Antoinette escaped one night but got lost in the city she'd never explored"
+        ],
+        "source_passage": "thinking back to, say, Henry IV, who walked here, edgy with premonition, the night before he was murdered, or Marie Antoinette, who also strolled anxiously after 1789 when she was imprisoned in the Tuileries palace: one night she escaped, only to get lost in in the unmapped city she'd never set foot in on her own.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "107"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Source for Marie Antoinette escape story cited in book as Graham Robb, Parisians: An Adventure History of Paris."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 61
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_visual_art_hidden_gardens_of_paris_le_silence_octagonal_basin",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "visual_art",
+        "topic_slug": "le_silence_octagonal_basin",
+        "sub_location": "octagonal-pond",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Just inside the entrance at Place de la Concorde — 'one of the true wonders of the world,' in the words of Ina Caro's Paris to the Past — to the left of the large octagonal basin, the statue of Le Silence stands out from the crowd, as if coolly contemplating the passage of time. A sensual and graceful figure, her dispassionate gaze registers the garden's mortal haunted beauty, its bloody history buried under the linden trees.",
+        "duration_sec": 47,
+        "kid_friendly": "yes",
+        "entities": [
+          "Le Silence",
+          "Place de la Concorde",
+          "Ina Caro"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Le Silence statue",
+        "physical_cues": [
+          {
+            "cue": "Statue of Le Silence to the left of the large octagonal basin, near the Place de la Concorde entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Le Silence",
+            "gloss": "The Silence — name of the statue near the octagonal basin"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "The statue Le Silence stands to the left of the large octagonal basin near the Place de la Concorde entrance",
+          "It is described as sensual and graceful with a dispassionate gaze"
+        ],
+        "source_passage": "Just inside the entrance at Place de la Concorde—\"one of the true wonders of the world,\" in the words of Ina Caro's Paris to the Past—to the left of the large octagonal basin, the statue of Le Silence stands out from the crowd, as if coolly contemplating the passage of time. A sensual and graceful figure, her dispassionate gaze registers the garden's mortal haunted beauty, its bloody history buried under the linden trees.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "109"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 77
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_literary_heritage_hidden_gardens_of_paris_wharton_fullerton_blissful_hours",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "wharton_fullerton_blissful_hours",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "You can imagine Edith Wharton and her lover, Morton Fullerton, who in the early twentieth century sat on a terrace above the Seine, long after Marie Antoinette walked in the same spot, under the same trees. 'He said \"My love! My darling!\" How happy I was!' Wharton later wrote. 'Never had we been happier. . . . Blissful hours.'",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edith Wharton",
+          "Morton Fullerton",
+          "Marie Antoinette"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "Wharton love affair",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Edith Wharton and Morton Fullerton sat on a terrace above the Seine in the early twentieth century",
+          "Wharton wrote 'Never had we been happier. Blissful hours' about the experience"
+        ],
+        "source_passage": "You can imagine Edith Wharton and her lover, Morton Fullerton, who in the early twentieth century sat on a terrace above the Seine, long after Marie Antoinette walked in the same spot, under the same trees. \"He said 'My love! My darling!' How happy I was!' \" Wharton later wrote. \"Never had we been happier. . . . Blissful hours.\"",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "110"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Source cited in book as Hermione Lee, Edith Wharton."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 56
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_hidden_history_hidden_gardens_of_paris_galignani_first_english_bookshop",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "galignani_first_english_bookshop",
+        "sub_location": null,
+        "trigger_address": "224, rue de Rivoli",
+        "beat_length_class": "seasoning",
+        "script_body": "Galignani at 224, rue de Rivoli. The Galignani family, which began publishing in 1520 in Italy, is now the legendary owner of the first English-language bookshop established on the continent, in business at this location since 1856. A fine interior of dark wood paneling shelves fiction, politics, art history, travel, and many titles published in America and England and translated into French.",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Galignani"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sidebar",
+        "emotional_register": "neutral",
+        "subject_tag": "first English bookshop",
+        "physical_cues": [
+          {
+            "cue": "Galignani bookshop façade at 224, rue de Rivoli with dark wood paneling interior",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Galignani family began publishing in 1520 in Italy",
+          "First English-language bookshop on the continent",
+          "In business at 224 rue de Rivoli since 1856"
+        ],
+        "source_passage": "GALIGNANI 224, rue de Rivoli. The Galignani family, which began publishing in i5zo in Italy, is now the legendary owner of the first English-language bookshop established on the continent, in business at this location since i856. A fine interior ofdark wood paneling shelves fiction, politics, art history, travel, and many titles published in America and England and translated into French.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "110"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "OCR renders '1520' as 'i5zo' and '1856' as 'i856' — corrected in script_body."
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 63
+      },
+      {
+        "beat_id": "paris_jardin_des_tuileries_historic_cuisine_hidden_gardens_of_paris_angelina_chocolat_chaud_mont_blanc",
+        "city_name": "paris",
+        "poi_name": "Jardin des Tuileries",
+        "parent_poi": null,
+        "lens": "historic_cuisine",
+        "topic_slug": "angelina_chocolat_chaud_mont_blanc",
+        "sub_location": null,
+        "trigger_address": "226, rue de Rivoli",
+        "beat_length_class": "seasoning",
+        "script_body": "Angelina's, next to Galignani at 226, rue de Rivoli — beloved of Parisians and travelers for its chocolat chaud and Mont Blanc — faces the Tuileries through the arches of rue de Rivoli.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Angelina's"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sidebar",
+        "emotional_register": "playful",
+        "subject_tag": "Angelina tea room",
+        "physical_cues": [
+          {
+            "cue": "Angelina tea room façade at 226, rue de Rivoli, facing the Tuileries through the arches",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "chocolat chaud",
+            "gloss": "hot chocolate"
+          },
+          {
+            "phrase": "Mont Blanc",
+            "gloss": "chestnut cream dessert, a specialty of the house"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Angelina's is at 226 rue de Rivoli next to Galignani",
+          "Famous for its chocolat chaud and Mont Blanc"
+        ],
+        "source_passage": "Angelina's Next to Galignani, at 226, rue de Rivoli. The crowded tea room, beloved ofParisians and travelers for its chocolat chaud and Mont Blanc, faces the Tuileries through the arches of rue de Rivoli.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "110"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": true,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 32
+      }
+    ],
+    "poi_role": "setting",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Palais-Royal",
+    "short_description": "Former royal palace with arcaded gardens where Camille Desmoulins' rooftop speech on July 12 1789 triggered the storming of the Bastille",
+    "latitude": 48.8637,
+    "longitude": 2.3372,
+    "importance_tier": 5,
+    "trigger_radius": 30,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Palais Royal",
+      "Palais-Cardinal"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_palais_royal_literary_heritage_hidden_gardens_of_paris_colette_earthly_paradise",
+        "city_name": "paris",
+        "poi_name": "Palais-Royal",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "colette_earthly_paradise",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Colette (1873–1954), France's greatest natural writer according to many critics, finally found her earthly paradise living above the garden of the Palais-Royal. In Places, she remembers this masterpiece of landscape and architecture, for centuries the social center of Paris and 'a unique point on the globe. Visit London, Amsterdam, Madrid or Vienna, you will see nothing like it. . . . It is called the capital of Paris. Everything is to be found there.' Colette makes you feel her delight as she looks down over the clipped lime trees at dawn and sunset, and, after rain, smelling the fragrance of flowers 'that last into late autumn' under the 'great ceiling of the Parisian sky.' She could see 'the tree trunks of the arbor, the quivering of whipped-up water in the great fountain.' The 'enchantment' of this place is intensified by the 'mutual courtesy' of her neighbors, who included her friend Jean Cocteau.",
+        "duration_sec": 107,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colette",
+          "Jean Cocteau",
+          "Places"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Colette garden paradise",
+        "physical_cues": [
+          {
+            "cue": "Clipped lime trees, great fountain, and garden arcades visible from the Palais-Royal garden",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Colette (1873–1954) lived above the garden of the Palais-Royal",
+          "She called it 'a unique point on the globe' and 'the capital of Paris'",
+          "Her neighbor was Jean Cocteau"
+        ],
+        "source_passage": "self-described \"migrant\" in Paris, who moved many times through many different quartiers, Colette (1873—1954), France's greatest natural writer according to many critics, finally found her earthly paradise living above the garden of the Palais-Royal. In Places, she remembers this masterpiece of landscape and architecture, for centuries the social center of Paris and \"a unique point on the globe. Visit London, Amsterdam, Madrid or Vienna, you will see nothing like it. . . . It is called the capital of Paris. Everything is to be found there.\" Colette makes you feel her delight as she looks down over the clipped lime trees at dawn and sunset, and, after rain, smelling the fragrance of flowers \"that last into late autumn\" under the \"great ceiling of the Parisian sky.\" She could see \"the tree trunks of the arbor, the quivering of whipped-up water in the great fountain.\" The \"enchantment\" of this place is intensified by the \"mutual courtesy\" of her neighbors, who included her friend Jean Cocteau.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "113"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 153
+      },
+      {
+        "beat_id": "paris_palais_royal_dark_history_hidden_gardens_of_paris_colette_husband_hidden_occupation",
+        "city_name": "paris",
+        "poi_name": "Palais-Royal",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "colette_husband_hidden_occupation",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "During the Occupation (1940–1944), when the Nazis made daily raids through the Palais apartments, hunting for Jews, Colette's neighbors hid her Jewish husband, Maurice Goudeket, in their tiny maids' rooms and crawl spaces, saving him from deportation. She, in turn, learning that some of her neighbors, like most of Paris, were hungry during the war, gave them food and money.",
+        "duration_sec": 47,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colette",
+          "Maurice Goudeket",
+          "Nazi Occupation"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "somber",
+        "subject_tag": "wartime hiding Goudeket",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "During the Occupation (1940–1944), Nazis raided Palais-Royal apartments hunting for Jews",
+          "Colette's neighbors hid her Jewish husband Maurice Goudeket in maids' rooms and crawl spaces",
+          "Colette gave food and money to hungry neighbors in return"
+        ],
+        "source_passage": "During the Occupation (1940—1944), when the Nazis made daily raids through the Palais apartments, hunting for Jews, Colette's neighbors hid her Jewish husband, Maurice Goudeket, in their tiny maids' rooms and crawl spaces, saving him from deportation. She, in turn, learning that some of her neighbors, like most of Paris, were hungry during the war, gave them food and money.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "113-114"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 62
+      },
+      {
+        "beat_id": "paris_palais_royal_hidden_history_hidden_gardens_of_paris_richelieu_hedonism_revolution_origins",
+        "city_name": "paris",
+        "poi_name": "Palais-Royal",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "richelieu_hedonism_revolution_origins",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Originally Palais-Cardinal, the site of the palace Cardinal Richelieu built for himself, the Palais-Royal earned a reputation as 'the home of Parisian hedonism.' In addition to the wild commerce of brothels, gambling houses, and taverns inside the colonnades, both before and after 1789, the coffeehouses welcomed journalists and politicians, bourgeoisie and aristocrats, who argued the radical politics that led to the Revolution. The storming of the Bastille on 14 July 1789 had its origins here. Legend has it that the journalist Camille Desmoulins stood on a café table to launch a call to arms. As Victor Hugo later put it, it was 'the core of the comet Revolution.'",
+        "duration_sec": 83,
+        "kid_friendly": "yes",
+        "entities": [
+          "Cardinal Richelieu",
+          "Camille Desmoulins",
+          "Victor Hugo",
+          "Bastille",
+          "French Revolution"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Revolution hedonism origins",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Originally called Palais-Cardinal, built by Cardinal Richelieu",
+          "Known as 'the home of Parisian hedonism' with brothels, gambling houses, taverns in the colonnades",
+          "Storming of the Bastille on 14 July 1789 had its origins in the Palais-Royal",
+          "Camille Desmoulins reportedly stood on a café table here to launch a call to arms",
+          "Victor Hugo called it 'the core of the comet Revolution'"
+        ],
+        "source_passage": "Characteristically, there's not a hint of puritanism in the free-spirited Colette's approach to the history of the Palais-Royal (originally Palais-Cardinal, as the site of the palace Cardinal Richelieu built for himself). She mentions its \"bad\" reputation, then summons the ghosts of the \"ladies of pleasure\" who once, like her, must have enjoyed the view of the garden beneath their windows. Historians detail the liheage of the Palais-Royal as \"the home of Parisian hedonism.\" In addition to the wild commerce of brothels, gambling houses, and taverns inside the colonnades, both before and after 1789, the coffeehouses welcomed journalists and politicians, bourgeoisie and aristocrats, who argued the radical politics that led to the Revolution. The storming of the Bastille on 14 July iy8c> . . . had its origins in the Palais-Royal. It was there, legend has it, that the journalist Camille Desmoulins stood on a cafe table to .. . launch a call to arms. ... As Victor Hugo later put it, it was \"the core of the comet Revolution\"",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "114"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Source cited as Colin Jones, Paris: The Biography of a City."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 110
+      },
+      {
+        "beat_id": "paris_palais_royal_parks_gardens_hidden_gardens_of_paris_spring_garden_parisians_benches",
+        "city_name": "paris",
+        "poi_name": "Palais-Royal",
+        "parent_poi": null,
+        "lens": "parks_gardens",
+        "topic_slug": "spring_garden_parisians_benches",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Today the Palais-Royal is a refuge of tranquillity, beautiful in all seasons but especially in spring. A profusion of yellow and white tulips frame a pretty fountain surrounded by magnolia and lime trees and Parisians on benches reading and sleeping and taking the sun. At the north end, where Colette lived, there's a plaque on 9, rue du Beaujolais.",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colette"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "garden spring tranquillity",
+        "physical_cues": [
+          {
+            "cue": "Plaque on 9, rue du Beaujolais marking where Colette lived at the north end of the Palais-Royal",
+            "direction": "north",
+            "feature_type": "plaque"
+          },
+          {
+            "cue": "Fountain surrounded by magnolia and lime trees in the garden",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Palais-Royal garden has yellow and white tulips framing a fountain surrounded by magnolia and lime trees",
+          "Colette's plaque is at 9, rue du Beaujolais at the north end"
+        ],
+        "source_passage": "Today the Palais-Royal is a refuge of tranquillity, beautiful in all seasons but especially in spring. A profusion of yellow and white tulips frame a pretty fountain surrounded by magnolia and lime trees and Parisians on benches reading and sleeping and taking the sun. (Colette often observed from her window how devoted Parisians are to books.) There's little traffic into the shops of the arcades. At the north end, where Colette lived (there's a plaque on p, rue du Beaujolais),",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "115"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "OCR renders '9' as 'p' in source — corrected in script_body."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 61
+      },
+      {
+        "beat_id": "paris_palais_royal_historic_cuisine_hidden_gardens_of_paris_grand_vefour_cafe_de_chartres",
+        "city_name": "paris",
+        "poi_name": "Palais-Royal",
+        "parent_poi": null,
+        "lens": "historic_cuisine",
+        "topic_slug": "grand_vefour_cafe_de_chartres",
+        "sub_location": "Galerie de Beaujolais",
+        "trigger_address": "17, rue du Beaujolais",
+        "beat_length_class": "seasoning",
+        "script_body": "One of Colette's (and Julia Child's) favorite restaurants, Grand Véfour at 17, rue du Beaujolais under the northwestern arcades, opened in the 1780s as the Café de Chartres and still serves its haute cuisine in an elegant dining room. The Muscade, a friendly modest café just south of it with outdoor tables, serves a 'salade Colette.'",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Grand Véfour",
+          "Colette",
+          "Julia Child",
+          "Café de Chartres",
+          "Muscade"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "Grand Vefour Colette",
+        "physical_cues": [
+          {
+            "cue": "Grand Véfour restaurant under the northwestern arcades at 17, rue du Beaujolais",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "haute cuisine",
+            "gloss": "high-end French cooking"
+          },
+          {
+            "phrase": "salade Colette",
+            "gloss": "a house salad named after Colette, served at Muscade café"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Grand Véfour at 17, rue du Beaujolais under the northwestern arcades was a favorite of Colette and Julia Child",
+          "It opened in the 1780s as the Café de Chartres",
+          "Adjacent Muscade café serves a 'salade Colette'"
+        ],
+        "source_passage": "one of her (and Julia Child's) favorite restaurants, Grand Vefour (17, rue du Beaujolais, under the northwestern arcades), opened in the 1780s as the Cafe de Chartres, and still serves its haute cuisine in an elegant dining room. The Muscade, a friendly modest cafe just south of it, with outdoor tables, serves a \"salade Colette.\"",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "115"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 58
+      },
+      {
+        "beat_id": "paris_palais_royal_literary_heritage_hidden_gardens_of_paris_colette_state_funeral_first_woman",
+        "city_name": "paris",
+        "poi_name": "Palais-Royal",
+        "parent_poi": null,
+        "lens": "literary_heritage",
+        "topic_slug": "colette_state_funeral_first_woman",
+        "sub_location": "Cour d'Honneur",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "On the occasion of Colette's death, though the nearby church of Saint-Roch refused her a Catholic funeral Mass, she received the first state funeral that France ever gave a woman. Her bier rested in the Palais-Royal's Cour d'Honneur in front of Cardinal Richelieu's original palace. Thousands of Parisians, mostly women, filed past, leaving bunches of wildflowers in her honor.",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colette",
+          "Saint-Roch",
+          "Cardinal Richelieu",
+          "Cour d'Honneur"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "Colette state funeral",
+        "physical_cues": [
+          {
+            "cue": "Cour d'Honneur of the Palais-Royal, in front of Cardinal Richelieu's original palace",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Cour d'Honneur",
+            "gloss": "honor courtyard — the ceremonial forecourt of the Palais-Royal"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Saint-Roch refused Colette a Catholic funeral Mass",
+          "Colette received the first state funeral France ever gave a woman",
+          "Her bier rested in the Palais-Royal's Cour d'Honneur",
+          "Thousands of Parisians, mostly women, filed past with wildflowers"
+        ],
+        "source_passage": "On the occasion of Colette's death, though the nearby church of Saint-Roch refused her a Catholic funeral Mass, she received the first state funeral that France ever gave a woman. Her bier rested in the Palais-Royal's Cour d'Honneur in front of Cardinal Richelieu's original palace. Thousands of Parisians, mostly women, filed past, leaving bunches of wildflowers in her honor",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "115"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Source cited as Judith Thurman, Secrets of the Flesh: A Life of Colette."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 65
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Saint-Germain-l'Auxerrois",
+    "short_description": "Royal parish church opposite the Louvre where the bells signalled the St Bartholomew's Day massacre in 1572",
+    "latitude": 48.8598,
+    "longitude": 2.341,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Eglise Saint-Germain-l'Auxerrois"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_saint_germain_l_auxerrois_dark_history_hidden_gardens_of_paris_st_bartholomew_bell_la_marie",
+        "city_name": "paris",
+        "poi_name": "Saint-Germain-l'Auxerrois",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "st_bartholomew_bell_la_marie",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Walk east through the Tuileries, past the Louvre and its oldest part, the beautiful Cour Carrée. Cross rue de l'Amiral de Coligny and place du Louvre and a median of tulips and trees to enter the front porch of what used to be the parish church of the royal families, built on the site of a Viking stronghold. From the belfry of Saint-Germain, the church bell — 'la Marie' — rang out the signal to launch the Saint Bartholomew's Day Massacre.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Saint Bartholomew's Day Massacre",
+          "Cour Carrée",
+          "Louvre"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "massacre bell signal",
+        "physical_cues": [
+          {
+            "cue": "Bell tower (belfry) of Saint-Germain-l'Auxerrois visible from place du Louvre",
+            "direction": "east",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "la Marie",
+            "gloss": "nickname of the church bell that rang the signal for the St. Bartholomew's Day Massacre"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Saint-Germain-l'Auxerrois was the parish church of the royal families",
+          "Built on the site of a Viking stronghold",
+          "The church bell 'la Marie' rang the signal to launch the Saint Bartholomew's Day Massacre"
+        ],
+        "source_passage": "CHURCH OF SAINT-GERMAIN l'aUXERROIS Walk east through the Tuileries, past the Louvre and its oldest part, the beautiful Cour Carree. Cross rue de TAmiral de Coligny andplace du Louvre and a median of tulips and trees to enter the front porch ofwhat used to be the parish church ofthe royal families, built on the site of a Viking stronghold. From the belfry of Saint- Germain, the church hell— \"la Marie \"—rang out the signal to launch the Saint Bartholomew's Day Massacre.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "111"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 82
+      },
+      {
+        "beat_id": "paris_saint_germain_l_auxerrois_historic_worship_hidden_gardens_of_paris_chapel_stained_glass_esther_judith_deborah",
+        "city_name": "paris",
+        "poi_name": "Saint-Germain-l'Auxerrois",
+        "parent_poi": null,
+        "lens": "historic_worship",
+        "topic_slug": "chapel_stained_glass_esther_judith_deborah",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "These days its Wednesday carillon concert (1:30–2) plays Bach, Couperin, Mozart. Inside, the statue of Saint Mary of Egypt stands in the rear of the lovely thirteenth-century Chapel of the Holy Sacrament, where the medallions in the stained-glass windows bear motifs from the Hebrew Bible: beautiful Esther in the first window; fearless Judith in the second, holding a sword and draped in turquoise, coral, and purple; a brilliant Deborah in the third.",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "entities": [
+          "Saint Mary of Egypt",
+          "Chapel of the Holy Sacrament",
+          "Esther",
+          "Judith",
+          "Deborah",
+          "Bach",
+          "Couperin",
+          "Mozart"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Hebrew Bible stained",
+        "physical_cues": [
+          {
+            "cue": "Stained-glass windows bearing Esther, Judith, and Deborah in the thirteenth-century Chapel of the Holy Sacrament",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Statue of Saint Mary of Egypt in the rear of the Chapel of the Holy Sacrament",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Wednesday carillon concert at 1:30–2 plays Bach, Couperin, Mozart",
+          "Thirteenth-century Chapel of the Holy Sacrament contains statue of Saint Mary of Egypt",
+          "Stained-glass windows bear Hebrew Bible figures: Esther (first), Judith with sword in turquoise, coral, purple (second), Deborah (third)"
+        ],
+        "source_passage": "These days its Wednesday carillon concert (1:30—2) plays Bach, Couperin, Mozart. Inside, the statue of Saint Mary of Egypt stands in the rear of the lovely thirteenth-century Chapel of the Holy Sacrament, where the medallions in the stained-glass windows bear motifs from the Hebrew Bible: beautiful Esther in the first window; fearless Judith in the second, holding a sword and draped in turquoise, coral, and purple; a brilliant Deborah in the third.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Jardin des Tuileries",
+          "page": "111"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 76
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Eglise Saint-Roch",
+    "short_description": "Fashionable 17th-century church on rue Saint-Honoré where Corneille, Diderot and Le Nôtre are buried",
+    "latitude": 48.8639,
+    "longitude": 2.3324,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Saint-Roch",
+      "Church of Saint-Roch"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_eglise_saint_roch_dark_history_hidden_gardens_of_paris_le_notre_deportation_wall_concentration_camps",
+        "city_name": "paris",
+        "poi_name": "Eglise Saint-Roch",
+        "parent_poi": null,
+        "lens": "dark_history",
+        "topic_slug": "le_notre_deportation_wall_concentration_camps",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "André Le Nôtre (1613–1700), the landscape designer of Versailles and the Tuileries, had his workshop in Saint-Roch. Behind the Wall of the Deportation are buried pieces of earth from ten German concentration camps as well as the ashes of French deportees.",
+        "duration_sec": 30,
+        "kid_friendly": "no",
+        "entities": [
+          "André Le Nôtre",
+          "Wall of the Deportation"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "somber",
+        "subject_tag": "Le Notre deportation",
+        "physical_cues": [
+          {
+            "cue": "Wall of the Deportation inside Saint-Roch, containing earth from ten German concentration camps and ashes of French deportees",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "André Le Nôtre (1613–1700) had his workshop in Saint-Roch",
+          "Behind the Wall of the Deportation are pieces of earth from ten German concentration camps and ashes of French deportees"
+        ],
+        "source_passage": "CHURCH OF SAINT-ROCH West, on rue Saint-Honore. Andre Le Notre (1613—ijoo), the landscape designer of Versailles and the Tuileries, had his workshop in Saint-Roch. Behind the Wall of the Deportation are buried pieces of earth from ten German concentration camps as well as the ashes of French deportees.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "116"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": "Le Nôtre birth year confirmed as 1613 from this passage (same chunk, different entry gives '1633' which was OCR error). Used 1613 in script_body."
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 43
+      }
+    ],
+    "poi_role": "walk_by_only",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Notre-Dame-des-Victoires",
+    "short_description": "17th-century basilica on Place des Petits-Pères, a pilgrimage shrine co-designed by the architect of Les Invalides, where Lully is buried",
+    "latitude": 48.8665,
+    "longitude": 2.341,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Basilique Notre-Dame-des-Victoires",
+      "Notre Dame des Victoires"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_notre_dame_des_victoires_historic_worship_hidden_gardens_of_paris_colette_candles_occupation",
+        "city_name": "paris",
+        "poi_name": "Notre-Dame-des-Victoires",
+        "parent_poi": null,
+        "lens": "historic_worship",
+        "topic_slug": "colette_candles_occupation",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Colette's parish church, Notre-Dame-des-Victoires on Place des Petits-Pères, is where boys play soccer in front of the church today. A baptised Catholic and lifelong agnostic, Colette lit candles here before a Marian altar — still ablaze with the vigil lights of Parisians — for her friends who were sick and in danger during the Occupation.",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colette",
+          "Notre-Dame-des-Victoires",
+          "Place des Petits-Pères"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent",
+        "subject_tag": "Colette Marian altar",
+        "physical_cues": [
+          {
+            "cue": "Marian altar still ablaze with vigil lights of Parisians inside Notre-Dame-des-Victoires",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Notre-Dame-des-Victoires is on Place des Petits-Pères",
+          "Colette was Colette's parish church",
+          "Colette, a baptised Catholic and lifelong agnostic, lit candles at a Marian altar during the Occupation for sick and endangered friends"
+        ],
+        "source_passage": "CHURCH OF NOTRE-DAME DES VICTOIRES Place des Petits-Peres. Through the north end of the Palais-Royal at rue de Beaujolais—detouring through the elegant covered passage of Galerie Vivienne, home to a good antiquarian bookstore, Librai- rie Jousseaume—you come to this friendly little square where boys play soccer in front of Colette's parish church. A baptised Catholic and lifelong agnostic, she lit candles here before a Marian altar (still ablaqe with the vigil lights ofParisians) for her friends who were sick and in danger during the Occupation.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "116"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 58
+      }
+    ],
+    "poi_role": "walk_by_only",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Galerie Vivienne",
+    "short_description": "Elegant 1823 covered arcade with mosaic floors and neoclassical decor, one of the most beautiful passages in Paris",
+    "latitude": 48.8667,
+    "longitude": 2.3398,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Galerie Vivienne",
+      "Galerie Colbert"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_galerie_vivienne_hidden_history_hidden_gardens_of_paris_librairie_jousseaume_antiquarian",
+        "city_name": "paris",
+        "poi_name": "Galerie Vivienne",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "librairie_jousseaume_antiquarian",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Through the north end of the Palais-Royal at rue de Beaujolais — detouring through the elegant covered passage of Galerie Vivienne, home to a good antiquarian bookstore, Librairie Jousseaume.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Galerie Vivienne",
+          "Librairie Jousseaume"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "transition",
+        "beat_type": "sidebar",
+        "emotional_register": "neutral",
+        "subject_tag": "Galerie Vivienne bookstore",
+        "physical_cues": [
+          {
+            "cue": "Elegant covered passage of Galerie Vivienne accessible from rue de Beaujolais at the north end of Palais-Royal",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Galerie Vivienne is accessed through the north end of the Palais-Royal at rue de Beaujolais",
+          "Home to antiquarian bookstore Librairie Jousseaume"
+        ],
+        "source_passage": "Through the north end of the Palais-Royal at rue de Beaujolais—detouring through the elegant covered passage of Galerie Vivienne, home to a good antiquarian bookstore, Librai- rie Jousseaume—you come to this friendly little square",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "116"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 29
+      }
+    ],
+    "poi_role": "setting",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Comedie-Francaise",
+    "short_description": "France's oldest national theatre founded in 1680, where Molière's death is commemorated every February",
+    "latitude": 48.8634,
+    "longitude": 2.3367,
+    "importance_tier": 4,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Comédie-Française",
+      "Theatre-Francais",
+      "La Maison de Molière"
+    ],
+    "parent_poi": null,
+    "beats": [
+      {
+        "beat_id": "paris_comedie_francaise_hidden_history_hidden_gardens_of_paris_southwest_corner_palais_royal_entrance",
+        "city_name": "paris",
+        "poi_name": "Comedie-Francaise",
+        "parent_poi": null,
+        "lens": "hidden_history",
+        "topic_slug": "southwest_corner_palais_royal_entrance",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Comédie-Française Theatre (La Maison de Molière) is located in the southwest corner of place Colette, an entrance to the garden of the Palais-Royal.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Comédie-Française",
+          "Place Colette"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "transition",
+        "beat_type": "sidebar",
+        "emotional_register": "neutral",
+        "subject_tag": "Comedie-Francaise location",
+        "physical_cues": [
+          {
+            "cue": "Comédie-Française theatre building at the southwest corner of place Colette",
+            "direction": "south",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "La Maison de Molière",
+            "gloss": "The House of Molière — nickname for the Comédie-Française"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Comédie-Française is at the southwest corner of place Colette, an entrance to the Palais-Royal garden"
+        ],
+        "source_passage": "COMEDIE FRAN^AISE THEATRE (LA MAISON DE MOLIERE) Located in the southwest comer of place Colette, an entrance to the garden of the Palais-Royal.",
+        "source_attribution": {
+          "book_title": "Hidden Gardens of Paris",
+          "author": "Susan Cahill",
+          "chapter": "Palais-Royal",
+          "page": "115"
+        },
+        "fact_check": {
+          "flagged_claims": [],
+          "status": "unverified",
+          "notes": ""
+        },
+        "new_poi": false,
+        "source_chunk_slug": "chunk-05b-tuileries-palais-royal",
+        "book_slug": "hidden_gardens_of_paris",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-04-29T00:00:00Z",
+          "city_name": "paris"
+        },
+        "_word_count": 26
+      }
+    ],
+    "poi_role": "stop",
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Galignani",
+    "short_description": "",
+    "latitude": 48.8650224,
+    "longitude": 2.3285487,
+    "importance_tier": 2,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  },
+  {
+    "name": "Angelina Paris",
+    "short_description": "",
+    "latitude": 48.8650778,
+    "longitude": 2.3284104,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": null,
+    "kid_friendly": "yes",
+    "name_variations": [],
+    "parent_poi": null,
+    "beats": [],
+    "poi_role": null,
+    "_meta": {
+      "source_chunk": "chunk-05b-tuileries-palais-royal",
+      "source_book": "hidden_gardens_of_paris",
+      "is_new_poi": false
+    }
+  }
+]

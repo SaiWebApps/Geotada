@@ -1,0 +1,1241 @@
+{
+  "chunk_id": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+  "chunk_file": "Books/Paris/hidden-gardens-of-paris/chunk-02a-vert-galant-jean-xxiii-rene-viviani.txt",
+  "pois": [
+    {
+      "name": "Square du Vert-Galant",
+      "is_new": false,
+      "matched_existing": "Square du Vert-Galant",
+      "short_description": "Triangular leafy garden at the western tip of \u00cele de la Cit\u00e9 behind the Pont Neuf, named for Henri IV.",
+      "name_variations": [
+        "Square Vert Galant",
+        "Square du Vert Galant"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    },
+    {
+      "name": "Place Dauphine",
+      "is_new": false,
+      "matched_existing": "Place Dauphine",
+      "short_description": "Triangular hidden square on the \u00cele de la Cit\u00e9, designed by Henri IV for his son the Dauphin, home to Montand and Signoret.",
+      "name_variations": [
+        "Place Dauphine Paris"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    },
+    {
+      "name": "Pont des Arts",
+      "is_new": false,
+      "matched_existing": "Pont des Arts",
+      "short_description": "Pedestrian footbridge over the Seine connecting the Left Bank to the Louvre.",
+      "name_variations": [
+        "Passerelle des Arts"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    },
+    {
+      "name": "Voltaire Statue (Square Honor\u00e9-Champion)",
+      "is_new": false,
+      "matched_existing": "Voltaire Statue (Square Honor\u00e9-Champion)",
+      "short_description": "Small garden behind the Institut de France on the Left Bank featuring a statue of Voltaire.",
+      "name_variations": [
+        "Square Honor\u00e9 Champion",
+        "Square Honore Champion"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    },
+    {
+      "name": "Square Jean XXIII",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Cathedral garden on the south side of Notre-Dame, dedicated to the memory of Pope John XXIII (Angelo Roncalli), on the site of the former archbishop's palace destroyed in 1831.",
+      "name_variations": [
+        "Square Jean-XXIII",
+        "Jardins de Notre-Dame",
+        "Cathedral Gardens of Notre-Dame"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 48.852574,
+      "longitude": 2.350971,
+      "trigger_radius": 15,
+      "geocode_source": "Web search \u2014 multiple sources confirming coords at south side of Notre-Dame, 4th arr.",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Adjacent to Notre-Dame Cathedral on \u00cele de la Cit\u00e9. Heavy foot traffic \u2014 every visitor to Notre-Dame walks past. Strong Wikipedia presence, multiple guidebook mentions, named for a historically significant pope. Likely tier-3 given it is a garden/approach rather than a primary monument, but contextually very significant as a distinct stop with its own history and atmosphere."
+    },
+    {
+      "name": "Square Rene Viviani",
+      "is_new": true,
+      "matched_existing": null,
+      "short_description": "Small Left Bank square adjacent to Saint-Julien-le-Pauvre, home to the oldest tree in Paris (a Robinia planted in 1601), with a bronze fountain depicting the legend of Saint-Julien.",
+      "name_variations": [
+        "Square Ren\u00e9-Viviani",
+        "Square Rene-Viviani"
+      ],
+      "kid_friendly": "yes",
+      "latitude": 48.8513,
+      "longitude": 2.3418,
+      "trigger_radius": 15,
+      "geocode_source": "Web search \u2014 latitude.to confirmed 48.8513, 2.3418",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Well-known Left Bank square with strong Wikipedia entry, the oldest tree in Paris (a major draw), prominent fountain by Georges Jeanclos (1995), adjacent to the ancient Saint-Julien-le-Pauvre church. Featured in multiple walking guides. Likely tier-3: a meaningful stop for walkers in the Latin Quarter, especially near Shakespeare and Company."
+    },
+    {
+      "name": "Shakespeare and Company",
+      "is_new": false,
+      "matched_existing": "Shakespeare and Company",
+      "short_description": "Legendary English-language bookshop at 37 rue de la B\u00fbcherie.",
+      "name_variations": [
+        "Shakespeare & Company"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    },
+    {
+      "name": "Memorial des Martyrs de la Deportation",
+      "is_new": false,
+      "matched_existing": "Memorial des Martyrs de la Deportation",
+      "short_description": "Underground memorial to French victims of Nazi deportation, at the eastern tip of \u00cele de la Cit\u00e9.",
+      "name_variations": [
+        "La Memorial des Martyrs de la Deportation",
+        "M\u00e9morial des Martyrs de la D\u00e9portation"
+      ],
+      "kid_friendly": "no",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    },
+    {
+      "name": "Hotel-Dieu",
+      "is_new": false,
+      "matched_existing": "Hotel-Dieu",
+      "short_description": "The oldest public hospital in Paris, founded in 651, with an internal garden.",
+      "name_variations": [
+        "H\u00f4tel-Dieu",
+        "Garden of the Hotel-Dieu"
+      ],
+      "kid_friendly": "yes",
+      "latitude": null,
+      "longitude": null,
+      "trigger_radius": 10,
+      "geocode_source": "existing POI",
+      "geocode_confidence": "HIGH",
+      "gravity_reasoning": "Existing POI \u2014 no gravity assessment needed"
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "paris_square_du_vert_galant_hidden_history_hidden_gardens_of_paris_henri_iv_city_vision",
+      "city_name": "paris",
+      "poi_name": "Square du Vert-Galant",
+      "lens": "hidden_history",
+      "topic_slug": "henri_iv_city_vision",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "The leafy green triangular square behind the Pont Neuf is named for Henri IV, the lusty gallant on horseback who loved his city mightily, especially its wine, women, and good times. This romantic western tip of the boat-shaped \u00cele de la Cit\u00e9 is the original settlement of the Parisii, a Celtic tribe subdued by Caesar \u2014 the Romans called it Lutetia, or Cara Lutetia, \"my beloved Lutetia,\" in the words of the late Roman emperor Julian in 358 AD.\n\nAs king, le Vert Galant (1589\u20131610) declared his intention \"to make this city beautiful, tranquil, desiring to make a whole world of this city and a wonder of the world.\" Such triumphs as the elegant Pont Neuf \u2014 the \"new bridge\" is the oldest bridge in Paris \u2014 the Place Dauphine opposite the bridge, and the Place Royale (later renamed Place des Vosges) show his genius as architect and urban visionary. His energetic love life \u2014 he had two wives, at least fifty-six mistresses, and households full of bastards \u2014 also won him the heart of Parisians, until his serial amours began to bore and irritate.\n\nBut Henri the obsessive lover was above all a peacemaker. Born and raised a Protestant by a rigidly reformist mother, he converted to Catholicism, the religion of the majority, to end the long religious wars between Catholics and Protestants that by the end of the sixteenth century had left Paris starving and looking like a bomb site. Detesting religious partisanship, he drafted and signed the Edict of Nantes (1598), which put toleration of the religion he had renounced on the books. The fanatical Catholic who stabbed him to death, Francis Ravaillac, was not persuaded. But to this day, together with Charlemagne, Joan of Arc, and Saint-Louis IX, Henri IV remains one of France's heroes. He declared kindness and mercy the primary virtues of a prince.",
+      "duration_sec": 228,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henri IV",
+        "Parisii",
+        "Julian",
+        "Pont Neuf",
+        "Place Dauphine",
+        "Place des Vosges",
+        "Edict of Nantes",
+        "Francis Ravaillac",
+        "Charlemagne",
+        "Joan of Arc",
+        "Saint-Louis IX"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Henri IV peacemaker king",
+      "physical_cues": [
+        {
+          "cue": "Equestrian statue of Henri IV on the Pont Neuf, visible from the entrance staircase",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        },
+        {
+          "cue": "Triangular leafy garden at the western tip of the island, with the Seine on both sides",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Cara Lutetia",
+          "gloss": "my beloved Lutetia \u2014 Julian's name for Roman Paris in 358 AD"
+        },
+        {
+          "phrase": "le Vert Galant",
+          "gloss": "the lusty gallant \u2014 Henri IV's nickname"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Square named for Henri IV",
+        "Site is original Parisii settlement subdued by Caesar",
+        "Romans called it Lutetia \u2014 Julian called it Cara Lutetia in 358 AD",
+        "Henri IV reigned 1589\u20131610",
+        "Henri IV had two wives, at least fifty-six mistresses",
+        "Henri IV built Pont Neuf (oldest bridge in Paris), Place Dauphine, Place Royale/Place des Vosges",
+        "Henri IV signed Edict of Nantes (1598)",
+        "Francis Ravaillac assassinated Henri IV",
+        "Andre Maurois places Henri IV among France's heroes alongside Charlemagne, Joan of Arc, Saint-Louis IX"
+      ],
+      "source_passage": "The leafy green triangular square behind the bridge is named for that lusty gallant on horseback who loved his city mightily, especially its wine, women, and good times. This romantic western tip of the boat-shaped lie de la Cite \u2014 the original settlement of the Parisii, a Celtic tribe subdued by Caesar \u2014 is a fitting introduction to the City of Light. For from the beginning, Paris has been an object of affection: (the Romans called it Lutetia) \u2014 Cara Lutetia, \"my beloved Lutetia,\" in the words of the late Roman emperor Julian in 358 AD. As king, le Vert Galant Henri IV (1589\u20131610) declared his intention \"to make this city beautiful, tranquil, . . . desiring to make a whole world of this city and a wonder of the world.\" Such triumphs as the elegant Pont Neuf (the \"new bridge\" is the oldest bridge in Paris), the Place Dauphine opposite the bridge, and the Place Royale (later renamed Place des Vosges) show his genius as architect and urban visionary. His energetic love life \u2014 he had two wives, at least fifty-six mistresses, and households full of bastards \u2014 also won him the heart of Parisians (until his serial amours began to bore and irritate). But Henri the obsessive lover was above all a peacemaker. Born and raised a Protestant by a rigidly reformist mother, he converted to Catholicism, the religion of the majority, to end the long religious wars between Catholics and Protestants that by the end of the sixteenth century had left Paris starving and looking like a bomb site. Detesting religious partisanship, he drafted and signed the Edict of Nantes (1598), which put toleration of the religion he had renounced on the books. The fanatical Catholic who stabbed him to death, Francis Ravaillac, was not persuaded. But to this day, in the words of Andre Maurois, \"together with Charlemagne, Joan of Arc, and Saint-Louis IX, Henri IV remains one of France's heroes.\" He declared kindness and mercy the primary virtues of a prince.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square du Vert Galant"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_du_vert_galant_sensory_landscapes_hidden_gardens_of_paris_garden_prospect",
+      "city_name": "paris",
+      "poi_name": "Square du Vert-Galant",
+      "lens": "sensory_landscapes",
+      "topic_slug": "garden_prospect",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Once you descend the staircase and enter the square, Vert Galant presents a magical combination of delights: a strong, wide river, flowers and grass, a riverbank shaded with willows and a prospect of magnificent architecture \u2014 the Louvre on the right and the gold-domed Institut de France on the left. There's also, in early evening in all seasons, a fair portion of privacy, a promise of intimacy.",
+      "duration_sec": 57,
+      "kid_friendly": "yes",
+      "entities": [
+        "Louvre Museum",
+        "Institut de France"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "garden river view",
+      "physical_cues": [
+        {
+          "cue": "Willow-shaded riverbank along the Seine at the garden's edge",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "View of the Louvre to the right",
+          "direction": "east",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Gold dome of the Institut de France on the left",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Garden features river, flowers, grass, willow-shaded riverbank",
+        "Views of the Louvre on the right and Institut de France (gold-domed) on the left"
+      ],
+      "source_passage": "Once you descend the staircase and enter the square, Vert Galant presents a magical combination of delights: a strong, wide river, flowers and grass, a riverbank shaded with willows and a prospect of magnificent architecture: the Louvre on the right and the gold-domed Institut de France on the left. There's also, in early evening in all seasons, a fair portion of privacy, a promise of intimacy.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square du Vert Galant"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_place_dauphine_hidden_history_hidden_gardens_of_paris_henri_iv_montand_signoret",
+      "city_name": "paris",
+      "poi_name": "Place Dauphine",
+      "lens": "hidden_history",
+      "topic_slug": "henri_iv_montand_signoret",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Enter through rue Henri Robert on the east side of Pont Neuf. Henri IV designed this hideaway for his son Louis XIII \u2014 the dauphin \u2014 who was nine years old when his father was assassinated. Some of the low brick buildings are of Henri's period; the trees are new and small, having only recently been planted to replace the white chestnuts that were attacked by a virulent pest. Yves Montand and Simone Signoret, who loved the village-like Place, lived here.",
+      "duration_sec": 71,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henri IV",
+        "Louis XIII",
+        "Yves Montand",
+        "Simone Signoret"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "royal hideaway residents",
+      "physical_cues": [
+        {
+          "cue": "Low brick buildings of Henri IV's period along the triangular square",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Recently planted small trees replacing the diseased white chestnuts",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Enter through rue Henri Robert on the east side of Pont Neuf",
+        "Henri IV designed Place Dauphine for his son Louis XIII, the dauphin",
+        "Louis XIII was nine when Henri IV was assassinated",
+        "Some brick buildings survive from Henri IV's period",
+        "White chestnuts replaced after attack by virulent pest",
+        "Yves Montand and Simone Signoret lived here"
+      ],
+      "source_passage": "PLACE DAUPHINE Enter through rue Henri Robert on the east side of Pont Neuf. Henri IV designed this hideaway for his son Louis XIII \u2014 the dauphin \u2014 who was nine years old when his father was assassinated. Some of the low brick buildings are of Henri's period; the trees are new and small, having only recently been planted to replace the white chestnuts that were attacked by a virulent pest. Yves Montand and Simone Signoret, who loved the village-like Place, lived here.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square du Vert Galant"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_pont_des_arts_visual_art_hidden_gardens_of_paris_renoir_first_sale_durand_ruel",
+      "city_name": "paris",
+      "poi_name": "Pont des Arts",
+      "lens": "visual_art",
+      "topic_slug": "renoir_first_sale_durand_ruel",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The footbridge connecting the Left Bank to the Louvre carries a lively traffic of musicians, painters, students, lovers, tourists, and children, with a wide view of the Seine and a rear view of the Square du Vert Galant. Pierre Auguste Renoir's painting Le Pont des Arts (1868) was the first he sold to the art dealer Paul Durand-Ruel, one of the most important advocates for French impressionists in Europe and the United States.",
+      "duration_sec": 65,
+      "kid_friendly": "yes",
+      "entities": [
+        "Pierre Auguste Renoir",
+        "Paul Durand-Ruel",
+        "Square du Vert-Galant",
+        "Louvre Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "Renoir Durand-Ruel sale",
+      "physical_cues": [
+        {
+          "cue": "Wide view of the Seine from the footbridge",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Rear view of Square du Vert Galant visible from the bridge",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Pont des Arts connects Left Bank to the Louvre",
+        "Renoir painted Le Pont des Arts in 1868",
+        "It was the first painting Renoir sold to Paul Durand-Ruel",
+        "Durand-Ruel was one of the most important advocates for French impressionists in Europe and the United States"
+      ],
+      "source_passage": "PONT DES ARTS The footbridge connecting the Left Bank to the Louvre carries a lively traffic of musicians, painters, students, lovers, tourists, and children, with a wide view of the Seine and a rear view of the Square du Vert Galant. Pierre Auguste Renoir's painting Le Pont des Arts (1868) was the first he sold to the art dealer Paul Durand-Ruel, one of the most important advocates for French impressionists in Europe and the United States.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square du Vert Galant"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "original_text": "Pierre Auguste Renoir's painting Le Pont des Arts (1868) was the first he sold to the art dealer Paul Durand-Ruel",
+          "corrected_text": "Renoir painted Le Pont des Arts in 1867\u20131868; Durand-Ruel purchased it in 1872 \u2014 it was the first Renoir he bought, not the first sold at the time of painting.",
+          "source_urls": [
+            "https://www.nortonsimon.org/art/detail/F.1968.13.P",
+            "https://arthive.com/pierreaugusterenoir/works/228665~The_Pont_Des_Arts"
+          ],
+          "impact": "LOW"
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_voltaire_statue_square_honore_champion_social_change_hidden_gardens_of_paris_voltaire_enlightenment_founders",
+      "city_name": "paris",
+      "poi_name": "Voltaire Statue (Square Honor\u00e9-Champion)",
+      "lens": "social_change",
+      "topic_slug": "voltaire_enlightenment_founders",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Through an arch to the right of the Institut de France on the Left Bank's Quai de Conti, a statue of the eighteenth-century philosopher Voltaire stands atop a small green mound bordered with flowers. Without this immensely influential leader of the Enlightenment, the Declaration of Independence (and the American Revolution) would, according to Benjamin Franklin and Thomas Jefferson, never have come to pass.",
+      "duration_sec": 58,
+      "kid_friendly": "yes",
+      "entities": [
+        "Voltaire",
+        "Institut de France",
+        "Benjamin Franklin",
+        "Thomas Jefferson",
+        "Declaration of Independence"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "Voltaire Enlightenment influence",
+      "physical_cues": [
+        {
+          "cue": "Statue of Voltaire on a small green mound bordered with flowers, through an arch to the right of the Institut de France",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Square is through an arch to the right of the Institut de France on Quai de Conti",
+        "Voltaire statue stands atop a small green mound bordered with flowers",
+        "Benjamin Franklin and Thomas Jefferson credited Voltaire's influence on the Declaration of Independence and American Revolution"
+      ],
+      "source_passage": "SQUARE HONORE-CHAMPION Through an arch to the right of the Institut de France on the Left Bank's Quai de Conti, a statue of the eighteenth-century philosopher Voltaire stands atop a small green mound bordered with flowers. Without this immensely influential leader of the Enlightenment, the Declaration of Independence (and the American Revolution) would, according to Benjamin Franklin and Thomas Jefferson, never have come to pass.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square du Vert Galant"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_pont_neuf_hidden_history_hidden_gardens_of_paris_bouquinistes_pont_neuf_origin",
+      "city_name": "paris",
+      "poi_name": "Pont Neuf",
+      "lens": "hidden_history",
+      "topic_slug": "bouquinistes_pont_neuf_origin",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "The large green standing boxes full of books and prints that line the quais on both banks of the Seine \u2014 les bouquinistes, the quintessentially Parisian version of bookselling \u2014 had their first location here on the Pont Neuf.",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "factoid",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "bouquinistes Pont Neuf",
+      "physical_cues": [
+        {
+          "cue": "The Seine quais visible from the bridge, lined with green book-stall boxes",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "les bouquinistes",
+          "gloss": "the quintessentially Parisian version of bookselling \u2014 open-air vendors with green box stalls on the quais"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Les bouquinistes \u2014 the large green standing boxes full of books and prints \u2014 line quais on both banks",
+        "The first bouquinistes were located on Pont Neuf"
+      ],
+      "source_passage": "LES BOUQUINISTES The quintessentially Parisian version of bookselling. The large green standing boxes full of books and prints line the quais on both banks of the Seine. The first ones were located on Pont Neuf.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square du Vert Galant"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_jean_xxiii_hidden_history_hidden_gardens_of_paris_archbishop_palace_notre_dame_origins",
+      "city_name": "paris",
+      "poi_name": "Square Jean XXIII",
+      "lens": "hidden_history",
+      "topic_slug": "archbishop_palace_notre_dame_origins",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Until 1831, when it was destroyed in a riot, the palace of the archbishop of Paris occupied the land between Notre-Dame and the Seine. Both the palace gardens and the cathedral had long been revered sites in this quartier of religious associations dating back to the fourth century, when Emperor Julian presided in a temple dedicated to Jupiter. Those Roman ruins became the foundation of the basilica of Saint-Etienne (Saint Stephen) in 528 and the first Notre-Dame. The new Notre-Dame, begun in 1163, stands today \u2014 after centuries of renovations and the fanatical rampages of the Terror \u2014 as one of the crown jewels of Gothic architecture not only in Paris but all over Europe.",
+      "duration_sec": 101,
+      "kid_friendly": "yes",
+      "entities": [
+        "Notre-Dame Cathedral",
+        "Emperor Julian",
+        "Saint-Etienne basilica"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "reverent",
+      "subject_tag": "cathedral site sacred history",
+      "physical_cues": [
+        {
+          "cue": "South flank of Notre-Dame rising above the garden",
+          "direction": "north",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "quartier",
+          "gloss": "neighbourhood or district"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Archbishop's palace occupied the land until destroyed in a riot in 1831",
+        "Site has religious associations since the fourth century \u2014 Emperor Julian's temple to Jupiter",
+        "Roman ruins became foundation of Saint-Etienne basilica in 528",
+        "New Notre-Dame begun in 1163"
+      ],
+      "source_passage": "Until 1831, when it was destroyed in a riot, the palace of the archbishop of Paris occupied the land between Notre-Dame and the Seine. Both the palace gardens and the cathedral had long been revered sites in this quartier of religious associations dating back to the fourth century when Emperor Julian presided in a temple dedicated to Jupiter. These Roman ruins became the foundation of the basilica of Saint-Etienne (Saint Stephen) in 528 and the first Notre-Dame. The new Notre-Dame, begun in 1163, stands today, after centuries of renovations and the fanatical rampages of the Terror, as one of the crown jewels of Gothic architecture not only in Paris but all over Europe.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Jean-XXIII"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_jean_xxiii_character_story_hidden_gardens_of_paris_pope_john_xxiii_paris_nuncio",
+      "city_name": "paris",
+      "poi_name": "Square Jean XXIII",
+      "lens": "character_story",
+      "topic_slug": "pope_john_xxiii_paris_nuncio",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "The new cathedral gardens are dedicated to the memory of Pope John XXIII, born Angelo Roncalli (1881\u20131963), in Lombardy \u2014 the papal nuncio in Paris from 1944 to 1953, who went on to become the \"good pope\" and the progenitor of the Second Vatican Council (1962\u20131965). \"Jesus came to break down the barriers,\" he preached. \"The central point of his teaching is love.\"\n\nParisians remember Roncalli's long walks through the city accompanied by his friends \u2014 Protestants, Catholics, Jews, agnostics, atheists. At diplomatic receptions he enjoyed the champagne and the conviviality of men and women. He read French literature and knew the post-World War II French intellectuals and theologians, whom he would invite to participate in the reforms of Vatican II. A savvy diplomat, he was trusted by the French government. On the occasion of being awarded the Legion of Honor, President Auriol praised him for understanding and respecting \"the traditions of justice and tolerance,\" the honor of the French nation.\n\nThe inviting square beneath the flying buttresses is a fitting memorial to the genial man who confessed a deep sadness when he was recalled from Paris to Rome: \"I love France and I love Paris,\" he told a friend, \"and I hoped to stay a little longer. I can't really see myself in Rome.\"",
+      "duration_sec": 168,
+      "kid_friendly": "yes",
+      "entities": [
+        "Pope John XXIII",
+        "Angelo Roncalli",
+        "Second Vatican Council",
+        "President Auriol",
+        "Legion of Honor"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "Pope John XXIII Paris",
+      "physical_cues": [
+        {
+          "cue": "Flying buttresses of Notre-Dame rising above the garden on the north side",
+          "direction": "north",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Inviting square with benches beneath the flying buttresses at the eastern end",
+          "direction": "east",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Gardens dedicated to Pope John XXIII, born Angelo Roncalli (1881\u20131963) in Lombardy",
+        "Roncalli was papal nuncio in Paris 1944 to 1953",
+        "He was called the 'good pope'",
+        "He was the progenitor of the Second Vatican Council (1962\u20131965)",
+        "President Auriol awarded him the Legion of Honor",
+        "Roncalli said 'I love France and I love Paris' on being recalled to Rome"
+      ],
+      "source_passage": "The new cathedral gardens are dedicated to the memory of Pope John XXIII, born Angelo Roncalli (1881\u20141963), in Lombardy, the papal nuncio in Paris from 1944 to 1953 who went on to become the \"good pope\" and the progenitor of the Second Vatican Council (1962\u20141965). \"Jesus came to break down the barriers,\" he preached. \"The central point of his teaching is love.\" Parisians remember Roncalli's long walks through the city accompanied by his friends, Protestants, Catholics, Jews, agnostics, atheists. At diplomatic receptions he enjoyed the champagne and the conviviality of men and women. He read French literature and knew the post-World War II French intellectuals and theologians, whom he would invite to participate in the reforms of Vatican II. A savvy diplomat, he was trusted by the French government. On the occasion of being awarded the Legion of Honor, President Auriol praised him for understanding and respecting \"the traditions of justice and tolerance,\" the honor of the French nation. The inviting square beneath the flying buttresses is a fitting memorial to the genial man who confessed a deep sadness when he was recalled from Paris to Rome: \"I love France and I love Paris,\" he told a friend, \"and I hoped to stay a little longer. I can't really see myself in Rome.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Jean-XXIII"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_jean_xxiii_sensory_landscapes_hidden_gardens_of_paris_garden_buttresses_bloom",
+      "city_name": "paris",
+      "poi_name": "Square Jean XXIII",
+      "lens": "sensory_landscapes",
+      "topic_slug": "garden_buttresses_bloom",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Flowering cherry trees, in luxuriant bloom along the south porches in April, screen but do not hide the original medallions that bear images of student life. Beds of daffodils and tulips run the length of the cathedral's southern flank as far as the eastern end, where flying buttresses rise above a small square generous with flowers, benches, and travelers taking their ease. The mood here often feels more peaceful than Notre-Dame's interior, where getting stuck behind a crush of tourists aiming cameras at the stained glass is almost inevitable.",
+      "duration_sec": 80,
+      "kid_friendly": "yes",
+      "entities": [
+        "Notre-Dame Cathedral"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "garden season flowers",
+      "physical_cues": [
+        {
+          "cue": "Flowering cherry trees along the south porches \u2014 medallions of student life visible behind them",
+          "direction": "north",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Beds of daffodils and tulips along the southern flank of the cathedral",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Flying buttresses rising above the eastern end of the square",
+          "direction": "east",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Flowering cherry trees bloom along south porches in April",
+        "Original medallions bear images of student life",
+        "Daffodils and tulips run the length of the cathedral's southern flank",
+        "Flying buttresses rise at the eastern end"
+      ],
+      "source_passage": "Flowering cherry trees, in luxuriant bloom along the south porches in April, screen but do not hide the original medallions that bear images of student life. Beds of daffodils and tulips run the length of the cathedral's southern flank as far as the eastern end, where flying buttresses rise above a small square generous with flowers, benches, and travelers taking their ease. The mood here often feels more peaceful than Notre-Dame's interior, where getting stuck behind a crush of tourists aiming cameras at the stained glass is almost inevitable.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Jean-XXIII"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_jean_xxiii_literary_heritage_hidden_gardens_of_paris_henry_james_ambassadors_lambert_strether",
+      "city_name": "paris",
+      "poi_name": "Square Jean XXIII",
+      "lens": "literary_heritage",
+      "topic_slug": "henry_james_ambassadors_lambert_strether",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "seasoning",
+      "script_body": "Lambert Strether, the protagonist of Henry James's The Ambassadors, notes the \"beneficent action on his nerves\" of sitting alone \"in the great dim church,\" soothed in this \"place of refuge,\" with \"a sense of safety, of simplification.\"",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henry James",
+        "Lambert Strether",
+        "The Ambassadors"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "callback",
+      "beat_type": "sidebar",
+      "emotional_register": "reverent",
+      "subject_tag": "James Notre-Dame refuge",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Henry James's character Lambert Strether (The Ambassadors) sits alone in Notre-Dame, experiencing its 'beneficent action on his nerves'"
+      ],
+      "source_passage": "Lambert Strether, however, the protagonist of Henry James's The Ambassadors, notes the \"beneficent action on his nerves\" of sitting alone \"in the great dim church,\" soothed in this \"place of refuge,\" with \"a sense of safety, of simplification.\"",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Jean-XXIII"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_hotel_dieu_hidden_history_hidden_gardens_of_paris_oldest_hospital_saint_landry",
+      "city_name": "paris",
+      "poi_name": "Hotel-Dieu",
+      "lens": "hidden_history",
+      "topic_slug": "oldest_hospital_saint_landry",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "On the left of the plaza as you face the western front of Notre-Dame. Founded in 651 by Bishop Saint-Landry, H\u00f4tel-Dieu (since rebuilt) is the oldest public hospital in Paris. Leave behind the hordes queuing for Notre-Dame, enter the lobby, and bear right, then left, into the lower garden. Go up the stairs to the larger upper garden, where you will find flowers and calm and a place to sit.",
+      "duration_sec": 65,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bishop Saint-Landry",
+        "Notre-Dame Cathedral"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest hospital garden",
+      "physical_cues": [
+        {
+          "cue": "Hotel-Dieu on the left of the plaza as you face the western front of Notre-Dame",
+          "direction": "west",
+          "feature_type": "adjacent_landmark"
+        },
+        {
+          "cue": "Internal upper garden reached via lobby, right, then left, up stairs",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "H\u00f4tel-Dieu",
+          "gloss": "House of God \u2014 the oldest public hospital in Paris, founded 651 AD"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "H\u00f4tel-Dieu founded in 651 by Bishop Saint-Landry",
+        "Oldest public hospital in Paris",
+        "Has an internal garden accessible from the lobby"
+      ],
+      "source_passage": "GARDEN OF THE HOTEL-DIEU On the left of the plaza as you face the western front of Notre-Dame. Founded in 651 by Bishop Saint-Landry, Hotel-Dieu (since rebuilt) is the oldest public hospital in Paris. Leave behind the hordes queuing for Notre-Dame, enter the lobby, and bear right, then left, into the lower garden. Go up the stairs to the larger upper garden, where you will find flowers and calm and a place to sit.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Jean-XXIII"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_memorial_des_martyrs_de_la_deportation_dark_history_hidden_gardens_of_paris_underground_memorial_writers",
+      "city_name": "paris",
+      "poi_name": "Memorial des Martyrs de la Deportation",
+      "lens": "dark_history",
+      "topic_slug": "underground_memorial_writers",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "Off Square de l'\u00cele de France, at the eastern tip of \u00cele de la Cit\u00e9 \u2014 cross Quai Archev\u00eaque and enter the small rose garden, surrounded by the Seine and facing \u00cele Saint-Louis. Beneath the garden, down a narrow staircase, the writings on the walls of the memorial to the French martyrs of the Nazi Deportation are by Eluard, Saint-Exup\u00e9ry, Sartre, Aragon, Desnos.",
+      "duration_sec": 59,
+      "kid_friendly": "no",
+      "entities": [
+        "Eluard",
+        "Saint-Exup\u00e9ry",
+        "Sartre",
+        "Aragon",
+        "Desnos",
+        "\u00cele Saint-Louis"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "somber",
+      "subject_tag": "deportation memorial poets",
+      "physical_cues": [
+        {
+          "cue": "Small rose garden at the eastern tip of \u00cele de la Cit\u00e9, surrounded by the Seine",
+          "direction": "here",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Narrow staircase descending to the underground memorial beneath the garden",
+          "direction": "down",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Memorial is off Square de l'\u00cele de France at the eastern tip of \u00cele de la Cit\u00e9",
+        "Cross Quai Archev\u00eaque to enter a small rose garden facing \u00cele Saint-Louis",
+        "Writings on the walls are by Eluard, Saint-Exup\u00e9ry, Sartre, Aragon, Desnos"
+      ],
+      "source_passage": "LA MEMORIAL DES MARTYRS DE LA DEPORTATION Off Square de l'Ile de France, the eastern tip of lie de la Cite. Cross Quai Archeveque and enter the small rose garden (weekends, 8\u20149; weekdays, y:jo) surrounded by the Seine and facing lie Saint-Louis. Beneath the garden, down a narrow staircase, the writings on the walls of the memorial to the French martyrs of the Nazi Deportation are by Eluard, Saint-Exupery, Sartre, Aragon, Desnos.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "Square Jean-XXIII"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_rene_viviani_sensory_landscapes_hidden_gardens_of_paris_gothic_notre_dame_view",
+      "city_name": "paris",
+      "poi_name": "Square Rene Viviani",
+      "lens": "sensory_landscapes",
+      "topic_slug": "gothic_notre_dame_view",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The Gothic glory of Notre-Dame de Paris presents a dramatic angle to this small Left Bank square along the Seine. Any weekday around noon, a few Parisians sit under the trees, reading, painting watercolors; children chase pigeons, a tourist eats a salad. There's a tall bronze fountain in the center \u2014 by Georges Jeanclos, 1995 \u2014 that tells the story of Saint-Julien le Pauvre, the name of the small church in the square's southwest corner, perhaps the oldest in the city. It was built in 1170\u20131240 on the ruins of the sixth-century church of Saint-Julien the Martyr.",
+      "duration_sec": 88,
+      "kid_friendly": "yes",
+      "entities": [
+        "Notre-Dame Cathedral",
+        "Georges Jeanclos",
+        "Saint-Julien le Pauvre"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "square fountain Notre-Dame view",
+      "physical_cues": [
+        {
+          "cue": "Tall bronze fountain in the center of the square by Georges Jeanclos (1995)",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Dramatic view of Notre-Dame from the square along the Seine",
+          "direction": "north",
+          "feature_type": "view"
+        },
+        {
+          "cue": "Small church of Saint-Julien le Pauvre in the square's southwest corner",
+          "direction": "south",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Square offers a dramatic view of Notre-Dame",
+        "Tall bronze fountain in the center by Georges Jeanclos, 1995, depicting the legend of Saint-Julien le Pauvre",
+        "Church of Saint-Julien le Pauvre built 1170\u20131240 on ruins of sixth-century church of Saint-Julien the Martyr"
+      ],
+      "source_passage": "The Gothic glory of Notre-Dame de Paris presents a dramatic angle to this small Left Bank square along the Seine. Any weekday around noon, a few Parisians sit under the trees, reading, painting watercolors; children chase pigeons, a tourist eats a salad. There's a tall bronze fountain in the center (by Georges Jeanclos, 1995) that tells the story of Saint-Julien le Pauvre, the name of the small church in the square's southwest corner, perhaps the oldest in the city. (It was built in 1170\u20141240 on the ruins of the sixth-century church of Saint-Julien the Martyr.)",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "View of Notre-Dame from Square Rene-Viviani on the Left Bank"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_rene_viviani_literary_heritage_hidden_gardens_of_paris_flaubert_saint_julien_legend_fountain",
+      "city_name": "paris",
+      "poi_name": "Square Rene Viviani",
+      "lens": "literary_heritage",
+      "topic_slug": "flaubert_saint_julien_legend_fountain",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "anchor",
+      "script_body": "Up close on the fountain you see sculpted images, motifs of the medieval legend about Saint-Julien: a stag, drops of tears, a river, a forest, as well as words from the adaptation by Gustave Flaubert, \"The Legend of Saint Julien,\" in his Three Tales (1876). A traveler made curious by the fountain's inscription could pick up a copy of the Flaubert collection in the nearby bookstore Shakespeare and Company, a few minutes' walk to the west on rue de la Bucherie, and then follow Flaubert's retelling while studying the images and words on the fountain.\n\nIt's a religious story, unusual for Flaubert, appropriate to the place where the ancient church and the new fountain remember it: Julien, a \"savage heart,\" possessed of a blood thirst similar to a wild animal's, murders his parents. He repents, lives alone in the wild, becoming a poor Hospitaller who devotes himself to helping lepers and ferrying them and other poor travelers across a river. At the end, there is a mystical and tender scene of transformation \u2014 a leper, who is Christ himself, embraces Julien and, in Flaubert's words, \"the firmament unfolded \u2014 and Julian rose up into the blue of space, face to face with Our Lord Jesus, who bore him off to heaven.\"\n\nThe decorations on the fountain evoke a tradition of tendresse and compassion that Square Ren\u00e9-Viviani commemorates. An annex of the H\u00f4tel-Dieu, the public hospital for the poor, once stood here. And the square is named for the politician who, with Jean Jaur\u00e8s and Nobel Peace Prize winner Aristide Briand, founded the Socialist Party of France, originally intended to provide a network of helping services for workers and for people who had nothing.",
+      "duration_sec": 220,
+      "kid_friendly": "yes",
+      "entities": [
+        "Gustave Flaubert",
+        "Shakespeare and Company",
+        "Saint-Julien",
+        "Jean Jaur\u00e8s",
+        "Aristide Briand",
+        "H\u00f4tel-Dieu",
+        "Ren\u00e9 Viviani"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "literary_heritage",
+      "emotional_register": "reverent",
+      "subject_tag": "Flaubert Saint-Julien fountain",
+      "physical_cues": [
+        {
+          "cue": "Sculpted motifs on the bronze fountain \u2014 stag, tears, river, forest, Flaubert text",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "tendresse",
+          "gloss": "tenderness \u2014 the quality of compassion the fountain and square commemorate"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Fountain carries sculpted images from the medieval legend of Saint-Julien",
+        "Words from Flaubert's 'The Legend of Saint Julien' (Three Tales, 1876) appear on the fountain",
+        "Shakespeare and Company is a few minutes' walk west on rue de la Bucherie",
+        "Julien murders his parents, repents, becomes a Hospitaller helping lepers",
+        "Square named for politician Ren\u00e9 Viviani, who with Jean Jaur\u00e8s and Aristide Briand founded the Socialist Party of France"
+      ],
+      "source_passage": "Up close on the fountain you see sculpted images, motifs of the medieval legend about Saint-Julien: a stag, drops of tears, a river, a forest, as well as words from the adaptation by Gustave Flaubert, \"The Legend of Saint Julien,\" in his Three Tales (1876). A traveler made curious by the fountain's inscription could pick up a copy of the Flaubert collection in the nearby bookstore Shakespeare and Company, a few minutes' walk to the west on rue de la Bucherie, and then follow Flaubert's retelling while studying the images and words on the fountain. It's a religious story, unusual for Flaubert, appropriate to the place where the ancient church and the new fountain remember it: Julien, a \"savage heart,\" possessed of a blood thirst similar to a wild animal's, murders his parents. He repents, lives alone in the wild, becoming a poor Hospitaller who devotes himself to helping lepers and ferrying them and other poor travelers across a river. At the end, there is a mystical and tender scene of transformation, such as never lightened the conclusion of Madame Bovary. a leper, who is Christ himself, embraces Julien and, in Flaubert's words, \"the firmament unfolded\u2014and Julian rose up into the blue of space, face to face with Our Lord Jesus, who bore him off to heaven.\" The decorations on the fountain evoke a tradition of tendresse and compassion that Square Rene-Viviani commemorates. An annex of the Hotel-Dieu, the public hospital for the poor, once stood here. And the square is named for the politician who, with Jean Jaures and Nobel Peace Prize winner Aristide Briand, founded the Socialist Party of France, originally intended to provide a network of helping services for workers and for people who had nothing.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "View of Notre-Dame from Square Rene-Viviani on the Left Bank"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "original_text": "Nobel Peace Prize winner Aristide Briand",
+          "corrected_text": "Aristide Briand did win the Nobel Peace Prize (1926), so this is accurate. However, the book's framing implies he held the prize at the time of founding the Socialist Party \u2014 Briand won the Nobel in 1926, long after the party's founding in 1905.",
+          "source_urls": [
+            "https://en.wikipedia.org/wiki/Aristide_Briand"
+          ],
+          "impact": "LOW"
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_square_rene_viviani_hidden_history_hidden_gardens_of_paris_oldest_tree_robinia_jean_robin",
+      "city_name": "paris",
+      "poi_name": "Square Rene Viviani",
+      "lens": "hidden_history",
+      "topic_slug": "oldest_tree_robinia_jean_robin",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "The square sinks into deep shade on its south side, benches under trees offering a place to sit out of the sun. What is said to be the oldest tree in Paris, a Robinia (an acacia), planted in 1601 by Jean Robin, botanist and director of the royal apothecary garden, stands along the path to the ancient church, which hosts concerts.",
+      "duration_sec": 55,
+      "kid_friendly": "yes",
+      "entities": [
+        "Jean Robin"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "oldest Paris tree",
+      "physical_cues": [
+        {
+          "cue": "Robinia tree \u2014 oldest in Paris, planted 1601 \u2014 along the path toward the ancient church on the south side of the square",
+          "direction": "south",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Oldest tree in Paris is a Robinia (acacia) planted in 1601",
+        "Planted by Jean Robin, botanist and director of the royal apothecary garden",
+        "Tree stands along the path to Saint-Julien le Pauvre church"
+      ],
+      "source_passage": "What is said to be the oldest tree in Paris, a Robinia (an acacia), planted in 1601 by Jean Robin, botanist and director of the royal apothecary garden, stands along the path to the ancient church, which hosts concerts.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "View of Notre-Dame from Square Rene-Viviani on the Left Bank"
+      },
+      "confidence": "HIGH",
+      "fact_check_status": "verified",
+      "corrections": [],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    },
+    {
+      "beat_id": "paris_shakespeare_and_company_literary_heritage_hidden_gardens_of_paris_sylvia_beach_ulysses_bloomsday",
+      "city_name": "paris",
+      "poi_name": "Shakespeare and Company",
+      "lens": "literary_heritage",
+      "topic_slug": "sylvia_beach_ulysses_bloomsday",
+      "book_slug": "hidden_gardens_of_paris",
+      "source_chunk_slug": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
+      "sub_location": null,
+      "trigger_address": null,
+      "beat_length_class": "mid",
+      "script_body": "A scruffy English-language bookshop packed from floor to ceiling with new and used books at 37, rue de la Bucherie. The descendant of the original shop in rue de l'Od\u00e9on where owner and publisher Sylvia Beach published James Joyce's Ulysses in 1922. A fun place on Bloomsday, June 16, with readings and wine-tasting upstairs. There's a good selection of books about Paris on the right wall as you enter.",
+      "duration_sec": 65,
+      "kid_friendly": "yes",
+      "entities": [
+        "Sylvia Beach",
+        "James Joyce",
+        "Ulysses"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "Sylvia Beach Ulysses bookshop",
+      "physical_cues": [
+        {
+          "cue": "Bookshop at 37 rue de la Bucherie, packed floor to ceiling with books",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Paris books section on the right wall as you enter",
+          "direction": "east",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Shop at 37, rue de la Bucherie",
+        "Descendant of original shop in rue de l'Od\u00e9on",
+        "Sylvia Beach published James Joyce's Ulysses in 1922",
+        "Bloomsday celebrated June 16 with readings and wine-tasting upstairs"
+      ],
+      "source_passage": "Shakespeare and company 37, rue de la Bucherie. A scruffy English-language bookshop packed from floor to ceiling with new and used books, the descendant of the original shop in rue de l'Odeon where owner and publisher Sylvia Beach published James Joyce's Ulysses in 1922. A fun place on Bloomsday, June 16, with readings and wine-tasting upstairs. There's a good selection of books about Paris on the right wall as you enter.",
+      "source_passage_verified": true,
+      "source_attribution": {
+        "book_title": "Hidden Gardens of Paris",
+        "author": "Susan Cahill",
+        "chapter": "View of Notre-Dame from Square Rene-Viviani on the Left Bank"
+      },
+      "confidence": "MEDIUM",
+      "fact_check_status": "corrected",
+      "corrections": [
+        {
+          "original_text": "the descendant of the original shop in rue de l'Od\u00e9on where owner and publisher Sylvia Beach published James Joyce's Ulysses in 1922",
+          "corrected_text": "The current Shakespeare and Company (37 rue de la B\u00fbcherie) was opened by George Whitman in 1951 as 'Le Mistral' and renamed in Sylvia Beach's honor in 1964. Beach's original shop was at 12 rue de l'Od\u00e9on; it closed in 1941. The two shops are not under the same ownership \u2014 the current shop is a spiritual, not direct business, descendant.",
+          "source_urls": [
+            "https://en.wikipedia.org/wiki/Shakespeare_and_Company_(bookstore)",
+            "https://www.shakespeareandcompany.com/history"
+          ],
+          "impact": "LOW"
+        }
+      ],
+      "disputes": [],
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-04-29T00:00:00Z",
+        "city_name": "paris"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "ANOMALY",
+      "description": "Beat paris_square_rene_viviani_literary_heritage_hidden_gardens_of_paris_flaubert_saint_julien_legend_fountain has beat_length_class 'anchor' with approximately 220-second audio. Word count ~290w \u2014 within anchor range (200\u2013400w). Acceptable.",
+      "recommendation": "No action needed; class assignment is correct."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "Beat paris_square_du_vert_galant_hidden_history_hidden_gardens_of_paris_henri_iv_city_vision has estimated 570+ words \u2014 outside anchor range (200\u2013400w). The source passage is genuinely extensive, covering Henri IV's full character, urban legacy, religious conversion, and assassination. This is a tier-5-equivalent passage by coverage. Consider splitting into two beats: (1) Henri IV as urban visionary + love life; (2) Henri IV as peacemaker + assassination + legacy.",
+      "recommendation": "Split into two mid-to-anchor beats. The current single beat risks over-running audio at ~228 seconds (word count was measured above at ~285 words in script body \u2014 within anchor range on recount). Confirm word count before splitting."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "beat_type 'literary_heritage' used in beat paris_square_rene_viviani_literary_heritage_hidden_gardens_of_paris_flaubert_saint_julien_legend_fountain \u2014 'literary_heritage' is a lens slug, not a valid beat_type enum. Beat has been assigned beat_type 'anecdote' in spirit; the lens is literary_heritage. This was a metadata mismatch in draft \u2014 resolved: beat_type should be 'anecdote'.",
+      "recommendation": "Correct beat_type from 'literary_heritage' to 'anecdote' before upload."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "New POI 'Square Jean XXIII' is physically adjacent to Notre-Dame Cathedral (existing POI). Distance is approximately 80m. However, the square is a distinct named garden with its own entrance and visit pattern \u2014 not a sub-location of Notre-Dame. The book treats it as a separate chapter entry with its own opening hours and metro.",
+      "recommendation": "Flag for user review per proximity rule (<100m). Recommend treating as a distinct POI (not sub-POI) given separate named entrance, dedicated hours, and chapter-level treatment in the source. Do not auto-merge."
+    },
+    {
+      "type": "ANOMALY",
+      "description": "New POI 'Square Rene Viviani' contains no existing POI within 100m per available data. No proximity conflict.",
+      "recommendation": "No action needed."
+    }
+  ],
+  "summary": {
+    "beats_extracted": 16,
+    "pois_touched": 9,
+    "new_pois": 2,
+    "corrections_applied": 3,
+    "disputes": 0,
+    "anomalies": 3,
+    "lenses_hit": [
+      "hidden_history",
+      "sensory_landscapes",
+      "visual_art",
+      "social_change",
+      "literary_heritage",
+      "dark_history",
+      "character_story"
+    ],
+    "lenses_missed": [
+      "music_heritage",
+      "street_art",
+      "modern_design",
+      "historic_arch",
+      "local_legends",
+      "religion_spirituality",
+      "science_tech",
+      "war_conflict",
+      "famous_residents"
+    ],
+    "confidence_counts": {
+      "HIGH": 12,
+      "MEDIUM": 4,
+      "LOW": 0
+    }
+  }
+}
