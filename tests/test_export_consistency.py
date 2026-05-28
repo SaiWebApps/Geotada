@@ -13,6 +13,7 @@ This test runs in <100ms with no DB and catches both:
   - Missing fields (poi-raw says 4, export omits the field entirely)
   - Coordinate drift between poi-raw and exports
 """
+
 from __future__ import annotations
 
 import json
@@ -41,10 +42,7 @@ COORD_TOLERANCE = 0.001
 def _city_dirs() -> list[Path]:
     if not DATA_ROOT.exists():
         return []
-    return [
-        d for d in sorted(DATA_ROOT.iterdir())
-        if d.is_dir() and (d / "poi-raw.json").exists()
-    ]
+    return [d for d in sorted(DATA_ROOT.iterdir()) if d.is_dir() and (d / "poi-raw.json").exists()]
 
 
 @pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
@@ -121,8 +119,12 @@ def test_no_tier_one_for_known_top_landmarks() -> None:
     overwrites of canonical data."""
     must_be_high_tier = {
         "paris": [
-            "Eiffel Tower", "Notre-Dame Cathedral", "Louvre Museum",
-            "Arc de Triomphe", "Sacre-Coeur Basilica", "Luxembourg Gardens",
+            "Eiffel Tower",
+            "Notre-Dame Cathedral",
+            "Louvre Museum",
+            "Arc de Triomphe",
+            "Sacre-Coeur Basilica",
+            "Luxembourg Gardens",
             "Champs-Elysees",
         ],
     }

@@ -248,9 +248,10 @@ temp/
 # Project Specific
 # ====================
 
-# Claude Code working state (keep shared commands, ignore the rest)
+# Claude Code working state (keep shared commands and learnings, ignore the rest)
 .claude/*
 !.claude/commands/
+!.claude/LEARNINGS.md
 
 # Keep .env.example and .env.test.example but ignore .env and .env.test
 !.env.example

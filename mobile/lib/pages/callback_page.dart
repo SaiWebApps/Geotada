@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/lens_service.dart';
+import 'package:ondoway/services/profile_service.dart';
 
 class CallbackPage extends StatefulWidget {
   final String token;
@@ -18,7 +20,7 @@ class _CallbackPageState extends State<CallbackPage> {
   @override
   void initState() {
     super.initState();
-    _verifyToken();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _verifyToken());
   }
 
   Future<void> _verifyToken() async {
@@ -28,14 +30,28 @@ class _CallbackPageState extends State<CallbackPage> {
     }
 
     try {
-      await context.read<AuthService>().verifyMagicLink(widget.token);
-      if (mounted) {
-        context.go('/home');
-      }
+      final authService = context.read<AuthService>();
+      await authService.verifyMagicLink(widget.token);
+
+      if (!mounted) return;
+
+      final lensService = context.read<LensService>();
+      final profileService = context.read<ProfileService>();
+
+      await Future.wait([
+        if (!lensService.isLoaded) lensService.fetchLenses(),
+        profileService.fetchProfile(
+          authService.userId!,
+          authService.accessToken!,
+        ),
+      ]);
+
+      if (!mounted) return;
+      context.go(profileService.isFirstTime ? '/onboarding' : '/explore');
     } on AuthException catch (e) {
-      if (mounted) {
-        setState(() => _error = e.message);
-      }
+      if (mounted) setState(() => _error = e.message);
+    } catch (e) {
+      if (mounted) setState(() => _error = 'Sign-in failed: $e');
     }
   }
 

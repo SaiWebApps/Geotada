@@ -39,7 +39,7 @@ def _record_to_edge(record) -> dict[str, Any]:
     """Convert a Neo4j record to an edge dict."""
     props = serialize_neo4j_props(dict(record["props"])) if record["props"] else {}
     return {
-        "id": record["id"],
+        "id": record["id"] or "",
         "type": record["type"],
         "source_id": record["source_id"],
         "target_id": record["target_id"],
@@ -47,19 +47,29 @@ def _record_to_edge(record) -> dict[str, Any]:
     }
 
 
-def list_edges(session: Session, rel_type: str, skip: int, limit: int) -> tuple[list[dict], int]:
+def list_edges(
+    session: Session, rel_type: str, skip: int, limit: int, source_id: str | None = None
+) -> tuple[list[dict], int]:
     """Return paginated edges of a type and total count."""
     _validate_rel_type(rel_type)
-    count_result = session.run(f"MATCH ()-[r:{rel_type}]->() RETURN count(r) AS total").single()
+
+    where = "WHERE a.id = $source_id" if source_id else ""
+    params: dict[str, Any] = {"skip": skip, "limit": limit}
+    if source_id:
+        params["source_id"] = source_id
+
+    count_result = session.run(
+        f"MATCH (a)-[r:{rel_type}]->() {where} RETURN count(r) AS total",
+        **params,
+    ).single()
     total = count_result["total"]
 
     result = session.run(
-        f"MATCH (a)-[r:{rel_type}]->(b) "
+        f"MATCH (a)-[r:{rel_type}]->(b) {where} "
         f"RETURN r.id AS id, type(r) AS type, "
         f"a.id AS source_id, b.id AS target_id, properties(r) AS props "
         f"ORDER BY r.id SKIP $skip LIMIT $limit",
-        skip=skip,
-        limit=limit,
+        **params,
     )
     edges = [_record_to_edge(record) for record in result]
     return edges, total
@@ -105,7 +115,7 @@ def create_edge(
     for key, val in properties.items():
         params[key] = val
 
-    use_merge = rel_type in ("HAS_BEAT", "TAGGED_WITH", "WITHIN")
+    use_merge = rel_type in ("HAS_BEAT", "TAGGED_WITH", "WITHIN", "HAS_PROFILE", "PREFERS_LENS")
 
     if use_merge:
         set_parts = [

@@ -24,7 +24,8 @@ SET child.id = coalesce(child.id, randomUUID()),
     child.is_parent = false
 WITH child
 MATCH (parent:Lens {name: $parent_name})
-MERGE (parent)-[:IS_PARENT_OF]->(child)
+MERGE (parent)-[r:IS_PARENT_OF]->(child)
+SET r.id = coalesce(r.id, randomUUID())
 """
 
 

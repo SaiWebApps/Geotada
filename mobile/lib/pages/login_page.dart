@@ -1,8 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/lens_service.dart';
+import 'package:ondoway/services/profile_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -139,6 +143,12 @@ class _LoginPageState extends State<LoginPage> {
             icon: const Icon(Icons.g_mobiledata, size: 24),
             label: const Text('Sign in with Google'),
           ),
+          if (defaultTargetPlatform == TargetPlatform.iOS) ...[
+            const SizedBox(height: 12),
+            SignInWithAppleButton(
+              onPressed: authService.isLoading ? () {} : () => _handleAppleSignIn(),
+            ),
+          ],
         ],
       ),
     );
@@ -190,11 +200,57 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
       await context.read<AuthService>().loginWithGoogle(idToken);
-      if (mounted) context.go('/home');
+
+      if (!mounted) return;
+      final authService = context.read<AuthService>();
+      final lensService = context.read<LensService>();
+      final profileService = context.read<ProfileService>();
+
+      await Future.wait([
+        if (!lensService.isLoaded) lensService.fetchLenses(),
+        profileService.fetchProfile(
+          authService.userId!,
+          authService.accessToken!,
+        ),
+      ]);
+
+      if (mounted) {
+        context.go(profileService.isFirstTime ? '/onboarding' : '/explore');
+      }
     } on AuthException catch (e) {
       setState(() => _errorMessage = e.message);
     } catch (e) {
       setState(() => _errorMessage = 'Google sign-in failed: $e');
+    }
+  }
+
+  Future<void> _handleAppleSignIn() async {
+    setState(() => _errorMessage = null);
+
+    try {
+      if (!mounted) return;
+      await context.read<AuthService>().loginWithApple();
+
+      if (!mounted) return;
+      final authService = context.read<AuthService>();
+      final lensService = context.read<LensService>();
+      final profileService = context.read<ProfileService>();
+
+      await Future.wait([
+        if (!lensService.isLoaded) lensService.fetchLenses(),
+        profileService.fetchProfile(
+          authService.userId!,
+          authService.accessToken!,
+        ),
+      ]);
+
+      if (mounted) {
+        context.go(profileService.isFirstTime ? '/onboarding' : '/explore');
+      }
+    } on AuthException catch (e) {
+      setState(() => _errorMessage = e.message);
+    } catch (e) {
+      setState(() => _errorMessage = 'Apple sign-in failed: $e');
     }
   }
 }

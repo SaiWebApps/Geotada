@@ -37,3 +37,7 @@ services:
         value: local
       - key: AUDIO_STORAGE_PATH
         value: audio_store
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false

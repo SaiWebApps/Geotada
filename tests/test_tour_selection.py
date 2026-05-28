@@ -19,7 +19,6 @@ from src.tour.selection import (
     select_route,
 )
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -99,7 +98,7 @@ def _density_fillers(
 
     Phase 6 density gate requires ≥4 anchor candidates with rich beats
     inside a tight cluster for GREEN. Some pre-Phase-6 selection tests
-    used 1–3 POIs in their fixtures and now trip the gate. Adding these
+    used 1-3 POIs in their fixtures and now trip the gate. Adding these
     fillers keeps each test's assertion intact (they cluster colocated
     near start, so they don't affect spine, envelope, or distance
     behaviour) while letting the gate clear.
@@ -159,9 +158,7 @@ def test_envelope_excludes_walk_by_only():
     walk_by = _poi("wb", role="walk_by_only", lat=48.8556, lng=2.3658)
     stop = _poi("stop", lat=48.8556, lng=2.3660)
     snap = _snap([walk_by, stop])
-    route = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
-    )
+    route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     assert "wb" not in [p.id for p in route.pois]
 
 
@@ -170,9 +167,7 @@ def test_envelope_excludes_tier_1_2_anchors():
     t1 = _poi("t1", tier=1, lat=48.8556, lng=2.3658)
     t5 = _poi("t5", tier=5, lat=48.8556, lng=2.3660)
     snap = _snap([t1, t5, *_density_fillers(PDV)])
-    route = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
-    )
+    route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     assert "t1" not in [p.id for p in route.pois]
     assert "t5" in [p.id for p in route.pois]
 
@@ -325,10 +320,7 @@ def test_select_route_round_trip_returns_to_origin():
 
 def test_select_route_respects_walk_budget():
     # Too many anchors with non-negligible spread → must still respect budget.
-    pois = [
-        _poi(f"p{i}", lat=48.8550 + i * 0.0010, lng=2.3650 + i * 0.0010)
-        for i in range(20)
-    ]
+    pois = [_poi(f"p{i}", lat=48.8550 + i * 0.0010, lng=2.3650 + i * 0.0010) for i in range(20)]
     snap = _snap(pois)
     inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
     route = select_route(inp, snap)
@@ -349,17 +341,12 @@ def test_select_route_respects_hard_anchor_cap():
     ]
     snap = _snap(pois)
     # Long duration → max_anchors theoretically bigger than HARD_ANCHOR_CAP.
-    route = select_route(
-        TourInput(start=PDV, duration_min=400, city_slug="paris"), snap
-    )
+    route = select_route(TourInput(start=PDV, duration_min=400, city_slug="paris"), snap)
     assert len(route.pois) <= HARD_ANCHOR_CAP
 
 
 def test_select_route_deterministic_under_input_shuffle():
-    base = [
-        _poi(f"p{i}", lat=48.8550 + i * 0.0001, lng=2.3650 + i * 0.0001)
-        for i in range(8)
-    ]
+    base = [_poi(f"p{i}", lat=48.8550 + i * 0.0001, lng=2.3650 + i * 0.0001) for i in range(8)]
 
     import random
 
@@ -411,9 +398,7 @@ def test_select_route_prefers_spine_area():
         [in_marais, out_other, *fillers],
         area_types={"Le Marais": "neighborhood", "Other Hood": "neighborhood"},
     )
-    route = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
-    )
+    route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     assert route.spine_area == "Le Marais"
     ids = [p.id for p in route.pois]
     # Spine POI must be selected (bias is a scoring multiplier, not a hard
@@ -424,9 +409,9 @@ def test_select_route_prefers_spine_area():
 def test_yellow_density_attaches_assessment_to_route():
     """Phase 6: a YELLOW assessment must surface as route.tourability."""
     # 5 colocated tier-5 anchors with thin per-beat audio so fill lands
-    # in the YELLOW band (0.5–1.0). 5 beats × 5 POIs × 80s = 2000s;
+    # in the YELLOW band (0.5-1.0). 5 beats x 5 POIs x 80s = 2000s;
     # target 60min = 1793s; fill ≈ 1.12 — too high for YELLOW. Drop to
-    # 60s per beat: 5 × 5 × 60 = 1500s; fill ≈ 0.84 → YELLOW by-fill.
+    # 60s per beat: 5 x 5 x 60 = 1500s; fill ≈ 0.84 → YELLOW by-fill.
     pois = [
         _poi(
             f"y{i}",
@@ -473,9 +458,7 @@ def test_zero_beat_poi_excluded_from_anchor_pool():
         area_types={"Le Marais": "neighborhood"},
         beats_by_poi={"empty": []},  # explicit zero
     )
-    route = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris"), snap
-    )
+    route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     ids = {p.id for p in route.pois}
     assert "rich" in ids
     assert "empty" not in ids, (
@@ -485,17 +468,17 @@ def test_zero_beat_poi_excluded_from_anchor_pool():
 
 
 def test_select_route_empty_when_no_candidates_in_envelope():
-    """Phase 6: an empty reachable envelope now raises TourabilityRefused.
+    """Phase 6: an empty reachable envelope now raises TourabilityRefusedError.
 
     Pre-Phase-6 this returned an empty Route. The density gate runs
     before the envelope filter and refuses (RED) when there's no corpus
     to support a tour at all.
     """
-    from src.tour.density import TourabilityRefused
+    from src.tour.density import TourabilityRefusedError
 
     far = _poi("far", lat=49.5, lng=3.0)  # well outside Paris
     snap = _snap([far])
-    with pytest.raises(TourabilityRefused) as excinfo:
+    with pytest.raises(TourabilityRefusedError) as excinfo:
         select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     assert excinfo.value.assessment.status == "RED"
     assert excinfo.value.assessment.reachable_poi_count == 0
@@ -540,9 +523,9 @@ def test_oneway_endpoint_pull_reaches_far_envelope():
         )
         for i in range(1, 4)
     ]
-    # Far-envelope anchor — east of start, beyond 0.5 × radius.
+    # Far-envelope anchor — east of start, beyond 0.5 x radius.
     far_lat = start[0] - 0.0030  # ~330m south
-    far_lng = start[1] + 0.0140  # ~1km east, well past 0.5 × radius (~570m)
+    far_lng = start[1] + 0.0140  # ~1km east, well past 0.5 x radius (~570m)
     far_anchor = _poi(
         "far",
         tier=5,
@@ -571,12 +554,20 @@ def test_endpoint_pull_does_not_apply_to_round_trip():
     """Round-trip routes must not append a far-envelope stop at the end."""
     start = (48.85675, 2.341033)
     near = _poi(
-        "near", tier=5, lat=start[0], lng=start[1] + 0.0002,
-        areas=("Île de la Cité",), beat_count=5,
+        "near",
+        tier=5,
+        lat=start[0],
+        lng=start[1] + 0.0002,
+        areas=("Île de la Cité",),
+        beat_count=5,
     )
     far = _poi(
-        "far", tier=5, lat=start[0], lng=start[1] + 0.0050,
-        areas=("Île de la Cité",), beat_count=5,
+        "far",
+        tier=5,
+        lat=start[0],
+        lng=start[1] + 0.0050,
+        areas=("Île de la Cité",),
+        beat_count=5,
     )
     fillers = _density_fillers(start)
     snap = _snap([near, far, *fillers], area_types={"Île de la Cité": "island"})
@@ -594,13 +585,21 @@ def test_endpoint_pull_respects_walk_budget():
     start = (48.85675, 2.341033)
     # Make the far candidate so distant that adding it busts the budget.
     near = _poi(
-        "near", tier=5, lat=start[0], lng=start[1] + 0.0001,
-        areas=("Île de la Cité",), beat_count=5,
+        "near",
+        tier=5,
+        lat=start[0],
+        lng=start[1] + 0.0001,
+        areas=("Île de la Cité",),
+        beat_count=5,
     )
     too_far_lng = start[1] + 0.020  # ~1.5km — ringed against a 60-min budget
     too_far = _poi(
-        "too-far", tier=5, lat=start[0], lng=too_far_lng,
-        areas=("Île de la Cité",), beat_count=5,
+        "too-far",
+        tier=5,
+        lat=start[0],
+        lng=too_far_lng,
+        areas=("Île de la Cité",),
+        beat_count=5,
     )
     snap = _snap([near, too_far], area_types={"Île de la Cité": "island"})
     route = select_route(
@@ -647,11 +646,11 @@ def test_spine_tiebreak_prefers_neighborhood_over_tied_district():
     assert spine == "Le Marais"
 
 
-# Phase 2.6 calibration — 2× district dominance rule (Note 1).
+# Phase 2.6 calibration — 2x district dominance rule (Note 1).
 
 
 def test_spine_prefers_island_over_district_below_2x():
-    """Island B at 1.875× ratio (below 2× threshold) → smaller Area wins."""
+    """Island B at 1.875x ratio (below 2x threshold) → smaller Area wins."""
     # 7 POIs in district A, ∑tier = 30 (5+5+5+5+4+3+3).
     district_pois = [
         _poi(f"d{i}", tier=t, lat=48.857, lng=2.341, areas=("District A",))
@@ -667,27 +666,25 @@ def test_spine_prefers_island_over_district_below_2x():
         area_types={"District A": "district", "Island B": "island"},
     )
     spine = pick_spine_area(48.857, 2.341, district_pois + island_pois, snap)
-    assert spine == "Island B", f"ratio 30/16=1.875 < 2× → island should win, got {spine}"
+    assert spine == "Island B", f"ratio 30/16=1.875 < 2x → island should win, got {spine}"
 
 
 def test_spine_picks_district_when_2x_dominant():
-    """District A at 3× ratio (above 2× threshold) → district wins."""
+    """District A at 3x ratio (above 2x threshold) → district wins."""
     # 12 POIs in district A, ∑tier = 60.
     district_pois = [
-        _poi(f"d{i}", tier=5, lat=48.857, lng=2.341, areas=("District A",))
-        for i in range(12)
+        _poi(f"d{i}", tier=5, lat=48.857, lng=2.341, areas=("District A",)) for i in range(12)
     ]
     # 4 POIs in island B, ∑tier = 20.
     island_pois = [
-        _poi(f"i{i}", tier=5, lat=48.857, lng=2.341, areas=("Island B",))
-        for i in range(4)
+        _poi(f"i{i}", tier=5, lat=48.857, lng=2.341, areas=("Island B",)) for i in range(4)
     ]
     snap = _snap(
         district_pois + island_pois,
         area_types={"District A": "district", "Island B": "island"},
     )
     spine = pick_spine_area(48.857, 2.341, district_pois + island_pois, snap)
-    assert spine == "District A", f"ratio 60/20=3× ≥ 2× → district wins, got {spine}"
+    assert spine == "District A", f"ratio 60/20=3x ≥ 2x → district wins, got {spine}"
 
 
 def test_spine_district_dominance_picks_strongest_specific_when_multiple():
@@ -786,13 +783,25 @@ def test_phase7_fill_pass_adds_anchors_when_below_floor():
     """
     start = (48.85675, 2.341033)
     main = [
-        _poi(f"main-{i}", tier=5, lat=start[0] + 0.0001 * i,
-             lng=start[1] + 0.0002 * i, areas=("Le Marais",), beat_count=8)
+        _poi(
+            f"main-{i}",
+            tier=5,
+            lat=start[0] + 0.0001 * i,
+            lng=start[1] + 0.0002 * i,
+            areas=("Le Marais",),
+            beat_count=8,
+        )
         for i in range(3)
     ]
     fill_candidates = [
-        _poi(f"fill-{i}", tier=3, lat=start[0] + 0.0008 * (i + 1),
-             lng=start[1] + 0.0010 * (i + 1), areas=("Le Marais",), beat_count=4)
+        _poi(
+            f"fill-{i}",
+            tier=3,
+            lat=start[0] + 0.0008 * (i + 1),
+            lng=start[1] + 0.0010 * (i + 1),
+            areas=("Le Marais",),
+            beat_count=4,
+        )
         for i in range(6)
     ]
     snap = _snap(main + fill_candidates, area_types={"Le Marais": "neighborhood"})
@@ -802,8 +811,7 @@ def test_phase7_fill_pass_adds_anchors_when_below_floor():
     ids = [p.id for p in route.pois]
 
     assert any(i.startswith("fill-") for i in ids), (
-        f"Fill pass should have pulled in at least one tier-3 candidate; "
-        f"got POIs: {ids}"
+        f"Fill pass should have pulled in at least one tier-3 candidate; got POIs: {ids}"
     )
 
 
@@ -812,8 +820,14 @@ def test_phase7_fill_pass_does_not_run_when_already_above_floor():
     start = (48.85675, 2.341033)
     # 9 dense tier-5 anchors with rich beats — greedy will satisfy audio floor.
     pois = [
-        _poi(f"rich-{i}", tier=5, lat=start[0] + 0.0001 * i,
-             lng=start[1] + 0.0001 * i, areas=("Le Marais",), beat_count=12)
+        _poi(
+            f"rich-{i}",
+            tier=5,
+            lat=start[0] + 0.0001 * i,
+            lng=start[1] + 0.0001 * i,
+            areas=("Le Marais",),
+            beat_count=12,
+        )
         for i in range(9)
     ]
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
@@ -830,8 +844,14 @@ def test_phase7_fill_pass_respects_hard_anchor_cap():
     start = (48.85675, 2.341033)
     # A long ladder of 30 cheap-to-insert near-start tier-3 candidates.
     pois = [
-        _poi(f"l-{i}", tier=3, lat=start[0] + 0.00005 * i,
-             lng=start[1] + 0.00010 * i, areas=("Le Marais",), beat_count=4)
+        _poi(
+            f"l-{i}",
+            tier=3,
+            lat=start[0] + 0.00005 * i,
+            lng=start[1] + 0.00010 * i,
+            areas=("Le Marais",),
+            beat_count=4,
+        )
         for i in range(30)
     ]
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
@@ -841,21 +861,33 @@ def test_phase7_fill_pass_respects_hard_anchor_cap():
 
 
 def test_phase7_fill_pass_respects_walk_budget_cap():
-    """Fill pass clips at FILL_PASS_WALK_BUDGET_FRAC × walk_budget."""
+    """Fill pass clips at FILL_PASS_WALK_BUDGET_FRAC x walk_budget."""
     from src.tour.routing import walk_budget_seconds
     from src.tour.selection import FILL_PASS_WALK_BUDGET_FRAC
 
     start = (48.85675, 2.341033)
     # Three near anchors + several far candidates the fill pass can't fit.
     near = [
-        _poi(f"n-{i}", tier=5, lat=start[0] + 0.0001 * i,
-             lng=start[1] + 0.0001 * i, areas=("Le Marais",), beat_count=8)
+        _poi(
+            f"n-{i}",
+            tier=5,
+            lat=start[0] + 0.0001 * i,
+            lng=start[1] + 0.0001 * i,
+            areas=("Le Marais",),
+            beat_count=8,
+        )
         for i in range(3)
     ]
     # Each "far" candidate is ~1km from origin, so any insertion costs ≥ 14 min.
     far = [
-        _poi(f"f-{i}", tier=3, lat=start[0] + 0.005 + 0.0005 * i,
-             lng=start[1] + 0.010 + 0.0005 * i, areas=("Le Marais",), beat_count=2)
+        _poi(
+            f"f-{i}",
+            tier=3,
+            lat=start[0] + 0.005 + 0.0005 * i,
+            lng=start[1] + 0.010 + 0.0005 * i,
+            areas=("Le Marais",),
+            beat_count=2,
+        )
         for i in range(8)
     ]
     snap = _snap(near + far, area_types={"Le Marais": "neighborhood"})
@@ -874,6 +906,7 @@ def test_phase7_fill_pass_concorde_smoke_real_corpus():
     add at least one anchor when the route is below the audio floor.
     """
     from pathlib import Path
+
     from dotenv import dotenv_values
 
     pytest.importorskip("neo4j")
@@ -894,7 +927,9 @@ def test_phase7_fill_pass_concorde_smoke_real_corpus():
     except Exception:
         pytest.skip("production Neo4j unreachable")
     try:
-        from src.tour.selection import load_paris_corpus, select_route as live_select_route
+        from src.tour.selection import load_paris_corpus
+        from src.tour.selection import select_route as live_select_route
+
         snapshot = load_paris_corpus(driver, city_slug="paris")
     finally:
         driver.close()

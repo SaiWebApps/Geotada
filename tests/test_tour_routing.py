@@ -22,7 +22,6 @@ from src.tour.routing import (
     walk_budget_seconds,
 )
 
-
 # ---------------------------------------------------------------------------
 # Haversine
 # ---------------------------------------------------------------------------
@@ -64,13 +63,13 @@ def test_pace_corrected_negative_clamps_to_zero():
 
 
 def test_pace_corrected_1km_haversine():
-    # 1000m × 1.35 = 1350m at 3 km/h (50 m/min) → 27 min = 1620s.
+    # 1000m x 1.35 = 1350m at 3 km/h (50 m/min) → 27 min = 1620s.
     secs = pace_corrected_walk_seconds(1000)
     assert secs == 1620
 
 
 def test_pace_corrected_500m_haversine():
-    # 500m × 1.35 = 675m at 50 m/min → 13.5 min = 810s.
+    # 500m x 1.35 = 675m at 50 m/min → 13.5 min = 810s.
     assert pace_corrected_walk_seconds(500) == 810
 
 
@@ -87,17 +86,17 @@ def test_pace_constants_lock():
 
 
 def test_err_short_60min():
-    # 60 × 0.83 = 49.8 min × 60 = 2988s.
+    # 60 x 0.83 = 49.8 min x 60 = 2988s.
     assert err_short_total_seconds(60) == 2988
 
 
 def test_walk_budget_60min():
-    # 60 × 0.83 × 0.40 × 60 = 1195.2s → 1195.
+    # 60 x 0.83 x 0.40 x 60 = 1195.2s → 1195.
     assert walk_budget_seconds(60) == 1195
 
 
 def test_audio_budget_60min():
-    # 60 × 0.83 × 0.60 × 60 = 1792.8s → 1793.
+    # 60 x 0.83 x 0.60 x 60 = 1792.8s → 1793.
     assert target_audio_seconds(60) == 1793
 
 
@@ -108,7 +107,7 @@ def test_envelope_round_trip_is_half_of_one_way():
 
 
 def test_envelope_60min_one_way_paris():
-    # walk_min ≈ 19.92, ×3 km/h / 1.35 → ~738m.
+    # walk_min ≈ 19.92, x3 km/h / 1.35 → ~738m.
     r = envelope_radius_m(60, round_trip=False)
     assert 730 < r < 745
 

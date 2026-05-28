@@ -9,20 +9,15 @@ from __future__ import annotations
 
 import math
 
-import pytest
-
-from src.tour.contract import BeatRef, POI, TourInput
+from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.density import (
-    ANCHOR_CANDIDATE_BEAT_COUNT_MIN,
-    ANCHOR_CANDIDATE_TIER_MIN,
     GREEN_FILL_RATIO_MIN,
-    TourabilityAssessment,
-    TourabilityRefused,
     YELLOW_FILL_RATIO_MIN,
+    TourabilityAssessment,
+    TourabilityRefusedError,
     assess,
 )
-from src.tour.routing import envelope_radius_m, haversine_m
-
+from src.tour.routing import envelope_radius_m
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -87,19 +82,19 @@ PANTHEON = (48.84622, 2.34604)
 
 
 def test_walk_radius_matches_canonical_formula():
-    """walk_radius = (duration × 0.83 × 0.4 × 3000 / 1.35) / 60, halved if round-trip."""
-    # 60-min one-way: 60 × 0.83 × 0.4 × 3000 / 1.35 / 60 = 738.5m
+    """walk_radius = (duration x 0.83 x 0.4 x 3000 / 1.35) / 60, halved if round-trip."""
+    # 60-min one-way: 60 x 0.83 x 0.4 x 3000 / 1.35 / 60 = 738.5m
     expected_one_way = (60 * 0.83 * 0.4 * 3000 / 1.35) / 60
     assert math.isclose(envelope_radius_m(60, round_trip=False), expected_one_way, rel_tol=1e-6)
     assert math.isclose(envelope_radius_m(60, round_trip=True), expected_one_way / 2, rel_tol=1e-6)
 
 
 def test_target_audio_matches_canonical_formula():
-    """target_audio_s = duration × 0.83 × 0.6 × 60."""
+    """target_audio_s = duration x 0.83 x 0.6 x 60."""
     pois = [_poi("p", lat=PDV[0], lng=PDV[1])]
     beats = {"p": (_beat("b1", "p"),)}
     a = assess(_input(PDV, 60), pois, beats)
-    expected = int(round(60 * 0.83 * 0.6 * 60))
+    expected = round(60 * 0.83 * 0.6 * 60)
     assert a.target_audio_seconds == expected
 
 
@@ -111,15 +106,14 @@ def test_target_audio_matches_canonical_formula():
 def test_green_when_capacity_exceeds_target_with_4_anchors_compact():
     """Synthetic GREEN: 4 colocated tier-5 anchors, capacity > target."""
     pois = [
-        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=10)
-        for i in range(4)
+        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=10) for i in range(4)
     ]
     beats = {
         f"p{i}": tuple(_beat(f"b{i}_{j}", f"p{i}", est_spoken_seconds=200) for j in range(10))
         for i in range(4)
     }
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
-    # 40 beats × 200s = 8000s. target = 1793s. fill = 4.46.
+    # 40 beats x 200s = 8000s. target = 1793s. fill = 4.46.
     assert a.fill_ratio >= GREEN_FILL_RATIO_MIN
     assert a.anchor_candidate_count >= 4
     assert a.cluster_compactness < 0.6
@@ -175,15 +169,14 @@ def test_yellow_when_fill_in_yellow_band():
     # 5 colocated anchors, but each beat is short so capacity falls into [0.5, 1.0) target band.
     # target for 60min = 1793s. Aim for ~1200s capacity → fill = 0.67.
     pois = [
-        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.00005 * i, lng=PDV[1], beat_count=3)
-        for i in range(5)
+        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.00005 * i, lng=PDV[1], beat_count=3) for i in range(5)
     ]
     beats = {
         f"p{i}": tuple(_beat(f"b{i}_{j}", f"p{i}", est_spoken_seconds=80) for j in range(3))
         for i in range(5)
     }
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
-    # 15 beats × 80s = 1200s; target = 1793s; fill = 0.67.
+    # 15 beats x 80s = 1200s; target = 1793s; fill = 0.67.
     assert YELLOW_FILL_RATIO_MIN <= a.fill_ratio < GREEN_FILL_RATIO_MIN
     assert a.status == "YELLOW"
 
@@ -193,7 +186,7 @@ def test_yellow_attaches_max_supportable_duration():
     pois = [_poi("p", tier=5, lat=PDV[0], lng=PDV[1], beat_count=5)]
     beats = {"p": tuple(_beat(f"b{j}", "p", est_spoken_seconds=80) for j in range(5))}
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
-    # capacity = 400s; max_supportable = 400 / (0.83×0.6×60) = 400/29.88 ≈ 13 min
+    # capacity = 400s; max_supportable = 400 / (0.83x0.6x60) = 400/29.88 ≈ 13 min
     assert a.max_supportable_duration_min is not None
     assert a.max_supportable_duration_min == int(400 / (0.83 * 0.6 * 60))
 
@@ -245,7 +238,9 @@ def test_round_trip_yellow_offers_one_way_alternative():
             _beat("n1", "near", est_spoken_seconds=60),
             _beat("n2", "near", est_spoken_seconds=60),
         ),
-        "Far Anchor": tuple(_beat(f"f{i}", "Far Anchor", est_spoken_seconds=200) for i in range(20)),
+        "Far Anchor": tuple(
+            _beat(f"f{i}", "Far Anchor", est_spoken_seconds=200) for i in range(20)
+        ),
     }
     a = assess(_input(PDV, 60, round_trip=True), [near, far_anchor], beats)
     # Round-trip envelope of 369m drops "Far Anchor" (590m). near is only 2 beats.
@@ -261,9 +256,7 @@ def test_round_trip_yellow_offers_one_way_alternative():
 
 def test_walk_by_only_pois_excluded_from_density():
     """walk_by_only POIs aren't anchor candidates, even with rich beats."""
-    pois = [
-        _poi("wb", tier=5, role="walk_by_only", lat=PDV[0], lng=PDV[1], beat_count=10)
-    ]
+    pois = [_poi("wb", tier=5, role="walk_by_only", lat=PDV[0], lng=PDV[1], beat_count=10)]
     beats = {"wb": tuple(_beat(f"b{i}", "wb", est_spoken_seconds=200) for i in range(10))}
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
     assert a.reachable_poi_count == 0
@@ -294,12 +287,10 @@ def test_word_count_fallback_when_est_spoken_seconds_missing():
     """Beats without est_spoken_seconds use word_count / 2.5."""
     pois = [_poi("p", tier=5, lat=PDV[0], lng=PDV[1], beat_count=4)]
     beats = {
-        "p": tuple(
-            _beat(f"b{j}", "p", est_spoken_seconds=0, word_count=250) for j in range(4)
-        )
+        "p": tuple(_beat(f"b{j}", "p", est_spoken_seconds=0, word_count=250) for j in range(4))
     }
     a = assess(_input(PDV, 60, round_trip=False), pois, beats)
-    # 250/2.5 = 100s per beat × 4 beats = 400s
+    # 250/2.5 = 100s per beat x 4 beats = 400s
     assert a.audio_capacity_seconds == 400
 
 
@@ -319,7 +310,7 @@ def test_compactness_zero_when_one_anchor():
 
 def test_compactness_close_to_one_when_anchors_at_envelope_edge():
     """Anchors at opposite envelope edges → high compactness."""
-    radius = envelope_radius_m(60, round_trip=False)
+    envelope_radius_m(60, round_trip=False)
     # Two anchors on opposite sides of the envelope (~radius apart).
     # 4 anchor candidates required for evaluation; place 2 east, 2 west.
     pois = [
@@ -386,7 +377,7 @@ def test_le_marais_dense_centroid_green():
 
 
 # ---------------------------------------------------------------------------
-# TourabilityRefused
+# TourabilityRefusedError
 # ---------------------------------------------------------------------------
 
 
@@ -399,15 +390,14 @@ def test_low_fill_with_tight_anchors_is_red_not_yellow():
     floor on the anchor-disjunct closes the loophole.
     """
     pois = [
-        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=3)
-        for i in range(4)
+        _poi(f"p{i}", tier=5, lat=PDV[0] + 0.0001 * i, lng=PDV[1], beat_count=3) for i in range(4)
     ]
     beats = {
         f"p{i}": tuple(_beat(f"b{i}_{j}", f"p{i}", est_spoken_seconds=20) for j in range(3))
         for i in range(4)
     }
     a = assess(_input(PDV, 60, round_trip=True), pois, beats)
-    # 12 beats × 20s = 240s; target round-trip 60min = 1793s; fill ≈ 0.13.
+    # 12 beats x 20s = 240s; target round-trip 60min = 1793s; fill ≈ 0.13.
     # 4 colocated tier-5 anchors with ≥3 beats each → compactness near 0 →
     # would fire yellow_by_anchors without the floor. With floor, fill < 0.5
     # → RED.
@@ -421,12 +411,8 @@ def test_alternative_finder_picks_richest_far_anchor():
     inside the one-way envelope but outside the round-trip envelope."""
     near = _poi("near", tier=4, lat=PDV[0], lng=PDV[1], beat_count=1)
     # Two candidates beyond the round-trip envelope.
-    poor_far = _poi(
-        "Poor Far", tier=5, lat=PDV[0], lng=PDV[1] + 0.0060, beat_count=2
-    )
-    rich_far = _poi(
-        "Rich Far", tier=5, lat=PDV[0], lng=PDV[1] + 0.0085, beat_count=20
-    )
+    poor_far = _poi("Poor Far", tier=5, lat=PDV[0], lng=PDV[1] + 0.0060, beat_count=2)
+    rich_far = _poi("Rich Far", tier=5, lat=PDV[0], lng=PDV[1] + 0.0085, beat_count=20)
     beats = {
         "near": (_beat("n", "near", est_spoken_seconds=20),),
         "Poor Far": tuple(_beat(f"p{i}", "Poor Far", est_spoken_seconds=80) for i in range(2)),
@@ -451,6 +437,6 @@ def test_refused_carries_assessment():
         duration_min=60,
         round_trip=True,
     )
-    exc = TourabilityRefused(a)
+    exc = TourabilityRefusedError(a)
     assert exc.assessment is a
     assert "RED" in str(exc)

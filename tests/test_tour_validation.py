@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import datetime as _dt
 
-import pytest
-
 from src.tour.contract import (
     BeatRef,
     BeatSequence,
@@ -18,13 +16,11 @@ from src.tour.contract import (
 )
 from src.tour.generation import (
     GLUE_CLOSING,
-    GLUE_LABELS,
     GLUE_NAV,
     GLUE_PACING,
     SYNTHESIZED_OPENER,
 )
 from src.tour.validation import validate_script
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -66,15 +62,16 @@ def _input() -> TourInput:
 def _script(sentences: list[Sentence]) -> Script:
     return Script(
         city_slug="paris",
-        generated_at=_dt.datetime(2026, 4, 28, tzinfo=_dt.timezone.utc).isoformat(),
+        generated_at=_dt.datetime(2026, 4, 28, tzinfo=_dt.UTC).isoformat(),
         inputs=_input(),
         total_audio_seconds=0,
         total_walking_seconds=0,
         total_walk_distance_m=0,
         total_planned_seconds=0,
         selected_pois=(
-            ScriptPOI(id="p1", name="Place des Vosges", tier=5,
-                      lat=48.85, lng=2.36, area="Le Marais"),
+            ScriptPOI(
+                id="p1", name="Place des Vosges", tier=5, lat=48.85, lng=2.36, area="Le Marais"
+            ),
         ),
         lens_coverage={},
         script=tuple(sentences),
@@ -140,7 +137,7 @@ def test_imagine_in_glue_is_flagged():
     )
     report = validate_script(_script([bad]), seq)
     hit_codes = [code for _, code in report.forbidden_phrase_hits]
-    assert any("forbidden_phrase:imagine" == c for c in hit_codes)
+    assert any(c == "forbidden_phrase:imagine" for c in hit_codes)
     assert not report.passed
 
 
@@ -155,10 +152,10 @@ def test_picture_this_in_glue_is_flagged():
     )
     report = validate_script(_script([bad]), seq)
     codes = [code for _, code in report.forbidden_phrase_hits]
-    assert any("forbidden_phrase:picture this" == c for c in codes)
+    assert any(c == "forbidden_phrase:picture this" for c in codes)
 
 
-def test_imagine_inside_beat_body_is_NOT_flagged():
+def test_imagine_inside_beat_body_is_not_flagged():
     # Corpus is canonical; only glue is scanned for forbidden phrases.
     beat = _beat("b1", body="Hugo asked the reader to imagine the cathedral aflame.")
     seq = _seq([beat])
@@ -189,34 +186,40 @@ def test_glue_introducing_proper_noun_not_in_beats_is_flagged():
     )
     report = validate_script(_script([bad]), seq)
     codes = [code for _, code in report.forbidden_phrase_hits]
-    assert any("new_proper_noun:Napoleon" == c for c in codes)
+    assert any(c == "new_proper_noun:Napoleon" for c in codes)
 
 
-def test_glue_naming_a_proper_noun_already_in_beats_is_OK():
+def test_glue_naming_a_proper_noun_already_in_beats_is_ok():
     beat = _beat("b1", body="Hugo lived at no. 6 from 1832.")
     seq = _seq([beat])
     s = Sentence(text="Hugo's house was here.", source_id=GLUE_NAV, source_type="glue", stop_idx=0)
-    cited_beat_sentence = Sentence(text="Hugo lived at no. 6 from 1832.", source_id=beat.id, source_type="beat", stop_idx=0)
+    cited_beat_sentence = Sentence(
+        text="Hugo lived at no. 6 from 1832.", source_id=beat.id, source_type="beat", stop_idx=0
+    )
     report = validate_script(_script([cited_beat_sentence, s]), seq)
     # No new_proper_noun hits — Hugo is in cited corpus.
     codes = [c for _, c in report.forbidden_phrase_hits]
-    assert not any("new_proper_noun:Hugo" == c for c in codes)
+    assert not any(c == "new_proper_noun:Hugo" for c in codes)
 
 
 def test_glue_introducing_new_year_is_flagged():
     beat = _beat("b1", body="Henri IV built it in 1612.")
     seq = _seq([beat])
-    cited = Sentence(text="Henri IV built it in 1612.", source_id=beat.id, source_type="beat", stop_idx=0)
+    cited = Sentence(
+        text="Henri IV built it in 1612.", source_id=beat.id, source_type="beat", stop_idx=0
+    )
     bad = Sentence(text="That was 1789.", source_id=GLUE_NAV, source_type="glue", stop_idx=0)
     report = validate_script(_script([cited, bad]), seq)
     codes = [c for _, c in report.forbidden_phrase_hits]
-    assert any("new_year:1789" == c for c in codes)
+    assert any(c == "new_year:1789" for c in codes)
 
 
 def test_glue_referring_to_year_already_in_beats_passes():
     beat = _beat("b1", body="Henri IV built it in 1612.")
     seq = _seq([beat])
-    cited = Sentence(text="Henri IV built it in 1612.", source_id=beat.id, source_type="beat", stop_idx=0)
+    cited = Sentence(
+        text="Henri IV built it in 1612.", source_id=beat.id, source_type="beat", stop_idx=0
+    )
     glue = Sentence(text="That was 1612.", source_id="ARITH", source_type="arith", stop_idx=0)
     report = validate_script(_script([cited, glue]), seq)
     codes = [c for _, c in report.forbidden_phrase_hits]
@@ -233,9 +236,18 @@ def test_clean_script_passes_both_gates():
     seq = _seq([beat])
     sentences = [
         Sentence(text="Settle in.", source_id=GLUE_PACING, source_type="glue", stop_idx=0),
-        Sentence(text="Henri IV built the square.", source_id=beat.id, source_type="beat", stop_idx=0),
-        Sentence(text="The inauguration was in 1612.", source_id=beat.id, source_type="beat", stop_idx=0),
-        Sentence(text="You've now circled the square.", source_id=GLUE_CLOSING, source_type="glue", stop_idx=0),
+        Sentence(
+            text="Henri IV built the square.", source_id=beat.id, source_type="beat", stop_idx=0
+        ),
+        Sentence(
+            text="The inauguration was in 1612.", source_id=beat.id, source_type="beat", stop_idx=0
+        ),
+        Sentence(
+            text="You've now circled the square.",
+            source_id=GLUE_CLOSING,
+            source_type="glue",
+            stop_idx=0,
+        ),
     ]
     report = validate_script(_script(sentences), seq)
     assert report.passed

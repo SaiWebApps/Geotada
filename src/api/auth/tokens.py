@@ -85,9 +85,7 @@ def verify_magic_token(token: str) -> str:
         raise TokenError(f"Invalid magic link: {exc}") from exc
 
     if payload.get("type") != "magic":
-        raise TokenError(
-            f"Wrong token type: expected 'magic', got {payload.get('type')!r}"
-        )
+        raise TokenError(f"Wrong token type: expected 'magic', got {payload.get('type')!r}")
 
     email = payload.get("email")
     if not email:

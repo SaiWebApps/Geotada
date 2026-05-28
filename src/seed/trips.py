@@ -58,8 +58,20 @@ TRIP_DEF = {
 }
 
 STOPS: list[dict] = [
-    {"poi_name": "Eiffel Tower", "city_name": "paris", "sort_order": 1, "start_time": "09:00", "duration_min": 90},
-    {"poi_name": "Café de Flore", "city_name": "paris", "sort_order": 2, "start_time": "11:00", "duration_min": 30},
+    {
+        "poi_name": "Eiffel Tower",
+        "city_name": "paris",
+        "sort_order": 1,
+        "start_time": "09:00",
+        "duration_min": 90,
+    },
+    {
+        "poi_name": "Café de Flore",
+        "city_name": "paris",
+        "sort_order": 2,
+        "start_time": "11:00",
+        "duration_min": 30,
+    },
     {
         "poi_name": "Shakespeare and Company",
         "city_name": "paris",

@@ -1,99 +1,156 @@
 # Ondoway — GPS-triggered audio tour platform
 
-> **IRONCLAD. NO EXCEPTIONS. NO SHORTCUTS. NO RATIONALIZING.**
+## Agent Perspectives
 
-## Rule 1: Self-Verify EVERY Response
+This project benefits from all agent perspectives. Use them:
+- `/agent-chat architect` — before designing new features or data model changes
+- `/agent-chat reviewer` — before presenting ANY result (mandatory self-verification)
+- `/agent-chat implementer` — when setting up builds, running tests, or debugging infra
 
-Before presenting ANY response to the user — no matter how simple — spawn a checker agent to review your work. The checker must:
-- Challenge every assumption
-- Verify every path, value, and config exists
-- Check if there's a simpler or more correct approach
-- Look for mistakes, fabrications, and lazy shortcuts
-
-Incorporate the checker's corrections before presenting to the user. If the checker finds nothing wrong, good — that took 5 seconds and cost nothing compared to the user finding your mistake.
-
-**No exceptions. No "this is too simple to check." The first answer is ALWAYS wrong until verified.**
-
-## Rule 2: No Silent Exploration
-
-Report findings after every 2-3 tool calls. One sentence minimum. Silence is NEVER acceptable.
-
-Before starting any exploration: state what you're looking for.
-After every few tool calls: report what you found.
-After 5-6 calls with no result: stop and tell the user what you've tried.
-
-The user is paying for every token. Silent exploration burns money and time.
-
-## Rule 3: Zero Tolerance for Laziness
-
-- Never skip a verification step
-- Never guess a value when you can look it up
-- Never carve out exceptions to rules
-- Never present a first draft as a final answer
-- If in doubt, do MORE work, not less
-
-## Rule 4: Never Blame the Apple Sandbox
-
-Do not mention the Apple sandbox as a failure cause unless the error output contains an explicit sandbox denial message. Read the actual error. Diagnose the actual cause.
-
-## Rule 5: Never Fabricate
-
-Never invent values, paths, versions, entity types, or configurations. If you don't know it, look it up. If you can't look it up, say so. Fabrication is the cardinal sin.
-
-## Rule 6: Frequent Incremental Updates
-
-The user must never wonder what you're doing. Communicate constantly:
-- Before a task: what you're about to do
-- During a task: what you've found so far
-- After a task: what changed and what's next
-
-One sentence is enough. Silence is not.
+The reviewer's self-verification checklist is **mandatory** before presenting results.
 
 ---
 
-## Project structure
+## Behavioral Rules
+
+### Diagnosis Before Action
+
+When anything fails:
+1. Read the exact error message and stack trace
+2. Identify root cause with evidence (not "it might be X")
+3. Fix with the minimal change
+4. Re-run to verify
+
+Never blame the sandbox, infrastructure, or external systems without explicit evidence in the error output. When a command fails with a connection error: check `docker ps`, check env vars, check the target port. These take seconds and are almost always the actual cause.
+
+### Build System Enforcement
+
+Every command must go through Makefile targets. Never use raw `uv run pytest`, `uv run python`, `flutter test`, or any direct invocation. The Makefile encodes correct env setup, container checks, port selection, and cache clearing.
+
+If no target exists for what you need, add one to the Makefile first.
+
+### Test Discipline
+
+- The bar is `make test` — full suite, 0 failures, 0 skipped
+- Never report partial results as success (unit-only is not the bar)
+- Skipped tests are failures in disguise — diagnose why they skip
+- Never split composite targets to work around failures
+- Never use `--ignore` or `-k "not ..."` to exclude tests
+- A test that hasn't been run is not a test — always execute after writing
+- Step 0 baseline must be green before starting work
+
+### Zero Lint Errors
+
+`make lint` must produce ZERO errors before ANY commit, agent spawn, or declaration of done. "Pre-existing" is not an exemption. The lint-enforcer hook mechanically blocks operations when lint is dirty. Never pipe `make lint` through `tail` or `head`.
+
+### No Guessing
+
+- Never offer "try this" fixes without evidence from the codebase
+- For iOS/Xcode/simulator errors: read the actual source code and project config immediately
+- For email issues: read the raw email source first (Show Original in Gmail)
+- For GUI workflows (Apple portal, Xcode, App Store Connect): list ALL prerequisites upfront, caveat what you cannot see, never abandon a correct diagnosis under pushback
+
+### Workaround Spirals
+
+When the same approach fails twice: STOP. The approach is wrong. Diagnose WHY before trying any more variations. Run `<tool> --help` before building workarounds — the tool may already have the flag you need.
+
+### Communication
+
+- Report findings every 2-3 tool calls. One sentence is enough, silence is not.
+- When spawning background agents, state expected completion time
+- Never chain more than 3 tool calls without a visible update
+
+### Flutter-Specific
+
+- Never run Flutter tests in background (Flutter buffers stdout completely)
+- `make flutter-clean` is required after ANY asset change
+- `FlutterDeepLinkingEnabled` must remain `false` while using `app_links`
+- New `.swift` files must be added to `Runner.xcodeproj/project.pbxproj` (filesystem alone is invisible to the build)
+
+### Worktree Cleanup
+
+After cherry-picking from a worktree: immediately remove the worktree directory, delete the feature branch, and remove orphaned Docker networks/volumes.
+
+---
+
+## Project Structure
+
 - `data/{city_slug}/` — pipeline data (poi-raw.json, beats.json, export/)
 - `Books/{city_slug}/{book_slug}/` — chunked source texts + manifest.json
 - `.claude/commands/` — pipeline skills (beat-from-book, pipeline-batch, tour-build, etc.)
-- `.claude/agents/challenger.md` — adversarial reviewer, invoke at checkpoints
 - `tests/` — pytest suite
+- `mobile/` — Flutter iOS app
 - Launch city: Paris (`data/paris/`)
 
-## Key docs (read before related work)
-- @Docs/Markdown Docs/NORTHSTAR.md — product north star, locked decisions, Neo4j schema v3
-- @specs/NORTHSTAR.md — same as above, canonical location
-- Tour-builder design: the prior rule-forward design at `Docs/tour-builder/design.md` is DEPRECATED as of 2026-04-22. Restarting learn-by-example from Paris guidebooks. Do not auto-load.
+## Key Docs
 
-## Feature development workflow
-- Specs live in `specs/{date}-{topic}/` with files: 01-scope → 02-spec → 03-scopes (or 03-red-team) → 04-red-team (or 04-plan) → 05-plan → 06-verify
-- Use `/spec-pm` to drive the lifecycle. Each stage builds on the prior — don't skip.
-- Invoke the challenger agent (`/challenge`) before saving any scope/spec/plan, before committing, and before declaring a scope done
-- Multi-scope features track progress in `specs/{date}-{topic}/state.json`
-- After implementation, run the full test suite before committing — not just the tests you think are relevant
+- `specs/NORTHSTAR.md` — product north star, locked decisions, Neo4j schema v3
+- Tour-builder design: prior rule-forward design at `Docs/tour-builder/design.md` is DEPRECATED as of 2026-04-22
 
-## Running tests
+## Test Infrastructure
+
 ```bash
-pytest tests/                              # full suite
-pytest tests/test_gravity_distribution.py  # after /poi-gravity
-pytest tests/test_export_consistency.py    # after /export-validate
-pytest tests/test_lens_drift.py            # before /upload
-pytest tests/test_tour_*.py                # tour-builder suite
+make test          # THE bar — test-local + test-cloud + flutter-test
+make test-unit     # Python unit only (for quick iteration, NOT the bar)
+make test-local    # Python against local Docker Neo4j (port 7688)
+make test-cloud    # Python against Aura cloud
+make flutter-test  # Flutter (headless Chrome, foreground only)
+make flutter-ios   # Launch on iOS simulator
+make db-test-up    # Start test Neo4j (port 7688)
+make db-up         # Start dev Neo4j (port 7687)
 ```
 
-## Pipeline guardrails (non-negotiable)
+**Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687. Both must be running for full suite.
+
+**Common issue:** Tests skip unexpectedly → stale `__pycache__` caches a False result for `_neo4j_available()`. Fix: `make test-local` (clears cache automatically) or manually `find tests src -name __pycache__ -exec rm -rf {} +`.
+
+## Config Layering
+
+Precedence: shell environment → process environment → `load_dotenv()` → defaults.
+
+Shell env vars override `.env` file values. Changing `.env.test` alone does not help if the shell already has a stale export. `pytest.mark.skipif` conditions are cached in `.pyc` files — changing .env.test does NOT re-evaluate them without clearing `__pycache__`.
+
+## Feature Development Workflow
+
+- Specs live in `specs/{date}-{topic}/` with stages: 01-scope → 02-spec → 03-scopes → 04-red-team → 05-plan → 06-verify
+- Use `/spec-pm` to drive the lifecycle. Each stage builds on the prior.
+- Invoke the challenger agent before saving any scope/spec/plan, before committing, and before declaring done
+- Multi-scope features track progress in `specs/{date}-{topic}/state.json`
+
+## Python Style (ruff)
+
+- **Line length:** 100 chars
+- **Rule sets:** E, F, I, N, W, UP, B, SIM, RUF
+- **Imports:** isort order. No unused (F401). No `import *` (F403).
+- **Modern Python (UP):** `dict` not `Dict`, `list` not `List`, `X | None` not `Optional[X]`, f-strings not `.format()`.
+- **Bugbear (B):** No mutable default args, no bare `except:`, no `assert` outside tests.
+- **Ignored:** B008 (FastAPI `Depends()`), E402 (conftest env loading), E741 (`l` for Lens in Cypher).
+
+## Deployment
+
+- **Backend:** Render (ondoway-api)
+- **FRONTEND_URL** env var must be `https://ondoway.com` — used only in `email.py` to build magic link URLs
+- **API_BASE_URL** is separate — compiled into the Flutter IPA via `--dart-define`
+- **TLS cert issue pattern:** If Let's Encrypt HTTP-01 challenge fails on Render, check Namecheap for URL Redirect Records that intercept HTTP traffic
+
+## Pipeline Guardrails
+
 1. Two-source minimum for auto-corrections
 2. Source passage must exist in chunk text
 3. New POIs within 100m of existing → flag for user review
 4. Never auto-resolve: living people, superlatives, story deletions
 5. Log every auto-correction with source URLs
 
-## Data conventions
+## Data Conventions
+
 - All queries scoped to city geofence, never global
 - MERGE keys must be multi-city safe (include city_slug)
 - Never create empty placeholder nodes — only when content exists
 - poi-raw.json is the canonical POI source of truth per city
 
-## Style
-- Always lead with a recommendation + reasoning, don't ask bare questions
-- Challenge whether the approach is the simplest path
-- Terse responses, no trailing summaries
+## Pre-commit Checklist
+
+- [ ] `make test` passes (Python local + cloud + Flutter — all three)
+- [ ] Read the diff (`git diff --staged`) — every change is intentional
+- [ ] No hardcoded colors (use `Theme.of(context).colorScheme.*`)
+- [ ] No fabricated values — every field name, ID, and property comes from a verified source

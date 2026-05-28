@@ -4,6 +4,7 @@ These tests validate `data/paris/within_edges.json` against `areas.json` and
 `poi-raw.json` without requiring a running Neo4j or API. They guard against
 regressions in the staging-generation pipeline.
 """
+
 from __future__ import annotations
 
 import json

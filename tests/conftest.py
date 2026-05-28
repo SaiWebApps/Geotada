@@ -109,6 +109,7 @@ def _wipe(driver) -> None:
 @pytest.fixture(scope="module")
 def clean_driver():
     """Create a driver with a clean DB + schema constraints."""
+    _assert_test_port()
     d = create_driver()
     with d.session(database=get_database()) as s:
         s.run("MATCH (n) DETACH DELETE n")

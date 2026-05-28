@@ -7,6 +7,7 @@ Catches:
   - Beat→POI orphans in source files
   - POI name / name_variations collisions
 """
+
 from __future__ import annotations
 
 import json
@@ -21,8 +22,7 @@ DATA_ROOT = REPO_ROOT / "data"
 
 def _strip_accents(s: str) -> str:
     return "".join(
-        c for c in unicodedata.normalize("NFD", s or "")
-        if unicodedata.category(c) != "Mn"
+        c for c in unicodedata.normalize("NFD", s or "") if unicodedata.category(c) != "Mn"
     )
 
 
@@ -33,10 +33,7 @@ def _norm(s: str) -> str:
 def _city_dirs() -> list[Path]:
     if not DATA_ROOT.exists():
         return []
-    return [
-        d for d in sorted(DATA_ROOT.iterdir())
-        if d.is_dir() and (d / "poi-raw.json").exists()
-    ]
+    return [d for d in sorted(DATA_ROOT.iterdir()) if d.is_dir() and (d / "poi-raw.json").exists()]
 
 
 @pytest.mark.parametrize("city_dir", _city_dirs(), ids=lambda d: d.name)
@@ -65,10 +62,7 @@ def test_no_ghost_beat_stubs(city_dir: Path) -> None:
     Would have caught the 19 metadata-only stubs in the 2026-04-08 audit."""
     beats = json.loads((city_dir / "beats.json").read_text())
     missing_id = [i for i, b in enumerate(beats) if not b.get("beat_id")]
-    missing_body = [
-        i for i, b in enumerate(beats)
-        if not (b.get("script_body") or "").strip()
-    ]
+    missing_body = [i for i, b in enumerate(beats) if not (b.get("script_body") or "").strip()]
     problems = []
     if missing_id:
         problems.append(f"{len(missing_id)} beat(s) missing beat_id")
@@ -93,7 +87,7 @@ def test_every_beat_references_known_poi(city_dir: Path) -> None:
     for b in beats:
         pn = b.get("poi_name")
         if pn and _norm(pn) not in poi_keys:
-            orphans.append(f"'{pn}' (beat {b.get('beat_id','?')})")
+            orphans.append(f"'{pn}' (beat {b.get('beat_id', '?')})")
     if orphans:
         pytest.fail(
             f"{city_dir.name}: {len(orphans)} beat(s) reference unknown POIs:\n  "

@@ -17,15 +17,17 @@ live. Keep it deliberate and well-commented.
 
 from __future__ import annotations
 
+import itertools
 import json
 import math
 import re
 from collections import Counter
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable
 
 from .contract import POI, BeatRef, PhysicalCue, Route, TourabilityAssessment, TourInput
-from .density import TourabilityRefused, assess as assess_tourability
+from .density import TourabilityRefusedError
+from .density import assess as assess_tourability
 from .routing import (
     HAVERSINE_CORRECTION,
     PACE_KMH,
@@ -122,13 +124,43 @@ DEMOTION_MIN_TIER: int = 4
 # the unambiguously POI-specific ones).
 _NAME_GENERIC_TOKENS: frozenset[str] = frozenset(
     {
-        "the", "of", "and", "or",
-        "de", "des", "du", "le", "la", "les", "et",
-        "place", "rue", "boulevard", "avenue", "quai", "pont", "musee", "musée",
-        "hotel", "hôtel", "cathedral", "cathedrale", "cathédrale", "church",
-        "saint", "sainte", "st", "ste",
-        "square", "garden", "jardin", "park", "parc", "tower", "tour",
-        "victor",  # ambiguous given name; a tour with two "Victor X" POIs in it should already be co-located before this fires
+        "the",
+        "of",
+        "and",
+        "or",
+        "de",
+        "des",
+        "du",
+        "le",
+        "la",
+        "les",
+        "et",
+        "place",
+        "rue",
+        "boulevard",
+        "avenue",
+        "quai",
+        "pont",
+        "musee",
+        "musée",
+        "hotel",
+        "hôtel",
+        "cathedral",
+        "cathedrale",
+        "cathédrale",
+        "church",
+        "saint",
+        "sainte",
+        "st",
+        "ste",
+        "square",
+        "garden",
+        "jardin",
+        "park",
+        "parc",
+        "tower",
+        "tour",
+        "victor",  # ambiguous given name; co-located before this fires
     }
 )
 _NAME_TOKEN_MIN_LEN: int = 4
@@ -395,7 +427,7 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
     Phase 6 added two guards before the greedy:
 
     1. **Density gate** (§3.7) — call ``density.assess(input)``. RED
-       raises ``TourabilityRefused``; YELLOW attaches the assessment to
+       raises ``TourabilityRefusedError``; YELLOW attaches the assessment to
        ``Route.tourability`` for the harness to surface.
     2. **Zero-beat-POI exclusion** — POIs with no active beats are
        removed from the candidate pool before scoring. This was the
@@ -403,13 +435,13 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
        as an anchor purely because it sat on the route corridor.
     """
     start_lat, start_lng = input.start
-    interest = frozenset((input.lenses or []))
+    interest = frozenset(input.lenses or [])
 
     # Phase 6 density gate. RED → refuse; YELLOW → continue but
     # attach the assessment so the harness can warn.
     assessment = assess_tourability(input, snapshot.pois, snapshot.beats_by_poi)
     if assessment.status == "RED":
-        raise TourabilityRefused(assessment)
+        raise TourabilityRefusedError(assessment)
 
     # Step 1: envelope filter. Phase 6 also drops 0-active-beat POIs.
     radius_m = envelope_radius_m(input.duration_min, round_trip=input.round_trip)
@@ -640,9 +672,7 @@ def _pick_demotion_host(a: POI, b: POI) -> tuple[POI, POI]:
     return (a, b) if a.id < b.id else (b, a)
 
 
-def _has_cross_poi_address_overlap(
-    a: POI, b: POI, snapshot: CorpusSnapshot
-) -> bool:
+def _has_cross_poi_address_overlap(a: POI, b: POI, snapshot: CorpusSnapshot) -> bool:
     """True iff a beat at one POI mentions a distinctive token of the other.
 
     Looks at ``trigger_address`` and ``sub_location`` (case-insensitive
@@ -674,10 +704,7 @@ def _distinctive_name_tokens(name: str) -> set[str]:
     if not name:
         return set()
     tokens = re.findall(r"[a-zà-öø-ÿ]+", name.lower())
-    return {
-        t for t in tokens
-        if len(t) >= _NAME_TOKEN_MIN_LEN and t not in _NAME_GENERIC_TOKENS
-    }
+    return {t for t in tokens if len(t) >= _NAME_TOKEN_MIN_LEN and t not in _NAME_GENERIC_TOKENS}
 
 
 def _apply_fill_pass(
@@ -698,8 +725,10 @@ def _apply_fill_pass(
 
     Score-first ranking (not score / cost) so we keep adding genuinely
     rich anchors at the price of a higher walk cost. Stops when:
-      - delivered audio (sum of dwell-seconds proxy) ≥ ``FILL_PASS_AUDIO_FLOOR_FRAC × audio_budget``;
-      - cumulative walk would exceed ``FILL_PASS_WALK_BUDGET_FRAC × walk_budget``;
+      - delivered audio (dwell-seconds proxy)
+        >= ``FILL_PASS_AUDIO_FLOOR_FRAC x audio_budget``;
+      - cumulative walk would exceed
+        ``FILL_PASS_WALK_BUDGET_FRAC x walk_budget``;
       - route hits ``hard_anchor_cap``;
       - no remaining candidate fits.
 
@@ -758,7 +787,7 @@ def _apply_fill_pass(
             )
         if consumed_walk + extra > walk_cap:
             continue
-        selected = selected[:idx] + [cand] + selected[idx:]
+        selected = [*selected[:idx], cand, *selected[idx:]]
         consumed_walk += extra
         consumed_audio += compute_dwell_seconds(cand.tier)
 
@@ -775,18 +804,24 @@ def _insertion_extra_at_index(
     round_trip: bool,
 ) -> int:
     """Walk-time delta from inserting `cand` at exactly position `idx`."""
-    base_coords: list[tuple[float, float]] = [(start_lat, start_lng), *((p.lat, p.lng) for p in selected)]
+    base_coords: list[tuple[float, float]] = [
+        (start_lat, start_lng),
+        *((p.lat, p.lng) for p in selected),
+    ]
     if round_trip:
         base_coords.append((start_lat, start_lng))
     base = 0
-    for (lat1, lng1), (lat2, lng2) in zip(base_coords, base_coords[1:]):
+    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(base_coords):
         base += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
-    new_pois = selected[:idx] + [cand] + selected[idx:]
-    new_coords: list[tuple[float, float]] = [(start_lat, start_lng), *((p.lat, p.lng) for p in new_pois)]
+    new_pois = [*selected[:idx], cand, *selected[idx:]]
+    new_coords: list[tuple[float, float]] = [
+        (start_lat, start_lng),
+        *((p.lat, p.lng) for p in new_pois),
+    ]
     if round_trip:
         new_coords.append((start_lat, start_lng))
     new_total = 0
-    for (lat1, lng1), (lat2, lng2) in zip(new_coords, new_coords[1:]):
+    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(new_coords):
         new_total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
     return new_total - base
 
@@ -799,7 +834,7 @@ def _full_route_walk_seconds(
     if round_trip:
         coords.append((start_lat, start_lng))
     total = 0
-    for (lat1, lng1), (lat2, lng2) in zip(coords, coords[1:]):
+    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
         total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
     return total
 
@@ -831,7 +866,11 @@ def _apply_endpoint_pull(
     incumbents = list(selected)
     drops_used = 0
     while True:
-        if len(incumbents) + 1 > hard_anchor_cap and incumbents and drops_used < ENDPOINT_PULL_MAX_DROPS:
+        if (
+            len(incumbents) + 1 > hard_anchor_cap
+            and incumbents
+            and drops_used < ENDPOINT_PULL_MAX_DROPS
+        ):
             incumbents = _drop_weakest(incumbents, spine, interest, snapshot)
             drops_used += 1
             continue
@@ -842,9 +881,7 @@ def _apply_endpoint_pull(
         candidate_route = _reorder_with_endpoint(
             incumbents, endpoint, start_lat=start_lat, start_lng=start_lng
         )
-        walk = _route_walk_seconds(
-            candidate_route, start_lat=start_lat, start_lng=start_lng
-        )
+        walk = _route_walk_seconds(candidate_route, start_lat=start_lat, start_lng=start_lng)
         if walk <= walk_budget:
             return candidate_route
         if not incumbents or drops_used >= ENDPOINT_PULL_MAX_DROPS:
@@ -863,14 +900,12 @@ def _drop_weakest(
     return [p for p in pois if p.id != weakest.id]
 
 
-def _route_walk_seconds(
-    pois: list[POI], *, start_lat: float, start_lng: float
-) -> int:
+def _route_walk_seconds(pois: list[POI], *, start_lat: float, start_lng: float) -> int:
     coords = [(start_lat, start_lng), *((p.lat, p.lng) for p in pois)]
     total = 0
     from .routing import pace_corrected_walk_seconds
 
-    for (lat1, lng1), (lat2, lng2) in zip(coords, coords[1:]):
+    for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
         total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
     return total
 
@@ -892,7 +927,7 @@ def _reorder_with_endpoint(
         for cand in pool:
             extra, idx = insertion_cost_seconds(
                 cand,
-                interior + [endpoint],
+                [*interior, endpoint],
                 start_lat=start_lat,
                 start_lng=start_lng,
                 round_trip=False,
@@ -910,7 +945,7 @@ def _reorder_with_endpoint(
             best_idx = len(interior)
         interior.insert(best_idx, best)
         pool.remove(best)
-    return interior + [endpoint]
+    return [*interior, endpoint]
 
 
 # ---------------------------------------------------------------------------
@@ -930,7 +965,7 @@ def pick_spine_area(
     Areas. **Phase 2.6 rule:** if the top-scoring Area is a district,
     promote a competing neighborhood/island/corridor whose votes are at
     least `(top / SPINE_DISTRICT_DOMINANCE)` — i.e., the district must be
-    ≥2× the more-specific area to keep the spine. Districts naturally
+    ≥2x the more-specific area to keep the spine. Districts naturally
     accumulate more votes (every district contains everything inside
     it), so without this lift districts always win and the algorithm
     can never pick "Île de la Cité" near Pont Neuf.
@@ -977,8 +1012,7 @@ def pick_spine_area(
         contenders = [
             a
             for a in votes
-            if snapshot.area_types.get(a, "") in SPECIFIC_AREA_TYPES
-            and votes[a] >= threshold
+            if snapshot.area_types.get(a, "") in SPECIFIC_AREA_TYPES and votes[a] >= threshold
         ]
         if contenders:
             return max(contenders, key=lambda a: (votes[a], -_type_rank(a, snapshot), a))
@@ -1000,7 +1034,7 @@ def _type_rank(area: str, snapshot: CorpusSnapshot) -> int:
 def _spine_tiebreak_key(area: str, votes: Counter[str], snapshot: CorpusSnapshot) -> tuple:
     """Smaller is better: (-vote_count, type_rank, vote_count, name).
 
-    Used only when the 2× district lift hasn't already chosen a winner —
+    Used only when the 2x district lift hasn't already chosen a winner —
     e.g., among multiple specific Areas with identical scores.
     """
     return (-votes[area], _type_rank(area, snapshot), votes[area], area)
@@ -1067,9 +1101,7 @@ def _area_alignment(poi: POI, spine_area: str | None, snapshot: CorpusSnapshot) 
     return AREA_ALIGNMENT_OTHER
 
 
-def _with_interest_count(
-    poi: POI, snapshot: CorpusSnapshot, interest: frozenset[str]
-) -> POI:
+def _with_interest_count(poi: POI, snapshot: CorpusSnapshot, interest: frozenset[str]) -> POI:
     if not interest:
         return poi
     matching = 0
@@ -1087,15 +1119,10 @@ def _has_active_beats(poi: POI, snapshot: CorpusSnapshot) -> bool:
     beats because routing-aware scoring liked the corridor geometry.
     The fix: filter the candidate pool by beat count before scoring.
     """
-    for beat in snapshot.beats_for(poi.id):
-        if (beat.active_status or "active") == "active":
-            return True
-    return False
+    return any((beat.active_status or "active") == "active" for beat in snapshot.beats_for(poi.id))
 
 
-def _attach_tourability_if_yellow(
-    route: Route, assessment: TourabilityAssessment
-) -> Route:
+def _attach_tourability_if_yellow(route: Route, assessment: TourabilityAssessment) -> Route:
     """Attach the YELLOW assessment to the Route for skill-side surfacing.
 
     GREEN tours don't need to carry the assessment — the absence of a
@@ -1109,11 +1136,11 @@ def _attach_tourability_if_yellow(
 
 
 __all__ = [
+    "HAVERSINE_CORRECTION",
+    "PACE_KMH",
     "CorpusSnapshot",
     "load_paris_corpus",
-    "select_route",
     "pick_spine_area",
     "poi_score",
-    "PACE_KMH",
-    "HAVERSINE_CORRECTION",
+    "select_route",
 ]

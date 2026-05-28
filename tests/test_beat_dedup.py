@@ -15,8 +15,6 @@ import re
 from pathlib import Path
 from types import SimpleNamespace
 
-import pytest
-
 from scripts import beat_dedup
 from scripts.beat_dedup_judge import classify_pair
 from scripts.dedup_pairs import find_pairs
@@ -62,6 +60,7 @@ def _log_skeleton() -> dict:
 
 # ------------------------- AC-6: MinHash behavior -------------------------
 
+
 def test_minhash_surfaces_known_pair():
     body_a = (
         "Val-de-Grace was founded in 1645 by Anne of Austria in fulfilment of her vow "
@@ -93,6 +92,7 @@ def test_minhash_ignores_distant_beats():
 
 
 # --------------------- BP-5 + R-4: Haiku judge behavior ---------------------
+
 
 def _fake_tool_block(classification: str, reasoning: str):
     return SimpleNamespace(
@@ -127,9 +127,9 @@ class _FakeClient:
 
 
 def test_judge_happy_path():
-    client = _FakeClient([
-        _fake_response(_fake_tool_block("same_story_added_detail", "both cite 1645"))
-    ])
+    client = _FakeClient(
+        [_fake_response(_fake_tool_block("same_story_added_detail", "both cite 1645"))]
+    )
     out = classify_pair(_beat("a", "x"), _beat("b", "y"), client=client)
     assert out["classification"] == "same_story_added_detail"
     assert out["_parse_failed"] is False
@@ -163,6 +163,7 @@ def test_haiku_parse_fail_falls_back():
 
 
 # --------------------- AC-7: apply semantics + audit log ---------------------
+
 
 def _seed_files(tmp_path: Path, beats: list[dict]) -> tuple[Path, Path]:
     bp = tmp_path / "beats.json"
@@ -270,9 +271,7 @@ def test_audit_log_matches_mutation(tmp_path):
         },
     ]
     out_dir = tmp_path / "_dedup_review"
-    beat_dedup.apply_decisions(
-        decisions, beats_path=bp, log_path=lp, city="paris", out_dir=out_dir
-    )
+    beat_dedup.apply_decisions(decisions, beats_path=bp, log_path=lp, city="paris", out_dir=out_dir)
     log_lines = (out_dir / "_log.jsonl").read_text(encoding="utf-8").splitlines()
     entries = [json.loads(line) for line in log_lines if line.strip()]
     assert len(entries) == 2
@@ -333,9 +332,7 @@ def test_report_contains_no_api_key(tmp_path, monkeypatch):
             "action": "INSERT",
         }
     ]
-    beat_dedup.apply_decisions(
-        decisions, beats_path=bp, log_path=lp, city="paris", out_dir=out_dir
-    )
+    beat_dedup.apply_decisions(decisions, beats_path=bp, log_path=lp, city="paris", out_dir=out_dir)
     log_content = (out_dir / "_log.jsonl").read_text(encoding="utf-8")
     assert leak not in log_content
     assert "sk-ant" not in log_content

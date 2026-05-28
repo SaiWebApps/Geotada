@@ -41,6 +41,4 @@ async def send_magic_link(email: str, token: str) -> None:
         )
 
     if resp.status_code >= 400:
-        raise EmailDeliveryError(
-            f"Resend API returned {resp.status_code}: {resp.text}"
-        )
+        raise EmailDeliveryError(f"Resend API returned {resp.status_code}: {resp.text}")

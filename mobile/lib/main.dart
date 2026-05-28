@@ -1,40 +1,104 @@
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ondoway/router.dart';
 import 'package:ondoway/services/auth_service.dart';
+import 'package:ondoway/services/feedback_service.dart';
+import 'package:ondoway/services/lens_service.dart';
+import 'package:ondoway/services/location_service.dart';
+import 'package:ondoway/services/profile_service.dart';
+import 'package:ondoway/services/trip_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final authService = AuthService();
+  final lensService = LensService();
+  final profileService = ProfileService();
+  final tripService = TripService();
+  final feedbackService = FeedbackService();
+  final locationService = LocationService();
+
   await authService.tryRestoreSession();
 
+  if (authService.isAuthenticated) {
+    try {
+      await Future.wait([
+        lensService.fetchLenses(),
+        profileService.fetchProfile(
+          authService.userId!,
+          authService.accessToken!,
+        ),
+      ]);
+    } catch (_) {
+      // Non-fatal: app still works, onboarding detection may default to first-time
+    }
+  }
+
+  final router = createRouter(authService, profileService, lensService);
+
+  void handleDeepLink(Uri uri) {
+    final host = uri.host;
+    final path = uri.path;
+    final fullPath = host.isNotEmpty ? '/$host$path' : path;
+    final query = uri.query.isNotEmpty ? '?${uri.query}' : '';
+    debugPrint('DEEP LINK: $uri → routing to $fullPath$query');
+    Future.delayed(Duration.zero, () {
+      router.go('$fullPath$query');
+    });
+  }
+
+  final appLinks = AppLinks();
+  appLinks.uriLinkStream.listen(handleDeepLink);
+
   runApp(
-    ChangeNotifierProvider.value(
-      value: authService,
-      child: const OndowayApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: authService),
+        ChangeNotifierProvider.value(value: lensService),
+        ChangeNotifierProvider.value(value: profileService),
+        ChangeNotifierProvider.value(value: tripService),
+        ChangeNotifierProvider.value(value: feedbackService),
+        ChangeNotifierProvider.value(value: locationService),
+      ],
+      child: OndowayApp(router: router),
     ),
   );
 }
 
 class OndowayApp extends StatelessWidget {
-  const OndowayApp({super.key});
+  final dynamic router;
+  const OndowayApp({super.key, required this.router});
 
   @override
   Widget build(BuildContext context) {
+    final profile = context.watch<ProfileService>();
     return MaterialApp.router(
       title: 'Ondoway',
       theme: ThemeData(
-        colorSchemeSeed: const Color(0xFF1A73E8),
+        colorSchemeSeed: const Color(0xFF3D5AFE),
         useMaterial3: true,
         brightness: Brightness.light,
       ),
       darkTheme: ThemeData(
-        colorSchemeSeed: const Color(0xFF1A73E8),
+        colorSchemeSeed: const Color(0xFF3D5AFE),
         useMaterial3: true,
         brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF121212),
       ),
-      routerConfig: createRouter(context.read<AuthService>()),
+      themeMode: _resolveThemeMode(profile.themePreference),
+      routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  static ThemeMode _resolveThemeMode(String? preference) {
+    switch (preference) {
+      case 'dark':
+        return ThemeMode.dark;
+      case 'light':
+        return ThemeMode.light;
+      default:
+        return ThemeMode.system;
+    }
   }
 }

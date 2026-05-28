@@ -9,7 +9,6 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -114,16 +113,18 @@ def env(tmp_path: Path) -> dict[str, Path]:
 
 
 def _run_cli(env: dict[str, Path], *args: str) -> int:
-    return wipe_main([
-        "paris/around-and-about-paris",
-        "--chunk",
-        *args[:1],
-        "--beats-path",
-        str(env["beats"]),
-        "--log-path",
-        str(env["log"]),
-        *args[1:],
-    ])
+    return wipe_main(
+        [
+            "paris/around-and-about-paris",
+            "--chunk",
+            *args[:1],
+            "--beats-path",
+            str(env["beats"]),
+            "--log-path",
+            str(env["log"]),
+            *args[1:],
+        ]
+    )
 
 
 def test_wipe_removes_exact_chunk(env, capsys):
@@ -193,16 +194,18 @@ def test_wipe_refuses_legacy_ambiguous_log_entry(tmp_path):
     )
     pre_log = _sha_file(log_path)
 
-    rc = wipe_main([
-        "paris/around-and-about-paris",
-        "--chunk",
-        "legacy_ambiguous",
-        "--beats-path",
-        str(beats_path),
-        "--log-path",
-        str(log_path),
-        "--apply",
-    ])
+    rc = wipe_main(
+        [
+            "paris/around-and-about-paris",
+            "--chunk",
+            "legacy_ambiguous",
+            "--beats-path",
+            str(beats_path),
+            "--log-path",
+            str(log_path),
+            "--apply",
+        ]
+    )
     assert rc == 0
     assert _sha_file(log_path) == pre_log
 

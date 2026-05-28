@@ -7,13 +7,17 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, status
 from neo4j import Session
 
+from src.api.auth.apple import verify_apple_id_token
 from src.api.auth.dependencies import get_current_user
 from src.api.auth.email import EmailDeliveryError, send_magic_link
 from src.api.auth.google import verify_google_id_token
 from src.api.auth.schemas import (
+    AppleAuthRequest,
     GoogleAuthRequest,
     MagicLinkRequest,
     MagicLinkVerifyRequest,
+    OnboardingRequest,
+    OnboardingResponse,
     RefreshRequest,
     TokenResponse,
     UserResponse,
@@ -38,6 +42,18 @@ SET u.id = coalesce(u.id, randomUUID()),
 RETURN u
 """
 
+_FIND_BY_GOOGLE_SUB = "MATCH (u:User {google_sub: $sub}) RETURN u"
+_SET_GOOGLE_SUB = """
+MATCH (u:User {email: $email})
+SET u.google_sub = coalesce(u.google_sub, $google_sub)
+"""
+
+_FIND_BY_APPLE_SUB = "MATCH (u:User {apple_sub: $sub}) RETURN u"
+_SET_APPLE_SUB = """
+MATCH (u:User {email: $email})
+SET u.apple_sub = coalesce(u.apple_sub, $apple_sub)
+"""
+
 
 @router.get("/me", response_model=UserResponse)
 def me(current_user: dict = Depends(get_current_user)):
@@ -53,6 +69,11 @@ async def magic_link_request(body: MagicLinkRequest):
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
             detail=f"Failed to send magic link email: {exc}",
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Email delivery connection error: {type(exc).__name__}: {exc}",
         ) from exc
     return {"message": "Magic link sent"}
 
@@ -97,9 +118,7 @@ def refresh(
         ) from exc
 
     user_id = payload["sub"]
-    result = session.run(
-        "MATCH (u:User {id: $uid}) RETURN u.email AS email", uid=user_id
-    ).single()
+    result = session.run("MATCH (u:User {id: $uid}) RETURN u.email AS email", uid=user_id).single()
 
     if not result:
         raise HTTPException(
@@ -127,9 +146,20 @@ def google_auth(
         ) from exc
 
     email = google_info["email"]
-    result = session.run(_MERGE_USER, email=email).single()
-    user_node = result["u"]
+    google_sub = google_info.get("sub", "")
+
+    existing = session.run(_FIND_BY_GOOGLE_SUB, sub=google_sub).single() if google_sub else None
+    if existing:
+        user_node = existing["u"]
+        email = user_node["email"]
+    else:
+        result = session.run(_MERGE_USER, email=email).single()
+        user_node = result["u"]
+
     user_id = user_node.get("id")
+
+    if google_sub:
+        session.run(_SET_GOOGLE_SUB, email=email, google_sub=google_sub)
 
     session_id = str(uuid.uuid4())
     token_family = str(uuid.uuid4())
@@ -137,4 +167,92 @@ def google_auth(
     return TokenResponse(
         access_token=create_access_token(user_id, email),
         refresh_token=create_refresh_token(user_id, session_id, token_family),
+    )
+
+
+@router.post("/apple", response_model=TokenResponse)
+def apple_auth(
+    body: AppleAuthRequest,
+    session: Session = Depends(get_session),
+):
+    try:
+        apple_info = verify_apple_id_token(body.identity_token, nonce=body.nonce)
+    except TokenError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(exc),
+        ) from exc
+
+    email = apple_info["email"]
+    apple_sub = apple_info.get("sub", "")
+
+    existing = session.run(_FIND_BY_APPLE_SUB, sub=apple_sub).single() if apple_sub else None
+    if existing:
+        user_node = existing["u"]
+        email = user_node["email"]
+    else:
+        result = session.run(_MERGE_USER, email=email).single()
+        user_node = result["u"]
+
+    user_id = user_node.get("id")
+
+    if apple_sub:
+        session.run(_SET_APPLE_SUB, email=email, apple_sub=apple_sub)
+
+    session_id = str(uuid.uuid4())
+    token_family = str(uuid.uuid4())
+
+    return TokenResponse(
+        access_token=create_access_token(user_id, email),
+        refresh_token=create_refresh_token(user_id, session_id, token_family),
+    )
+
+
+_ONBOARDING_QUERY = """
+MATCH (u:User {id: $user_id})
+MERGE (u)-[hp:HAS_PROFILE]->(p:Profile {display_name: $display_name})
+ON CREATE SET p.id = randomUUID(), p.created_at = datetime(),
+              hp.id = randomUUID(), hp.created_at = datetime()
+WITH p
+UNWIND $lens_ids AS lid
+MATCH (lens:Lens {id: lid, is_parent: false})
+MERGE (p)-[r:PREFERS_LENS]->(lens)
+ON CREATE SET r.id = randomUUID(), r.created_at = datetime()
+RETURN p.id AS profile_id, p.display_name AS display_name, count(lens) AS lens_count
+"""
+
+
+@router.post("/onboarding/complete", response_model=OnboardingResponse)
+def onboarding_complete(
+    body: OnboardingRequest,
+    current_user: dict = Depends(get_current_user),
+    session: Session = Depends(get_session),
+):
+    if len(body.lens_ids) < 3:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="At least 3 lenses required",
+        )
+
+    user_id = current_user["id"]
+    email = current_user["email"]
+    display_name = email.split("@")[0]
+
+    result = session.run(
+        _ONBOARDING_QUERY,
+        user_id=user_id,
+        display_name=display_name,
+        lens_ids=body.lens_ids,
+    ).single()
+
+    if result is None or result["lens_count"] == 0:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User or lenses not found",
+        )
+
+    return OnboardingResponse(
+        profile_id=result["profile_id"],
+        display_name=result["display_name"],
+        lens_count=result["lens_count"],
     )

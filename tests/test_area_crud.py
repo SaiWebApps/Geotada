@@ -54,13 +54,16 @@ def _create_area(client, **overrides) -> dict:
 
 
 def _create_poi(client, name: str, lat: float, lng: float) -> dict:
-    resp = client.post("/api/v1/nodes/POI", json={
-        "name": name,
-        "city_name": "paris",
-        "latitude": lat,
-        "longitude": lng,
-        "importance_tier": 3,
-    })
+    resp = client.post(
+        "/api/v1/nodes/POI",
+        json={
+            "name": name,
+            "city_name": "paris",
+            "latitude": lat,
+            "longitude": lng,
+            "importance_tier": 3,
+        },
+    )
     assert resp.status_code == 201
     return resp.json()
 
@@ -71,10 +74,13 @@ def _create_poi(client, name: str, lat: float, lng: float) -> dict:
 @needs_neo4j
 class TestCreateArea:
     def test_returns_201(self, client):
-        resp = client.post("/api/v1/nodes/Area", json={
-            **VALID_AREA,
-            "name": "Test Create 201",
-        })
+        resp = client.post(
+            "/api/v1/nodes/Area",
+            json={
+                **VALID_AREA,
+                "name": "Test Create 201",
+            },
+        )
         assert resp.status_code == 201
 
     def test_response_has_generated_id(self, client):
@@ -138,10 +144,7 @@ class TestAreaMerge:
         _create_area(client, name="Dual Type", area_type="neighborhood")
 
         resp = client.get("/api/v1/nodes/Area")
-        matches = [
-            a for a in resp.json()["items"]
-            if a["properties"]["name"] == "Dual Type"
-        ]
+        matches = [a for a in resp.json()["items"] if a["properties"]["name"] == "Dual Type"]
         assert len(matches) == 2
 
     def test_different_city_creates_separate_node(self, client):
@@ -149,24 +152,24 @@ class TestAreaMerge:
         _create_area(client, name="Cross City", city_name="Boston")
 
         resp = client.get("/api/v1/nodes/Area")
-        matches = [
-            a for a in resp.json()["items"]
-            if a["properties"]["name"] == "Cross City"
-        ]
+        matches = [a for a in resp.json()["items"] if a["properties"]["name"] == "Cross City"]
         assert len(matches) == 2
 
 
-# ── Validation (D1–D4) ──
+# ── Validation (D1-D4) ──
 
 
 @needs_neo4j
 class TestAreaValidation:
     def test_invalid_area_type_returns_422(self, client):
-        resp = client.post("/api/v1/nodes/Area", json={
-            **VALID_AREA,
-            "name": "Bad Type",
-            "area_type": "bogus",
-        })
+        resp = client.post(
+            "/api/v1/nodes/Area",
+            json={
+                **VALID_AREA,
+                "name": "Bad Type",
+                "area_type": "bogus",
+            },
+        )
         assert resp.status_code == 422
 
     def test_missing_city_name_returns_422(self, client):
@@ -176,27 +179,36 @@ class TestAreaValidation:
         assert resp.status_code == 422
 
     def test_centroid_lat_out_of_range_returns_422(self, client):
-        resp = client.post("/api/v1/nodes/Area", json={
-            **VALID_AREA,
-            "name": "Bad Lat",
-            "centroid_lat": 999,
-        })
+        resp = client.post(
+            "/api/v1/nodes/Area",
+            json={
+                **VALID_AREA,
+                "name": "Bad Lat",
+                "centroid_lat": 999,
+            },
+        )
         assert resp.status_code == 422
 
     def test_centroid_lng_out_of_range_returns_422(self, client):
-        resp = client.post("/api/v1/nodes/Area", json={
-            **VALID_AREA,
-            "name": "Bad Lng",
-            "centroid_lng": 999,
-        })
+        resp = client.post(
+            "/api/v1/nodes/Area",
+            json={
+                **VALID_AREA,
+                "name": "Bad Lng",
+                "centroid_lng": 999,
+            },
+        )
         assert resp.status_code == 422
 
     def test_invalid_boundary_returns_422(self, client):
-        resp = client.post("/api/v1/nodes/Area", json={
-            **VALID_AREA,
-            "name": "Bad Boundary",
-            "boundary": "not wkt",
-        })
+        resp = client.post(
+            "/api/v1/nodes/Area",
+            json={
+                **VALID_AREA,
+                "name": "Bad Boundary",
+                "boundary": "not wkt",
+            },
+        )
         assert resp.status_code == 422
 
 
@@ -209,10 +221,13 @@ class TestWithinEdge:
         area = _create_area(client, name="WITHIN Target Area")
         poi = _create_poi(client, "WITHIN Test POI", 48.855, 2.35)
 
-        resp = client.post("/api/v1/edges/WITHIN", json={
-            "source": {"label": "POI", "id": poi["id"]},
-            "target": {"label": "Area", "id": area["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/WITHIN",
+            json={
+                "source": {"label": "POI", "id": poi["id"]},
+                "target": {"label": "Area", "id": area["id"]},
+            },
+        )
         assert resp.status_code == 201
         assert resp.json()["type"] == "WITHIN"
 
@@ -220,10 +235,13 @@ class TestWithinEdge:
         parent = _create_area(client, name="Parent City", area_type="city")
         child = _create_area(client, name="Child Arr", area_type="district")
 
-        resp = client.post("/api/v1/edges/WITHIN", json={
-            "source": {"label": "Area", "id": child["id"]},
-            "target": {"label": "Area", "id": parent["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/WITHIN",
+            json={
+                "source": {"label": "Area", "id": child["id"]},
+                "target": {"label": "Area", "id": parent["id"]},
+            },
+        )
         assert resp.status_code == 201
 
     def test_within_merge_no_duplicate(self, client):
@@ -246,20 +264,26 @@ class TestWithinEdge:
         user_resp = client.post("/api/v1/nodes/User", json={"email": "within@test.com"})
         user = user_resp.json()
 
-        resp = client.post("/api/v1/edges/WITHIN", json={
-            "source": {"label": "User", "id": user["id"]},
-            "target": {"label": "Area", "id": area["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/WITHIN",
+            json={
+                "source": {"label": "User", "id": user["id"]},
+                "target": {"label": "Area", "id": area["id"]},
+            },
+        )
         assert resp.status_code == 422
         assert "WITHIN source must be POI or Area" in resp.json()["detail"]
 
     def test_invalid_target_label_returns_422(self, client):
         poi = _create_poi(client, "WITHIN Bad Target POI", 48.85, 2.34)
 
-        resp = client.post("/api/v1/edges/WITHIN", json={
-            "source": {"label": "POI", "id": poi["id"]},
-            "target": {"label": "POI", "id": poi["id"]},
-        })
+        resp = client.post(
+            "/api/v1/edges/WITHIN",
+            json={
+                "source": {"label": "POI", "id": poi["id"]},
+                "target": {"label": "POI", "id": poi["id"]},
+            },
+        )
         assert resp.status_code == 422
         assert "WITHIN target must be Area" in resp.json()["detail"]
 
@@ -270,12 +294,16 @@ class TestWithinEdge:
 @needs_neo4j
 class TestAreaSpatialQuery:
     def test_centroid_is_real_geopoint(self, clean_driver, client):
-        area = _create_area(client, name="Spatial Query Area", centroid_lat=48.853, centroid_lng=2.349)
+        _create_area(
+            client, name="Spatial Query Area", centroid_lat=48.853, centroid_lng=2.349
+        )
 
         with clean_driver.session() as s:
             result = s.run(
                 "MATCH (a:Area {name: 'Spatial Query Area'}) "
-                "RETURN point.distance(a.centroid, point({latitude: 48.853, longitude: 2.349, srid: 4326})) AS dist"
+                "RETURN point.distance(a.centroid, point("
+                "{latitude: 48.853, longitude: 2.349, srid: 4326}"
+                ")) AS dist"
             ).single()
             assert result is not None
             assert result["dist"] < 1.0  # Within 1 meter — confirms it's a real GeoPoint

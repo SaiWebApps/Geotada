@@ -18,7 +18,7 @@ the cold-open. Falls through to SYNTHESIZED_OPENER instead.
 - "trigger_address": square circumnavigation. Stable order by trigger
   address; one beat per address.
 - "narrative_function": flat fallback. hook → establishing → deepen →
-  climax → callback (and any remaining), 4–6 beats.
+  climax -> callback (and any remaining), 4-6 beats.
 
 Branch thresholds match phase-1-design.md: sub_location active when
 ≥3 distinct values populated on tier-5/4 anchors; trigger_address active
@@ -32,7 +32,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections import defaultdict
-from typing import Iterable
+from collections.abc import Iterable
 
 from .contract import POI, BeatRef, BeatSequence, OrderingStrategy, POIBeats, Route
 from .fixtures import sub_location_order_for
@@ -52,7 +52,7 @@ DEFAULT_FLAT_MIN: int = 4
 # walk's Sainte-Chapelle (5 beats) + Île de la Cité (4 beats) lost
 # fixture deepens to the 6-beat trim. 8 keeps all empirical anchor-flat
 # beats while staying under the audio budget for 90-min tours
-# (Île 8 anchors × ~4 extra-beat seconds is well within the 44-min budget).
+# (Île 8 anchors x ~4 extra-beat seconds is well within the 44-min budget).
 DEFAULT_FLAT_MAX: int = 8
 # Phase 4 calibration (2026-04-29): bumped from 2 to 3. The empirical
 # Vert-Galant pause stop carries 3 beats (establishing + view + tarnished);
@@ -112,10 +112,7 @@ def choose_ordering_strategy(beats: Iterable[BeatRef]) -> OrderingStrategy:
     """
     sub_n = len({b.sub_location for b in beats if b.sub_location})
     trig_n = len({b.trigger_address for b in beats if b.trigger_address})
-    if (
-        sub_n >= SUB_LOCATION_THRESHOLD
-        and (trig_n < TRIGGER_ADDRESS_THRESHOLD or sub_n >= trig_n)
-    ):
+    if sub_n >= SUB_LOCATION_THRESHOLD and (trig_n < TRIGGER_ADDRESS_THRESHOLD or sub_n >= trig_n):
         return "sub_location"
     if trig_n >= TRIGGER_ADDRESS_THRESHOLD:
         return "trigger_address"
@@ -336,7 +333,7 @@ def reorder_final_stop_for_closing(beat_sequence: BeatSequence) -> BeatSequence:
     moved = beats.pop(closing_idx)
     beats.append(moved)
     new_last = last_plan.model_copy(update={"beats": tuple(beats)})
-    new_poi_beats = beat_sequence.poi_beats[:-1] + (new_last,)
+    new_poi_beats = (*beat_sequence.poi_beats[:-1], new_last)
     return beat_sequence.model_copy(update={"poi_beats": new_poi_beats})
 
 
@@ -350,7 +347,8 @@ def _find_closing_friendly_index(beats: tuple[BeatRef, ...]) -> int | None:
     than a wrap-up.
     """
     eligible_indices = [
-        i for i, b in enumerate(beats)
+        i
+        for i, b in enumerate(beats)
         if (b.beat_type or "").lower() != "stop_orientation"
         and (b.narrative_function or "").lower() != "stop_orientation"
     ]
@@ -439,14 +437,11 @@ def find_area_orientation_beat(
             continue
         if not (start_areas & {a for a in peer.areas if a}):
             continue
-        peer_distance_m = haversine_m(
-            start_poi.lat, start_poi.lng, peer.lat, peer.lng
-        )
+        peer_distance_m = haversine_m(start_poi.lat, start_poi.lng, peer.lat, peer.lng)
         for beat in plan.beats:
-            is_orientation = (
-                (beat.beat_type or "").lower() == "stop_orientation"
-                or (beat.narrative_function or "").lower() == "stop_orientation"
-            )
+            is_orientation = (beat.beat_type or "").lower() == "stop_orientation" or (
+                beat.narrative_function or ""
+            ).lower() == "stop_orientation"
             if not is_orientation:
                 continue
             if not _hoist_geographically_honest(
@@ -492,9 +487,7 @@ def _hoist_orientation(
     the cold-open lookup actually finds it. If the orientation beat is
     already in ``ordered``, it's moved (not duplicated) to position 0.
     """
-    orientations = [
-        b for b in active if (b.beat_type or "").lower() == "stop_orientation"
-    ]
+    orientations = [b for b in active if (b.beat_type or "").lower() == "stop_orientation"]
     if not orientations:
         return ordered
     chosen = _pick_best(orientations, interest)
@@ -502,9 +495,7 @@ def _hoist_orientation(
     return [chosen, *rest]
 
 
-def _apply_b8_lite_dedup(
-    beats: list[BeatRef], interest: frozenset[str]
-) -> list[BeatRef]:
+def _apply_b8_lite_dedup(beats: list[BeatRef], interest: frozenset[str]) -> list[BeatRef]:
     """Drop near-duplicate beats per phase-1-design §3.3.
 
     Two beats collide when they share at least one lens (or are both
@@ -585,9 +576,7 @@ def _claims_collide(a: BeatRef, b: BeatRef) -> bool:
         return True
     # Phase 7: same year + ≥2 shared canonical entities catches
     # "same founding story, divergent prose" pairs (Pantheon vow).
-    if _shares_year_and_canonical_entities(a, b):
-        return True
-    return False
+    return bool(_shares_year_and_canonical_entities(a, b))
 
 
 def _entities_jaccard(a: BeatRef, b: BeatRef) -> float:
@@ -609,8 +598,8 @@ def _char_ngram_jaccard(a: BeatRef, b: BeatRef) -> float:
     Gallet / Hugo affair pairs where two extractors paraphrased the
     same anecdote at different lengths.
     """
-    body_a = (a.script_body or "")
-    body_b = (b.script_body or "")
+    body_a = a.script_body or ""
+    body_b = b.script_body or ""
     if not body_a or not body_b:
         return 0.0
     return _jaccard(_char_ngrams(body_a), _char_ngrams(body_b))
@@ -698,9 +687,7 @@ def _jaccard(a: set[str], b: set[str]) -> float:
     return len(a & b) / len(union)
 
 
-def _pick_dedup_loser(
-    a: BeatRef, b: BeatRef, interest: frozenset[str]
-) -> BeatRef:
+def _pick_dedup_loser(a: BeatRef, b: BeatRef, interest: frozenset[str]) -> BeatRef:
     """Return the beat to drop. Tie-breakers per §3.3 docstring above."""
     score_a = _beat_score(a, interest)
     score_b = _beat_score(b, interest)
@@ -736,10 +723,10 @@ def _enforce_tone_variety(beats: list[BeatRef]) -> list[BeatRef]:
     position i-1 (the middle), which breaks the run regardless of which
     direction the relief comes from.
     """
-    SOMBER = {"somber", "reverent"}
+    somber_registers = {"somber", "reverent"}
 
     def is_somber(b: BeatRef) -> bool:
-        return (b.emotional_register or "").lower() in SOMBER
+        return (b.emotional_register or "").lower() in somber_registers
 
     out = list(beats)
     for _ in range(len(out) + 1):  # bounded fixpoint
@@ -753,7 +740,11 @@ def _enforce_tone_variety(beats: list[BeatRef]) -> list[BeatRef]:
 
         # Find any non-somber beat outside the violation window.
         swap_with = next(
-            (j for j, b in enumerate(out) if not is_somber(b) and j not in {violation - 2, violation - 1, violation}),
+            (
+                j
+                for j, b in enumerate(out)
+                if not is_somber(b) and j not in {violation - 2, violation - 1, violation}
+            ),
             None,
         )
         if swap_with is None:

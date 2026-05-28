@@ -18,7 +18,6 @@ Mocks the driver so no actual Cypher runs against any real instance.
 
 from __future__ import annotations
 
-import os
 from unittest.mock import MagicMock
 
 import pytest

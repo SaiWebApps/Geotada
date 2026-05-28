@@ -62,8 +62,13 @@ def find_matching_beats(
                poi.id AS poi_id,
                poi.name AS poi_name,
                l.name AS lens_name,
-               coalesce(l.display_name, l.name) AS lens_display,
+               coalesce(l.display_label, l.name) AS lens_display,
                coalesce(beat.duration_sec, 180) AS duration_sec,
+               coalesce(poi.typical_duration_min,
+                   CASE WHEN coalesce(poi.importance_tier, 3) >= 5 THEN 60
+                        WHEN coalesce(poi.importance_tier, 3) >= 4 THEN 45
+                        ELSE 30 END
+               ) AS typical_duration_min,
                coalesce(poi.importance_tier, 3) AS importance_tier,
                poi.location.latitude AS lat,
                poi.location.longitude AS lng
@@ -116,16 +121,15 @@ def apply_golden_ratio(
 
     selected = selected_anchors + selected_flavour
 
-    # Trim to duration budget if provided
+    # Trim to duration budget if provided (using POI visit duration, not beat audio length)
     if duration_min is not None:
         trimmed: list[dict[str, Any]] = []
-        total_sec = 0
-        budget_sec = duration_min * 60
+        total_min = 0
         for stop in selected:
-            stop_dur = stop.get("duration_sec", 180)
-            if total_sec + stop_dur <= budget_sec:
+            stop_dur = stop.get("typical_duration_min", 30)
+            if total_min + stop_dur <= duration_min:
                 trimmed.append(stop)
-                total_sec += stop_dur
+                total_min += stop_dur
             else:
                 break
         selected = trimmed
@@ -148,8 +152,7 @@ def compute_schedule(
 
     scheduled: list[dict[str, Any]] = []
     for idx, stop in enumerate(stops):
-        duration_sec = stop.get("duration_sec", 180)
-        duration_min = max(1, duration_sec // 60)
+        duration_min = stop.get("typical_duration_min", 30)
         time_str = f"{current_hour:02d}:{current_minute:02d}"
 
         scheduled.append(
@@ -168,7 +171,7 @@ def compute_schedule(
             }
         )
 
-        # Advance clock
+        # Advance clock by POI visit duration
         current_minute += duration_min
         current_hour += current_minute // 60
         current_minute = current_minute % 60
@@ -248,3 +251,78 @@ def create_trip_with_stops(
         )
 
     return {"trip_id": trip_id, "trip_name": trip_name}
+
+
+def list_trips_for_profile(
+    session: Session,
+    profile_id: str,
+) -> list[dict[str, Any]]:
+    """Return all trips for a profile with their stops.
+
+    For each trip, collects stops via HAS_STOP → ItineraryItem → AT_POI → POI,
+    PLAYS_BEAT → Beat → TAGGED_WITH → Lens. Returns trip data + ordered stops.
+    """
+    # First verify profile exists
+    check = session.run(
+        "MATCH (p:Profile {id: $pid}) RETURN p.id AS id",
+        pid=profile_id,
+    ).single()
+    if check is None:
+        return None  # type: ignore[return-value]
+
+    # Get all trips for this profile
+    trips_query = """
+        MATCH (p:Profile {id: $pid})-[:IS_CAPTAIN_OF]->(t:Trip)
+        RETURN t.id AS trip_id,
+               t.name AS trip_name,
+               t.start_date AS start_date,
+               t.end_date AS end_date,
+               t.status AS status
+        ORDER BY t.created_at DESC
+    """
+    trip_records = session.run(trips_query, pid=profile_id)
+    trips = [dict(r) for r in trip_records]
+
+    results: list[dict[str, Any]] = []
+    for trip in trips:
+        # Get stops for each trip
+        stops_query = """
+            MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(item:ItineraryItem)
+            MATCH (item)-[:AT_POI]->(poi:POI)
+            MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)-[:TAGGED_WITH]->(lens:Lens)
+            RETURN item.sort_order AS sort_order,
+                   poi.id AS poi_id,
+                   poi.name AS poi_name,
+                   poi.location.latitude AS lat,
+                   poi.location.longitude AS lng,
+                   beat.id AS beat_id,
+                   lens.name AS lens_name,
+                   coalesce(lens.display_label, lens.name) AS lens_display,
+                   item.duration_min AS duration_min,
+                   coalesce(poi.importance_tier, 3) AS importance_tier,
+                   CASE WHEN item.start_time IS NOT NULL
+                        THEN substring(toString(item.start_time), 0, 5)
+                        ELSE '09:00' END AS start_time
+            ORDER BY item.sort_order
+        """
+        stop_records = session.run(stops_query, tid=trip["trip_id"])
+        stops = [dict(r) for r in stop_records]
+
+        total_duration = sum(s["duration_min"] for s in stops)
+        anchor_count = sum(1 for s in stops if s["importance_tier"] == 5)
+        flavour_count = len(stops) - anchor_count
+
+        results.append(
+            {
+                "trip_id": trip["trip_id"],
+                "trip_name": trip["trip_name"],
+                "profile_id": profile_id,
+                "total_stops": len(stops),
+                "total_duration_min": total_duration,
+                "anchor_count": anchor_count,
+                "flavour_count": flavour_count,
+                "stops": stops,
+            }
+        )
+
+    return results

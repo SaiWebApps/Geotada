@@ -94,7 +94,7 @@ def test_rollback_byte_identical_on_hash_collision(tmp_path):
         topic_slug="fortress",
         chunk="chunk-01-1st-arr",
     )
-    final_beats = seed + [collider]
+    final_beats = [*seed, collider]
     final_log = json.loads(log_path.read_text())  # unchanged
 
     with pytest.raises(BeatValidationError) as exc:
@@ -128,7 +128,7 @@ def test_rollback_byte_identical_on_identity_collision(tmp_path):
         topic_slug="fortress",
         chunk="chunk-01-1st-arr",
     )
-    final_beats = seed + [duplicate]
+    final_beats = [*seed, duplicate]
 
     with pytest.raises(BeatValidationError) as exc:
         commit(
@@ -159,7 +159,7 @@ def test_commit_happy_path_writes_both_files(tmp_path):
         topic_slug="1645_vow",
         chunk="chunk-15-5th-arr-val-de-grace",
     )
-    final_beats = seed + [new_beat]
+    final_beats = [*seed, new_beat]
     final_log = json.loads(log_path.read_text())
     final_log["books_processed"][0]["chunks_processed"].append(
         {"chunk": "chunk-15-5th-arr-val-de-grace", "beats_extracted": 1}
@@ -202,7 +202,7 @@ def test_commit_missing_hash_rejected(tmp_path):
         chunk="chunk-15-5th-arr-val-de-grace",
     )
     del new_beat["script_body_hash"]
-    final_beats = seed + [new_beat]
+    final_beats = [*seed, new_beat]
 
     with pytest.raises(BeatValidationError) as exc:
         commit(
@@ -235,7 +235,7 @@ def test_commit_pre_existing_targets_untouched_on_fail(tmp_path):
 
     with pytest.raises(BeatValidationError):
         commit(
-            seed + [collider],
+            [*seed, collider],
             json.loads(log_path.read_text()),
             beats_path=beats_path,
             log_path=log_path,

@@ -35,7 +35,7 @@ from __future__ import annotations
 import datetime as _dt
 import re
 from collections import Counter
-from typing import Iterable
+from collections.abc import Iterable
 
 from .contract import (
     BeatRef,
@@ -48,7 +48,7 @@ from .contract import (
     TourInput,
     ValidationReport,
 )
-from .glue_client import GlueClient, MockGlueClient, NO_GLUE_SENTINEL
+from .glue_client import NO_GLUE_SENTINEL, GlueClient, MockGlueClient
 from .routing import compute_dwell_seconds
 
 # ---------------------------------------------------------------------------
@@ -132,9 +132,8 @@ def generate(
     No exception is raised on validation failure — the caller (skill
     orchestrator) decides whether to block on a non-empty report.
     """
-    from .validation import validate_script  # avoid import cycle
-
     from .beat_select import reorder_final_stop_for_closing  # avoid cycles
+    from .validation import validate_script  # avoid import cycle
 
     client = glue_client or MockGlueClient()
     sentences: list[Sentence] = []
@@ -171,9 +170,7 @@ def generate(
             for s in transit_sents:
                 if s.source_type == "beat":
                     consumed_beat_ids.add(s.source_id)
-        anchor_sents = _build_anchor_block(
-            current, stop_idx, skip_beat_ids=consumed_beat_ids
-        )
+        anchor_sents = _build_anchor_block(current, stop_idx, skip_beat_ids=consumed_beat_ids)
         sentences.extend(anchor_sents)
         for s in anchor_sents:
             if s.source_type == "beat":
@@ -199,7 +196,7 @@ def generate(
 
     script = Script(
         city_slug=tour_input.city_slug,
-        generated_at=(now or _dt.datetime.now(_dt.timezone.utc)).isoformat(),
+        generated_at=(now or _dt.datetime.now(_dt.UTC)).isoformat(),
         inputs=tour_input,
         total_audio_seconds=total_audio,
         total_walking_seconds=walking,
@@ -247,9 +244,7 @@ def _build_cold_open(
     first_stop = poi_beats[stop_idx]
     orientation = _find_orientation_beat(first_stop)
     if orientation is None:
-        orientation = find_area_orientation_beat(
-            beat_sequence, route, start_idx=stop_idx
-        )
+        orientation = find_area_orientation_beat(beat_sequence, route, start_idx=stop_idx)
     sentences: list[Sentence] = []
     consumed: set[str] = set()
 
@@ -274,9 +269,7 @@ def _build_cold_open(
         # Every phrase traces to a glue-whitelist token or an extracted
         # corpus field — no Haiku invention. Marked SYNTHESIZED_OPENER
         # so audits can prioritise stop_orientation back-fill.
-        sentences.extend(
-            _build_synthesized_opener(first_stop, route, tour_input, stop_idx)
-        )
+        sentences.extend(_build_synthesized_opener(first_stop, route, tour_input, stop_idx))
         first_beat = next((b for b in first_stop.beats if b.script_body), None)
         if first_beat is not None:
             sentences.extend(_beat_to_sentences(first_beat, stop_idx))
@@ -479,9 +472,7 @@ def _find_orientation_beat(stop: POIBeats) -> BeatRef | None:
 # ---------------------------------------------------------------------------
 
 
-_TRANSIT_NARRATIVE_FUNCTIONS: frozenset[str] = frozenset(
-    {"transition", "transit", "navigation"}
-)
+_TRANSIT_NARRATIVE_FUNCTIONS: frozenset[str] = frozenset({"transition", "transit", "navigation"})
 
 
 def _build_anchor_block(
@@ -566,7 +557,7 @@ def _build_transit(
         return _beat_to_sentences(transit_beat, stop_idx)
 
     distance_m = _segment_distance_m(route, stop_idx)
-    distance_clause = f", distance approx {int(round(distance_m))}m" if distance_m else ""
+    distance_clause = f", distance approx {round(distance_m)}m" if distance_m else ""
     request = (
         f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
         f"Use only navigation language — no facts, no names, no dates."
@@ -621,17 +612,13 @@ def _find_directional_transit_beat(
             continue
         if not needles:
             return beat  # caller didn't ask for direction-awareness
-        haystack = (
-            f"{beat.trigger_address or ''} {beat.script_body or ''}"
-        ).lower()
+        haystack = (f"{beat.trigger_address or ''} {beat.script_body or ''}").lower()
         if any(n.lower() in haystack for n in needles):
             return beat
     return None
 
 
-def _find_transit_beat(
-    stop: POIBeats, consumed: set[str] | None = None
-) -> BeatRef | None:
+def _find_transit_beat(stop: POIBeats, consumed: set[str] | None = None) -> BeatRef | None:
     """Phase 7 deprecated alias — kept for backward import compat."""
     return _find_directional_transit_beat(stop, consumed=consumed)
 
@@ -763,7 +750,9 @@ def _flatten_pois(beat_sequence: BeatSequence, route: Route) -> tuple[ScriptPOI,
                 tier=poi.tier,
                 lat=poi.lat,
                 lng=poi.lng,
-                area=route.spine_area if route.spine_area in poi.areas else (poi.areas[0] if poi.areas else None),
+                area=route.spine_area
+                if route.spine_area in poi.areas
+                else (poi.areas[0] if poi.areas else None),
                 dwell_seconds=compute_dwell_seconds(poi.tier),
                 beat_ids=beat_ids,
             )
@@ -800,21 +789,21 @@ def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> in
         if beat.est_spoken_seconds:
             total += beat.est_spoken_seconds
         elif beat.word_count:
-            total += int(round(beat.word_count / 150 * 60))  # 150 wpm
+            total += round(beat.word_count / 150 * 60)  # 150 wpm
     total += glue_count * 4
     return total
 
 
 __all__ = [
-    "generate",
-    "split_sentences",
-    "GLUE_LABELS",
-    "GLUE_NAV",
-    "GLUE_STAGING",
-    "GLUE_PACING",
+    "ARITH",
+    "FORBIDDEN_PHRASES",
     "GLUE_CALLBACK",
     "GLUE_CLOSING",
-    "ARITH",
+    "GLUE_LABELS",
+    "GLUE_NAV",
+    "GLUE_PACING",
+    "GLUE_STAGING",
     "SYNTHESIZED_OPENER",
-    "FORBIDDEN_PHRASES",
+    "generate",
+    "split_sentences",
 ]
