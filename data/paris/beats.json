@@ -81026,10 +81026,24 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 4,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "britannica.com/place/Saint-Sulpice (reference)",
+        "generalsaintsulpice.org/en/who-are-we/en-jean-jacques-olier (primary — Sulpician society)",
+        "afrenchcollection.com size corroboration: 113m vs Notre-Dame 128m (travel)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81090,10 +81104,23 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "restaurersaintsulpice.fr/en/decouvrir (primary — church restoration project)",
+        "getty.edu Bouchardon exhibition (academic)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81145,10 +81172,23 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "en.wikipedia.org/wiki/Saint-Sulpice,_Paris (reference)",
+        "corroborated independently: 1739 Turgot map shows no crossing tower"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81210,10 +81250,23 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "commune1871.org — Clubs de la Commune / Louise Michel at Saint-Sulpice (association/academic)",
+        "parcoursrevolution.paris.fr Saint-Sulpice republican temple (primary — City of Paris)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81277,10 +81330,23 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "parcoursrevolution.paris.fr Saint-Sulpice a Republican Temple (primary — City of Paris)",
+        "travelfranceonline.com St-Sulpice history (travel — faded sign over center door)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81334,10 +81400,24 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 2,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "en.wikipedia.org/wiki/Adèle_Foucher — Hugo–Foucher marriage 12 Oct 1822 (reference)",
+        "susannahfullerton.com.au 12 Oct 1822 marriage (reference)",
+        "eymardianplaces.com — Sade (1740) & Baudelaire (1821) baptisms at Saint-Sulpice"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81404,10 +81484,23 @@
       "retrieved_at": "2026-05-28T05:07:33+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 4,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; described features (gnomon meridian line, Pigalle marble Virgin, de Wailly pulpit, Supreme Being inscription, P/S transept windows) remain present and the church is open.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "en.wikipedia.org/wiki/The_Da_Vinci_Code_(film) — Archbishop refused filming; Shepperton recreation (reference)",
+        "travelfranceonline.com — church disclaimer notice, meridian line (travel)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81466,10 +81559,23 @@
       "retrieved_at": "2026-05-28T18:43:36+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 2,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; the arch stands on the historic axis and all described features (quadriga, soldier statues, marble columns, bas-reliefs) remain in place.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "napoleon.org Arc de Triomphe du Carrousel (academic/foundation)",
+        "louvre.fr Arc de Triomphe du Carrousel campaign (primary — Louvre)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81531,10 +81637,23 @@
       "retrieved_at": "2026-05-28T18:43:36+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; the arch stands on the historic axis and all described features (quadriga, soldier statues, marble columns, bas-reliefs) remain in place.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "louvre.fr conservation treatment on the Arc de triomphe du Carrousel (primary — Louvre)",
+        "napoleon.org Arc de Triomphe du Carrousel (academic)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81594,10 +81713,23 @@
       "retrieved_at": "2026-05-28T18:43:36+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 2,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; the arch stands on the historic axis and all described features (quadriga, soldier statues, marble columns, bas-reliefs) remain in place.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "louvre.fr conservation treatment — Denon selected subjects, Meynier designed (primary — Louvre)",
+        "napoleon.org Arc de Triomphe du Carrousel (academic)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81657,10 +81789,23 @@
       "retrieved_at": "2026-05-28T18:43:36+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; the arch stands on the historic axis and all described features (quadriga, soldier statues, marble columns, bas-reliefs) remain in place.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "louvre.fr Arc de Triomphe du Carrousel (primary — Louvre)",
+        "theatrum-belli.com / paris-autrement.paris — sapeur Dominique Gaye-Mariolle (reference)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81723,10 +81868,23 @@
       "retrieved_at": "2026-05-28T18:43:36+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; the arch stands on the historic axis and all described features (quadriga, soldier statues, marble columns, bas-reliefs) remain in place.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "en.wikipedia.org/wiki/Horses_of_Saint_Mark (reference)",
+        "napoleon.org Arc de Triomphe du Carrousel (academic)"
+      ]
     },
     "new_poi": false,
     "_meta": {
@@ -81788,10 +81946,23 @@
       "retrieved_at": "2026-05-28T18:43:36+00:00"
     },
     "fact_check": {
-      "flagged_claims": [],
-      "status": "unverified",
       "extractor_state": "clean",
-      "notes": ""
+      "flagged_claims": [],
+      "notes": "",
+      "status": "verified",
+      "checked_at": "2026-05-28T19:22:36+00:00",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions; the arch stands on the historic axis and all described features (quadriga, soldier statues, marble columns, bas-reliefs) remain in place.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "napoleon.org Arc de Triomphe du Carrousel (academic)",
+        "en.wikipedia.org/wiki/Axe_historique — ~9 km axis, arch at eastern end (reference)"
+      ]
     },
     "new_poi": false,
     "_meta": {
