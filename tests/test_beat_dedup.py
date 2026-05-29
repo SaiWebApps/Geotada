@@ -227,6 +227,57 @@ def test_apply_combine_replaces_both(tmp_path):
     assert merged_beat["_meta"]["prompt_version"] == "dedup_merge_v1"
 
 
+def test_apply_combine_resets_verification(tmp_path):
+    """A COMBINE that rewrites the body must drop an inherited verified badge —
+    otherwise commit blocks it (VERIFICATION_STALE) and a 'verified' status would
+    sit on text no human checked."""
+    a = _beat("a", "First phrasing about the vow.", topic="vow_a")
+    a["fact_check"] = {"status": "verified", "verified_body_hash": a["script_body_hash"]}
+    b = _beat("b", "Second phrasing about the vow.", topic="vow_b")
+    bp, lp = _seed_files(tmp_path, [a, b])
+    decisions = [
+        {
+            "beat_a": "a",
+            "beat_b": "b",
+            "jaccard": 0.55,
+            "classification": "same_story_enhanced_content",
+            "action": "COMBINE",
+            "merged_text": "The merged account of the royal vow and the abbey's founding.",
+        }
+    ]
+    beat_dedup.apply_decisions(
+        decisions, beats_path=bp, log_path=lp, city="paris", out_dir=tmp_path / "_dedup_review"
+    )
+    merged = json.loads(bp.read_text(encoding="utf-8"))[0]
+    assert merged["fact_check"]["status"] == "unverified"
+    assert "verified_body_hash" not in merged["fact_check"]
+
+
+def test_apply_skip_keeps_verified_over_unverified(tmp_path):
+    """SKIP must not drop a verified beat for an unverified duplicate, even when
+    the verified one is 'newer' (which the timestamp tie-break would otherwise drop)."""
+    older = _beat("older", "Older unverified phrasing.", generated_at="2025-01-01T00:00:00Z")
+    newer = _beat(
+        "newer", "Newer verified phrasing.", topic="new_angle", generated_at="2026-04-22T12:00:00Z"
+    )
+    newer["fact_check"] = {"status": "verified", "verified_body_hash": newer["script_body_hash"]}
+    bp, lp = _seed_files(tmp_path, [older, newer])
+    decisions = [
+        {
+            "beat_a": "older",
+            "beat_b": "newer",
+            "jaccard": 0.6,
+            "classification": "same_story_same_wording",
+            "action": "SKIP",
+        }
+    ]
+    beat_dedup.apply_decisions(
+        decisions, beats_path=bp, log_path=lp, city="paris", out_dir=tmp_path / "_dedup_review"
+    )
+    remaining_ids = {b["beat_id"] for b in json.loads(bp.read_text(encoding="utf-8"))}
+    assert remaining_ids == {"newer"}
+
+
 def test_apply_keep_both_flags_both(tmp_path):
     a = _beat("a", "Story one.", topic="one")
     b = _beat("b", "Story two.", topic="two", lens="visual_art")

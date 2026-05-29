@@ -314,3 +314,45 @@ def test_validator_book_legacy_chunk_soft_skips(tmp_path):
     target = _setup_book(tmp_path, [beat])
     result = run_validator(target)
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+# ── commit-time verification-freshness gate ──
+
+
+def _verified_beat(body_hash: str, verified_body_hash: str | None) -> dict:
+    fc = {"status": "verified"}
+    if verified_body_hash is not None:
+        fc["verified_body_hash"] = verified_body_hash
+    return {
+        "beat_id": "paris_x_historic_arch_legacy_unknown_t",
+        "city_name": "paris",
+        "poi_name": "X",
+        "lens": "historic_arch",
+        "book_slug": "legacy_unknown",  # skips grounding + identity wildcard
+        "topic_slug": "t",
+        "source_chunk_slug": "legacy_ambiguous",
+        "script_body_hash": body_hash,
+        "fact_check": fc,
+    }
+
+
+def test_validator_verified_matching_hash_passes(tmp_path):
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_verified_beat("hX", "hX")]))
+    assert run_validator(target).returncode == 0
+
+
+def test_validator_verified_stale_hash_fails(tmp_path):
+    """A verified beat whose body changed since verification is blocked."""
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_verified_beat("hNEW", "hOLD")]))
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "VERIFICATION_STALE" in result.stdout
+
+
+def test_validator_verified_without_stamp_passes(tmp_path):
+    """A verified beat with no verified_body_hash is unprotected, not failed."""
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_verified_beat("hX", None)]))
+    assert run_validator(target).returncode == 0

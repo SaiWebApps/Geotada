@@ -143,6 +143,7 @@ Update each beat's `fact_check` field:
 "fact_check": {
   "status": "verified | corrected | disputed | unverified",
   "checked_at": "ISO 8601 timestamp",
+  "verified_body_hash": "<the beat's current script_body_hash, ONLY when status=='verified'>",
   "claims_checked": 5,
   "source_passage_verified": true,
   "physical_cues_verified": true,
@@ -298,3 +299,4 @@ Before writing:
 5. **No new content invented** — corrections use verified facts only, not AI knowledge
 6. **Valid JSON** — proper formatting
 7. **Count check** — same number of beats and POIs in output as input
+8. **Every `verified` beat carries `verified_body_hash` == its current `script_body_hash`** — this binds the verification to the exact text, so a later edit/merge that rewrites the body is caught by `validate_beats` (`VERIFICATION_STALE`) instead of silently keeping a stale "verified" badge.

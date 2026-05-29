@@ -247,8 +247,17 @@ def apply_decisions(
             continue
 
         if action == "SKIP":
-            newer_id = _newer_beat(a, b)
-            keep.pop(newer_id, None)
+            drop_id = _newer_beat(a, b)
+            # Never drop a verified beat in favour of an unverified duplicate —
+            # verification is human-reviewed content we don't want to lose to a
+            # timestamp tie-break. If exactly one side is verified, keep it.
+            a_ver = (a.get("fact_check") or {}).get("status") == "verified"
+            b_ver = (b.get("fact_check") or {}).get("status") == "verified"
+            if a_ver and not b_ver:
+                drop_id = b_id
+            elif b_ver and not a_ver:
+                drop_id = a_id
+            keep.pop(drop_id, None)
         elif action == "INSERT":
             pass  # both stay, no mutation
         elif action == "COMBINE":
@@ -260,6 +269,13 @@ def apply_decisions(
             new_beat = dict(a)
             new_beat["script_body"] = merged_text.strip()
             new_beat["script_body_hash"] = _normalize_hash(merged_text)
+            # The merged body is new text — drop any inherited verification so a
+            # "verified" badge can't carry onto content no human checked. The
+            # merged beat must be re-run through /fact-check.
+            merged_fc = dict(new_beat.get("fact_check") or {})
+            merged_fc["status"] = "unverified"
+            merged_fc.pop("verified_body_hash", None)
+            new_beat["fact_check"] = merged_fc
             new_beat["merged_from"] = [a_id, b_id]
             pair_digest = hashlib.sha256(
                 f"{a_id}\n{b_id}".encode("utf-8")

@@ -22,6 +22,11 @@ Checks collection-level invariants the Pydantic model can't enforce:
    `{beats_dir}/grounding_grandfathered.json` (legacy terse-note beats predating
    the verbatim convention — a shrinking cleanup backlog). New extractions and
    any edit to a grandfathered beat are hard-enforced.
+5. A `verified` beat still carries the body it was verified against:
+   `fact_check.verified_body_hash` (stamped by /fact-check) must equal the
+   current `script_body_hash`. A mutation that rewrites a verified beat's body
+   without re-verifying (e.g. a dedup merge) is blocked, so a "verified" badge
+   can never sit on unverified text.
 
 Scoped to the beats file's own city directory + the repo's `Books/{City}/`
 chunk sources; never reads any other city or global state. The pre-upload gate
@@ -232,6 +237,34 @@ def _check_book_grounding(beats: list[dict], beats_path: Path) -> list[str]:
     return errors
 
 
+def _check_verification_freshness(beats: list[dict]) -> list[str]:
+    """A `verified` beat must still carry the body it was verified against.
+
+    When `/fact-check` marks a beat `verified` it stamps
+    `fact_check.verified_body_hash = script_body_hash`. If a later operation
+    rewrites the body (e.g. a dedup COMBINE) but carries the old verification
+    forward, the stamp no longer matches the current `script_body_hash` — a
+    "verified" badge on text no human checked. That is blocked here.
+
+    Enforced only when the stamp is present, so beats verified before this field
+    existed (or not yet re-stamped) are not falsely failed — they are simply
+    unprotected until re-verified.
+    """
+    errors: list[str] = []
+    for beat in beats:
+        fc = beat.get("fact_check") or {}
+        if fc.get("status") != "verified":
+            continue
+        stamped = fc.get("verified_body_hash")
+        if stamped and stamped != beat.get("script_body_hash"):
+            errors.append(
+                f"VERIFICATION_STALE {beat.get('beat_id', '<no-beat-id>')}: status=verified but "
+                f"verified_body_hash != script_body_hash — body changed since verification; "
+                f"re-run /fact-check or drop the verified status"
+            )
+    return errors
+
+
 def validate(path: Path) -> list[str]:
     beats = _load_beats(path)
     return (
@@ -239,6 +272,7 @@ def validate(path: Path) -> list[str]:
         + _check_identity_uniqueness(beats)
         + _check_wikipedia_grounding(beats, path.parent / "wikipedia")
         + _check_book_grounding(beats, path)
+        + _check_verification_freshness(beats)
     )
 
 

@@ -37,7 +37,8 @@
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Les_Halles (wikipedia)",
         "https://www.europeana.eu/en/stories/the-history-of-les-halles-food-market-in-paris (reference)"
-      ]
+      ],
+      "verified_body_hash": "7a2c89afbfdc5593118794ea4dd1810c9aee73e0691b5a892fa7bf4e568eef7f"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -101,7 +102,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "7f6fcd6cb360f8b69a26a1fcda4062f732bb58db55a56accceb13e620b3ab16f"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -173,7 +175,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "2f85bb016ba90aecd42db6ba0108093fee7f13cbd9ebe75d41c2278e21f61b3b"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -233,7 +236,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "32973296a6e145c479cbcd55bf32d614cc1508de303d1dc580e823d863b8c35f"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -299,7 +303,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "cf1c177973e1eb89f5ec33297731cf9e3462954c84f63820fceb61a23f9ae1cb"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -362,7 +367,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "a3973bac40751577fe988bca3f025d865a4e720407d1ceb7199ced2b4053ec82"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -430,7 +436,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "21a484a42dd0fff1eea53f87b77b1b592d16cca9d82b0273375aab1fa5915159"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -497,7 +504,8 @@
       "physical_cue_issues": [],
       "sources_consulted": [
         "Cross-referenced against Wikipedia and primary sources during batch verification"
-      ]
+      ],
+      "verified_body_hash": "7a287100615a39999490c12df20cc152d0a2be319f4c99fce36d423b08c05c53"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -569,7 +577,8 @@
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Fran%C3%A7ois_Ravaillac (wikipedia)",
         "https://frenchmoments.eu/assassination-of-henri-iv/ (reference)"
-      ]
+      ],
+      "verified_body_hash": "ce956a337376bc8ba3e3c0e2dee095a2bb8897d1627e6e69e922f4be532d4726"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -799,7 +808,8 @@
       "sources_consulted": [
         "https://www.smithsonianmag.com/science-nature/x-ray-technology-reveals-marie-antoinettes-censored-secret-correspondence-180978796/ (reference — Smithsonian)",
         "https://www.1001pharma.fr/pharmacie/ile-de-france/paris/paris/pharmacie-saint-honore-la-pharmacie-la-plus-ancienne-de-paris-etablissement-cree-en-1715-3975.html (primary — pharmacy listing)"
-      ]
+      ],
+      "verified_body_hash": "b3db3c9de5ee07954a75fcf3b3875339e7cd2c254546e76e89a49d5ebe937b7e"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -980,7 +990,8 @@
         "Le Pied de Cochon Belle Époque setting"
       ],
       "status": "verified",
-      "notes": "Le Pied de Cochon at 6 rue Coquillière confirmed — still operating with Belle Époque décor. Founded 1947 (not itself Belle Époque era, but the décor style is accurate). Rue Montorgueil remains a major food street in the 1st/2nd arrondissement."
+      "notes": "Le Pied de Cochon at 6 rue Coquillière confirmed — still operating with Belle Époque décor. Founded 1947 (not itself Belle Époque era, but the décor style is accurate). Rue Montorgueil remains a major food street in the 1st/2nd arrondissement.",
+      "verified_body_hash": "73068bf89e2e361b99074b3610c5f2d7b00fd2a2c8e7505566c0881c9707be76"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1035,7 +1046,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Pont-Neuf's history as a bustling social hub and the bouquinistes' origins from bridge vendors are well-documented."
+      "notes": "Pont-Neuf's history as a bustling social hub and the bouquinistes' origins from bridge vendors are well-documented.",
+      "verified_body_hash": "b27aaa73cbbe317827cce59281b772de72cee1d78cdacbc67835e79a0c97ce58"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1088,7 +1100,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Philippe le Bel's palace reconstruction and the Salle des Pas Perdus confirmed. Fire of 1618 destroyed much of the medieval interior."
+      "notes": "Philippe le Bel's palace reconstruction and the Salle des Pas Perdus confirmed. Fire of 1618 destroyed much of the medieval interior.",
+      "verified_body_hash": "dddd53d4403b95d4e9c87a491e7a7c6c3f043b7759a7e3e1f15aa1409d6b8580"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1228,7 +1241,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Conciergerie as prison from 1391 confirmed. Tour Bonbec and its etymology confirmed. Prison remained in use until early 20th century."
+      "notes": "Conciergerie as prison from 1391 confirmed. Tour Bonbec and its etymology confirmed. Prison remained in use until early 20th century.",
+      "verified_body_hash": "4479898ee2f39cbe01ba2d8de4633e49e189135b9ffce9dc2872133a552ea406"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1285,7 +1299,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Cartouche (Louis Dominique Garthausen, 1693-1721) confirmed. Brinvilliers executed 1676 confirmed. All held at Conciergerie confirmed."
+      "notes": "Cartouche (Louis Dominique Garthausen, 1693-1721) confirmed. Brinvilliers executed 1676 confirmed. All held at Conciergerie confirmed.",
+      "verified_body_hash": "41624ed9aa30031162447b68e752bc64bba7bd3168f44b19786cba44aadec698"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1429,7 +1444,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Sanson family 7 generations 1688-1847 confirmed (Library of Congress, Wikipedia). Charles-Henri Sanson executed Louis XVI on 21 January 1793 confirmed. Last Sanson (Henry-Clément) dismissed 1847 after pawning guillotine. Renoir family connection from Jean Renoir's memoirs."
+      "notes": "Sanson family 7 generations 1688-1847 confirmed (Library of Congress, Wikipedia). Charles-Henri Sanson executed Louis XVI on 21 January 1793 confirmed. Last Sanson (Henry-Clément) dismissed 1847 after pawning guillotine. Renoir family connection from Jean Renoir's memoirs.",
+      "verified_body_hash": "db208cd141434fe66a6ecc687b6bc1c038e0ed64edf474a522c811bd6940810c"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1504,7 +1520,8 @@
       "disputes": [],
       "unverified_claims": [],
       "physical_cue_issues": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "a21b9066c75300544ff9f1bcf3139446222158eb810e579ca0418661f797be01"
     },
     "_meta": {
       "prompt_version": "beat_from_book_v1",
@@ -1637,7 +1654,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Hortense_Schneider"
-      ]
+      ],
+      "verified_body_hash": "190f4b45ea8be572a001ce803e7fcdbacce6717269fd7b92adc41d206ef1c8f1"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -1704,7 +1722,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Euronext_Paris"
-      ]
+      ],
+      "verified_body_hash": "05fbf22498d727d77d53b50af8ce451cd15dc0eb0919978519d4c5392442bb91"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -1767,7 +1786,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Notre-Dame-des-Victoires,_Paris"
-      ]
+      ],
+      "verified_body_hash": "19fba6dc218a3aa58ab45831806b9802921f424ce4dbfa657a583fc40d877d7d"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -1832,7 +1852,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Jean-Baptiste_Lully"
-      ]
+      ],
+      "verified_body_hash": "cce477684504d06c6dfd9af2bcce5a26ddc6d0156f227ab4552a80b0453ee8a2"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -1887,7 +1908,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://www.bnf.fr/en/the-bnfs-richelieu-site"
-      ]
+      ],
+      "verified_body_hash": "8e666714fd2e27d050b2dae00b4a3d3a6ea757c79848e92dbeb30de19866d5d3"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -1942,7 +1964,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://www.bnf.fr/en/the-bnfs-richelieu-site"
-      ]
+      ],
+      "verified_body_hash": "21c9f10408e3120cbf7cef40c1c4cefd5ff026bfe373c924ef856a021d5f981b"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2010,7 +2033,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Galerie_Vivienne"
-      ]
+      ],
+      "verified_body_hash": "5977b5f072a23f8d372a63fdc4a176ee6acb02b5fa17024a86a8b7131a39d234"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2143,7 +2167,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Jean-Baptiste_Lully"
-      ]
+      ],
+      "verified_body_hash": "80c733a9b5b59ae32c71a7d065287699bf5c6a7d1934f8c3f1a7b4752f61b74c"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2273,7 +2298,8 @@
       "disputes": [],
       "sources_consulted": [
         "General knowledge — Le Chabanais well-documented"
-      ]
+      ],
+      "verified_body_hash": "a97507e65520f64d9fba7baf55f68fdcb01014a51eb1337bd95cd5866407342c"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2339,7 +2365,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Passage_Choiseul"
-      ]
+      ],
+      "verified_body_hash": "42891a73539d72db191aae874513bf5ef00527a6faa9f37c37de5e27366c5442"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2406,7 +2433,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://gallica.bnf.fr/accueil/fr/html/proust-prix-goncourt-1919"
-      ]
+      ],
+      "verified_body_hash": "a536221f0313ab8379365ff80a17d8e8df990139c320607a271b7dc50088e65f"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2480,7 +2508,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Harry%27s_New_York_Bar"
-      ]
+      ],
+      "verified_body_hash": "2c7c205db15bc72209f7ccdb0b3b549b4d4d5c7790be7110e4610ef0482bf6c3"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2539,7 +2568,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Rue_de_la_Paix"
-      ]
+      ],
+      "verified_body_hash": "fd4e92b046f1b14a2c2146d38c3c34ed501f69404d9fd1486ac1e99bc9ea66ae"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2597,7 +2627,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Charles_Frederick_Worth"
-      ]
+      ],
+      "verified_body_hash": "8802d43a6196b67799861bf9574484cc48d1c33198a8d68bbde7fe5b3f90dc29"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2737,7 +2768,8 @@
       "disputes": [],
       "sources_consulted": [
         "https://en.wikipedia.org/wiki/Jeanne_Paquin"
-      ]
+      ],
+      "verified_body_hash": "608ee04add27a8ccbf1a89ee6b481ad31200814335f184704ab796197d8ea965"
     },
     "_meta": {
       "prompt_version": "pipeline_chunk_v1",
@@ -2800,7 +2832,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "7a701d92b71309b8ad8347796d9d72814b4ea796a82ffff5d01bd3fe7052a92d"
     },
     "_meta": {
       "extracted_from": "chunk-08-3rd-arr-saint-martin-des-champs",
@@ -3100,7 +3133,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "bbe7a72087fdfeca1b41bc7cc12375b7d1e2da0120c47581ff87884134baf7ee"
     },
     "_meta": {
       "extracted_from": "chunk-08-3rd-arr-saint-martin-des-champs",
@@ -3159,7 +3193,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "efec494dc8822610543dde6f0a03ae41c937104eb08f3b4d21c0631c074ff18b"
     },
     "_meta": {
       "extracted_from": "chunk-08-3rd-arr-saint-martin-des-champs",
@@ -3218,7 +3253,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "b18477ad9776d755bf5680bc30c659859db02d4e78cd07caf5fddd24e15c3c2a"
     },
     "_meta": {
       "extracted_from": "chunk-08-3rd-arr-saint-martin-des-champs",
@@ -3279,7 +3315,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "a20a226b2c355566c6d93ae99232ef61e9b1ebd7fc777b62319077d4ea4761b9"
     },
     "_meta": {
       "extracted_from": "chunk-08-3rd-arr-saint-martin-des-champs",
@@ -3511,7 +3548,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "e60d4ff08cf17bd80d847a1a2a2c62f20b62775c4db41f31c87f8ddd5f72bef2"
     },
     "_meta": {
       "extracted_from": "chunk-08-3rd-arr-saint-martin-des-champs",
@@ -3627,7 +3665,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "33ec51c3209d8931d0cbd60f28bcb25d7a3713e1123abe394f4fd5e17d3c8cec"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -3684,7 +3723,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "08ac883d2bb5efe5dde19596b2dcc22231abb1a7c7dca32b352c10ba1854c0b6"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -3747,7 +3787,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "b9cf5f6b1f4186fdfceaac0b9568bf23c2498ba189a65784aee98478d6c80cfb"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -3805,7 +3846,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "8e81bae988ce8b99655e3d7a0aadcda8afba33fb436d3aff06a07ccb217f7f67"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -3863,7 +3905,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "9ad32c7e0dba1fa2b9eae5a261296df4c80b84fb61a005e79e6d7b450a4e4ae1"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -3923,7 +3966,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "64e3ba46f2759cc0c023e098075209e68c5d84646ab8504a444ad23c2ca82c6b"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -3981,7 +4025,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "5400d1d696c68d1d32f0b62a2ea1d1a8db7fe8cf33a24a15344bf73408413dac"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4039,7 +4084,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "bead53721ece30475125ff5ae04bb31a9237c6c85209e10598f1fd4073e8b355"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4095,7 +4141,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "04dacd01c240b5556842c4b0f3379e6dab0a68ec0fe2c2dad1f704744bb547f0"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4154,7 +4201,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "e800c092613e63834f8bf853fb954d247502ad88229f5c40d23062cc6f188b7a"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4212,7 +4260,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2124df5768f46967590e5092f4fd1c63ca705b542b6edc0c1eaabb831f34e81f"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4269,7 +4318,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "265708fbcfbc713a35cc5c3cc5a11c205989a7b432dcb642d3b71f939972c039"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4332,7 +4382,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "01a5ad450a05f1d9ed81b1e6a9f307151c1df307e95eec71025b1bd391abaa3c"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4390,7 +4441,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "a055f94660aa0986e1d018671de052e00c81e901e437cf61bb48f538cfb2703e"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4449,7 +4501,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "dc80d0103239345a840b7113907655a37a713fa9da038286682a8084c89812b3"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4517,7 +4570,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "98c0d33d6255b2efe7541e940223b3edc3b62a94eea7200bdff8e73a2a2f4d15"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4584,7 +4638,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "51ab5ae2b1ff0b944e4d9d940eb2107388295128ddbfdd6cdda400fb970bf4bd"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4647,7 +4702,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "358e0a60f859ed0d9461e47138cc1dddb45c9992ee7a6dac3b8dfbc1c54253d3"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4708,7 +4764,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "a5c1bfb923f76c8ef441dad3fc6c5f729f92ece16cb128ef91e85b935d74121a"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4825,7 +4882,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "49a63ff1ebea6cdcb137deecb94d02b9adbf9a4075c10fd8deac7cef1856a4a9"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4884,7 +4942,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "98ae91a42e589c59b84a6b6ff9885a2444d07c0af45a5f65998c403627f78dc3"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -4940,7 +4999,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "feec1ea419588bb9cf9fbfbb17cd00760693df4ef80fe295a034442e36ad4e91"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -5004,7 +5064,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "814c5887b9464da30039c1474e53ae970d91cd1e95f8b8ef33c73ede634a33c0"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -5068,7 +5129,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "09fb5d65a7179e7f3d7af420c4f7ac779f892d8a1168912986fcfbc319b0a20f"
     },
     "_meta": {
       "extracted_from": "chunk-09-4th-arr-arsenal",
@@ -5263,7 +5325,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "524d1d130e77091f1809b941a4b2163dedf18a589909d168a1618625169741fb"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5320,7 +5383,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "de1c7ece2fe6de509a3d1daaa5016e5bffa327e54478139d7ea7b540ae3dc44d"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5380,7 +5444,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2bde785f3288bcedf53d07f68c4e72a15e8138f8e7d526904e8b18d2f25391ad"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5440,7 +5505,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "8354280cb1f8b29830619d720e27965b11b0601eafc5f4cc8f5d0e2ca527ffbe"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5499,7 +5565,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "24c1e88f7d8dfc09a4e0d31b9f6fa3802ab1283ceb2eeaf8a5ac9e6fba6756e4"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5562,7 +5629,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "47d9a3b4ac61be8e430b8fe23e3ca22ac2c1b8a3fad23ce301bd2929c63ab370"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5619,7 +5687,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "5e158c78822f7880657859ab9a4e01678a02f9ae24bb7e67eb8fc260319c4d19"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5682,7 +5751,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "c8fc1b5abb89c716b83f41c43d6e7890435ef9e50fb996dd6cf223a634c8570c"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5742,7 +5812,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "0c4ac60104979a5aa00870274e99fcbd4bdb6e30cd2e963354e6a7bd643f5118"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5800,7 +5871,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "0d0cef35b2c5109955f0634b5ebee97640f3e4a68412846b1005e8b495a3de0a"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5859,7 +5931,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "d27ca68aabe38815247be68fa61b2c9ef58d3423f6c665244c0e970db837a093"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5920,7 +5993,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "cf686264b676f64494f256a77e71654ff1392c8031ed1599e29ca373ca431898"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -5983,7 +6057,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "fa463796db708c0395b8fb8783941d9aee939996d98ebc24621e06674889f4bc"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6042,7 +6117,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "f184156ea931807757be6f3424cf487d5e04556b8a512393005f27c8bae64ea0"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6099,7 +6175,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "98a02d2ba6fbffc4d48543f74446d9012c2d5b6f79e68968c6a3511f6dbc3f81"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6155,7 +6232,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "6f2b69752841be9e6e869934ecaa3b8cd99781740835994cda9b3ec670d578e8"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6217,7 +6295,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "d58262e459a12cc3ddfbaae5a4fe5c1eea2dd3ac1fc1d57eb3e3efdf417e32f2"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6281,7 +6360,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "d58f991a5130aaafb05ab8f51a744b887961243b97c97c5333510578cd3198d5"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6338,7 +6418,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2d4c9a9258f3020579ecc8535a17ad2734f636f4b4f86040fb02c935e889d95a"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6462,7 +6543,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "297a114e7e66a5bda9a8dabe4c6c60e958a761c8d1839c09e52ca31a83b2b295"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6522,7 +6604,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "4408dd8af4f3e0ea185d09c4e6bb77231f4997ed37db0974293eb74b2f67a588"
     },
     "_meta": {
       "extracted_from": "chunk-10-4th-arr-bastille-to-marais",
@@ -6585,7 +6668,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "9de4e2d2a60cd3c30d2aca45cdd263f39bcd7a3835446fdb0f8d881e799eb985"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -6638,7 +6722,8 @@
       "claims_checked": 1,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "24d82f763d44bae20ff42e60cdd582790b71269f96ee87685be9eb019d4583e5"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -6694,7 +6779,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "7728fd8ddf4422d76d1a1594aae2d4002505d74c52312e86744587d0b3ca9994"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -6815,7 +6901,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "87080f2ac768853a30c31187ec11ea532d2e3e03ffa55c70ce67417ddf82e110"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -6872,7 +6959,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "e122cc030ecb49cabd72a6afbdadce7891495cc0e97c660d12d2818dd7e38b9b"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -6929,7 +7017,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "7994570eae6c7efb3a1ea1830a9c0708da5b02b8925c39e5b810e278ab04f50c"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -6986,7 +7075,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2aad9515a894484e78bbd8b8f26330295afb61e03107814ee600a55ff8e49e2f"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7046,7 +7136,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "0c9875141563f6f0853a6a000f3a74f54722b9e32ce21b595b579adfbd4084f2"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7171,7 +7262,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "1c1e76f382f51513619d70ee46cf07eb8eb8d9b4991d0c65daaea627655b81d9"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7233,7 +7325,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "05626e2ca71a1ca807a45ca9671105b63d64b6a94dbdd0bb9d73ad67aa6647ea"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7288,7 +7381,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2fa0a729bff9a0ae6c870d406156bc6543388cbc871adc050d39158d2bc8a6e8"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7349,7 +7443,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2d3a8df6719e84b8174483dc8ea33243fd1f9bc9e13b7b9ac419bb3649edbf41"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7405,7 +7500,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "577a63ae3ca77f1104a4416a859c1dffc4d46db9aeaf259ca01121904a612443"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7464,7 +7560,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "0e56645d1f3c6cae248c36175d2739b9140bfbff778c1e15449842ac438680c4"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7523,7 +7620,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "37278151d23e47ebb2f814be788fb613c4e508c4234655b7e90b6b534b7ee042"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7587,7 +7685,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "bf5480a46bbd738854d7c6dc2cdf7581d994a52b46da26d3e78485ba7a4e0139"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7645,7 +7744,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "f3f6d47b997e08523c6eddece3196a31737958db0342a5f0211eda6bf0bfc982"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7899,7 +7999,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "778c3b75282ae7ac27c4a7a998c502a8e448f2da062119741978810f4b8aa68a"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -7961,7 +8062,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "5196c83febca7b4c8410eaeb9b94eb267f56712adf2a68db65cc96ddc0c90bc0"
     },
     "_meta": {
       "extracted_from": "chunk-11-4th-arr-pompidou-to-sens",
@@ -8021,7 +8123,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "8ad54082c108358bb96e1a460223c65b9ea0fcc835ea9148a9285a3def020a58"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8077,7 +8180,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "a35e68aa9b699a8fb4648db35a893c6ff4fc32b0162545738b8905e2cc3b1053"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8135,7 +8239,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "8a397b4d86202062b0ec03f6585a0b78d34d962a917c9a99695163829703ed8e"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8191,7 +8296,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "31b81ba97cd5bc4c4b0b0f3f1d050ba07b68db79cd6a03803360e55a55e94d24"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8248,7 +8354,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "576a50e97f58c9d788386716e1fac543eaab874b7ec95e58dd5bbbaf0bc0bbb7"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8305,7 +8412,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "af0ea63bf1ac2bea6fb8f3b9f2eeaa35ca147299a68a1f9194cbe6ae6fa4bdce"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8362,7 +8470,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "f1f9ad0140f4b58250e4e44ab92e1cbc364af990d0990f87ca2c0a86ccf97e8c"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8421,7 +8530,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "1cb10f8e361718c5a17eb6246133ba0f712e2ecc876bb88b78c6207d0813fe63"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8478,7 +8588,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "7f10a8f6b850205b867c8331b499c25b586cd6723c2616fb567587f7c9e0f69e"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8669,7 +8780,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "436f49231b8b6cb172d7d05ffb4237ecd4f3a36faf04687cad5d2cb9b84bdff5"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8728,7 +8840,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2a57c0a988733c8a2f7298a22a5cb2e679d3d48988b26597d3cc3908bed84160"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8788,7 +8901,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2b7163579548592545071f3d544dada8dbfb174461104c69fb440ec44f906f14"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8848,7 +8962,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "628551fdc3a832aa125bd1e7610b8180be4e7e546a2e8a462ec45e743c76724f"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8907,7 +9022,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "55358b4bf4761d36082bb12f0be06cb713f2e7522f71fac5f4c330042b063232"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -8964,7 +9080,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "0894a09887420a7fcce53618b3d1f53088a566dd5dde5f3b062ec2cef3b3bb1f"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9086,7 +9203,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2453e383c3dc20d19975ea08b4cf7ba53dc9d4c43c0713801a1302c88576f928"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9145,7 +9263,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "15b88405672876dd440c2fab369c0e1557f4f5c9af3dd23018672f9639e425a9"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9207,7 +9326,8 @@
       "claims_checked": 2,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "33471aaaa351869672a9d978810caf88672f1a0636c1d24fa8e1fb1a5f526f1e"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9262,7 +9382,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "0094863e66bd9b946593c9be64cefae9d043f1bd8f8071c580b0c1994219184b"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9524,7 +9645,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "03175761ef09c9669fd9a09df332d7e205156df8b329d7695dc3b2ea173a9f7c"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9584,7 +9706,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "77cc782e2d6cc0b9d464b1fc76bf9b0990e9aabf5d211b6cbcde3825f9115a5e"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9641,7 +9764,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "b176e705e6abe9f9602b44bae81caf00dbe810fc37920e2bb5b0b47bf608f32a"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9707,7 +9831,8 @@
       "claims_checked": 4,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "433ce7cc7616d5f744ab036c5a1bf8b92f1296a2cfaa7b2827d6f7ab6ddcb8cb"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9762,7 +9887,8 @@
       "claims_checked": 3,
       "source_passage_verified": true,
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "312f82af946f21cb6a8644bc98c8d1531659e44fd8302a4cf5b2488722726417"
     },
     "_meta": {
       "extracted_from": "chunk-12-4th-arr-the-islands",
@@ -9827,7 +9953,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "20f2b2b009dec5f5bd526222849adfeadd55e9adc0a8bbeca224c9a303734ce2"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -9893,7 +10020,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "53f1db7c7cd24939da13e8d7ed46614128174672652362d2238e7af6691651c1"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -9963,7 +10091,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "03a77f5e6bfd28eed2084cb09cb0ec697062b42323dae1dcc9ea0ee9f3327c91"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10027,7 +10156,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "bb5347b0320585d76946f30c4bc17ec713dbf1be57cf007d8a6fa4febed72f40"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10170,7 +10300,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "d49cd1d91bcd13350f8844dee24f31923878d4e3e20bd515fe33ef6e5d2153c2"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10238,7 +10369,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "ffa416ad055966fa662e237586712d73ea2d79343b0f13d8c934dacf391a561c"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10314,7 +10446,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "8ae2ef1767c5f8f8058c00b4622068f9bac54f58caa00690b90a4cf13f2e0201"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10459,7 +10592,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "7f040a0658ef434c6273066d531b3013bd4af04dc75ebf4d8bf50f3eb9c06a51"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10592,7 +10726,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "7c4da5a3020ff8b7470d3378f418d1c1e41bc943af9850777ad5871165483b60"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10656,7 +10791,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "48e98d81772aef51c9f53ece0cc7bbc425bda5122bced3451885884809832bf6"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10881,7 +11017,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "c8923d56c808ffccc308bf748474bec7352ee43644af4e8c8c4957c268a1bd8e"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -10946,7 +11083,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "d036f26a50cb2a1a78fe4617cb358f216142eec9e9f59a3626f9a50a687cacf1"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11012,7 +11150,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "56c8aa9fa0ac00c355678087a4aff388dbe056ecc69a4f1d39bda03a90ed46b2"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11151,7 +11290,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "4e66742d443ea98d48db619d19079626168a4354212734682027125ffc3db980"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11218,7 +11358,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "9e876e19784acc101e6d7e91cc1c2631da06dc8f077fea298b5fdb0aa9964066"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11291,7 +11432,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "2f91ba2b48c459d9ad0e373a69702f3acb8360ef3cc13a00ddaae1dc47a9efbc"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11354,7 +11496,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "9011aea27bdbf5aaaffc912c95bf57dd86b0a56d23166774207f356501156883"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11421,7 +11564,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "9bcc06c0e77e1c1a1bef65967ce53c9aabb240038e04c340bc5341a9a5a969c3"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11486,7 +11630,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "b58b1bf7a198ea05b0bb01925ab439dfa60124902ae5459c1e94037741c51363"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11550,7 +11695,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "3dee45cc711519dda69344a9d59b68e6802901734f39913d955610458cbe4a2f"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11686,7 +11832,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "9e3640502a88ae905227bae44fb4d41cedbf72f6a155bcb9d30ba46d26d839cf"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11755,7 +11902,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "0a95493de878de387ec8501c8a0f909fe9e0bdaf827d3a996eddf7a8c5ed24c6"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11822,7 +11970,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "223bd55d2533725b0e1169e6823981209167a19d0ce44292a745c75adb23cd83"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11897,7 +12046,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "e08dc331c7943172b43b096cb3fd9534f454b483f457789a199c2de3296ce2e0"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -11962,7 +12112,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "6114cc811f14866f8cf9be56a91c099803b08c29bca86b6f8563a0aa26d386f3"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12036,7 +12187,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "5aab121c32e897244759b2e5bec73b53f796c3613baeca928d285f36f31a7261"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12104,7 +12256,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "19bdd90b933f058d61b38311d77ce7ed5524d0eb141ea64185cdf82763688405"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12172,7 +12325,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "9b6ca8e35a90ee0d79e2e73367371773f5c24f0b8500475f5c862ec1d91787da"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12239,7 +12393,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "b6097915a6140c45e50cec8559446fa3c7987105eb9b78b0b225312b41bd16a3"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12307,7 +12462,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "fa5486a91919a4215257560ecb834629a801e8668e68e61b871603065b72783c"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12371,7 +12527,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "da699c458dde4bf9335d743058a1919ffb071cf2fe55d6b483f037ec39c37e7e"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12434,7 +12591,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "12e5d74a9aa16f252c9c9017ee8add5f86a4159582ff9c5b534d302f58952325"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12505,7 +12663,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "8533a621031ca12701fb76e8ab9d7b7e3263f9e26245fb49a228f5dae77090d4"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12723,7 +12882,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "593a1d6cfaf4d0cf24bc31b9807c790db284bdab7f1dac86fda76f589bc1c18b"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12790,7 +12950,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "3339827acd6b3bd0b25ec3c5f64ed0fe035105c3b46c7392e771a01f33f51fd7"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12853,7 +13014,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "e52ea01500a9163d899059f6184a3b8728f8b98c52ec5a0e2029520fc499f186"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12921,7 +13083,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "db83e5ff1660af6143fbb3dd793548090e1b0bad19e57d29ce4ab2fdb137e18c"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -12981,7 +13144,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "c1b3d37a9cc9f2ce38ea49a919f33dd42d9d8fe6bcdbb864d19280dae9806d12"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13045,7 +13209,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "f9d7fce355b32ae34b4d87915de0168058b8bd7bf20547ba1ce9742f54186f58"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13109,7 +13274,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "850ae2b8c4ce7fc65a4887045074861f2852f2734046abf2a66433a8f9d8a1ea"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13179,7 +13345,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "4ce135f591716603548316c80a69c990461e7a1110e8466c48438578b451b488"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13240,7 +13407,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "315c6458e09e5234f0f37aeb1ef4f1f9714aa3060a19e98ba629e2c14717d574"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13305,7 +13473,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "2ead79c6a2a13453004d726a9d9206a6144877332e619cc3aaede6cdcd127581"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13384,7 +13553,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "79d8e0bb11a8d5a841344fd235936e002fc63d9dc5a9bc9dd07b1bddb731249a"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13536,7 +13706,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "fb65bc742e01b8d1025ee6bc37a0435a020d6dde34507734ed9692ebaaff2086"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13694,7 +13865,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "56a34edf2d3002f4dd245e481765f9b9aacb034da4ba24a9999068ac4a68063d"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13761,7 +13933,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "4f748ee182421e8c1baddb315bfbfcb8d6549d0015e35ab136d61ff34bdb2faf"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13826,7 +13999,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "3857db969dd36048c18bae0cceb80a8c147deff1f5449bacb61506ca4bbb2086"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13888,7 +14062,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "67dc5553dcab671e04f00b8f1d3e8abd60022ecb0027435676d121e163ddebf1"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -13956,7 +14131,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "3f44fec948c6b215d03e69ff6c03ac0697a5ae6c63a5dad3832dd3bed16641ba"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14019,7 +14195,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "930828f518455b35ee81aa8aa8aa49c57969c00744c3bdad29f9d96f39ef7234"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14085,7 +14262,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "141228703c82d8da280b6139b3896317ec5c347f0d3bbde6e0697f22fa108dbd"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14157,7 +14335,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "2899ac8af3f488e67f81988b477e0494eddba1c26f87ce5c464f697b39b3c910"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14222,7 +14401,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "4e68eaaf2cc0a83449f754c2000d7ed9dc7ce7007a00e6a4d1fc09e2cdcf4ff2"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14290,7 +14470,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "3e28a149617dc22635c62065df90576d46c07fc3a6da7ce0229d8e9dc837e873"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14367,7 +14548,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "74c66d1b1c699075b0a7b4c4ca6724ad4e0f549c1ce62a36ed94579b300790c4"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14433,7 +14615,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "e2509cf44d620876382eed05dc0537e729e74298b5e2f9c125e6f182de1349ad"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14507,7 +14690,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "962dcb807676846d5a80e76c55c4f9172510ba66890e99dbf7d9a4cad2c83102"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14657,7 +14841,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "2d710a5522b0aeb08d1f5f9bc3823b3602582ab5e79ea3c1d7b006a321419eb1"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14723,7 +14908,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "6c6df7e6e649aadbffb9c67c574a33005f6278885b75f6b6c320d3fdadc098ae"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14797,7 +14983,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "6f657ea8982801c586bdcba82e87296910f48abf419e2ef0f2cf9b97fc4dac8d"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14863,7 +15050,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "cc7c5fb830c8c4823cbccbe8f46c0295b05d5c2e55b8869fd7e3d8972bf83e6b"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14928,7 +15116,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "c18681a58456371777c7016b5083fccc585b5218fd029fe89902ead407878adf"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -14997,7 +15186,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "0ca06e2ac3b979d059adff5b86f181da820fcfe1a7e9d1b57d631037d41abeed"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15145,7 +15335,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "3bbc08ec6d38e18e62cbe797414e66b89012544070109ea7b3645efff1c5313b"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15219,7 +15410,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "1445c52afc7cbf0f1acfbcba8429f14341ea22c677406dc2c4cacf27d760cb2e"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15283,7 +15475,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "0fee5408524c2a81e9a378485aa7e0ce4fb0d9ac0cd998870db3d20e0ca8ace8"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15349,7 +15542,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "b84c0a4e7b9310d3cf02d8ca88241e169dcca2d78d435ad96bb814696cc80d77"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15490,7 +15684,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "b992e5bcb63d2a83365bffcd2ef7f0c30a4100b160fc357a3a5b5b98f4c3655e"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15554,7 +15749,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "e853877651195897e8589fafa669fa62ea7d89a3bbe9f6962d2df938bdbc6175"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15685,7 +15881,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "0b5820bd564991bb769fdff29b93234f2434579a6916ca4dfb4bdd474428316a"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15758,7 +15955,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "67b9b7a0cbe451cea06a99469f7735ca6e077ed665cb763734d0c3a09ee1272b"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15830,7 +16028,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "70f331c1f48f9983fc9f14938377192cc37e754c54346f59582a9388cc372b03"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15903,7 +16102,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "8505a617ae0423803e6906213e94bbb07864a32f6b13b11e288c5d184a0a19bb"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -15967,7 +16167,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "397750843a65f6cb60a44fab053af6ab912c424413ea72d5b689fad15f7ee8d3"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16038,7 +16239,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "5771d672cc313e99f8a666a8a45019c2e83eb632130f7c9f7e2e0f1ddbece7fd"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16108,7 +16310,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "b9dfbc69b2d8dc3ae726db1b5fc7341c95c6444dba42267bdfff92076f1a951c"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16166,7 +16369,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "047aa627fc0a10ccbcc04605a64f6cdc622fde17a40e26a30aeeea640e4bd5e6"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16230,7 +16434,8 @@
       "source_passage_verified": true,
       "corrections": [],
       "disputes": [],
-      "sources_consulted": []
+      "sources_consulted": [],
+      "verified_body_hash": "c94a41d6769aef837e363f336eeb694ef3c433520ef3c9cd5b650a7b0133db47"
     },
     "_meta": {
       "prompt_version": "pipeline_batch_v1",
@@ -16298,7 +16503,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "c823792fd75ad2f12dddf58eb77b0ad7633fd5f936b52632669e68514aff6553"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16518,7 +16724,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "c1e4600c3d9d8161844889ff508bca1576b4baf25f15994a57f2fce9ec228174"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16589,7 +16796,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "f58f803b891b264edd997862452e956353e90ba8da202b97baed265c163e4b9b"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16734,7 +16942,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "ac09aa1a7e075f5a3dae85163bd06edabe8517fe9fc7170fa7f3ddd090998b16"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16803,7 +17012,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "b9d68676869f6ea0efff61d3ebc8bafc7c6f266071d61b43ed0a9fcbcb74f088"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16867,7 +17077,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "d1182f3addfc399b59bdbbd6d0a861d1ba91fb9aba1e24ee1aa4d0b83b1819e2"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16932,7 +17143,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "54afba19ccf4d88fdb5c1694e91487c46d0208b40c2b5f3c5d5c44eeb19d891c"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -16990,7 +17202,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "d8e714f85b060cc2f658b4105643d5783c152492b30f4e0c9aad6a0a1b71f198"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17053,7 +17266,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "bcd26d4bdf71d263f4df1ca5e4e5d2cd0505af3860faf2396f3c6259a7607fa6"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17125,7 +17339,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "2f28dfb99c0b6dec946fc2968c6326513ba6483bc405be1dfcfc8f01e42acb0a"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17194,7 +17409,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "0e3964f549e272435125c47091ca868f127c0693f1bd27be1503db7da8a56917"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17259,7 +17475,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "8a4fcabba14ed9bade7facf1f942da1e301b9a3467d2a7f2912ec222f69e2155"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17324,7 +17541,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "0b21afa52bff62ef357ad0ea59e551af5e4824d172e4da4d0835c2275b2290ad"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17389,7 +17607,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "04b6a2bca3d015813ac8d3dc43145ca9d654ae4cd1d34a04ff46ecbd5ae00c26"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17459,7 +17678,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "1a85a2bfb43ed569fa4d01ba9388336d905270731cbfbd919da375cb53b93f29"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17523,7 +17743,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "8f91d50665327bf3a04a4af5b4754f698a2fe01184fdbf6227fe6f77bb2beb42"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17586,7 +17807,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "03fd109fe529781e07ec7918dec88d6068c7cd19059ae4681ad2cf17dcdf8320"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17728,7 +17950,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "edd00944f18b553babc0d98bcd07a14543490fd4bcd6bb7c92e6125ef492fafe"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -17884,7 +18107,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "0aaba164c2c58e776909808ad75f3b4fb558d0fac09e4d8e034e4965aad165f2"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18031,7 +18255,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "a13d2804a1f0cf4391e3a1daf84e8c05acd8db0856c4f310a9377201906b5b8c"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18104,7 +18329,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "ac49b527668f03817e78020bedac4e3dea852f714d1d72b1ea196bc249ace5bd"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18175,7 +18401,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "f5d90aa70ac48d3bdf43c1733fab4578fa2c1d6c78eccb50de31db5be4b29ad9"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18245,7 +18472,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "af04673378fdac15162cff79f44b75998882faf09e18e9a316681bdee4defe12"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18307,7 +18535,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "94f2e03bb09843da3076221d5c69b0da440e4f7f9dffa0a863617f351c89248c"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18426,7 +18655,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "5d498fdb49e9e33a3281df658adc921dc04ec95f45b986d500f4cdc6adbaed88"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18575,7 +18805,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "017e22e3f974e359b7f9cb11c08ec506615a76c08fb019d7d227fce305ff7b9e"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18730,7 +18961,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "f2a160f041d61f5c90b98e12c6b85462d039c24d94354831d7e7e22d0041c8b9"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18797,7 +19029,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "115adcb055a1dd6d11691afd086bad7a6894d4aa400fdeacdd3d76b273a571d2"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18860,7 +19093,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "312f5b7f3350976c99aa557011fb562bcc0229462f9219d222e5e0605ba5f70d"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -18995,7 +19229,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "32d771b2903f783434ec26edf917fc34d3a99536944a39816ed5eb64ff62ec1b"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19059,7 +19294,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "0290f6ecbc9e6d53b76e54dc1c6396c4837b89bbf5452ceb26287324d49d4b4c"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19117,7 +19353,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "ed03442ffb5e64700b9c8f11b7dfc018c49742cad04afb515d5aebee9b8051d3"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19180,7 +19417,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "6a0bd6838e0355be9ab41444e32173b0d6efffc64dc595c828dad91dede6bd3d"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19247,7 +19485,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "8ae400671e15380604409b145b5ac71505094253a0f2dfdad8731e501bd804ca"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19318,7 +19557,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "23b8219669bef1c6a9c68b97e790532a491e8e47b35ec1d29ff5409ada618b41"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19390,7 +19630,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "00155bbd3b9270ed114a88bc84f027a74d323e8cce8fb093448ad4b2cde4f637"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19452,7 +19693,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "b9829f1274356f2629b600a6b9f0594029d9a080a01d08c493c64c74b73debe8"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19513,7 +19755,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "fb2dbc30e1a8dc2fd3b56f7bc40d1d516c9fc389d32bcc3ddbdeb4a23e87f3de"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19584,7 +19827,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "b9fd09b3cf50fbfb3abadae5fc80ccfa66d5d1b8e9d2682e1e373f2139e28d07"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19647,7 +19891,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "cf65cd615f9cb3ecb3d6a2ae6979be6bb069098f5534cd715a18804add99cf3f"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19787,7 +20032,8 @@
     "fact_check": {
       "status": "verified",
       "checked_at": "2026-04-06T23:06:18Z",
-      "corrections": []
+      "corrections": [],
+      "verified_body_hash": "503eebe99cbc1560b244a3f75f711e6087e2606a3cb8e52b804e25ad2a036bbb"
     },
     "_meta": {
       "created_at": "2026-04-06T23:06:18Z",
@@ -19995,7 +20241,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "11d8950ad02c6befe8edbab8f468189732a2f686ce64ad95f1ce71076c0da7b6"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20055,7 +20302,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "851e83f66df6b1d8b36af9b37ecb76031d14b84b90062440ec272ad15dcb4a34"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20115,7 +20363,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "229c867b6c6071c6343c4ad581f9d0ad282bdfbab4b731ff4e97e6c61d9e357d"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20243,7 +20492,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "8a1b03fcc1f857d0c4bb7e17e27c3d71e0eb03c9f236673a38b15292e7833f5a"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20374,7 +20624,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "b19a909a49357e90ace920c611e563593c4db4a998a95d7b98459584a0cfbd05"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20436,7 +20687,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "00d7a32ced1df3479775ff9fde117d901196c89ba69f951a63fd63d4f8c5342e"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20494,7 +20746,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "2d704b2f534d6971185cb3b85f1ac8c4d3f8fd975193e7af04093c06abb4a1aa"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20612,7 +20865,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "322e613bf04e8a499450c14bf7f42ba381b1bd8476da308c1494c16110d67b1b"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20672,7 +20926,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "f1efe0b89686cacb71822ce2ebdf93409144c6912325b869620e9c7b88fc6148"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20735,7 +20990,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "52a5bd1a87b53418214c0aa2355eca970756c89c6931d600f1b6950e61e43e1c"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20793,7 +21049,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "635c2dd8cad12af2953a5f07460dad8302696ec5db971b66ff24b4c4489200f8"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20849,7 +21106,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "5464f9823ac8acfc9a5d25287a83d4c03a78185776984da7248c9cf68c01bc37"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20908,7 +21166,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "c45d2ebc9154ca8018d33d00b5aa2b83e02d47d9112ee4726b6d59d9e37de575"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -20965,7 +21224,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "44b797382000d9b35864f1aeeb7aae87f578571fa42b289c36c0ce4ce147d098"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21025,7 +21285,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "af79dd5c35770c5c05a97738f1c79b78335741da2819621146b3ba70163f6e86"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21086,7 +21347,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "6f8ed3ae00e4298cb2ccc28f1277fc3ddb07dcd7bf3e0c48ca35af14511a41f6"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21140,7 +21402,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "73c7b33f1916d03b09488a76d1275b3d85f9d93fe33cc748c65e03190171bd74"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21199,7 +21462,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "34cb72f8b7b227b6c7f827894a5a8b7658711d9fa3ab8b8ff01bca25587d44a8"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21262,7 +21526,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "8efb864e6f22dc00c2893c691fa5fe11b57dc9cde2cb3ed3d48dbdc0f9fad386"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21321,7 +21586,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "845e28192ba9afe6179bf614dadfefd048ffac6b0a9f501b3dddc76845ea9ca6"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21384,7 +21650,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "276ab78c9f5caeac7496672241cf289d309a233b36551586beca618939e1bda0"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21438,7 +21705,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "d136d7f6265b171bcec35eedbc72f8495ab9642b27a746c6a62712e83b73d3b3"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21564,7 +21832,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "dfca6cfd1f22ac5af24412a3819cafba05e4a23c19930ab18a59ff93129a2f37"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21620,7 +21889,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "1f4498dd59fed9b0265d610807e794e80977cf21712d99a4d32792aff9b35e2e"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21677,7 +21947,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "48e4e470e3305238378d8b41e38028d7775325b0ee4d4b4d270e4843489259ef"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21732,7 +22003,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "f179dbfed649902dcbff3e96e18626565d216a62ebd869ae719e5de3f0489f67"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21789,7 +22061,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "243efa5af9bb94903bb64845893132ecb197ff3dd42566feea7f53364d238c6d"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21842,7 +22115,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "d574afd455c141893b6bc5072b7906f4b27f9872ad72504f2eb9e421884efcb4"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21901,7 +22175,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "473d966eb878c46e3b0bf29f54d8c3dec6f4f8ed2a0087db7615ba701af3b33a"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -21960,7 +22235,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "3b0bc50129ba26440b607ac1bf068dd43795c16ca266518c32714942b37e31b3"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -22211,7 +22487,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "876904ce7ae350064622d8005c3dd8580b158c575b4d0b620b8053c7e680a294"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -22394,7 +22671,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "132622849d1397d3d405f63bb5bac12975d479cd7e9af5ea607822e7b9a94d90"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -22448,7 +22726,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "3fbce2798d974c48c9e27e3e006262e200c1d7679ab3399a197dd64aa8f2a2d1"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -22503,7 +22782,8 @@
       "status": "verified",
       "checked_at": "2026-04-07T00:17:52Z",
       "corrections": [],
-      "disputes": []
+      "disputes": [],
+      "verified_body_hash": "ba3dad64724e8ba63f509816820553fd379ceeeaaa570d5cd374d421f259da54"
     },
     "_meta": {
       "created_at": "2026-04-07T00:17:52Z",
@@ -65814,7 +66094,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Polyphemus/Acis/Galatea sculpture group confirmed as the fountain's main composition."
+      "notes": "Polyphemus/Acis/Galatea sculpture group confirmed as the fountain's main composition.",
+      "verified_body_hash": "a7fb6e1a88f59bc33df9bc38a3cc41296bd91f63413b0e0188a843419592bacf"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-03a-luxembourg-delacroix",
@@ -66002,7 +66283,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Source footnote: Larry Collins and Dominique Lapierre, Is Paris Burning?"
+      "notes": "Source footnote: Larry Collins and Dominique Lapierre, Is Paris Burning?",
+      "verified_body_hash": "d2971338edc7e3f9116e2b4ed93a8ffa877984c4ef3204255f63b5797aafa054"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-03a-luxembourg-delacroix",
@@ -66133,7 +66415,8 @@
         }
       ],
       "status": "verified",
-      "notes": ""
+      "notes": "",
+      "verified_body_hash": "f243b980267418ab304a783597ac31fcff40442cdd6d65700232ff5c09e5becf"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-03a-luxembourg-delacroix",
@@ -66703,7 +66986,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Institut Catholique is adjacent to the Church of Saint-Joseph des Carmes, the confirmed massacre site."
+      "notes": "Institut Catholique is adjacent to the Church of Saint-Joseph des Carmes, the confirmed massacre site.",
+      "verified_body_hash": "e4181d841934f11ef1cb4a85f2b7b57a8e4d87fde5507b0ff74844d5fb990131"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-03a-luxembourg-delacroix",
@@ -67087,7 +67371,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Bon Marché 1852 date confirmed (Wikipedia: https://en.wikipedia.org/wiki/Le_Bon_March%C3%A9). Marguerite Boucicaut philanthropic legacy confirmed (Wikipedia: https://en.wikipedia.org/wiki/Marguerite_Boucicaut). Illegitimate birth confirmed — her mother Pierrette Guérin was a seamstress; father unknown."
+      "notes": "Bon Marché 1852 date confirmed (Wikipedia: https://en.wikipedia.org/wiki/Le_Bon_March%C3%A9). Marguerite Boucicaut philanthropic legacy confirmed (Wikipedia: https://en.wikipedia.org/wiki/Marguerite_Boucicaut). Illegitimate birth confirmed — her mother Pierrette Guérin was a seamstress; father unknown.",
+      "verified_body_hash": "0aebd6586816ea11e72378cfbb8544efa106efd94a54792d54cacc095608a8cb"
     },
     "new_poi": true,
     "_meta": {
@@ -67150,7 +67435,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Joseph Roth's 'Report from a Parisian Paradise' collection confirmed as source. Jeffrey Eugenides NYT Book Review attribution is cited in the original text's footnote."
+      "notes": "Joseph Roth's 'Report from a Parisian Paradise' collection confirmed as source. Jeffrey Eugenides NYT Book Review attribution is cited in the original text's footnote.",
+      "verified_body_hash": "d43bc7c48ae6729ad28817fa21d71139abbdaa2550ef0bd8f2ce41f2ab9d21bc"
     },
     "new_poi": true,
     "_meta": {
@@ -67264,7 +67550,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Eiffel's involvement confirmed: he contributed to one of the glass roof expansions (Le Bon Marché website: https://www.lebonmarche.com/en/lbm-gazette-architecture-eiffel-bon-marche.html). 'Oldest in Paris' confirmed. The comparison to Crystal Palace is the book's own framing — stylistic, not directly checkable."
+      "notes": "Eiffel's involvement confirmed: he contributed to one of the glass roof expansions (Le Bon Marché website: https://www.lebonmarche.com/en/lbm-gazette-architecture-eiffel-bon-marche.html). 'Oldest in Paris' confirmed. The comparison to Crystal Palace is the book's own framing — stylistic, not directly checkable.",
+      "verified_body_hash": "c2552d99c5922604b7f23c8c0aeb5ca130b5e7bd0139dc3a2b443c3ec40f0bbe"
     },
     "new_poi": false,
     "_meta": {
@@ -67406,7 +67693,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Garden confirmed at 33 rue de Babylone on grounds of the Daughters of Charity (Sisters of Charity) convent — Wikipedia confirms location and convent connection: https://en.wikipedia.org/wiki/Jardin_Catherine-Labour%C3%A9"
+      "notes": "Garden confirmed at 33 rue de Babylone on grounds of the Daughters of Charity (Sisters of Charity) convent — Wikipedia confirms location and convent connection: https://en.wikipedia.org/wiki/Jardin_Catherine-Labour%C3%A9",
+      "verified_body_hash": "a49f140b0d840dcafae88f8a4c32b4a90c5296b58decc6fa03ce28f950f5c2c3"
     },
     "new_poi": true,
     "_meta": {
@@ -67477,7 +67765,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Entrance at 19 rue Oudinot confirmed. Rose garden confirmed. Hospital confirmed at that address: https://www.clinique-stjeandedieu.com/. Madame de la Sablière as original owner not independently verified in this session but is plausible and not flagged in available sources."
+      "notes": "Entrance at 19 rue Oudinot confirmed. Rose garden confirmed. Hospital confirmed at that address: https://www.clinique-stjeandedieu.com/. Madame de la Sablière as original owner not independently verified in this session but is plausible and not flagged in available sources.",
+      "verified_body_hash": "a31345d42e1f3eb5fbb44bee305ece66a5d0fad5c974d42d39e9ef1ed3342d77"
     },
     "new_poi": true,
     "_meta": {
@@ -67971,7 +68260,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Eglise Sainte-Clotilde is an existing POI; César Franck as organist for fifty years confirmed in prior extraction (beat: eglise_sainte_clotilde_music_heritage_cesar_franck_organist_around_and_about_paris). Edith Wharton's address at 53 rue de Varenne is well documented. Note: OCR garbled the address digits ('2j' and ',5j') — cross-referencing known records, the church is at 23 bis rue Las Cases and Wharton at 53 rue de Varenne."
+      "notes": "Eglise Sainte-Clotilde is an existing POI; César Franck as organist for fifty years confirmed in prior extraction (beat: eglise_sainte_clotilde_music_heritage_cesar_franck_organist_around_and_about_paris). Edith Wharton's address at 53 rue de Varenne is well documented. Note: OCR garbled the address digits ('2j' and ',5j') — cross-referencing known records, the church is at 23 bis rue Las Cases and Wharton at 53 rue de Varenne.",
+      "verified_body_hash": "8ad8ed49ce4345582c496e69322958d6eef54dbc46a2bd03f9fff15ca9f1d856"
     },
     "new_poi": false,
     "_meta": {
@@ -68442,7 +68732,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Claim confirmed. Source text was truncated in PDF (ends 'trliW') — note PDF artifact but narrative claim is complete."
+      "notes": "Claim confirmed. Source text was truncated in PDF (ends 'trliW') — note PDF artifact but narrative claim is complete.",
+      "verified_body_hash": "b72b34ca8ba6770f028fe14c337fa2e46bd592e80e8e6c3e52cead57d1f59893"
     },
     "new_poi": false,
     "_meta": {
@@ -68724,7 +69015,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Creator attribution confirmed."
+      "notes": "Creator attribution confirmed.",
+      "verified_body_hash": "6d042369fc6854171f95aea2248f6ce6f9381fb776f234898f9e9ad83dab8ee3"
     },
     "new_poi": false,
     "_meta": {
@@ -69334,7 +69626,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Historical facts confirmed by multiple sources."
+      "notes": "Historical facts confirmed by multiple sources.",
+      "verified_body_hash": "72740a2a4fcba82d9fb44d8c5d70ceb7b13a8fbe1ca7726faf4ba9a66dc34a79"
     },
     "new_poi": true,
     "_meta": {
@@ -69777,7 +70070,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Patti Smith and Just Kids National Book Award 2010 confirmed. Source: https://en.wikipedia.org/wiki/Just_Kids"
+      "notes": "Patti Smith and Just Kids National Book Award 2010 confirmed. Source: https://en.wikipedia.org/wiki/Just_Kids",
+      "verified_body_hash": "e59ac1a92da03c1344ee97917335010f2f704df79ca9ceb397d0d4ddb348ea3e"
     },
     "new_poi": true,
     "_meta": {
@@ -69918,7 +70212,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "René Clair film 'Porte des Lilas' (1957) confirmed. Sources: https://en.wikipedia.org/wiki/Georges_Brassens"
+      "notes": "René Clair film 'Porte des Lilas' (1957) confirmed. Sources: https://en.wikipedia.org/wiki/Georges_Brassens",
+      "verified_body_hash": "2ee81844dcd55234c64abfa909ccfa73b5ceb2a406a39b3ec7f179c4afa62d45"
     },
     "new_poi": true,
     "_meta": {
@@ -70373,7 +70668,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "All named graves at Montparnasse Cemetery confirmed via general knowledge; Sartre/de Beauvoir side by side widely documented."
+      "notes": "All named graves at Montparnasse Cemetery confirmed via general knowledge; Sartre/de Beauvoir side by side widely documented.",
+      "verified_body_hash": "04faeec778e5a7b24b813c95a9c6a3e10e695cf9ea59f12aad1ed98807091f9f"
     },
     "new_poi": false,
     "_meta": {
@@ -70605,7 +70901,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Confirmed: Comte d'Artois (future Charles X) was brother of Louis XVI. Wager with Marie-Antoinette confirmed by multiple sources. Architect Bélanger and ~900 workers confirmed. 63-day completion confirmed. Sources: https://en.wikipedia.org/wiki/Parc_de_Bagatelle, https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/324911-did-you-know-the-chateau-de-bagatelle-in-paris-was-built-on-a-bet"
+      "notes": "Confirmed: Comte d'Artois (future Charles X) was brother of Louis XVI. Wager with Marie-Antoinette confirmed by multiple sources. Architect Bélanger and ~900 workers confirmed. 63-day completion confirmed. Sources: https://en.wikipedia.org/wiki/Parc_de_Bagatelle, https://www.sortiraparis.com/en/what-to-visit-in-paris/history-heritage/articles/324911-did-you-know-the-chateau-de-bagatelle-in-paris-was-built-on-a-bet",
+      "verified_body_hash": "09b37f090bf6ddc962590b8404fd717e302cc2eae34f44c0f44927be4319abf4"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -70670,7 +70967,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Madame de Pompadour's passion for roses well documented. Madame du Barry as Louis XV's final mistress confirmed. Joséphine and Eugénie as rose enthusiasts confirmed by general historical knowledge."
+      "notes": "Madame de Pompadour's passion for roses well documented. Madame du Barry as Louis XV's final mistress confirmed. Joséphine and Eugénie as rose enthusiasts confirmed by general historical knowledge.",
+      "verified_body_hash": "b7994433becf1daa5f299df0720a15ddca5c94dc2aad50b125dbb828e92b15f8"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -70731,7 +71029,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Royal hunting ground history confirmed. Haussmann/Alphand redesign confirmed. Forêt de Rouvray as ancient predecessor confirmed."
+      "notes": "Royal hunting ground history confirmed. Haussmann/Alphand redesign confirmed. Forêt de Rouvray as ancient predecessor confirmed.",
+      "verified_body_hash": "18ac7eebfb44642f628607d7fcc3184ec0ecdd974c51f9b18caaf3929d55da6d"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -70861,7 +71160,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Proust's Swann's Way Bois scenes confirmed. Colette's Chéri confirmed. Bresson's 1945 film confirmed. Catherine Millet's 2001 novel confirmed."
+      "notes": "Proust's Swann's Way Bois scenes confirmed. Colette's Chéri confirmed. Bresson's 1945 film confirmed. Catherine Millet's 2001 novel confirmed.",
+      "verified_body_hash": "c8804468fcea53bd086c904bf4cce9d895c86aeb22099c4c7e24cbf91aae3d88"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -70978,7 +71278,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Annual Chopin Festival at Orangerie du Parc de Bagatelle confirmed — a real recurring event. Sources: https://parisjetaime.com/eng/event/festival-chopin-in-paris-e002"
+      "notes": "Annual Chopin Festival at Orangerie du Parc de Bagatelle confirmed — a real recurring event. Sources: https://parisjetaime.com/eng/event/festival-chopin-in-paris-e002",
+      "verified_body_hash": "962271eaba2bcaf0ac3278257bdb6a10513b10e111c63f1a73cc8ef099beed87"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71086,7 +71387,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Metro 6 is indeed elevated/aerial after Bercy — confirmed factual."
+      "notes": "Metro 6 is indeed elevated/aerial after Bercy — confirmed factual.",
+      "verified_body_hash": "b992aa5b5dce706ff3baa4d45daece0845c0a0ccc621ff78cdcdc7f13ba351e7"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71160,7 +71462,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Rue Berton back-door escape confirmed by multiple sources. Rue Raynouard address confirmed as 47 rue Raynouard. Sources: https://www.francophilesanonymes.com/en/paris/maison-de-balzac/, https://en.wikipedia.org/wiki/Maison_de_Balzac"
+      "notes": "Rue Berton back-door escape confirmed by multiple sources. Rue Raynouard address confirmed as 47 rue Raynouard. Sources: https://www.francophilesanonymes.com/en/paris/maison-de-balzac/, https://en.wikipedia.org/wiki/Maison_de_Balzac",
+      "verified_body_hash": "6fede03e2cfa9b19ae693e6d3378e6255ce92466416064f5115c12096d333bf4"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71228,7 +71531,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Balzac as 'secretary of French society' confirmed in his own preface. Midnight writing schedule confirmed. Henry James's admiration for Balzac over Flaubert confirmed. Sources: https://en.wikipedia.org/wiki/La_Com%C3%A9die_humaine"
+      "notes": "Balzac as 'secretary of French society' confirmed in his own preface. Midnight writing schedule confirmed. Henry James's admiration for Balzac over Flaubert confirmed. Sources: https://en.wikipedia.org/wiki/La_Com%C3%A9die_humaine",
+      "verified_body_hash": "b42afce929f5112e48e725e0ad05f0e0d30028dd5e377bc10a37aedbe352acdc"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71280,7 +71584,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Cousin Bette published 1846 confirmed. Quote about money from Balzac's text confirmed as representative of his themes."
+      "notes": "Cousin Bette published 1846 confirmed. Quote about money from Balzac's text confirmed as representative of his themes.",
+      "verified_body_hash": "8c02575df1988e46ea9ef761bea07b213d189f8fcc2f313830ab69fd6182476c"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71349,7 +71654,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Eiffel Tower opened 1889; Balzac died 1850 — he indeed never saw it. Confirmed."
+      "notes": "Eiffel Tower opened 1889; Balzac died 1850 — he indeed never saw it. Confirmed.",
+      "verified_body_hash": "48d2af61e0413603cfa60794d12f9967ce780b2c558c48d8f746e9fd7523bc79"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71486,7 +71792,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Allée des Cygnes as Beckett connection confirmed. Bridge architecture confirmed."
+      "notes": "Allée des Cygnes as Beckett connection confirmed. Bridge architecture confirmed.",
+      "verified_body_hash": "2af17cf620c6490ee6ed208b264a5647496f54e96a0fa13d6c616a80f92a91c5"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71569,7 +71876,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Franklin statue confirmed. Franklin's quote confirmed. Invalides sunset view confirmed."
+      "notes": "Franklin statue confirmed. Franklin's quote confirmed. Invalides sunset view confirmed.",
+      "verified_body_hash": "71270a8cf938b8cc46e5889b74b484a18e4d5092582dc174a11324810a266e7d"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71694,7 +72002,8 @@
         }
       ],
       "status": "verified",
-      "notes": "1999 renovation confirmed. Address confirmed. Sources: https://en.wikipedia.org/wiki/Jardin_des_Serres_d'Auteuil"
+      "notes": "1999 renovation confirmed. Address confirmed. Sources: https://en.wikipedia.org/wiki/Jardin_des_Serres_d'Auteuil",
+      "verified_body_hash": "91ba4b0a1020fd2a4ccbe1c0460e6748721756a7e869287b0538dc234bac3fbf"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -75470,7 +75779,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Proust born 1871, died 1922, lived at 45 rue de Courcelles and 9 boulevard Malesherbes near the park — well-established biographical fact. Artist residents of the Monceau neighborhood are consistently cited in multiple Paris guidebook sources."
+      "notes": "Proust born 1871, died 1922, lived at 45 rue de Courcelles and 9 boulevard Malesherbes near the park — well-established biographical fact. Artist residents of the Monceau neighborhood are consistently cited in multiple Paris guidebook sources.",
+      "verified_body_hash": "bc96db4c38906325dba26d58c74bbd224a091d55a3bc84f58e454eba64b34d41"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -75529,7 +75839,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Claudine in Paris published 1901 under Willy's name, authored by Colette — well documented. The Luce/kept-woman subplot is accurately summarized from the source."
+      "notes": "Claudine in Paris published 1901 under Willy's name, authored by Colette — well documented. The Luce/kept-woman subplot is accurately summarized from the source.",
+      "verified_body_hash": "64ea27ccddf94e6bbdb6dcd3ef58efd57843fcce5b0d05cc546ee21dc9da9d6d"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -75635,7 +75946,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Tell No One (2006) directed by Guillaume Canet — note: the source attributes the setting but doesn't name the director; Francis Cluzet is the lead actor. This is accurate. L'armée des ombres (1969) is Melville's confirmed masterpiece."
+      "notes": "Tell No One (2006) directed by Guillaume Canet — note: the source attributes the setting but doesn't name the director; Francis Cluzet is the lead actor. This is accurate. L'armée des ombres (1969) is Melville's confirmed masterpiece.",
+      "verified_body_hash": "33c1ca94376b5921f68c198975c134f29efafb157ff89f303e3beaaf2ff63df9"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -75821,7 +76133,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Collection contents verified; Jacquemart-André is well documented."
+      "notes": "Collection contents verified; Jacquemart-André is well documented.",
+      "verified_body_hash": "1e179ea15a0ff7f9a4e2e2683aa81fb8d8bfe7b3ebb5ad885cde5d30d5829d4c"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -75871,7 +76184,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Cathedral at rue Daru confirmed as Russian Orthodox and the center of the Paris Russian émigré community."
+      "notes": "Cathedral at rue Daru confirmed as Russian Orthodox and the center of the Paris Russian émigré community.",
+      "verified_body_hash": "d6f9eaf1b3d8df59a3d2cd6fc98316c0dc6b95111292ce0a7f76408a6b8c3617"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -75931,7 +76245,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Garden at 16 rue Chaptal confirmed as existing feature of the Musée de la Vie Romantique, well-documented."
+      "notes": "Garden at 16 rue Chaptal confirmed as existing feature of the Musée de la Vie Romantique, well-documented.",
+      "verified_body_hash": "b6a343e3504ddcdabbb6867dd5780a42f0a0bb3ced5b3b9c768abc56298a939d"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -76001,7 +76316,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "All biographical facts (Chopin/Sand relationship 1838–1847, Sand's birth name Aurore Dupin Dudevant, Delacroix double portrait, Chopin death 1849) are well-established. Ary Scheffer's address at rue Chaptal confirmed."
+      "notes": "All biographical facts (Chopin/Sand relationship 1838–1847, Sand's birth name Aurore Dupin Dudevant, Delacroix double portrait, Chopin death 1849) are well-established. Ary Scheffer's address at rue Chaptal confirmed.",
+      "verified_body_hash": "f1616f80dea33b2085d7a99a3364c50931844eafd51ab43d4440a8fdb6d39f0a"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -76059,7 +76375,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "The Chopin hand cast and Sand memorabilia are confirmed holdings of the Musée de la Vie Romantique per museum documentation."
+      "notes": "The Chopin hand cast and Sand memorabilia are confirmed holdings of the Musée de la Vie Romantique per museum documentation.",
+      "verified_body_hash": "516fe291e0e54c222b4450cb4a4e281bafa73e3683905229c091b2e99a3a8879"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -76213,7 +76530,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Alphand's role under Napoleon III redesigning Parisian parks is a well-documented historical fact. The 1860 annexation of suburban communes including Batignolles is confirmed."
+      "notes": "Alphand's role under Napoleon III redesigning Parisian parks is a well-documented historical fact. The 1860 annexation of suburban communes including Batignolles is confirmed.",
+      "verified_body_hash": "356a44d62c67b0262d6a44115b5d396c00f3e798125b9554afa9cc4a4e874e36"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -76383,7 +76701,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "All Verlaine biographical facts confirmed: Paris Commune participation, imprisonment for Rimbaud shooting, conversion to Catholicism, burial in Batignolles Cemetery, Luxembourg Gardens statue. Poem line is from 'Ariettes oubliées III' (Romances sans paroles)."
+      "notes": "All Verlaine biographical facts confirmed: Paris Commune participation, imprisonment for Rimbaud shooting, conversion to Catholicism, burial in Batignolles Cemetery, Luxembourg Gardens statue. Poem line is from 'Ariettes oubliées III' (Romances sans paroles).",
+      "verified_body_hash": "ace991aa4cbf3cab443fd669768cb61ce0cab9ebd84cebc355969a688662cbac"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -76447,7 +76766,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Baudelaire's Paris imagery is accurate; 'great gray sky' references Spleen poems. Atmospheric description is from source."
+      "notes": "Baudelaire's Paris imagery is accurate; 'great gray sky' references Spleen poems. Atmospheric description is from source.",
+      "verified_body_hash": "e8989234b7aceb1d2d22705c008726c6e7506c4662ad6dbd7c8b327244e91220"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07a-monceau-vie-romantique-batignolles",
@@ -76518,7 +76838,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Physical approach directions and Place Casadesus musicians family are local facts consistent with the area."
+      "notes": "Physical approach directions and Place Casadesus musicians family are local facts consistent with the area.",
+      "verified_body_hash": "1fc0786fb9f0811fd78c1376db88f2c77e9c73c0160c29b025cf58a47c44c225"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -76603,7 +76924,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Core legend details verified. Statue of Denis holding head is a known visible feature of the square. Mons Martyrum etymology confirmed."
+      "notes": "Core legend details verified. Statue of Denis holding head is a known visible feature of the square. Mons Martyrum etymology confirmed.",
+      "verified_body_hash": "71de3ff4b0f705c3b777d2abe3ce379355d914230e9feae5a6d76c1bebf927db"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -76809,7 +77131,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "All notable burials confirmed. Truffaut (1932-1984) confirmed at Montmartre Cemetery. Note: source text has OCR artifact 'Berliop' — should read 'Berlioz'. Auto-corrected in script_body. Sources: https://en.wikipedia.org/wiki/Fran%C3%A7ois_Truffaut"
+      "notes": "All notable burials confirmed. Truffaut (1932-1984) confirmed at Montmartre Cemetery. Note: source text has OCR artifact 'Berliop' — should read 'Berlioz'. Auto-corrected in script_body. Sources: https://en.wikipedia.org/wiki/Fran%C3%A7ois_Truffaut",
+      "verified_body_hash": "fd3411fdbb04226a89ca4a415cf9b35f781b3c70bbbd55e5a093ad3753d9c47e"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -76953,7 +77276,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Social-historical claim about Montmartre's working-class origins is well-established."
+      "notes": "Social-historical claim about Montmartre's working-class origins is well-established.",
+      "verified_body_hash": "e94bcc7a73b0524e82169bfe33236821fb6817ecc60a8d0da2df61564fdb90cc"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77099,7 +77423,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Van Gogh at 54 rue Lepic 1886-1888 confirmed. Sources: https://montmartrefootsteps.com/theo-and-vincent-van-gogh-54-rue-lepic/"
+      "notes": "Van Gogh at 54 rue Lepic 1886-1888 confirmed. Sources: https://montmartrefootsteps.com/theo-and-vincent-van-gogh-54-rue-lepic/",
+      "verified_body_hash": "18969170fff40c1e86d1d8f34dbf05acd7f6482dca2162dc6a294c3f913e4f9a"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77171,7 +77496,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "17th-century house owned by actor-colleague of Molière (Claude de la Rose, called Rosimond) is historically documented."
+      "notes": "17th-century house owned by actor-colleague of Molière (Claude de la Rose, called Rosimond) is historically documented.",
+      "verified_body_hash": "51d38ae42a84680be7d887c63b10cf421db29afa60553d8a6c9448eabd14cd74"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77320,7 +77646,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Louise Michel (1830-1905) confirmed. Her role in the Commune, reading Baudelaire in the trenches, and the semaine sanglante of May 1871 all confirmed. Sources: https://en.wikipedia.org/wiki/Louise_Michel"
+      "notes": "Louise Michel (1830-1905) confirmed. Her role in the Commune, reading Baudelaire in the trenches, and the semaine sanglante of May 1871 all confirmed. Sources: https://en.wikipedia.org/wiki/Louise_Michel",
+      "verified_body_hash": "555f094a1c028899a24dcec88493a0e7236e2b777dd1db544ce8f8392071fbe6"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77389,7 +77716,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Renoir's Bal du Moulin de la Galette 1876, now in Musée d'Orsay, confirmed. Renoir rented studio at rue Cortot confirmed. Dufy at 12 rue Cortot c.1900-1902 confirmed (book says '1901' which falls within the documented period). Sources: https://www.musee-orsay.fr/en/artworks/bal-du-moulin-de-la-galette-497"
+      "notes": "Renoir's Bal du Moulin de la Galette 1876, now in Musée d'Orsay, confirmed. Renoir rented studio at rue Cortot confirmed. Dufy at 12 rue Cortot c.1900-1902 confirmed (book says '1901' which falls within the documented period). Sources: https://www.musee-orsay.fr/en/artworks/bal-du-moulin-de-la-galette-497",
+      "verified_body_hash": "0e9f95bde68138a52c4ce9b1ddaaf62dc9d4afb4b5145f9831b0b4c3212ddbb3"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77528,7 +77856,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Lapin Agile's association with Picasso, Modigliani, Utrillo confirmed by existing beats in corpus."
+      "notes": "Lapin Agile's association with Picasso, Modigliani, Utrillo confirmed by existing beats in corpus.",
+      "verified_body_hash": "2ea4e74c1c910d9d767a739f7106bd2458e56352e8c6f9ba45930b4b6b97a63e"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77603,7 +77932,8 @@
     "fact_check": {
       "flagged_claims": [],
       "status": "verified",
-      "notes": "Louise Michel's schoolteacher identity and Commune role confirmed."
+      "notes": "Louise Michel's schoolteacher identity and Commune role confirmed.",
+      "verified_body_hash": "6ef35ecee4d1e1b29a0bc5c20de7c65874844f392c16d2f46b154cd2fc2bb50e"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77772,7 +78102,8 @@
         }
       ],
       "status": "verified",
-      "notes": "The book says 'the 1990s' — the actual opening year is 1993, which is consistent. No correction needed."
+      "notes": "The book says 'the 1990s' — the actual opening year is 1993, which is consistent. No correction needed.",
+      "verified_body_hash": "a6096c48cc6bda80715e7530da50cd3e41a6a879a8ad37f7041da8a9be646dc6"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
@@ -77971,7 +78302,8 @@
         }
       ],
       "status": "verified",
-      "notes": ""
+      "notes": "",
+      "verified_body_hash": "d1da529c817132983073fc50a6966efe2e32f7b9e39cf1ae18bdbfdf3af41847"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
@@ -78152,7 +78484,8 @@
         }
       ],
       "status": "verified",
-      "notes": ""
+      "notes": "",
+      "verified_body_hash": "554a58024586618039403fc44f8be782d6873077b8c1bde596e7abbfbe44574e"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
@@ -78296,7 +78629,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Typo in source 'RachidKhimoun' — correct name is Rachid Khimoune. Script_body uses correct form."
+      "notes": "Typo in source 'RachidKhimoun' — correct name is Rachid Khimoune. Script_body uses correct form.",
+      "verified_body_hash": "d11709ac27140dfbbb6458110a45c733e8b79e6458c6f729417d0dc4dcc3406d"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
@@ -78494,7 +78828,8 @@
         }
       ],
       "status": "verified",
-      "notes": ""
+      "notes": "",
+      "verified_body_hash": "371f0b16c05ed6626d322224db0da62bc64647897bb76475ed407a2b61f5d860"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
@@ -78822,7 +79157,8 @@
         }
       ],
       "status": "verified",
-      "notes": ""
+      "notes": "",
+      "verified_body_hash": "ff3d37b52d30cf6405d718bdd244c94ffd59dfaa9fc63ed81e1ec9e3ee712152"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-08a-promenade-plantee-parc-floral",
@@ -79030,7 +79366,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Core facts about Maurice Gardette and the Châteaubriant massacre are historically accurate."
+      "notes": "Core facts about Maurice Gardette and the Châteaubriant massacre are historically accurate.",
+      "verified_body_hash": "a8e0f97fd9b1f986bde0e2b833371fa385f78980ca09c395b05643b875e115b4"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
@@ -79623,7 +79960,8 @@
         }
       ],
       "status": "verified",
-      "notes": "Canal dimensions (9 locks, 2 swing bridges) are consistent with known facts about Canal Saint-Martin."
+      "notes": "Canal dimensions (9 locks, 2 swing bridges) are consistent with known facts about Canal Saint-Martin.",
+      "verified_body_hash": "5161bf174c46fee6e40dbddd2ca761059b50ed13cbb50444b7ae2d636beb2025"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-08b-maurice-gardette-roquette",
@@ -81043,7 +81381,8 @@
         "britannica.com/place/Saint-Sulpice (reference)",
         "generalsaintsulpice.org/en/who-are-we/en-jean-jacques-olier (primary — Sulpician society)",
         "afrenchcollection.com size corroboration: 113m vs Notre-Dame 128m (travel)"
-      ]
+      ],
+      "verified_body_hash": "d2ad1d31bdd6dd4f92874b9abd92105c26385e92823d96df6586f713a9a0bbb3"
     },
     "new_poi": false,
     "_meta": {
@@ -81120,7 +81459,8 @@
       "sources_consulted": [
         "restaurersaintsulpice.fr/en/decouvrir (primary — church restoration project)",
         "getty.edu Bouchardon exhibition (academic)"
-      ]
+      ],
+      "verified_body_hash": "7955e80c0143d711978e7d20b1e79cca0594738b43615aa1a8f658b9ec48bd03"
     },
     "new_poi": false,
     "_meta": {
@@ -81188,7 +81528,8 @@
       "sources_consulted": [
         "en.wikipedia.org/wiki/Saint-Sulpice,_Paris (reference)",
         "corroborated independently: 1739 Turgot map shows no crossing tower"
-      ]
+      ],
+      "verified_body_hash": "74bc85cbed2209266d9f9436ed52373805eba7d8c66fb1ff96f713ebe6862119"
     },
     "new_poi": false,
     "_meta": {
@@ -81266,7 +81607,8 @@
       "sources_consulted": [
         "commune1871.org — Clubs de la Commune / Louise Michel at Saint-Sulpice (association/academic)",
         "parcoursrevolution.paris.fr Saint-Sulpice republican temple (primary — City of Paris)"
-      ]
+      ],
+      "verified_body_hash": "e72e504c719437e21fac0dcd3b77a41581d56f9e01bb392e85ac07b7f3164ea0"
     },
     "new_poi": false,
     "_meta": {
@@ -81346,7 +81688,8 @@
       "sources_consulted": [
         "parcoursrevolution.paris.fr Saint-Sulpice a Republican Temple (primary — City of Paris)",
         "travelfranceonline.com St-Sulpice history (travel — faded sign over center door)"
-      ]
+      ],
+      "verified_body_hash": "00b029e4492a97dafcdac48c21ef17d35b1e3dd4880bc22b8c34018604f1cc74"
     },
     "new_poi": false,
     "_meta": {
@@ -81417,7 +81760,8 @@
         "en.wikipedia.org/wiki/Adèle_Foucher — Hugo–Foucher marriage 12 Oct 1822 (reference)",
         "susannahfullerton.com.au 12 Oct 1822 marriage (reference)",
         "eymardianplaces.com — Sade (1740) & Baudelaire (1821) baptisms at Saint-Sulpice"
-      ]
+      ],
+      "verified_body_hash": "70e53acca252bdce0650b9bcbeb060e660d91cd565eec3b27050e667500b55ce"
     },
     "new_poi": false,
     "_meta": {
@@ -81500,7 +81844,8 @@
       "sources_consulted": [
         "en.wikipedia.org/wiki/The_Da_Vinci_Code_(film) — Archbishop refused filming; Shepperton recreation (reference)",
         "travelfranceonline.com — church disclaimer notice, meridian line (travel)"
-      ]
+      ],
+      "verified_body_hash": "5cc5eb9d33f10dead93a3405cb0b97ace0642d62add87969dd1fd481c2a1139b"
     },
     "new_poi": false,
     "_meta": {
@@ -81575,7 +81920,8 @@
       "sources_consulted": [
         "napoleon.org Arc de Triomphe du Carrousel (academic/foundation)",
         "louvre.fr Arc de Triomphe du Carrousel campaign (primary — Louvre)"
-      ]
+      ],
+      "verified_body_hash": "4f160412d537a9c60e5e24a12d92dbf496b4494d5068b27c1ba7380f9e3bdb97"
     },
     "new_poi": false,
     "_meta": {
@@ -81653,7 +81999,8 @@
       "sources_consulted": [
         "louvre.fr conservation treatment on the Arc de triomphe du Carrousel (primary — Louvre)",
         "napoleon.org Arc de Triomphe du Carrousel (academic)"
-      ]
+      ],
+      "verified_body_hash": "361a6db2b3b85e20796fb8bdeae41d183b6390807270fd000f1cd0a42737823d"
     },
     "new_poi": false,
     "_meta": {
@@ -81729,7 +82076,8 @@
       "sources_consulted": [
         "louvre.fr conservation treatment — Denon selected subjects, Meynier designed (primary — Louvre)",
         "napoleon.org Arc de Triomphe du Carrousel (academic)"
-      ]
+      ],
+      "verified_body_hash": "a4335ac47b88bcd56b4976b5f732720f13b8888eee65561429ee93d26c5d8df5"
     },
     "new_poi": false,
     "_meta": {
@@ -81805,7 +82153,8 @@
       "sources_consulted": [
         "louvre.fr Arc de Triomphe du Carrousel (primary — Louvre)",
         "theatrum-belli.com / paris-autrement.paris — sapeur Dominique Gaye-Mariolle (reference)"
-      ]
+      ],
+      "verified_body_hash": "7be21d52d14f78c9b973513babf12e52122ba0b9b9985778d37c68bd936e15ce"
     },
     "new_poi": false,
     "_meta": {
@@ -81884,7 +82233,8 @@
       "sources_consulted": [
         "en.wikipedia.org/wiki/Horses_of_Saint_Mark (reference)",
         "napoleon.org Arc de Triomphe du Carrousel (academic)"
-      ]
+      ],
+      "verified_body_hash": "d51c918b6c861183bd5f5743023a68904351e94ab33d5a8afef63f8e5bbe49ea"
     },
     "new_poi": false,
     "_meta": {
@@ -81962,7 +82312,8 @@
       "sources_consulted": [
         "napoleon.org Arc de Triomphe du Carrousel (academic)",
         "en.wikipedia.org/wiki/Axe_historique — ~9 km axis, arch at eastern end (reference)"
-      ]
+      ],
+      "verified_body_hash": "97a11a5fc15f12104892450c7c67df6e192f9d22c00ef56568379d034a58f734"
     },
     "new_poi": false,
     "_meta": {
