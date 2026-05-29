@@ -15,11 +15,18 @@ Checks collection-level invariants the Pydantic model can't enforce:
    makes the source-grounding gate a hard commit-time chokepoint rather than an
    extractor honor-system check — a beat reconstructed from memory cannot be
    committed even if the extractor skipped its own validation.
+4. Every BOOK beat's `source_passage` is grounded in its source chunk
+   (`Books/{City}/{book-slug}/{source_chunk_slug}.txt`), with three soft-skips
+   so the gate never breaks the historical corpus: legacy-sentinel chunks,
+   chunks not locatable on disk, and beats whose `script_body_hash` is listed in
+   `{beats_dir}/grounding_grandfathered.json` (legacy terse-note beats predating
+   the verbatim convention — a shrinking cleanup backlog). New extractions and
+   any edit to a grandfathered beat are hard-enforced.
 
-Scoped to the beats file's own city directory: it reads that beats.json and the
-sibling `wikipedia/` pinned sources, never any other city or global state. The
-pre-upload gate (AC-9), end-of-extraction gate (AC-11), and `beats_io.commit`
-all call this script with the city's beats path.
+Scoped to the beats file's own city directory + the repo's `Books/{City}/`
+chunk sources; never reads any other city or global state. The pre-upload gate
+(AC-9), end-of-extraction gate (AC-11), and `beats_io.commit` all call this
+script with the city's beats path.
 
 Exit codes:
   0 — all checks pass
@@ -149,12 +156,89 @@ def _check_wikipedia_grounding(beats: list[dict], wiki_dir: Path) -> list[str]:
     return errors
 
 
+_NON_BOOK_SLUGS = {WIKIPEDIA_BOOK_SLUG, "legacy_unknown", ""}
+
+
+def _book_chunk_text(beats_path: Path, book_slug: str, chunk_slug: str) -> str | None:
+    """Locate a book beat's source chunk: `Books/{City}/{book-dir}/{chunk}.txt`.
+
+    Returns None when not locatable (legacy beats, unmapped books) so the gate
+    soft-skips rather than breaking commits. Derives the Books root from the
+    beats path (`data/{city}/beats.json` → repo-root → `Books/`), matching the
+    city directory case-insensitively (data dir `paris` ↔ `Books/Paris`).
+    """
+    resolved = beats_path.resolve()
+    books_root = resolved.parent.parent.parent / "Books"
+    if not books_root.exists():
+        return None
+    city_slug = resolved.parent.name
+    city_dir = next(
+        (d for d in books_root.iterdir() if d.is_dir() and d.name.lower() == city_slug.lower()),
+        None,
+    )
+    if city_dir is None:
+        return None
+    chunk_file = city_dir / book_slug.replace("_", "-") / f"{chunk_slug}.txt"
+    return chunk_file.read_text(encoding="utf-8") if chunk_file.exists() else None
+
+
+def _load_grounding_grandfather(beats_path: Path) -> set[str]:
+    """`script_body_hash`es of legacy book beats exempt from grounding.
+
+    These predate the verbatim-source_passage convention (older terse-note
+    style; facts trace to the chunk but not as substrings). A shrinking cleanup
+    backlog: re-quoting a beat verbatim changes its hash and drops it from the
+    exemption automatically, at which point it must ground.
+    """
+    f = beats_path.parent / "grounding_grandfathered.json"
+    if not f.exists():
+        return set()
+    data = json.loads(f.read_text(encoding="utf-8"))
+    return set(data.get("exempt_script_body_hashes", []))
+
+
+def _check_book_grounding(beats: list[dict], beats_path: Path) -> list[str]:
+    """Hard-fail any BOOK beat whose `source_passage` isn't grounded in its
+    pinned chunk file — except legacy beats grandfathered by hash, beats whose
+    chunk isn't locatable (soft-skip), and Wikipedia (handled separately).
+    Mirrors the Wikipedia gate's threshold; this is what makes book extraction
+    a hard commit-time chokepoint instead of an extractor honor-system check.
+    """
+    exempt = _load_grounding_grandfather(beats_path)
+    errors: list[str] = []
+    text_cache: dict[tuple[str, str], str | None] = {}
+    for beat in beats:
+        book_slug = beat.get("book_slug", "")
+        if book_slug in _NON_BOOK_SLUGS:
+            continue
+        chunk = beat.get("source_chunk_slug", "")
+        if not chunk or "legacy" in chunk.lower():
+            continue  # legacy sentinel chunk — not locatable, soft-skip
+        if beat.get("script_body_hash", "") in exempt:
+            continue  # grandfathered legacy terse-note beat (tracked cleanup debt)
+        key = (book_slug, chunk)
+        if key not in text_cache:
+            text_cache[key] = _book_chunk_text(beats_path, book_slug, chunk)
+        chunk_text = text_cache[key]
+        if chunk_text is None:
+            continue  # chunk file not locatable — soft-skip (don't break commits)
+        total, ungrounded = source_grounding_gate(beat.get("source_passage", ""), chunk_text)
+        if len(ungrounded) >= 2 and len(ungrounded) / total > 0.3:
+            beat_id = beat.get("beat_id", "<no-beat-id>")
+            errors.append(
+                f"BOOK_UNGROUNDED {beat_id}: {len(ungrounded)}/{total} source_passage "
+                f"sentence(s) absent from {chunk}.txt — not quoted from the source chunk"
+            )
+    return errors
+
+
 def validate(path: Path) -> list[str]:
     beats = _load_beats(path)
     return (
         _check_hash_uniqueness(beats)
         + _check_identity_uniqueness(beats)
         + _check_wikipedia_grounding(beats, path.parent / "wikipedia")
+        + _check_book_grounding(beats, path)
     )
 
 

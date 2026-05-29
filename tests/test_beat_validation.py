@@ -224,3 +224,93 @@ def test_validator_wikipedia_missing_source_fails(tmp_path):
     result = run_validator(target)
     assert result.returncode == 1
     assert "WIKIPEDIA_MISSING_SOURCE" in result.stdout
+
+
+# ── commit-time BOOK source-grounding gate (with legacy grandfather) ──
+
+_BOOK_CHUNK = "The hotel was built in 1655 for the financier. It stands on the rue Saint-Antoine."
+_BOOK_UNGROUNDED_SP = "It was a palace of glass. The duke fled to Venice. Cannons lined the roof."
+
+
+def _book_beat(
+    topic: str, lens: str, source_passage: str, body_hash: str, chunk: str = "chunk-01"
+) -> dict:
+    return {
+        "beat_id": f"paris_x_{lens}_around_and_about_paris_{topic}",
+        "city_name": "paris",
+        "poi_name": "X",
+        "lens": lens,
+        "book_slug": "around_and_about_paris",
+        "topic_slug": topic,
+        "source_chunk_slug": chunk,
+        "script_body_hash": body_hash,
+        "source_passage": source_passage,
+    }
+
+
+def _setup_book(tmp_path, beats, grandfather_hashes=None) -> Path:
+    (tmp_path / "data" / "paris").mkdir(parents=True, exist_ok=True)
+    book_dir = tmp_path / "Books" / "Paris" / "around-and-about-paris"
+    book_dir.mkdir(parents=True, exist_ok=True)
+    (book_dir / "chunk-01.txt").write_text(_BOOK_CHUNK)
+    if grandfather_hashes is not None:
+        (tmp_path / "data" / "paris" / "grounding_grandfathered.json").write_text(
+            json.dumps({"exempt_script_body_hashes": grandfather_hashes})
+        )
+    target = tmp_path / "data" / "paris" / "beats.json"
+    target.write_text(json.dumps(beats))
+    return target
+
+
+def test_validator_book_grounded_passes(tmp_path):
+    target = _setup_book(tmp_path, [_book_beat("a", "historic_arch", _BOOK_CHUNK, "h1")])
+    result = run_validator(target)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_validator_book_ungrounded_fails(tmp_path):
+    """A non-grandfathered book beat that doesn't quote its chunk is blocked."""
+    target = _setup_book(tmp_path, [_book_beat("b", "war_conflict", _BOOK_UNGROUNDED_SP, "h2")])
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "BOOK_UNGROUNDED" in result.stdout
+
+
+def test_validator_book_grandfathered_exempt(tmp_path):
+    """A legacy beat whose hash is grandfathered is exempt even if ungrounded."""
+    target = _setup_book(
+        tmp_path,
+        [_book_beat("c", "dark_history", _BOOK_UNGROUNDED_SP, "h3")],
+        grandfather_hashes=["h3"],
+    )
+    result = run_validator(target)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_validator_book_grandfather_invalidated_on_edit(tmp_path):
+    """Editing a grandfathered beat changes its hash → no longer exempt → enforced."""
+    # grandfather lists the OLD hash; the beat now carries a NEW hash (simulated edit)
+    target = _setup_book(
+        tmp_path,
+        [_book_beat("c", "dark_history", _BOOK_UNGROUNDED_SP, "h3_new")],
+        grandfather_hashes=["h3_old"],
+    )
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "BOOK_UNGROUNDED" in result.stdout
+
+
+def test_validator_book_unlocatable_chunk_soft_skips(tmp_path):
+    """A book beat whose chunk file doesn't exist soft-skips (never breaks commits)."""
+    beat = _book_beat("d", "hidden_history", _BOOK_UNGROUNDED_SP, "h4", chunk="chunk-99")
+    target = _setup_book(tmp_path, [beat])
+    result = run_validator(target)
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_validator_book_legacy_chunk_soft_skips(tmp_path):
+    """A legacy-sentinel chunk slug soft-skips."""
+    beat = _book_beat("e", "hidden_history", _BOOK_UNGROUNDED_SP, "h5", chunk="legacy_ambiguous")
+    target = _setup_book(tmp_path, [beat])
+    result = run_validator(target)
+    assert result.returncode == 0, result.stdout + result.stderr
