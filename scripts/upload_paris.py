@@ -21,6 +21,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -32,11 +33,48 @@ from src.seed.lenses import seed_lenses
 DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "paris"
 POI_FILE = DATA_DIR / "poi-raw.json"
 BEATS_FILE = DATA_DIR / "beats.json"
+VALIDATOR = Path(__file__).resolve().parent / "validate_beats.py"
+
+# Generous Paris bounding box (city + inner suburbs): rejects gross coordinate
+# errors (a Boston POI, (0,0), or out-of-city leaks) without clipping legitimate
+# edge POIs. (min_lat, max_lat, min_lon, max_lon)
+PARIS_BBOX = (48.70, 49.00, 2.10, 2.60)
+
+# fact_check.status values that must never reach the live database.
+_BLOCKED_STATUSES = {"disputed"}
 
 
 def _load_json(path: Path) -> list[dict]:
     with open(path) as f:
         return json.load(f)
+
+
+def _in_city_bounds(lat: float, lon: float, bbox: tuple = PARIS_BBOX) -> bool:
+    return bbox[0] <= lat <= bbox[1] and bbox[2] <= lon <= bbox[3]
+
+
+def _beat_blocked(beat: dict) -> bool:
+    """True if a beat must NOT be uploaded — currently: missing essentials or a
+    `disputed` fact-check status. (Note: this does NOT require `verified`;
+    uploading unverified beats is a launch-policy decision left to the operator.)"""
+    if not beat.get("poi_name") or not beat.get("script_body"):
+        return True
+    return (beat.get("fact_check") or {}).get("status") in _BLOCKED_STATUSES
+
+
+def _assert_beats_valid(beats_path: Path) -> None:
+    """Run the full validate_beats gate before any DB write (AC-9). Aborts the
+    upload if the beats file fails — so grounding, verification-freshness,
+    uniqueness, and status checks all gate the upload, not just extraction."""
+    result = subprocess.run(
+        [sys.executable, str(VALIDATOR), str(beats_path)], capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        raise RuntimeError(
+            "Refusing to upload: validate_beats rejected the beats file.\n"
+            + (result.stdout or "")
+            + (result.stderr or "")
+        )
 
 
 def _ensure_lenses(session, lens_slugs: set[str]) -> int:
@@ -64,11 +102,18 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
     """Upload POI nodes with spatial points via batched UNWIND. Returns stats."""
     params = []
     skipped = 0
+    out_of_bounds = 0
     for poi in pois:
         lat = poi.get("latitude")
         lon = poi.get("longitude")
         if lat is None or lon is None:
             skipped += 1
+            continue
+        if not _in_city_bounds(float(lat), float(lon)):
+            # Coordinate hygiene: never upload a POI outside the city geofence
+            # (catches the Boston-POI class, (0,0), and stray coords).
+            print(f"         ! skipping out-of-bounds POI {poi.get('name')!r} @ ({lat}, {lon})")
+            out_of_bounds += 1
             continue
 
         name_variations = poi.get("name_variations") or []
@@ -103,13 +148,14 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
         pois=params,
     )
     created = result.single()["total"]
-    return {"created": created, "skipped": skipped}
+    return {"created": created, "skipped": skipped, "out_of_bounds": out_of_bounds}
 
 
 def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
     """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND."""
     params = []
     pre_skipped = 0
+    blocked = 0
 
     for beat in beats:
         poi_name = beat.get("poi_name", "")
@@ -118,6 +164,9 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
 
         if not poi_name or not script_body:
             pre_skipped += 1
+            continue
+        if (beat.get("fact_check") or {}).get("status") in _BLOCKED_STATUSES:
+            blocked += 1  # disputed beats never go live
             continue
 
         word_count = len(script_body.split())
@@ -178,7 +227,7 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
     else:
         tagged = 0
 
-    return {"linked": linked, "orphaned": orphaned, "tagged": tagged}
+    return {"linked": linked, "orphaned": orphaned, "tagged": tagged, "blocked": blocked}
 
 
 @abort_on_connection_error
@@ -188,6 +237,12 @@ def main() -> None:
     print(f"\n{'='*60}")
     print(f"  PARIS DATA UPLOAD → Neo4j [{db_label}]")
     print(f"{'='*60}\n")
+
+    # AC-9: every integrity gate (grounding, verification-freshness, uniqueness,
+    # status vocab) must pass before we touch the database. Fail fast, pre-connect.
+    print("  [0/5] Validating beats (validate_beats gate)...")
+    _assert_beats_valid(BEATS_FILE)
+    print("         OK")
 
     pois = _load_json(POI_FILE)
     beats = _load_json(BEATS_FILE)
@@ -217,13 +272,21 @@ def main() -> None:
             print(f"  [3/5] Uploading {len(pois)} POIs...")
             t0 = time.time()
             poi_stats = _upload_pois(session, pois)
-            print(f"         {poi_stats['created']} created, {poi_stats['skipped']} skipped ({time.time()-t0:.1f}s)")
+            print(
+                f"         {poi_stats['created']} created, {poi_stats['skipped']} skipped "
+                f"(null coords), {poi_stats['out_of_bounds']} skipped (out of bounds) "
+                f"({time.time()-t0:.1f}s)"
+            )
 
             # 4. Beats + relationships
             print(f"  [4/5] Uploading {len(beats)} beats + linking...")
             t0 = time.time()
             beat_stats = _upload_beats(session, beats)
-            print(f"         {beat_stats['linked']} linked, {beat_stats['orphaned']} orphaned, {beat_stats['tagged']} tagged ({time.time()-t0:.1f}s)")
+            print(
+                f"         {beat_stats['linked']} linked, {beat_stats['orphaned']} orphaned, "
+                f"{beat_stats['tagged']} tagged, {beat_stats['blocked']} blocked (disputed) "
+                f"({time.time()-t0:.1f}s)"
+            )
 
             # 5. Summary
             print("  [5/5] Verifying counts...")
