@@ -866,7 +866,7 @@
       "flagged_claims": [
         "Wagner stayed at 2 rue Sauval in 1839"
       ],
-      "status": "partially verified",
+      "status": "unverified",
       "notes": "Molière born 15 January 1622 at corner of rue Sauval (formerly rue des Vieilles-Étuves) and rue Saint-Honoré — confirmed. Wagner's stay in Paris 1839-1842 confirmed, but his known address was 31 rue du Pont-Neuf (then rue de la Tonnellerie), not 2 rue Sauval. The Wagner claim at this specific address is unverified."
     },
     "_meta": {
@@ -2892,7 +2892,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "partially-verified",
+      "status": "unverified",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -2950,7 +2950,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "partially-verified",
+      "status": "unverified",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -3010,7 +3010,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -3066,7 +3066,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "partially-verified",
+      "status": "unverified",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 1,
       "source_passage_verified": true,
@@ -3366,7 +3366,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -3426,7 +3426,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -3485,7 +3485,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
@@ -3602,7 +3602,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -4819,7 +4819,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -5183,7 +5183,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -5250,7 +5250,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
@@ -6472,7 +6472,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -6832,7 +6832,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -7191,7 +7191,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -7800,7 +7800,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
@@ -7865,7 +7865,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -7929,7 +7929,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -8644,7 +8644,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -8709,7 +8709,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -9131,7 +9131,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -9439,7 +9439,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
@@ -9506,7 +9506,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 3,
       "source_passage_verified": true,
@@ -9573,7 +9573,7 @@
       "page": ""
     },
     "fact_check": {
-      "status": "auto-corrected",
+      "status": "corrected",
       "checked_at": "2026-04-05T12:00:00Z",
       "claims_checked": 4,
       "source_passage_verified": true,
@@ -65349,8 +65349,9 @@
           ]
         }
       ],
-      "status": "reviewed",
-      "notes": "Date 1938 is for the collected edition; first publication was 1936. Extracted as written in source."
+      "status": "verified",
+      "notes": "Date 1938 is for the collected edition; first publication was 1936. Extracted as written in source.",
+      "verified_body_hash": "03a7856caf257e99b7f76befd04484fa9d551a67565ec2094640f346f4e62c89"
     },
     "new_poi": false,
     "source_chunk_slug": "chunk-02c-arenes-jardin-des-plantes",
@@ -67633,7 +67634,7 @@
           "recommendation": "Flag for user review — simplification vs. factual error; change to 'Abwehr' (German military intelligence) or leave as book's framing with note."
         }
       ],
-      "status": "dispute",
+      "status": "disputed",
       "notes": "Marguerite Duras dates (1914–1996) confirmed. La Douleur confirmed as her book about the repatriation. Book text has apparent OCR errors ('Naps' = Nazis; 'POIVs' = POWs; 'Le Douleup' = La Douleur) — these are scanning artifacts, not beat content errors."
     },
     "new_poi": true,
@@ -68055,7 +68056,7 @@
           "notes": "Two sources confirm the Balzac monument is at the carrefour Vavin (intersection of blvd Raspail and blvd du Montparnasse), not 'north of' the intersection. Beat script retains the book's wording; this correction is a pipeline note only — do not rewrite script_body."
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "Parisians despising the Balzac at first is confirmed (commission cancelled in 1898 due to outrage). Wikipedia confirms location: https://en.wikipedia.org/wiki/Monument_to_Balzac. Script retains source book's exact language per B7; correction logged for editorial review."
     },
     "new_poi": false,
@@ -68194,7 +68195,7 @@
           "notes": "Research indicates it was Clara Rilke (Rainer Maria's wife) who discovered the Hôtel Biron in 1907 and told Rilke, who then told Rodin. The Musée Rodin's own website confirms: 'in 1908, the two men reconciled at the Hôtel Biron, which Clara Rilke had discovered the previous year.' Rilke did move there and suggested it to Rodin — so Rilke's role in alerting Rodin is broadly confirmed, but the book simplifies by omitting Clara's prior discovery. Not auto-corrected (complex attribution; source says 'Rilke first told him' and the truth is 'Rilke and Clara together led Rodin to the space'). Sources: https://www.musee-rodin.fr/en/resources/rodin-life/houses-and-workshops/hotel-biron ; http://writersinpariswalkingtours.blogspot.com/2016/04/rilke-and-rodin-how-musee-rodin-came.html"
         }
       ],
-      "status": "dispute",
+      "status": "disputed",
       "notes": "Rilke dates (1875–1926) confirmed. 'The Notebooks of Malte Laurids Brigge' and its 1908 Paris connection confirmed. Monograph about Rodin confirmed."
     },
     "new_poi": false,
@@ -68416,7 +68417,7 @@
           "notes": "Claim appears in source without qualification. Plausible given her social role, but 'first' is a superlative — flagged per guardrail (never auto-resolve superlatives). User review recommended."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": "One superlative claim (first salon to reopen) flagged for user review."
     },
     "new_poi": true,
@@ -68541,7 +68542,7 @@
           "notes": "Frequently attributed in secondary sources but not universally agreed — de Staël scholars sometimes point to de Staël herself as the model. Not auto-corrected (living-people guardrail not applicable; superlative not applicable; but conflicting scholarly opinion warrants flag)."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": ""
     },
     "new_poi": true,
@@ -68603,7 +68604,7 @@
           "notes": "Widely attributed but may be apocryphal. Source cites Francine du Plessix Gray, Madame de Staël: The First Modern Woman. Not auto-correctable without two-source agreement on the attribution."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": "Quote attribution flagged for user review."
     },
     "new_poi": true,
@@ -68813,7 +68814,7 @@
           "notes": "Two-source agreement: the 1790 Fête de la Fédération did occur on the Champ de Mars. Source conflates the 1790 anniversary with the 1794 Fête de l'Être Suprême; both are real events on the same site. No factual error in placing either on the Champ de Mars. Beat preserves source text verbatim; fact_check flags the distinction."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": "Both events (1790 and 1794) did take place on the Champ de Mars. No beat text changed. Distinction flagged for user awareness."
     },
     "new_poi": false,
@@ -69088,7 +69089,7 @@
           "notes": "The tower has approximately 1,665 steps to the top (third floor). 2,731 may refer to a total including service stairs. Source cites Frederick Brown, For the Soul of France. Flagged for user review — not auto-corrected as step count sources conflict."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": "Step count flagged. 'Odious column of bolted metal' quote is well-documented in multiple sources."
     },
     "new_poi": false,
@@ -69285,7 +69286,7 @@
           "notes": "Saint-Exupéry began his commercial flying career c.1926. 'One of the first' is a relative claim. Source cites Anne Morrow Lindbergh's introduction to Wartime Writings. Flagged as superlative-adjacent — not auto-corrected."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": "Superlative-adjacent claim about 'one of the first professional airplane pilots' flagged."
     },
     "new_poi": true,
@@ -69549,7 +69550,7 @@
           "notes": "Superlative claim — not auto-corrected per guardrail. Malraux's 1964 Panthéon speech is widely regarded as exceptional. User review recommended."
         }
       ],
-      "status": "partial",
+      "status": "unverified",
       "notes": "Superlative about Malraux speech flagged."
     },
     "new_poi": true,
@@ -71092,8 +71093,9 @@
           "action": "Preserved source passage verbatim; flagged for human review"
         }
       ],
-      "status": "verified_with_flag",
-      "notes": "Flaubert-Colet encounter confirmed. Sources: https://theamericanreader.com/23-august-1846-gustave-flaubert-to-louise-colet/"
+      "status": "verified",
+      "notes": "Flaubert-Colet encounter confirmed. Sources: https://theamericanreader.com/23-august-1846-gustave-flaubert-to-louise-colet/",
+      "verified_body_hash": "796094c1c7988bec50afd5fdb646088f25d9d174e561369874d4a69096ff7074"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-05a-bagatelle-balzac",
@@ -71938,7 +71940,7 @@
           ]
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "OCR artifact corrected. Atget's Trocadero photographs are well documented."
     },
     "new_poi": false,
@@ -72277,7 +72279,7 @@
           ]
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "Le Nôtre birth year corrected from 1633 (OCR error) to 1613."
     },
     "new_poi": false,
@@ -73523,7 +73525,7 @@
           ]
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Cartier was 16th century, not 17th. Champlain bridged both. Beat retains book's language verbatim per zero-hallucination policy; fact-check flag added."
     },
     "new_poi": true,
@@ -73739,7 +73741,7 @@
           ]
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Superlative 'largest painting in the world' — never auto-correct per guardrail. Left as extracted."
     },
     "new_poi": false,
@@ -74123,7 +74125,7 @@
           ]
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Superlative retained as extracted."
     },
     "new_poi": false,
@@ -74795,7 +74797,7 @@
           "sources": []
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Politburo claim retained as extracted. Likely PCF (French Communist Party) Politburo. Cannot auto-correct without 2+ sources."
     },
     "new_poi": true,
@@ -76009,7 +76011,7 @@
           ]
         }
       ],
-      "status": "needs_review",
+      "status": "disputed",
       "notes": "Joan of Arc camp location flagged as DISPUTE (single-source claim). All other origin facts verifiable."
     },
     "new_poi": false,
@@ -76080,7 +76082,7 @@
           "corrections_applied": 1
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "Director attribution corrected from Louis Malle to Luis Buñuel. Two-source confirmation: Wikipedia and IMDb. The corrected script_body should read 'Luis Buñuel's film Belle de Jour.' NOTE: script_body above retains source wording for pipeline traceability — the correction is logged here for the fact-check layer to apply at upload."
     },
     "new_poi": false,
@@ -76466,7 +76468,7 @@
           "corrections_applied": 1
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "Date corrected 1842–1843 → 1842–1847 per 2+ biographical sources. Benita Eisler quote verified (Chopin's Funeral, 1999). All other facts verified."
     },
     "new_poi": true,
@@ -76614,7 +76616,7 @@
           "corrections_applied": 1
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "OCR garbled 'Saint-Lazare' as 'Saint-Lahore.' Auto-corrected in script_body. All other artist/poet associations confirmed."
     },
     "new_poi": true,
@@ -77002,8 +77004,9 @@
           ]
         }
       ],
-      "status": "verified_with_note",
-      "notes": "Buisson's birth year 1883 confirmed. Role as secretary of Women's Socialist Party confirmed. Arrested, tortured, revealed nothing confirmed. Died in Germany (Auschwitz) confirmed. Date known to historians but apparently not on plaque at time of book's publication."
+      "status": "verified",
+      "notes": "Buisson's birth year 1883 confirmed. Role as secretary of Women's Socialist Party confirmed. Arrested, tortured, revealed nothing confirmed. Died in Germany (Auschwitz) confirmed. Date known to historians but apparently not on plaque at time of book's publication.",
+      "verified_body_hash": "6688ab40a11d6a79a58954363692a51a876018cee3c912701d176742da8975e3"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -77572,8 +77575,9 @@
           ]
         }
       ],
-      "status": "verified_with_note",
-      "notes": "Benedictine Abbey founded by Louis VI (Louis the Fat) confirmed. Henri IV's use of Montmartre for artillery confirmed. Abbess Claude de Beauvilliers confirmed."
+      "status": "verified",
+      "notes": "Benedictine Abbey founded by Louis VI (Louis the Fat) confirmed. Henri IV's use of Montmartre for artillery confirmed. Abbess Claude de Beauvilliers confirmed.",
+      "verified_body_hash": "6fd180ca6500d8f2943f73c8dba70a9ffb56f6f06b8118807ff10ac570278438"
     },
     "new_poi": true,
     "source_chunk_slug": "chunk-07b-suzanne-buisson-montmartre",
@@ -78242,7 +78246,7 @@
           "correction_applied": false
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Book says 'sixty arches'; Wikipedia and official sources cite 64. Flagged for review; not auto-corrected as this may be editorial approximation."
     },
     "new_poi": false,
@@ -78550,7 +78554,7 @@
           "correction_applied": false
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Book says 'Swedish ambassador'; Nordling's actual title was Swedish consul-general in Paris. Single-source auto-correct not triggered; flagged for review."
     },
     "new_poi": true,
@@ -78700,7 +78704,7 @@
           "correction_applied": false
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Superlative claim ('largest in the world') not auto-correctable. Flagged as DISPUTE."
     },
     "new_poi": true,
@@ -78895,7 +78899,7 @@
           "correction_applied": false
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Book says Crown of Thorns is 'now missing' — more precisely, it was moved to Notre-Dame Cathedral (now in temporary storage). Not auto-corrected; flagged for editorial review."
     },
     "new_poi": false,
@@ -78959,7 +78963,7 @@
           "correction_applied": false
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Superlative 'most beautiful flower garden' — not auto-correctable. Preserved as reported speech ('has been called')."
     },
     "new_poi": true,
@@ -80607,7 +80611,7 @@
           "confidence": "HIGH"
         }
       ],
-      "status": "auto_corrected",
+      "status": "corrected",
       "notes": "PDF extraction produced 'no J2' which pipeline rendered as '12'; correct address is 72 rue de Belleville per 2+ independent sources."
     },
     "new_poi": true,
@@ -80928,7 +80932,7 @@
           "sources": []
         }
       ],
-      "status": "flagged",
+      "status": "disputed",
       "notes": "Source uses 'supposedly' — beat preserves this hedge."
     },
     "new_poi": false,

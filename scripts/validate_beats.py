@@ -27,6 +27,9 @@ Checks collection-level invariants the Pydantic model can't enforce:
    current `script_body_hash`. A mutation that rewrites a verified beat's body
    without re-verifying (e.g. a dedup merge) is blocked, so a "verified" badge
    can never sit on unverified text.
+6. `fact_check.status`, when present, is one of {verified, corrected, disputed,
+   unverified}. A controlled vocabulary keeps the field a reliable gate (the
+   upload's disputed-exclusion can't be defeated by a "dispute" typo).
 
 Scoped to the beats file's own city directory + the repo's `Books/{City}/`
 chunk sources; never reads any other city or global state. The pre-upload gate
@@ -265,6 +268,29 @@ def _check_verification_freshness(beats: list[dict]) -> list[str]:
     return errors
 
 
+_VALID_STATUSES = {"verified", "corrected", "disputed", "unverified"}
+
+
+def _check_status_vocabulary(beats: list[dict]) -> list[str]:
+    """`fact_check.status`, when present, must be one of the four controlled
+    values. Keeps the field a reliable gate: ad-hoc variants ("dispute" vs
+    "disputed", "auto_corrected", "needs_review", …) silently defeat any
+    status-based filter (e.g. the upload's disputed-exclusion), so they are
+    blocked at commit. Absent/empty status is allowed (not yet fact-checked).
+    """
+    errors: list[str] = []
+    for beat in beats:
+        status = (beat.get("fact_check") or {}).get("status")
+        if status in (None, ""):
+            continue
+        if status not in _VALID_STATUSES:
+            errors.append(
+                f"STATUS_INVALID {beat.get('beat_id', '<no-beat-id>')}: "
+                f"fact_check.status={status!r} not in {sorted(_VALID_STATUSES)}"
+            )
+    return errors
+
+
 def validate(path: Path) -> list[str]:
     beats = _load_beats(path)
     return (
@@ -273,6 +299,7 @@ def validate(path: Path) -> list[str]:
         + _check_wikipedia_grounding(beats, path.parent / "wikipedia")
         + _check_book_grounding(beats, path)
         + _check_verification_freshness(beats)
+        + _check_status_vocabulary(beats)
     )
 
 

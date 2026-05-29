@@ -356,3 +356,35 @@ def test_validator_verified_without_stamp_passes(tmp_path):
     target = tmp_path / "beats.json"
     target.write_text(json.dumps([_verified_beat("hX", None)]))
     assert run_validator(target).returncode == 0
+
+
+# ── controlled fact_check.status vocabulary ──
+
+
+def _status_beat(status) -> dict:
+    return {
+        "beat_id": "paris_x_historic_arch_legacy_unknown_t",
+        "city_name": "paris",
+        "poi_name": "X",
+        "lens": "historic_arch",
+        "book_slug": "legacy_unknown",
+        "topic_slug": "t",
+        "source_chunk_slug": "legacy_ambiguous",
+        "script_body_hash": "hZ",
+        "fact_check": {"status": status},
+    }
+
+
+def test_validator_status_invalid_fails(tmp_path):
+    """An off-vocabulary status (e.g. the 'dispute' typo) is blocked at commit."""
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_status_beat("dispute")]))
+    result = run_validator(target)
+    assert result.returncode == 1
+    assert "STATUS_INVALID" in result.stdout
+
+
+def test_validator_status_valid_passes(tmp_path):
+    target = tmp_path / "beats.json"
+    target.write_text(json.dumps([_status_beat("disputed")]))
+    assert run_validator(target).returncode == 0
