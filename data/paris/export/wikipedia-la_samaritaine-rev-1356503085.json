@@ -1,0 +1,246 @@
+[
+  {
+    "name": "La Samaritaine",
+    "short_description": "Historic Parisian department store founded 1867, combining Art Nouveau and Art Deco architecture, reopened 2021 after 16-year renovation",
+    "latitude": 48.859,
+    "longitude": 2.342,
+    "importance_tier": 5,
+    "trigger_radius": 20,
+    "typical_duration_min": 45,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Samaritaine"
+    ],
+    "poi_role": "stop",
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "Look at the façade — it is a manifesto of Art Nouveau. Across it run ceramic panels in bright hues of yellow, white, green and gold, and the word 'Samaritaine,' along with some of the wares once sold inside, is spelled out in colourful enamel in elaborate lettering, scattered with naturalistic flower motifs. Two domes of glass brick crown the building and light up at night; their eight-sided verticals draw the eye upward, and together the two domes frame a sight line between the Seine and the left bank. The buildings have been listed as a monument historique by the French Ministry of Culture since 1990.",
+        "lens": "historic_arch",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "French Ministry of Culture"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Art Nouveau facade",
+        "sub_location": "facade",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The two glass-brick domes and the enamel 'Samaritaine' lettering and floral motifs across the façade",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Since 1990 the buildings have been listed as a monument historique by the French Ministry of Culture. The building's exterior has two domes made of glass brick that light up in the nighttime. The extended verticals of the domes, sectioned into eight sides, accentuate the height of the building and draw the viewer's eye to the top of the store. The facade of the building consists of ceramic panels in brightly colored hues of yellow, white, green, and gold. The word \"Samaritaine\", as well as some of the available merchandise and ware, are displayed around the facade of the building in colorful enamel using an elaborate lettering. Dispersed around these signs are colorful naturalistic flower motifs, which continue to the interior design of the building as well. The two domes of the Samaritaine create a sight line between the Seine and the left bank.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "La Samaritaine",
+          "url": "https://en.wikipedia.org/wiki/La_Samaritaine?oldid=1356503085",
+          "revision_id": "1356503085",
+          "section": "Building design and style",
+          "retrieved_at": "2026-05-29T03:08:23+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Samaritaine you can enter today reopened only recently, after one of Paris's longest store closures. It shut on 15 June 2005, officially to fix urgent fire-safety hazards — though the labour unions suspected a restructuring. LVMH took full ownership in late 2010, but the redevelopment dragged: in January 2015 a French court revoked the building permit and halted the work, and there was opposition to the new façades designed by the Japanese architecture firm SANAA, which the mayor of Paris, Anne Hidalgo, supported. Work resumed, and after sixteen years of closure the store reopened in June 2021 — its doors opened by French President Emmanuel Macron alongside LVMH's CEO Bernard Arnault. The buildings now hold a Cheval Blanc hotel, a nursery, offices and social housing as well.",
+        "lens": "modern_design",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "entities": [
+          "LVMH",
+          "SANAA",
+          "Anne Hidalgo",
+          "Emmanuel Macron",
+          "Bernard Arnault",
+          "Cheval Blanc"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "closure and reopening",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The new façade designed by SANAA",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Since 1990 the buildings have been listed as a monument historique by the French Ministry of Culture. The store was closed on 15 June 2005, as the building needed urgent renovations to mitigate fire safety hazards. However labour unions believed it was because of a restructure of the store. LVMH purchased the remaining shares in the department store from the Cognacq-Jay foundation in late 2010, giving LVMH full ownership of the department store. In January 2015 work on the store was halted again after building permission was revoked by a French Court. Work started again despite opposition to the new facades designed by Japanese architecture firm SANAA. The mayor of Paris Anne Hidalgo supported the plans. After sixteen years of closure, the department store was reopened to the public in June 2021, now co-branded as part of DFS. The store was reopened by French President Emmanuel Macron and the CEO of LVMH, Bernard Arnault. The buildings now include a Cheval Blanc hotel, nursery, offices and social housing.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "La Samaritaine",
+          "url": "https://en.wikipedia.org/wiki/La_Samaritaine?oldid=1356503085",
+          "revision_id": "1356503085",
+          "section": "1970s–present: Decline, closure and reopening",
+          "retrieved_at": "2026-05-29T03:08:23+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Unlike the grand stores that courted the status-conscious middle class, the Samaritaine aimed at a different crowd: the working people who constantly travelled through the first arrondissement on their way to work.",
+        "lens": "social_change",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "working-class shoppers",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "However, their main audience is the middle-class city dwellers who were highly conscious of their status. The Samaritaine, in particular, targeted the working class who constantly traveled through the first arrondissement for work.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "La Samaritaine",
+          "url": "https://en.wikipedia.org/wiki/La_Samaritaine?oldid=1356503085",
+          "revision_id": "1356503085",
+          "section": "The department store as a type and consumerism",
+          "retrieved_at": "2026-05-29T03:08:23+00:00"
+        },
+        "fact_check_status": "unverified"
+      },
+      {
+        "script_body": "Once the Samaritaine had grown to four magasins, each had its specialty: the first was given over entirely to women's clothing, while the other three sold goods such as supplies and tools.",
+        "lens": "historic_markets",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "four magasins",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Once the Samaritaine consisted of four Magasins, the first was dedicated as a department store solely for women's clothing while the other three were for items such as supplies and tools.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "La Samaritaine",
+          "url": "https://en.wikipedia.org/wiki/La_Samaritaine?oldid=1356503085",
+          "revision_id": "1356503085",
+          "section": "Consumerism",
+          "retrieved_at": "2026-05-29T03:08:23+00:00"
+        },
+        "fact_check_status": "unverified"
+      },
+      {
+        "script_body": "La Samaritaine takes its name from the river. Ernest Cognacq opened the store in 1870, on the corner of the Rue du Pont-Neuf and the Rue de la Monnaie, and in 1872 he married Marie-Louise Jaÿ, the two of them running it together. The name reached back to an old water pump called the Samaritaine, which until 1813 had stood on the second arch of the nearby Pont Neuf — so the great department store on this corner is named for a vanished pumping station on the bridge beside it. The store is now owned by the luxury goods conglomerate LVMH.",
+        "lens": "historic_markets",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Ernest Cognacq",
+          "Marie-Louise Jaÿ",
+          "LVMH",
+          "Pont Neuf"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "store name origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The Pont Neuf beside the store, where the Samaritaine pump once stood",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Established in 1870 by Ernest Cognacq, it is now owned by the luxury goods conglomerate LVMH. In 1870 Ernest Cognacq opened La Samaritaine, on the corner of Rue du Pont-Neuf and Rue de la Monnaie. In 1872 Cognacq married Marie-Louise Jaÿ, and they began to manage the store together. The store was named after the old Samaritaine pumping station, which until 1813 had stood on the second arch of the nearby Pont Neuf.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "La Samaritaine",
+          "url": "https://en.wikipedia.org/wiki/La_Samaritaine?oldid=1356503085",
+          "revision_id": "1356503085",
+          "section": "1870–1930s: Early years and expansion",
+          "retrieved_at": "2026-05-29T03:08:23+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The store's architect, Frantz Jourdain, was a leading figure of Art Nouveau — president of the Societe du Nouveau at the movement's height — and he built the Samaritaine in its image. He redesigned the interiors of magasin one — magasin meaning 'store' in French — in 1891, and designed magasin two, which opened in 1910; much of magasin two was pre-fabricated, so it went up quickly. Its skeleton is steel and glass. Then, between 1926 and 1928, Jourdain worked with Henri Sauvage to extend the store toward the river Seine, and by the end of that partnership the Samaritaine had grown into four buildings, eleven floors tall.",
+        "lens": "historic_arch",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frantz Jourdain",
+          "Societe du Nouveau",
+          "Henri Sauvage"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "Jourdain Art Nouveau",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The steel-and-glass Art Nouveau structure of the store",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "magasin",
+            "gloss": "store"
+          }
+        ],
+        "source_passage": "The interiors of magasin one (magasin means \"store\" in French) were redesigned in 1891, and the project was overseen by architect Frantz Jourdain. He also designed magasin two, which opened in 1910. Much of magasin two had been pre-fabricated, allowing the construction to occur rapidly. Between 1926 and 1928, Jourdain and Henri Sauvage worked together designing the stores extension towards the river Seine. By the end of this partnership the Samaritaine was made up of four buildings and was eleven floors in height. Jourdain was the president of the Societe du Nouveau during the height of the Art Nouveau movement. While the skeletal structure of the department store is constructed of steel and glass, the building contains many applied adornments which lessen the harshness of its rigid structure.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "La Samaritaine",
+          "url": "https://en.wikipedia.org/wiki/La_Samaritaine?oldid=1356503085",
+          "revision_id": "1356503085",
+          "section": "Building design and style",
+          "retrieved_at": "2026-05-29T03:08:23+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "la_samaritaine-rev-1356503085",
+      "source_book": "Wikipedia"
+    }
+  }
+]

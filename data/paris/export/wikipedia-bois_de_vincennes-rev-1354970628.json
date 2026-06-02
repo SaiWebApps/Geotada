@@ -1,0 +1,392 @@
+[
+  {
+    "name": "Bois de Vincennes",
+    "short_description": "Largest park in Paris at 995 hectares — almost three times Central Park — with a medieval castle, zoo, and floral garden",
+    "latitude": 48.836671,
+    "longitude": 2.441435,
+    "importance_tier": 5,
+    "trigger_radius": 150,
+    "typical_duration_min": 45,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Vincennes Woods"
+    ],
+    "poi_role": "setting",
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "You are in the largest public park in Paris. The Bois de Vincennes spreads across the eastern edge of the city, created between 1855 and 1866 by the Emperor Napoleon III. It sits beside the Château de Vincennes, a former residence of the Kings of France, and packs in an astonishing variety: an English landscape garden with four lakes, a zoo, an arboretum, a botanical garden, a hippodrome for horse-racing, a velodrome for cycling, and the campus of France's national institute of sport and physical education.",
+        "lens": "parks_gardens",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Napoleon III",
+          "Château de Vincennes"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "largest Paris park",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The wooded expanse of the park and the Château de Vincennes alongside it",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Bois de Vincennes (French pronunciation: [bwɑ d(ə) vɛ̃sɛn]), located on the eastern edge of Paris, France, is the largest public park in the city. It was created between 1855 and 1866 by Emperor Napoleon III. The park is next to the Château de Vincennes, a former residence of the Kings of France. It contains an English landscape garden with four lakes; a zoo; an arboretum; a botanical garden; a hippodrome or horse-racing track; a velodrome for bicycle races; and the campus of the French national institute of sports and physical education.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "Introduction",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Just how big is it? The Bois de Vincennes covers 995 hectares — about a tenth of the entire area of Paris, and almost as much ground as the city's first six arrondissements combined. It is about three times larger than New York's Central Park, and slightly larger than London's Richmond Park. Only about half of it, though, is actually covered with trees.",
+        "lens": "parks_gardens",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Central Park",
+          "Richmond Park"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "park size",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "It occupies ten percent of the total area of Paris, and is almost as large as the first six arrondissements in the center of the city combined. The Bois de Vincennes is about three times larger than Central Park in New York City (341 hectares / 843 acres), and is slightly larger than Richmond Park in London (955 hectares / 2,360 acres); but is smaller than Griffith Park in Los Angeles (1,170 hectares / 2891 acres). Only about half of the Bois de Vincennes is covered with trees.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "Dimensions",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Long before it was a park, this was a royal hunting forest. It was once part of the ancient woods around the Roman town of Lutetia, where it bore the name Vilcena — the origin of 'Vincennes.' Around 1150 King Louis VII built a hunting lodge here, on the site of the present château; King Philippe-Auguste later enclosed the forest with a wall, stocked it with game and began a castle. King Louis IX — Saint Louis — built a chapel beside it to house a relic he believed to be the crown of thorns from the Crucifixion. He was also famous for holding a royal court of justice under an oak near the château.",
+        "lens": "hidden_history",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lutetia",
+          "Louis VII",
+          "Philippe-Auguste",
+          "Louis IX",
+          "Saint Louis"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "subject_tag": "royal hunting forest",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Bois de Vincennes was part of the ancient forest that surrounded the ancient Roman town of Lutetia; at that time it was called Vilcena, the origin of the present name. In about 1150 King Louis VII (1137–1180) built a hunting lodge at the site of the present chateau. King Philippe-Auguste (1180–1223) enclosed the forest with a wall, stocked it with game, and began building a castle. King Louis IX, or Saint Louis (1226–1270) built a chapel next to the castle to house an important religious relic, which he believed to be the crown of thorns from the Crucifixion of Jesus. He was also famous for holding a royal court of justice under an oak near the chateau.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "A royal hunting preserve",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "It was King Louis XV who first opened the forest to the public in the eighteenth century — to everyone, that is, except servants in livery. He had hundreds of trees planted and laid out long straight alleys through the woods in the form of intersecting stars, and in 1731 he built a pyramid-shaped monument to mark the meeting point of the two main alleys. It can still be seen.",
+        "lens": "hidden_history",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Louis XV"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Louis XV pyramid",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The 1731 pyramid-shaped monument marking the meeting point of the two main alleys",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In the 18th century Louis XV (1710–1774) opened the park to the public, excepting servants in livery. He had hundreds of trees planted and laid out long straight alleys through the forest in the form of intersecting stars. In 1731 he constructed a pyramid-shaped monument to mark the meeting point of the two main alleys, which can still be seen.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "A royal hunting preserve",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Bois de Vincennes became a public park as part of Haussmann's remaking of Paris. In 1854 the Emperor Louis Napoleon and his new Prefect of the Seine, Georges-Eugène Haussmann, decided to transform it — and its purpose was pointedly social. It was to give green space and recreation to the large working-class population of eastern Paris, just as the Bois de Boulogne, begun in 1852, served the more affluent population of the west. To build it, Haussmann set up a new Service of Promenades and Plantations in 1855, led by the engineer Jean-Charles Adolphe Alphand — the great park-builder of nineteenth-century Paris, who also created Parc Monceau and the Parc des Buttes Chaumont.",
+        "lens": "social_change",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Louis Napoleon",
+          "Georges-Eugène Haussmann",
+          "Bois de Boulogne",
+          "Jean-Charles Adolphe Alphand",
+          "Parc Monceau",
+          "Parc des Buttes Chaumont"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "working-class park",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1854 the Emperor Louis Napoleon, and his new Prefect of the Seine, Georges-Eugène Haussmann, decided to transform the Bois de Vincennes into a public park. The purpose of the park was to provide green space and recreation to the large working-class population of eastern Paris, similar to the Bois de Boulogne, which Louis Napoleon had begun building in 1852 for the more affluent population of the west side of Paris. To build the parks, in 1855 Haussmann created a new Service of Promenades and Plantations, led by an engineer, Jean-Charles Adolphe Alphand, who was already at work on the Bois de Boulogne. Alphand was a master organizer, the builder of the most famous Paris parks of the 19th century; besides the Bois de Boulogne and Bois de Vincennes, he built the gardens of the Champs-Élysées, the boulevard of the Paris Observatory, Parc Monceau and the Parc des Buttes Chaumont.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "The creation of the park",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Lac Daumesnil, at the western end of the park, was designed like a romantic landscape painting, with two islands and sloping green lawns. Much of the park's picturesque architecture was the work of the city architect Gabriel Davioud, and his prettiest flourish stands here: the Temple of Love, a round Doric temple set on a promontory of the Isle de Reuilly, above an artificial grotto. The same island once held a Swiss chalet — taken from the Paris Universal Exposition of 1867 — along with a café, a bandstand and concession stalls, and a swinging suspension bridge connected the lake's two islands.",
+        "lens": "parks_gardens",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lac Daumesnil",
+          "Gabriel Davioud",
+          "Temple of Love",
+          "Isle de Reuilly"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Temple of Love",
+        "sub_location": "lac-daumesnil",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The Temple of Love — a round Doric temple — on the Isle de Reuilly in Lac Daumesnil, above its artificial grotto",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Lake Daumesnil, designed like a romantic landscape painting, had two islands, and sloping green lawns. The park was also decorated with picturesque architecture, mostly designed by Gabriel Davioud, the city architect. His works included the grandstands of the hippodrome and the Temple of Love, a round doric temple which was placed on a promontory on the Isle de Reuilly in Lac Daumesnil, above an artificial grotto. On the same island was a Swiss chalet (taken from the Paris Universal Exposition of 1867), a cafe, a bandstand, and buildings for vendors and game concessions. A swinging suspension bridge connected the two islands in the lake.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "The creation of the park",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Twice the park hosted France's colonial expositions — vast fairs staged to showcase the French empire. The first, in 1907, built six 'villages, complete with inhabitants,' from across the empire: an encampment of Tuaregs from North Africa, a farm from Sudan, a village of Kanaks from New Caledonia, and villages from Madagascar, French Indochina and the Congo; two million people came to see it. The far larger 1931 Colonial Exposition filled the park with pavilions, a Senegalese village complete with inhabitants, a zoo, and eight spectacular fountains fed from Lake Daumesnil. Several traces survive: the entrance gate still stands, the Palace of the Colonies became the Museum of the Arts of Africa and the Oceania, and the pavilion of Cameroon was preserved and turned into a Buddhist temple.",
+        "lens": "dark_history",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "entities": [
+          "Colonial Exposition",
+          "French Empire",
+          "Palace of the Colonies",
+          "Museum of the Arts of Africa and the Oceania"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "colonial expositions",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "Surviving traces of the colonial fairs — the entrance gate, the former Palace of the Colonies, and the Cameroon pavilion turned Buddhist temple",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1907, this garden became the site of the first Colonial Exposition held in Paris, designed to showcase the cultures and products of the French colonies. The exposition featured six villages, complete with inhabitants, from the different parts of the French Empire; an emcampment of Tuaregs from North Africa; a farm from Sudan; a village of Kanaks from New Caledonia; and villages from Madagascar, French Indochina, and the Congo. The Exposition was seen by two million visitors. It had pavilions from each colony and from other nations, cafes and theaters, a Senegalese village complete with inhabitants, and a zoo. The exposition featured eight spectacular fountains, fed with water from Lake Daumesnil. The entrance gate is still standing. After the Fair closed, the Palace of the Colonies became the Museum of the Arts of Africa and the Oceania. The pavilion of Cameroon was preserved and turned into a Buddhist temple and religious center.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "The 1931 Paris Colonial Exposition",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Paris Zoological Park — the Zoo of Vincennes — opened in 1934, inspired by the popular zoo of the 1931 Colonial Exposition. Modelled on the Tierpark Hagenbeck in Hamburg, it was revolutionary for its time: instead of cages, it set the animals on open plateaus separated from the public by moats. Its great landmark is a sixty-five-metre-high artificial mountain, home to a herd of mouflon, or wild sheep. Its concrete buildings, built to last only fifty years, crumbled in the 1980s; the zoo closed in 2008 for a major renovation and reopened in 2014.",
+        "lens": "parks_gardens",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paris Zoological Park",
+          "Zoo of Vincennes",
+          "Tierpark Hagenbeck"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Vincennes zoo",
+        "sub_location": "zoo",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The sixty-five-metre-high artificial mountain at the zoo",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Paris Zoological Park, also known as Zoo of Vincennes, was opened in 1934, inspired by the popular zoo of the 1931 Colonial Exposition. It was modelled upon the Tierpark Hagenbeck in Hamburg, and was revolutionary for its time for putting the animals in open plateaus separated from the public by moats rather than in cages. The most prominent feature is a sixty-five meter high artificial mountain, which is the home of a herd of mouflon, or wild sheep. The park suffered from the crumbling of its concrete buildings in the 1980s, since they had been built to last only fifty years. It was closed in 2008 for major renovation, and reopened in 2014.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "Gardens",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During the First World War, the Dutch spy Mata Hari was imprisoned in the fortress of Vincennes and executed by firing squad in its moat, on 15 October 1917. Eyewitnesses reported that her hands were not bound and that she refused a blindfold. According to legend — though it is undocumented — she blew a kiss to the firing squad and remarked, 'What a strange custom you French have, to shoot people at dawn.'",
+        "lens": "war_conflict",
+        "duration_sec": 30,
+        "kid_friendly": "no",
+        "entities": [
+          "Mata Hari"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Mata Hari execution",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "During the First World War, the Dutch spy Mata Hari was imprisoned in the fortress of Vincennes and executed by firing squad in the moat of the fortress on 15 October 1917. Eyewitnesses reported that her hands were not bound, and that she refused a blindfold. According to the legend (not documented), she is said to have blown a kiss at the firing squad, and to have said, \"What a strange custom you French have, to shoot people at dawn.\"",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "The park in the 19th and 20th century",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In the park's eastern corner lies the Jardin tropical, opened in 1899 as a garden for studying tropical plants. Its ruined colonial pavilions — from the French Congo, French Guiana, French Indochina, Réunion and Tunisia — can still be found among the trees. And in 1916 something remarkable rose here: the first mosque built in France in more than a millennium, raised as part of a hospital complex that served Muslim soldiers. It was demolished only three years later, in 1919.",
+        "lens": "hidden_history",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jardin tropical de Paris",
+          "French Congo",
+          "French Indochina"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "jardin tropical mosque",
+        "sub_location": "jardin-tropical",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The ruined colonial pavilions among the trees of the Jardin tropical",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Jardin tropical de Paris, of 4.5 hectares, was originally the Colonial Experimental Garden, opened in 1899 to study tropical plants. The pavilions of the French Congo, French Guiana, French Indochina, Réunion, and Tunisia, mostly vandalized and in ruins, can still be seen, as well as vestiges of the old Indochinese garden. In 1916, the first-ever mosque built in France in more than a millennium was erected in the jardin tropical as part of a hospital complex that served Muslim soldiers. It was disaffected and demolished in 1919.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bois de Vincennes",
+          "url": "https://en.wikipedia.org/wiki/Bois_de_Vincennes?oldid=1354970628",
+          "revision_id": "1354970628",
+          "section": "Gardens",
+          "retrieved_at": "2026-05-29T03:46:14+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "bois_de_vincennes-rev-1354970628",
+      "source_book": "Wikipedia"
+    }
+  }
+]

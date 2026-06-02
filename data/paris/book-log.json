@@ -1313,6 +1313,256 @@
           ],
           "pois_created": [],
           "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "galeries_lafayette-rev-1355539443",
+          "processed_at": "2026-05-29T02:47:20+00:00",
+          "beats_extracted": 8,
+          "pois_touched": [
+            "Galeries Lafayette"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "bourse_de_commerce_pinault_collection-rev-1356049536",
+          "processed_at": "2026-05-29T03:00:26+00:00",
+          "beats_extracted": 8,
+          "pois_touched": [
+            "Bourse de Commerce — Pinault Collection"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "la_samaritaine-rev-1356503085",
+          "processed_at": "2026-05-29T03:08:23+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "La Samaritaine"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "moulin_rouge-rev-1353706143",
+          "processed_at": "2026-05-29T03:22:16+00:00",
+          "beats_extracted": 9,
+          "pois_touched": [
+            "Moulin Rouge"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "grand_palais-rev-1356164554",
+          "processed_at": "2026-05-29T03:28:31+00:00",
+          "beats_extracted": 9,
+          "pois_touched": [
+            "Grand Palais"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "opera_bastille-rev-1348635916",
+          "processed_at": "2026-05-29T03:37:25+00:00",
+          "beats_extracted": 9,
+          "pois_touched": [
+            "Opéra Bastille"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "colonne_de_juillet-rev-1351698150",
+          "processed_at": "2026-05-29T03:41:04+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Colonne de Juillet"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "bois_de_vincennes-rev-1354970628",
+          "processed_at": "2026-05-29T03:46:14+00:00",
+          "beats_extracted": 10,
+          "pois_touched": [
+            "Bois de Vincennes"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "notre_dame_cathedral-rev-1355960300",
+          "processed_at": "2026-05-30T01:13:08+00:00",
+          "beats_extracted": 11,
+          "pois_touched": [
+            "Notre-Dame Cathedral"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "louvre_museum-rev-1356167335",
+          "processed_at": "2026-05-30T01:18:52+00:00",
+          "beats_extracted": 11,
+          "pois_touched": [
+            "Louvre Museum"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "eiffel_tower-rev-1355037264",
+          "processed_at": "2026-05-30T01:23:39+00:00",
+          "beats_extracted": 10,
+          "pois_touched": [
+            "Eiffel Tower"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "arc_de_triomphe-rev-1351587978",
+          "processed_at": "2026-05-30T01:38:16+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Arc de Triomphe"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "sacre_coeur_basilica-rev-1354368450",
+          "processed_at": "2026-05-30T01:41:33+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Sacre-Coeur Basilica"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "musee_d_orsay-rev-1356645465",
+          "processed_at": "2026-05-30T01:47:47+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Musee d'Orsay"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "sainte_chapelle-rev-1354169735",
+          "processed_at": "2026-05-30T01:52:10+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Sainte-Chapelle"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "palais_garnier-rev-1351990402",
+          "processed_at": "2026-05-30T01:55:50+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Palais Garnier"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "champs_elysees-rev-1354857148",
+          "processed_at": "2026-05-30T02:00:09+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Champs-Elysees"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "place_de_la_concorde-rev-1355518938",
+          "processed_at": "2026-05-30T02:03:40+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Place de la Concorde"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "conciergerie-rev-1344392273",
+          "processed_at": "2026-05-30T15:28:19+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Conciergerie"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "pont_neuf-rev-1356503820",
+          "processed_at": "2026-05-30T15:36:39+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Pont Neuf"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "ile_de_la_cite-rev-1356775124",
+          "processed_at": "2026-06-02T02:08:33+00:00",
+          "beats_extracted": 6,
+          "pois_touched": [
+            "Ile de la Cite"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "memorial_des_martyrs_de_la_deportation-rev-1346249082",
+          "processed_at": "2026-06-02T02:21:45+00:00",
+          "beats_extracted": 5,
+          "pois_touched": [
+            "Memorial des Martyrs de la Deportation"
+          ],
+          "pois_created": [
+            "Memorial des Martyrs de la Deportation"
+          ],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "hotel_de_ville-rev-1353511867",
+          "processed_at": "2026-06-02T02:29:59+00:00",
+          "beats_extracted": 5,
+          "pois_touched": [
+            "Hotel de Ville"
+          ],
+          "pois_created": [],
+          "pois_mentioned_no_content": []
+        },
+        {
+          "chunk": "jardin_des_tuileries-rev-1355155269",
+          "processed_at": "2026-06-02T02:43:06+00:00",
+          "beats_extracted": 7,
+          "pois_touched": [
+            "Jardin des Tuileries",
+            "Grand Bassin Rond",
+            "Galerie nationale du Jeu de Paume",
+            "Esplanade des Feuillants",
+            "Musee de l'Orangerie"
+          ],
+          "pois_created": [
+            "Grand Bassin Rond",
+            "Galerie nationale du Jeu de Paume",
+            "Esplanade des Feuillants"
+          ],
+          "pois_mentioned_no_content": []
         }
       ]
     }

@@ -1,0 +1,349 @@
+[
+  {
+    "name": "Moulin Rouge",
+    "short_description": "Cabaret founded in 1889 at the foot of Montmartre, birthplace of the modern can-can dance immortalised by Toulouse-Lautrec's posters",
+    "latitude": 48.884129,
+    "longitude": 2.3324,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "no",
+    "name_variations": [
+      "Le Moulin Rouge"
+    ],
+    "poi_role": "stop",
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "Its name means 'Red Mill,' and there it is on the roof: the landmark red windmill that has crowned this cabaret on the Boulevard de Clichy since the Belle Époque. The Moulin Rouge opened on 6 October 1889 as the Jardin de Paris, an outdoor garden café-concert at the foot of the Montmartre hill, in the district of Pigalle. It was co-founded by two formidable showmen, Joseph Oller and Charles Zidler, who also owned the Paris Olympia and understood exactly what the public wanted.",
+        "lens": "hidden_history",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Joseph Oller",
+          "Charles Zidler",
+          "Paris Olympia"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Moulin Rouge founding",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The red windmill on the roof of the cabaret",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Moulin Rouge",
+            "gloss": "Red Mill"
+          }
+        ],
+        "source_passage": "Moulin Rouge (, French: [mulɛ̃ ʁuʒ]; lit. 'Red Mill') is a cabaret in Paris, on the Boulevard de Clichy, at the Place Blanche, the intersection and end of the Rue Blanche. In 1889, the Moulin Rouge was co-founded by Charles Zidler and Joseph Oller, who also owned the Paris Olympia. Moulin Rouge is southwest of Montmartre, in the Paris district of Pigalle on Boulevard de Clichy in the 18th arrondissement, and has a landmark red windmill on its roof. On 6 October 1889, the Moulin Rouge opened as the Jardin de Paris, an outdoor garden café-concert, at the foot of the Montmartre hill. Its creator Joseph Oller and his Manager Charles Zidler were formidable businessmen who understood the public's tastes.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "Creation and early success",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In its garden stood a giant elephant, part of an elaborate setting meant to draw the wealthy into Montmartre for a taste of 'slumming.' The result was a place where every social stratum mixed — workers, local residents, artists, the middle class, businessmen, stylish women and tourists passing through Paris — a cabaret its founders nicknamed 'The First Palace of Women.'",
+        "lens": "social_change",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Joseph Oller",
+          "Charles Zidler"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "scene_setter",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "garden elephant",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The aim was to attract wealthy individuals to experience the ambiance of the fashionable district of Montmartre, which was perceived as a form of slumming. The elaborate setting, featuring a garden adorned with a large elephant, provided an environment where individuals from various social strata could interact. This included workers, local residents, artists, the middle class, businessmen, stylish women, and tourists passing through Paris. Nicknamed \"The First Palace of Women\" by Oller and Zidler, the cabaret swiftly garnered significant acclaim.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "Creation and early success",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "This is the birthplace of the modern can-can. It began here as a seductive dance performed by the courtesans who operated from the site, inspired by the quadrille — an energetic dance done to a lively rhythm in provocative costumes. From the Moulin Rouge the can-can grew into a revue, an entertainment in its own right, and helped spread the cabaret across Europe. Its early stars became legends of the era — la Goulue, Jane Avril, la Môme Fromage, Grille d'Egout, Nini Pattes en l'Air, Valentin le désossé, the singer Yvette Guilbert and the clown Cha-U-Kao.",
+        "lens": "music_heritage",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "la Goulue",
+          "Jane Avril",
+          "la Môme Fromage",
+          "Grille d'Egout",
+          "Nini Pattes en l'Air",
+          "Valentin le désossé",
+          "Yvette Guilbert",
+          "Cha-U-Kao"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "can-can birthplace",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Moulin Rouge is best known as the birthplace of the modern form of the can-can dance. Originally introduced as a seductive dance by the courtesans who operated from the site, the can-can dance revue evolved into a form of entertainment of its own and led to the introduction of cabarets across Europe. A new dance, inspired by the quadrille and gaining popularity, known as the Can-can. Dancers performed this energetic dance to a lively rhythm while wearing provocative costumes. Prominent dancers from the era included figures such as la Goulue, Jane Avril, la Môme Fromage, Grille d'Egout, Nini Pattes en l'Air, Yvette Guilbert, Valentin le désossé, and the clown Cha-U-Kao.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "Creation and early success",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Moulin Rouge was a favoured haunt of artists — above all Toulouse-Lautrec, whose posters and paintings carried its name around the world. In 1891 he made his first poster for the cabaret, featuring the dancer La Goulue; his images of the place did as much as the dancing to make it famous.",
+        "lens": "visual_art",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Toulouse-Lautrec",
+          "La Goulue"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Lautrec posters",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "A favored venue among artists, including Toulouse-Lautrec, whose posters and paintings contributed to the rapid and international renown of the Moulin Rouge. In 1891, Toulouse-Lautrec created his first poster for the Moulin Rouge, featuring La Goulue.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "Greatest moments",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "On 26 October 1890, the Prince of Wales — the future Edward VII — slipped into the Moulin Rouge during a private visit to Paris and reserved a table to watch a quadrille. The star dancer La Goulue spotted him and called out, 'Hey, Wales, the champagne's on you!'",
+        "lens": "local_legends",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Prince of Wales",
+          "Edward VII",
+          "La Goulue"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "Goulue and Prince",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "On 26 October 1890, during a private visit to Paris, the Prince of Wales, later Edward VII, reserved a table to witness a quadrille at the Moulin Rouge, where La Goulue famously greeted him with the exclamation, \"Hey, Wales, the champagne's on you!\"",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "Greatest moments",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Under the German occupation, the Moulin Rouge kept its lights on. The German Occupation Guide listed it as a must-visit attraction, and its stage shows played on for the occupation troops — mentioned in the autobiographies of German officers such as Ernst Jünger and Gerhard Heller. The army ran 'recreational visits' to Paris for its soldiers under the motto 'Jeder einmal in Paris' — everyone once in Paris. The widespread prostitution of those years eventually brought the Loi Marthe Richard of 1946, which closed the bordellos and reduced the cabaret's stage shows to dancing events.",
+        "lens": "war_conflict",
+        "duration_sec": 38,
+        "kid_friendly": "no",
+        "entities": [
+          "Ernst Jünger",
+          "Gerhard Heller",
+          "Loi Marthe Richard"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "German occupation",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Jeder einmal in Paris",
+            "gloss": "everyone once in Paris"
+          }
+        ],
+        "source_passage": "During the Second World War (1939–1945), the Moulin Rouge was highlighted in the German Occupation Guide as a must-visit attraction in Paris. Its stage shows continued for the occupation troops and were mentioned in autobiographies of German officers such as Ernst Jünger and Gerhard Heller. The Germans facilitated \"recreational visits\" in Paris for their troops, promoting the motto \"Jeder einmal in Paris\" (everyone once in Paris). The widespread prostitution during the occupation eventually led to the implementation of the Loi Marthe Richard in 1946, which closed bordellos and reduced stage shows to dancing events.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "After Mistinguett",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 1944, shortly after the liberation of Paris, Edith Piaf returned to the stage at the Moulin Rouge. At her side was a newcomer she had chosen to perform with her: the young Yves Montand.",
+        "lens": "music_heritage",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edith Piaf",
+          "Yves Montand"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Piaf and Montand",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1944, shortly after the liberation of Paris, Edith Piaf, who had performed frequently at social gatherings for German forces during the war, returned to the stage at the Moulin Rouge. She was accompanied by Yves Montand, a newcomer chosen to perform with her.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "After Mistinguett",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look closely at the famous blades: they are new. On 25 April 2024 the windmill's blades collapsed onto the street, damaging the façade, though no injuries were reported. The windmill was restored on 5 July that year — just in time for the Olympic torch relay that passed through the area ten days later.",
+        "lens": "hidden_history",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Olympic torch relay"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "2024 windmill collapse",
+        "sub_location": "windmill",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The restored windmill blades, replaced after the 2024 collapse",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "On 25 April 2024, the cabaret's windmill blades collapsed onto the street, resulting in damage to the facade. No injuries were reported. The windmill was restored on 5 July that year, in time for the Olympic torch relay that passed through the area on 15 July.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "After Mistinguett",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The windmill you see is not the original. On 27 February 1915, fire destroyed the Moulin Rouge during building works, closing it for nine years. In 1923 the composer and conductor Raphaël Beretta proposed rebuilding the music hall on a larger scale, and the rebuilt cabaret reopened in 1925. Its iconic mill — set above a central façade adorned with oval dormers — was designed by Gesmar, a twenty-year-old set designer whose work became synonymous with the venue.",
+        "lens": "historic_arch",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Raphaël Beretta",
+          "Gesmar"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "fire and rebuild",
+        "sub_location": "windmill",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The red windmill above the central façade, with its oval dormers",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Tragically, on 27 February 1915, the Moulin Rouge was destroyed by fire during building works, resulting in a nine-year closure. In 1925, the rebuilt Moulin Rouge reopened its doors to the public. In 1923, composer and conductor Raphaël Beretta proposed a reconstruction of the Moulin Rouge's music hall on a larger scale. The iconic mill structure, supported by a central facade adorned with oval dormers, was designed by Gesmar, a 20-year-old set designer whose work became synonymous with the venue.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Moulin Rouge",
+          "url": "https://en.wikipedia.org/wiki/Moulin_Rouge?oldid=1353706143",
+          "revision_id": "1353706143",
+          "section": "Mistinguett years",
+          "retrieved_at": "2026-05-29T03:22:16+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "moulin_rouge-rev-1353706143",
+      "source_book": "Wikipedia"
+    }
+  }
+]

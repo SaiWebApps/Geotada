@@ -977,6 +977,12 @@
         "placement": "Main entrance on Avenue du General Eisenhower",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Fully reopened June 2025 after a four-year, EUR466M restoration (free summer access under the glass roof).",
+        "source": "https://www.dezeen.com/2025/06/19/grand-palais-fully-reopens-chatillon-architectes/"
       }
     },
     "_meta": {
@@ -1099,6 +1105,12 @@
         "placement": "Front facade on Boulevard de Clichy",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Cabaret operating; windmill blades fell 25 Apr 2024 and were restored by early July 2024 ahead of the Olympic torch relay.",
+        "source": "https://www.cbsnews.com/news/moulin-rouge-windmill-sails-restored-collapse-paris-olympics-montmartre/"
       }
     },
     "_meta": {
@@ -4452,6 +4464,12 @@
         "placement": "Nominatim result for: Route de la Pyramide, 75012 Paris",
         "trigger_radius_reasoning": "Expanded to 150m based on POI type",
         "notes": "Nominatim display: Route de la Pyramide, Quartier du Bel-Air, Paris 12e Arrondissement, Paris, Île-de-France, France mé. May need entrance verification for large buildings."
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Largest public park in Paris; open. Contains the Paris Zoo (reopened 2014), Parc Floral, arboretum, and colonial-exposition vestiges.",
+        "source": "https://en.wikipedia.org/wiki/Bois_de_Vincennes"
       }
     },
     "_meta": {
@@ -5294,6 +5312,12 @@
         "placement": "Main entrance on Boulevard Haussmann",
         "trigger_radius_reasoning": "Default 10m for building entrance",
         "notes": ""
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Flagship on Boulevard Haussmann operating; free rooftop terrace open ~10am-8pm as of 2026.",
+        "source": "https://haussmann.galerieslafayette.com/en/the-terrace-at-galeries-lafayette/"
       }
     },
     "_meta": {
@@ -5611,67 +5635,6 @@
     "trigger_radius": 10,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
-    "city_name": "paris"
-  },
-  {
-    "name": "Memorial des Martyrs de la Deportation",
-    "short_description": "Stark underground memorial at the tip of Ile de la Cite honouring the 200,000 people deported from France to Nazi concentration camps",
-    "name_variations": [
-      "Deportation Memorial"
-    ],
-    "kid_friendly": "no",
-    "_pipeline": {
-      "address": "7 Quai de l'Archeveche, 75004 Paris",
-      "discovery_sources": [
-        "WWII sites guide"
-      ],
-      "discovery_notes": "Behind Notre-Dame, 200,000 crystal lights represent individual deportees, deliberately claustrophobic design",
-      "verified": true,
-      "gravity_signals": {
-        "visitor_volume": "LOW",
-        "guidebook_presence": "RARE",
-        "source_urls": [
-          "https://destinationwwii.com/wwii-sites-in-paris-france/",
-          "https://www.wwiimemorialfriends.org/blog/top-ten-liberation-sites-in-paris"
-        ]
-      },
-      "parent_poi": "Ile de la Cite",
-      "gravity_audit": {
-        "official_visitors": null,
-        "google_review_count": null,
-        "google_trends": "minimal",
-        "wikipedia_depth": "moderate",
-        "guidebook_presence": "RARE",
-        "raw_composite": 29.2,
-        "assigned_gravity": 1,
-        "signal_source": "cached_audit",
-        "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
-        "s1_used_proxy": true,
-        "s2_used_proxy": true,
-        "prior_reasoning": "Composite 29: minimal search interest, moderate Wikipedia, RARE in guidebooks",
-        "reasoning": "Composite 34.4: trends=minimal; wiki=moderate; gb=RARE",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
-      },
-      "geocode_audit": {
-        "source": "OpenStreetMap Nominatim",
-        "confidence": "MEDIUM",
-        "placement": "Nominatim result for: 7 Quai de l'Archeveche, 75004 Paris",
-        "trigger_radius_reasoning": "Default 10m",
-        "notes": "Nominatim display: Quai de l'Archevêché, Quartier Les Îles, Paris 4e Arrondissement, Paris, Île-de-France, France métro. May need entrance verification for large buildings."
-      }
-    },
-    "_meta": {
-      "prompt_version": "poi_generate_v1",
-      "generated_at": "2026-03-31T00:00:00Z",
-      "city": "Paris"
-    },
-    "importance_tier": 1,
-    "latitude": 48.852192,
-    "longitude": 2.351968,
-    "trigger_radius": 10,
-    "poi_role": "walk_by_only",
-    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
     "city_name": "paris"
   },
   {
@@ -6200,6 +6163,12 @@
         "prior_reasoning": "Major department store, Art Deco landmark, reopened 2021 under LVMH",
         "reasoning": "Composite 78.6: 5,000,000 visitors; trends=high; wiki=extensive; gb=COMMON",
         "scored_at": "2026-05-01T15:45:48.181108+00:00"
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Reopened June 2021 after 16-yr closure (LVMH/SANAA); department store + Cheval Blanc hotel. Reported in 2024 to be struggling to attract customers, but open.",
+        "source": "https://en.wikipedia.org/wiki/La_Samaritaine"
       }
     },
     "_meta": {
@@ -14928,6 +14897,12 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 9.317235065227768e-05
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Main house of the Paris National Opera; operating.",
+        "source": "https://www.operadeparis.fr/en/about/theaters-and-workshops/bastille-opera"
       }
     },
     "_meta": {
@@ -15457,6 +15432,12 @@
         "notes": "Phase 5d: proximity flag (distance to nearest existing) confirmed distinct via second-source verification.",
         "geocoded_at": "2026-04-26T14:25:25.938847+00:00",
         "phase_5d_review": "approved_distinct_via_address_check"
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Monument standing at the centre of Place de la Bastille; viewable from the square (interior access only via occasional CMN-led tours).",
+        "source": "https://www.culture.gouv.fr/en/documentation-area/Inventory-of-Information-Resources/Monuments-nationaux/July-Column-Place-de-la-Bastille"
       }
     },
     "_meta": {
@@ -17104,6 +17085,12 @@
         "notes": "",
         "geocoded_at": "2026-04-26T14:15:39.767954+00:00",
         "nominatim_importance": 0.36001248335965585
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-05-29T04:13:51+00:00",
+        "notes": "Contemporary-art museum (Pinault Collection); opened 22 May 2021, operating.",
+        "source": "https://www.museos.com/en/paris/bourse-de-commerce/"
       }
     },
     "_meta": {
@@ -19486,5 +19473,246 @@
       "city_name": "paris"
     },
     "importance_tier": 1
+  },
+  {
+    "name": "Grand Bassin Rond",
+    "short_description": "The large round basin at the west end of the Tuileries — popular with lunching office workers and children sailing miniature boats; hosted the 2024 Olympic cauldron.",
+    "name_variations": [
+      "Grand Bassin",
+      "Round Pond Tuileries"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Jardin des Tuileries, 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia"
+      ],
+      "discovery_notes": "Le Notre's octagonal/round basin; surrounded by 18th-c classical statues (Caesar, Hannibal, Agrippina copies); seat of the Mathieu Lehanneur 2024 Olympic/Paralympic cauldron.",
+      "verified": false,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Tuileries_Garden"
+        ]
+      },
+      "parent_poi": "Jardin des Tuileries",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "covered_within_parent",
+        "guidebook_presence": "COMMON",
+        "raw_composite": null,
+        "assigned_gravity": 2,
+        "signal_source": "manual_add",
+        "rescored_at": null,
+        "formula_version": null,
+        "prior_reasoning": "Manual addition 2026-06-01 as sub-POI of Jardin des Tuileries; discrete named zone within parent that warrants its own audio trigger",
+        "reasoning": "Manual gravity 2 assigned at creation as sub-POI of Jardin des Tuileries; rescore via standard pipeline when available",
+        "scored_at": "2026-06-01T00:00:00+00:00"
+      },
+      "geocode_audit": {
+        "source": "OSM landmark — Grand Bassin Rond (round pond) within Jardin des Tuileries",
+        "confidence": "HIGH",
+        "placement": "Eastern edge of the round pond, the entry side facing the Louvre — where lunching workers and sailboat-children gather",
+        "trigger_radius_reasoning": "Pond + surrounding stone perimeter ~60m across; 40m catches any walking approach",
+        "notes": "Sub-POI of Jardin des Tuileries; pinned at the round pond which carried the 2024 Olympic cauldron",
+        "geocoded_at": "2026-06-02T02:49:54+00:00"
+      }
+    },
+    "_meta": {
+      "prompt_version": "manual_add_v1",
+      "generated_at": "2026-06-01T00:00:00+00:00",
+      "city": "Paris"
+    },
+    "importance_tier": 2,
+    "latitude": 48.86431,
+    "longitude": 2.32348,
+    "trigger_radius": 40,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
+    "city_name": "paris"
+  },
+  {
+    "name": "Galerie nationale du Jeu de Paume",
+    "short_description": "Gallery on the Tuileries' northwest corner, originally an 1861 imperial real-tennis (jeu de paume) court; Nazi-stolen-art warehouse during the Occupation; held the Louvre's Impressionists 1947-1986; now hosts contemporary photography and visual art.",
+    "name_variations": [
+      "Jeu de Paume",
+      "Galerie du Jeu de Paume"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "1 Place de la Concorde, 75008 Paris",
+      "discovery_sources": [
+        "Wikipedia"
+      ],
+      "discovery_notes": "Built 1861 under Napoleon III as imperial tennis court, enlarged 1878. WWII Nazi-stolen-art depot. Held Louvre's Impressionists 1947-1986. Now contemporary art gallery.",
+      "verified": false,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Tuileries_Garden"
+        ]
+      },
+      "parent_poi": "Jardin des Tuileries",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "covered_within_parent",
+        "guidebook_presence": "COMMON",
+        "raw_composite": null,
+        "assigned_gravity": 3,
+        "signal_source": "manual_add",
+        "rescored_at": null,
+        "formula_version": null,
+        "prior_reasoning": "Manual addition 2026-06-01 as sub-POI of Jardin des Tuileries; discrete named zone within parent that warrants its own audio trigger",
+        "reasoning": "Manual gravity 3 assigned at creation as sub-POI of Jardin des Tuileries; rescore via standard pipeline when available",
+        "scored_at": "2026-06-01T00:00:00+00:00"
+      },
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim result for: 1 Place de la Concorde, 75008 Paris",
+        "trigger_radius_reasoning": "Single building/entrance, default 10m",
+        "notes": "Nominatim display: Place de la Concorde, Quartier des Champs-Élysées, Paris 8e Arrondissement, Paris, Île-de-France, France métropolitaine, 75008, France",
+        "geocoded_at": "2026-06-02T02:49:54+00:00"
+      }
+    },
+    "_meta": {
+      "prompt_version": "manual_add_v1",
+      "generated_at": "2026-06-01T00:00:00+00:00",
+      "city": "Paris"
+    },
+    "importance_tier": 3,
+    "latitude": 48.865572,
+    "longitude": 2.321225,
+    "trigger_radius": 10,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
+    "city_name": "paris"
+  },
+  {
+    "name": "Esplanade des Feuillants",
+    "short_description": "Wide pathway running along Rue de Rivoli at the north of the Tuileries; named for the Convent of the Feuillants (closed in the Revolution, became a revolutionary clubhouse); planted by Henri IV with mulberries to start a French silk industry.",
+    "name_variations": [
+      "Terrasse des Feuillants"
+    ],
+    "kid_friendly": "yes",
+    "_pipeline": {
+      "address": "Jardin des Tuileries (Rue de Rivoli side), 75001 Paris",
+      "discovery_sources": [
+        "Wikipedia"
+      ],
+      "discovery_notes": "Created by Le Nôtre for Louis XIV. Named for the Convent of the Feuillants. Originally mulberry-planted by Henri IV for silk; orange-planted after the Revolution; now open for events and statues. Liberty Tree commemorative oak planted 1992.",
+      "verified": false,
+      "gravity_signals": {
+        "visitor_volume": "MEDIUM",
+        "guidebook_presence": "COMMON",
+        "source_urls": [
+          "https://en.wikipedia.org/wiki/Tuileries_Garden"
+        ]
+      },
+      "parent_poi": "Jardin des Tuileries",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "covered_within_parent",
+        "guidebook_presence": "COMMON",
+        "raw_composite": null,
+        "assigned_gravity": 2,
+        "signal_source": "manual_add",
+        "rescored_at": null,
+        "formula_version": null,
+        "prior_reasoning": "Manual addition 2026-06-01 as sub-POI of Jardin des Tuileries; discrete named zone within parent that warrants its own audio trigger",
+        "reasoning": "Manual gravity 2 assigned at creation as sub-POI of Jardin des Tuileries; rescore via standard pipeline when available",
+        "scored_at": "2026-06-01T00:00:00+00:00"
+      },
+      "geocode_audit": {
+        "source": "OSM landmark — Esplanade des Feuillants running along Rue de Rivoli on the Tuileries north edge",
+        "confidence": "MEDIUM",
+        "placement": "Central section of the esplanade alongside Rue de Rivoli, near the 1992 commemorative oak",
+        "trigger_radius_reasoning": "Linear esplanade ~300m long; 75m catches walkers approaching from either end and the Rivoli gate",
+        "notes": "Sub-POI of Jardin des Tuileries; pinned near the commemorative Liberty Tree oak planted 1992",
+        "geocoded_at": "2026-06-02T02:49:54+00:00"
+      }
+    },
+    "_meta": {
+      "prompt_version": "manual_add_v1",
+      "generated_at": "2026-06-01T00:00:00+00:00",
+      "city": "Paris"
+    },
+    "importance_tier": 2,
+    "latitude": 48.86475,
+    "longitude": 2.32892,
+    "trigger_radius": 75,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
+    "city_name": "paris"
+  },
+  {
+    "name": "Memorial des Martyrs de la Deportation",
+    "short_description": "Stark underground memorial at the tip of Ile de la Cite honouring the 200,000 people deported from France to Nazi concentration camps",
+    "name_variations": [
+      "Deportation Memorial"
+    ],
+    "kid_friendly": "no",
+    "_pipeline": {
+      "address": "7 Quai de l'Archevêché, 75004 Paris",
+      "discovery_sources": [
+        "WWII sites guide"
+      ],
+      "discovery_notes": "Behind Notre-Dame, 200,000 crystal lights represent individual deportees, deliberately claustrophobic design",
+      "verified": true,
+      "gravity_signals": {
+        "visitor_volume": "LOW",
+        "guidebook_presence": "RARE",
+        "source_urls": [
+          "https://destinationwwii.com/wwii-sites-in-paris-france/",
+          "https://www.wwiimemorialfriends.org/blog/top-ten-liberation-sites-in-paris"
+        ]
+      },
+      "parent_poi": "Ile de la Cite",
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 29.2,
+        "assigned_gravity": 1,
+        "signal_source": "cached_audit",
+        "rescored_at": "2026-04-26T13:59:22.482596+00:00",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "s1_used_proxy": true,
+        "s2_used_proxy": true,
+        "prior_reasoning": "Composite 29: minimal search interest, moderate Wikipedia, RARE in guidebooks",
+        "reasoning": "Composite 34.4: trends=minimal; wiki=moderate; gb=RARE",
+        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+      },
+      "geocode_audit": {
+        "source": "OSM landmark — Square de l'Île-de-France at the east tip of Île de la Cité, behind Notre-Dame",
+        "confidence": "HIGH",
+        "placement": "Stairway entrance to the underground memorial at the east tip of Île de la Cité, behind Notre-Dame apse",
+        "trigger_radius_reasoning": "Compact site (stairway + small square above); 15m catches walkers approaching from behind Notre-Dame",
+        "notes": "Manual correction — Nominatim returned wrong square in the 14th arrondissement",
+        "geocoded_at": "2026-06-02T02:50:23+00:00"
+      }
+    },
+    "_meta": {
+      "prompt_version": "poi_generate_v1",
+      "generated_at": "2026-03-31T00:00:00Z",
+      "city": "Paris"
+    },
+    "importance_tier": 1,
+    "latitude": 48.851781,
+    "longitude": 2.352303,
+    "trigger_radius": 15,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 — minor landmark, default walk_by_only",
+    "city_name": "paris"
   }
 ]

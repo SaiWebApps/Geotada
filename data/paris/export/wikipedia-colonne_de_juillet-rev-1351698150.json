@@ -1,0 +1,305 @@
+[
+  {
+    "name": "Colonne de Juillet",
+    "short_description": "47-metre bronze column at the centre of Place de la Bastille (1835–1840) commemorating the Trois Glorieuses of July 1830, with a crypt holding the remains of 615 revolution victims.",
+    "latitude": 48.85262,
+    "longitude": 2.368776,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "July Column",
+      "Colonne de Juillet",
+      "Génie de la Liberté (figure on top)"
+    ],
+    "poi_role": null,
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "The tall column at the centre of the Place de la Bastille is the July Column, the Colonne de Juillet. It commemorates the Revolution of 1830 — the Trois Glorieuses, the 'three glorious days' of 27 to 29 July 1830 that toppled Charles X, King of France, and brought in the July Monarchy of Louis-Philippe. It was built between 1835 and 1840.",
+        "lens": "hidden_history",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Trois Glorieuses",
+          "Charles X",
+          "Louis-Philippe",
+          "July Monarchy"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "1830 revolution column",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The July Column rising at the centre of the Place de la Bastille",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Colonne de Juillet",
+            "gloss": "July Column"
+          },
+          {
+            "phrase": "Trois Glorieuses",
+            "gloss": "three glorious days"
+          }
+        ],
+        "source_passage": "The July Column (French: Colonne de Juillet, [kɔlɔn d(ə) ʒɥijɛ]) is a monumental column in Paris commemorating the Revolution of 1830. It stands in the center of the Place de la Bastille and celebrates the Trois Glorieuses — the 'three glorious' days of 27–29 July 1830 that saw the fall of Charles X, King of France, and the commencement of the July Monarchy of Louis-Philippe, King of the French. It was built between 1835 and 1840.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "Introduction",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "This spot has carried monuments that never quite happened. As early as 1792, a column to commemorate the Fall of the Bastille was planned, and a foundation stone was laid on 14 July 1792 — but the project went no further. Under the Empire, the circular basin the column now stands in was built as part of the Elephant of the Bastille: a fountain with an elephant at its centre, completed in semi-permanent stucco to designs by the architect Jean-Antoine Alavoine — who would himself later design the July Column. The permanent bronze version was never commissioned, the Empire's finances having run thin in its last days. The elephant's low base, however, was kept — and it still supports the socle of the column.",
+        "lens": "hidden_history",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "entities": [
+          "Fall of the Bastille",
+          "Elephant of the Bastille",
+          "Jean-Antoine Alavoine"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Bastille elephant",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The circular basin and low base — once the Elephant of the Bastille — supporting the column",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "A first project for one commemorative column, one that would commemorate the Fall of the Bastille, had been envisaged in 1792, and a foundation stone was laid, 14 July 1792; but the project never got further than that. The circular basin in which its socle stands was realised during the Empire as part of the Elephant of the Bastille, a fountain with an elephant in its centre. The elephant was completed to designs by Percier and Fontaine in semi-permanent stucco, but the permanent bronze sculpture was never commissioned due to pinched finances in the latter days of the Empire. Its low base has been retained to support the socle of the column.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "History",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The monument inspired great music. For the laying of the first stone, a hymn with words by Victor Hugo and music by Ferdinand Hérold was sung at the Panthéon. And for the inauguration in 1840, Hector Berlioz composed his Grande Symphonie funèbre et triomphale, performing it in the open air himself as he led a procession of musicians that ended at the Place de la Bastille.",
+        "lens": "music_heritage",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Victor Hugo",
+          "Ferdinand Hérold",
+          "Hector Berlioz",
+          "Grande Symphonie funèbre et triomphale",
+          "Panthéon"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "Berlioz symphony",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "a hymn with words by Victor Hugo and music by Ferdinand Hérold was sung at the Panthéon on the occasion. The Colonne de Juillet was constructed by Alavoine's partner in the project, Joseph-Louis Duc. It was inaugurated 28 July 1840. Music composed for the occasion was Hector Berlioz's Grande Symphonie funèbre et triomphale, which was performed in the open air under the direction of Berlioz himself, leading the procession of musicians which ended at the Place de la Bastille.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "History",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The column is also a tomb. In its foundation, a columbarium holds the remains of 615 people killed in the July Revolution of 1830. Later, 200 victims of the Revolution of 1848 were laid there too — and in July 1848 the throne of Louis-Philippe, the very king who had raised the column, was symbolically burned in the square below it.",
+        "lens": "dark_history",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "July Revolution",
+          "Revolution of 1848",
+          "Louis-Philippe"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "columbarium tomb",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In the foundation, a columbarium was arranged to receive the remains of 615 victims of the July Revolution. A further 200 victims of the Revolution of 1848 were later interred in the space; the throne of Louis-Philippe was symbolically burned in the square, in July 1848.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "History",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The column itself is built from twenty-one cast-bronze drums, weighing more than 74 tonnes and rising 47 metres high, with a spiral staircase hidden inside. It rests on a base of white marble ornamented with bronze bas-reliefs — the most celebrated being the lion by the sculptor Antoine-Louis Barye, who also made the roosters at the corners. And around the shaft, engraved in gold, run the names of those who died in the July 1830 revolution — the dead the column was raised to honour.",
+        "lens": "historic_arch",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Antoine-Louis Barye"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "column structure",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The bronze column's gold-engraved names and Barye's lion and roosters on the white-marble base",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Colonne de Juillet is composed of twenty-one cast bronze drums, weighing over 74 tonnes (163,000 lb); it is 47 metres (154 ft) high, containing an interior spiral staircase, and rests on a base of white marble ornamented with bronze bas-reliefs, of which the lion by Antoine-Louis Barye is the most noted. The roosters at the corners are also by Barye. The column is engraved in gold with the names of those who died during the July 1830 revolution.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "Description",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look to the very top. Above the Corinthian capital sits a gallery nearly five metres wide, crowned by a gilded globe, and on that globe stands the column's glory: a colossal gilded figure, the Génie de la Liberté — the 'Spirit of Freedom' — by the sculptor Auguste Dumont. Balanced on one foot in the manner of Giambologna's Mercury, the star-crowned nude figure brandishes the torch of civilisation and the remains of his broken chains. The figure once appeared on French ten-franc coins, and Gustave Flaubert, in Sentimental Education, compared it to a large golden star shining in the east.",
+        "lens": "visual_art",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Génie de la Liberté",
+          "Auguste Dumont",
+          "Giambologna",
+          "Gustave Flaubert",
+          "Sentimental Education"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Liberte statue",
+        "sub_location": "genie-de-la-liberte",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The gilded Génie de la Liberté atop the column, standing on its globe",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Génie de la Liberté",
+            "gloss": "Spirit of Freedom"
+          }
+        ],
+        "source_passage": "Over the Corinthian capital is a gallery 4.9 metres (16 ft) wide, surmounted with a gilded globe, on which stands a colossal gilded figure, Augustin's Génie de la Liberté (the \"Spirit of Freedom\"). Perched on one foot in the manner of Giambologna's Mercury, the star-crowned nude brandishes the torch of civilisation and the remains of his broken chains. Formerly, the figure also appeared on French ten-franc coins. Gustave Flaubert, in Sentimental Education, compares the statue to a large golden star shining in the east.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "Description",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The column was the work of the architect Jean-Antoine Alavoine, who shaped it as an elaborate Corinthian column on a commission from Louis-Philippe. The Place de la Bastille was officially selected as the site on 9 March 1831, and the Citizen-King laid the first stone on 28 July 1831 — the anniversary of the revolution that brought him to power. Alavoine's partner, Joseph-Louis Duc, carried the work through, and the finished column was inaugurated on 28 July 1840.",
+        "lens": "historic_arch",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jean-Antoine Alavoine",
+          "Louis-Philippe",
+          "Joseph-Louis Duc"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "Alavoine construction",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The Corinthian column commissioned by Louis-Philippe",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The monument, in an elaboration of a Corinthian column, was designed by the architect Jean-Antoine Alavoine, following a commission from Louis-Philippe: the Place de la Bastille was officially selected as the site on 9 March 1831, and the Citizen-King placed a first stone on 28 July 1831, the anniversary of the revolution that brought him to power. The Colonne de Juillet was constructed by Alavoine's partner in the project, Joseph-Louis Duc. It was inaugurated 28 July 1840.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "July Column",
+          "url": "https://en.wikipedia.org/wiki/July_Column?oldid=1351698150",
+          "revision_id": "1351698150",
+          "section": "History",
+          "retrieved_at": "2026-05-29T03:41:04+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "colonne_de_juillet-rev-1351698150",
+      "source_book": "Wikipedia"
+    }
+  }
+]

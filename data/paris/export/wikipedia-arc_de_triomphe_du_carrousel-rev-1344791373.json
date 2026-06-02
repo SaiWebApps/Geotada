@@ -1,0 +1,268 @@
+[
+  {
+    "name": "Arc de Triomphe du Carrousel",
+    "short_description": "Neoclassical triumphal arch built 1806–08 by Percier and Fontaine, originally topped by the Horses of Saint Mark looted from Venice and returned in 1815.",
+    "latitude": 48.861727,
+    "longitude": 2.332909,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 10,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Carrousel Arch",
+      "Arc du Carrousel"
+    ],
+    "poi_role": null,
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "You're standing at the smaller of Paris's two triumphal arches. Napoleon had it raised between 1806 and 1808 to commemorate his victories in the Wars of the Third and Fourth Coalitions, in the Neoclassical style, its columns set in the Corinthian order. Look down the long axis to the west and you can pick out its far more famous sibling, the Arc de Triomphe de l'Étoile, at the end of the Champs-Élysées — about twice this size. The two were designed in the same year, though that larger arch wasn't completed until 1836.",
+        "lens": "historic_arch",
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "entities": [
+          "Napoleon",
+          "Arc de Triomphe de l'Étoile",
+          "Champs-Élysées"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "grounded",
+        "subject_tag": "carrousel identity",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "the view west down the long axis toward the distant Arc de Triomphe de l'Étoile",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "It is an example of Neoclassical architecture in the Corinthian order. It was built between 1806 and 1808 to commemorate Napoleon's military victories in the Wars of the Third and Fourth Coalitions. The Arc de Triomphe de l'Étoile, at the far end of the Champs-Élysées, is about twice the size; designed in the same year but not completed until 1836.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Arc de Triomphe du Carrousel",
+          "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+          "revision_id": "1344791373",
+          "section": "Lead",
+          "retrieved_at": "2026-05-28T18:43:36+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The arch was designed by Charles Percier and Pierre François Léonard Fontaine and raised for the Emperor Napoleon the First between 1806 and 1808. They modelled it openly on ancient Rome — in particular the Arch of Septimius Severus, and the Arch of Constantine, built there in the year 312. Around the outside stand eight Corinthian columns of marble. Those columns weren't cut for the arch at all: they were salvaged from the Château de Meudon, which had been pulled down in 1804.",
+        "lens": "historic_arch",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Charles Percier",
+          "Pierre François Léonard Fontaine",
+          "Arch of Septimius Severus",
+          "Arch of Constantine",
+          "Château de Meudon"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "curious",
+        "subject_tag": "salvaged columns",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "the eight marble Corinthian columns around the arch's exterior",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Designed by Charles Percier and Pierre François Léonard Fontaine, the arch was built between 1806 and 1808 by the Emperor Napoleon I, on the model of the Arch of Constantine (312 AD) in Rome, as a gateway of the Tuileries Palace, the Imperial residence. Around its exterior are eight Corinthian columns of marble. These columns were recovered from the Château de Meudon, destroyed in 1804. The arch is derivative of the triumphal arches of the Roman Empire, in particular the Arch of Septimius Severus in Rome.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Arc de Triomphe du Carrousel",
+          "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+          "revision_id": "1344791373",
+          "section": "History",
+          "retrieved_at": "2026-05-28T18:43:36+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The carved panels set into the arch are a roll-call of Napoleon's triumphs, worked in rose-coloured marble. Among them are the Battle of Austerlitz, the surrender of Ulm, the entrances into Vienna and Munich, the Peace of Pressburg, and the conference at Tilsit. The battle subjects were chosen by Vivant Denon, director of the Musée Napoléon — then housed in the Louvre — and drawn up by Charles Meynier.",
+        "lens": "war_conflict",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Battle of Austerlitz",
+          "Vivant Denon",
+          "Charles Meynier",
+          "Tilsit"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "grounded",
+        "subject_tag": "victory bas-reliefs",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "the carved rose-marble battle panels set around the arch",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Napoleon's diplomatic and military victories are commemorated by bas-reliefs executed in rose marble. The subjects of the bas-reliefs devoted to the battles were selected by the director of the Musée Napoléon (located at the time in the Louvre), Vivant Denon, and designed by Charles Meynier.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Arc de Triomphe du Carrousel",
+          "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+          "revision_id": "1344791373",
+          "section": "Description",
+          "retrieved_at": "2026-05-28T18:43:36+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look up to the tops of the columns. Each is crowned by a marble soldier, and together the eight figures reproduce, in careful detail, the uniforms of the principal corps of Napoleon's imperial army. Only one of them portrays a real man. The sapper is modelled on Dominique Gaye Mariolle, a soldier known for his strength and for a height that topped two metres. He is remembered for a single gesture: during a review of the troops before Tilsit, in July 1807, he presented a cannon to Napoleon in place of a rifle.",
+        "lens": "visual_art",
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "entities": [
+          "Dominique Gaye Mariolle",
+          "Napoleon",
+          "Tilsit"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wonder",
+        "subject_tag": "the sapper",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "the marble soldier statues standing atop the columns",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "On the top of each of the eight marble columns are marble sculptures that faithfully reproduce the uniforms of the principal corps of Napoleon's imperial army. The statue of the sapper is the only one that represents a real soldier, fr: Dominique Gaye Mariolle, who was known for his strength and height, which exceeded 2 meters. He is famous for having presented a cannon instead of a rifle during Napoleon's review of his troops prior to the battle of Tilsitt in July 1807.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Arc de Triomphe du Carrousel",
+          "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+          "revision_id": "1344791373",
+          "section": "Description",
+          "retrieved_at": "2026-05-28T18:43:36+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The chariot and horses on top of the arch carry a story of conquest and reversal. When the arch went up, it was crowned by the Horses of Saint Mark, taken from St Mark's Basilica in Venice — Napoleon had seized them in 1798. They didn't stay long. In 1815, after the defeat at Waterloo and the return of the Bourbon kings, France ceded the horses to the Austrian Empire, which then held Venice under the Congress of Vienna; the Austrians sent them straight back to Venice. So in 1828 they were replaced by the group you see now, sculpted by Baron François Joseph Bosio: Peace riding in a triumphal chariot, led by gilded Victories on either side — raised not to Napoleon, but to the restored Bourbon monarchy that had outlasted him.",
+        "lens": "hidden_history",
+        "duration_sec": 53,
+        "kid_friendly": "yes",
+        "entities": [
+          "Horses of Saint Mark",
+          "St Mark's Basilica",
+          "Venice",
+          "Napoleon",
+          "Congress of Vienna",
+          "François Joseph Bosio"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "the travelling quadriga",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "the quadriga of Peace in a chariot, led by gilded Victories, atop the arch",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "It was originally surmounted by the Horses of Saint Mark from St Mark's Basilica in Venice, which had been captured in 1798 by Napoleon. In 1815, following the Battle of Waterloo and the Bourbon restoration, France ceded the quadriga to the Austrian Empire which had annexed Venice under the terms of the Congress of Vienna. The Austrians immediately returned the statuary to Venice. The horses of Saint Mark were replaced in 1828 by a quadriga sculpted by Baron François Joseph Bosio, depicting Peace riding in a triumphal chariot led by gilded Victories on both sides. The composition commemorates the Restoration of the Bourbons following Napoleon's downfall.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Arc de Triomphe du Carrousel",
+          "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+          "revision_id": "1344791373",
+          "section": "History",
+          "retrieved_at": "2026-05-28T18:43:36+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "This arch was never meant to stand on its own. It was built as the ceremonial gateway to the Tuileries Palace, the imperial residence that once closed off this end of the Louvre. That palace is gone — destroyed in 1871, during the Paris Commune — and clearing its ruins opened the long, unobstructed view west, straight toward the distant Arc de Triomphe. What you're standing on is the eastern end of the Axe historique, the 'historic axis': a roughly nine-kilometre line running out across the northwestern quarter of the city, arch aligned with arch all the way to the horizon.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Tuileries Palace",
+          "Paris Commune",
+          "Arc de Triomphe",
+          "Axe historique",
+          "Louvre"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "contemplative",
+        "subject_tag": "Tuileries gateway",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "the open western view down the axis toward the distant Arc de Triomphe, where the Tuileries Palace once stood",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "as a gateway of the Tuileries Palace, the Imperial residence. The destruction of the Tuileries Palace during the Paris Commune in 1871, allowed an unobstructed view west towards the Arc de Triomphe. The Arc de Triomphe du Carrousel is at the eastern end of Paris Axe historique (\"historic axis\"), a nine-kilometre-long linear route which dominates much of the northwestern quadrant of the city.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Arc de Triomphe du Carrousel",
+          "url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe_du_Carrousel?oldid=1344791373",
+          "revision_id": "1344791373",
+          "section": "History",
+          "retrieved_at": "2026-05-28T18:43:36+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "arc_de_triomphe_du_carrousel-rev-1344791373",
+      "source_book": "Wikipedia"
+    }
+  }
+]

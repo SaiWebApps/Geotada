@@ -1,0 +1,326 @@
+[
+  {
+    "name": "Galeries Lafayette",
+    "short_description": "Belle Epoque department store with a neo-Byzantine stained-glass dome and a free rooftop terrace offering city panoramas",
+    "latitude": 48.8739,
+    "longitude": 2.3322,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 45,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Galeries Lafayette Haussmann"
+    ],
+    "poi_role": "stop",
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "Galeries Lafayette began in 1894, when Théophile Bader and his cousin Alphonse Kahn opened a fashion store in a small haberdasher's shop at the corner of rue La Fayette and the Chaussée d'Antin. The little haberdashery grew fast: in 1896 the company bought the entire building at 1 rue La Fayette, and in 1905 it acquired the buildings at 38, 40 and 42 boulevard Haussmann, along with 15 rue de la Chaussée d'Antin — the footprint of the flagship store that fills this corner today.",
+        "lens": "historic_markets",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Théophile Bader",
+          "Alphonse Kahn"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "store founding",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The flagship store's frontage along 38–42 boulevard Haussmann",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1894, Théophile Bader and his cousin Alphonse Kahn opened a fashion store in a small haberdasher's shop at the corner of rue La Fayette and the Chaussée d'Antin, in Paris. In 1896, their company purchased the entire building at 1 rue La Fayette; in 1905 they acquired the buildings at 38, 40 and 42 boulevard Haussmann and 15 rue de la Chaussée d'Antin.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "History",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look up: the dome that crowns the store rises forty-three metres overhead, a Neo-Byzantine canopy of glass and steel. It was designed by Ferdinand Chanut, the apprentice of the architect Georges Chedanne — Chedanne had led the store's first major renovations, completed in 1907. The dome and the building's Art Nouveau staircases were finished in 1912, and the store was inaugurated that October. Two decades later, in 1932, the interior was reworked in Art Déco style by the architect Pierre Patou.",
+        "lens": "historic_arch",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [
+          "Ferdinand Chanut",
+          "Georges Chedanne",
+          "Pierre Patou"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "the dome",
+        "sub_location": "dome",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The forty-three-metre glass-and-steel dome overhead",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The store's Art Nouveau staircases",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Bader commissioned the architect Georges Chedanne and his pupil Ferdinand Chanut to design the store at the Haussmann location, where a glass and steel dome and Art Nouveau staircases were finished in 1912. Théophile Bader appointed the architect Georges Chedanne to head up the first major renovations which were completed in 1907. Ferdinand Chanut, Georges Chedanne's apprentice, designed the store's 43-metre (141 ft) high Neo Byzantine dome. This store's inauguration ceremony took place in October 1912. In 1932, the store was renovated with an Art Déco style by architect Pierre Patou.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "Architecture",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During the Nazi occupation of France, Galeries Lafayette was stripped from its Jewish owners. In 1940 the store underwent a process of 'Aryanization' — the forced removal of those owners and their replacement by non-Jewish ones. Théophile Bader, Raoul Meyer, Max Heilbronn, the store's administrators and 129 Jewish employees were all made to resign. The property of the Bader, Meyer and Heilbronn families was taken, and the company itself was transferred to new owners: the Swiss Aubert and the French industrialist Harlachol.",
+        "lens": "war_conflict",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Théophile Bader",
+          "Raoul Meyer",
+          "Max Heilbronn",
+          "Aubert",
+          "Harlachol",
+          "Nazi occupation of France"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "Nazi Aryanization",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "During Nazi occupation of France in 1940, Les Galeries Lafayette underwent a process of \"Aryanization\", that is the removal of Jewish owners and their replacement by non-Jewish owners. Théophile Bader, Raoul Meyer, Max Heilbronn, the store's administrators and 129 Jewish employees were forced to resign. The property of Bader, Meyer and Heilbronn families was taken. The Galeries Lafayette group was transferred to non-Jewish owners: the Swiss Aubert and the French industrialist Harlachol.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "Aryanization during Nazi occupation",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 1919, the French pilot Jules Védrines landed his aircraft on the store's rooftop — one of the events Galeries Lafayette organised in those years.",
+        "lens": "hidden_history",
+        "duration_sec": 10,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jules Védrines"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "rooftop plane landing",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The rooftop where Védrines landed his aircraft",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "This store then expanded to include menswear, furniture, toys and tableware departments and get involved in organizing events such as the rooftop landing by French pilot Jules Védrines in 1919.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "Fashion and events",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "From the 1960s, young designers began launching their ready-to-wear lines at the store. The first to become famous did so in 1962 under the name Laura — a little while later, she would be known to the world as Sonia Rykiel. In 1984 the store opened a dedicated designer department carrying the work of Jean-Paul Gaultier and Thierry Mugler.",
+        "lens": "historic_markets",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sonia Rykiel",
+          "Jean-Paul Gaultier",
+          "Thierry Mugler"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "subject_tag": "designer launches",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In the 1960s, young designers began launching their ready-to-wear lines at the store. The first designer to become famous was Laura, in 1962. A little while later she went on to become known as Sonia Rykiel. From 1980 to 1999 \"Fashion Festivals\", were organized, in order to select designs for the store. In 1984, the store opened a designer department including designs from, Jean-Paul Gaultier and Thierry Mugler.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "Fashion and events",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Every year, a Christmas tree hangs suspended beneath the great dome — a tradition the store began in 1976, when the first such tree was hung from the glass roof.",
+        "lens": "local_legends",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "suspended christmas tree",
+        "sub_location": "dome",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The dome from which the Christmas tree is suspended each year",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Galeries Lafayette Paris Haussmann has a suspended Christmas tree every year, the first of which was hung from the dome in 1976.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "Events",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Up on the rooftop terrace, a panoramic view of Paris opens out — taking in the Eiffel Tower, the Montparnasse Tower, the Invalides and the Opera Garnier — with a bar and restaurant set beside it.",
+        "lens": "waterways_views",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Eiffel Tower",
+          "Montparnasse Tower",
+          "Invalides",
+          "Opera Garnier"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "rooftop panorama",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "Panoramic rooftop view of the Eiffel Tower, Montparnasse Tower, Invalides and Opera Garnier",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The rooftop has a bar, restaurant and terrace with a panoramic view of Paris and its monuments including the Eiffel Tower, the Montparnasse Tower, Invalides, and Opera Garnier.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "Restaurants and bars",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Like the other great Paris department stores, Galeries Lafayette ran its own decorative-arts atelier. Called the Maîtrise workshop and directed from 1921 by Maurice Dufrêne, it produced affordable furniture, fabric, carpets, wallpaper, pottery and other household goods. It was one of several such in-house design studios: Printemps had its Primavera, Le Bon Marché its Pomone under Paul Follot, and the Grands Magasins du Louvre its Studium.",
+        "lens": "visual_art",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Maurice Dufrêne",
+          "Primavera",
+          "Printemps",
+          "Pomone",
+          "Le Bon Marché",
+          "Paul Follot",
+          "Studium",
+          "Grands Magasins du Louvre"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Maitrise atelier",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "From 1921 Maurice Dufrêne directed the Maîtrise workshop of the Galeries Lafayette. This workshop for decorative art and furniture followed the Primavera of the Printemps store founded in 1912 by René Guilleré, Paul Follot's Pomone of Le Bon Marché, and the Studium of the Grands Magasins du Louvre. In 1922, it opened arts workshops under the artistic direction of Maurice Dufrêne in order to produce affordable furniture, fabric, carpets, wallpaper, pottery, and other household goods.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Galeries Lafayette",
+          "url": "https://en.wikipedia.org/wiki/Galeries_Lafayette?oldid=1355539443",
+          "revision_id": "1355539443",
+          "section": "History",
+          "retrieved_at": "2026-05-29T02:47:20+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "galeries_lafayette-rev-1355539443",
+      "source_book": "Wikipedia"
+    }
+  }
+]

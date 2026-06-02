@@ -1,0 +1,352 @@
+[
+  {
+    "name": "Bourse de Commerce — Pinault Collection",
+    "short_description": "François Pinault's contemporary-art museum opened in 2021 inside a circular former corn exchange, with a concrete cylinder inserted under the cast-iron dome by Tadao Ando.",
+    "latitude": 48.862817,
+    "longitude": 2.342836,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 90,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Bourse du Commerce",
+      "La Bourse de Commerce",
+      "Pinault Collection Paris",
+      "Halle aux Blés",
+      "La Bourse du Commerce — Pinault Collection"
+    ],
+    "poi_role": null,
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "This site holds a survivor far older than the exchange itself. Between 1574 and 1584, the architect Jean Bullant built a grand hôtel particulier here for Catherine de' Medici, and beside it rose a tower with an encaged observation platform — now known as the Medici column — from which the stars could be observed for astrological purposes. The queen's house later passed to the Count of Soissons, becoming the Hôtel de Soissons; but its last owner died in debt, and in 1748 the house was demolished and its materials sold to pay the creditors. The column alone was spared: that same year, the writer Louis Petit de Bachaumont bought it and saved it from destruction.",
+        "lens": "hidden_history",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Catherine de' Medici",
+          "Jean Bullant",
+          "Medici column",
+          "Hôtel de Soissons",
+          "Charles de Bourbon-Condé",
+          "Victor Amadeus of Savoy",
+          "Louis Petit de Bachaumont"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Medici column",
+        "sub_location": "medici-column",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The Medici column standing on the site",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "hôtel particulier",
+            "gloss": "grand house"
+          }
+        ],
+        "source_passage": "Between 1574 and 1584 Jean Bullant (1515–78) built a hôtel particulier (grand house) on the site for Catherine de' Medici (1519–89). A tower with an encaged observation platform, now called the Medici column, was built beside the hôtel from which observations of the stars could be made for astrological purposes. The Queen's hôtel was bought by Charles de Bourbon-Condé, Count of Soissons, who repaired and enlarged it. The hotel became called the Hôtel de Soissons. The indebted last owner was Victor Amadeus of Savoy (1690–1741). After his death the hotel was demolished in 1748 and the materials sold to pay the creditors. The city of Paris bought the column from its first owner, Laurent Destouches, which saved it from destruction.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "Early buildings",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "corrected"
+      },
+      {
+        "script_body": "The round building you stand in began as a granary. Between 1763 and 1767, the City of Paris raised a circular hall here for the storage and sale of wheat — the Halle aux blés, or Wheat Exchange, designed by Nicolas Le Camus de Mézières around a circular central courtyard reached by a double staircase. That eighteenth-century layout has been kept ever since; the ring you walk today still traces the old grain market's plan.",
+        "lens": "historic_arch",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Halle aux blés",
+          "Nicolas Le Camus de Mézières"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "wheat exchange origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The circular central courtyard and 18th-century double staircase",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Halle aux blés",
+            "gloss": "Wheat Exchange"
+          }
+        ],
+        "source_passage": "Between 1763 and 1767 the City of Paris built a circular building on the site for the storage and sale of wheat. The Halle aux blés (Wheat Exchange) was designed by Nicolas Le Camus de Mézières with a circular central courtyard and a double staircase. The layout of that building has been retained.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "Early buildings",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look up at the dome — the building's crowning glory and today a listed historical monument. The first version, a wooden cupola, was built in 1782–83 by Jacques-Guillaume Legrand and Jacques Molinos, following the principles defined by Philibert de l'Orme. On 16 October 1802 fire destroyed it. After some controversy, a new design by François-Joseph Bélanger was chosen: an iron dome sheathed in copper. Victor Hugo, writing in his 1831 novel Notre-Dame de Paris, described it as 'an English jockey-cap on a large scale.'",
+        "lens": "historic_arch",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jacques-Guillaume Legrand",
+          "Jacques Molinos",
+          "Philibert de l'Orme",
+          "François-Joseph Bélanger",
+          "Victor Hugo",
+          "Notre-Dame de Paris"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "the dome",
+        "sub_location": "dome",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The iron-and-copper dome overhead",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The dome of the building is listed as a historical monument. From 1782 to 1783 a wooden dome was built to a design by Jacques-Guillaume Legrand and Jacques Molinos based on the principles defined by Philibert de l'Orme. On 16 October 1802 the cupola was destroyed by fire. A new design by François-Joseph Bélanger for an iron dome covered in sheets of copper was selected after some controversy. Victor Hugo described the dome in his 1831 novel Notre-Dame de Paris as an English jockey-cap on a large scale.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "History",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The building you see owes its present shape to a major reconstruction begun by the architect Henri Blondel in 1885 and carried out in 1888–89. He kept the circular form — twenty-five bays divided by pairs of pilasters — and reworked the structure around the surviving cupola. Above the entrance, look for the pediment: four fluted Corinthian columns carry a sculpted group by Aristide Croisy, in which three allegorical figures represent the City of Paris flanked by Trade and Abundance.",
+        "lens": "historic_arch",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [
+          "Henri Blondel",
+          "Aristide Croisy"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "Blondel portico",
+        "sub_location": "entrance-portico",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The entrance pediment on four fluted Corinthian columns with Aristide Croisy's three allegorical figures",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1885 Henri Blondel began a major renovation of the building. Construction took place between 1888 and 1889. The building designed by Blondel still had a circular shape, with 25 bays separated by two pilasters. Blondel retained but modified the cupola. The entrance portico is surmounted by a pediment supported by four fluted Corinthian columns on which three allegorical figures by the sculptor Aristide Croisy represent the City of Paris flanked by Trade and Abundance.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "1886 renovation",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In 2016 the mayor of Paris, Anne Hidalgo, offered the collector François Pinault a fifty-year lease on the Bourse de Commerce for a lump sum of fifteen million euros plus yearly fees, and the city approved turning the old exchange into a home for contemporary art. The boldest stroke came from the architect Tadao Ando: a thirty-foot-high concrete cylinder set inside the historic building to serve as the main exhibition gallery, standing within the nineteenth-century shell. Delayed from 2020 by the COVID-19 pandemic, the museum opened in mid-May 2021.",
+        "lens": "modern_design",
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "entities": [
+          "Anne Hidalgo",
+          "François Pinault",
+          "Tadao Ando",
+          "Pinault Collection"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "Ando cylinder",
+        "sub_location": "ando-cylinder",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "Tadao Ando's concrete cylinder rising inside the rotunda",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 2016, the mayor of Paris, Anne Hidalgo, offered François Pinault a 50-year lease on the Bourse de Commerce for a lump sum of €15 million, plus yearly fees. Shortly after, the Paris City Council approved the project to transform the building into an exhibition space for contemporary art, including pieces from Pinault's private collection of more than 3,500 works valued at around €1.25 billion. In 2017, Pinault publicly presented plans by architect Tadao Ando for placing a 30-foot-high concrete cylinder inside the building to be the Bourse's main exhibition gallery, at construction costs of $170 million. The Bourse's initial opening date had been set for summer 2020, before it was delayed due to the COVID-19 pandemic in France. Instead, it opened in mid-May 2021.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "Pinault Collection",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The museum's first show borrowed its name from music: 'Ouverture' — the introductory piece played at the beginning of an opera. It introduced works by international artists including Urs Fischer, Kerry James Marshall, Marlene Dumas, Luc Tuymans and Cindy Sherman.",
+        "lens": "modern_design",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Urs Fischer",
+          "Kerry James Marshall",
+          "Marlene Dumas",
+          "Luc Tuymans",
+          "Cindy Sherman"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Ouverture show",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Ouverture",
+            "gloss": "the introductory piece played at the beginning of an opera"
+          }
+        ],
+        "source_passage": "The inaugural exhibition was called \"Ouverture,\" referring to the introductory piece that is played at the beginning of an opera. The exhibit presented the works of several international artists including Urs Fischer, Kerry James Marshall, Marlene Dumas, Luc Tuymans, and Cindy Sherman.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "Pinault Collection",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "For more than a century this was a working trading floor. Futures markets ran here from the start — first in wheat, oats, flour, oil, sugar, alcohol and rubber, and after World War II in white sugar, cocoa, coffee, soybean meal and rapeseed. Then, in 1998, computerization ended trading in the building, and the exchange now survives as an electronic market within Euronext.",
+        "lens": "historic_markets",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Euronext"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "commodities exchange",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Many futures markets functioned at the Commodities Exchange from its inception, at first under the control of syndicates for wheat, rye and oats, flour, oil, sugar, alcohol, and rubber. After the World War II (1939–45) the futures markets were opened gradually to international trading in goods such as white sugar, cocoa, coffee, potato, soybean meal, and rapeseed. With the computerization of futures markets, in 1998 market activity ended at the Bourse de Commerce building. The exchange continues as an electronic market within Euronext.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "Use as a stock exchange",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Step inside and look up at the curved wall beneath the dome. The rotunda is wrapped in a painted panorama, the work of five painters — Alexis-Joseph Mazerolle, Évariste Vital Luminais, Désiré François Laugée, Georges Clairin and Hippolyte Lucas. Painted panels personify the four directions — North, East, South and West — while frescoes depict the history of trade between the five continents. Classified as a historical monument in 1975, the murals were restored in 1998.",
+        "lens": "visual_art",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alexis-Joseph Mazerolle",
+          "Évariste Vital Luminais",
+          "Désiré François Laugée",
+          "Georges Clairin",
+          "Hippolyte Lucas"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "rotunda murals",
+        "sub_location": "rotunda",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The rotunda murals beneath the dome — painted panels of the four directions and frescoes of world trade",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The interior of the rotunda was decorated by the painters Alexis-Joseph Mazerolle, Évariste Vital Luminais, Désiré François Laugée, Georges Clairin  and Hippolyte Lucas. Painted panels depict characters that symbolize North, East, South, and West, and frescoes represent the history of trade between the five continents. The murals and cupola were classified as a historical monument on 15 January 1975. The murals were restored in 1998.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Bourse de commerce (Paris)",
+          "url": "https://en.wikipedia.org/wiki/Bourse_de_commerce_%28Paris%29?oldid=1356049536",
+          "revision_id": "1356049536",
+          "section": "1886 renovation",
+          "retrieved_at": "2026-05-29T03:00:26+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "bourse_de_commerce_pinault_collection-rev-1356049536",
+      "source_book": "Wikipedia"
+    }
+  }
+]

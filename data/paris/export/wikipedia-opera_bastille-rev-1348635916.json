@@ -1,0 +1,341 @@
+[
+  {
+    "name": "Opéra Bastille",
+    "short_description": "Carlos Ott-designed modern opera house inaugurated on 13 July 1989 with 2,745 seats, the principal stage of the Opéra national de Paris.",
+    "latitude": 48.851517,
+    "longitude": 2.370108,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Opera Bastille",
+      "Opéra national de Paris - Bastille",
+      "Bastille Opera"
+    ],
+    "poi_role": null,
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "The Opéra Bastille is Paris's modern opera house, facing the Place de la Bastille. It was inaugurated in 1989 as part of President François Mitterrand's Grands Travaux — his great programme of monument-building — and became the main facility of the Paris National Opera, sharing the company with the older Palais Garnier; most opera performances are staged here, along with some ballet and symphony concerts. It was designed by the Uruguayan-Canadian architect Carlos Ott. With a main theatre, a concert hall and a studio theatre, it seats 2,723 people in all, making it the largest opera house in Europe.",
+        "lens": "modern_design",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "François Mitterrand",
+          "Paris National Opera",
+          "Palais Garnier",
+          "Carlos Ott"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "modern opera house",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The glass-walled modern opera house facing the Place de la Bastille",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Grands Travaux",
+            "gloss": "President Mitterrand's large monument-building programme"
+          }
+        ],
+        "source_passage": "Inaugurated in 1989 as part of President François Mitterrand's Grands Travaux, it became the main facility of the Paris National Opera, France's principal opera company, alongside the older Palais Garnier; most opera performances are shown at the Bastille along with some ballet performances and symphony concerts, while Palais Garnier presents a mix of opera and ballet performances. Designed by Uruguayan-Canadian architect Carlos Ott, it is situated facing Place de la Bastille. It can seat 2,723 people in total, with a main theatre, concert hall and studio theatre, making it the largest opera house in Europe.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Background and construction",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The choice of the Bastille was deliberate. The planners wanted a 'popular and modern' opera, and they set it in a relatively working-class district — one that evoked the French Revolution and had long been a traditional starting or ending point for demonstrations.",
+        "lens": "social_change",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "French Revolution"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "scene_setter",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Bastille location",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The idea of a new \"popular and modern\" opera house in Paris first arose in the 1880s, only years after the opening of the Palais Garnier. It was quickly decided to separate it and to build it in the Bastille area of Paris, a relatively working-class district that also evoked the French Revolution and was a traditional starting or ending point for demonstrations.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Background and construction",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The architect was chosen by blind competition. An international contest drew 756 entries, and in November 1983 it was won by a little-known architect named Carlos Ott, an Uruguayan living in Canada. The jury, judging the designs without knowing who had made them, was said to have assumed this one came from the distinguished American architect Richard Meier — only to find the unknown Ott behind it. Construction began the next year, in 1984, on the site of the old gare de la Bastille, a train station that had opened in 1859 and closed in 1969.",
+        "lens": "hidden_history",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Carlos Ott",
+          "Richard Meier"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Ott competition win",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "756 entries were received, and, in November 1983, the competition was won by little-known architect Carlos Ott, an Uruguayan living in Canada. It was said that the jury, who—as it is common with architectural competitions—did not know the names or track-records of the entrants, mistakenly assumed the design was by the distinguished American architect Richard Meier. Construction began in 1984 with the demolition of the gare de la Bastille train station, which had opened in 1859 and closed in 1969, and where art expositions had been held thereafter.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Background and construction",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "President Mitterrand stayed personally involved in the project from start to finish. In 1986 a new right-wing government under Jacques Chirac considered cancelling it, but judged the work too far advanced and let it continue. Mitterrand was so hands-on that when the planning team could not agree on the colour of the seats, they took the question to him. He chose black.",
+        "lens": "local_legends",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "François Mitterrand",
+          "Jacques Chirac"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "Mitterrand black seats",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1986, the new right-wing government led by Jacques Chirac considered canceling the project, but eventually decided it was too advanced and gave it the green light again. President Mitterrand remained personally involved throughout the building process, to the point that the planning team referred to him to decide on the seats’ colour following internal disagreement. (He chose black.)",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Background and construction",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Opéra Bastille was inaugurated by François Mitterrand on 13 July 1989, on the eve of the 200th anniversary of the storming of the Bastille, before thirty-three foreign heads of state or government. The opening gala was a semi-staged concert titled 'la Nuit avant le jour' — The Night Before the Day — directed by Robert Wilson and conducted by Georges Prêtre, with singers including Teresa Berganza and Plácido Domingo. The house was in fact unfinished that night: its first full opera, Hector Berlioz's 'les Troyens,' was not staged until 17 March 1990.",
+        "lens": "music_heritage",
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "entities": [
+          "François Mitterrand",
+          "Robert Wilson",
+          "Georges Prêtre",
+          "Teresa Berganza",
+          "Plácido Domingo",
+          "Hector Berlioz"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "1989 inauguration",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "la Nuit avant le jour",
+            "gloss": "The Night Before the Day"
+          }
+        ],
+        "source_passage": "The building was inaugurated by François Mitterrand on 13 July 1989, on the eve of the 200th anniversary of the storming of the Bastille, in the presence of thirty-three foreign heads of state or heads of government. A semi-staged gala concert, directed by Robert Wilson under the title la Nuit avant le jour (The Night Before the Day), was conducted by Georges Prêtre and featured singers such as Teresa Berganza and Plácido Domingo. The opera house was unfinished at the time of the official inauguration, and did not see its first opera performance until 17 March 1990, with Hector Berlioz’ les Troyens, directed by Pier Luigi Pizzi.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Background and construction",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Even before it opened, the Opéra Bastille was engulfed in scandal. In 1987 the conductor Daniel Barenboim was hired as its first Artistic Director, but in January 1989 — six months before the inauguration — he was fired by the company's board chairman Pierre Bergé, head of the Yves Saint Laurent fashion house. Bergé reportedly objected to Barenboim's refusal to cut his pay by half, and to a modernist stance he deemed unfit for a 'popular' opera house. The artistic world erupted: Patrice Chéreau withdrew from staging the inaugural gala, Pierre Boulez resigned from the board, and Herbert von Karajan and Georg Solti signed a letter of protest and called for a boycott. In Barenboim's place, Bergé appointed a young and practically unknown Korean conductor, Myung-whun Chung.",
+        "lens": "music_heritage",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "entities": [
+          "Daniel Barenboim",
+          "Pierre Bergé",
+          "Yves Saint Laurent",
+          "Patrice Chéreau",
+          "Pierre Boulez",
+          "Herbert von Karajan",
+          "Georg Solti",
+          "Myung-whun Chung"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Barenboim firing",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In 1987, conductor Daniel Barenboim, who had previously led the orchestre de Paris, was hired to become the house's first Artistic Director, and began planning the first seasons. In January 1989, six months before inauguration, the company's board chairman Pierre Bergé, otherwise head of the Yves Saint Laurent fashion house, fired Barenboim, reportedly after the conductor's refusal to cut his pay by half as well as due to his modernist stance, which Bergé deemed unfit for a \"popular\" opera house. This decision proved extremely controversial in the artistic field: Patrice Chéreau backed off the staging of the inaugural gala, composer Pierre Boulez resigned from the Board of Directors, and Herbert von Karajan and Georg Solti, along with several other prominent conductors, signed a letter of protest and called for a boycott of the opéra Bastille, canceling their own concerts there. In May, Bergé was finally able to announce the appointment of Korean pianist and conductor Myung-whun Chung, then young and practically unknown in France.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Troubles and controversies",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look at the façade — you may still see safety nets on it. As early as 1991, some of the 36,000 Burgundy limestone panels covering the building began to fall, and in 1996 nets were strung over some of the external walls; the disgruntled director dubbed them 'condoms with holes.' The falling-panel problem was not solved until 2009, when new tiles of composite material, attached differently, were installed — yet as of 2022 many of the nets were still in place.",
+        "lens": "hidden_history",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "falling facade panels",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The limestone façade panels and the safety nets strung over parts of the walls",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "As early as 1991, a few of the 36,000 Burgundy limestone panels covering the facade began to fall, which led to the installation of safety nets over some external walls in 1996; they were dubbed \"condoms with holes\" by the disgruntled Director. The facade problems were not solved until 2009 with the installation of new tiles made of composite material and attached differently. However, as of 2022 many nets were still in place on the facades.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Troubles and controversies",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Inside, the auditorium makes a political point. Designed with 2,723 seats — later trimmed to 2,703 — it is laid out as an arena, a conscious, egalitarian departure from the Palais Garnier, whose several dozen types of seats leave many places without a view of the stage. Here every seat is the same type, with the same comfort and an unrestricted view of the stage, and there are no boxes. There is no royal or presidential box; instead the president's seat is simply a regular one in the arena, on the 'VIP' row, row 15, just after the central aisle — though not all presidents since 1989 have been avid opera-goers.",
+        "lens": "modern_design",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Palais Garnier"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "egalitarian auditorium",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The theatre's auditorium was designed with 2,723 seats, later reduced to 2,703. It is organised in an arena format with two huge balconies at the back, with a few narrow balconies on the sides. It was a conscious, egalitarian, departure from the Palais Garnier, which has several dozen types of seats and does not offer stage visibility from all of them. Every seat at the Opéra Bastille offers an unrestricted view of the stage, it is the very same type of seat with the same level of comfort, and there are no boxes. There is no \"royal\" or \"presidential box\"; instead, one of the regular seats in the arena, on the \"VIP\" row (row 15) just after the central aisle, is considered the presidential seat, although not all Presidents since 1989 have been avid opera-goers.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Design",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Opéra Bastille is a machine as much as a building. The floor of its orchestra pit is actually an elevator, raised for a smaller orchestra and lowered for a larger, louder one; at its biggest it holds 130 players. Behind the stage lies an enormous backstage of 5,000 square metres — six times the size of the stage itself — with identical areas to the left, right and rear. A system of rails and a rotating dock can roll entire sets on and off on giant motorised platforms in a few minutes, while a giant elevator under the stage lowers unused sets to an underground storehouse as large as the backstage. It lets the company rehearse one work in the afternoon and perform another the same evening.",
+        "lens": "science_tech",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "stage machinery",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "One technical feature destined to make it better is that the floor of the orchestra pit is actually a small elevator, which makes it possible to adapt the pit to the requirements of the performance, elevating it for a smaller orchestra and lowering it for a larger and louder one; in its largest configuration, the pit has room for 130 players. The backstage occupies an enormous area (5,000 m2), six times larger than the stage: the stage area is flanked left and right with areas of the same size, and these three areas are replicated towards the back of the theatre. A system of rails and a rotating dock make it possible to roll entire sets on and off on giant motorised platforms in a few minutes and to store these platforms on the available backstage spots; quick changes of set enable the artists to rehearse a work in the afternoon and to perform another one in the evening within the same space. Under the stage is a giant elevator, which is used to lower unused set platforms to an underground storehouse as large as the backstage itself.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Opéra Bastille",
+          "url": "https://en.wikipedia.org/wiki/Op%C3%A9ra_Bastille?oldid=1348635916",
+          "revision_id": "1348635916",
+          "section": "Design",
+          "retrieved_at": "2026-05-29T03:37:25+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "opera_bastille-rev-1348635916",
+      "source_book": "Wikipedia"
+    }
+  }
+]

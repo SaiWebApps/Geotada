@@ -1,0 +1,347 @@
+[
+  {
+    "name": "Grand Palais",
+    "short_description": "Monumental exhibition hall with the largest glass roof in Europe, built for the 1900 World Fair and renovated for the 2024 Olympics",
+    "latitude": 48.866096,
+    "longitude": 2.312156,
+    "importance_tier": 5,
+    "trigger_radius": 10,
+    "typical_duration_min": 90,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Grand Palais des Champs-Elysees"
+    ],
+    "poi_role": "stop",
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "The Grand Palais was built for a party: the Universal Exposition of 1900. Construction began in 1897, after the old Palais de l'Industrie — the Palace of Industry — was demolished to clear the ground, and the same exposition gave Paris the neighbouring Petit Palais and the Pont Alexandre III. It was conceived as a large-scale venue for official artistic events, and a pediment on the façade still declares its purpose: its inscription reads, 'a monument dedicated by the Republic to the glory of French art.' Designed to Beaux-Arts taste, it married ornate stone façades with glass vaults and the new techniques of the age — iron and light steel framing and reinforced concrete.",
+        "lens": "historic_arch",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Palais de l'Industrie",
+          "Petit Palais",
+          "Pont Alexandre III"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "1900 exposition origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The pediment inscription: 'a monument dedicated by the Republic to the glory of French art'",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Palais de l'Industrie",
+            "gloss": "Palace of Industry"
+          }
+        ],
+        "source_passage": "Construction of the Grand Palais began in 1897 following the demolition of the Palais de l'Industrie (Palace of Industry) to prepare for the Universal Exposition of 1900. That exposition also produced the adjacent Petit Palais and Pont Alexandre III. The building was designed to be a large-scale venue for official artistic events. A pediment on the building refers to this function with an inscription that reads, \"a monument dedicated by the Republic to the glory of French art.\" Designed according to Beaux-Arts tastes, the building features ornate stone facades, glass vaults and period innovations that included iron and light steel framing and reinforced concrete.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "Construction and early years",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Step into the nave and look up at the great glass sky. The main hall runs almost 240 metres long beneath an iron, steel and glass barrel-vaulted roof — the last of the great transparent structures inspired by London's Crystal Palace, the kind of vast daylit space needed for large gatherings of people before the age of electricity.",
+        "lens": "historic_arch",
+        "duration_sec": 23,
+        "kid_friendly": "yes",
+        "entities": [
+          "Crystal Palace"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "glass nave",
+        "sub_location": "nave",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "The 240-metre iron-and-glass barrel-vaulted roof over the nave",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The main space, almost 240 m (790 ft) long, was constructed with an iron, steel and glass barrel-vaulted roof, making it the last of the large transparent structures inspired by London's Crystal Palace that were necessary for large gatherings of people before the age of electricity. The main space was originally connected to the other parts of the palace along an east–west axis by a grand staircase in a style combining Classical and Art Nouveau, but the interior layout has since been somewhat modified.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "Construction and early years",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look up at the corners of the roofline. Crowning each wing of the main façade is a monumental bronze quadriga by the sculptor Georges Récipon. The one on the Champs-Élysées side depicts Immortality prevailing over Time; the one facing the Seine depicts Harmony triumphing over Discord. Below them, the exterior sets an imposing Classical stone façade against a riot of Art Nouveau ironwork, studded with allegorical statue groups by sculptors including Paul Gasq, Camille Lefèvre, Alfred Boucher, Alphonse-Amédée Cordonnier and Raoul Verlet.",
+        "lens": "visual_art",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Georges Récipon",
+          "Paul Gasq",
+          "Camille Lefèvre",
+          "Alfred Boucher",
+          "Alphonse-Amédée Cordonnier",
+          "Raoul Verlet"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Recipon quadrigas",
+        "sub_location": "facade",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "Georges Récipon's bronze quadrigas crowning each wing of the main façade",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The exterior of this massive palace combines an imposing Classical stone façade with a riot of Art Nouveau ironwork, and a number of allegorical statue groups including work by sculptors Paul Gasq, Camille Lefèvre, Alfred Boucher, Alphonse-Amédée Cordonnier and Raoul Verlet. A monumental bronze quadriga by Georges Récipon tops each wing of the main façade. The one on the Champs-Élysées side depicts Immortality prevailing over Time, the one on the Seine side Harmony triumphing over Discord.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "Construction and early years",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Grand Palais has fought its own ground since the day it was built. Subsidence from a falling water table cracked the structure before it was even completed, and once it was in use, further damage piled on: heavy exhibitions strained the frame, and acid runoff from the horse shows ate at the metal. Differential expansion between cast iron and steel members let water enter, corroding the structure further. Finally, when one of the glass ceiling panels fell in 1993, the main space had to be closed for restoration, and was not fully reopened to the public until 2007.",
+        "lens": "hidden_history",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Exposition Internationale de la Locomotion Aérienne"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "subsidence and decay",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The restored glass roof, whose 1993 panel fall closed the hall for years",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The structure had problems that started even before it was completed, mainly as a result of subsidence caused by a drop in the water table. Further damage occurred once the building was in use. Excessive force applied to structural members during the installation of certain exhibitions such as the Exposition Internationale de la Locomotion Aérienne caused damage, as did acid runoff from the horse shows. Differential rates of expansion and contraction between cast iron and steel members, for example, allowed for water to enter, leading to corrosion and further weakening. When finally one of the glass ceiling panels fell in 1993, the main space had to be closed for restoration work, and was not fully reopened to the public until 2007.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "Construction and early years",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "During World War I, the Grand Palais became a military hospital. Local artists who had not been deployed to the front were put to work here — decorating the hospital rooms and making moulds for prosthetic limbs for the wounded.",
+        "lens": "war_conflict",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "WWI hospital",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Palais served as a military hospital during World War I, employing local artists who had not been deployed to the front to decorate hospital rooms or to make moulds for prosthetic limbs.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "World Wars I and II",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "In World War II the building changed hands with the fighting. The Nazis used it first as a truck depot and then for two propaganda exhibitions; but during the Liberation of Paris the Parisian resistance made it a headquarters. On 23 August 1944, an advancing German column was fired upon from a window on the Avenue de Sèlves, and the Germans answered with a tank attack on the Palais. The shellfire set alight hay laid out for a circus show, and for the next forty-eight hours thick black smoke poured through the building, doing serious damage. By 26 August, American jeeps stood in the nave, followed by tanks of the French 2nd Armored Division, completing the liberation of the building.",
+        "lens": "war_conflict",
+        "duration_sec": 48,
+        "kid_friendly": "yes",
+        "entities": [
+          "French 2nd Armored Division"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Liberation fire",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Nazis put the Palais to use during the Occupation of France in World War II. First used as a truck depot, the Palais then housed two Nazi propaganda exhibitions. The Parisian resistance used the Grand Palais as a headquarters during the Liberation of Paris. On 23 August 1944, an advancing German column was fired upon from a window on the Avenue de Sèlves, and the Germans responded with a tank attack upon the Palais. The attack ignited hay that was set up for a circus show, and over the next 48 hours, thick black smoke from the fire caused serious damage to the building. By 26 August, American jeeps were parked in the nave, followed by tanks from the French 2nd Armored Division, completing the liberation of the building.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "World Wars I and II",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Grand Palais came surprisingly close to being torn down. In the 1960s the architect Le Corbusier wanted it demolished and replaced with a Museum of 20th Century Art, a commission André Malraux had entrusted to him. Le Corbusier's death, on 27 August 1965, put an end to the project.",
+        "lens": "hidden_history",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Le Corbusier",
+          "André Malraux",
+          "Museum of 20th Century Art"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Corbusier demolition",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "In the 1960s, Le Corbusier wanted the Grand Palais to be demolished to set up the Museum of 20th Century Art there, which André Malraux had entrusted to him. The death of the architect, on 27 August 1965, put an end to the project.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "Postwar years",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "When restorers set out to find the metalwork's original colour, decades of overpainting had left it close to gray by 2001. Luck held: the company that supplied the paint in 1900, Ripolin, was still in business and still kept its archives. The records revealed the original shade — a 'Réséda' green, and specifically the palest of its three tones, 'pale reseda green.'",
+        "lens": "historic_arch",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Ripolin"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "reseda green",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "As time took its toll, numerous layers of paint covered all the elements. The color visible in 2001 was close to gray. Luck is on the cards, as the manufacturer who supplied the paint in 1900 is still in business. This is the Ripolin company, which still has archives from the period in question. The corresponding color chart is quickly found, and the name of the color used is revealed: a \"Réséda\" green, of which there are three shades : pale, medium, and dark. The previous analyses clearly indicate the use of \"pale reseda green.\"",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "A short history of \"Réséda\" green",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The Grand Palais you can visit now is freshly restored. It closed to the public in March 2021 for major renovation works, then reopened in time for the Paris 2024 Olympic Games, where it hosted the fencing and taekwondo events. In October 2024, after four years of closure, it returned to the public and welcomed art fairs again, including Art Basel. The full reopening came in June 2025, at the end of a €466 million, four-year overhaul: its iconic glass roof restored, galleries improved, a new public entrance added, forty lifts installed, and a 'Children's Palace' created for young visitors. The work increased the building's capacity by 140 percent.",
+        "lens": "modern_design",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paris 2024 Olympic Games",
+          "Art Basel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "2025 reopening",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The restored glass roof and new public entrance from the 2025 overhaul",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Grand Palais temporarily closed to the public in March 2021 for significant renovation works. It reopened in time for the Paris 2024 Olympic Games, where it hosted the fencing and taekwondo events. In October 2024, after four years of closure, the Grand Palais reopened its doors to the public, once again hosting art fairs, including Art Basel. In June 2025, the Grand Palais reopened following a €466 million, four‑year overhaul. Highlights include restoration of its iconic glass roof, improved galleries, a new public entrance, 40 lifts, and a Children’s Palace for young visitors. Capacity has increased by 140%, aiming to serve millions annually.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Grand Palais",
+          "url": "https://en.wikipedia.org/wiki/Grand_Palais?oldid=1356164554",
+          "revision_id": "1356164554",
+          "section": "21st century",
+          "retrieved_at": "2026-05-29T03:28:31+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "grand_palais-rev-1356164554",
+      "source_book": "Wikipedia"
+    }
+  }
+]

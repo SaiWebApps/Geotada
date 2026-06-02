@@ -1,0 +1,293 @@
+[
+  {
+    "name": "Saint-Sulpice",
+    "short_description": "Baroque church housing what is considered the greatest pipe organ in existence and a gnomon solar calendar featured in The Da Vinci Code",
+    "latitude": 48.850987,
+    "longitude": 2.33487,
+    "importance_tier": 3,
+    "trigger_radius": 10,
+    "typical_duration_min": 20,
+    "kid_friendly": "yes",
+    "name_variations": [
+      "Eglise Saint-Sulpice"
+    ],
+    "poi_role": "stop",
+    "parent_poi": null,
+    "establishing_not_applicable": false,
+    "beats": [
+      {
+        "script_body": "Saint-Sulpice is the second-largest church in Paris, dedicated to Sulpitius the Pious. The present building — the second on the site, raised over a Romanesque church from the 13th century — was founded in 1646 by the parish priest Jean-Jacques Olier, who had established the Society of Saint-Sulpice, a clerical congregation, and a seminary attached to the church. Anne of Austria laid the first stone.",
+        "lens": "historic_worship",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jean-Jacques Olier",
+          "Society of Saint-Sulpice",
+          "Anne of Austria",
+          "Sulpitius the Pious"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "church founding",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "It is the second largest church in the city. It is dedicated to Sulpitius the Pious. The present church is the second building on the site, erected over a Romanesque church originally constructed during the 13th century. The new building was founded in 1646 by parish priest Jean-Jacques Olier (1608–1657) who had established the Society of Saint-Sulpice, a clerical congregation, and a seminary attached to the church. Anne of Austria laid the first stone.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "Lead / History",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "At the far end of the church, in the Lady Chapel, stands a large white marble statue of the Virgin by Jean-Baptiste Pigalle. It is a replacement. The original was solid silver, sculpted by Edmé Bouchardon and cast from silverware donated by the parishioners — and it was known as \"Our Lady of the Old Tableware.\" That silver Virgin vanished at the time of the Revolution, and Pigalle's marble figure, ringed by stucco from Louis-Philippe Mouchy, has stood in her place ever since.",
+        "lens": "visual_art",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jean-Baptiste Pigalle",
+          "Edmé Bouchardon",
+          "Louis-Philippe Mouchy",
+          "Our Lady of the Old Tableware"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "old tableware virgin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "Large white marble statue of the Virgin by Pigalle in the Lady Chapel at the far end of the church",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Pigalle also designed the large white marble statue of Mary in the Lady Chapel at the far end of the church. The stucco decoration surrounding it is by Louis-Philippe Mouchy. Pigalle's work replaced a solid-silver statue by Edmé Bouchardon, which vanished at the time of the Revolution. It was cast from silverware donated by parishioners and was known as \"Our Lady of the Old Tableware\".",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "Interior",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "When the architect Gilles-Marie Oppenord was working on the transept in the 1720s, he built a bell tower on top of the crossing, around 1725. It was a costly miscalculation: the tower's own weight threatened to collapse the structure, and it had to be removed. This may account for what came next — Oppenord was relieved of his duties as an architect and restricted to designing decoration.",
+        "lens": "historic_arch",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gilles-Marie Oppenord"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "oppenord bell tower",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "He also built a bell tower on top of the transept crossing (c. 1725), which threatened to collapse the structure because of its weight and had to be removed. This miscalculation may account for the fact that Oppenord was then relieved of his duties as an architect and restricted to designing decoration.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "History",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "The pulpit in the nave, designed by Charles de Wailly and completed in 1788, has a quirk: its oak canopy broadcasts sound so well it needs no amplification. It also became a stage for revolution. From here the parish priest of Saint-Sulpice declared his refusal to accept the Civil Constitution of the Clergy, and revolutionary orators used it later too. During the Paris Commune of 1871, the church served as headquarters of a faction called the Club de la Victoire, and Louise Michel spoke from this same pulpit.",
+        "lens": "war_conflict",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "entities": [
+          "Charles de Wailly",
+          "Civil Constitution of the Clergy",
+          "Paris Commune",
+          "Club de la Victoire",
+          "Louise Michel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "revolutionary pulpit",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The carved oak pulpit standing in the nave, designed by Charles de Wailly",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "De Wailly also designed the pulpit (in the nave), completed in 1788. The oak canopy broadcasts sound very well and it was from here that the parish priest of Saint-Sulpice declared his refusal to accept the Civil Constitution of the Clergy. Revolutionary orators used it later also. During the Paris Commune (1871) one faction, called the Club de la Victoire, chose Saint-Sulpice as its headquarters and Louise Michel spoke from the pulpit.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "Interior / Notable events",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Look above the center door of the main entrance and you can still barely make out a printed sign. It dates from the Revolution, when Christianity was suppressed and Saint-Sulpice was turned into a place of worship for Robespierre's Cult of the Supreme Being. The faded words read: Le Peuple Français Reconnoit L'Etre Suprême Et L'Immortalité de L'Âme — \"The French people recognize the Supreme Being and the immortality of the soul.\"",
+        "lens": "social_change",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Cult of the Supreme Being",
+          "Robespierre"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "subject_tag": "supreme being sign",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [
+          {
+            "cue": "Faded printed sign above the center door of the main west entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Le Peuple Français Reconnoit L'Etre Suprême Et L'Immortalité de L'Âme",
+            "gloss": "The French people recognize the Supreme Being and the immortality of the soul"
+          }
+        ],
+        "source_passage": "Another point of interest dating from the time of the Revolution, when Christianity was suppressed and Saint-Sulpice became a place of worship for the Robespierrean Cult of the Supreme Being, is a printed sign over the center door of the main entrance. One can still barely make out the printed words Le Peuple Français Reconnoit L'Etre Suprême Et L'Immortalité de L'Âme (\"The French people recognize the Supreme Being and the immortality of the soul\").",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "West façade",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "Three names from French literature are written into Saint-Sulpice's records. The Marquis de Sade was baptized here in 1740, Charles Baudelaire in 1821, and in 1822 the church hosted the marriage of Victor Hugo to Adèle Foucher.",
+        "lens": "literary_heritage",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Marquis de Sade",
+          "Charles Baudelaire",
+          "Victor Hugo",
+          "Adèle Foucher"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "literary baptisms",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "physical_cues": [],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "The Marquis de Sade and Charles Baudelaire were baptized in Saint-Sulpice (1740 and 1821, respectively), and the church also saw the marriage of Victor Hugo to Adèle Foucher (1822).",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "Notable events",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "script_body": "When Dan Brown's 2003 novel The Da Vinci Code became an international bestseller, it brought crowds of tourists to Saint-Sulpice hunting for the secrets the book claimed were hidden here. The church pushed back with a note on display for visitors: the brass line in the floor is not the vestige of a pagan temple, it was never called a \"Rose-Line,\" and the letters P and S in the round transept windows stand for Peter and Sulpice, the church's patron saints — not for any imaginary \"Priory of Sion.\" In 2005, the Archdiocese of Paris refused Ron Howard permission to film inside the church for the movie.",
+        "lens": "film_tv",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "entities": [
+          "Dan Brown",
+          "The Da Vinci Code",
+          "Ron Howard",
+          "Priory of Sion"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "da vinci code",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "physical_cues": [
+          {
+            "cue": "The brass meridian line inlaid across the floor",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The letters P and S in the small round windows at both ends of the transept",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "pronunciation": null,
+        "inline_foreign_phrases": [],
+        "source_passage": "Dan Brown's 2003 novel The Da Vinci Code was an international bestseller that brought crowds of tourists to Saint-Sulpice. This note has been on display in the church: Contrary to fanciful allegations in a recent best-selling novel, this [the line in the floor] is not a vestige of a pagan temple. No such temple ever existed in this place. It was never called a «Rose-Line». ... Please also note that the letters «P» and «S» in the small round windows at both ends of the transept refer to Peter and Sulpice, the patron saints of the church, not an imaginary «Priory of Sion». In 2005, the Archdiocese of Paris refused Ron Howard permission to film inside Saint-Sulpice when he was making The Da Vinci Code.",
+        "source_attribution": {
+          "source_type": "wikipedia",
+          "book_title": "Wikipedia",
+          "article_title": "Saint-Sulpice, Paris",
+          "url": "https://en.wikipedia.org/wiki/Saint-Sulpice,_Paris?oldid=1354368793",
+          "revision_id": "1354368793",
+          "section": "Cultural allusions",
+          "retrieved_at": "2026-05-28T05:07:33+00:00"
+        },
+        "fact_check_status": "verified"
+      }
+    ],
+    "_meta": {
+      "exported_at": "2026-05-30T00:34:05+00:00",
+      "source_chunk": "saint_sulpice-rev-1354368793",
+      "source_book": "Wikipedia"
+    }
+  }
+]
