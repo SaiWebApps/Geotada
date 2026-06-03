@@ -2,9 +2,9 @@
   "_meta": {
     "generated_by": "scripts/generate_within_edges.py",
     "city_name": "Paris",
-    "total_pois": 303,
+    "total_pois": 370,
     "total_areas": 34,
-    "poi_to_area_count": 761,
+    "poi_to_area_count": 915,
     "area_to_area_count": 33,
     "orphans": [
       "Chateau de Vincennes"
@@ -82,6 +82,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "9 Quai Malaquais (George Sand)",
+      "area_name": "6th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "9 Quai Malaquais (George Sand)",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Abbey Bookshop",
       "area_name": "5th Arrondissement",
       "area_type": "district"
@@ -103,6 +113,26 @@
     },
     {
       "poi_name": "Academie de la Grande-Chaumiere",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Allée des Cygnes",
+      "area_name": "15th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Allée des Cygnes",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Angelina Paris",
+      "area_name": "1st Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Angelina Paris",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -267,6 +297,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Bistro du Peintre",
+      "area_name": "11th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bistro du Peintre",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Bois de Vincennes",
       "area_name": "12th Arrondissement",
       "area_type": "district"
@@ -300,6 +340,16 @@
       "poi_name": "Brasserie Lipp",
       "area_name": "Saint-Germain-des-Prés",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Buddhist Temple Lac Daumesnil",
+      "area_name": "12th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Buddhist Temple Lac Daumesnil",
+      "area_name": "Paris",
+      "area_type": "city"
     },
     {
       "poi_name": "Butte-aux-Cailles",
@@ -432,6 +482,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Cemetery of Eglise Saint-Germain de Charonne",
+      "area_name": "20th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Cemetery of Eglise Saint-Germain de Charonne",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Centre Pompidou",
       "area_name": "4th Arrondissement",
       "area_type": "district"
@@ -487,12 +547,37 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Cinematheque Française",
+      "area_name": "12th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Cinematheque Française",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Cite des Sciences et de l'Industrie",
       "area_name": "19th Arrondissement",
       "area_type": "district"
     },
     {
       "poi_name": "Cite des Sciences et de l'Industrie",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Clos des Blancs-Manteaux",
+      "area_name": "4th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Clos des Blancs-Manteaux",
+      "area_name": "Le Marais",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Clos des Blancs-Manteaux",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -692,6 +777,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Eglise Notre-Dame de la Croix",
+      "area_name": "20th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Eglise Notre-Dame de la Croix",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Eglise Saint-Gervais-Saint-Protais",
       "area_name": "4th Arrondissement",
       "area_type": "district"
@@ -773,6 +868,16 @@
     },
     {
       "poi_name": "Eiffel Tower",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Esplanade des Feuillants",
+      "area_name": "1st Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Esplanade des Feuillants",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -902,6 +1007,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Galerie nationale du Jeu de Paume",
+      "area_name": "8th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Galerie nationale du Jeu de Paume",
+      "area_name": "Madeleine-Concorde",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Galerie nationale du Jeu de Paume",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Galeries Lafayette",
       "area_name": "9th Arrondissement",
       "area_type": "district"
@@ -913,6 +1033,16 @@
     },
     {
       "poi_name": "Galeries Lafayette",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Galignani",
+      "area_name": "1st Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Galignani",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -930,6 +1060,16 @@
       "poi_name": "George Sand's House (31 Rue de Seine)",
       "area_name": "Saint-Germain-des-Prés",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Grand Bassin Rond",
+      "area_name": "1st Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Grand Bassin Rond",
+      "area_name": "Paris",
+      "area_type": "city"
     },
     {
       "poi_name": "Grand Mosque of Paris",
@@ -1058,6 +1198,16 @@
     },
     {
       "poi_name": "Hotel Le Meurice",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hotel Lutetia",
+      "area_name": "7th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hotel Lutetia",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -1342,6 +1492,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Institut Catholique",
+      "area_name": "6th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Institut Catholique",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Institut de France",
       "area_name": "6th Arrondissement",
       "area_type": "district"
@@ -1377,6 +1537,106 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Jardin Alpin",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Alpin",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin Atlantique",
+      "area_name": "15th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Atlantique",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin Carre",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Carre",
+      "area_name": "Latin Quarter",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Jardin Carre",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin Catherine-Laboure",
+      "area_name": "7th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Catherine-Laboure",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin Naturel",
+      "area_name": "20th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Naturel",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin Saint-Gilles Grand Veneur",
+      "area_name": "3rd Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Saint-Gilles Grand Veneur",
+      "area_name": "Le Marais",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Jardin Saint-Gilles Grand Veneur",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin Tino Rossi",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin Tino Rossi",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin de Reuilly",
+      "area_name": "12th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin de Reuilly",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardin de la Clinique Saint-Jean de Dieu",
+      "area_name": "7th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardin de la Clinique Saint-Jean de Dieu",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Jardin des Plantes",
       "area_name": "5th Arrondissement",
       "area_type": "district"
@@ -1393,6 +1653,21 @@
     },
     {
       "poi_name": "Jardin des Tuileries",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jardins du Musee de Cluny",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jardins du Musee de Cluny",
+      "area_name": "Latin Quarter",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Jardins du Musee de Cluny",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -1487,6 +1762,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "La Maison des Metallos",
+      "area_name": "11th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "La Maison des Metallos",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "La Pagode",
       "area_name": "7th Arrondissement",
       "area_type": "district"
@@ -1507,6 +1792,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "La Ruche",
+      "area_name": "15th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "La Ruche",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "La Samaritaine",
       "area_name": "1st Arrondissement",
       "area_type": "district"
@@ -1517,12 +1812,42 @@
       "area_type": "city"
     },
     {
+      "poi_name": "La Tartine",
+      "area_name": "4th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "La Tartine",
+      "area_name": "Le Marais",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "La Tartine",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "La Tour d'Argent",
       "area_name": "5th Arrondissement",
       "area_type": "district"
     },
     {
       "poi_name": "La Tour d'Argent",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "La Vallée Suisse",
+      "area_name": "8th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "La Vallée Suisse",
+      "area_name": "Champs-Élysées",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "La Vallée Suisse",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -1637,6 +1962,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Librairie Michael Seksik",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Librairie Michael Seksik",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Louvre Museum",
       "area_name": "1st Arrondissement",
       "area_type": "district"
@@ -1685,6 +2020,16 @@
       "poi_name": "Maison Loo",
       "area_name": "Plaine Monceau",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Maison de Balzac",
+      "area_name": "16th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Maison de Balzac",
+      "area_name": "Paris",
+      "area_type": "city"
     },
     {
       "poi_name": "Marche des Enfants Rouges",
@@ -1762,6 +2107,16 @@
       "area_type": "island"
     },
     {
+      "poi_name": "Montagne Sainte-Genevieve",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Montagne Sainte-Genevieve",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Montmartre Cemetery",
       "area_name": "18th Arrondissement",
       "area_type": "district"
@@ -1813,6 +2168,16 @@
     },
     {
       "poi_name": "Moulin de la Galette",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Musee Bourdelle",
+      "area_name": "15th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Musee Bourdelle",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -2002,6 +2367,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Musée Eugène Delacroix",
+      "area_name": "6th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Musée Eugène Delacroix",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Musée Eugène Delacroix",
+      "area_name": "Saint-Germain-des-Prés",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Musée Jacquemart-André",
       "area_name": "8th Arrondissement",
       "area_type": "district"
@@ -2030,6 +2410,31 @@
       "poi_name": "Musée Nissim de Camondo",
       "area_name": "Plaine Monceau",
       "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Musée de Montmartre",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Musée de Montmartre",
+      "area_name": "Montmartre",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Musée de Montmartre",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Musée de la Vie Romantique",
+      "area_name": "9th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Musée de la Vie Romantique",
+      "area_name": "Paris",
+      "area_type": "city"
     },
     {
       "poi_name": "Musée du Luxembourg",
@@ -2232,6 +2637,26 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Parc Floral",
+      "area_name": "12th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc Floral",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc Georges-Brassens",
+      "area_name": "15th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc Georges-Brassens",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Parc Monceau",
       "area_name": "17th Arrondissement",
       "area_type": "district"
@@ -2247,12 +2672,87 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Parc Montsouris",
+      "area_name": "14th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc Montsouris",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc Turlure",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc Turlure",
+      "area_name": "Montmartre",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Parc Turlure",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc de Bagatelle",
+      "area_name": "16th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc de Bagatelle",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc de Belleville",
+      "area_name": "20th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc de Belleville",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc de Bercy",
+      "area_name": "12th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc de Bercy",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc de la Villette",
+      "area_name": "19th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc de la Villette",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Parc des Buttes-Chaumont",
       "area_name": "19th Arrondissement",
       "area_type": "district"
     },
     {
       "poi_name": "Parc des Buttes-Chaumont",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Parc des Serres d'Auteuil",
+      "area_name": "16th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Parc des Serres d'Auteuil",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -2430,6 +2930,16 @@
       "poi_name": "Place Dauphine",
       "area_name": "Île de la Cité",
       "area_type": "island"
+    },
+    {
+      "poi_name": "Place Saint-Georges",
+      "area_name": "9th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Place Saint-Georges",
+      "area_name": "Paris",
+      "area_type": "city"
     },
     {
       "poi_name": "Place Vendome",
@@ -3442,12 +3952,247 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Square Boucicaut",
+      "area_name": "7th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Boucicaut",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Carpeaux",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Carpeaux",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Georges-Cain",
+      "area_name": "3rd Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Georges-Cain",
+      "area_name": "Le Marais",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Georges-Cain",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Jean XXIII",
+      "area_name": "4th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Jean XXIII",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Jean XXIII",
+      "area_name": "Île de la Cité",
+      "area_type": "island"
+    },
+    {
+      "poi_name": "Square Louise-Michel",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Louise-Michel",
+      "area_name": "Montmartre",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Louise-Michel",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Square Louvois",
       "area_name": "2nd Arrondissement",
       "area_type": "district"
     },
     {
       "poi_name": "Square Louvois",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Léon-Serpollet",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Léon-Serpollet",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Léopold-Achille",
+      "area_name": "3rd Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Léopold-Achille",
+      "area_name": "Le Marais",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Léopold-Achille",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Maurice-Gardette",
+      "area_name": "11th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Maurice-Gardette",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Paul-Langevin",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Paul-Langevin",
+      "area_name": "Latin Quarter",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Paul-Langevin",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Paul-Painleve",
+      "area_name": "5th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Paul-Painleve",
+      "area_name": "Latin Quarter",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Paul-Painleve",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Raoul Nordling",
+      "area_name": "11th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Raoul Nordling",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Rene Viviani",
+      "area_name": "6th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Rene Viviani",
+      "area_name": "Latin Quarter",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Rene Viviani",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Récamier",
+      "area_name": "6th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Récamier",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Santiago du Chili",
+      "area_name": "7th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Santiago du Chili",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square Suzanne-Buisson",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square Suzanne-Buisson",
+      "area_name": "Montmartre",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square Suzanne-Buisson",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square d'Orléans",
+      "area_name": "9th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square d'Orléans",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square de la Roquette",
+      "area_name": "11th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square de la Roquette",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square des Abbesses",
+      "area_name": "18th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square des Abbesses",
+      "area_name": "Montmartre",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Square des Abbesses",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Square des Batignolles",
+      "area_name": "17th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Square des Batignolles",
       "area_name": "Paris",
       "area_type": "city"
     },
@@ -3642,6 +4387,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Théâtre du Vieux-Colombier",
+      "area_name": "6th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Théâtre du Vieux-Colombier",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Théâtre du Vieux-Colombier",
+      "area_name": "Saint-Germain-des-Prés",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Tour Jean sans Peur",
       "area_name": "1st Arrondissement",
       "area_type": "district"
@@ -3738,6 +4498,16 @@
     },
     {
       "poi_name": "Viaduc des Arts",
+      "area_name": "Paris",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Villa Santos-Dumont",
+      "area_name": "15th Arrondissement",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Villa Santos-Dumont",
       "area_name": "Paris",
       "area_type": "city"
     },

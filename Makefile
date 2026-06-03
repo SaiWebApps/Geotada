@@ -1,22 +1,31 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync lint format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
 # ──────────────────────────────────────────────────────────
 
 help: ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
+	@grep -hE '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
 
 # ──────────────────────────────────────────────────────────
 # SETUP
 # ──────────────────────────────────────────────────────────
 
-sync: ## Install/update Python dependencies via uv
-	uv sync --extra test --extra dev
-	@echo "✓ Dependencies installed."
+sync: ## Install Python deps from public PyPI (default — works on any machine)
+	uv sync --extra test --extra dev --extra aws
+	@echo "✓ Dependencies installed (public PyPI)."
+
+sync-apple: ## Install deps from Apple's internal PyPI mirror — ONLY on Apple VPN when public PyPI is blocked
+	@curl -sI --max-time 5 https://pypi.apple.com/simple/ >/dev/null 2>&1 || \
+		{ echo "ERROR: pypi.apple.com unreachable — are you on the Apple VPN? Use 'make sync' for public PyPI." >&2; exit 1; }
+	@cp uv.lock /tmp/ondoway-uv.lock.public
+	@UV_DEFAULT_INDEX=https://pypi.apple.com/simple uv sync --extra test --extra dev --extra aws; ec=$$?; \
+		cp /tmp/ondoway-uv.lock.public uv.lock; rm -f /tmp/ondoway-uv.lock.public; \
+		if [ $$ec -ne 0 ]; then echo "sync-apple failed; uv.lock restored to public." >&2; exit $$ec; fi; \
+		echo "✓ Deps installed from Apple mirror. uv.lock kept public (apple refs now: $$(grep -c pypi.apple.com uv.lock))."
 
 env: ## Create .env from template (won't overwrite)
 	@test -f .env || (cp .env.example .env && echo "✓ .env created from template.") || echo "• .env already exists."
@@ -39,6 +48,9 @@ lint: ## Run ruff linter
 
 format: ## Auto-format with ruff
 	uv run ruff format src/ tests/
+	uv run ruff check --fix src/ tests/
+
+lint-fix: ## Auto-fix fixable lint errors only (ruff check --fix; no reformatting)
 	uv run ruff check --fix src/ tests/
 
 flutter-analyze: ## Run Dart static analysis on Flutter code
@@ -144,6 +156,9 @@ upload-paris: ## Upload full Paris dataset to active Neo4j instance
 
 wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
 	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)
+
+gen-within-edges: ## Regenerate data/paris/within_edges.json (POI→Area staging) from areas.json + poi-raw.json
+	uv run python scripts/generate_within_edges.py
 
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS

@@ -110,6 +110,15 @@ Precedence: shell environment → process environment → `load_dotenv()` → de
 
 Shell env vars override `.env` file values. Changing `.env.test` alone does not help if the shell already has a stale export. `pytest.mark.skipif` conditions are cached in `.pyc` files — changing .env.test does NOT re-evaluate them without clearing `__pycache__`.
 
+## Python Dependency Index (regular vs Apple)
+
+The project pins **public PyPI** as the default index in `pyproject.toml` (`[[tool.uv.index]]`), so `uv.lock` is reproducible on any machine — the committed lock must always contain only `files.pythonhosted.org` URLs (never `pypi.apple.com`). The pin overrides any machine-level `~/.config/uv/uv.toml` default.
+
+- **Regular (default, everyone): `make sync`** — installs from public PyPI. This is what non-Apple machines use; zero config. Verified 2026-06-03: public PyPI is reachable on this user's Apple VPN too (no proxy env set), so `make sync` works whether the VPN is on or off.
+- **Apple corp: `make sync-apple`** — fallback for a network that blocks public PyPI. It backs up `uv.lock`, re-resolves+installs from `pypi.apple.com` via `UV_DEFAULT_INDEX`, then restores the backed-up (public) `uv.lock` from the working tree — it does NOT use `git checkout`, so it is safe even when the public lock is uncommitted.
+
+**Auto-detect rule (for Claude):** default to `make sync`. Only switch to `make sync-apple` if a `uv` command fails reaching public PyPI **and** `curl -sI --max-time 3 https://pypi.apple.com/simple/` returns a response. (In practice this rarely triggers, since public PyPI reaches fine on the VPN.) Re-locking (`uv lock`, after a dependency change) must be done where public PyPI is reachable so the committed lock stays public.
+
 ## Feature Development Workflow
 
 - Specs live in `specs/{date}-{topic}/` with stages: 01-scope → 02-spec → 03-scopes → 04-red-team → 05-plan → 06-verify

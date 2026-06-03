@@ -16,10 +16,10 @@ relies on them holding.
 from __future__ import annotations
 
 import hashlib
-import re
 
 import pytest
 
+from scripts.audit_extraction import audit_chunk
 from scripts.beat_builder import (
     BookContext,
     beat_id,
@@ -27,18 +27,14 @@ from scripts.beat_builder import (
     hash_body,
     make_beat,
     slugify,
-    word_count,
 )
 from scripts.extract_validators import (
-    BeatVerdict,
     check_length_class,
     count_source_sentences,
     fabrication_probe,
     source_span_gate,
     validate_beat,
 )
-from scripts.audit_extraction import audit_chunk
-
 
 # ─── beat_builder ────────────────────────────────────────────────────
 
@@ -57,7 +53,7 @@ def test_hash_body_collapses_whitespace_and_lowercases():
     b = hash_body("hello world")
     c = hash_body("\thello\nworld\n")
     assert a == b == c
-    expected = hashlib.sha256("hello world".encode()).hexdigest()
+    expected = hashlib.sha256(b"hello world").hexdigest()
     assert a == expected
 
 
@@ -288,7 +284,10 @@ def test_fabrication_probe_unsourced_claim_in_cue():
     body = "Hitler stopped at La Danse."
     cues = [
         {
-            "cue": "La Danse sculpture group; the original is now in Musée d'Orsay; the façade carries a 1964 replica",
+            "cue": (
+                "La Danse sculpture group; the original is now in Musée d'Orsay; "
+                "the façade carries a 1964 replica"
+            ),
             "direction": "here",
             "feature_type": "architectural_detail",
         }
@@ -345,7 +344,10 @@ def test_fabrication_probe_drops_sentence_start_function_words():
     entities — the leading word is a connective."""
     src = "Guillaumot acted in April. The committee approved the plan."
     chunk = src
-    body = "Once Guillaumot had established himself, the work continued. In April, students saw the collapse."
+    body = (
+        "Once Guillaumot had established himself, the work continued. "
+        "In April, students saw the collapse."
+    )
     verdict = fabrication_probe(
         script_body=body,
         physical_cues=[],
@@ -413,7 +415,10 @@ def _minimal_beat(**overrides):
         "poi_name": "X",
         "lens": "war_conflict",
         "script_body": "x " * 100,
-        "source_passage": "First sentence here. Second one too. Third one as well. Fourth one. Fifth one.",
+        "source_passage": (
+            "First sentence here. Second one too. Third one as well. "
+            "Fourth one. Fifth one."
+        ),
         "beat_length_class": "mid",
         "physical_cues": [],
         "fact_check": {"extractor_state": "clean", "flagged_claims": [], "status": "unverified"},

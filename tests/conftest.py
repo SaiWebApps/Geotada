@@ -45,6 +45,21 @@ from src.api.app import create_app
 from src.connection import Neo4jConnectionError, create_driver, get_database
 from src.schema.constraints import apply_all
 
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """Project policy: a skipped test counts as a FAILURE — no silent non-runs.
+
+    Any skip outcome is flipped to 'failed' (the original skip reason is shown
+    as the failure detail). Explicit xfail is preserved, since that is an
+    asserted expected-failure, not a silent skip.
+    """
+    outcome = yield
+    report = outcome.get_result()
+    if report.skipped and not getattr(report, "wasxfail", False):
+        report.outcome = "failed"
+
+
 # Ports the conftest is allowed to wipe. Update this if your local test
 # instance runs on a different port. Dev/production must NEVER be in here.
 _TEST_PORT_ALLOWLIST: set[int] = {7688}

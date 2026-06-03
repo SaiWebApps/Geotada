@@ -30,6 +30,15 @@ dev = [
     "ruff>=0.4",
 ]
 
+# Pin the package index so resolution is identical on every machine, regardless
+# of any machine-level uv config (e.g. a corporate ~/.config/uv/uv.toml default).
+# Regular (default) is public PyPI; `make sync-apple` overrides this via
+# UV_DEFAULT_INDEX when on a network that only allows the Apple mirror.
+[[tool.uv.index]]
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.util
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -13,6 +14,8 @@ from src.audio.storage import (
     StorageProvider,
     get_storage,
 )
+
+_HAS_BOTO3 = importlib.util.find_spec("boto3") is not None
 
 
 @pytest.fixture
@@ -76,6 +79,9 @@ class TestGetStorage:
             get_storage("unknown")
 
 
+@pytest.mark.skipif(
+    not _HAS_BOTO3, reason="boto3 not installed; run `uv sync --extra aws` to enable R2 tests"
+)
 class TestR2Storage:
     """Tests for R2StorageProvider (Cloudflare R2, S3-compatible)."""
 
