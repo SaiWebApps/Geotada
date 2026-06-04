@@ -1,0 +1,309 @@
+{
+  "_meta": {
+    "description": "Realistic example of /tours/plan-route → /tours/build-script round-trip. Stop list is complete (8 stops along the natural Concorde → Notre-Dame corridor). Script content is abbreviated to two stops to keep the file readable. POI IDs follow the kebab-case-name convention used in the Paris corpus.",
+    "scenario": "Tourist at Place de la Concorde, 180-min budget, wants Notre-Dame as anchor + Sainte-Chapelle as optional, interested in dark history + historic architecture.",
+    "geographic_note": "Concorde → Notre-Dame follows Rue de Rivoli east through Tuileries → Arc du Carrousel → Louvre, then crosses Pont Neuf onto Île de la Cité. Per rule B2, T5 POIs on the natural path are auto-anchors — the algorithm cannot skip Tuileries, Arc du Carrousel, or Louvre even though the user didn't name them."
+  },
+
+  "plan_route_request": {
+    "city_slug": "paris",
+    "start": { "lat": 48.8676, "lng": 2.3214 },
+    "time_budget_min": 180,
+    "lenses": ["dark_history", "historic_arch"],
+    "anchor_poi_id": "notre-dame-cathedral",
+    "optional_pois": ["sainte-chapelle"],
+    "visit_modes": {
+      "notre-dame-cathedral": "stop_visit",
+      "sainte-chapelle": "stop_visit"
+    }
+  },
+
+  "plan_route_response_200": {
+    "route_id": "rt_8f3a2e1c9b4d",
+    "city_slug": "paris",
+    "inputs": "<request body echoed>",
+    "stops": [
+      {
+        "poi_id": "place-de-la-concorde",
+        "name": "Place de la Concorde",
+        "lat": 48.8656, "lng": 2.3211,
+        "role": "anchor",
+        "importance_tier": 4,
+        "visit_mode": null,
+        "lens_density": { "dark_history": 4, "historic_arch": 2 }
+      },
+      {
+        "poi_id": "jardin-des-tuileries",
+        "name": "Jardin des Tuileries",
+        "lat": 48.8634, "lng": 2.3275,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": null,
+        "lens_density": { "dark_history": 3, "historic_arch": 5 }
+      },
+      {
+        "poi_id": "arc-de-triomphe-du-carrousel",
+        "name": "Arc de Triomphe du Carrousel",
+        "lat": 48.8615, "lng": 2.3327,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": null,
+        "lens_density": { "dark_history": 1, "historic_arch": 4 }
+      },
+      {
+        "poi_id": "louvre-museum",
+        "name": "Louvre Museum",
+        "lat": 48.8606, "lng": 2.3376,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": null,
+        "lens_density": { "dark_history": 5, "historic_arch": 11 }
+      },
+      {
+        "poi_id": "pont-neuf",
+        "name": "Pont Neuf",
+        "lat": 48.8570, "lng": 2.3413,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": null,
+        "lens_density": { "dark_history": 1, "historic_arch": 3 }
+      },
+      {
+        "poi_id": "conciergerie",
+        "name": "Conciergerie",
+        "lat": 48.8559, "lng": 2.3454,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": null,
+        "lens_density": { "dark_history": 12, "historic_arch": 4 }
+      },
+      {
+        "poi_id": "sainte-chapelle",
+        "name": "Sainte-Chapelle",
+        "lat": 48.8554, "lng": 2.3450,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": "stop_visit",
+        "lens_density": { "dark_history": 2, "historic_arch": 8 }
+      },
+      {
+        "poi_id": "notre-dame-cathedral",
+        "name": "Notre-Dame Cathedral",
+        "lat": 48.8530, "lng": 2.3499,
+        "role": "anchor",
+        "importance_tier": 5,
+        "visit_mode": "stop_visit",
+        "lens_density": { "dark_history": 6, "historic_arch": 14 }
+      }
+    ],
+    "segments": [
+      {
+        "from_stop_index": 0, "to_stop_index": 1,
+        "walking_distance_m": 580, "walking_time_sec": 464,
+        "polyline": [[48.8656, 2.3211], "...22 points along Rue de Rivoli...", [48.8634, 2.3275]],
+        "routing_mode": "live_osrm"
+      },
+      {
+        "from_stop_index": 1, "to_stop_index": 2,
+        "walking_distance_m": 410, "walking_time_sec": 328,
+        "polyline": [[48.8634, 2.3275], "...16 points...", [48.8615, 2.3327]],
+        "routing_mode": "live_osrm"
+      },
+      {
+        "from_stop_index": 2, "to_stop_index": 3,
+        "walking_distance_m": 380, "walking_time_sec": 304,
+        "polyline": [[48.8615, 2.3327], "...12 points across Louvre courtyards...", [48.8606, 2.3376]],
+        "routing_mode": "live_osrm"
+      },
+      {
+        "from_stop_index": 3, "to_stop_index": 4,
+        "walking_distance_m": 540, "walking_time_sec": 432,
+        "polyline": [[48.8606, 2.3376], "...20 points to Pont Neuf...", [48.8570, 2.3413]],
+        "routing_mode": "live_osrm"
+      },
+      {
+        "from_stop_index": 4, "to_stop_index": 5,
+        "walking_distance_m": 290, "walking_time_sec": 232,
+        "polyline": [[48.8570, 2.3413], "...12 points...", [48.8559, 2.3454]],
+        "routing_mode": "live_osrm"
+      },
+      {
+        "from_stop_index": 5, "to_stop_index": 6,
+        "walking_distance_m": 60, "walking_time_sec": 48,
+        "polyline": [[48.8559, 2.3454], [48.8554, 2.3450]],
+        "routing_mode": "live_osrm"
+      },
+      {
+        "from_stop_index": 6, "to_stop_index": 7,
+        "walking_distance_m": 420, "walking_time_sec": 336,
+        "polyline": [[48.8554, 2.3450], "...18 points...", [48.8530, 2.3499]],
+        "routing_mode": "live_osrm"
+      }
+    ],
+    "total_walking_time_sec": 2144,
+    "total_walking_distance_m": 2680,
+    "routing_mode_summary": { "live_osrm": 7, "fallback": 0 },
+    "warnings": []
+  },
+
+  "build_script_request": "<plan_route_response_200 body, posted verbatim>",
+
+  "build_script_response_200": {
+    "_note": "Two stops shown in full (Conciergerie + Notre-Dame). Other six abbreviated as { stop_index, poi_id, beats_count, total_audio_sec } in real output. Total script across the route ≈ 12-14 min of speakable text — fits well under the 60% silence cap on a 180-min tour.",
+    "route_id": "rt_8f3a2e1c9b4d",
+    "per_stop": [
+      { "stop_index": 0, "poi_id": "place-de-la-concorde", "_abbreviated": true, "total_audio_sec": 60 },
+      { "stop_index": 1, "poi_id": "jardin-des-tuileries", "_abbreviated": true, "total_audio_sec": 105 },
+      { "stop_index": 2, "poi_id": "arc-de-triomphe-du-carrousel", "_abbreviated": true, "total_audio_sec": 75 },
+      { "stop_index": 3, "poi_id": "louvre-museum", "_abbreviated": true, "total_audio_sec": 135 },
+      { "stop_index": 4, "poi_id": "pont-neuf", "_abbreviated": true, "total_audio_sec": 90 },
+      {
+        "stop_index": 5,
+        "poi_id": "conciergerie",
+        "beats": [
+          {
+            "source": "beat",
+            "beat_id": "bt_conciergerie_open_01",
+            "glue_id": null,
+            "play_order": 0,
+            "duration_sec": 22,
+            "narrative_function": "establishing",
+            "lens": "historic_arch",
+            "sentence_text": "The four conical towers fronting the Seine are the last surviving fragments of the Capetian royal palace."
+          },
+          {
+            "source": "glue",
+            "beat_id": null,
+            "glue_id": "scene_setter_short",
+            "play_order": 1,
+            "duration_sec": 4,
+            "narrative_function": null,
+            "lens": null,
+            "sentence_text": "But the palace had a darker chapter."
+          },
+          {
+            "source": "beat",
+            "beat_id": "bt_conciergerie_terror_marie_antoinette",
+            "glue_id": null,
+            "play_order": 2,
+            "duration_sec": 48,
+            "narrative_function": "hook",
+            "lens": "dark_history",
+            "sentence_text": "Marie Antoinette spent her final 76 days in a cell here before being driven to the Concorde at dawn."
+          },
+          {
+            "source": "beat",
+            "beat_id": "bt_conciergerie_revolutionary_tribunal",
+            "glue_id": null,
+            "play_order": 3,
+            "duration_sec": 38,
+            "narrative_function": "deepen",
+            "lens": "dark_history",
+            "sentence_text": "The Revolutionary Tribunal sat in the upper hall — over 2,700 condemnations sealed across the Terror."
+          },
+          {
+            "source": "beat",
+            "beat_id": "bt_conciergerie_close_01",
+            "glue_id": null,
+            "play_order": 4,
+            "duration_sec": 12,
+            "narrative_function": "transition",
+            "lens": "historic_arch",
+            "sentence_text": "Walk along the quay; Sainte-Chapelle's spire is already visible ahead."
+          }
+        ],
+        "total_audio_sec": 124
+      },
+      { "stop_index": 6, "poi_id": "sainte-chapelle", "_abbreviated": true, "total_audio_sec": 130 },
+      {
+        "stop_index": 7,
+        "poi_id": "notre-dame-cathedral",
+        "beats": [
+          {
+            "beat_id": "bt_notredame_open_01",
+            "play_order": 0,
+            "duration_sec": 24,
+            "narrative_function": "establishing",
+            "lens": "historic_arch",
+            "sentence_text": "You're standing where construction began in 1163 — the western façade you see was finished nearly a century later."
+          },
+          {
+            "beat_id": "bt_notredame_rose_window",
+            "play_order": 1,
+            "duration_sec": 38,
+            "narrative_function": "deepen",
+            "lens": "historic_arch",
+            "sentence_text": "The north rose window above the portal still holds its original 13th-century glass — most of what survived the Revolution did so by accident."
+          },
+          {
+            "beat_id": "bt_notredame_revolution_desecration",
+            "play_order": 2,
+            "duration_sec": 44,
+            "narrative_function": "hook",
+            "lens": "dark_history",
+            "sentence_text": "In 1793, revolutionaries beheaded the kings of Judah on the western façade, mistaking them for French monarchs — the heads were dug up in a Paris basement in 1977."
+          },
+          {
+            "beat_id": "bt_notredame_napoleon_coronation",
+            "play_order": 3,
+            "duration_sec": 36,
+            "narrative_function": "deepen",
+            "lens": "dark_history",
+            "sentence_text": "Eleven years later Napoleon crowned himself emperor in the nave, taking the crown from the Pope's hands at the decisive moment."
+          },
+          {
+            "beat_id": "bt_notredame_close_01",
+            "play_order": 4,
+            "duration_sec": 14,
+            "narrative_function": "transition",
+            "lens": "historic_arch",
+            "sentence_text": "Step back across the parvis; the full façade reads best from the far edge of the square."
+          }
+        ],
+        "total_audio_sec": 156
+      }
+    ],
+    "per_segment": [
+      { "segment_index": 0, "from_stop_index": 0, "to_stop_index": 1, "beats": [], "total_audio_sec": 0 },
+      { "segment_index": 1, "from_stop_index": 1, "to_stop_index": 2, "beats": [], "total_audio_sec": 0 },
+      { "segment_index": 2, "from_stop_index": 2, "to_stop_index": 3, "beats": [], "total_audio_sec": 0 },
+      {
+        "segment_index": 3,
+        "from_stop_index": 3,
+        "to_stop_index": 4,
+        "beats": [
+          {
+            "source": "beat",
+            "beat_id": "bt_quai_de_la_megisserie_walkby_01",
+            "glue_id": null,
+            "play_order": 0,
+            "duration_sec": 18,
+            "lens": "hidden_history",
+            "sentence_text": "On your right, the Quai de la Mégisserie — until the 1830s, this strip housed the city's tanneries and slaughterhouses."
+          }
+        ],
+        "total_audio_sec": 18
+      },
+      { "segment_index": 4, "from_stop_index": 4, "to_stop_index": 5, "beats": [], "total_audio_sec": 0 },
+      { "segment_index": 5, "from_stop_index": 5, "to_stop_index": 6, "beats": [], "total_audio_sec": 0 },
+      { "segment_index": 6, "from_stop_index": 6, "to_stop_index": 7, "beats": [], "total_audio_sec": 0 }
+    ],
+    "total_audio_sec": 893,
+    "silence_pct": 0.65,
+    "tour_name": "Dark History: Notre-Dame Cathedral",
+    "thinness_signal": false
+  },
+
+  "error_response_422_anchor_infeasible": {
+    "error": "anchor_infeasible",
+    "detail": "Anchor 'arc-de-triomphe' requires minimum 95 min walking round-trip from start; budget is 60 min.",
+    "min_required_min": 95,
+    "budget_min": 60
+  },
+
+  "error_response_200_osrm_fallback": {
+    "_note": "Same shape as success, but every segment carries routing_mode: 'fallback' and warnings is populated.",
+    "routing_mode_summary": { "live_osrm": 0, "fallback": 7 },
+    "warnings": ["OSRM container unreachable at http://osrm:5000 — using haversine fallback"]
+  }
+}

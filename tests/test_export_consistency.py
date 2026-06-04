@@ -54,7 +54,10 @@ def test_export_matches_poi_raw(city_dir: Path) -> None:
 
     export_dir = city_dir / "export"
     if not export_dir.exists():
-        pytest.skip(f"No export directory for {city_dir.name}")
+        pytest.xfail(
+            f"No export directory for {city_dir.name} — fixture not provisioned. "
+            "See specs/2026-06-02-tour-build-harness/known-failing-tests.md"
+        )
 
     offenders: list[str] = []
 
