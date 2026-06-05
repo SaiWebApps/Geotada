@@ -80,6 +80,11 @@ source .venv/bin/activate
 | `make db-down`          | Stop Neo4j                                       |
 | `make db-status`        | Check Neo4j container status                     |
 | `make db-reset`         | Stop Neo4j and wipe all data                     |
+| `make osrm-up`          | Start OSRM foot-routing server (127.0.0.1:5000) and wait until healthy |
+| `make osrm-down`        | Stop OSRM routing server                         |
+| `make osrm-status`      | Check OSRM health (single route probe)           |
+| `make matrix-build`     | Build the POI distance matrix (needs OSRM + Neo4j). Usage: `make matrix-build paris` or `make matrix-build CITY=paris` |
+| `make matrix-rebuild`   | Force-rebuild the distance matrix from scratch (OSRM pre-check) |
 | `make setup`            | Full pipeline: schema + seed + verify            |
 | `make test`             | Run all tests                                    |
 | `make test-unit`        | Run unit tests (no Neo4j needed)                 |
@@ -118,6 +123,13 @@ src/
     ├── models/                # Pydantic models (nodes, edges, schema, trips)
     ├── crud/                  # Cypher operations + schema introspection + trip generation
     └── routes/                # API endpoint handlers (nodes, edges, schema, audio, trips)
+src/tour/
+├── routing.py                 # Route summary + walk seconds/distance (delegates to distance.py)
+└── distance.py                # Three-tier walking distance: matrix → live OSRM → haversine
+scripts/
+├── build_distance_matrix.py   # Build data/{city}/distance_matrix.sqlite from Neo4j POIs + OSRM
+└── distance_smoke.py          # 5 canonical Paris routes vs Google-Maps ground truth (>25% flag)
+docker-compose.osrm.yml        # OSRM foot-routing server (bound 127.0.0.1:5000)
 frontend/
 ├── index.html                 # Read-only dashboard
 └── editor/

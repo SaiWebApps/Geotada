@@ -179,3 +179,11 @@ Five commands. Ten seconds. Non-negotiable.
 **Incident:** `make flutter-test` was run with `run_in_background`. Flutter buffers stdout completely, so the output file stayed at 0 bytes for over 3 minutes. Claude polled it with `sleep 5` loops — over 20 polling attempts, all showing empty output — wasting the user's time. The CLAUDE.md Rule 8 and prevent-laziness hook now mechanically block this.
 
 **Rule:** Always run `make flutter-test` and `make test` in the foreground. Never use `run_in_background` for Flutter commands. If a foreground command is taking long, tell the user what you're waiting for — don't go silent.
+
+---
+
+## 22. Probe loopback HTTP services on `127.0.0.1`, not `localhost` — the proxy 403s the hostname
+
+**Incident:** During Scope 1 (OSRM routing infra), `make osrm-up` reported "OSRM did not become healthy within 60s" even though `docker logs ondoway-osrm` showed "running and waiting for requests." The healthcheck `curl http://localhost:5000/...` returned HTTP 403, but `curl http://127.0.0.1:5000/...` returned 200. No shell `*_proxy` env vars were even set — the corporate proxy intercepts the hostname `localhost` (via system config) and 403s it, while passing the literal loopback IP. Several minutes lost before getting verbose headers (`curl -v`) that revealed `127.0.0.1` worked.
+
+**Rule:** For any self-hosted HTTP service on loopback (OSRM, a local API, etc.), probe `http://127.0.0.1:<port>` — NEVER `localhost` — and set `NO_PROXY=localhost,127.0.0.1`. In Python, build the client with `httpx.Client(trust_env=False)` so it never consults the proxy. When a healthcheck times out but `docker logs` shows the server is up, the first diagnostic is `curl -v` (check whether a proxy returns the error, and try the raw IP) — not a longer sleep. Also: `make format` (ruff's formatter) will reflow pre-existing out-of-scope files that `ruff check` passed; after running it in a scoped change, `git checkout --` the unrelated format churn so the PR stays scoped (`make lint` = `ruff check`, which doesn't enforce format, so reverting stays green).

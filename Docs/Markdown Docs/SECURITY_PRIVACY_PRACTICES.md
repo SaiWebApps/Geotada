@@ -37,6 +37,7 @@ This document defines non‑negotiable security and privacy constraints for futu
 - Log security‑relevant events (auth failures, permission denials, admin actions).
 - Avoid logging PII or sensitive data; redact where necessary.
 - Set alerts for anomalous behavior (e.g., spikes in failed logins).
+- The distance layer (`src/tour/distance.py`) never logs raw lat/lng for arbitrary points. Fallback/diagnostic logs emit a POI id, or a `nearest_poi_id` plus a coarse (~100m) bucketed coord hash. See `_pii_safe_point_label`.
 
 **8) Data Retention & Deletion**
 - Define retention periods for all data types and enforce automated deletion.
@@ -62,6 +63,7 @@ This document defines non‑negotiable security and privacy constraints for futu
 - Segment networks; restrict access via firewall rules and security groups.
 - Use principle of least exposure (no public databases).
 - Maintain least‑privilege IAM policies.
+- The OSRM routing server is bound to `127.0.0.1:5000` only (never `0.0.0.0`) — see `docker-compose.osrm.yml`. It is a routing-only service with no auth and must remain unreachable off-host.
 
 **13) Privacy by Design**
 - Default to the most privacy‑preserving settings.

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -14,12 +15,22 @@ from fastapi.staticfiles import StaticFiles
 from src.api.auth.routes import router as auth_router
 from src.api.dependencies import close_driver, init_driver
 from src.api.routes import audio, edges, feedback, graph, nodes, schema, trips
+from src.tour import distance
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Startup/shutdown: manage Neo4j driver lifecycle."""
+    """Startup/shutdown: manage Neo4j driver + distance-matrix lifecycle."""
     init_driver()
+    matrix = distance.load_matrix("paris")
+    app.state.distance_matrix = matrix
+    if matrix is None:
+        logger.warning("API starting in degraded routing mode (distance matrix missing)")
+    else:
+        distance.set_active_matrix(matrix)
+        logger.info("Distance matrix loaded: matrix_pairs_loaded=%d", len(matrix))
     yield
     close_driver()
 

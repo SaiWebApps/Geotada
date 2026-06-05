@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth osrm-up osrm-down osrm-status matrix-build matrix-rebuild paris
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -125,6 +125,50 @@ db-test-reset: ## Stop test Neo4j and wipe test data
 	docker compose rm -f neo4j-test
 	docker volume rm -f ondoway_neo4j_test_data
 	@echo "✓ Test Neo4j stopped and data wiped."
+
+# ──────────────────────────────────────────────────────────
+# OSRM ROUTING ENGINE (pedestrian distance layer)
+# ──────────────────────────────────────────────────────────
+
+# Probe 127.0.0.1 (not `localhost`): the corporate proxy 403s localhost but not the
+# literal loopback IP. NO_PROXY also set so curl never routes loopback via the proxy.
+OSRM_PROBE := NO_PROXY=localhost,127.0.0.1 no_proxy=localhost,127.0.0.1 curl -fsS 'http://127.0.0.1:5000/route/v1/foot/2.3214,48.8676;2.3499,48.8530'
+
+osrm-up: ## Start OSRM foot-routing server (127.0.0.1:5000) + wait until healthy
+	@test -f data/osrm/ile-de-france.osrm.mldgr || { \
+		echo "ERROR: OSRM graph not prepared. Run first-run prep — see 'OSRM first-run setup' in Docs/Markdown Docs/TROUBLESHOOTING.md" >&2; exit 1; }
+	docker compose -f docker-compose.osrm.yml up -d osrm
+	@echo "Waiting for OSRM to be healthy (up to 60s)..."
+	@i=0; until $(OSRM_PROBE) >/dev/null 2>&1; do \
+		i=$$((i+1)); \
+		if [ $$i -ge 30 ]; then echo "ERROR: OSRM did not become healthy within 60s" >&2; exit 1; fi; \
+		sleep 2; \
+	done
+	@echo "✓ OSRM is ready at http://127.0.0.1:5000 (foot profile)"
+
+osrm-down: ## Stop OSRM routing server
+	docker compose -f docker-compose.osrm.yml down
+
+osrm-status: ## Check OSRM health (single route probe)
+	@if $(OSRM_PROBE) 2>/dev/null | grep -q '"code":"Ok"'; then \
+		echo "✓ OSRM healthy at http://127.0.0.1:5000"; \
+	else \
+		echo "✗ OSRM not responding at http://127.0.0.1:5000 (run 'make osrm-up')"; exit 1; \
+	fi
+
+# Resolve the city from a trailing goal (`make matrix-build paris`), a CITY= var,
+# or default to paris. The no-op `paris` target below absorbs the trailing goal.
+MATRIX_CITY := $(or $(filter-out matrix-build matrix-rebuild,$(MAKECMDGOALS)),$(CITY),paris)
+
+matrix-build: ## Build the POI distance matrix (needs OSRM + Neo4j up). Usage: make matrix-build paris  |  make matrix-build CITY=paris
+	uv run python scripts/build_distance_matrix.py $(MATRIX_CITY)
+
+matrix-rebuild: ## Force-rebuild the distance matrix from scratch (OSRM pre-check)
+	@$(MAKE) osrm-status
+	uv run python scripts/build_distance_matrix.py $(MATRIX_CITY) --rebuild
+
+paris: ## (no-op) lets `make matrix-build paris` pass the city as a trailing goal
+	@:
 
 # ──────────────────────────────────────────────────────────
 # APPLICATION

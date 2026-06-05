@@ -35,6 +35,26 @@ make test-integration   # Integration tests only (needs Neo4j)
 | test_trip_api.py            | 8     | Integration | Trip generation endpoint (201/404/422)|
 | **Total**                   | **177** |           |                                       |
 
+The table above covers the Neo4j graph backend. The tour layer (`tests/test_tour_*.py`) is tracked separately; the distance/routing infrastructure added in Scope 1 is described below.
+
+## Tour Distance Layer
+
+`tests/test_tour_distance.py` (7 tests) covers the three-tier walking-distance layer (`src/tour/distance.py`: precomputed matrix → live OSRM → haversine fallback):
+
+- Three-tier resolution + per-tier counters.
+- OSRM-down → haversine fallback.
+- Matrix-missing → live OSRM.
+- Both-down → haversine.
+- Matrix lookup p99 < 1ms (timeit, 10k iters, real Paris matrix).
+- PII-safe logging (no raw-coord leak).
+- LRU cache dedup.
+
+All 7 mock the OSRM seam (`distance._osrm_route`) — they do **not** require the live container.
+
+The existing tour tests were **not** rebased: their numeric assertions target unchanged pure functions (`haversine_m`, `pace_corrected_walk_seconds`) and structural properties, not `summarise_route` distance output, so they pass identically in `auto` and `haversine` modes (`TOUR_DISTANCE_MODE`).
+
+The 2 golden overlap tests remain `xfail` (corpus UUID drift from re-extraction, independent of the OSRM work) — tracked in `specs/2026-06-02-tour-build-harness/known-failing-tests.md`.
+
 ## What Each Category Validates
 
 ### Unit Tests (49 tests)

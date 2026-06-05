@@ -15,12 +15,25 @@ Constants and pure functions used by selection.py:
 
 Constants are exported as module-level so tests can pin them and so
 selection.py reads identical values.
+
+Distance modes (``TOUR_DISTANCE_MODE`` env var, honoured by ``distance.py``):
+
+- ``auto`` (default): pre-computed matrix → live OSRM → haversine.
+- ``live``: live OSRM → haversine.
+- ``haversine``: this module's haversine math only.
+
+``segment_walk_seconds`` delegates to ``distance.walking_time`` unless the
+mode is ``haversine``, in which case it computes ``pace_corrected_walk_seconds``
+from the local haversine math — guaranteeing the haversine path is unchanged.
+The ``distance`` import is lazy (inside the function) to break the
+``routing`` ↔ ``distance`` import cycle.
 """
 
 from __future__ import annotations
 
 import itertools
 import math
+import os
 from collections.abc import Iterable
 
 from .contract import POI, Route, TransitSegment
@@ -65,6 +78,53 @@ def pace_corrected_walk_seconds(haversine_distance_m: float) -> int:
     actual_distance_m = haversine_distance_m * HAVERSINE_CORRECTION
     speed_m_per_s = (PACE_KMH * 1000.0) / 3600.0
     return round(actual_distance_m / speed_m_per_s)
+
+
+def segment_walk_seconds(
+    lat1: float,
+    lng1: float,
+    lat2: float,
+    lng2: float,
+    from_poi_id: str | None = None,
+    to_poi_id: str | None = None,
+) -> int:
+    """Walking time in seconds for one route segment.
+
+    When ``TOUR_DISTANCE_MODE != "haversine"`` this delegates to the
+    three-tier ``distance.walking_time`` (matrix → live OSRM → haversine),
+    passing any POI ids so the matrix tier can fire. When the mode is
+    ``haversine`` it computes ``pace_corrected_walk_seconds`` from this
+    module's haversine math — byte-identical to the legacy behaviour.
+
+    The ``distance`` import is lazy to avoid the import cycle.
+    """
+    if os.getenv("TOUR_DISTANCE_MODE", "auto").strip().lower() == "haversine":
+        return pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+
+    from . import distance
+
+    return distance.walking_time((lat1, lng1, from_poi_id), (lat2, lng2, to_poi_id))
+
+
+def segment_walk_distance_m(
+    lat1: float,
+    lng1: float,
+    lat2: float,
+    lng2: float,
+    from_poi_id: str | None = None,
+    to_poi_id: str | None = None,
+) -> float:
+    """Walking distance in metres for one route segment (always >= 0).
+
+    Mirrors :func:`segment_walk_seconds`: legacy haversine when the mode is
+    ``haversine``, else the three-tier ``distance.walking_distance_m``.
+    """
+    if os.getenv("TOUR_DISTANCE_MODE", "auto").strip().lower() == "haversine":
+        return haversine_m(lat1, lng1, lat2, lng2)
+
+    from . import distance
+
+    return distance.walking_distance_m((lat1, lng1, from_poi_id), (lat2, lng2, to_poi_id))
 
 
 def envelope_radius_m(duration_min: int, *, round_trip: bool) -> float:
@@ -124,7 +184,7 @@ def insertion_cost_seconds(
     # but never after the closing-return-to-origin segment.
     insertable_positions = len(ordered) + 1
     for idx in range(insertable_positions):
-        new_coords = [*coords[:idx + 1], (candidate.lat, candidate.lng), *coords[idx + 1:]]
+        new_coords = [*coords[: idx + 1], (candidate.lat, candidate.lng), *coords[idx + 1 :]]
         extra = _path_walk_seconds(new_coords) - base_seconds
         if best_extra is None or extra < best_extra:
             best_extra = extra
@@ -157,8 +217,12 @@ def summarise_route(
     total_distance = 0.0
 
     for poi in ordered:
-        d = haversine_m(prev_lat, prev_lng, poi.lat, poi.lng)
-        secs = pace_corrected_walk_seconds(d)
+        d = segment_walk_distance_m(
+            prev_lat, prev_lng, poi.lat, poi.lng, from_poi_id=prev_id, to_poi_id=poi.id
+        )
+        secs = segment_walk_seconds(
+            prev_lat, prev_lng, poi.lat, poi.lng, from_poi_id=prev_id, to_poi_id=poi.id
+        )
         transits.append(
             TransitSegment(
                 from_poi_id=prev_id,
@@ -172,8 +236,12 @@ def summarise_route(
         prev_id = poi.id
 
     if round_trip and ordered:
-        d = haversine_m(prev_lat, prev_lng, start_lat, start_lng)
-        secs = pace_corrected_walk_seconds(d)
+        d = segment_walk_distance_m(
+            prev_lat, prev_lng, start_lat, start_lng, from_poi_id=prev_id, to_poi_id=None
+        )
+        secs = segment_walk_seconds(
+            prev_lat, prev_lng, start_lat, start_lng, from_poi_id=prev_id, to_poi_id=None
+        )
         transits.append(
             TransitSegment(
                 from_poi_id=prev_id,

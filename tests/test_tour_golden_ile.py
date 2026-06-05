@@ -112,10 +112,12 @@ def _generated_beat_ids(snapshot, fixture):
 
 
 @pytest.mark.xfail(
-    reason="pre-existing corpus drift as of 2026-06-03 — beat UUIDs in golden "
-    "list predate Phase 5-7 re-extraction. Algorithm picks correct POIs but "
-    "UUIDs don't match. Refresh planned in Scope 1 Task 1.5. See "
-    "specs/2026-06-02-tour-build-harness/known-failing-tests.md",
+    reason="Corpus UUID drift: beats were re-extracted (Phase 5-7) so pinned "
+    "expected_beat_ids no longer match; the algorithm still selects the correct "
+    "POIs and the spine/validation/anchor golden assertions pass. An honest "
+    "refresh requires remapping the empirical Tour-2 roster to current beat "
+    "UUIDs (corpus-hygiene task), and is independent of the OSRM routing work "
+    "in this scope. Tracked in known-failing-tests.md.",
     strict=False,
 )
 def test_ile_golden_overlap(snapshot, fixture):

@@ -70,6 +70,56 @@ make db-up              # Restart with matching credentials
 
 ---
 
+## OSRM Routing
+
+### OSRM first-run setup
+
+`make osrm-up` needs a one-time graph prep before it works — the server refuses
+to start without the customized `.osrm` graph files. The orchestrator already ran
+this for Paris; reproduce it as follows (Île-de-France foot profile, MLD pipeline):
+
+```bash
+# 1. Download the OSM extract (~318MB) — pinned date so reruns are reproducible:
+mkdir -p data/osrm
+curl -fSL -o data/osrm/ile-de-france.osm.pbf \
+  https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf   # extract date used: 2026-06-03
+
+# 2. One-time prep (extract → partition → customize) with the foot profile:
+docker run --rm -v "${PWD}/data/osrm:/data" osrm/osrm-backend osrm-extract   -p /opt/foot.lua /data/ile-de-france.osm.pbf
+docker run --rm -v "${PWD}/data/osrm:/data" osrm/osrm-backend osrm-partition  /data/ile-de-france.osrm
+docker run --rm -v "${PWD}/data/osrm:/data" osrm/osrm-backend osrm-customize  /data/ile-de-france.osrm
+
+# 3. Start the server + build the Paris matrix:
+make osrm-up
+make matrix-build paris
+```
+
+The `data/osrm/` graph files and `data/paris/distance_matrix.sqlite` are large
+build artifacts — generated, not committed. The matrix is already covered by the
+`*.sqlite` rule in `.gitignore`; the `data/osrm/` graph files (`.osm.pbf`,
+`.osrm.*`) are not yet ignored, so add a `data/osrm/` rule before committing.
+
+### `make osrm-up` reports "did not become healthy" (HTTP 403 on localhost)
+
+Symptom: `make osrm-up` reports the server "did not become healthy" even though
+`docker logs ondoway-osrm` shows `running and waiting for requests`.
+
+Cause: the corporate proxy intercepts the hostname `localhost` and returns
+HTTP 403, but passes the literal loopback IP `127.0.0.1`. A `curl http://localhost:5000`
+healthcheck therefore 403s while the container is perfectly healthy.
+
+Fix: always probe `127.0.0.1`, never `localhost` (the make targets already do),
+and set:
+
+```bash
+export NO_PROXY=localhost,127.0.0.1
+```
+
+The Python distance client (`src/tour/distance.py`) builds its httpx client with
+`trust_env=False`, so it never consults the proxy regardless of env.
+
+---
+
 ## Python & Dependencies
 
 ### "command not found: python3" or Python version too old

@@ -1,0 +1,90 @@
+tests/test_tour_density.py:88:    assert math.isclose(envelope_radius_m(60, round_trip=False), expected_one_way, rel_tol=1e-6)
+tests/test_tour_density.py:89:    assert math.isclose(envelope_radius_m(60, round_trip=True), expected_one_way / 2, rel_tol=1e-6)
+tests/test_tour_density.py:118:    assert a.anchor_candidate_count >= 4
+tests/test_tour_density.py:119:    assert a.cluster_compactness < 0.6
+tests/test_tour_density.py:132:    assert a.fill_ratio == 0.0
+tests/test_tour_density.py:133:    assert a.anchor_candidate_count == 0
+tests/test_tour_density.py:143:    assert a.anchor_candidate_count == 0
+tests/test_tour_density.py:144:    assert a.fill_ratio == 0.0
+tests/test_tour_density.py:158:    assert a.reachable_poi_count == 0
+tests/test_tour_density.py:159:    assert a.anchor_candidate_count == 0
+tests/test_tour_density.py:203:    assert math.isclose(round_trip, one_way / 2.0, rel_tol=1e-9)
+tests/test_tour_density.py:262:    assert a.reachable_poi_count == 0
+tests/test_tour_density.py:263:    assert a.anchor_candidate_count == 0
+tests/test_tour_density.py:277:    assert a.reachable_poi_count == 4
+tests/test_tour_density.py:278:    assert a.anchor_candidate_count == 4
+tests/test_tour_density.py:294:    assert a.audio_capacity_seconds == 400
+tests/test_tour_density.py:307:    assert a.cluster_compactness == 0.0
+tests/test_tour_density.py:308:    assert a.anchor_candidate_count == 1
+tests/test_tour_density.py:340:    assert a.cluster_compactness > 0.5  # spread across most of the envelope
+tests/test_tour_density.py:342:    assert a.status != "GREEN" or a.cluster_compactness <= 0.6
+tests/test_tour_density.py:375:    assert a.fill_ratio > 1.0
+tests/test_tour_density.py:376:    assert a.anchor_candidate_count >= 4
+tests/test_tour_density.py:404:    assert a.fill_ratio < 0.5
+tests/test_tour_density.py:405:    assert a.anchor_candidate_count == 4
+tests/test_tour_beat_select.py:262:    assert len(plan.beats) == 8
+tests/test_tour_beat_select.py:272:    assert len(plan.beats) == 3
+tests/test_tour_beat_select.py:279:    assert len(plan.beats) == 1
+tests/test_tour_beat_select.py:507:    assert B8_JACCARD_THRESHOLD == 0.8
+tests/test_tour_beat_select.py:589:    assert len(ids) == 1, f"Expected dedup; got both {ids}"
+tests/test_tour_beat_select.py:613:    assert len(ids) == 1, f"Expected dedup; got both {ids}"
+tests/test_tour_beat_select.py:650:    assert len(ids) == 1, f"Expected dedup; got both {ids}"
+tests/test_tour_beat_select.py:783:    assert find_area_orientation_beat(seq, route, start_idx=0) is None
+tests/test_tour_beat_select.py:811:    assert find_area_orientation_beat(seq, route, start_idx=0) is None
+tests/test_tour_beat_select.py:956:    assert len(plan.beats) == 4
+tests/test_tour_beat_select.py:1082:    assert find_area_orientation_beat(seq, route, start_idx=0) is None
+tests/test_tour_beat_select.py:1198:    assert HOIST_PROXIMITY_M == 100.0
+tests/test_tour_generation.py:85:            from_poi_id=None if i == 0 else pois[i - 1].id,
+tests/test_tour_generation.py:163:    cold_open_ids = [s.source_id for s in script.script if s.stop_idx == 0][:3]
+tests/test_tour_generation.py:169:    assert body_count >= 1
+tests/test_tour_generation.py:224:    assert orient_count == 1
+tests/test_tour_generation.py:316:    assert len(nav_sentences) == 1
+tests/test_tour_generation.py:423:    assert len(nav_sentences) == 1
+tests/test_tour_generation.py:425:    assert nav_sentences[0].stop_idx == 1
+tests/test_tour_generation.py:635:    assert script.lens_coverage["famous_residents"] == 3
+tests/test_tour_generation.py:636:    assert script.lens_coverage["literary_heritage"] == 1
+tests/test_tour_generation.py:714:    cold_open = [s for s in script.script if s.stop_idx == 0]
+tests/test_tour_generation.py:742:    cold_open = [s for s in script.script if s.stop_idx == 0]
+tests/test_tour_generation.py:767:    cold_open = [s for s in script.script if s.stop_idx == 0]
+tests/test_tour_generation.py:795:    cold_open_texts = [s.text for s in script.script if s.stop_idx == 0]
+tests/test_tour_routing.py:31:    assert haversine_m(48.85, 2.35, 48.85, 2.35) == 0.0
+tests/test_tour_routing.py:37:    assert math.isclose(a, b, abs_tol=1e-6)
+tests/test_tour_routing.py:43:    assert 1107 < d < 1117
+tests/test_tour_routing.py:49:    assert 1100 < d < 1300
+tests/test_tour_routing.py:58:    assert pace_corrected_walk_seconds(0) == 0
+tests/test_tour_routing.py:62:    assert pace_corrected_walk_seconds(-100) == 0
+tests/test_tour_routing.py:68:    assert secs == 1620
+tests/test_tour_routing.py:73:    assert pace_corrected_walk_seconds(500) == 810
+tests/test_tour_routing.py:77:    assert PACE_KMH == 3.0
+tests/test_tour_routing.py:78:    assert HAVERSINE_CORRECTION == 1.35
+tests/test_tour_routing.py:79:    assert ERR_SHORT == 0.83
+tests/test_tour_routing.py:90:    assert err_short_total_seconds(60) == 2988
+tests/test_tour_routing.py:95:    assert walk_budget_seconds(60) == 1195
+tests/test_tour_routing.py:100:    assert target_audio_seconds(60) == 1793
+tests/test_tour_routing.py:106:    assert math.isclose(rt, one_way / 2, rel_tol=1e-9)
+tests/test_tour_routing.py:112:    assert 730 < r < 745
+tests/test_tour_routing.py:116:    assert envelope_radius_m(0, round_trip=False) == 0.0
+tests/test_tour_routing.py:125:    assert compute_dwell_seconds(5) == 300
+tests/test_tour_routing.py:126:    assert compute_dwell_seconds(4) == 300
+tests/test_tour_routing.py:130:    assert compute_dwell_seconds(3) == 150
+tests/test_tour_routing.py:134:    assert compute_dwell_seconds(1) == 0
+tests/test_tour_routing.py:138:    assert compute_dwell_seconds(99) == 0
+tests/test_tour_routing.py:156:    assert r.total_walk_seconds == 0
+tests/test_tour_routing.py:169:    assert len(r.transits) == 1
+tests/test_tour_routing.py:186:    assert len(r.transits) == 3
+tests/test_tour_routing.py:203:    assert idx == 2
+tests/test_tour_routing.py:204:    assert extra > 0
+tests/test_tour_routing.py:215:    assert idx == 0
+tests/test_tour_routing.py:216:    assert extra > 0
+tests/test_tour_selection.py:238:    assert math.isclose(s_in / s_out, AREA_ALIGNMENT_SPINE / AREA_ALIGNMENT_OTHER, rel_tol=1e-9)
+tests/test_tour_selection.py:266:    assert math.isclose(s / s0, 1.5, rel_tol=1e-9)
+tests/test_tour_selection.py:328:    assert route.total_walk_seconds <= 1195 + 5  # cushion for integer rounding
+tests/test_tour_selection.py:449:    assert 0.5 <= route.tourability.fill_ratio < 1.0
+tests/test_tour_selection.py:484:    assert excinfo.value.assessment.reachable_poi_count == 0
+tests/test_tour_selection.py:503:    assert radius_m > 1000  # sanity: 90-min one-way envelope is roomy
+tests/test_tour_selection.py:550:    assert haversine_m(*start, far_anchor.lat, far_anchor.lng) >= 0.5 * radius_m
+tests/test_tour_selection.py:669:    assert spine == "Island B", f"ratio 30/16=1.875 < 2x → island should win, got {spine}"
+tests/test_tour_selection.py:687:    assert spine == "District A", f"ratio 60/20=3x ≥ 2x → district wins, got {spine}"
+tests/test_tour_selection.py:839:    assert len(route.pois) <= 6  # max_anchors = 60 // 10 = 6
+tests/test_tour_selection.py:940:    assert len(route.pois) >= 6, (
+tests/test_tour_selection.py:1037:    assert DEMOTION_PROXIMITY_M == 100.0

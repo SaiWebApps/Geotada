@@ -202,6 +202,10 @@ docker-compose.override.yml
 *.sqlite
 *.sqlite3
 
+# OSRM routing build artifacts (OSM extract + prepared graph — large, regenerable
+# via the first-run prep in Docs/Markdown Docs/TROUBLESHOOTING.md)
+data/osrm/
+
 # ====================
 # Logs
 # ====================

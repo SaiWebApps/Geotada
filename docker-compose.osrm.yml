@@ -1,0 +1,22 @@
+# Self-hosted OSRM pedestrian routing engine for the tour-builder distance layer.
+#
+# Kept SEPARATE from the Neo4j compose (docker-compose.yml) so OSRM can be
+# started/stopped independently of the database.
+#
+# SECURITY (§12): bound to 127.0.0.1 only — never exposed on 0.0.0.0.
+#
+# First-run prep (osrm-extract / -partition / -customize) is a one-time step
+# documented in Docs/Markdown Docs/TROUBLESHOOTING.md and driven by the Makefile.
+# This service only runs the already-prepared routing server.
+services:
+  osrm:
+    image: osrm/osrm-backend:latest
+    container_name: ondoway-osrm
+    # --max-table-size raised so the matrix builder can request a 371-source
+    # /table in batched calls (default cap is 100 coordinates).
+    command: osrm-routed --algorithm mld --max-table-size 1000 /data/ile-de-france.osrm
+    ports:
+      - "127.0.0.1:5000:5000"
+    volumes:
+      - ./data/osrm:/data
+    restart: unless-stopped
