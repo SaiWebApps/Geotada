@@ -155,6 +155,57 @@
         "Run /poi-geocode paris --missing-only to resolve coordinates for 4 new POIs",
         "Run /fact-check paris on the new beats"
       ]
+    },
+    {
+      "id": 4,
+      "completed_at": "2026-06-02",
+      "pois": [
+        "Palais-Royal",
+        "Les Halles",
+        "Champ de Mars",
+        "Place des Vosges",
+        "Trocadero"
+      ],
+      "beats_per_poi": {
+        "Palais-Royal": 5,
+        "Les Halles": 4,
+        "Champ de Mars": 5,
+        "Place des Vosges": 3,
+        "Trocadero": 6
+      },
+      "total_beats": 23,
+      "style_note": "Place des Vosges already had 65 beats from books — only 3 lightly-additive wiki beats. Trocadero focus on Palais de Chaillot story-arcs (1948 UDHR, 1940 Hitler photo, NATO HQ, Cavaillé-Coll organ, aquarium re-open 2006). Les Halles centred on the demolition→trou→Forum→Canopée arc. Champ de Mars added 2024 Olympic Eiffel Tower Stadium + Grand Palais Éphémère.",
+      "new_pois_created": [],
+      "follow_up_required": [
+        "Run /fact-check paris on the new beats (status defaulted to unverified)"
+      ]
+    },
+    {
+      "id": 5,
+      "completed_at": "2026-06-02",
+      "pois": [
+        "Luxembourg Gardens",
+        "Palais du Luxembourg",
+        "Institut de France",
+        "Place des Abbesses",
+        "Rue Cler"
+      ],
+      "beats_per_poi": {
+        "Luxembourg Gardens": 5,
+        "Palais du Luxembourg": 3,
+        "Institut de France": 3,
+        "Place des Abbesses": 4,
+        "Rue Cler": 1
+      },
+      "total_beats": 16,
+      "style_note": "Rue Cler already had 39 beats from books — only 1 wiki beat added (General Cler / Battle of Magenta) from FR wiki, since no EN wiki article exists. Place des Abbesses sourced from two articles: Abbesses station (Guimard édicule transferred from Hôtel de Ville 1974 + Nord-Sud anachronism, deepest until 2025) AND Saint-Jean de Montmartre (first reinforced concrete church in France, 1898 lawsuit + garden demos). Luxembourg Gardens story arcs: Medici Fountain journey, Carpeaux Four Continents fountain, first public museum 1694. Palais du Luxembourg: Chalgrin destroys Rubens gallery 1799-1805, Delacroix Inferno library ceiling, Choltitz surrender + first Provisional Assembly Nov 7 1944. Institut de France: Mazarin inscription, five académies, President as Protector.",
+      "new_pois_created": [],
+      "sub_location_candidates_for_promotion": [
+        "Saint-Jean de Montmartre (used as sub_location of Place des Abbesses; could be promoted to standalone tier-3 POI if desired)"
+      ],
+      "follow_up_required": [
+        "Run /fact-check paris on the new beats (status defaulted to unverified)"
+      ]
     }
   ],
   "already_done_before_queue": [

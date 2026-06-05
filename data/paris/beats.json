@@ -94155,5 +94155,2494 @@
       "generated_at": "2026-06-02T02:43:06+00:00",
       "city_name": "paris"
     }
+  },
+  {
+    "beat_id": "paris_palais_royal_hidden_history_wikipedia_noon_cannon_stolen_returned",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "noon_cannon_stolen_returned",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_royal-rev-1355014282",
+    "sub_location": "jardin-du-palais-royal",
+    "trigger_address": null,
+    "script_body": "A small cannon was installed in the bowling green at the north end of the garden in 1786. Each day at noon, a magnifying lens caught the sun's noontime position and lit the fuse — a tiny astronomical clock that fired itself. For two decades, between 1891 and 1911, this cannon shot was how official noontime was defined across France. In 1998 someone stole it. Four years later, in 2002, it was recovered and put back in its place. It still fires.",
+    "script_body_hash": "ea8f007ed76bbd54f9d500f1c591b3d09477be3fc18e682ffb58f29b01aee187",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "noon cannon",
+      "Palais-Royal Garden"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "noon cannon arc",
+    "physical_cues": [
+      {
+        "cue": "The noon cannon in the bowling green at the north end of the garden",
+        "direction": "north",
+        "feature_type": "object"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Cannon installed 1786 in bowling green at north end of garden",
+      "Magnifying lens at sun's noontime position lit gunpowder",
+      "Between 1891 and 1911, the official noontime in France was defined by the cannon shot",
+      "Stolen in 1998, recovered and returned in 2002"
+    ],
+    "source_passage": "A small cannon was installed in the middle of the bowling green at the north end of the garden in 1786. It fired a shot each day at noon, regulated by an ingenious mechanism that used a magnifying lens pointed at the sun's noontime position to light the match which fired the gunpowder. Between 1891 and 1911, the official noontime in France was defined by the cannon shot. It was stolen in 1998, but recovered and returned to its place in 2002.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Palais-Royal",
+      "url": "https://en.wikipedia.org/wiki/Palais-Royal?oldid=1355014282",
+      "revision_id": "1355014282",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Gardens"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_social_change_wikipedia_commune_fire_state_council_inherits",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "commune_fire_state_council_inherits",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_royal-rev-1355014282",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "On May 24, 1871, in the final days of the Paris Commune, the Communards set the palace on fire. As a symbol of aristocracy it was deliberately torched — but it suffered less damage than other government buildings. That accident of survival shaped its second life: the Conseil d'État, France's supreme administrative court created by Napoleon in 1799, moved in. It has been here ever since, installed in 1875.",
+    "script_body_hash": "7e0712bb317ea5bbee171076031fa2a4d89bd9a40bbd75a82f09577f94a8132b",
+    "beat_length_class": "mid",
+    "duration_sec": 38,
+    "kid_friendly": "yes",
+    "entities": [
+      "Paris Commune",
+      "Conseil d'État",
+      "Napoleon"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "grounded",
+    "subject_tag": "commune fire reuse",
+    "physical_cues": [
+      {
+        "cue": "The wing now occupied by the Conseil d'État, facing Place du Palais-Royal",
+        "direction": "here",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "On May 24, 1871, Communards set the palace on fire in final days of Paris Commune",
+      "Suffered less damage than other government buildings",
+      "Became permanent home of Conseil d'État, created by Napoleon in 1799",
+      "Conseil installed in Palais-Royal in 1875"
+    ],
+    "source_passage": "During the final days of Paris Commune, on May 24, 1871, the palace, seen as a symbol of aristocracy, was set afire by the Communards, but suffered less damage than other government buildings. As a result, it became the temporary (and later permanent) home of several state institutions, including the Conseil d'Etat, or State Council. The Council of State, created by Napoleon in 1799, inherited many of the functions of the earlier Royal Council, acting both as a consultant to the government and a kind of Supreme Court. It was installed in the Palais-Royal in 1875.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Palais-Royal",
+      "url": "https://en.wikipedia.org/wiki/Palais-Royal?oldid=1355014282",
+      "revision_id": "1355014282",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Council of State"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_parks_gardens_wikipedia_rudkin_salons_de_verdure_1992",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "parent_poi": null,
+    "lens": "parks_gardens",
+    "topic_slug": "rudkin_salons_de_verdure_1992",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_royal-rev-1355014282",
+    "sub_location": "jardin-du-palais-royal",
+    "trigger_address": null,
+    "script_body": "The garden you walk through has been remade many times — by Le Nôtre in 1674, by his nephew Desgots in 1730, then by Charles X who widened the central basin to twenty-five meters in 1817. The most recent hand is Mark Rudkin's, in 1992. He laid out the salons de verdure — outdoor rooms of seasonal flowers — and enclosed each one with grills covered in climbing plants. The garden itself had been classified a French historical monument back in 1920; the rest of the Palais-Royal followed only in 1994.",
+    "script_body_hash": "0a1f49cb355bea236ad31172b639ce65540b1694c9334e09728e506d759beb4a",
+    "beat_length_class": "mid",
+    "duration_sec": 48,
+    "kid_friendly": "yes",
+    "entities": [
+      "Mark Rudkin",
+      "André Le Nôtre",
+      "Claude Desgots",
+      "Charles X"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "scene_setter",
+    "beat_type": "architectural_detail",
+    "emotional_register": "contemplative",
+    "subject_tag": "rudkin garden 1992",
+    "physical_cues": [
+      {
+        "cue": "The 'Salons of greenery' — seasonal flower beds enclosed by grills with climbing plants",
+        "direction": "here",
+        "feature_type": "garden"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Garden redesigned by Le Nôtre 1674, Desgots 1730",
+      "Main water basin enlarged to 25 m diameter under Charles X in 1817",
+      "In 1992 Mark Rudkin created 'Salons of greenery' with seasonal flowers enclosed by grills covered with climbing plants",
+      "Garden classified historical monument 1920, rest of Palais-Royal 1994"
+    ],
+    "source_passage": "The garden was redesigned several times, notably in 1674 by André Le Nôtre, and his nephew Claude Desgots in 1730. In 1817, under Charles X of France, the main water basin was enlarged to twenty-five meters in diameter, and the longitudinal parterres were remade in 1824. In 1992 the landscape gardener Mark Rudkin created new lawns and flower beds, termed \"Salons of greenery\", with seasonal flowers enclosed by grills covered with climbing plants. The garden was classified as a French historical monument in 1920, followed by the rest of the Palais-Royal in 1994.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Palais-Royal",
+      "url": "https://en.wikipedia.org/wiki/Palais-Royal?oldid=1355014282",
+      "revision_id": "1355014282",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Gardens"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_social_change_wikipedia_three_state_institutions_today",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "three_state_institutions_today",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_royal-rev-1355014282",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Three of the French Republic's quiet powers now share these walls. The Ministry of Culture occupies one wing. The Conseil d'État — the country's top administrative court — sits behind that pediment. And the Constitutional Council, the body that rules on whether laws conform to the Constitution, is tucked just behind the Salle Richelieu of the Comédie-Française. The arcaded garden in the middle is still a public park; its shop-lined galleries are still open. The state and the city stroll through each other here.",
+    "script_body_hash": "c00240e98f56f58fd6c18786b5c6f8aa415efca093fe87a27cc632580c93cecb",
+    "beat_length_class": "mid",
+    "duration_sec": 46,
+    "kid_friendly": "yes",
+    "entities": [
+      "Ministry of Culture",
+      "Conseil d'État",
+      "Constitutional Council",
+      "Comédie-Française"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "grounded",
+    "subject_tag": "three institutions",
+    "physical_cues": [
+      {
+        "cue": "The arcaded Jardin du Palais-Royal between the state institutions",
+        "direction": "here",
+        "feature_type": "garden"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Palais-Royal now seat of Ministry of Culture, Conseil d'État, Constitutional Council",
+      "Central Jardin du Palais-Royal is a public park with shop-lined arcades",
+      "Constitutional Council offices behind the Salle Richelieu of the Comédie-Française"
+    ],
+    "source_passage": "The Palais-Royal is now the seat of the Ministry of Culture, the Conseil d'État and the Constitutional Council. The central Palais-Royal Garden (Jardin du Palais-Royal) serves as a public park; its arcade houses shops. On the west side of the Council building is Place Colette, and the Salle Richelieu of the Comédie Française. Behind that are the offices of the Constitutional Council.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Palais-Royal",
+      "url": "https://en.wikipedia.org/wiki/Palais-Royal?oldid=1355014282",
+      "revision_id": "1355014282",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Today"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_royal_visual_art_wikipedia_salon_jerome_culture_minister",
+    "city_name": "paris",
+    "poi_name": "Palais-Royal",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "salon_jerome_culture_minister",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_royal-rev-1355014282",
+    "sub_location": "salon-jerome",
+    "trigger_address": null,
+    "script_body": "The office of France's Minister of Culture is upstairs, in an apartment originally built in 1820 for the Duke and Duchess of Orléans. In the 1850s, Napoleon's younger brother Jérôme moved in. The gilded salon that bears his name still has the sculpture, the torchères, and the decoration that were originally installed in the throne room of the Tuileries Palace before that palace burned in the Commune. Every culture minister since has signed papers under those salvaged thrones.",
+    "script_body_hash": "be4ef78b7c1a384945f8f9a1bb51c1990afd2cc77fe8792b2ba96e4779f2dee7",
+    "beat_length_class": "mid",
+    "duration_sec": 44,
+    "kid_friendly": "yes",
+    "entities": [
+      "Minister of Culture",
+      "Jérôme Bonaparte",
+      "Tuileries Palace"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "salon jerome",
+    "physical_cues": [
+      {
+        "cue": "The gilded Salon Jérôme in the Ministry of Culture wing — sculpture and torchères from the lost Tuileries throne room",
+        "direction": "up",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Minister of Culture's office originally built 1820 for Duke and Duchess of Orléans",
+      "Jérôme Bonaparte (Napoleon's younger brother) occupied apartment in the 1850s",
+      "Gilded Salon Jérôme features sculpture, torchères, and decoration originally from the throne room of the Tuileries Palace"
+    ],
+    "source_passage": "The office of the French Minister of Culture is located in the Palais-Royal, in an apartment originally built for the Duke and Duchess of Orleans in 1820, and later occupied by Jérôme Bonaparte in the 1850s. The gilded and highly decorated salon of Jérôme, the younger brother of Napoleon, features sculpture, torchieres and other decoration originally in the throne room of the Tuileries Palace.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Palais-Royal",
+      "url": "https://en.wikipedia.org/wiki/Palais-Royal?oldid=1355014282",
+      "revision_id": "1355014282",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Ministry of Culture"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_historic_markets_wikipedia_trou_des_halles_1971_1977",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "parent_poi": null,
+    "lens": "historic_markets",
+    "topic_slug": "trou_des_halles_1971_1977",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "les_halles-rev-1348162214",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The market closed on January 12, 1973. What it left behind was a vast open pit — an eyesore Parisians called le trou des Halles, the hole of Les Halles. For four years the city's belly was nothing but excavation. Underground, engineers were threading the Châtelet–Les Halles RER station into the void, connecting three express lines that reached south, east, and west. The station was completed in 1977. The hole was finally covered over by the Forum, which opened on September 4, 1979.",
+    "script_body_hash": "308a955ef926b62b5c74587bf22c1f7df13a406bbfdb69e3d1f257044f5653ca",
+    "beat_length_class": "anchor",
+    "duration_sec": 52,
+    "kid_friendly": "yes",
+    "entities": [
+      "Les Halles",
+      "Châtelet–Les Halles RER",
+      "Forum des Halles"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "trou des halles",
+    "physical_cues": [
+      {
+        "cue": "The sunken Forum entrance and the canopy roof — what fills the old market pit",
+        "direction": "down",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Market last operated 12 January 1973",
+      "Site became 'an enormous open pit, nicknamed le trou des Halles (the hole of Les Halles), regarded as an eyesore'",
+      "Châtelet–Les Halles RER station designed to connect three express lines south, east, west",
+      "Station completed 1977",
+      "Forum des Halles opened September 4, 1979"
+    ],
+    "source_passage": "Les Halles ( ; 'The Halls') was Paris's central fresh food market. It last operated on 12 January 1973 and was replaced by an underground shopping centre and a park.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Les Halles",
+      "url": "https://en.wikipedia.org/wiki/Les_Halles?oldid=1348162214",
+      "revision_id": "1348162214",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Demolition and replacement"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_social_change_wikipedia_delanoe_soulless_concrete_jungle",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "delanoe_soulless_concrete_jungle",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "les_halles-rev-1348162214",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The Forum that replaced the market was almost universally hated. The architecture critic Oliver Wainwright called the demolition of Baltard's pavilions one of the worst acts of urban vandalism of the century. The park functioned as a magnet for drug dealing. In 2002, the new mayor Bertrand Delanoë announced the City of Paris would begin public consultations regarding the remodeling of the area. He called Les Halles, in so many words, a soulless, architecturally bombastic concrete jungle. That was the formal announcement that the Forum had to go.",
+    "script_body_hash": "597484825b02ab6053393d93e9648e3de5f2bcb9785607656e766b45237ef113",
+    "beat_length_class": "anchor",
+    "duration_sec": 50,
+    "kid_friendly": "yes",
+    "entities": [
+      "Bertrand Delanoë",
+      "Oliver Wainwright",
+      "Forum des Halles"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "climax",
+    "beat_type": "character_story",
+    "emotional_register": "wry",
+    "subject_tag": "delanoe critique",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Mayor Bertrand Delanoë announced in 2002 the City of Paris would begin public consultations regarding the remodeling of the area",
+      "Delanoë called Les Halles 'a soulless, architecturally bombastic concrete jungle'"
+    ],
+    "source_passage": "Against that background, in 2002 Mayor Bertrand Delanoë announced that the City of Paris would begin public consultations regarding the remodeling of the area, calling Les Halles \"a soulless, architecturally bombastic concrete jungle\".",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Les Halles",
+      "url": "https://en.wikipedia.org/wiki/Les_Halles?oldid=1348162214",
+      "revision_id": "1348162214",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "21st-century redesign"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_modern_design_wikipedia_canopee_berger_anziutti_2018",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "parent_poi": null,
+    "lens": "modern_design",
+    "topic_slug": "canopee_berger_anziutti_2018",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "les_halles-rev-1348162214",
+    "sub_location": "canopee",
+    "trigger_address": null,
+    "script_body": "Two competitions decided what to do with the carcass. For the gardens, the city chose David Mangin over Jean Nouvel, Winy Maas, and Rem Koolhaas — he wanted to flatten the 1980s mounds and replace them with east–west promenades and a central lawn. For the Forum itself, in 2007, the city chose Patrick Berger and Jacques Anziutti. Their design was a large undulating glass canopy — a single billowing roof over the entire redesigned Forum. Construction finished in 2018.",
+    "script_body_hash": "d56c5225888226e2ced5de5e37d6fe0e2cf62bc91d3fbc871066264d34d6666b",
+    "beat_length_class": "anchor",
+    "duration_sec": 48,
+    "kid_friendly": "yes",
+    "entities": [
+      "David Mangin",
+      "Patrick Berger",
+      "Jacques Anziutti",
+      "Jean Nouvel",
+      "Winy Maas",
+      "Rem Koolhaas"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "grounded",
+    "subject_tag": "canopee selection",
+    "physical_cues": [
+      {
+        "cue": "The undulating glass canopy roof over the Forum",
+        "direction": "up",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Design competition included Jean Nouvel, Winy Maas, David Mangin, Rem Koolhaas",
+      "Mangin selected for gardens (east-west promenades, central lawn)",
+      "Patrick Berger and Jacques Anziutti chosen for Forum redesign in 2007",
+      "Design included large undulating glass canopy",
+      "Construction finished 2018"
+    ],
+    "source_passage": "A design competition for the Forum and gardens was held, with entries from Jean Nouvel, Winy Maas, David Mangin, and Rem Koolhaas. Mangin's design for the gardens, which proposed replacing the landscaped mounds and paths of the 1980s design with a simplified pattern of east-west pedestrian promenades and a large central lawn, was selected. Another competition was held for the redesign of the Forum. Ten teams submitted plans, and the proposal by Patrick Berger and Jacques Anziutti was selected in 2007. Their design included a large undulating glass canopy covering the redesigned Forum. construction finished in 2018.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Les Halles",
+      "url": "https://en.wikipedia.org/wiki/Les_Halles?oldid=1348162214",
+      "revision_id": "1348162214",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "21st-century redesign"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_les_halles_historic_markets_wikipedia_westfield_busiest_mall_france",
+    "city_name": "paris",
+    "poi_name": "Les Halles",
+    "parent_poi": null,
+    "lens": "historic_markets",
+    "topic_slug": "westfield_busiest_mall_france",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "les_halles-rev-1348162214",
+    "sub_location": "westfield-forum-des-halles",
+    "trigger_address": null,
+    "script_body": "What you stand on top of now is the Westfield Forum des Halles. About fifty million people come through it every year, which makes it — as of 2019 — the busiest shopping mall in France. The market that once fed Paris from this spot now sells everything else. And one floor below the boutiques, you can step straight onto a train: the Forum sits directly above Châtelet–Les Halles, Paris's busiest station and the busiest in all of Europe.",
+    "script_body_hash": "69bec61175341ad87935c9228dcd61ce3dbc0d32512b9d7f9f3d24966597fd62",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "Westfield Forum des Halles",
+      "Châtelet–Les Halles"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "grounded",
+    "subject_tag": "westfield busiest",
+    "physical_cues": [
+      {
+        "cue": "The Westfield Forum entrance into the underground complex",
+        "direction": "down",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Westfield Forum des Halles attracts approximately 50 million annual visitors",
+      "Busiest shopping mall in France as of 2019",
+      "Directly connected to the massive RER and métro transit hub of Châtelet–Les Halles",
+      "Châtelet–Les Halles is Paris's busiest station"
+    ],
+    "source_passage": "The mall sees around 50 million visitors every year, making it the busiest in France as of 2019. It is directly connected to the massive RER and métro transit hub of Châtelet-Les Halles, Paris's busiest station.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Les Halles",
+      "url": "https://en.wikipedia.org/wiki/Les_Halles?oldid=1348162214",
+      "revision_id": "1348162214",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Lead"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_champ_de_mars_science_tech_wikipedia_first_hydrogen_balloon_1783",
+    "city_name": "paris",
+    "poi_name": "Champ de Mars",
+    "parent_poi": null,
+    "lens": "science_tech",
+    "topic_slug": "first_hydrogen_balloon_1783",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "champ_de_mars-rev-1322668310",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "On August 27, 1783, before any Eiffel Tower, before any Exposition, this lawn launched the world's first hydrogen-filled balloon. Jacques Charles and the Robert brothers had figured out how to fill a varnished silk envelope with hydrogen gas — lighter than the hot air Montgolfier had been using just months earlier. The crowd that gathered here watched it lift off. It drifted northeast for about forty-five minutes, came down in a field outside Paris, and was torn to pieces by terrified peasants who thought it was a demon.",
+    "script_body_hash": "6abd1f3523a3fbf8157e5d98906dac137c8578affe3c30536f59030048bd0fbf",
+    "beat_length_class": "mid",
+    "duration_sec": 48,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jacques Charles",
+      "Robert brothers"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "wonder",
+    "subject_tag": "first hydrogen balloon",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Jacques Charles and the Robert brothers launched the world's first hydrogen-filled balloon from the Champ-de-Mars on 27 August 1783"
+    ],
+    "source_passage": "Jacques Charles and the Robert brothers launched the world's first hydrogen-filled balloon from the Champ-de-Mars on 27 August 1783.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Champ de Mars",
+      "url": "https://en.wikipedia.org/wiki/Champ_de_Mars?oldid=1322668310",
+      "revision_id": "1322668310",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Pre-Revolutionary period"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_champ_de_mars_social_change_wikipedia_first_federation_day_1790",
+    "city_name": "paris",
+    "poi_name": "Champ de Mars",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "first_federation_day_1790",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "champ_de_mars-rev-1322668310",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "July 14, 1790 — exactly one year after the storming of the Bastille — three hundred thousand people gathered on this lawn for the Fête de la Fédération. It was the first Federation Day, the first time the Revolution staged itself as a national festival. Today every French town fires fireworks on July 14 because of what happened here. The next year, on July 17, 1791, things turned: troops opened fire on a republican petition crowd on this same lawn — the massacre on the Champ de Mars. And the man who had been the first mayor of Paris, Jean Sylvain Bailly, was guillotined on this ground on November 12, 1793.",
+    "script_body_hash": "1f12dbf7929b52c2b9a3fb5b001a7f0f4c3359d428894143329b9b35e75d06c6",
+    "beat_length_class": "anchor",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Fête de la Fédération",
+      "Jean Sylvain Bailly"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "dramatic",
+    "subject_tag": "first federation day",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "On 14 July 1790 the first 'Federation Day' celebration (fête de la Fédération), now known as Bastille Day, was held on the Champ de Mars, exactly one year after the storming of the prison",
+      "On 17 July 1791 the massacre on the Champ de Mars took place",
+      "Jean Sylvain Bailly, first mayor of Paris, was guillotined there on 12 November 1793"
+    ],
+    "source_passage": "On 14 July 1790 the first \"Federation Day\" celebration (fête de la Fédération), now known as Bastille Day, was held on the Champ de Mars, exactly one year after the storming of the prison. The following year, on 17 July 1791, the massacre on the Champ de Mars took place. Jean Sylvain Bailly, the first mayor of Paris, became a victim of his own revolution, and was guillotined there on 12 November 1793.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Champ de Mars",
+      "url": "https://en.wikipedia.org/wiki/Champ_de_Mars?oldid=1322668310",
+      "revision_id": "1322668310",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Revolutionary period"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_champ_de_mars_modern_design_wikipedia_grand_palais_ephemere_2021",
+    "city_name": "paris",
+    "poi_name": "Champ de Mars",
+    "parent_poi": null,
+    "lens": "modern_design",
+    "topic_slug": "grand_palais_ephemere_2021",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "champ_de_mars-rev-1322668310",
+    "sub_location": "grand-palais-ephemere",
+    "trigger_address": null,
+    "script_body": "At the southern end of this lawn, behind you toward the École Militaire, stood the Grand Palais Éphémère — built in 2021 specifically to host Olympic events and conventions while the real Grand Palais across the river was being renovated. A temporary nave under a wood-and-metal vault, dropped onto the parade ground for a few years and then taken away again. The 2024 Games used it for judo and wrestling.",
+    "script_body_hash": "e1acc831723780fe4674726008b2fb68cd7a394b9e39220e9b74a7ac8816a7b4",
+    "beat_length_class": "mid",
+    "duration_sec": 40,
+    "kid_friendly": "yes",
+    "entities": [
+      "Grand Palais Éphémère",
+      "2024 Summer Olympics",
+      "École Militaire"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "scene_setter",
+    "beat_type": "architectural_detail",
+    "emotional_register": "grounded",
+    "subject_tag": "grand palais ephemere",
+    "physical_cues": [
+      {
+        "cue": "The south end of the Champ de Mars, between you and the École Militaire",
+        "direction": "south",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Grand Palais Éphémère built in 2021 at the south end of the Champ to host Olympic events and conventions displaced by the renovation of the Grand Palais"
+    ],
+    "source_passage": "The Grand Palais Éphémère was built in 2021 at the south end of the Champ to host Olympic events and conventions displaced by the renovation of the Grand Palais.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Champ de Mars",
+      "url": "https://en.wikipedia.org/wiki/Champ_de_Mars?oldid=1322668310",
+      "revision_id": "1322668310",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Modern era"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_champ_de_mars_social_change_wikipedia_eiffel_tower_stadium_2024",
+    "city_name": "paris",
+    "poi_name": "Champ de Mars",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "eiffel_tower_stadium_2024",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "champ_de_mars-rev-1322668310",
+    "sub_location": "place-jacques-rueff",
+    "trigger_address": null,
+    "script_body": "For the 2024 Summer Olympics and Paralympics, a temporary stadium known as the Eiffel Tower Stadium was erected atop the Place Jacques-Rueff — the round plaza closest to the tower. It hosted the beach volleyball and blind football tournaments. Parts of the opening ceremony spilled onto this lawn. For two weeks, the most photographed park in the world was a sand court.",
+    "script_body_hash": "fd01f9d0e14fe8014d4a43972a03e2cf9df26e64aa58ce20a522c14f6261cb3b",
+    "beat_length_class": "mid",
+    "duration_sec": 38,
+    "kid_friendly": "yes",
+    "entities": [
+      "Eiffel Tower Stadium",
+      "Place Jacques-Rueff",
+      "2024 Summer Olympics"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "grounded",
+    "subject_tag": "eiffel tower stadium",
+    "physical_cues": [
+      {
+        "cue": "Place Jacques-Rueff — the round plaza closest to the Eiffel Tower where the temporary stadium stood",
+        "direction": "here",
+        "feature_type": "plaza"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "For the 2024 Summer Olympics and Paralympics, a temporary stadium known as the Eiffel Tower Stadium was erected atop the Place Jacques-Rueff",
+      "Hosted beach volleyball and blind football tournaments at the games",
+      "Portions of the opening ceremony were held at the Champ"
+    ],
+    "source_passage": "For the 2024 Summer Olympics and Paralympics, a temporary stadium known as the Eiffel Tower Stadium ( ) was erected atop the Place Jacques-Rueff, and hosted the beach volleyball and blind football tournaments at the games. Portions of the opening ceremony were held at the Champ.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Champ de Mars",
+      "url": "https://en.wikipedia.org/wiki/Champ_de_Mars?oldid=1322668310",
+      "revision_id": "1322668310",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Modern era"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_champ_de_mars_film_tv_wikipedia_view_to_a_kill_renault_chase",
+    "city_name": "paris",
+    "poi_name": "Champ de Mars",
+    "parent_poi": null,
+    "lens": "film_tv",
+    "topic_slug": "view_to_a_kill_renault_chase",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "champ_de_mars-rev-1322668310",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "If you've seen the 1985 James Bond film A View to a Kill, you've watched a car chase through here. Roger Moore — playing Bond for the last time — hijacked a Renault 11 taxi at the foot of the Eiffel Tower and drove it down the Champ de Mars in pursuit of a mysterious assassin who turned out to be May Day, played by Grace Jones. The lawn served as the chase route. The Renault, predictably, did not survive.",
+    "script_body_hash": "c2117c1debacb56c915ee7274583dc654e6592b3633b59a5768121ab1a33bf2c",
+    "beat_length_class": "seasoning",
+    "duration_sec": 34,
+    "kid_friendly": "yes",
+    "entities": [
+      "A View to a Kill",
+      "Roger Moore",
+      "Grace Jones"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "scene_setter",
+    "beat_type": "anecdote",
+    "emotional_register": "playful",
+    "subject_tag": "view-to-a-kill",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Champ de Mars used as a filming location in the 1985 James Bond film A View to a Kill",
+      "Bond (played by Roger Moore) drove a Renault 11 taxi hijacked at the Eiffel Tower",
+      "Pursuit of May Day character played by Grace Jones"
+    ],
+    "source_passage": "Champ de Mars was used as a filming location in the 1985 James Bond film A View to a Kill, in which Bond (played for the last time by Roger Moore) drove a Renault 11 taxi which he had hijacked at the Eiffel Tower in pursuit of a mysterious assassin, later revealed to be May Day (Grace Jones).",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Champ de Mars",
+      "url": "https://en.wikipedia.org/wiki/Champ_de_Mars?oldid=1322668310",
+      "revision_id": "1322668310",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Modern era"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_historic_arch_wikipedia_five_royal_squares_paris",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "five_royal_squares_paris",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "place_des_vosges-rev-1350346662",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "There are five royal squares in Paris. This is the oldest. Place Dauphine on the Île de la Cité is the next youngest — Henri IV laid it out almost immediately after starting this one. Then later, Place des Victoires under Louis XIV, Place Vendôme also under Louis XIV, and finally Place de la Concorde under Louis XV. Five royal squares — and only this one is enclosed: 140 meters by 140 meters, accessible by a main street on one side and two passages running underneath pavilions. The other four open outward; this one folds in on itself.",
+    "script_body_hash": "5bbec2a5e611cecfa7d5f47445602f6958cc33f54480169770e5f6fb4201003a",
+    "beat_length_class": "anchor",
+    "duration_sec": 52,
+    "kid_friendly": "yes",
+    "entities": [
+      "Place Dauphine",
+      "Place des Victoires",
+      "Place Vendôme",
+      "Place de la Concorde"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "establishing",
+    "emotional_register": "grounded",
+    "subject_tag": "five royal squares",
+    "physical_cues": [
+      {
+        "cue": "The enclosed 140-metre square with arcades on all four sides",
+        "direction": "here",
+        "feature_type": "plaza"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Place des Vosges is the oldest planned square in Paris, just before the Place Dauphine",
+      "A true square 140 m × 140 m",
+      "Enclosed square, accessible via a main street on one of its four sides and two streets running beneath pavilions",
+      "One of the five royal squares in Paris (with Place des Victoires, Place Dauphine, Place Vendôme, Place de la Concorde)"
+    ],
+    "source_passage": "The Place des Vosges ( ;  ), originally the Place Royale ('Royal Square'), is the oldest planned square in Paris, just before the Place Dauphine. It is an enclosed square, accessible via a main street on one of its four sides and two streets running beneath pavilions. Along with the Place des Victoires, the Place Dauphine, the Place Vendôme and the Place de la Concorde, it is one of the five royal squares in Paris. A true square (140 m × 140 m), it embodied one of the first European programs of royal city planning",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Place des Vosges",
+      "url": "https://en.wikipedia.org/wiki/Place_des_Vosges?oldid=1350346662",
+      "revision_id": "1350346662",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Lead"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_famous_residents_wikipedia_sully_hotel_minister_seven",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "parent_poi": null,
+    "lens": "famous_residents",
+    "topic_slug": "sully_hotel_minister_seven",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "place_des_vosges-rev-1350346662",
+    "sub_location": "hotel-de-sully-no-7",
+    "trigger_address": null,
+    "script_body": "Number 7 belonged to Sully — Henri IV's great minister, the one who balanced the finances of a kingdom that had just stopped fighting itself. He lived next door to the man whose square this was. You can still walk from here to the back garden of the Hôtel de Sully on rue Saint-Antoine through a small passage; the architect made sure the minister could come and go without ever leaving the king's planned ensemble.",
+    "script_body_hash": "e7124f967df86f68578345891dff0b39c9e9b345b8aec90ed025794a091a8a29",
+    "beat_length_class": "mid",
+    "duration_sec": 36,
+    "kid_friendly": "yes",
+    "entities": [
+      "Sully",
+      "Henri IV"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "character_story",
+    "emotional_register": "reverent",
+    "subject_tag": "sully at seven",
+    "physical_cues": [
+      {
+        "cue": "The facade of No. 7 — Hôtel de Sully on the square",
+        "direction": "here",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "No. 7: Sully, Henri IV's great minister"
+    ],
+    "source_passage": "* No. 7: Sully, Henri IV's great minister",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Place des Vosges",
+      "url": "https://en.wikipedia.org/wiki/Place_des_Vosges?oldid=1350346662",
+      "revision_id": "1350346662",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Residents"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_vosges_hidden_history_wikipedia_academie_architecture_chaulnes",
+    "city_name": "paris",
+    "poi_name": "Place des Vosges",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "academie_architecture_chaulnes",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "place_des_vosges-rev-1350346662",
+    "sub_location": "hotel-de-chaulnes-no-9",
+    "trigger_address": null,
+    "script_body": "Number 9 is the Hôtel de Chaulnes. It is the seat — today — of the Académie d'Architecture, the French institution that has watched over the country's buildings since 1840. Inside the same townhouse, the Galerie Historisimus shows nineteenth-century art. So one of the square's original 1612 facades is now a kind of double exhibit: the architects who study facades, and the painters who painted them.",
+    "script_body_hash": "e86ea7f87fa6469061c9c6106b2f93a22d14d9d4daf936efdd18f4599a565b82",
+    "beat_length_class": "seasoning",
+    "duration_sec": 30,
+    "kid_friendly": "yes",
+    "entities": [
+      "Hôtel de Chaulnes",
+      "Académie d'Architecture"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "curious",
+    "subject_tag": "academie chaulnes",
+    "physical_cues": [
+      {
+        "cue": "The facade of No. 9 — Hôtel de Chaulnes on the north side",
+        "direction": "north",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "No. 9 Hôtel de Chaulnes is seat of l'Académie d'Architecture",
+      "Currently also tenanted by Galerie Historisimus"
+    ],
+    "source_passage": "* No. 9 (Hôtel de Chaulnes): seat of l'Académie d'Architecture, currently also tenanted by Galerie Historisimus",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Place des Vosges",
+      "url": "https://en.wikipedia.org/wiki/Place_des_Vosges?oldid=1350346662",
+      "revision_id": "1350346662",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Residents"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_trocadero_social_change_wikipedia_declaration_human_rights_1948",
+    "city_name": "paris",
+    "poi_name": "Trocadero",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "declaration_human_rights_1948",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "trocadero-rev-1349046548",
+    "sub_location": "esplanade-droits-de-lhomme",
+    "trigger_address": null,
+    "script_body": "On December 10, 1948, the United Nations General Assembly met inside the Palais de Chaillot — the building behind you — and adopted the Universal Declaration of Human Rights. Article one: All human beings are born free and equal in dignity and rights. A stone now marks it. The esplanade you are standing on was renamed for it: the Esplanade des droits de l'homme, the Esplanade of Human Rights. Most people who come here come for the photo of the Eiffel Tower. The ground itself is named for something else.",
+    "script_body_hash": "f3237cb6a0f9ab18f45d6ca9a005d770ca022e10642e1835c2145ad489e3d651",
+    "beat_length_class": "anchor",
+    "duration_sec": 54,
+    "kid_friendly": "yes",
+    "entities": [
+      "United Nations General Assembly",
+      "Universal Declaration of Human Rights",
+      "Palais de Chaillot"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "human rights 1948",
+    "physical_cues": [
+      {
+        "cue": "The Esplanade des droits de l'homme between the Palais de Chaillot wings, looking toward the Eiffel Tower",
+        "direction": "here",
+        "feature_type": "plaza"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "United Nations General Assembly adopted the Universal Declaration of Human Rights on 10 December 1948 at Palais de Chaillot",
+      "Commemorated by a stone",
+      "Esplanade is known as the esplanade des droits de l'homme (Esplanade of Human Rights)"
+    ],
+    "source_passage": "It is in the Palais de Chaillot that the United Nations General Assembly adopted the Universal Declaration of Human Rights on 10 December 1948. This event is now commemorated by a stone, and the esplanade is known as the esplanade des droits de l'homme (English: \"Esplanade of Human Rights\").",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Trocadéro, Paris",
+      "url": "https://en.wikipedia.org/wiki/Trocad%C3%A9ro,_Paris?oldid=1349046548",
+      "revision_id": "1349046548",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Palais de Chaillot"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_trocadero_war_conflict_wikipedia_hitler_photo_1940_terrace",
+    "city_name": "paris",
+    "poi_name": "Trocadero",
+    "parent_poi": null,
+    "lens": "war_conflict",
+    "topic_slug": "hitler_photo_1940_terrace",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "trocadero-rev-1349046548",
+    "sub_location": "palais-de-chaillot-terrace",
+    "trigger_address": null,
+    "script_body": "On June 23, 1940, Adolf Hitler stood on the front terrace of the Palais de Chaillot — this exact terrace — with Albert Speer and the sculptor Arno Breker. Behind them was the Eiffel Tower. The photograph that was taken there became one of the iconic images of the Second World War: a German Führer posing as a tourist in a city that had just surrendered to him. The terrace looks like every other tourist terrace now. It was built for postcards. He understood that.",
+    "script_body_hash": "9b446977c762ac4439ceea5b2da8415efb87373eca51e0599662f69e5421e4e1",
+    "beat_length_class": "anchor",
+    "duration_sec": 50,
+    "kid_friendly": "yes",
+    "entities": [
+      "Adolf Hitler",
+      "Albert Speer",
+      "Arno Breker"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "event",
+    "emotional_register": "somber",
+    "subject_tag": "hitler 1940 terrace",
+    "physical_cues": [
+      {
+        "cue": "The front terrace of the Palais de Chaillot with the Eiffel Tower in the background",
+        "direction": "here",
+        "feature_type": "plaza"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Adolf Hitler pictured on front terrace of palace during short tour of city in 1940",
+      "Visited 23 June 1940 with Albert Speer and sculptor Arno Breker",
+      "Image became iconic of the Second World War"
+    ],
+    "source_passage": "It was on the front terrace of the palace that Adolf Hitler was pictured during his short tour of the city in 1940, with the Eiffel Tower in the background. This became an iconic image of the Second World War.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Trocadéro, Paris",
+      "url": "https://en.wikipedia.org/wiki/Trocad%C3%A9ro,_Paris?oldid=1349046548",
+      "revision_id": "1349046548",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Palais de Chaillot"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_trocadero_historic_arch_wikipedia_four_museums_chaillot",
+    "city_name": "paris",
+    "poi_name": "Trocadero",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "four_museums_chaillot",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "trocadero-rev-1349046548",
+    "sub_location": "palais-de-chaillot",
+    "trigger_address": null,
+    "script_body": "The Palais de Chaillot was designed in 1937 for an Exposition that was supposed to last six months and instead stays here. Two great curved wings, no central element to join them — that's why you can see straight through to the Eiffel Tower. Today the south wing holds the Musée national de la Marine and the Musée de l'Homme. The east wing holds the Cité de l'Architecture et du Patrimoine. And below the esplanade, beneath your feet, is the Théâtre national de Chaillot. Four cultural institutions, one building, one missing center.",
+    "script_body_hash": "54cf9cef5bd91decfd693a982270505b27ad0a2f46f47fdc6eb9cddce0e81710",
+    "beat_length_class": "anchor",
+    "duration_sec": 50,
+    "kid_friendly": "yes",
+    "entities": [
+      "Palais de Chaillot",
+      "Musée national de la Marine",
+      "Musée de l'Homme",
+      "Cité de l'Architecture et du Patrimoine",
+      "Théâtre national de Chaillot"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "grounded",
+    "subject_tag": "four chaillot museums",
+    "physical_cues": [
+      {
+        "cue": "The two curved wings of the Palais de Chaillot flanking the esplanade",
+        "direction": "here",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Palais de Chaillot features two wings shaped to form a wide arc",
+      "Wings are independent buildings; no central element connecting them — open view to Eiffel Tower",
+      "Houses Musée national de la Marine and Musée de l'Homme in the southern (Passy) wing",
+      "Cité de l'Architecture et du Patrimoine and Musée des Monuments Français in eastern (Paris) wing",
+      "Théâtre national de Chaillot is below the esplanade"
+    ],
+    "source_passage": "Like the old palais, the Palais de Chaillot features two wings shaped to form a wide arc; reclad and expanded, these wings and the pair of central pavilions are the only remaining portion of the former building. However, unlike the old palais, the wings are independent buildings and there is no central element to connect them: instead, a wide esplanade leaves an open view from the place du Trocadéro to the Eiffel Tower and beyond. The buildings now house a number of museums: * the Musée national de la Marine (naval museum) and the Musée de l'Homme (ethnology) in the southern (Passy) wing. * the Cité de l'Architecture et du Patrimoine, including the Musée national des Monuments Français, in the eastern (Paris) wing, from which one also enters the Théâtre national de Chaillot, a theater below the esplanade.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Trocadéro, Paris",
+      "url": "https://en.wikipedia.org/wiki/Trocad%C3%A9ro,_Paris?oldid=1349046548",
+      "revision_id": "1349046548",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Palais de Chaillot"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_trocadero_war_conflict_wikipedia_nato_initial_headquarters",
+    "city_name": "paris",
+    "poi_name": "Trocadero",
+    "parent_poi": null,
+    "lens": "war_conflict",
+    "topic_slug": "nato_initial_headquarters",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "trocadero-rev-1349046548",
+    "sub_location": "palais-de-chaillot",
+    "trigger_address": null,
+    "script_body": "There is a layer of postwar history most visitors miss. The Palais de Chaillot was the initial headquarters of NATO. The alliance ran from this building while its purpose-built Palais de l'OTAN was under construction across the city — that building, by the way, is now the Université Paris Dauphine. So the place that hosted the Declaration of Human Rights in 1948 was, a year later in 1949, also where NATO opened for business.",
+    "script_body_hash": "60e2426f74ac2af0a984ce49aef40960e2a54af25cbef1e0fa39ad03e0bfa6fd",
+    "beat_length_class": "mid",
+    "duration_sec": 38,
+    "kid_friendly": "yes",
+    "entities": [
+      "NATO",
+      "Palais de l'OTAN",
+      "Université Paris Dauphine"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "grounded",
+    "subject_tag": "nato first hq",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Palais de Chaillot was initial headquarters of NATO",
+      "While Palais de l'OTAN was being built",
+      "Palais de l'OTAN is now Université Paris Dauphine"
+    ],
+    "source_passage": "The Palais de Chaillot was also the initial headquarters of NATO, while the \"Palais de l'OTAN\" (now Université Paris Dauphine) was being built.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Trocadéro, Paris",
+      "url": "https://en.wikipedia.org/wiki/Trocad%C3%A9ro,_Paris?oldid=1349046548",
+      "revision_id": "1349046548",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Palais de Chaillot"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_trocadero_music_heritage_wikipedia_cavaille_coll_organ_moves_lyon",
+    "city_name": "paris",
+    "poi_name": "Trocadero",
+    "parent_poi": null,
+    "lens": "music_heritage",
+    "topic_slug": "cavaille_coll_organ_moves_lyon",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "trocadero-rev-1349046548",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The original 1878 Palais du Trocadéro had a concert hall, and inside that hall was an enormous Aristide Cavaillé-Coll organ — the first big organ ever installed in a French concert hall. Charles-Marie Widor inaugurated it at the 1878 World's Fair with the premiere of his Symphony for Organ No. 6. When the building came down in 1937, the organ survived. In 1977 it was moved to the Auditorium Maurice Ravel in Lyon. It is still played there.",
+    "script_body_hash": "d4dd1a8792e013847692773d656f479d5c42064a13acb97cd571ed113bd02be1",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "Aristide Cavaillé-Coll",
+      "Charles-Marie Widor",
+      "Auditorium Maurice Ravel"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "reverent",
+    "subject_tag": "cavaille-coll organ",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Concert hall contained large organ built by Aristide Cavaillé-Coll",
+      "First large organ installed in a concert hall in France",
+      "Inaugurated during 1878 World Fair with Charles Marie Widor playing premiere of Symphony for Organ No. 6",
+      "Moved in 1977 to Auditorium Maurice Ravel in Lyon",
+      "Still in use today"
+    ],
+    "source_passage": "The concert hall contained a large organ built by Aristide Cavaillé-Coll; the first large organ to be installed in a concert hall in France (it has since been modified twice, and eventually moved in 1977 to the Auditorium Maurice Ravel in Lyon, where it is still in use today.) The organ was inaugurated during the 1878 World Fair with a concert in which Charles Marie Widor played the premiere of his Symphony for Organ No. 6.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Trocadéro, Paris",
+      "url": "https://en.wikipedia.org/wiki/Trocad%C3%A9ro,_Paris?oldid=1349046548",
+      "revision_id": "1349046548",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Palais du Trocadéro"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_trocadero_waterways_views_wikipedia_aquarium_closed_reopened",
+    "city_name": "paris",
+    "poi_name": "Trocadero",
+    "parent_poi": null,
+    "lens": "waterways_views",
+    "topic_slug": "aquarium_closed_reopened",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "trocadero-rev-1349046548",
+    "sub_location": "aquarium-de-paris",
+    "trigger_address": null,
+    "script_body": "Underneath the gardens, in the space hollowed out by former limestone quarries, there is an aquarium. It was built originally to display the fish of French rivers. It was renovated for the 1937 Exposition, and then it was closed. The closure lasted twenty-one years — from 1985 until May 22, 2006. The Aquarium de Paris, today, sits in that re-opened cave between the Palais de Chaillot and the Seine. Most people walking past have no idea it's down there.",
+    "script_body_hash": "620c320d754c0cf7dba5124954f1700a64dbef4f82ae63c1a203655e22c6bf4b",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "Aquarium de Paris",
+      "Palais de Chaillot"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "curious",
+    "subject_tag": "aquarium closed reopened",
+    "physical_cues": [
+      {
+        "cue": "The hillside between the Palais de Chaillot and the Seine — the aquarium hides under the gardens here",
+        "direction": "down",
+        "feature_type": "garden"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Aquarium built in space left by former underground quarries",
+      "Originally contained fish of French rivers",
+      "Renovated in 1937",
+      "Closed again for renovation from 1985 until 22 May 2006"
+    ],
+    "source_passage": "Below the building in the space left by former underground quarries, a large aquarium was built to contain fish of French rivers. It was renovated in 1937 but closed again for renovation from 1985 until 22 May 2006.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Trocadéro, Paris",
+      "url": "https://en.wikipedia.org/wiki/Trocad%C3%A9ro,_Paris?oldid=1349046548",
+      "revision_id": "1349046548",
+      "retrieved_at": "2026-06-03T02:04:30+00:00",
+      "section": "Palais du Trocadéro"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T02:04:30+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T02:04:30+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_luxembourg_gardens_visual_art_wikipedia_medici_fountain_journey",
+    "city_name": "paris",
+    "poi_name": "Luxembourg Gardens",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "medici_fountain_journey",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "luxembourg_gardens-rev-1355104784",
+    "sub_location": "medici-fountain",
+    "trigger_address": null,
+    "script_body": "The Medici Fountain has wandered. Tommaso Francini built it in 1630 for Marie de' Medici as a grotto — an Italian Renaissance feature, dropped into a French garden by a homesick Florentine. It fell into ruins in the 18th century. In 1811 Napoleon ordered it restored by Jean-François Chalgrin, the man who designed the Arc de Triomphe. Then in 1864-66 the whole thing was moved to where you see it now, centered on the east front of the palace. They added the long basin of water, the plane trees flanking it, and the central drama: the giant Polyphemus surprising the lovers Acis and Galatea, carved by Auguste Ottin into the grotto rockwork.",
+    "script_body_hash": "2267929b1c623b76b964bc7c9874987936d1b03a67f15d72132f339effa4aad5",
+    "beat_length_class": "anchor",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Medici Fountain",
+      "Tommaso Francini",
+      "Marie de' Medici",
+      "Jean-François Chalgrin",
+      "Napoleon Bonaparte",
+      "Auguste Ottin"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "medici fountain saga",
+    "physical_cues": [
+      {
+        "cue": "The Medici Fountain — the long basin, plane trees, grotto with Polyphemus over Acis and Galatea",
+        "direction": "east",
+        "feature_type": "object"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Built 1630 by Marie de' Medici, designed by Tommaso Francini",
+      "Florentine fountain maker brought to France by Henri IV",
+      "Fell into ruins in 18th century",
+      "Restored in 1811 by Jean-François Chalgrin (architect of Arc de Triomphe) at command of Napoleon",
+      "Moved 1864-66 to present location centered on east front of palace",
+      "Long basin and plane trees added then",
+      "Sculptures of Polyphemus surprising Acis and Galatea by Auguste Ottin added to grotto"
+    ],
+    "source_passage": "The Medici Fountain (La fontaine Médicis) was built in 1630 by Marie de' Medici, the widow of King Henri IV and regent of King Louis XIII. It was designed by Tommaso Francini, a Florentine fountain maker and hydraulic engineer who was brought from Florence to France by Henri IV. It was in the form of a grotto, a popular feature of the Italian Renaissance garden. It fell into ruins during the 18th century, but in 1811, at the command of Napoleon Bonaparte, the fountain was restored by Jean-François Chalgrin, the architect of the Arc de Triomphe. In 1864-66, the fountain was moved to its present location, centered on the east front of the Palais du Luxembourg. The long basin of water was built and flanked by plane trees, and the sculptures of the giant Polyphemus surprising the lovers Acis and Galatea, by French classical sculptor Auguste Ottin, were added to the grotto's rockwork.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Jardin du Luxembourg",
+      "url": "https://en.wikipedia.org/wiki/Jardin_du_Luxembourg?oldid=1355104784",
+      "revision_id": "1355104784",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Medici Fountain"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_luxembourg_gardens_visual_art_wikipedia_bartholdi_liberty_first_model",
+    "city_name": "paris",
+    "poi_name": "Luxembourg Gardens",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "bartholdi_liberty_first_model",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "luxembourg_gardens-rev-1355104784",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Among the statues here, somewhere along the central axis, stands a small-scale model of the Statue of Liberty — first model, by Frédéric Bartholdi, 1870. Liberty Enlightening the World, before she became the bronze giantess in New York harbor. This is where she started: a sketch in metal, set among the other monuments to writers and artists that filled the park in the 1880s and 1890s. Most people walk past her.",
+    "script_body_hash": "db5368a560b60e53457d409254953e275cc37edef31664f061261d6ab75d6285",
+    "beat_length_class": "mid",
+    "duration_sec": 38,
+    "kid_friendly": "yes",
+    "entities": [
+      "Frédéric Bartholdi",
+      "Statue of Liberty"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "curious",
+    "subject_tag": "bartholdi liberty model",
+    "physical_cues": [
+      {
+        "cue": "The small-scale Statue of Liberty model among the central garden statues",
+        "direction": "here",
+        "feature_type": "object"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Small-scale model of Bartholdi's Liberty Enlightening the World stands in the gardens",
+      "Liberty Enlightening the World is commonly known as the Statue of Liberty",
+      "First model dated 1870"
+    ],
+    "source_passage": "Liberty Enlightening the World, commonly known as the Statue of Liberty, first model, by Frédéric Bartholdi, 1870",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Jardin du Luxembourg",
+      "url": "https://en.wikipedia.org/wiki/Jardin_du_Luxembourg?oldid=1355104784",
+      "revision_id": "1355104784",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Sculptures"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_luxembourg_gardens_visual_art_wikipedia_carpeaux_four_continents",
+    "city_name": "paris",
+    "poi_name": "Luxembourg Gardens",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "carpeaux_four_continents",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "luxembourg_gardens-rev-1355104784",
+    "sub_location": "fontaine-de-l-observatoire",
+    "trigger_address": null,
+    "script_body": "Beyond the south gate, the garden's central axis continues out into the Jardin Marco Polo and ends at the Fountain of the Observatory. Four bronze women hold up a globe. They are the Four Continents, sculpted by Jean-Baptiste Carpeaux in 1874. Below them: a zodiac armillary carved by Pierre Legrain, eight horses and marine turtles by the animalier Emmanuel Frémiet, and garlands by Louis Vuillemot. Four sculptors, one fountain. Davioud installed it as part of his reshaping of the avenue de l'Observatoire in 1867.",
+    "script_body_hash": "da21e0d9d3372acc175fceedccc67f92cc28091f31514c5f808789bc8a295b13",
+    "beat_length_class": "anchor",
+    "duration_sec": 52,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean-Baptiste Carpeaux",
+      "Emmanuel Frémiet",
+      "Pierre Legrain",
+      "Louis Vuillemot",
+      "Gabriel Davioud"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "carpeaux four continents",
+    "physical_cues": [
+      {
+        "cue": "The Fountain of the Observatory at the south end of the Jardin Marco Polo — four women holding the globe",
+        "direction": "south",
+        "feature_type": "object"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Central axis continues into Jardin Marco Polo, culminating at 1874 Fountain of the Observatory (Carpeaux Fountain)",
+      "Jean-Baptiste Carpeaux sculpted four nude women supporting the globe representing the Four Continents",
+      "Pierre Legrain carved the armillary with interior globe and zodiac band",
+      "Emmanuel Frémiet designed the eight horses, marine turtles and spouting fish",
+      "Louis Vuillemot carved the garlands and festoons around the pedestal",
+      "Installed by Gabriel Davioud in 1867"
+    ],
+    "source_passage": "The central axis of the garden is extended, beyond its wrought iron grill and gates opening to rue Auguste Comte, by the central esplanade of the rue de l'Observatoire, officially the Jardin Marco Polo, where sculptures of the four Times of Day alternate with columns and culminate at the southern end with the 1874 \"Fountain of the Observatory\", also known as the \"Fontaine des Quatre-Parties-du-Monde\" or the \"Carpeaux Fountain\", for its sculptures by Jean-Baptiste Carpeaux. The bronze fountain represents the work of four sculptors: Louis Vuillemot carved the garlands and festoons around the pedestal, Pierre Legrain carved the armillary with interior globe and zodiac band; the animalier Emmanuel Fremiet designed the eight horses, marine turtles and spouting fish. Most importantly Jean-Baptiste Carpeaux sculpted the four nude women supporting the globe, representing the Four Continents of classical iconography.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Jardin du Luxembourg",
+      "url": "https://en.wikipedia.org/wiki/Jardin_du_Luxembourg?oldid=1355104784",
+      "revision_id": "1355104784",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Fountain of the Observatory"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_luxembourg_gardens_visual_art_wikipedia_orangerie_first_public_museum",
+    "city_name": "paris",
+    "poi_name": "Luxembourg Gardens",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "orangerie_first_public_museum",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "luxembourg_gardens-rev-1355104784",
+    "sub_location": "musee-du-luxembourg",
+    "trigger_address": null,
+    "script_body": "The orangery on the west side of the palace was the first public museum France ever had. It opened in 1694 as a Beaux-Arts gallery. It was also the first museum of contemporary art in Paris, functioning as such from 1818 — taking the work of artists who were still alive, before any other museum thought to. It went dark for decades. The Senate formally reopened it as the Musée du Luxembourg in 1979. The exhibitions that rotate through here now are the descendants of three centuries of French museum-going, all of which started in this one orangery.",
+    "script_body_hash": "09be9decfe954ded0ed2c8d70d8410485c6a27427f07d45212129e340a74df54",
+    "beat_length_class": "anchor",
+    "duration_sec": 52,
+    "kid_friendly": "yes",
+    "entities": [
+      "Musée du Luxembourg",
+      "Orangerie du Sénat",
+      "French Senate"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "reverent",
+    "subject_tag": "first public museum",
+    "physical_cues": [
+      {
+        "cue": "The Musée du Luxembourg — the orangery on the west side of the palace grounds",
+        "direction": "west",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Musée du Luxembourg reopened as a museum by the French Senate in 1979",
+      "Orangerie today holds temporary art exhibitions",
+      "First opened to the public as Beaux-Arts public museum in 1694",
+      "First public museum in France",
+      "Also first contemporary art museum in Paris, functioning as such in 1818"
+    ],
+    "source_passage": "The following year, in 1979 the Musée du Luxembourg was formally reopened as a museum by the French Senate. The orangerie today holds temporary art exhibitions. It was first opened to the public as a Beaux-Arts public museum in 1694, the first public museum in France. It was also the first contemporary art museum in Paris, functioning as such in 1818.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Jardin du Luxembourg",
+      "url": "https://en.wikipedia.org/wiki/Jardin_du_Luxembourg?oldid=1355104784",
+      "revision_id": "1355104784",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Orangerie"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_luxembourg_gardens_famous_residents_wikipedia_twenty_queens_of_france",
+    "city_name": "paris",
+    "poi_name": "Luxembourg Gardens",
+    "parent_poi": null,
+    "lens": "famous_residents",
+    "topic_slug": "twenty_queens_of_france",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "luxembourg_gardens-rev-1355104784",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Surrounding the central green are twenty pedestals. Twenty French queens and illustrious women, all of them — commissioned by Louis Philippe I in 1848. Anne of Austria. Anne of Brittany. Blanche of Castile. Mary, Queen of Scots — yes, the Scottish queen who was briefly Queen of France. Marie de' Medici, who built this park, watches over a corner of it. Saint Geneviève of Paris. Laure de Noves, Petrarch's muse. The whole pantheon of France-as-female-monarchy, frozen above the lawn where the children sail toy boats.",
+    "script_body_hash": "02e7661229070753fdb2ff7f2e2cbd892267d419b77e41ba0147129b2205165e",
+    "beat_length_class": "anchor",
+    "duration_sec": 54,
+    "kid_friendly": "yes",
+    "entities": [
+      "Louis Philippe I",
+      "Anne of Austria",
+      "Marie de' Medici",
+      "Mary, Queen of Scots",
+      "Saint Geneviève",
+      "Laure de Noves"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "scene_setter",
+    "beat_type": "architectural_detail",
+    "emotional_register": "contemplative",
+    "subject_tag": "twenty queens",
+    "physical_cues": [
+      {
+        "cue": "The ring of twenty statues of queens and illustrious women on pedestals around the central green",
+        "direction": "here",
+        "feature_type": "object"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Surrounding central green space are twenty figures of French queens and illustrious women standing on pedestals",
+      "Commissioned by Louis Philippe I in 1848",
+      "Include Anne of Austria, Anne of Brittany, Blanche of Castile, Marie de' Medici, Mary Queen of Scots, Saint Geneviève, Laure de Noves"
+    ],
+    "source_passage": "Surrounding the central green space are twenty figures of French queens and illustrious women standing on pedestals. They were commissioned by Louis Philippe I in 1848 and include: Anne of Austria, Anne of Brittany, Anne of France, Anne Marie Louise of Orléans, Bertha of Burgundy, Blanche of Castile, Clémence Isaure, Jeanne III of Navarre, Laure de Noves, Louise of Savoy, Margaret of Anjou, Margaret of Provence, Marguerite de Navarre, Marie de' Medici, Mary, Queen of Scots, Matilda, Duchess of Normandy, Saint Balthild, Saint Clotilde, Saint Genevieve, and Valentina Visconti.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Jardin du Luxembourg",
+      "url": "https://en.wikipedia.org/wiki/Jardin_du_Luxembourg?oldid=1355104784",
+      "revision_id": "1355104784",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Statues"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_du_luxembourg_historic_arch_wikipedia_chalgrin_destroys_rubens_gallery",
+    "city_name": "paris",
+    "poi_name": "Palais du Luxembourg",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "chalgrin_destroys_rubens_gallery",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_du_luxembourg-rev-1344825060",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Between 1799 and 1805, the architect Jean-François Chalgrin turned this palace into a legislative building. To do it, he had to destroy things. He demolished the grand central staircase to install a Senate chamber on the first floor — and in the process he wrecked Marie de' Medici's chapel. He enclosed the flanking terraces for a library. And then, to create a new neo-classical staircase in the west wing, he tore down the long gallery that had once held a cycle of paintings by Rubens. The Rubens cycle was the Marie de' Medici cycle — twenty-four paintings commissioned by Marie herself. They're at the Louvre now. The room they were painted for is gone.",
+    "script_body_hash": "3aab796f23535b4f86e6550948a41f9c88c0eef75e6f37d38f593dab99e39f22",
+    "beat_length_class": "anchor",
+    "duration_sec": 62,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean-François Chalgrin",
+      "Marie de' Medici",
+      "Rubens"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "architectural_detail",
+    "emotional_register": "somber",
+    "subject_tag": "rubens gallery lost",
+    "physical_cues": [
+      {
+        "cue": "The west wing's neo-classical Ionic staircase under its coffered barrel vault",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "From 1799 to 1805 Jean-François Chalgrin transformed palace into a legislative building",
+      "Demolished grand central staircase, replacing it with senate chamber on first floor",
+      "Incorporated and destroyed Marie de' Medici's chapel on garden side",
+      "Enclosed flanking terraces to make space for a library",
+      "Created neo-classical escalier d'honneur in west wing — single monumental flight, Ionic colonnade, coffered barrel vault",
+      "Construction destroyed the long gallery that had formerly housed the cycle of paintings by Rubens"
+    ],
+    "source_passage": "From 1799 to 1805, the architect Jean-François Chalgrin transformed the palace into a legislative building. He demolished the grand central staircase (escalier d'honneur), replacing it with a senate chamber on the first floor, which incorporated and destroyed Marie de' Medici's chapel on the garden side of the corps de logis. Chalgrin also enclosed the flanking terraces, making space for a library. At the same time he created a neo-classical escalier d'honneur in the west wing, a single monumental flight enclosed by an Ionic colonnade and covered with a coffered barrel vault, the construction of which resulted in the destruction of the long gallery that had formerly housed the cycle of paintings by Rubens.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Luxembourg Palace",
+      "url": "https://en.wikipedia.org/wiki/Luxembourg_Palace?oldid=1344825060",
+      "revision_id": "1344825060",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Chalgrin transformation"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_du_luxembourg_visual_art_wikipedia_delacroix_library_inferno",
+    "city_name": "paris",
+    "poi_name": "Palais du Luxembourg",
+    "parent_poi": null,
+    "lens": "visual_art",
+    "topic_slug": "delacroix_library_inferno",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_du_luxembourg-rev-1344825060",
+    "sub_location": "bibliotheque-du-senat",
+    "trigger_address": null,
+    "script_body": "From 1835 the architect Alphonse de Gisors added a new garden wing. He replicated the 17th-century facade so precisely that you can't tell the old from the new at a glance. Inside the new wing he built the Senate library. Between 1845 and 1847, Eugène Delacroix painted its ceiling. The subject he chose was Dante's Inferno. So the senators of France debate beneath Delacroix's vision of Hell.",
+    "script_body_hash": "7fa00495680201b5b65833e5a1b9e744995729fd1d56dbf7cee2291af3cb8c3f",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "Alphonse de Gisors",
+      "Eugène Delacroix",
+      "Dante"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "delacroix inferno",
+    "physical_cues": [
+      {
+        "cue": "The Senate library ceiling — Delacroix's cycle on Dante's Inferno",
+        "direction": "up",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Beginning 1835 Alphonse de Gisors added new garden wing parallel to old corps de logis",
+      "Replicated look of original 17th-century facade so precisely it is difficult to distinguish old from new",
+      "New wing included a library with cycle of paintings (1845-1847) by Eugène Delacroix",
+      "Library ceiling depicts Dante's Inferno"
+    ],
+    "source_passage": "Beginning in 1835, the architect Alphonse de Gisors added a new garden wing parallel to the old corps de logis, replicating the look of the original 17th-century façade so precisely that it is difficult to distinguish at first glance the old from the new. The new wing included a library (bibliothèque) with a cycle of paintings (1845-1847) by Eugène Delacroix.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Luxembourg Palace",
+      "url": "https://en.wikipedia.org/wiki/Luxembourg_Palace?oldid=1344825060",
+      "revision_id": "1344825060",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Gisors wing"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_palais_du_luxembourg_war_conflict_wikipedia_choltitz_saves_first_assembly",
+    "city_name": "paris",
+    "poi_name": "Palais du Luxembourg",
+    "parent_poi": null,
+    "lens": "war_conflict",
+    "topic_slug": "choltitz_saves_first_assembly",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "palais_du_luxembourg-rev-1344825060",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "In August 1944 this palace was designated a strong point — a building German forces would defend to the last in the battle for Paris. The Commanding General, Dietrich von Choltitz, had been ordered by Hitler to burn the city. He chose to surrender it instead. The palace was minimally damaged, though the furniture was stolen. On November 7, 1944, four months after the city was free, the Provisional Consultative Assembly of France held its first meeting in this room. Democracy, in this building, restarted that day.",
+    "script_body_hash": "0dbd3ae2abc00dc3ca318aaa96268a7bb23aea201cf2c5f431fcc273757256ba",
+    "beat_length_class": "anchor",
+    "duration_sec": 52,
+    "kid_friendly": "yes",
+    "entities": [
+      "Dietrich von Choltitz",
+      "Provisional Consultative Assembly",
+      "Liberation of France"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "climax",
+    "beat_type": "event",
+    "emotional_register": "reverent",
+    "subject_tag": "first assembly 1944",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Palace was a designated 'strong point' for German forces defending the city in August 1944",
+      "Commanding General Dietrich von Choltitz surrendered the city rather than fight",
+      "Palace only minimally damaged although furniture was stolen",
+      "On 7 November 1944, after the Liberation of France, the Provisional Consultative Assembly held its first meeting at the Luxembourg Palace"
+    ],
+    "source_passage": "The palace was a designated \"strong point\" for German forces defending the city in August 1944, but thanks to the decision of Commanding General Dietrich von Choltitz to surrender the city rather than fight, the palace was only minimally damaged although furniture was stolen. On 7 November 1944, after the Liberation of France, the Provisional Consultative Assembly held its first meeting at the Luxembourg Palace.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Luxembourg Palace",
+      "url": "https://en.wikipedia.org/wiki/Luxembourg_Palace?oldid=1344825060",
+      "revision_id": "1344825060",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "World War II"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_institut_de_france_historic_arch_wikipedia_mazarin_quatre_nations_1661",
+    "city_name": "paris",
+    "poi_name": "Institut de France",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "mazarin_quatre_nations_1661",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "institut_de_france-rev-1349402492",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "This building was not built for the institute that lives in it now. Read the inscription over the facade: JUL. MAZARIN S.R.E. CARD BASILICAM ET GYMNAS F.C.A M.D.C.LXI. Julius Mazarin, Cardinal of the Roman Church, had this basilica and school built in 1661. Cardinal Mazarin commissioned the Collège des Quatre-Nations as a school for students from the four new provinces attached to France under Louis XIV. The institute moved in a century later. The inscription stayed.",
+    "script_body_hash": "ea789fe1e4e02a22bee7d823641790f6d5ed876ae8475652a0a453d4b8558b96",
+    "beat_length_class": "anchor",
+    "duration_sec": 50,
+    "kid_friendly": "yes",
+    "entities": [
+      "Cardinal Mazarin",
+      "Collège des Quatre-Nations",
+      "Louis XIV"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "establishing",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "mazarin inscription",
+    "physical_cues": [
+      {
+        "cue": "The Latin inscription across the front facade: JUL. MAZARIN S.R.E. CARD BASILICAM ET GYMNAS F.C.A M.D.C.LXI",
+        "direction": "up",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Building originally constructed as Collège des Quatre-Nations by Cardinal Mazarin",
+      "Built as school for students from new provinces attached to France under Louis XIV",
+      "Inscription over facade reads 'JUL. MAZARIN S.R.E. CARD BASILICAM ET GYMNAS F.C.A M.D.C.LXI'",
+      "Mazarin ordered construction in 1661"
+    ],
+    "source_passage": "The building was originally constructed as the Collège des Quatre-Nations by Cardinal Mazarin, as a school for students from new provinces attached to France under Louis XIV. The inscription over the façade reads \"JUL. MAZARIN S.R.E. CARD BASILICAM ET GYMNAS F.C.A M.D.C.LXI\", attesting that Mazarin ordered its construction in 1661.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Institut de France",
+      "url": "https://en.wikipedia.org/wiki/Institut_de_France?oldid=1349402492",
+      "revision_id": "1349402492",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "History"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_institut_de_france_social_change_wikipedia_five_academies_under_dome",
+    "city_name": "paris",
+    "poi_name": "Institut de France",
+    "parent_poi": null,
+    "lens": "social_change",
+    "topic_slug": "five_academies_under_dome",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "institut_de_france-rev-1349402492",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "Five académies share this dome. The Académie Française — the one that guards the language, founded 1635, suppressed in 1793 by the Revolution, restored in 1803 as a division of the institute. The Académie des inscriptions et belles-lettres, the humanities body, 1663. The Académie des sciences, 1666. The Académie des Beaux-Arts, created 1816 by merging three older academies — painting and sculpture from 1648, music from 1669, architecture from 1671. And the Académie des sciences morales et politiques, founded 1795, suppressed in 1803 by Napoleon, reestablished in 1832. Five académies, one roof.",
+    "script_body_hash": "fa4026f2ccc36447e2e4a9ec80ee478cb51aec31d346340c7b1f06ddd35fdeee",
+    "beat_length_class": "anchor",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Académie Française",
+      "Académie des inscriptions et belles-lettres",
+      "Académie des sciences",
+      "Académie des Beaux-Arts",
+      "Académie des sciences morales et politiques"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "establishing",
+    "beat_type": "factoid",
+    "emotional_register": "grounded",
+    "subject_tag": "five academies",
+    "physical_cues": [
+      {
+        "cue": "The dome of the Mazarin building above the quai de Conti",
+        "direction": "up",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Académie Française initiated 1635, suppressed 1793, restored 1803 as division of the institute",
+      "Académie des inscriptions et belles-lettres initiated 1663",
+      "Académie des sciences initiated 1666",
+      "Académie des Beaux-Arts created 1816 as merger of Painting/Sculpture (1648), Music (1669), Architecture (1671)",
+      "Académie des sciences morales et politiques initiated 1795, suppressed 1803, reestablished 1832"
+    ],
+    "source_passage": "Académie Française (French Academy, concerning the French language) – initiated in 1635, suppressed in 1793, and restored in 1803 as a division of the institute. Académie des inscriptions et belles-lettres (Academy of Humanities) – initiated 1663. Académie des sciences (Academy of Sciences) – initiated 1666. Académie des sciences morales et politiques (Academy of Moral and Political Sciences) – initiated 1795, suppressed 1803, reestablished 1832.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Institut de France",
+      "url": "https://en.wikipedia.org/wiki/Institut_de_France?oldid=1349402492",
+      "revision_id": "1349402492",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Académies"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_institut_de_france_hidden_history_wikipedia_president_protector_chancellor",
+    "city_name": "paris",
+    "poi_name": "Institut de France",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "president_protector_chancellor",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "institut_de_france-rev-1349402492",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The institute has a Chancellor and a Protector. The Chancellor is its working leader — the institute's secretary general. The Protector is the President of the French Republic. The man or woman in the Élysée Palace formally protects this academy on the quai de Conti. The institute manages roughly a thousand foundations, plus museums and châteaux. In 2017 it awarded over twenty-seven million euros in prizes and subsidies on the recommendation of its five académies.",
+    "script_body_hash": "5827d43aaf42d94c50494ca4be3476f83147b588693abd4de186875b15a13e3a",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "Chancellor of the Institute",
+      "President of the French Republic"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "grounded",
+    "subject_tag": "president protector",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Chancellor acts as the institute's secretary general",
+      "Institute placed under protection of the president of the republic",
+      "Institute manages approximately 1,000 foundations, plus museums and châteaux open for visit",
+      "Awarded prizes and subsidies totalling over €27 million per year in 2017",
+      "Most prizes awarded on recommendation of the académies"
+    ],
+    "source_passage": "The institute manages approximately 1,000 foundations, as well as museums and châteaux open for visit. It also awards prizes and subsidies, which amounted to a total of over €27 million per year in 2017. Most of these prizes are awarded by the institute on the recommendation of the académies. The chancellor acts as the institute's secretary general, whilst the organisation itself is placed under the protection of the president of the republic.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Institut de France",
+      "url": "https://en.wikipedia.org/wiki/Institut_de_France?oldid=1349402492",
+      "revision_id": "1349402492",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Governance"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_abbesses_hidden_history_wikipedia_guimard_edicule_transferred_1974",
+    "city_name": "paris",
+    "poi_name": "Place des Abbesses",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "guimard_edicule_transferred_1974",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "abbesses_station-rev-1348564328",
+    "sub_location": "abbesses-station",
+    "trigger_address": null,
+    "script_body": "There's a plot twist about the Art Nouveau Métro entrance you're standing next to. Hector Guimard designed it, yes — it's one of only two surviving glass-covered 'dragonfly' édicules he made, the other is at Porte Dauphine. But this one was never built for Abbesses. It originally stood at Hôtel de Ville and was transferred here in 1974. And it's technically anachronistic: Line 12 was built by the Nord-Sud Company, a competitor of the firm that hired Guimard. They used different architects entirely. So the most famous Guimard entrance on the Paris Métro is on a line he never worked on, at a station he never designed.",
+    "script_body_hash": "b6bf976f3ddba6eca18479d819cb2f40c78c4bfeccca3e037c90df0c0a0e4203",
+    "beat_length_class": "anchor",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Hector Guimard",
+      "Hôtel de Ville",
+      "Nord-Sud Company",
+      "Porte Dauphine"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "climax",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "guimard transferred",
+    "physical_cues": [
+      {
+        "cue": "The glass-covered Guimard édicule over the Abbesses station entrance",
+        "direction": "here",
+        "feature_type": "object"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Station's entrance designed by Hector Guimard (1867-1942)",
+      "One of only two remaining glass-covered 'dragonfly' entrances, known as édicules",
+      "The other is located at Porte Dauphine",
+      "A replica exists at Châtelet",
+      "Édicule at Abbesses was originally located at Hôtel de Ville and transferred to current location in 1974",
+      "Entrance is technically anachronistic: line 12 of the Paris metro was built by competing Nord-Sud Company",
+      "Nord-Sud did not hire Guimard but engaged other architects"
+    ],
+    "source_passage": "The station's entrance, designed by Hector Guimard (1867-1942), is one of only two remaining glass-covered \"dragonfly\" entrances, known as édicules (the other is located at Porte Dauphine, while a replica exists at Châtelet). Though a Guimard original, the édicule at Abbesses was originally located at Hôtel de Ville and was transferred to its current location in 1974. The entrance is technically anachronistic, since line 12 of the Paris metro was built by a competing firm, the Nord-Sud Company, which did not hire Guimard but engaged other architects to design its stations and station entrances.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Abbesses station",
+      "url": "https://en.wikipedia.org/wiki/Abbesses_station?oldid=1348564328",
+      "revision_id": "1348564328",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Architecture"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_abbesses_science_tech_wikipedia_deepest_station_until_2025",
+    "city_name": "paris",
+    "poi_name": "Place des Abbesses",
+    "parent_poi": null,
+    "lens": "science_tech",
+    "topic_slug": "deepest_station_until_2025",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "abbesses_station-rev-1348564328",
+    "sub_location": "abbesses-station",
+    "trigger_address": null,
+    "script_body": "Abbesses is buried thirty-six meters below the street — about a hundred-and-eighteen feet. For more than a century it was the deepest station in the Paris Métro. You can ride a long elevator down or you can spiral down the painted stairwell. The stairs are decorated; tourists photograph them. In 2025 a brand-new station out at Villejuif–Gustave Roussy finally went deeper. So Abbesses lost the record. The stairwell is still the same.",
+    "script_body_hash": "e2dd70c7accf3dd5dd05103db01838e2a763ad314a1f6de29ac5b19726dca325",
+    "beat_length_class": "mid",
+    "duration_sec": 42,
+    "kid_friendly": "yes",
+    "entities": [
+      "Abbesses station",
+      "Villejuif–Gustave Roussy"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "factoid",
+    "emotional_register": "curious",
+    "subject_tag": "deepest until 2025",
+    "physical_cues": [
+      {
+        "cue": "The spiral painted stairwell down to the platforms — 36 metres below street level",
+        "direction": "down",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Abbesses was the deepest station in the Paris Métro at 36 metres (118 feet) below ground",
+      "Surpassed by Villejuif–Gustave Roussy in 2025",
+      "Located on the western side of the butte (hill) of Montmartre",
+      "Access to platforms by elevator or decorated stairs"
+    ],
+    "source_passage": "Abbesses was the deepest station in the Paris Métro, at 36 metres (118 feet) below ground, before being surpassed by Villejuif–Gustave Roussy in 2025. The station is located on the western side of the butte (hill) of Montmartre. Access to the platforms is by elevator or the decorated stairs.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Abbesses station",
+      "url": "https://en.wikipedia.org/wiki/Abbesses_station?oldid=1348564328",
+      "revision_id": "1348564328",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Lead"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_abbesses_historic_arch_wikipedia_saint_jean_first_concrete_church",
+    "city_name": "paris",
+    "poi_name": "Place des Abbesses",
+    "parent_poi": null,
+    "lens": "historic_arch",
+    "topic_slug": "saint_jean_first_concrete_church",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_jean_de_montmartre-rev-1324712553",
+    "sub_location": "saint-jean-de-montmartre",
+    "trigger_address": null,
+    "script_body": "On the corner of Rue des Abbesses stands the church of Saint-Jean de Montmartre, built 1894 to 1904. Look at the facade: red brick over a hidden frame. That frame is what makes it historic. It was the first religious building in France constructed from reinforced concrete. The architect Anatole de Baudot — a student of Viollet-le-Duc — used a system patented by the engineer Paul Cottancin in 1892: wire-reinforced perforated brickwork as the permanent framework of a cement armature. The reinforced concrete let Baudot make the walls thinner. The red brick on the outside gave it its nickname: Saint-Jean-of-the-Bricks.",
+    "script_body_hash": "1643cb832d19237a1bb56e7fcd5558e51c0d85a1a029b525cf39fa5bf4eab9a7",
+    "beat_length_class": "anchor",
+    "duration_sec": 58,
+    "kid_friendly": "yes",
+    "entities": [
+      "Saint-Jean de Montmartre",
+      "Anatole de Baudot",
+      "Paul Cottancin",
+      "Viollet-le-Duc"
+    ],
+    "sensory_anchor": true,
+    "narrative_function": "deepen",
+    "beat_type": "architectural_detail",
+    "emotional_register": "reverent",
+    "subject_tag": "first concrete church",
+    "physical_cues": [
+      {
+        "cue": "The red brick facade of Saint-Jean de Montmartre at 19 Rue des Abbesses",
+        "direction": "here",
+        "feature_type": "facade"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Saint-Jean de Montmartre built from 1894 to 1904",
+      "Designed by Anatole de Baudot (1834-1915), student of Viollet-le-Duc and Henri Labrouste",
+      "Reinforced cement structure followed a system patented by engineer Paul Cottancin in 1892",
+      "Church was first religious building in France to be built from reinforced concrete",
+      "Method used wire-reinforced perforated brickwork as permanent framework of cement armature",
+      "Facade covered with red brick gave church nickname 'Saint-Jean-of-the Bricks'"
+    ],
+    "source_passage": "Situated at the foot of Montmartre, it was built from 1894 to 1904. It is notable for its innovative use of reinforced concrete, a pioneering technique championed by architect Anatole de Baudot. The new church was designed by architect Anatole de Baudot (1834-1915), a student of Viollet-le-Duc and Henri Labrouste. The reinforced cement structure followed a system patented by the engineer Paul Cottancin in 1892. The church was first religious building in France to be built from reinforced concrete. This gave the church the nickname \"Saint-Jean-of-the Bricks\".",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Jean de Montmartre",
+      "url": "https://en.wikipedia.org/wiki/Saint-Jean_de_Montmartre?oldid=1324712553",
+      "revision_id": "1324712553",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Construction"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_place_des_abbesses_hidden_history_wikipedia_saint_jean_1898_lawsuit_saved",
+    "city_name": "paris",
+    "poi_name": "Place des Abbesses",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "saint_jean_1898_lawsuit_saved",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "saint_jean_de_montmartre-rev-1324712553",
+    "sub_location": "saint-jean-de-montmartre",
+    "trigger_address": null,
+    "script_body": "The building inspectors didn't like Saint-Jean. Twenty-five-meter columns only fifty centimeters in diameter. Outer walls just seven centimeters thick. The building codes had not caught up with reinforced concrete; other architects publicly said it would collapse. In 1898 a lawsuit was filed for non-conformity to town planning. Construction stopped. A demolition order followed — the city was going to take down the parts already standing. To save the church, Anatole de Baudot and Father Sobbeaux built full-scale models of the columns out in the garden and held public demonstrations of their strength. The skeptics were reassured. The demolition order was lifted. The church was consecrated in 1904.",
+    "script_body_hash": "f6a30c18f5530457d04d0213deb791c9afe2e485463570e423d5395900171a31",
+    "beat_length_class": "anchor",
+    "duration_sec": 60,
+    "kid_friendly": "yes",
+    "entities": [
+      "Anatole de Baudot",
+      "Father Sobbeaux"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "climax",
+    "beat_type": "anecdote",
+    "emotional_register": "dramatic",
+    "subject_tag": "1898 lawsuit demos",
+    "physical_cues": [
+      {
+        "cue": "The 25-metre-tall reinforced concrete columns inside Saint-Jean de Montmartre",
+        "direction": "here",
+        "feature_type": "interior"
+      }
+    ],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Building inspectors objected to plan for 25-metre columns only 50 cm in diameter, outer walls only 7 cm thick",
+      "Some other architects opposed the plan, believing it would collapse",
+      "Construction stopped as a result of a lawsuit filed in 1898 for non-conformity of town planning",
+      "Construction halt followed by an order for the demolition of completed portions",
+      "Baudot and Sobbeaux set up technical demonstrations and made full-scale models of the columns in the garden of the church",
+      "Demonstration reassured the skeptics, demolition order was lifted, construction resumed",
+      "Church finally consecrated in 1904"
+    ],
+    "source_passage": "Using reinforced concrete on Saint-Jean-de-Montmartre was ahead of its time and building codes had not caught up with the new technology. The building inspectors objected to a plan for twenty-five meter high columns that were only 50 centimeters in diameter, and outer walls only seven centimeters thick. Even some other architects opposed the plan, believing it would collapse. Construction was stopped as a result of a lawsuit filed in 1898 for \" non-conformity of town planning\". The construction halt was followed by an order for the demolition of completed portions of the building. To save the church, Baudot and Sobbeaux set up technical demonstrations, and made full-scale models of the columns in the garden of the church to demonstrate its strength and stability.This demonstration reassured the skeptics, the demolition order was lifted, and construction resumed. The church was finally consecrated in 1904.",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Saint-Jean de Montmartre",
+      "url": "https://en.wikipedia.org/wiki/Saint-Jean_de_Montmartre?oldid=1324712553",
+      "revision_id": "1324712553",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Construction"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
+  },
+  {
+    "beat_id": "paris_rue_cler_hidden_history_wikipedia_general_cler_magenta_namesake",
+    "city_name": "paris",
+    "poi_name": "Rue Cler",
+    "parent_poi": null,
+    "lens": "hidden_history",
+    "topic_slug": "general_cler_magenta_namesake",
+    "book_slug": "wikipedia",
+    "source_chunk_slug": "rue_cler-rev-232023055",
+    "sub_location": null,
+    "trigger_address": null,
+    "script_body": "The street is named for a man almost nobody who shops here would recognise. Jean Joseph Gustave Cler, French brigadier general, born 1814, killed at the Battle of Magenta in 1859 — one of the bloody victories of Napoleon III's Italian campaign. The street took its current name by decree in 1864, five years after he died. Before that it had been the Rue de l'Église — Church Street. So a market street remembered as the most French market street in Paris is officially a war memorial to a forgotten general.",
+    "script_body_hash": "d86fea8fa9ed161e90b835b1da5202bdc1843ab037c3311d19bffa02812c4224",
+    "beat_length_class": "anchor",
+    "duration_sec": 48,
+    "kid_friendly": "yes",
+    "entities": [
+      "Jean Joseph Gustave Cler",
+      "Battle of Magenta",
+      "Napoleon III"
+    ],
+    "sensory_anchor": false,
+    "narrative_function": "deepen",
+    "beat_type": "anecdote",
+    "emotional_register": "wry",
+    "subject_tag": "general cler namesake",
+    "physical_cues": [],
+    "inline_foreign_phrases": [],
+    "pronunciation": null,
+    "key_claims": [
+      "Street is named for the French brigadier general Jean Joseph Gustave Cler (1814-1859)",
+      "Killed at the Battle of Magenta",
+      "Street took its current denomination by decree in 1864",
+      "Former name was Rue de l'Église or Rue Neuve de l'Église"
+    ],
+    "source_passage": "Elle porte le nom du général de brigade français Jean Joseph Gustave Cler (1814-1859), tué à la bataille de Magenta. Elle prend sa dénomination actuelle par un décret du . ancien nom = Rue de l'Égliserue Neuve de l'Église",
+    "source_attribution": {
+      "source_type": "wikipedia",
+      "book_title": "Wikipedia",
+      "article_title": "Rue Cler",
+      "url": "https://fr.wikipedia.org/wiki/Rue_Cler?oldid=232023055",
+      "revision_id": "232023055",
+      "retrieved_at": "2026-06-03T03:24:37+00:00",
+      "section": "Origine du nom"
+    },
+    "fact_check": {
+      "flagged_claims": [],
+      "status": "unverified",
+      "extractor_state": "clean",
+      "notes": "Source-grounded from Wikipedia revision but not independently cross-checked against primary sources this pass. Recommend external verification before high-stakes use.",
+      "checked_at": "2026-06-03T03:24:37+00:00"
+    },
+    "new_poi": false,
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-03T03:24:37+00:00",
+      "city_name": "paris"
+    }
   }
 ]

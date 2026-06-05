@@ -1,0 +1,74 @@
+ 
+ 
+ 
+| owned = RATP
+| operator = RATP
+| line = 
+| accessible = 
+| zone = 1
+| opened = 
+| closed = 
+| services = 
+| map_type = France Paris
+}}
+Abbesses ( , literally Abbesses) is a station on Paris Métro Line 12, in the Montmartre district and the 18th arrondissement. Abbesses was the deepest station in the Paris Métro, at 36 metres (118 feet) below ground, before being surpassed by Villejuif–Gustave Roussy in 2025. The station is located on the western side of the butte (hill) of Montmartre. Access to the platforms is by elevator or the decorated stairs.
+
+==Location==
+ 
+Nearby are the Montmartre district, the Basilique du Sacré-Cœur de Montmartre (church), the Place du Tertre and the Église Saint-Jean-de-Montmartre (Art Nouveau church). The station is named after the Place des Abbesses, referring to the abbesses of the nearby abbey of the Dames-de-Montmartre.
+
+==History==
+The station opened on 30 January 1913, three months after the extension of the Nord-Sud company's line A from Pigalle to Jules Joffrin. On 27 March 1931, line A became line 12 of the Métro.
+
+== Station layout ==
+{| border=0 cellspacing=0 cellpadding=3
+|style="border-bottom:solid 1px gray;border-top:solid 1px gray;" width=50 valign=top|Street Level
+|}
+{| border=0 cellspacing=0 cellpadding=3
+|style="border-bottom:solid 1px gray;border-top:solid 1px gray;" width=50 valign=top|B1
+|style="border-top:solid 1px gray;border-bottom:solid 1px gray;" width=100 valign=top|Mezzanine
+|}
+{| border=0 cellspacing=0 cellpadding=3
+|style="border-bottom:solid 1px gray;" width=50 rowspan=10 valign=top|Line 12 platforms
+|style="border-top:solid 1px gray;border-right:solid 2px black;border-left:solid 2px black;border-bottom:solid 2px black;text-align:center;" colspan=2| 
+|-
+|style="border-bottom:solid 1px gray;" width=100|Southbound
+|style="border-bottom:solid 1px gray;" width=390|← 20px 20px toward Mairie d'Issy 
+|-
+|Northbound
+| 20px 20px toward Mairie d'Aubervilliers →
+|-
+|style="border-top:solid 2px black;border-right:solid 2px black;border-left:solid 2px black;border-bottom:solid 1px gray;text-align:center;" colspan=2| 
+|}
+
+==Architecture==
+ 
+thumb|right|Abbesses Metro Station
+thumb|right|[[Paris Métro Line 12|Line 12 platform barriers at Abbesses]]
+thumb|[[MF 67 on Line 12]]
+The station's entrance, designed by Hector Guimard (1867–1942), is one of only two remaining glass-covered "dragonfly" entrances, known as édicules (the other is located at Porte Dauphine, while a replica exists at Châtelet). Though a Guimard original, the édicule at Abbesses was originally located at Hôtel de Ville and was transferred to its current location in 1974. The entrance is technically anachronistic, since line 12 of the Paris metro was built by a competing firm, the Nord-Sud Company, which did not hire Guimard but engaged other architects to design its stations and station entrances.
+
+==Abbesses in popular culture==
+* Abbesses is featured in Le Fabuleux destin d'Amélie Poulain; a working title for the film was Amélie des Abbesses (Amélie of the Abbesses). Though set at Abbesses station, the film was actually shot at Porte des Lilas station, which has a disused platform that has been specially set up for filming.
+* The entrance to Abbesses metro station is featured near the beginning of music video for Howard Jones' What Is Love as well as several other locations around Paris
+* Louis Vuitton has a messenger style bag in the Monogram Canvas line named after the station.
+* A cartoon version of the station appears in the official music video for "Flowers", the ninth track on Émilie Simon.
+* "Abbesses" is also where Minette's fashion studio is located in a Nancy Drew PC game Danger By Design.
+* The French DJ crew Birdy Nam Nam has composed a musical piece called Abbesses.
+* Featured in multiple scenes of the final episode of Netflix original series Sense8.
+
+==References==
+ 
+
+==External links==
+ 
+*[https://web.archive.org/web/20060430103239/http://www.ratp.fr/corpo/rnm/index.html Renovation works schedule from RATP web-site (French)]
+ 
+ 
+
+ 
+Category:Paris Metro stations in the 18th arrondissement of Paris
+Category:Railway stations in France opened in 1912
+Category:Art Nouveau architecture in Paris
+Category:Art Nouveau railway stations
+Category:Paris Metro Line 12

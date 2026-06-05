@@ -1,0 +1,80 @@
+ 
+ | nom = rue Cler
+ | latitude = 48.85833
+ | longitude = 2.30556
+ | arrondissement = 7 
+ | quartier = Gros-Caillou
+ | début = 111, rue Saint-Dominique
+ | fin = 30, avenue de La Motte-Picquet
+ | longueur = 428
+ | largeur = 13
+ | création = 1738, 1826
+ | dénomination = 1864
+ | ancien nom = Rue de l’Égliserue Neuve de l’Église
+ | photo = P1200290 Paris VII rue Cler rwk.jpg
+ | légende = La rue Cler vue depuis la rue Saint-Dominique.
+ | Ville de Paris = 2108
+ | DGI = 2106
+ | commons = Category:Rue Cler (Paris)
+}}
+La rue Cler est une voie du de Paris, en France.
+
+== Situation et accès ==
+thumb|left|La rue en 2025.
+
+La rue Cler est orientée globalement nord-sud, dans le de Paris, à mi-chemin entre l’hôtel des Invalides et le Champ-de-Mars. Elle débute au nord au niveau du 111, rue Saint-Dominique, en face de l’église Saint-Pierre-du-Gros-Caillou, et se termine au sud au niveau du 30, avenue de La Motte-Picquet.
+
+Outre ces voies, la rue Cler est rejointe ou traversée par plusieurs rues perpendiculaires ; du sud au nord :
+* 23-25 et 24-24 bis : rue de Grenelle ;
+* 38-40 et 43-45 : rue du Champ-de-Mars ;
+* 46-50 : rue Bosquet ;
+* 54-56 : passage de la Vierge.
+
+Au nord, elle est prolongée par la rue Pierre-Villey.
+
+Entre la rue de Grenelle et l’avenue de La Motte-Piquet, la rue Cler est une voie piétonne. Elle est principalement dédiée aux commerces d'alimentation.
+
+Le quartier est desservi par la ligne 8 aux stations École Militaire et La Tour-Maubourg.
+
+== Origine du nom ==
+vignette|gauche| redresse|Jean Joseph Gustave Cler.
+Elle porte le nom du général de brigade français Jean Joseph Gustave Cler (1814-1859), tué à la bataille de Magenta.
+
+== Historique ==
+La partie de la rue entre les rues de Grenelle et Saint-Dominique est créée en 1738. La partie entre la rue de Grenelle et l'avenue de La Motte-Picquet est ouverte en 1826.
+
+Elle prend sa dénomination actuelle par un décret du .
+
+En 1895 sont annoncées la construction d’une école de filles rue Cler et la reconstruction de l’école maternelle existante pour un montant de 400 000 francs. 
+
+== Bâtiments remarquables et lieux de mémoire ==
+
+La rue Cler comporte les édifices remarquables suivants :
+* : maison d’angle de la fin du caractéristique de l’ancien village du Gros-Caillou ;
+* : en 1885 se trouve à cette adresse un asile ;
+* : collège public Jules-Romains ;
+* : chapelle ;
+* : le président de la République Emmanuel Macron y a vécu jusqu'en 2017, en location ;
+* : le Premier ministre François Bayrou y vit depuis 1997.
+
+1 rue Cler Paris.jpg| .
+28 rue Cler Paris.jpg| : ancienne boucherie chevaline.
+
+== Notes et références ==
+ 
+
+== Pour approfondir ==
+=== Bibliographie ===
+* .
+
+=== Articles connexes ===
+* Liste des voies du de Paris
+
+=== Liens externes ===
+ 
+* [https://experience.arcgis.com/experience/dc9f342a296b4f599aca1cfa631d97fd? Carte interactive des voies de Paris] sur le site de la direction de l'urbanisme de la Ville de Paris
+ 
+
+Cler
+Cler
+Cler
