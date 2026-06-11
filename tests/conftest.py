@@ -85,6 +85,28 @@ def _assert_test_port() -> None:
         )
 
 
+def pytest_configure(config):
+    """Refuse to run the whole suite against any non-test database.
+
+    Many fixtures across the suite issue ``MATCH (n) DETACH DELETE n`` via their
+    own ``create_driver()``, bypassing ``_wipe()``'s per-call guard. Rather than
+    guard each one, we hard-stop the entire run when ``NEO4J_URI`` is not an
+    allowlisted test port. The cloud (Aura) database is the single persistent
+    store and must NEVER be wiped by tests — cloud connectivity is checked
+    read-only via ``make test-cloud`` (which does not invoke pytest).
+    """
+    uri = os.getenv("NEO4J_URI", "")
+    port = urlparse(uri).port
+    if port not in _TEST_PORT_ALLOWLIST:
+        pytest.exit(
+            f"Refusing to run the test suite against NEO4J_URI={uri!r} (port={port}). "
+            f"The suite contains destructive fixtures; it may only run against the test "
+            f"database on port {sorted(_TEST_PORT_ALLOWLIST)}. The cloud DB is the single "
+            f"persistent store and is never wiped by tests — use the read-only "
+            f"`make test-cloud` smoke for a cloud check."
+        )
+
+
 def _neo4j_available() -> bool:
     try:
         driver = create_driver()

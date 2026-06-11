@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -60,7 +60,7 @@ flutter-analyze: ## Run Dart static analysis on Flutter code
 # TESTING
 # ──────────────────────────────────────────────────────────
 
-test: test-local test-cloud flutter-test ## Run ALL tests (Python local + cloud + Flutter) — THE bar before any commit
+test: test-local flutter-test ## THE bar before any commit (Python on local Docker 7688 + Flutter). Aura is NEVER wiped; `make test-cloud` is a separate read-only smoke.
 
 test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT the bar
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_generation.py tests/test_trip_models.py tests/test_feedback.py -v
@@ -70,16 +70,18 @@ test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/ -v
 
-test-cloud: ## Run tests against Neo4j Aura (cloud) — excludes wipe-dependent integration tests
-	@cp .env.cloud .env.test && echo "  → Testing against CLOUD Neo4j (Aura)"
-	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
-	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/ -v --ignore=tests/test_constraints.py --ignore=tests/test_seed.py --ignore=tests/test_traversals.py
+test-cloud: ## Read-only connectivity smoke against Aura (counts only). NEVER wipes — Aura is the single persistent store; the destructive suite runs only on local Docker (test-local).
+	@echo "  → Read-only smoke against Aura (no writes, no wipe)"
+	set -a && . .env.cloud && set +a && uv run python -c "from src.connection import create_driver, get_database; d=create_driver(); s=d.session(database=get_database()); n=s.run('MATCH (n) RETURN count(n) AS c').single()['c']; labels=sorted(r['label'] for r in s.run('CALL db.labels() YIELD label RETURN label')); print(f'Aura reachable - {n} nodes; labels: {labels}'); s.close(); d.close()"
 
 test-integration: ## Run integration tests (needs Neo4j)
 	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
 
 test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
 	uv run pytest tests/test_audio_functional.py -v -s
+
+test-live: ## Run live external-service tests (needs real creds, e.g. RESEND_API_KEY) — NOT in the default bar
+	uv run pytest -m live -v
 
 # ──────────────────────────────────────────────────────────
 # DATABASE
@@ -213,15 +215,17 @@ flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 	cd mobile && flutter clean
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get
 
-flutter-test: ## Run Flutter tests (headless Chrome for Testing — gtimeout kills Flutter SDK hang after completion)
-	@pkill -f "Google Chrome for Testing" 2>/dev/null || true
-	@rm -rf /tmp/flutter_tools.* 2>/dev/null || true
+flutter-test: ## Run Flutter tests (headless Chrome; pass/fail from the 'All tests passed!' marker — only the benign post-completion SDK hang is tolerated)
+	@pkill -f "Google Chrome for Testing" 2>/dev/null; rm -rf /tmp/flutter_tools.* 2>/dev/null; \
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
 	  CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" \
-	  gtimeout 30 flutter test --platform chrome 2>&1; EXIT=$$?; \
-	  pkill -f "Google Chrome for Testing" 2>/dev/null || true; \
-	  if [ $$EXIT -eq 124 ]; then echo "flutter test hung after completion (killed by timeout)"; exit 0; fi; \
-	  exit $$EXIT
+	  gtimeout 120 flutter test --platform chrome >/tmp/ondoway-flutter-test.log 2>&1; \
+	  cat /tmp/ondoway-flutter-test.log; \
+	  pkill -f "Google Chrome for Testing" 2>/dev/null; \
+	  if grep -q "All tests passed!" /tmp/ondoway-flutter-test.log && ! grep -qE "Some tests failed|Failed to load|did not complete" /tmp/ondoway-flutter-test.log; then \
+	    echo "Flutter: all tests passed (post-run SDK hang, if any, is benign)"; exit 0; \
+	  fi; \
+	  echo "FLUTTER TESTS FAILED OR INCOMPLETE — see output above"; exit 1
 
 flutter-test-diag: ## Diagnostic: run flutter-test with timeout and process logging
 	@echo "==> PRE-TEST: Chrome/Dart processes"

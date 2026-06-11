@@ -90,10 +90,10 @@ After cherry-picking from a worktree: immediately remove the worktree directory,
 ## Test Infrastructure
 
 ```bash
-make test          # THE bar — test-local + test-cloud + flutter-test
+make test          # THE bar — test-local + flutter-test (Aura is never wiped)
 make test-unit     # Python unit only (for quick iteration, NOT the bar)
 make test-local    # Python against local Docker Neo4j (port 7688)
-make test-cloud    # Python against Aura cloud
+make test-cloud    # Read-only connectivity smoke against Aura (no writes)
 make flutter-test  # Flutter (headless Chrome, foreground only)
 make flutter-ios   # Launch on iOS simulator
 make db-test-up    # Start test Neo4j (port 7688)
@@ -159,7 +159,7 @@ The project pins **public PyPI** as the default index in `pyproject.toml` (`[[to
 
 ## Pre-commit Checklist
 
-- [ ] `make test` passes (Python local + cloud + Flutter — all three)
+- [ ] `make test` passes (Python local + Flutter); `make test-cloud` is a separate read-only Aura smoke
 - [ ] Read the diff (`git diff --staged`) — every change is intentional
 - [ ] No hardcoded colors (use `Theme.of(context).colorScheme.*`)
 - [ ] No fabricated values — every field name, ID, and property comes from a verified source

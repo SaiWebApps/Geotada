@@ -15,6 +15,12 @@ from src.api.auth.config import MAGIC_LINK_PROVIDER, RESEND_API_KEY
 from src.api.auth.email import EmailDeliveryError, send_magic_link
 from src.api.auth.tokens import create_magic_token
 
+# Live external-service tests: excluded from the default bar via `-m 'not live'`
+# (pyproject addopts). Run explicitly with `make test-live` when real creds are
+# present. Marker-based deselection (not `--ignore`, not skip) keeps the conftest
+# skip->fail policy intact.
+pytestmark = pytest.mark.live
+
 _can_send = MAGIC_LINK_PROVIDER == "resend" and bool(RESEND_API_KEY)
 
 needs_resend = pytest.mark.skipif(

@@ -63,4 +63,7 @@ ignore = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore=tests/test_workbench_ui.py"
+addopts = "--ignore=tests/test_workbench_ui.py -m 'not live'"
+markers = [
+    "live: hits a live external service (e.g. Resend email) and needs real creds. Excluded from the default bar via `-m 'not live'`; run with `make test-live`.",
+]
