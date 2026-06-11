@@ -7,8 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:ondoway/services/providers.dart';
 
 class AudioService extends ChangeNotifier implements AudioProvider {
-  final AudioPlayer _player = AudioPlayer();
   final http.Client _httpClient;
+  AudioPlayer? _playerInstance;
 
   String? _currentBeatId;
   bool _isPlaying = false;
@@ -17,10 +17,21 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   Duration _duration = Duration.zero;
 
   AudioService({http.Client? httpClient})
-      : _httpClient = httpClient ?? http.Client() {
-    _player.playerStateStream.listen(_onPlayerStateChanged);
-    _player.positionStream.listen(_onPositionChanged);
-    _player.durationStream.listen(_onDurationChanged);
+      : _httpClient = httpClient ?? http.Client();
+
+  /// The just_audio player, created lazily on first playback. HTTP-only
+  /// operations (checkAudioStatus, prefetch, cache queries) never touch it,
+  /// so they don't boot the audio engine / its platform channels — which also
+  /// lets them run in plain unit tests without a Flutter binding.
+  AudioPlayer get _player {
+    final existing = _playerInstance;
+    if (existing != null) return existing;
+    final player = AudioPlayer();
+    player.playerStateStream.listen(_onPlayerStateChanged);
+    player.positionStream.listen(_onPositionChanged);
+    player.durationStream.listen(_onDurationChanged);
+    _playerInstance = player;
+    return player;
   }
 
   // Getters
@@ -153,7 +164,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
 
   @override
   void dispose() {
-    _player.dispose();
+    _playerInstance?.dispose();
     super.dispose();
   }
 

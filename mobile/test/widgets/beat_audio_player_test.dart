@@ -19,6 +19,27 @@ Widget _wrap({
   );
 }
 
+/// Reports playback state without booting a real just_audio player. A real
+/// `AudioService.play()` awaits `just_audio` loading a (fake) URL, which never
+/// completes on the headless-web test runner and hangs the suite.
+class _FakeAudioService extends AudioService {
+  _FakeAudioService({String? activeBeatId, bool playing = false})
+      : _activeBeatId = activeBeatId,
+        _playing = playing;
+
+  final String? _activeBeatId;
+  final bool _playing;
+
+  @override
+  String? get currentBeatId => _activeBeatId;
+
+  @override
+  bool get isPlaying => _playing;
+
+  @override
+  Future<void> play(String beatId, String audioUrl) async {}
+}
+
 void main() {
   group('BeatAudioPlayer', () {
     testWidgets('renders play button when audioUrl is provided', (tester) async {
@@ -75,9 +96,7 @@ void main() {
 
     testWidgets('shows pause icon when beat is active and playing',
         (tester) async {
-      final audioService = AudioService();
-      // Pre-set the audio service to be playing this beat
-      await audioService.play('beat-1', 'https://example.com/audio.mp3');
+      final audioService = _FakeAudioService(activeBeatId: 'beat-1', playing: true);
 
       await tester.pumpWidget(
         _wrap(
@@ -96,9 +115,8 @@ void main() {
 
     testWidgets('shows play icon when a different beat is active',
         (tester) async {
-      final audioService = AudioService();
-      // A different beat is playing
-      await audioService.play('beat-other', 'https://example.com/other.mp3');
+      final audioService =
+          _FakeAudioService(activeBeatId: 'beat-other', playing: true);
 
       await tester.pumpWidget(
         _wrap(
