@@ -30,9 +30,15 @@ class EvalResult:
 
 
 def _normalize(text: str) -> str:
-    """Lowercase, strip punctuation, collapse whitespace."""
+    """Lowercase, replace punctuation with spaces, collapse whitespace.
+
+    Punctuation is replaced with a space (not deleted) so a separator rendered
+    differently by the two sources — e.g. the script's spaced em-dash
+    ``hub — the`` vs Whisper's unspaced ``hub—the`` — normalizes to the same
+    word boundary instead of joining the words into ``hubthe`` and inflating WER.
+    """
     text = text.lower()
-    text = re.sub(r"[^\w\s]", "", text)
+    text = re.sub(r"[^\w\s]", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 

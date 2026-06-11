@@ -35,8 +35,13 @@ class TestNormalize:
         assert _normalize("  hello  ") == "hello"
 
     def test_handles_dashes(self):
-        result = _normalize("Look up — 2.5 million")
-        assert "25" in result  # punctuation stripped
+        # Punctuation is a word boundary, not a word-join. The eval compares a
+        # spaced em-dash in the script ("hub — the") against Whisper's unspaced
+        # "hub—the"; deleting the dash would yield "hubthe" and inflate WER, so
+        # both must normalize to "hub the".
+        assert _normalize("hub — the") == "hub the"
+        assert _normalize("hub—the") == "hub the"
+        assert _normalize("Look up — 2.5 million") == "look up 2 5 million"
 
 
 class TestWordErrorRate:
