@@ -368,10 +368,14 @@ def generate_audio_for_trip(
     body: GenerateRequest | None = None,
     session: Session = Depends(get_session),
 ):
-    """Generate audio for all beats in a trip that don't have audio yet.
+    """Generate audio for each stop's primary beat that doesn't have audio yet.
 
-    Finds beats linked to the trip via HAS_STOP -> ItineraryItem -> PLAYS_BEAT,
-    filters to those without audio, and runs TTS generation for each.
+    Finds each ItineraryItem's primary beat (HAS_STOP -> ItineraryItem ->
+    PLAYS_BEAT, filtered to `item.primary_beat_id`), filters to those without
+    audio, and runs TTS generation for each. Non-primary PLAYS_BEAT beats are
+    deliberately excluded: mobile plays only the primary beat, and M7's COMPOSE
+    layer replaces per-beat audio with one composed MP3 per stop
+    (specs/2026-06-12-tour-algorithm-decision/ALGORITHM-SPEC.md §2.5).
     """
     # Verify trip exists
     trip_check = session.run(
@@ -381,10 +385,18 @@ def generate_audio_for_trip(
     if trip_check is None:
         raise HTTPException(404, f"Trip '{trip_id}' not found")
 
-    # Find beats without audio
+    # Find each item's primary beat without audio. The coalesce fallback
+    # mirrors list_trips_for_profile (src/api/crud/trips.py): legacy items
+    # that predate M0b's multi-beat persistence have no primary_beat_id
+    # property and exactly one PLAYS_BEAT edge. DISTINCT guards against two
+    # items sharing a primary beat (generate it once, not once per item).
     query = """
         MATCH (t:Trip {id: $trip_id})-[:HAS_STOP]->(item:ItineraryItem)
         MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)
+        WITH item, collect(beat) AS beats
+        WITH beats, coalesce(item.primary_beat_id, beats[0].id) AS primary_id
+        UNWIND [b IN beats WHERE b.id = primary_id] AS beat
+        WITH DISTINCT beat
         WHERE beat.audio_url IS NULL OR beat.audio_url = ''
         RETURN beat.id AS beat_id, beat.script_body AS script_body
     """
