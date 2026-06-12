@@ -221,6 +221,23 @@ class TestGeneratedStop:
         assert stop.lens_name is None
         assert stop.lens_display is None
 
+    def test_generated_stop_transit_polyline_optional(self):
+        """T1(M2): transit_polyline defaults None; carries the routed leg shape."""
+        base = dict(
+            sort_order=1,
+            poi_id="poi-abc",
+            poi_name="Louvre",
+            lat=48.86,
+            lng=2.34,
+            beat_id="b1",
+            duration_min=10,
+            importance_tier=5,
+            start_time="09:00",
+        )
+        assert GeneratedStop(**base).transit_polyline is None
+        stop = GeneratedStop(**base, transit_polyline="encoded6_abc")
+        assert stop.transit_polyline == "encoded6_abc"
+
     def test_generated_stop_multi_beat_fields(self):
         """T1(M0b): GeneratedStop carries all beat_ids + dwell_seconds from the engine."""
         stop = GeneratedStop(

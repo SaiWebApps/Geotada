@@ -393,13 +393,14 @@ Generates a trip by running the tour engine (`src/tour`) end to end: corpus load
       "dwell_seconds": 1800,
       "script_body": "…primary beat text…",
       "audio_url": null,
-      "audio_duration_sec": null
+      "audio_duration_sec": null,
+      "transit_polyline": null
     }
   ]
 }
 ```
 
-`lens_name`/`lens_display` are the DOMINANT lens of the stop's beats and are `null` when no beat is lensed. `script_body`/`audio_url`/`audio_duration_sec` describe the primary beat.
+`lens_name`/`lens_display` are the DOMINANT lens of the stop's beats and are `null` when no beat is lensed. `script_body`/`audio_url`/`audio_duration_sec` describe the primary beat. `transit_polyline` is the encoded polyline (6-digit precision) of the walking leg INTO the stop — populated only when the local Valhalla routing engine is running (`make valhalla-up`); otherwise `null` (haversine fallback).
 
 **Response 404:** Profile not found.
 

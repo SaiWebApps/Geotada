@@ -81,6 +81,11 @@ class GeneratedStop(BaseModel):
         description="All beats narrated at this stop (engine output); beat_id is the primary/first",
     )
     dwell_seconds: int = Field(default=0, description="Engine-computed time spent at this stop")
+    transit_polyline: str | None = Field(
+        default=None,
+        description="Encoded polyline (6-digit precision) of the walking leg INTO this stop; "
+        "null when routing fell back to haversine (Valhalla not running)",
+    )
 
 
 class TripGenerateResponse(BaseModel):

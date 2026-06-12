@@ -22,8 +22,13 @@ from __future__ import annotations
 import itertools
 import math
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
 
 from .contract import POI, Route, TransitSegment
+
+if TYPE_CHECKING:
+    # routing_client imports from this module; type-only import avoids the cycle.
+    from .routing_client import RoutingClient
 
 # §3.2 / phase-1-design rule ledger 20-25.
 PACE_KMH: float = 3.0
@@ -140,6 +145,37 @@ def _path_walk_seconds(coords: list[tuple[float, float]]) -> int:
     return total
 
 
+def _transit(
+    from_id: str | None,
+    to_id: str | None,
+    from_lat: float,
+    from_lng: float,
+    to_lat: float,
+    to_lng: float,
+    routing_client: RoutingClient | None,
+) -> TransitSegment:
+    """One leg: haversine walk_seconds always; routed leg_seconds/polyline
+    when a client is given (a None polyline marks the client's own haversine
+    fallback, so source stays honest when Valhalla is down)."""
+    d = haversine_m(from_lat, from_lng, to_lat, to_lng)
+    secs = pace_corrected_walk_seconds(d)
+    leg_seconds: int | None = None
+    polyline: str | None = None
+    source = "haversine"
+    if routing_client is not None:
+        leg_seconds, _leg_m, polyline = routing_client.route(from_lat, from_lng, to_lat, to_lng)
+        source = "valhalla" if polyline is not None else "haversine"
+    return TransitSegment(
+        from_poi_id=from_id,
+        to_poi_id=to_id,
+        distance_m=d,
+        walk_seconds=secs,
+        leg_seconds=leg_seconds,
+        polyline=polyline,
+        source=source,
+    )
+
+
 def summarise_route(
     pois: Iterable[POI],
     *,
@@ -148,8 +184,15 @@ def summarise_route(
     round_trip: bool,
     duration_min: int,
     spine_area: str | None,
+    routing_client: RoutingClient | None = None,
 ) -> Route:
-    """Build a Route from an ordered POI list."""
+    """Build a Route from an ordered POI list.
+
+    M2: budgets (walk_seconds totals, audio budget) stay on the pace-corrected
+    haversine numbers regardless of the client — M3 moves scoring onto routed
+    leg_seconds. The client only enriches each TransitSegment with
+    leg_seconds/polyline/source and sets Route.routed.
+    """
     ordered = tuple(pois)
     transits: list[TransitSegment] = []
     prev_lat, prev_lng = start_lat, start_lng
@@ -157,32 +200,16 @@ def summarise_route(
     total_distance = 0.0
 
     for poi in ordered:
-        d = haversine_m(prev_lat, prev_lng, poi.lat, poi.lng)
-        secs = pace_corrected_walk_seconds(d)
-        transits.append(
-            TransitSegment(
-                from_poi_id=prev_id,
-                to_poi_id=poi.id,
-                distance_m=d,
-                walk_seconds=secs,
-            )
-        )
-        total_distance += d
+        seg = _transit(prev_id, poi.id, prev_lat, prev_lng, poi.lat, poi.lng, routing_client)
+        transits.append(seg)
+        total_distance += seg.distance_m
         prev_lat, prev_lng = poi.lat, poi.lng
         prev_id = poi.id
 
     if round_trip and ordered:
-        d = haversine_m(prev_lat, prev_lng, start_lat, start_lng)
-        secs = pace_corrected_walk_seconds(d)
-        transits.append(
-            TransitSegment(
-                from_poi_id=prev_id,
-                to_poi_id=None,
-                distance_m=d,
-                walk_seconds=secs,
-            )
-        )
-        total_distance += d
+        seg = _transit(prev_id, None, prev_lat, prev_lng, start_lat, start_lng, routing_client)
+        transits.append(seg)
+        total_distance += seg.distance_m
 
     total_walk_seconds = sum(t.walk_seconds for t in transits)
     audio_budget = max(0, err_short_total_seconds(duration_min) - total_walk_seconds)
@@ -195,4 +222,5 @@ def summarise_route(
         spine_area=spine_area,
         target_audio_seconds=target_audio_seconds(duration_min),
         err_short_total_seconds=err_short_total_seconds(duration_min),
+        routed=bool(transits) and all(t.source == "valhalla" for t in transits),
     )

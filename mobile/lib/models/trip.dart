@@ -13,6 +13,9 @@ class ItineraryStop {
   final String? scriptBody;
   final String? audioUrl;
   final double? audioDurationSec;
+  // M2: encoded polyline of the walking leg INTO this stop; null when the
+  // backend's routing fell back to haversine (Valhalla not running).
+  final String? transitPolyline;
 
   const ItineraryStop({
     required this.sortOrder,
@@ -29,6 +32,7 @@ class ItineraryStop {
     this.scriptBody,
     this.audioUrl,
     this.audioDurationSec,
+    this.transitPolyline,
   });
 
   factory ItineraryStop.fromJson(Map<String, dynamic> json) {
@@ -49,6 +53,7 @@ class ItineraryStop {
       scriptBody: json['script_body'] as String?,
       audioUrl: json['audio_url'] as String?,
       audioDurationSec: (json['audio_duration_sec'] as num?)?.toDouble(),
+      transitPolyline: json['transit_polyline'] as String?,
     );
   }
 
@@ -67,6 +72,7 @@ class ItineraryStop {
         'script_body': scriptBody,
         'audio_url': audioUrl,
         'audio_duration_sec': audioDurationSec,
+        'transit_polyline': transitPolyline,
       };
 
   ItineraryStop copyWith({
@@ -89,6 +95,7 @@ class ItineraryStop {
       scriptBody: scriptBody ?? this.scriptBody,
       audioUrl: audioUrl ?? this.audioUrl,
       audioDurationSec: audioDurationSec ?? this.audioDurationSec,
+      transitPolyline: transitPolyline,
     );
   }
 }

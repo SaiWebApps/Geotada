@@ -24,6 +24,7 @@ import re
 from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from .contract import POI, BeatRef, PhysicalCue, Route, TourabilityAssessment, TourInput
 from .density import TourabilityRefusedError
@@ -40,6 +41,9 @@ from .routing import (
     target_audio_seconds,
     walk_budget_seconds,
 )
+
+if TYPE_CHECKING:
+    from .routing_client import RoutingClient
 
 # §3.2 score weights / caps. Calibrated against golden tests on 2026-04-29.
 INTEREST_BIAS_MAX: float = 2.0
@@ -424,8 +428,17 @@ def _decode_physical_cues(raw) -> tuple[PhysicalCue, ...]:
 # ---------------------------------------------------------------------------
 
 
-def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
+def select_route(
+    input: TourInput,
+    snapshot: CorpusSnapshot,
+    *,
+    routing_client: RoutingClient | None = None,
+) -> Route:
     """Compute the spine, score POIs, run greedy selection. Returns a Route.
+
+    M2: ``routing_client`` only enriches the final Route's transits with
+    routed leg_seconds/polylines (via summarise_route) — selection scoring
+    stays on haversine until M3.
 
     Phase 6 added two guards before the greedy:
 
@@ -468,6 +481,7 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
             round_trip=input.round_trip,
             duration_min=input.duration_min,
             spine_area=None,
+            routing_client=routing_client,
         )
         return _attach_tourability_if_yellow(empty, assessment)
 
@@ -605,6 +619,7 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
         round_trip=input.round_trip,
         duration_min=input.duration_min,
         spine_area=spine,
+        routing_client=routing_client,
     )
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})

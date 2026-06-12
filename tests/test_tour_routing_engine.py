@@ -205,3 +205,130 @@ def test_default_construction_owns_a_client():
     no network call is made by construction."""
     rc = RoutingClient()
     rc.close()
+
+
+# ---------------------------------------------------------------------------
+# M2 — routed leg_seconds/polyline on the contract; summarise_route/select_route
+# ---------------------------------------------------------------------------
+
+from src.tour.contract import Route, TourInput, TransitSegment
+from src.tour.routing import summarise_route
+from src.tour.selection import select_route
+from tests.test_tour_selection import PDV, _density_fillers, _poi, _snap
+
+
+def test_transit_segment_m2_fields_round_trip_and_default():
+    routed = TransitSegment(
+        from_poi_id=None,
+        to_poi_id="p1",
+        distance_m=500.0,
+        walk_seconds=810,
+        leg_seconds=540,
+        polyline=SHAPE,
+        source="valhalla",
+    )
+    assert TransitSegment.model_validate(routed.model_dump()) == routed
+    # Pre-M2 construction still works; new fields default to the haversine era.
+    legacy = TransitSegment(from_poi_id=None, to_poi_id="p1", distance_m=500.0, walk_seconds=810)
+    assert (legacy.leg_seconds, legacy.polyline, legacy.source) == (None, None, "haversine")
+    assert TransitSegment.model_validate(legacy.model_dump()) == legacy
+
+
+def test_route_m2_fields_round_trip_and_default():
+    route = Route(
+        pois=(),
+        transits=(),
+        total_walk_distance_m=0.0,
+        total_walk_seconds=0,
+        audio_budget_seconds=0,
+        routed=False,
+        route_polyline=None,
+    )
+    assert (route.routed, route.route_polyline) == (False, None)
+    assert (route.backtrack_ratio, route.flow_score) == (0.0, 0.0)
+    assert Route.model_validate(route.model_dump()) == route
+
+
+def _two_stop_pois():
+    return [
+        _poi("a", lat=PDV[0] + 0.0030, lng=PDV[1], areas=("Le Marais",)),  # ~330m N
+        _poi("b", lat=PDV[0], lng=PDV[1] + 0.0045, areas=("Le Marais",)),  # ~330m E
+    ]
+
+
+def test_summarise_route_with_client_populates_routed_legs():
+    with _client(_valhalla_handler) as rc:
+        route = summarise_route(
+            _two_stop_pois(),
+            start_lat=PDV[0],
+            start_lng=PDV[1],
+            round_trip=True,
+            duration_min=60,
+            spine_area="Le Marais",
+            routing_client=rc,
+        )
+    assert route.routed is True
+    assert len(route.transits) == 3  # start->a, a->b, b->start
+    for seg in route.transits:
+        assert seg.source == "valhalla"
+        assert seg.polyline == SHAPE
+        expected = _routed_seconds(seg.distance_m)
+        assert seg.leg_seconds == expected
+        # budgets stay haversine: walk_seconds untouched by the client
+        assert seg.walk_seconds == pace_corrected_walk_seconds(seg.distance_m)
+        assert seg.leg_seconds != seg.walk_seconds  # 1.2x@4km/h vs 1.35x@3km/h
+
+
+def test_summarise_route_without_client_keeps_haversine_defaults():
+    route = summarise_route(
+        _two_stop_pois(),
+        start_lat=PDV[0],
+        start_lng=PDV[1],
+        round_trip=False,
+        duration_min=60,
+        spine_area="Le Marais",
+    )
+    assert route.routed is False
+    for seg in route.transits:
+        assert (seg.leg_seconds, seg.polyline, seg.source) == (None, None, "haversine")
+
+
+def test_summarise_route_client_down_marks_haversine_source():
+    with _client(_refusing_handler) as rc:
+        route = summarise_route(
+            _two_stop_pois(),
+            start_lat=PDV[0],
+            start_lng=PDV[1],
+            round_trip=False,
+            duration_min=60,
+            spine_area="Le Marais",
+            routing_client=rc,
+        )
+    assert route.routed is False
+    for seg in route.transits:
+        assert seg.source == "haversine"
+        assert seg.polyline is None
+        # the client's fallback equals the budget math exactly
+        assert seg.leg_seconds == seg.walk_seconds
+
+
+def test_select_route_same_pois_with_and_without_client():
+    """The M2 PROVE: a routing client changes NO selection decision (Jaccard
+    1.0, same order) — it only enriches the final transits."""
+    pois = [*_density_fillers(PDV), *_two_stop_pois()]
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    tour_input = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
+
+    bare = select_route(tour_input, snap)
+    with _client(_valhalla_handler) as rc:
+        routed = select_route(tour_input, snap, routing_client=rc)
+
+    assert [p.id for p in routed.pois] == [p.id for p in bare.pois]  # Jaccard == 1.0
+    assert routed.pois, "GREEN fixture must select something"
+    assert routed.routed is True
+    assert all(seg.leg_seconds is not None for seg in routed.transits)
+    assert any(
+        seg.leg_seconds != seg.walk_seconds for seg in routed.transits
+    ), "at least one leg must be visibly routed"
+    # budgets identical with/without the client
+    assert routed.total_walk_seconds == bare.total_walk_seconds

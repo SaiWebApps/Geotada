@@ -16,6 +16,7 @@ void main() {
         'duration_min': 5,
         'importance_tier': 5,
         'start_time': '09:00',
+        'transit_polyline': 'encodedpolyline6',
       };
 
       final stop = ItineraryStop.fromJson(json);
@@ -31,6 +32,24 @@ void main() {
       expect(stop.durationMin, 5);
       expect(stop.importanceTier, 5);
       expect(stop.startTime, '09:00');
+      expect(stop.transitPolyline, 'encodedpolyline6');
+    });
+
+    test('fromJson defaults transitPolyline to null when absent', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'poi-123',
+        'poi_name': 'Eiffel Tower',
+        'lat': 48.8584,
+        'lng': 2.2945,
+        'beat_id': 'beat-456',
+        'lens_name': 'dark_history',
+        'lens_display': 'Dark History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '09:00',
+      };
+      expect(ItineraryStop.fromJson(json).transitPolyline, isNull);
     });
 
     test('fromJson handles integer lat/lng values', () {

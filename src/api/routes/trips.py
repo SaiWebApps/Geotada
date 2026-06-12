@@ -20,6 +20,7 @@ from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
+from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
 
 router = APIRouter(tags=["trips"])
@@ -124,7 +125,11 @@ def generate_trip(
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
-        route = select_route(tour_input, snapshot)
+        # M2: the client enriches transits with routed leg_seconds/polylines
+        # when the local Valhalla container is up; with it down every call
+        # falls back to haversine instantly and behavior is unchanged.
+        with RoutingClient() as routing_client:
+            route = select_route(tour_input, snapshot, routing_client=routing_client)
     except TourabilityRefusedError as exc:
         a = exc.assessment
         raise HTTPException(
@@ -169,6 +174,9 @@ def generate_trip(
 
     display_map = _lens_display_map(session, {s["lens_name"] for s in stops if s["lens_name"]})
     audio_by_beat = _primary_beat_audio(session, [s["primary_beat_id"] for s in stops])
+    # Walking leg INTO each stop (transits[i] arrives at pois[i]); response-only
+    # in M2 — not persisted on ItineraryItem until routing runs in production.
+    polyline_by_poi = {t.to_poi_id: t.polyline for t in route.transits if t.to_poi_id}
     stops_out = [
         GeneratedStop(
             sort_order=s["sort_order"],
@@ -184,6 +192,7 @@ def generate_trip(
             importance_tier=s["importance_tier"],
             start_time=s["start_time"],
             dwell_seconds=s["dwell_seconds"],
+            transit_polyline=polyline_by_poi.get(s["poi_id"]),
             **audio_by_beat.get(s["primary_beat_id"], {}),
         )
         for s in stops

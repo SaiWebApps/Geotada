@@ -106,7 +106,13 @@ class BeatRef(BaseModel):
 
 
 class TransitSegment(BaseModel):
-    """A walking segment between two ordered points along the route."""
+    """A walking segment between two ordered points along the route.
+
+    M2: ``walk_seconds``/``distance_m`` stay the pace-corrected haversine
+    numbers the budget math uses; ``leg_seconds``/``polyline`` carry the
+    road-network values when a RoutingClient produced them (``source``
+    records their provenance). M3 moves selection scoring onto leg_seconds.
+    """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -114,6 +120,9 @@ class TransitSegment(BaseModel):
     to_poi_id: str | None
     distance_m: float = Field(..., ge=0)
     walk_seconds: int = Field(..., ge=0)
+    leg_seconds: int | None = Field(default=None, ge=0)
+    polyline: str | None = None  # encoded polyline (6-digit precision), routed legs only
+    source: Literal["valhalla", "haversine"] = "haversine"
 
 
 class TourabilityAssessment(BaseModel):
@@ -166,6 +175,14 @@ class Route(BaseModel):
     err_short_total_seconds: int = 0
     tourability: TourabilityAssessment | None = None
     demoted_beats: dict[str, tuple[BeatRef, ...]] = Field(default_factory=dict)
+    # M2 routed-metadata slots. ``routed`` is True iff every transit leg came
+    # from Valhalla. ``route_polyline`` (stitched whole-route shape) and
+    # ``backtrack_ratio``/``flow_score`` keep their defaults until the
+    # milestones that compute them (M3/M4) land.
+    routed: bool = False
+    route_polyline: str | None = None
+    backtrack_ratio: float = Field(default=0.0, ge=0)
+    flow_score: float = Field(default=0.0, ge=0)
 
 
 OrderingStrategy = Literal["sub_location", "trigger_address", "narrative_function"]
