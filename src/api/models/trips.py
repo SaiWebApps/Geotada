@@ -21,6 +21,13 @@ class TripGenerateRequest(BaseModel):
     trip_name: str | None = Field(
         default=None, description="Optional trip name; auto-generated if omitted"
     )
+    lenses: list[str] | None = Field(
+        default=None,
+        description="Lens slugs to bias selection; precedence: request -> profile -> city default",
+    )
+    round_trip: bool = Field(
+        default=False, description="Return to the start point (loops the route)"
+    )
 
     @field_validator("start_time")
     @classmethod
@@ -36,6 +43,15 @@ class TripGenerateRequest(BaseModel):
         if not (0 <= hour <= 23 and 0 <= minute <= 59):
             raise ValueError("start_time must be a valid time (00:00 - 23:59)")
         return v
+
+    @field_validator("lenses")
+    @classmethod
+    def normalize_lenses(cls, v: list[str] | None) -> list[str] | None:
+        """Drop blanks/whitespace; empty -> None. Mirrors TourInput in src/tour/contract.py."""
+        if v is None:
+            return None
+        cleaned = [s.strip() for s in v if s and s.strip()]
+        return cleaned or None
 
 
 class GeneratedStop(BaseModel):

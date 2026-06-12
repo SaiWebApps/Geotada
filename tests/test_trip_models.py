@@ -120,6 +120,34 @@ class TestTripGenerateRequest:
         assert req.max_stops == 10
         assert req.duration_min is None
         assert req.start_time == "09:00"
+        assert req.lenses is None
+        assert req.round_trip is False
+
+    def test_trip_generate_request_lenses_and_round_trip(self):
+        """T1: lenses normalize (blanks dropped) and round_trip is accepted."""
+        req = TripGenerateRequest(
+            profile_id="p",
+            center_lat=48.0,
+            center_lng=2.0,
+            start_date="2026-01-01",
+            end_date="2026-01-02",
+            lenses=[" dark_history ", "", "  ", "literary_heritage"],
+            round_trip=True,
+        )
+        assert req.lenses == ["dark_history", "literary_heritage"]
+        assert req.round_trip is True
+
+    def test_trip_generate_request_empty_lenses_become_none(self):
+        """T1: an all-blank lens list normalizes to None (falls back to profile/default)."""
+        req = TripGenerateRequest(
+            profile_id="p",
+            center_lat=48.0,
+            center_lng=2.0,
+            start_date="2026-01-01",
+            end_date="2026-01-02",
+            lenses=["", "   "],
+        )
+        assert req.lenses is None
         assert req.kid_friendly_only is False
         assert req.trip_name is None
 
