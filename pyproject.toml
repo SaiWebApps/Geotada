@@ -63,7 +63,8 @@ ignore = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore=tests/test_workbench_ui.py -m 'not live'"
+addopts = "--ignore=tests/test_workbench_ui.py -m 'not live and not golden'"
 markers = [
     "live: hits a live external service (e.g. Resend email) and needs real creds. Excluded from the default bar via `-m 'not live'`; run with `make test-live`.",
+    "golden: compares engine tour output against a human-curated ideal tour using the live dev graph (port 7687). Excluded from the default bar; the fixtures are the TARGET to reach as the engine gains walk-by/spine-narration features — do NOT re-baseline them to current output. Run with `make test-golden`.",
 ]

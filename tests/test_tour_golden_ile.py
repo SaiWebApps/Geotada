@@ -22,6 +22,10 @@ from src.tour.contract import BeatSequence, TourInput
 from src.tour.generation import generate
 from src.tour.selection import load_paris_corpus, select_route
 
+# Quality-comparison gate against a human-curated ideal tour; excluded from the
+# default `make test` bar (run via `make test-golden`). See pyproject markers.
+pytestmark = pytest.mark.golden
+
 FIXTURE_PATH = (
     Path(__file__).resolve().parent.parent / "fixtures" / "tour_golden" / "ile_oneway_90min.json"
 )

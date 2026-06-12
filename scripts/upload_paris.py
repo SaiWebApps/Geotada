@@ -130,6 +130,7 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
             "trigger_radius": poi.get("trigger_radius", 10),
             "kid_friendly": poi.get("kid_friendly", "yes"),
             "name_variations": name_variations,
+            "poi_role": poi.get("poi_role"),
         })
 
     result = session.run(
@@ -142,7 +143,8 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
             p.importance_tier     = poi.importance_tier,
             p.trigger_radius      = poi.trigger_radius,
             p.kid_friendly        = poi.kid_friendly,
-            p.name_variations     = poi.name_variations
+            p.name_variations     = poi.name_variations,
+            p.poi_role            = poi.poi_role
         RETURN count(p) AS total
         """,
         pois=params,
@@ -177,6 +179,16 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
         if isinstance(beat.get("fact_check"), dict):
             fact_status = beat["fact_check"].get("status", "")
 
+        # Neo4j cannot store list[dict]; JSON-encode physical_cues (matches the engine's
+        # _decode_physical_cues and the API's _encode_complex_props). entities is list[str]
+        # and stores natively. Both are read back by src/tour/selection.py.
+        raw_cues = beat.get("physical_cues")
+        physical_cues = (
+            json.dumps(raw_cues)
+            if isinstance(raw_cues, list) and raw_cues and all(isinstance(c, dict) for c in raw_cues)
+            else None
+        )
+
         params.append({
             "poi_name": poi_name,
             "beat_id": beat_id,
@@ -186,6 +198,17 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
             "confidence": confidence,
             "fact_status": fact_status,
             "lens": beat.get("lens", ""),
+            "sub_location": beat.get("sub_location"),
+            "trigger_address": beat.get("trigger_address"),
+            "narrative_function": beat.get("narrative_function"),
+            "beat_type": beat.get("beat_type"),
+            "emotional_register": beat.get("emotional_register"),
+            "beat_length_class": beat.get("beat_length_class"),
+            "est_spoken_seconds": beat.get("est_spoken_seconds"),
+            "entities": beat.get("entities") or [],
+            "subject_tag": beat.get("subject_tag"),
+            "physical_cues": physical_cues,
+            "pronunciation": beat.get("pronunciation"),
         })
 
     result = session.run(
@@ -202,7 +225,18 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
             beat.fact_status    = b.fact_status,
             beat.version        = 1,
             beat.active_status  = 'active',
-            beat.audio_url      = ''
+            beat.audio_url      = '',
+            beat.sub_location       = b.sub_location,
+            beat.trigger_address    = b.trigger_address,
+            beat.narrative_function = b.narrative_function,
+            beat.beat_type          = b.beat_type,
+            beat.emotional_register = b.emotional_register,
+            beat.beat_length_class  = b.beat_length_class,
+            beat.est_spoken_seconds = b.est_spoken_seconds,
+            beat.entities           = b.entities,
+            beat.subject_tag        = b.subject_tag,
+            beat.physical_cues      = b.physical_cues,
+            beat.pronunciation      = b.pronunciation
         MERGE (p)-[:HAS_BEAT]->(beat)
         RETURN count(beat) AS linked
         """,

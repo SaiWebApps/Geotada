@@ -83,6 +83,9 @@ test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
 test-live: ## Run live external-service tests (needs real creds, e.g. RESEND_API_KEY) — NOT in the default bar
 	uv run pytest -m live -v
 
+test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
+	uv run pytest -m golden -v
+
 # ──────────────────────────────────────────────────────────
 # DATABASE
 # ──────────────────────────────────────────────────────────
