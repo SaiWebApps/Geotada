@@ -215,17 +215,8 @@ flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 	cd mobile && flutter clean
 	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev flutter pub get
 
-flutter-test: ## Run Flutter tests (headless Chrome; pass/fail from the 'All tests passed!' marker — only the benign post-completion SDK hang is tolerated)
-	@pkill -f "Google Chrome for Testing" 2>/dev/null; rm -rf /tmp/flutter_tools.* 2>/dev/null; \
-	cd mobile && NO_PROXY=pub.dev,*.pub.dev no_proxy=pub.dev,*.pub.dev \
-	  CHROME_EXECUTABLE="$(HOME)/Library/Caches/ms-playwright/chromium-1200/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing" \
-	  gtimeout 120 flutter test --platform chrome >/tmp/ondoway-flutter-test.log 2>&1; \
-	  cat /tmp/ondoway-flutter-test.log; \
-	  pkill -f "Google Chrome for Testing" 2>/dev/null; \
-	  if grep -q "All tests passed!" /tmp/ondoway-flutter-test.log && ! grep -qE "Some tests failed|Failed to load|did not complete" /tmp/ondoway-flutter-test.log; then \
-	    echo "Flutter: all tests passed (post-run SDK hang, if any, is benign)"; exit 0; \
-	  fi; \
-	  echo "FLUTTER TESTS FAILED OR INCOMPLETE — see output above"; exit 1
+flutter-test: ## Run Flutter tests (headless Chrome). Early-exits on the verdict; retries ONLY on the intermittent flutter_tools finalize hang, never on a real failure. Logic: scripts/flutter_test.sh
+	@bash scripts/flutter_test.sh
 
 flutter-test-diag: ## Diagnostic: run flutter-test with timeout and process logging
 	@echo "==> PRE-TEST: Chrome/Dart processes"

@@ -27,7 +27,7 @@ class _FakeAudioService extends AudioService {
       : _activeBeatId = activeBeatId,
         _playing = playing;
 
-  final String? _activeBeatId;
+  String? _activeBeatId;
   final bool _playing;
 
   @override
@@ -37,7 +37,12 @@ class _FakeAudioService extends AudioService {
   bool get isPlaying => _playing;
 
   @override
-  Future<void> play(String beatId, String audioUrl) async {}
+  Future<void> play(String beatId, String audioUrl) async {
+    // Record the call without booting a real just_audio engine (which never
+    // completes on the headless-web test runner and hangs finalize).
+    _activeBeatId = beatId;
+    notifyListeners();
+  }
 }
 
 void main() {
@@ -74,7 +79,7 @@ void main() {
     });
 
     testWidgets('play button triggers AudioService.play', (tester) async {
-      final audioService = AudioService();
+      final audioService = _FakeAudioService();
 
       await tester.pumpWidget(
         _wrap(

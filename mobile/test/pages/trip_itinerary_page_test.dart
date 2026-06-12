@@ -290,6 +290,11 @@ void main() {
       // saveTrip should have been called
       expect(service.savedTrips.length, 1);
       expect(service.savedTrips.first.tripId, 'trip-gen');
+
+      // The page schedules a periodic poll Timer; disposing the tree runs
+      // State.dispose(), which cancels it. A leftover pending Timer keeps the
+      // test isolate alive and intermittently hangs flutter_tools finalize.
+      await tester.pumpWidget(const SizedBox());
     });
 
     testWidgets('shows anchor indicator for importance_tier 5', (tester) async {
