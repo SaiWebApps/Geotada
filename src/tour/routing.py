@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import itertools
 import math
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from typing import TYPE_CHECKING
 
 from .contract import POI, Route, TransitSegment
@@ -29,6 +29,11 @@ from .contract import POI, Route, TransitSegment
 if TYPE_CHECKING:
     # routing_client imports from this module; type-only import avoids the cycle.
     from .routing_client import RoutingClient
+
+# M3: walking seconds for one leg, (from_lat, from_lng, to_lat, to_lng) -> int.
+# The default is the pace-corrected haversine; selection builds a memoized
+# routed version from a RoutingClient.
+LegSecondsFn = Callable[[float, float, float, float], int]
 
 # §3.2 / phase-1-design rule ledger 20-25.
 PACE_KMH: float = 3.0
@@ -101,6 +106,11 @@ def compute_dwell_seconds(tier: int) -> int:
     return DWELL_SECONDS_BY_TIER.get(tier, 0)
 
 
+def default_leg_seconds(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
+    """The haversine LegSecondsFn — the M3 routed divisor's fallback."""
+    return pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+
+
 def insertion_cost_seconds(
     candidate: POI,
     ordered: list[POI],
@@ -108,6 +118,7 @@ def insertion_cost_seconds(
     start_lat: float,
     start_lng: float,
     round_trip: bool,
+    leg_seconds_fn: LegSecondsFn | None = None,
 ) -> tuple[int, int]:
     """Return (best_extra_walk_seconds, best_insertion_index) for a candidate.
 
@@ -115,13 +126,14 @@ def insertion_cost_seconds(
     For round-trip routes the path returns to the origin, so the closing leg
     is part of every cost evaluation.
 
-    Used by routing-aware greedy selection (§3.2).
+    Used by routing-aware greedy selection (§3.2). M3: ``leg_seconds_fn``
+    supplies routed leg times (the §3 divisor); default is haversine.
     """
     coords: list[tuple[float, float]] = [(start_lat, start_lng), *((p.lat, p.lng) for p in ordered)]
     if round_trip:
         coords.append((start_lat, start_lng))
 
-    base_seconds = _path_walk_seconds(coords)
+    base_seconds = _path_walk_seconds(coords, leg_seconds_fn)
     best_extra: int | None = None
     best_idx: int = 0
 
@@ -130,7 +142,7 @@ def insertion_cost_seconds(
     insertable_positions = len(ordered) + 1
     for idx in range(insertable_positions):
         new_coords = [*coords[:idx + 1], (candidate.lat, candidate.lng), *coords[idx + 1:]]
-        extra = _path_walk_seconds(new_coords) - base_seconds
+        extra = _path_walk_seconds(new_coords, leg_seconds_fn) - base_seconds
         if best_extra is None or extra < best_extra:
             best_extra = extra
             best_idx = idx
@@ -138,10 +150,13 @@ def insertion_cost_seconds(
     return (best_extra if best_extra is not None else 0, best_idx)
 
 
-def _path_walk_seconds(coords: list[tuple[float, float]]) -> int:
+def _path_walk_seconds(
+    coords: list[tuple[float, float]], leg_seconds_fn: LegSecondsFn | None = None
+) -> int:
+    fn = leg_seconds_fn or default_leg_seconds
     total = 0
     for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
-        total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+        total += fn(lat1, lng1, lat2, lng2)
     return total
 
 

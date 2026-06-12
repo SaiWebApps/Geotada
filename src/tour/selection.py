@@ -33,11 +33,12 @@ from .density import assess as assess_tourability
 from .routing import (
     HAVERSINE_CORRECTION,
     PACE_KMH,
+    LegSecondsFn,
     compute_dwell_seconds,
+    default_leg_seconds,
     envelope_radius_m,
     haversine_m,
     insertion_cost_seconds,
-    pace_corrected_walk_seconds,
     summarise_route,
     target_audio_seconds,
     walk_budget_seconds,
@@ -489,6 +490,10 @@ def select_route(
     """
     start_lat, start_lng = input.start
     interest = frozenset(input.lenses or [])
+    # M3: the §3 divisor — routed leg times when a client is given (memoized;
+    # the greedy re-evaluates the same coordinate pairs many times), else the
+    # pace-corrected haversine.
+    leg_fn = _memoized_leg_fn(routing_client) if routing_client is not None else None
 
     # Phase 6 density gate. RED → refuse; YELLOW → continue but
     # attach the assessment so the harness can warn.
@@ -561,6 +566,7 @@ def select_route(
                 start_lat=start_lat,
                 start_lng=start_lng,
                 round_trip=input.round_trip,
+                leg_seconds_fn=leg_fn,
             )
             if consumed_walk + extra > greedy_walk_budget:
                 continue
@@ -624,6 +630,7 @@ def select_route(
                     start_lng=start_lng,
                     walk_budget=walk_budget,
                     hard_anchor_cap=HARD_ANCHOR_CAP,
+                    leg_seconds_fn=leg_fn,
                 )
                 if pulled is not selected and pulled[-1].id == cand.id:
                     selected = pulled
@@ -642,6 +649,7 @@ def select_route(
         snapshot=snapshot,
         start_lat=start_lat,
         start_lng=start_lng,
+        leg_seconds_fn=leg_fn,
         round_trip=input.round_trip,
         walk_budget=walk_budget,
         audio_budget=audio_budget,
@@ -785,6 +793,7 @@ def _apply_fill_pass(
     walk_budget: int,
     audio_budget: int,
     hard_anchor_cap: int,
+    leg_seconds_fn: LegSecondsFn | None = None,
 ) -> list[POI]:
     """Phase 7: fill until audio floor is met or walk budget hits 95%.
 
@@ -813,7 +822,11 @@ def _apply_fill_pass(
         return selected  # already met; no fill needed
 
     consumed_walk = _full_route_walk_seconds(
-        selected, start_lat=start_lat, start_lng=start_lng, round_trip=round_trip
+        selected,
+        start_lat=start_lat,
+        start_lng=start_lng,
+        round_trip=round_trip,
+        leg_seconds_fn=leg_seconds_fn,
     )
     if consumed_walk >= walk_cap:
         return selected  # walk already saturated; no slack to fill
@@ -837,6 +850,7 @@ def _apply_fill_pass(
             start_lat=start_lat,
             start_lng=start_lng,
             round_trip=round_trip,
+            leg_seconds_fn=leg_seconds_fn,
         )
         if preserve_endpoint and idx >= len(selected):
             # Best position was after the endpoint; clamp to just before it
@@ -849,6 +863,7 @@ def _apply_fill_pass(
                 start_lat=start_lat,
                 start_lng=start_lng,
                 round_trip=round_trip,
+                leg_seconds_fn=leg_seconds_fn,
             )
         if consumed_walk + extra > walk_cap:
             continue
@@ -859,6 +874,25 @@ def _apply_fill_pass(
     return selected
 
 
+def _memoized_leg_fn(client: RoutingClient) -> LegSecondsFn:
+    """Memoized routed leg times for the §3 divisor.
+
+    The greedy, endpoint-pull, and fill pass re-evaluate the same coordinate
+    pairs many times per request; with a live Valhalla each unique pair costs
+    one HTTP roundtrip, so cache per select_route call. (The client itself
+    sticky-degrades to pure math after the first transport failure.)
+    """
+    cache: dict[tuple[float, float, float, float], int] = {}
+
+    def leg_fn(lat1: float, lng1: float, lat2: float, lng2: float) -> int:
+        key = (lat1, lng1, lat2, lng2)
+        if key not in cache:
+            cache[key] = client.leg_seconds(lat1, lng1, lat2, lng2)
+        return cache[key]
+
+    return leg_fn
+
+
 def _insertion_extra_at_index(
     cand: POI,
     selected: list[POI],
@@ -867,8 +901,10 @@ def _insertion_extra_at_index(
     start_lat: float,
     start_lng: float,
     round_trip: bool,
+    leg_seconds_fn: LegSecondsFn | None = None,
 ) -> int:
     """Walk-time delta from inserting `cand` at exactly position `idx`."""
+    fn = leg_seconds_fn or default_leg_seconds
     base_coords: list[tuple[float, float]] = [
         (start_lat, start_lng),
         *((p.lat, p.lng) for p in selected),
@@ -877,7 +913,7 @@ def _insertion_extra_at_index(
         base_coords.append((start_lat, start_lng))
     base = 0
     for (lat1, lng1), (lat2, lng2) in itertools.pairwise(base_coords):
-        base += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+        base += fn(lat1, lng1, lat2, lng2)
     new_pois = [*selected[:idx], cand, *selected[idx:]]
     new_coords: list[tuple[float, float]] = [
         (start_lat, start_lng),
@@ -887,20 +923,26 @@ def _insertion_extra_at_index(
         new_coords.append((start_lat, start_lng))
     new_total = 0
     for (lat1, lng1), (lat2, lng2) in itertools.pairwise(new_coords):
-        new_total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+        new_total += fn(lat1, lng1, lat2, lng2)
     return new_total - base
 
 
 def _full_route_walk_seconds(
-    pois: list[POI], *, start_lat: float, start_lng: float, round_trip: bool
+    pois: list[POI],
+    *,
+    start_lat: float,
+    start_lng: float,
+    round_trip: bool,
+    leg_seconds_fn: LegSecondsFn | None = None,
 ) -> int:
+    fn = leg_seconds_fn or default_leg_seconds
     coords: list[tuple[float, float]] = [(start_lat, start_lng)]
     coords.extend((p.lat, p.lng) for p in pois)
     if round_trip:
         coords.append((start_lat, start_lng))
     total = 0
     for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
-        total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+        total += fn(lat1, lng1, lat2, lng2)
     return total
 
 
@@ -922,6 +964,7 @@ def _apply_endpoint_pull(
     start_lng: float,
     walk_budget: int,
     hard_anchor_cap: int,
+    leg_seconds_fn: LegSecondsFn | None = None,
 ) -> list[POI]:
     """Insert `endpoint` as the closing stop, dropping at most
     ENDPOINT_PULL_MAX_DROPS weak incumbents to fit walk-budget +
@@ -944,9 +987,18 @@ def _apply_endpoint_pull(
             return list(selected)  # endpoint won't fit under cap with allowed drops
 
         candidate_route = _reorder_with_endpoint(
-            incumbents, endpoint, start_lat=start_lat, start_lng=start_lng
+            incumbents,
+            endpoint,
+            start_lat=start_lat,
+            start_lng=start_lng,
+            leg_seconds_fn=leg_seconds_fn,
         )
-        walk = _route_walk_seconds(candidate_route, start_lat=start_lat, start_lng=start_lng)
+        walk = _route_walk_seconds(
+            candidate_route,
+            start_lat=start_lat,
+            start_lng=start_lng,
+            leg_seconds_fn=leg_seconds_fn,
+        )
         if walk <= walk_budget:
             return candidate_route
         if not incumbents or drops_used >= ENDPOINT_PULL_MAX_DROPS:
@@ -965,13 +1017,18 @@ def _drop_weakest(
     return [p for p in pois if p.id != weakest.id]
 
 
-def _route_walk_seconds(pois: list[POI], *, start_lat: float, start_lng: float) -> int:
+def _route_walk_seconds(
+    pois: list[POI],
+    *,
+    start_lat: float,
+    start_lng: float,
+    leg_seconds_fn: LegSecondsFn | None = None,
+) -> int:
+    fn = leg_seconds_fn or default_leg_seconds
     coords = [(start_lat, start_lng), *((p.lat, p.lng) for p in pois)]
     total = 0
-    from .routing import pace_corrected_walk_seconds
-
     for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
-        total += pace_corrected_walk_seconds(haversine_m(lat1, lng1, lat2, lng2))
+        total += fn(lat1, lng1, lat2, lng2)
     return total
 
 
@@ -981,6 +1038,7 @@ def _reorder_with_endpoint(
     *,
     start_lat: float,
     start_lng: float,
+    leg_seconds_fn: LegSecondsFn | None = None,
 ) -> list[POI]:
     """Place `endpoint` last and order the remainder via best-insertion."""
     interior: list[POI] = []
@@ -996,6 +1054,7 @@ def _reorder_with_endpoint(
                 start_lat=start_lat,
                 start_lng=start_lng,
                 round_trip=False,
+                leg_seconds_fn=leg_seconds_fn,
             )
             if best is None or extra < best_extra:
                 best = cand

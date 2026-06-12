@@ -312,9 +312,127 @@ def test_summarise_route_client_down_marks_haversine_source():
         assert seg.leg_seconds == seg.walk_seconds
 
 
-def test_select_route_same_pois_with_and_without_client():
-    """The M2 PROVE: a routing client changes NO selection decision (Jaccard
-    1.0, same order) — it only enriches the final transits."""
+# ---------------------------------------------------------------------------
+# M3 — routed insertion cost (the §3 divisor) + sticky degradation
+# ---------------------------------------------------------------------------
+
+
+def test_transport_failure_degrades_client_permanently():
+    """One refused connect must not become thousands in the greedy: after the
+    first transport failure the client skips HTTP for its lifetime."""
+    calls = {"n": 0}
+
+    def counting_refuser(request: httpx.Request) -> httpx.Response:
+        calls["n"] += 1
+        raise httpx.ConnectError("refused", request=request)
+
+    with _client(counting_refuser) as rc:
+        (lat1, lng1), (lat2, lng2) = POINTS[0], POINTS[1]
+        d = haversine_m(lat1, lng1, lat2, lng2)
+        for _ in range(5):
+            assert rc.leg_seconds(lat1, lng1, lat2, lng2) == pace_corrected_walk_seconds(d)
+        assert rc.isochrone(*POINTS[0], 30) is None
+    assert calls["n"] == 1
+
+
+def test_http_status_error_does_not_degrade():
+    """4xx/5xx are per-request problems — the client keeps trying."""
+    calls = {"n": 0}
+
+    def flaky_500(request: httpx.Request) -> httpx.Response:
+        calls["n"] += 1
+        return httpx.Response(500, text="boom")
+
+    with _client(flaky_500) as rc:
+        rc.route(*POINTS[0], *POINTS[1])
+        rc.route(*POINTS[0], *POINTS[2])
+    assert calls["n"] == 2
+
+
+def test_insertion_cost_uses_leg_seconds_fn():
+    from src.tour.routing import insertion_cost_seconds
+
+    a = _poi("a", lat=48.8556, lng=2.3658)
+    b = _poi("b", lat=48.8600, lng=2.3700)
+    extra, _idx = insertion_cost_seconds(
+        b,
+        [a],
+        start_lat=PDV[0],
+        start_lng=PDV[1],
+        round_trip=False,
+        leg_seconds_fn=lambda lat1, lng1, lat2, lng2: 100,  # flat 100s per leg
+    )
+    # base path start->a is one leg (100s); any insertion makes two (200s).
+    assert extra == 100
+
+
+def test_memoized_leg_fn_caches_directed_pairs():
+    from src.tour.selection import _memoized_leg_fn
+
+    calls = {"n": 0}
+
+    def counting(request: httpx.Request) -> httpx.Response:
+        calls["n"] += 1
+        return _valhalla_handler(request)
+
+    with _client(counting) as rc:
+        fn = _memoized_leg_fn(rc)
+        first = fn(*POINTS[0], *POINTS[1])
+        assert fn(*POINTS[0], *POINTS[1]) == first
+        assert calls["n"] == 1
+        fn(*POINTS[1], *POINTS[0])  # reverse direction is a distinct leg
+        assert calls["n"] == 2
+
+
+# Routed-divisor inversion fixture: a POI cluster ~100m north of the start
+# that the mock road network walls off (25 s/m → ~2500s per leg, think
+# "across the river, no bridge" — over both the ~896s greedy budget and the
+# ~1135s fill-pass cap at 60 min), and a 250m POI it makes nearly free.
+_NEAR_CLUSTER = [(48.8564 + 0.00001 * i, 2.3656) for i in range(3)]
+_FAR_FAST = (48.85775, 2.3656)
+
+
+def _divisor_handler(request: httpx.Request) -> httpx.Response:
+    body = json.loads(request.content)
+    a, b = body["locations"]
+    if abs(b["lat"] - _FAR_FAST[0]) < 1e-9 and abs(b["lon"] - _FAR_FAST[1]) < 1e-9:
+        secs = 50
+    else:
+        secs = round(haversine_m(a["lat"], a["lon"], b["lat"], b["lon"]) * 25.0)
+    return httpx.Response(
+        200,
+        json={"trip": {"legs": [{"summary": {"time": secs, "length": 0.1}, "shape": SHAPE}]}},
+    )
+
+
+def test_routed_divisor_inverts_greedy_choice():
+    """The M3 PROVE with teeth: when routed times contradict straight-line
+    distance, the greedy follows the ROUTED times — selection changes."""
+    pois = [
+        _poi("near", lat=_NEAR_CLUSTER[0][0], lng=_NEAR_CLUSTER[0][1], areas=("Le Marais",)),
+        _poi("c1", lat=_NEAR_CLUSTER[1][0], lng=_NEAR_CLUSTER[1][1], areas=("Le Marais",)),
+        _poi("c2", lat=_NEAR_CLUSTER[2][0], lng=_NEAR_CLUSTER[2][1], areas=("Le Marais",)),
+        _poi("far", lat=_FAR_FAST[0], lng=_FAR_FAST[1], areas=("Le Marais",)),
+    ]
+    snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
+    tour_input = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
+
+    bare = [p.id for p in select_route(tour_input, snap).pois]
+    with _client(_divisor_handler) as rc:
+        routed = [p.id for p in select_route(tour_input, snap, routing_client=rc).pois]
+
+    # Haversine sees the cluster as cheap and takes everything; routed
+    # pricing walls it off and only "far" fits the budget.
+    assert set(bare) == {"near", "c1", "c2", "far"}
+    assert routed == ["far"]
+
+
+def test_routed_divisor_lets_cheaper_network_fit_more():
+    """M3 superseded the M2 'client changes no selection decision' invariant:
+    insertion costs now COME from the client. The mock's road network
+    (1.2x detour at 4 km/h ≈ 1.08 s/m) is cheaper than the haversine
+    fallback's 1.62 s/m, so the same budget fits MORE of the fixture —
+    and every transit leg arrives enriched."""
     pois = [*_density_fillers(PDV), *_two_stop_pois()]
     snap = _snap(pois, area_types={"Le Marais": "neighborhood"})
     tour_input = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
@@ -323,12 +441,15 @@ def test_select_route_same_pois_with_and_without_client():
     with _client(_valhalla_handler) as rc:
         routed = select_route(tour_input, snap, routing_client=rc)
 
-    assert [p.id for p in routed.pois] == [p.id for p in bare.pois]  # Jaccard == 1.0
-    assert routed.pois, "GREEN fixture must select something"
+    bare_ids = {p.id for p in bare.pois}
+    routed_ids = {p.id for p in routed.pois}
+    assert bare_ids, "GREEN fixture must select something without the client"
+    assert routed_ids > bare_ids, (
+        f"cheaper routed legs must fit a superset: bare={sorted(bare_ids)} "
+        f"routed={sorted(routed_ids)}"
+    )
     assert routed.routed is True
     assert all(seg.leg_seconds is not None for seg in routed.transits)
     assert any(
         seg.leg_seconds != seg.walk_seconds for seg in routed.transits
     ), "at least one leg must be visibly routed"
-    # budgets identical with/without the client
-    assert routed.total_walk_seconds == bare.total_walk_seconds

@@ -31,6 +31,7 @@ from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
+from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
 
 HAIKU_INPUT_USD_PER_MTOK = 1.00  # 2026 Haiku 4.5 list (per 1M tokens)
@@ -258,7 +259,10 @@ def main() -> int:
 
         t_select = time.perf_counter()
         try:
-            route = select_route(tour_input, snapshot)
+            # M3: routed leg costs when the local Valhalla is up; total
+            # haversine fallback (sticky-degraded after one refusal) when not.
+            with RoutingClient() as routing_client:
+                route = select_route(tour_input, snapshot, routing_client=routing_client)
         except TourabilityRefusedError as exc:
             _print_red_refusal(
                 exc, start_label=start_label, duration_min=args.duration,

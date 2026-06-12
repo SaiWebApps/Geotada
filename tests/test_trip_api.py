@@ -25,6 +25,7 @@ from neo4j.exceptions import AuthError, ServiceUnavailable
 from src.api.app import create_app
 from src.api.dependencies import get_driver, get_session
 from src.tour.contract import TourInput
+from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
 from tests.conftest import needs_neo4j
 from tests.test_tour_golden_pdv import _parse_env_file  # same .env-read-only pattern
@@ -151,7 +152,11 @@ def ile_engine_route(snapshot):
         lenses=None,
         round_trip=False,
     )
-    return select_route(tour_input, snapshot)
+    # Same routing mode as the endpoint (RoutingClient; falls back to
+    # haversine when local Valhalla is down) or stop-order comparisons
+    # diverge whenever Valhalla is up.
+    with RoutingClient() as rc:
+        return select_route(tour_input, snapshot, routing_client=rc)
 
 
 def _body(profile_id: str, **overrides) -> dict:
@@ -256,16 +261,18 @@ class TestTripGenerateLensPrecedence:
     def test_profile_lenses_feed_engine(self, client, snapshot):
         resp = client.post("/api/v1/trips/generate", json=_body(LENSED_PROFILE_ID))
         assert resp.status_code == 201, resp.text
-        engine_route = select_route(
-            TourInput(
-                start=ILE_START,
-                duration_min=ILE_DURATION_MIN,
-                city_slug="paris",
-                lenses=sorted(PROFILE_LENSES),  # the route sorts profile lenses
-                round_trip=False,
-            ),
-            snapshot,
-        )
+        with RoutingClient() as rc:
+            engine_route = select_route(
+                TourInput(
+                    start=ILE_START,
+                    duration_min=ILE_DURATION_MIN,
+                    city_slug="paris",
+                    lenses=sorted(PROFILE_LENSES),  # the route sorts profile lenses
+                    round_trip=False,
+                ),
+                snapshot,
+                routing_client=rc,
+            )
         got = [s["poi_id"] for s in resp.json()["stops"]]
         assert got == [p.id for p in engine_route.pois]
 
@@ -276,16 +283,18 @@ class TestTripGenerateLensPrecedence:
             json=_body(LENSED_PROFILE_ID, lenses=request_lenses),
         )
         assert resp.status_code == 201, resp.text
-        engine_route = select_route(
-            TourInput(
-                start=ILE_START,
-                duration_min=ILE_DURATION_MIN,
-                city_slug="paris",
-                lenses=request_lenses,
-                round_trip=False,
-            ),
-            snapshot,
-        )
+        with RoutingClient() as rc:
+            engine_route = select_route(
+                TourInput(
+                    start=ILE_START,
+                    duration_min=ILE_DURATION_MIN,
+                    city_slug="paris",
+                    lenses=request_lenses,
+                    round_trip=False,
+                ),
+                snapshot,
+                routing_client=rc,
+            )
         got = [s["poi_id"] for s in resp.json()["stops"]]
         assert got == [p.id for p in engine_route.pois]
 

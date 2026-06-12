@@ -23,6 +23,7 @@ sys.path.insert(0, str(ROOT))
 from src.connection import create_driver
 from src.tour.beat_select import select_poi_beats
 from src.tour.contract import TourInput
+from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
 
 
@@ -54,7 +55,10 @@ def main(name: str) -> int:
         start_label=inp.get("start_label"),
     )
 
-    route = select_route(tour_input, snapshot)
+    # M3: routed leg costs when the local Valhalla is up (make valhalla-up);
+    # identical to the haversine path when it isn't (total fallback).
+    with RoutingClient() as routing_client:
+        route = select_route(tour_input, snapshot, routing_client=routing_client)
     print("=" * 80)
     print(f"FIXTURE: {name}")
     print(f"Input: start={tour_input.start} duration={tour_input.duration_min}min "

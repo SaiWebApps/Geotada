@@ -21,6 +21,7 @@ from neo4j.exceptions import AuthError, ServiceUnavailable
 from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.generation import generate
+from src.tour.routing_client import RoutingClient
 from src.tour.selection import load_paris_corpus, select_route
 
 # Quality-comparison gate against a human-curated ideal tour; excluded from the
@@ -110,7 +111,10 @@ def _generated_beat_ids(snapshot, fixture):
         theme_hint=inp.get("theme_hint"),
         start_label=inp.get("start_label"),
     )
-    route = select_route(tour_input, snapshot)
+    # M3: routed leg costs when the local Valhalla is up (make valhalla-up);
+    # identical to the haversine path when it isn't (total fallback).
+    with RoutingClient() as routing_client:
+        route = select_route(tour_input, snapshot, routing_client=routing_client)
     poi_beats_list = []
     for poi in route.pois:
         plan = select_poi_beats(poi, snapshot.beats_for(poi.id))

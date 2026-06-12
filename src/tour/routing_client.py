@@ -52,6 +52,11 @@ class RoutingClient:
         # An injected client (tests use httpx.MockTransport) carries its own
         # base_url/timeout; base_url/timeout_s apply only to the owned one.
         self._client = client or httpx.Client(base_url=base_url, timeout=timeout_s)
+        # M3: sticky degradation. The greedy makes hundreds-to-thousands of
+        # leg calls per request; once a TRANSPORT failure proves Valhalla is
+        # away, stop attempting HTTP for this instance's lifetime. Bad
+        # responses (4xx/5xx/garbage) do NOT degrade — those are per-request.
+        self._degraded = False
 
     def close(self) -> None:
         self._client.close()
@@ -76,6 +81,8 @@ class RoutingClient:
         (distance_m is then the straight-line metres, matching what
         summarise_route records today).
         """
+        if self._degraded:
+            return self._route_fallback(from_lat, from_lng, to_lat, to_lng)
         try:
             resp = self._client.post(
                 "/route",
@@ -95,9 +102,18 @@ class RoutingClient:
                 float(leg["summary"]["length"]) * _KM_TO_M,
                 leg["shape"],
             )
+        except httpx.TransportError:
+            self._degraded = True
+            return self._route_fallback(from_lat, from_lng, to_lat, to_lng)
         except _FALLBACK_ERRORS:
-            d = haversine_m(from_lat, from_lng, to_lat, to_lng)
-            return (pace_corrected_walk_seconds(d), d, None)
+            return self._route_fallback(from_lat, from_lng, to_lat, to_lng)
+
+    @staticmethod
+    def _route_fallback(
+        from_lat: float, from_lng: float, to_lat: float, to_lng: float
+    ) -> tuple[int, float, None]:
+        d = haversine_m(from_lat, from_lng, to_lat, to_lng)
+        return (pace_corrected_walk_seconds(d), d, None)
 
     def isochrone(self, lat: float, lng: float, minutes: int) -> dict | None:
         """GeoJSON FeatureCollection of the walking isochrone, or ``None``.
@@ -105,6 +121,8 @@ class RoutingClient:
         ``None`` tells the caller to keep using the analytic envelope radius
         (``envelope_radius_m``) — the pre-M1 behavior.
         """
+        if self._degraded:
+            return None
         try:
             resp = self._client.post(
                 "/isochrone",
@@ -120,5 +138,8 @@ class RoutingClient:
             if data.get("type") != "FeatureCollection" or not data.get("features"):
                 return None
             return data
+        except httpx.TransportError:
+            self._degraded = True
+            return None
         except _FALLBACK_ERRORS:
             return None
