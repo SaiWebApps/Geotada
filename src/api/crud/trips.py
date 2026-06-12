@@ -8,6 +8,8 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from neo4j import Session
 
+    from src.tour.contract import BeatRef, ScriptPOI
+
 
 def find_candidate_pois(
     session: Session,
@@ -183,6 +185,70 @@ def compute_schedule(
         current_minute = current_minute % 60
 
     return scheduled
+
+
+def _dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) -> str | None:
+    """The most common lens across a stop's beats, or None if no beat is lensed.
+
+    Computed from the beats themselves (BeatRef.lenses) — never fabricated. Ties
+    break deterministically by lens name so the result is stable across runs.
+    """
+    counts: dict[str, int] = {}
+    for bid in beat_ids:
+        ref = beats_by_id.get(bid)
+        if ref is None:
+            continue
+        for lens in ref.lenses:
+            counts[lens] = counts.get(lens, 0) + 1
+    if not counts:
+        return None
+    return sorted(counts, key=lambda lname: (-counts[lname], lname))[0]
+
+
+def route_script_to_stops(
+    selected_pois: list[ScriptPOI] | tuple[ScriptPOI, ...],
+    beats_by_id: dict[str, BeatRef],
+    start_time: str,
+) -> list[dict[str, Any]]:
+    """Adapt the engine's ordered ScriptPOIs into the stop dicts create_trip_with_stops expects.
+
+    Pure function — no DB, no engine run. Each ScriptPOI becomes one stop in route
+    order; ALL of its beats are kept (`beat_ids`) with `primary_beat_id` = the first
+    (so single-beat read paths still work); the per-stop lens is the dominant lens of
+    its beats (computed, not fabricated); the clock advances by each stop's
+    `dwell_seconds`. See specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+    """
+    parts = start_time.split(":")
+    current_hour, current_minute = int(parts[0]), int(parts[1])
+
+    stops: list[dict[str, Any]] = []
+    for idx, sp in enumerate(selected_pois):
+        beat_ids = list(sp.beat_ids)
+        duration_min = max(1, round(sp.dwell_seconds / 60)) if sp.dwell_seconds else 1
+        time_str = f"{current_hour:02d}:{current_minute:02d}"
+
+        stops.append(
+            {
+                "sort_order": idx + 1,
+                "poi_id": sp.id,
+                "poi_name": sp.name,
+                "lat": sp.lat,
+                "lng": sp.lng,
+                "beat_ids": beat_ids,
+                "primary_beat_id": beat_ids[0] if beat_ids else None,
+                "lens_name": _dominant_lens(sp.beat_ids, beats_by_id),
+                "duration_min": duration_min,
+                "importance_tier": sp.tier,
+                "start_time": time_str,
+                "area": sp.area,
+            }
+        )
+
+        current_minute += duration_min
+        current_hour += current_minute // 60
+        current_minute %= 60
+
+    return stops
 
 
 def create_trip_with_stops(
