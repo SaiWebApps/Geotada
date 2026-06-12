@@ -35,3 +35,10 @@ def get_session() -> Generator[Session]:
         yield session
     finally:
         session.close()
+
+
+def get_driver() -> Driver:
+    """Return the process-wide driver (the tour engine's corpus loader opens
+    its own sessions, so it needs the driver rather than a request session)."""
+    assert _driver is not None, "Driver not initialized — is the app running?"
+    return _driver

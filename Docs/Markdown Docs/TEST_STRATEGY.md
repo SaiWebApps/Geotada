@@ -21,8 +21,9 @@ make test-integration   # Integration tests only (needs Neo4j)
 | test_definitions.py         | 11    | Unit        | Schema definitions are well-formed    |
 | test_api_models.py          | 11    | Unit        | Node Pydantic models validate correctly |
 | test_api_edge_models.py     | 10    | Unit        | Edge Pydantic models validate correctly |
-| test_trip_models.py         | 9     | Unit        | Trip generation Pydantic models       |
-| test_trip_generation.py     | 8     | Unit        | Golden ratio algorithm + scheduling   |
+| test_trip_models.py         | 17    | Unit        | Trip generation Pydantic models       |
+| test_trip_adapter.py        | 7     | Unit        | route_script_to_stops engine adapter  |
+| test_trip_lens_resolution.py | 3    | Unit        | Lens precedence (request → profile → none) |
 | test_constraints.py         | 4     | Integration | Constraints and indexes applied to Neo4j |
 | test_seed.py                | 8     | Integration | Data seeding + idempotency            |
 | test_traversals.py          | 7     | Integration | Planner, Wanderer, DAG traversals     |
@@ -55,7 +56,7 @@ Require a running Neo4j instance. Use pytest fixtures that skip automatically wh
 - **Traversals** (7): Planner path (Trip → ItineraryItem → POI → Beat → Lens) returns rows. Wanderer path (Profile → Lens ← Beat ← POI) with spatial filter works. DAG path (Lens → Lens via IS_PARENT_OF) returns rows.
 - **API CRUD** (84): Full create/read/update/delete lifecycle for all 7 node types and 11 edge types. Pagination, 404 handling, constraint violation (409), validation errors (422), cascade deletes.
 - **Schema introspection** (29): All node schemas returned with correct properties, constraints, and indexes. All relationship schemas returned. Individual type lookups work. Invalid labels return 422.
-- **Trip generation** (8): POST /trips/generate returns 201 with valid response fields. max_stops is respected. Non-existent profile returns 404. Distant center with no POIs returns 422. Golden ratio anchor/flavour split verified. Trip + ItineraryItem nodes persisted to graph. kid_friendly_only filter applied.
+- **Trip generation** (8): POST /trips/generate runs the real tour engine against the LIVE local Paris dev graph (port 7687, disposable test profiles cleaned up in teardown). Stop order equals select_route's POI order. Every beat_id is traceable to a route POI. lens_coverage present. Multi-beat persistence verified (one PLAYS_BEAT edge per beat). Lens precedence (request → profile). Non-existent profile returns 404. Sparse origin (Sydney) returns 422 from the density gate.
 
 ## Test Fixtures
 
@@ -67,7 +68,7 @@ Key fixtures in `tests/conftest.py`:
 
 ## Adding New Tests
 
-1. **Unit tests**: Add to `test_definitions.py` (schema), `test_api_models.py` / `test_api_edge_models.py` (Pydantic), or `test_trip_models.py` / `test_trip_generation.py` (trip logic).
+1. **Unit tests**: Add to `test_definitions.py` (schema), `test_api_models.py` / `test_api_edge_models.py` (Pydantic), or `test_trip_models.py` / `test_trip_adapter.py` (trip logic).
 2. **Integration tests**: Add to the appropriate `test_api_*.py` or `test_trip_api.py` file. Use the existing Neo4j fixtures.
 3. **New node/edge type**: Add schema in `src/schema/definitions.py`, create model in `src/api/models/`, then add tests covering create, read, update, delete, and schema introspection.
 

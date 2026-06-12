@@ -63,7 +63,7 @@ flutter-analyze: ## Run Dart static analysis on Flutter code
 test: test-local flutter-test ## THE bar before any commit (Python on local Docker 7688 + Flutter). Aura is NEVER wiped; `make test-cloud` is a separate read-only smoke.
 
 test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT the bar
-	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_generation.py tests/test_trip_models.py tests/test_feedback.py -v
+	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_adapter.py tests/test_trip_lens_resolution.py tests/test_trip_models.py tests/test_feedback.py -v
 
 test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@cp .env.test.example .env.test && echo "  → Testing against LOCAL Neo4j (test instance, port 7688)"

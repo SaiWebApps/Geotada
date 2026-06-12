@@ -46,18 +46,21 @@ hermetic default bar if it proves flaky. **Alternative:** build a denser hermeti
 
 ## Atomic sub-steps (each its own green commit)
 - [x] **1.** `lenses` + `round_trip` on `TripGenerateRequest` — DONE 5e6ac15.
-- [ ] **2.** Pure `route_script_to_stops(route, script) -> list[dict]` in crud/trips.py (decided shape) +
-      HERMETIC unit test from hand-built Route/Script contract objects (no DB, no engine run). Now a clean brick.
-- [ ] **3.** Output models: `GeneratedStop` gains `beat_ids: list[str]` (+ optional `dwell_seconds`);
-      `TripGenerateResponse` gains `lens_coverage`. Additive; update test_trip_models.py.
-- [ ] **4.** `create_trip_with_stops` writes `beat_ids` + one `PLAYS_BEAT` per beat (+ `primary_beat_id`).
-- [ ] **5.** Rewrite `generate_trip`: TourInput(start=(center_lat,center_lng), duration_min, city_slug="paris",
-      lenses, round_trip) → `load_paris_corpus` → `select_route` → `generate` → `validate_script` →
+- [x] **2.** Pure `route_script_to_stops(route, script) -> list[dict]` in crud/trips.py (decided shape) +
+      HERMETIC unit test from hand-built Route/Script contract objects (no DB, no engine run) — DONE 31336f3.
+- [x] **3.** Output models: `GeneratedStop` gains `beat_ids: list[str]` (+ optional `dwell_seconds`);
+      `TripGenerateResponse` gains `lens_coverage`. Additive; update test_trip_models.py — DONE bf7d506.
+- [x] **4.** `create_trip_with_stops` writes `beat_ids` + one `PLAYS_BEAT` per beat (+ `primary_beat_id`).
+- [x] **5.** Rewrite `generate_trip`: TourInput(start=(center_lat,center_lng), duration_min, city_slug="paris",
+      lenses, round_trip) → `load_paris_corpus` → `select_route` → `generate` (runs validation internally) →
       `route_script_to_stops` → `create_trip_with_stops`. `TourabilityRefusedError` → 422. DELETE
       `apply_golden_ratio` (crud/trips.py:83) + `compute_schedule` (:143) + imports; grep -rn apply_golden_ratio src/ → 0.
-- [ ] **6.** Rework tests/test_trip_api.py per the corpus resolution; assert stop order == select_route ordered
-      POI ids, every beat_id traceable to a route POI, lens_coverage present; Sydney → 422.
-- [ ] **7.** Lens precedence: request → profile `PREFERS_LENS` → city default (seed Mom/Kid PREFERS_LENS edges).
+- [x] **6.** Rework tests/test_trip_api.py per the corpus resolution (live 7687 graph, disposable test
+      profiles, cleanup in teardown); assert stop order == select_route ordered POI ids, every beat_id
+      traceable to a route POI, lens_coverage present; Sydney → 422.
+- [x] **7.** Lens precedence: request → profile `PREFERS_LENS` (sorted) → None = engine unbiased. The "city
+      default" starter set is a future computed feature (ondoway-lens-defaults-spec.md), not implemented —
+      decided + user-approved 2026-06-12.
 
 PROVE the milestone: `make test` green + `grep -rn apply_golden_ratio src/` → 0. `make test-golden` may shift
 again (engine now drives the API too) — still do NOT re-baseline; fixtures stay the human-ideal target.

@@ -11,182 +11,6 @@ if TYPE_CHECKING:
     from src.tour.contract import BeatRef, ScriptPOI
 
 
-def find_candidate_pois(
-    session: Session,
-    center_lat: float,
-    center_lng: float,
-    radius_m: int,
-    kid_friendly_only: bool,
-) -> list[dict[str, Any]]:
-    """Find POIs within radius of center point using Neo4j spatial functions.
-
-    Returns list of dicts with keys: id, name, lat, lng, importance_tier,
-    trigger_radius, kid_friendly.
-    """
-    kid_filter = "AND n.kid_friendly = true" if kid_friendly_only else ""
-    query = f"""
-        WITH point({{latitude: $lat, longitude: $lng, srid: 4326}}) AS center
-        MATCH (n:POI)
-        WHERE n.location IS NOT NULL
-          AND point.distance(n.location, center) <= $radius
-          {kid_filter}
-        RETURN n.id AS id,
-               n.name AS name,
-               n.location.latitude AS lat,
-               n.location.longitude AS lng,
-               coalesce(n.importance_tier, 3) AS importance_tier,
-               coalesce(n.trigger_radius, 50) AS trigger_radius,
-               coalesce(n.kid_friendly, false) AS kid_friendly
-        ORDER BY point.distance(n.location, center)
-    """
-    result = session.run(query, lat=center_lat, lng=center_lng, radius=radius_m)
-    return [dict(record) for record in result]
-
-
-def find_matching_beats(
-    session: Session,
-    poi_ids: list[str],
-    profile_id: str,
-) -> list[dict[str, Any]]:
-    """Find active NarrativeBeats for candidate POIs that match the profile's lens preferences.
-
-    Returns list of dicts with keys: beat_id, poi_id, poi_name, lens_name,
-    lens_display, duration_sec, importance_tier, lat, lng.
-    """
-    query = """
-        MATCH (profile:Profile {id: $profile_id})-[:PREFERS_LENS]->(lens:Lens)
-        WITH collect(lens) AS preferred_lenses
-        UNWIND $poi_ids AS pid
-        MATCH (poi:POI {id: pid})-[:HAS_BEAT]->(beat:NarrativeBeat)-[:TAGGED_WITH]->(l:Lens)
-        WHERE l IN preferred_lenses
-          AND coalesce(beat.status, 'active') <> 'inactive'
-        RETURN beat.id AS beat_id,
-               poi.id AS poi_id,
-               poi.name AS poi_name,
-               l.name AS lens_name,
-               coalesce(l.display_label, l.name) AS lens_display,
-               coalesce(beat.duration_sec, 180) AS duration_sec,
-               coalesce(poi.typical_duration_min,
-                   CASE WHEN coalesce(poi.importance_tier, 3) >= 5 THEN 60
-                        WHEN coalesce(poi.importance_tier, 3) >= 4 THEN 45
-                        ELSE 30 END
-               ) AS typical_duration_min,
-               coalesce(poi.importance_tier, 3) AS importance_tier,
-               poi.location.latitude AS lat,
-               poi.location.longitude AS lng,
-               beat.script_body AS script_body,
-               beat.audio_url AS audio_url,
-               beat.duration_sec AS audio_duration_sec
-    """
-    result = session.run(query, profile_id=profile_id, poi_ids=poi_ids)
-    return [dict(record) for record in result]
-
-
-def apply_golden_ratio(
-    candidates: list[dict[str, Any]],
-    max_stops: int,
-    duration_min: int | None,
-) -> list[dict[str, Any]]:
-    """Apply golden ratio selection: ~20% anchors (gravity 5), rest flavour (1-4).
-
-    Pure Python function — no DB calls.
-    Deduplicates by POI (picks highest-gravity beat if multiple).
-    Trims to duration budget if provided.
-    Caps at max_stops.
-    """
-    # Deduplicate: keep highest importance_tier beat per POI
-    best_per_poi: dict[str, dict[str, Any]] = {}
-    for c in candidates:
-        poi_id = c["poi_id"]
-        if (
-            poi_id not in best_per_poi
-            or c["importance_tier"] > best_per_poi[poi_id]["importance_tier"]
-        ):
-            best_per_poi[poi_id] = c
-
-    unique = list(best_per_poi.values())
-
-    # Split into anchors (tier 5) and flavour (tier 1-4)
-    anchors = sorted(
-        [c for c in unique if c["importance_tier"] == 5],
-        key=lambda x: x["importance_tier"],
-        reverse=True,
-    )
-    flavour = sorted(
-        [c for c in unique if c["importance_tier"] < 5],
-        key=lambda x: x["importance_tier"],
-        reverse=True,
-    )
-
-    # Target ~20% anchors
-    target_anchor_count = max(1, round(max_stops * 0.2))
-    selected_anchors = anchors[:target_anchor_count]
-    remaining_slots = max_stops - len(selected_anchors)
-    selected_flavour = flavour[:remaining_slots]
-
-    selected = selected_anchors + selected_flavour
-
-    # Trim to duration budget if provided (using POI visit duration, not beat audio length)
-    if duration_min is not None:
-        trimmed: list[dict[str, Any]] = []
-        total_min = 0
-        for stop in selected:
-            stop_dur = stop.get("typical_duration_min", 30)
-            if total_min + stop_dur <= duration_min:
-                trimmed.append(stop)
-                total_min += stop_dur
-            else:
-                break
-        selected = trimmed
-
-    return selected[:max_stops]
-
-
-def compute_schedule(
-    stops: list[dict[str, Any]],
-    start_time: str,
-) -> list[dict[str, Any]]:
-    """Assign sequential start_time to each stop based on duration.
-
-    Pure Python function. Returns stops enriched with sort_order, duration_min,
-    and start_time fields.
-    """
-    parts = start_time.split(":")
-    current_hour = int(parts[0])
-    current_minute = int(parts[1])
-
-    scheduled: list[dict[str, Any]] = []
-    for idx, stop in enumerate(stops):
-        duration_min = stop.get("typical_duration_min", 30)
-        time_str = f"{current_hour:02d}:{current_minute:02d}"
-
-        scheduled.append(
-            {
-                "sort_order": idx + 1,
-                "poi_id": stop["poi_id"],
-                "poi_name": stop["poi_name"],
-                "lat": stop["lat"],
-                "lng": stop["lng"],
-                "beat_id": stop["beat_id"],
-                "lens_name": stop["lens_name"],
-                "lens_display": stop["lens_display"],
-                "duration_min": duration_min,
-                "importance_tier": stop["importance_tier"],
-                "start_time": time_str,
-                "script_body": stop.get("script_body"),
-                "audio_url": stop.get("audio_url"),
-                "audio_duration_sec": stop.get("audio_duration_sec"),
-            }
-        )
-
-        # Advance clock by POI visit duration
-        current_minute += duration_min
-        current_hour += current_minute // 60
-        current_minute = current_minute % 60
-
-    return scheduled
-
-
 def _dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) -> str | None:
     """The most common lens across a stop's beats, or None if no beat is lensed.
 
@@ -241,6 +65,7 @@ def route_script_to_stops(
                 "importance_tier": sp.tier,
                 "start_time": time_str,
                 "area": sp.area,
+                "dwell_seconds": sp.dwell_seconds,
             }
         )
 
@@ -264,7 +89,11 @@ def create_trip_with_stops(
     Creates:
     - Trip node with UUID, name, dates, status='planning'
     - Profile -[:IS_CAPTAIN_OF]-> Trip
-    - For each stop: ItineraryItem with HAS_STOP, ASSIGNED_TO, AT_POI, PLAYS_BEAT
+    - For each stop: ItineraryItem with HAS_STOP, ASSIGNED_TO, AT_POI, and one
+      PLAYS_BEAT edge per beat in the stop's `beat_ids`. The item stores
+      `beat_ids` (engine narration order), `primary_beat_id` (= beat_ids[0],
+      for single-beat read paths), and the stop's dominant `lens_name`
+      (nullable). See specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
     """
     trip_id = str(uuid.uuid4())
 
@@ -291,36 +120,54 @@ def create_trip_with_stops(
         end_date=end_date,
     )
 
-    # Create each itinerary item
+    # Create each itinerary item with one PLAYS_BEAT edge per beat.
+    # A null $lens_name is simply not stored (Cypher drops null map entries).
     item_query = """
         MATCH (trip:Trip {id: $trip_id})
         MATCH (poi:POI {id: $poi_id})
-        MATCH (beat:NarrativeBeat {id: $beat_id})
         MATCH (profile:Profile {id: $profile_id})
         CREATE (item:ItineraryItem {
             id: $item_id,
             sort_order: $sort_order,
             duration_min: $duration_min,
             start_time: $start_time,
+            beat_ids: $beat_ids,
+            primary_beat_id: $primary_beat_id,
+            lens_name: $lens_name,
             created_at: datetime()
         })
         CREATE (trip)-[:HAS_STOP]->(item)
         CREATE (item)-[:ASSIGNED_TO]->(profile)
         CREATE (item)-[:AT_POI]->(poi)
+        WITH item
+        UNWIND $beat_ids AS bid
+        MATCH (beat:NarrativeBeat {id: bid})
         CREATE (item)-[:PLAYS_BEAT]->(beat)
+        RETURN count(beat) AS edges
     """
     for stop in stops:
-        session.run(
+        record = session.run(
             item_query,
             trip_id=trip_id,
             poi_id=stop["poi_id"],
-            beat_id=stop["beat_id"],
             profile_id=profile_id,
             item_id=str(uuid.uuid4()),
             sort_order=stop["sort_order"],
             duration_min=stop["duration_min"],
             start_time=stop["start_time"],
-        )
+            beat_ids=stop["beat_ids"],
+            primary_beat_id=stop["primary_beat_id"],
+            lens_name=stop["lens_name"],
+        ).single()
+        # The mid-query MATCH silently drops absent beat ids; fail loudly
+        # rather than persist an item whose stored beat_ids cite beats it
+        # has no PLAYS_BEAT edge to (corpus changed mid-request?).
+        edges = record["edges"] if record else 0
+        if edges != len(stop["beat_ids"]):
+            raise ValueError(
+                f"Stop {stop['poi_id']!r}: created {edges} PLAYS_BEAT edges "
+                f"for {len(stop['beat_ids'])} beat_ids — beats missing from graph"
+            )
 
     return {"trip_id": trip_id, "trip_name": trip_name}
 
@@ -331,8 +178,11 @@ def list_trips_for_profile(
 ) -> list[dict[str, Any]]:
     """Return all trips for a profile with their stops.
 
-    For each trip, collects stops via HAS_STOP → ItineraryItem → AT_POI → POI,
-    PLAYS_BEAT → Beat → TAGGED_WITH → Lens. Returns trip data + ordered stops.
+    For each trip, collects stops via HAS_STOP → ItineraryItem → AT_POI → POI.
+    One row per item: its PLAYS_BEAT beats are collected, with stored
+    `beat_ids`/`primary_beat_id`/`lens_name` item properties taking precedence
+    and edge-derived values as the fallback for legacy single-beat items
+    (e.g. seeded trips) that predate M0b's multi-beat persistence.
     """
     # First verify profile exists
     check = session.run(
@@ -361,23 +211,39 @@ def list_trips_for_profile(
         stops_query = """
             MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(item:ItineraryItem)
             MATCH (item)-[:AT_POI]->(poi:POI)
-            MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)-[:TAGGED_WITH]->(lens:Lens)
+            MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)
+            OPTIONAL MATCH (beat)-[:TAGGED_WITH]->(bl:Lens)
+            WITH item, poi, beat, min(bl.name) AS beat_lens
+            WITH item, poi, collect({id: beat.id, script_body: beat.script_body,
+                                     audio_url: beat.audio_url,
+                                     duration_sec: beat.duration_sec,
+                                     lens: beat_lens}) AS beats
+            WITH item, poi, beats,
+                 coalesce(item.primary_beat_id, beats[0].id) AS primary_id
+            WITH item, poi, beats, primary_id,
+                 [b IN beats WHERE b.id = primary_id][0] AS pb
+            WITH item, poi, beats, primary_id, pb,
+                 coalesce(item.lens_name, pb.lens) AS lens_name
+            OPTIONAL MATCH (lens:Lens {name: lens_name})
             RETURN item.sort_order AS sort_order,
                    poi.id AS poi_id,
                    poi.name AS poi_name,
                    poi.location.latitude AS lat,
                    poi.location.longitude AS lng,
-                   beat.id AS beat_id,
-                   lens.name AS lens_name,
-                   coalesce(lens.display_label, lens.name) AS lens_display,
+                   primary_id AS beat_id,
+                   coalesce(item.beat_ids, [b IN beats | b.id]) AS beat_ids,
+                   lens_name AS lens_name,
+                   CASE WHEN lens IS NOT NULL
+                        THEN coalesce(lens.display_label, lens.name)
+                        ELSE lens_name END AS lens_display,
                    item.duration_min AS duration_min,
                    coalesce(poi.importance_tier, 3) AS importance_tier,
                    CASE WHEN item.start_time IS NOT NULL
                         THEN substring(toString(item.start_time), 0, 5)
                         ELSE '09:00' END AS start_time,
-                   beat.script_body AS script_body,
-                   beat.audio_url AS audio_url,
-                   beat.duration_sec AS audio_duration_sec
+                   pb.script_body AS script_body,
+                   pb.audio_url AS audio_url,
+                   pb.duration_sec AS audio_duration_sec
             ORDER BY item.sort_order
         """
         stop_records = session.run(stops_query, tid=trip["trip_id"])

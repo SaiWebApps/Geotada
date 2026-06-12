@@ -92,6 +92,21 @@ class TestTripGenerateRequest:
             )
         assert "radius_m" in str(exc_info.value)
 
+    def test_trip_generate_request_duration_bounds(self):
+        """duration_min must satisfy the engine's TourInput bounds (1-600) at
+        request validation, so out-of-range values 422 instead of 500."""
+        for bad in (0, -5, 601):
+            with pytest.raises(ValidationError) as exc_info:
+                TripGenerateRequest(
+                    profile_id="p",
+                    center_lat=48.0,
+                    center_lng=2.0,
+                    duration_min=bad,
+                    start_date="2026-05-01",
+                    end_date="2026-05-03",
+                )
+            assert "duration_min" in str(exc_info.value)
+
     # Acceptance Criterion: AC1 — POST /api/v1/trips/generate returns 201
     def test_trip_generate_request_max_stops_capped(self):
         """T1: max_stops > 30 must be rejected."""
@@ -189,6 +204,22 @@ class TestGeneratedStop:
         # M0b additive fields default empty
         assert stop.beat_ids == []
         assert stop.dwell_seconds == 0
+
+    def test_generated_stop_lens_fields_optional(self):
+        """T1(M0b): lens_name/lens_display default None — a stop may have no lensed beat."""
+        stop = GeneratedStop(
+            sort_order=1,
+            poi_id="poi-abc",
+            poi_name="Plaque",
+            lat=48.85,
+            lng=2.35,
+            beat_id="b1",
+            duration_min=2,
+            importance_tier=2,
+            start_time="09:00",
+        )
+        assert stop.lens_name is None
+        assert stop.lens_display is None
 
     def test_generated_stop_multi_beat_fields(self):
         """T1(M0b): GeneratedStop carries all beat_ids + dwell_seconds from the engine."""

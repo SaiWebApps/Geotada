@@ -1,40 +1,110 @@
-"""Trip generation routes — create optimized itineraries from profile preferences."""
+"""Trip generation routes — run the tour engine (src/tour) and persist itineraries."""
 
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from neo4j import Session
+from neo4j import Driver, Session
 
 from src.api.crud.trips import (
-    apply_golden_ratio,
-    compute_schedule,
     create_trip_with_stops,
-    find_candidate_pois,
-    find_matching_beats,
     list_trips_for_profile,
+    route_script_to_stops,
 )
-from src.api.dependencies import get_session
+from src.api.dependencies import get_driver, get_session
 from src.api.models.trips import (
     GeneratedStop,
     TripGenerateRequest,
     TripGenerateResponse,
 )
+from src.tour.beat_select import select_poi_beats
+from src.tour.contract import BeatSequence, TourInput
+from src.tour.density import TourabilityRefusedError
+from src.tour.generation import generate
+from src.tour.selection import load_paris_corpus, select_route
 
 router = APIRouter(tags=["trips"])
+
+# TourInput.duration_min is required; the request field is optional for
+# back-compat with pre-engine clients that never sent it.
+DEFAULT_DURATION_MIN = 60
+
+
+def _resolve_lenses(session: Session, body: TripGenerateRequest) -> list[str] | None:
+    """Lens precedence: request -> profile PREFERS_LENS -> None (engine unbiased).
+
+    Profile lens names are sorted so the engine input is deterministic
+    regardless of edge-traversal order. A computed per-city default starter
+    set is a future feature (see ondoway-lens-defaults-spec.md); until it
+    exists, a no-lens profile runs the engine without lens bias.
+    """
+    if body.lenses:
+        return body.lenses
+    records = session.run(
+        "MATCH (p:Profile {id: $pid})-[:PREFERS_LENS]->(l:Lens) RETURN l.name AS name",
+        pid=body.profile_id,
+    )
+    names = sorted(r["name"] for r in records)
+    return names or None
+
+
+def _lens_display_map(session: Session, lens_names: set[str]) -> dict[str, str]:
+    """Map lens name -> display_label (falling back to the name) for the given lenses."""
+    if not lens_names:
+        return {}
+    records = session.run(
+        "MATCH (l:Lens) WHERE l.name IN $names "
+        "RETURN l.name AS name, coalesce(l.display_label, l.name) AS display",
+        names=sorted(lens_names),
+    )
+    return {r["name"]: r["display"] for r in records}
+
+
+def _primary_beat_audio(session: Session, beat_ids: list[str]) -> dict[str, dict]:
+    """Per primary beat: script_body/audio_url/audio_duration_sec for the response.
+
+    Mirrors what list_trips_for_profile reads for a stop's primary beat, so the
+    generate response keeps the pre-engine contract (mobile skips audio
+    generation when audio_url is already populated).
+    """
+    ids = [b for b in beat_ids if b]
+    if not ids:
+        return {}
+    records = session.run(
+        "MATCH (b:NarrativeBeat) WHERE b.id IN $ids "
+        "RETURN b.id AS id, b.script_body AS script_body, b.audio_url AS audio_url, "
+        "b.duration_sec AS audio_duration_sec",
+        ids=ids,
+    )
+    return {
+        r["id"]: {
+            "script_body": r["script_body"],
+            "audio_url": r["audio_url"],
+            "audio_duration_sec": r["audio_duration_sec"],
+        }
+        for r in records
+    }
 
 
 @router.post("/trips/generate", response_model=TripGenerateResponse, status_code=201)
 def generate_trip(
     body: TripGenerateRequest,
     session: Session = Depends(get_session),
+    driver: Driver = Depends(get_driver),
 ):
-    """Generate an optimized trip itinerary based on profile lens preferences.
+    """Generate a trip by running the tour engine end to end.
 
-    Finds POIs within radius, matches to beats the user prefers, applies
-    golden-ratio selection (~20% anchors), schedules stops, and persists
-    the Trip graph structure.
+    Pipeline: load_paris_corpus -> select_route (density gate: RED refusal
+    -> 422) -> select_poi_beats per route POI -> generate (deterministic
+    mock glue) -> route_script_to_stops -> persist Trip + ItineraryItems.
+
+    M0b scope notes:
+    - `radius_m`, `max_stops`, and `kid_friendly_only` are accepted for
+      request back-compat but are inert: the engine derives its own walk
+      radius and stop count from `duration_min`.
+    - The Script's narration (sentence stream) is not persisted or returned;
+      it belongs to the COMPOSE/audio milestone. The validation report that
+      `generate` attaches is non-blocking here for the same reason.
     """
-    # Verify profile exists
     profile_check = session.run(
         "MATCH (p:Profile {id: $pid}) RETURN p.id AS id",
         pid=body.profile_id,
@@ -42,59 +112,94 @@ def generate_trip(
     if profile_check is None:
         raise HTTPException(404, f"Profile '{body.profile_id}' not found")
 
-    # Step 1: Find candidate POIs within radius
-    pois = find_candidate_pois(
-        session,
-        center_lat=body.center_lat,
-        center_lng=body.center_lng,
-        radius_m=body.radius_m,
-        kid_friendly_only=body.kid_friendly_only,
-    )
-    if not pois:
-        raise HTTPException(422, "No POIs found within the specified radius and filters")
+    lenses = _resolve_lenses(session, body)
 
-    # Step 2: Find beats matching profile's lens preferences
-    poi_ids = [p["id"] for p in pois]
-    beats = find_matching_beats(session, poi_ids, body.profile_id)
-    if not beats:
+    tour_input = TourInput(
+        start=(body.center_lat, body.center_lng),
+        duration_min=body.duration_min or DEFAULT_DURATION_MIN,
+        city_slug="paris",
+        lenses=lenses,
+        round_trip=body.round_trip,
+    )
+
+    snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
+    try:
+        route = select_route(tour_input, snapshot)
+    except TourabilityRefusedError as exc:
+        a = exc.assessment
         raise HTTPException(
             422,
-            "No narrative beats match the profile's lens preferences for POIs in this area",
+            "Area too sparse for a tour of this length: "
+            f"{a.anchor_candidate_count} anchor candidates, "
+            f"{a.reachable_poi_count} reachable POIs.",
+        ) from exc
+
+    # A non-RED assessment can still yield an empty route (e.g. YELLOW by fill
+    # ratio with no tier-3+ anchor candidates). Refuse before persisting —
+    # never create a zero-stop Trip.
+    if not route.pois:
+        raise HTTPException(
+            422,
+            "No tourable POIs reachable from this start for the requested duration.",
         )
 
-    # Step 3: Apply golden ratio selection
-    selected = apply_golden_ratio(beats, body.max_stops, body.duration_min)
+    # Beat plan per route POI, merging beats demoted into a host POI
+    # (same sequence as scripts/tour_build.py).
+    plans = []
+    for poi in route.pois:
+        beats = list(snapshot.beats_for(poi.id))
+        beats.extend(route.demoted_beats.get(poi.id, ()))
+        plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
+    beat_sequence = BeatSequence(poi_beats=tuple(plans))
 
-    # Step 4: Compute schedule
-    scheduled = compute_schedule(selected, body.start_time)
+    script = generate(beat_sequence, route, tour_input)
 
-    # Step 5: Generate trip name if not provided
+    beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
+    stops = route_script_to_stops(script.selected_pois, beats_by_id, body.start_time)
+
     trip_name = body.trip_name or f"Trip ({body.start_date})"
-
-    # Step 6: Persist to Neo4j
     result = create_trip_with_stops(
         session,
         trip_name=trip_name,
         profile_id=body.profile_id,
         start_date=body.start_date,
         end_date=body.end_date,
-        stops=scheduled,
+        stops=stops,
     )
 
-    # Build response
-    stops_out = [GeneratedStop(**s) for s in scheduled]
-    total_duration = sum(s["duration_min"] for s in scheduled)
-    anchor_count = sum(1 for s in scheduled if s["importance_tier"] == 5)
-    flavour_count = len(scheduled) - anchor_count
+    display_map = _lens_display_map(session, {s["lens_name"] for s in stops if s["lens_name"]})
+    audio_by_beat = _primary_beat_audio(session, [s["primary_beat_id"] for s in stops])
+    stops_out = [
+        GeneratedStop(
+            sort_order=s["sort_order"],
+            poi_id=s["poi_id"],
+            poi_name=s["poi_name"],
+            lat=s["lat"],
+            lng=s["lng"],
+            beat_id=s["primary_beat_id"],
+            beat_ids=s["beat_ids"],
+            lens_name=s["lens_name"],
+            lens_display=display_map.get(s["lens_name"]) if s["lens_name"] else None,
+            duration_min=s["duration_min"],
+            importance_tier=s["importance_tier"],
+            start_time=s["start_time"],
+            dwell_seconds=s["dwell_seconds"],
+            **audio_by_beat.get(s["primary_beat_id"], {}),
+        )
+        for s in stops
+    ]
+    total_duration = sum(s["duration_min"] for s in stops)
+    anchor_count = sum(1 for s in stops if s["importance_tier"] == 5)
 
     return TripGenerateResponse(
         trip_id=result["trip_id"],
         trip_name=result["trip_name"],
         profile_id=body.profile_id,
-        total_stops=len(scheduled),
+        total_stops=len(stops),
         total_duration_min=total_duration,
         anchor_count=anchor_count,
-        flavour_count=flavour_count,
+        flavour_count=len(stops) - anchor_count,
+        lens_coverage=script.lens_coverage,
         stops=stops_out,
     )
 

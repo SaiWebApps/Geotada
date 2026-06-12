@@ -40,6 +40,7 @@ def test_all_beats_kept_with_primary():
     stops = route_script_to_stops(pois, beats, "09:00")
     assert stops[0]["beat_ids"] == ["b1", "b2", "b3"]
     assert stops[0]["primary_beat_id"] == "b1"
+    assert stops[0]["dwell_seconds"] == 600  # raw engine dwell passes through
 
 
 def test_dominant_lens_is_most_common():

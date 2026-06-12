@@ -13,7 +13,12 @@ class TripGenerateRequest(BaseModel):
     center_lng: float = Field(..., ge=-180, le=180, description="Longitude of search center")
     radius_m: int = Field(default=3000, le=10000, description="Search radius in meters")
     max_stops: int = Field(default=10, le=30, description="Cap on itinerary items")
-    duration_min: int | None = Field(default=None, description="Total trip budget in minutes")
+    duration_min: int | None = Field(
+        default=None,
+        ge=1,
+        le=600,
+        description="Total trip budget in minutes (engine cap: 600)",
+    )
     start_date: str = Field(..., description="ISO date for the trip start")
     end_date: str = Field(..., description="ISO date for the trip end")
     start_time: str = Field(default="09:00", description="Daily start time (HH:MM)")
@@ -63,8 +68,8 @@ class GeneratedStop(BaseModel):
     lat: float
     lng: float
     beat_id: str
-    lens_name: str
-    lens_display: str
+    lens_name: str | None = None
+    lens_display: str | None = None
     duration_min: int
     importance_tier: int
     start_time: str

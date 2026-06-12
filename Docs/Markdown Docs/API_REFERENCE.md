@@ -329,7 +329,7 @@ POST /trips/generate
 Content-Type: application/json
 ```
 
-Generates an optimized trip itinerary based on a profile's lens preferences. Finds POIs within the specified radius, matches narrative beats to the profile's preferred lenses, applies golden-ratio selection (~20% anchors at gravity 5, ~80% flavour at gravity 1–4), schedules sequential stops, and persists the Trip + ItineraryItem graph structure.
+Generates a trip by running the tour engine (`src/tour`) end to end: corpus load → route selection (with a density gate that refuses sparse areas) → per-POI beat selection → script assembly. Each stop is one engine route POI in walking order; ALL of its narrated beats persist (`beat_ids`, one `PLAYS_BEAT` edge per beat) with `beat_id` = the primary (first) beat. Lens precedence for selection bias: request `lenses` → the profile's `PREFERS_LENS` edges (sorted) → none (unbiased).
 
 **Request body:**
 
@@ -338,13 +338,12 @@ Generates an optimized trip itinerary based on a profile's lens preferences. Fin
   "profile_id": "prof-123",
   "center_lat": 48.858,
   "center_lng": 2.294,
-  "radius_m": 3000,
-  "max_stops": 10,
-  "duration_min": 120,
+  "duration_min": 90,
+  "round_trip": false,
+  "lenses": ["hidden_history"],
   "start_date": "2026-06-01",
   "end_date": "2026-06-03",
   "start_time": "09:00",
-  "kid_friendly_only": false,
   "trip_name": "My Paris Trip"
 }
 ```
@@ -352,15 +351,17 @@ Generates an optimized trip itinerary based on a profile's lens preferences. Fin
 | Field             | Type   | Required | Default | Description                                     |
 |-------------------|--------|----------|---------|-------------------------------------------------|
 | profile_id        | string | Yes      | —       | Profile node whose PREFERS_LENS edges select beats |
-| center_lat        | float  | Yes      | —       | Latitude of search center (-90 to 90)           |
-| center_lng        | float  | Yes      | —       | Longitude of search center (-180 to 180)        |
-| radius_m          | int    | No       | 3000    | Search radius in meters (max 10000)             |
-| max_stops         | int    | No       | 10      | Cap on itinerary items (max 30)                 |
-| duration_min      | int    | No       | null    | Total trip budget in minutes                    |
+| center_lat        | float  | Yes      | —       | Latitude of the tour start (-90 to 90)          |
+| center_lng        | float  | Yes      | —       | Longitude of the tour start (-180 to 180)       |
+| duration_min      | int    | No       | 60      | Tour budget in minutes (1–600); engine derives walk radius and stop count from it |
+| round_trip        | bool   | No       | false   | Return to the start point (loops the route)     |
+| lenses            | array  | No       | null    | Lens slugs to bias selection; overrides the profile's PREFERS_LENS |
+| radius_m          | int    | No       | 3000    | INERT since M0b (accepted for back-compat only) |
+| max_stops         | int    | No       | 10      | INERT since M0b (accepted for back-compat only) |
+| kid_friendly_only | bool   | No       | false   | INERT since M0b (accepted for back-compat only) |
 | start_date        | string | Yes      | —       | ISO date for the trip start                     |
 | end_date          | string | Yes      | —       | ISO date for the trip end                       |
 | start_time        | string | No       | "09:00" | Daily start time (HH:MM)                        |
-| kid_friendly_only | bool   | No       | false   | Filter for kid-friendly POIs only               |
 | trip_name         | string | No       | null    | Optional name; auto-generated if omitted        |
 
 **Response 201:**
@@ -374,6 +375,7 @@ Generates an optimized trip itinerary based on a profile's lens preferences. Fin
   "total_duration_min": 75,
   "anchor_count": 1,
   "flavour_count": 4,
+  "lens_coverage": {"hidden_history": 4, "architecture": 2},
   "stops": [
     {
       "sort_order": 1,
@@ -382,19 +384,26 @@ Generates an optimized trip itinerary based on a profile's lens preferences. Fin
       "lat": 48.8606,
       "lng": 2.3376,
       "beat_id": "beat-xyz",
+      "beat_ids": ["beat-xyz", "beat-uvw"],
       "lens_name": "hidden_history",
       "lens_display": "Hidden History",
       "duration_min": 30,
       "importance_tier": 5,
-      "start_time": "09:00"
+      "start_time": "09:00",
+      "dwell_seconds": 1800,
+      "script_body": "…primary beat text…",
+      "audio_url": null,
+      "audio_duration_sec": null
     }
   ]
 }
 ```
 
+`lens_name`/`lens_display` are the DOMINANT lens of the stop's beats and are `null` when no beat is lensed. `script_body`/`audio_url`/`audio_duration_sec` describe the primary beat.
+
 **Response 404:** Profile not found.
 
-**Response 422:** No POIs found within radius, or no narrative beats match the profile's lens preferences for POIs in the area.
+**Response 422:** The density gate refused the area (too sparse for a tour of the requested length), or no tourable POIs are reachable from the start.
 
 ---
 

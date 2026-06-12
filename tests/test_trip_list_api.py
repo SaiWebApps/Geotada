@@ -1,8 +1,10 @@
 """Unit tests for GET /api/v1/trips endpoint.
 
-These tests use the FastAPI TestClient with mocked Neo4j interactions
-via seeded data. Integration tests that need real Neo4j are skipped
-when the database is unavailable.
+Trips are seeded directly through create_trip_with_stops (adapter-shaped stop
+dicts built from the toy-seeded graph) — NOT through POST /trips/generate,
+which since M0b runs the real tour engine whose density gate refuses the toy
+corpus. The list read path is what's under test here, including its fallback
+for legacy single-beat items (the seeded "Paris Spring 2026" trip).
 """
 
 from __future__ import annotations
@@ -11,6 +13,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from src.api.app import create_app
+from src.api.crud.trips import create_trip_with_stops
 from src.connection import create_driver, get_database
 from src.schema.constraints import apply_all
 from src.seed.runner import seed_all
@@ -45,43 +48,82 @@ def mom_profile_id(seeded_driver):
         return result["id"]
 
 
-def _make_request_body(profile_id: str, **overrides) -> dict:
-    """Helper to build a valid trip generation request body."""
-    body = {
-        "profile_id": profile_id,
-        "center_lat": 48.858,
-        "center_lng": 2.294,
-        "radius_m": 5000,
-        "max_stops": 10,
-        "start_date": "2026-05-01",
-        "end_date": "2026-05-03",
-        "start_time": "09:00",
-    }
-    body.update(overrides)
-    return body
+def _engine_shaped_stops(driver) -> list[dict]:
+    """Adapter-shaped stop dicts from the toy-seeded graph — no engine run.
+
+    Mirrors the route_script_to_stops output contract: all of a POI's beats in
+    beat_ids, primary_beat_id = beat_ids[0], dominant lens (deterministic pick).
+    """
+    with driver.session(database=get_database()) as s:
+        records = s.run(
+            """
+            MATCH (poi:POI)-[:HAS_BEAT]->(b:NarrativeBeat)
+            OPTIONAL MATCH (b)-[:TAGGED_WITH]->(l:Lens)
+            WITH poi, b, min(l.name) AS beat_lens
+            ORDER BY b.id
+            WITH poi, collect(b.id) AS beat_ids, min(beat_lens) AS lens_name
+            RETURN poi.id AS poi_id,
+                   poi.name AS poi_name,
+                   poi.location.latitude AS lat,
+                   poi.location.longitude AS lng,
+                   coalesce(poi.importance_tier, 3) AS importance_tier,
+                   beat_ids,
+                   lens_name
+            ORDER BY poi.name
+            """
+        ).data()
+    return [
+        {
+            "sort_order": idx + 1,
+            "poi_id": r["poi_id"],
+            "poi_name": r["poi_name"],
+            "lat": r["lat"],
+            "lng": r["lng"],
+            "beat_ids": r["beat_ids"],
+            "primary_beat_id": r["beat_ids"][0],
+            "lens_name": r["lens_name"],
+            "duration_min": 30,
+            "importance_tier": r["importance_tier"],
+            "start_time": "09:00",
+            "area": None,
+            "dwell_seconds": 1800,
+        }
+        for idx, r in enumerate(records)
+    ]
+
+
+def _create_trip(driver, profile_id: str, name: str) -> tuple[str, list[dict]]:
+    """Persist a trip via the crud layer; returns (trip_id, stops used)."""
+    stops = _engine_shaped_stops(driver)
+    assert stops, "toy seed must provide POIs with beats"
+    with driver.session(database=get_database()) as s:
+        result = create_trip_with_stops(
+            s,
+            trip_name=name,
+            profile_id=profile_id,
+            start_date="2026-05-01",
+            end_date="2026-05-03",
+            stops=stops,
+        )
+    return result["trip_id"], stops
 
 
 @needs_neo4j
 class TestListTripsEndpoint:
     """Integration tests for GET /api/v1/trips endpoint."""
 
-    def test_list_trips_for_profile_returns_trips(self, client, mom_profile_id):
-        """After generating a trip, GET /trips returns it."""
-        # Generate a trip first
-        body = _make_request_body(mom_profile_id)
-        gen_resp = client.post("/api/v1/trips/generate", json=body)
-        assert gen_resp.status_code == 201
+    def test_list_trips_for_profile_returns_trips(self, client, seeded_driver, mom_profile_id):
+        """After persisting a trip, GET /trips returns it."""
+        trip_id, _ = _create_trip(seeded_driver, mom_profile_id, "List Test Trip")
 
-        # List trips
         resp = client.get(f"/api/v1/trips?profile_id={mom_profile_id}")
         assert resp.status_code == 200
         data = resp.json()
         assert isinstance(data, list)
         assert len(data) >= 1
 
-        # Verify the generated trip is in the list
         trip_ids = [t["trip_id"] for t in data]
-        assert gen_resp.json()["trip_id"] in trip_ids
+        assert trip_id in trip_ids
 
     def test_list_trips_for_profile_empty(self, client, seeded_driver):
         """A profile with no trips returns an empty list."""
@@ -101,37 +143,49 @@ class TestListTripsEndpoint:
         data = resp.json()
         assert data == []
 
-    def test_list_trips_includes_stops_with_poi_and_lens(self, client, mom_profile_id):
-        """Trips in the list include full stop details with POI and lens data."""
-        # Generate a trip to ensure at least one exists
-        body = _make_request_body(mom_profile_id)
-        gen_resp = client.post("/api/v1/trips/generate", json=body)
-        assert gen_resp.status_code == 201
-        generated_trip_id = gen_resp.json()["trip_id"]
+    def test_list_trips_includes_stops_with_poi_and_lens(
+        self, client, seeded_driver, mom_profile_id
+    ):
+        """Trips in the list include full stop details with POI, beats, and lens data."""
+        trip_id, seeded_stops = _create_trip(seeded_driver, mom_profile_id, "Stop Detail Trip")
 
-        # List and find this trip
         resp = client.get(f"/api/v1/trips?profile_id={mom_profile_id}")
         assert resp.status_code == 200
         data = resp.json()
 
-        trip = next((t for t in data if t["trip_id"] == generated_trip_id), None)
+        trip = next((t for t in data if t["trip_id"] == trip_id), None)
         assert trip is not None
-        assert trip["total_stops"] > 0
+        assert trip["total_stops"] == len(seeded_stops)
         assert len(trip["stops"]) == trip["total_stops"]
 
-        # Verify stop fields
-        stop = trip["stops"][0]
-        assert "sort_order" in stop
-        assert "poi_id" in stop
-        assert "poi_name" in stop
-        assert "lat" in stop
-        assert "lng" in stop
-        assert "beat_id" in stop
-        assert "lens_name" in stop
-        assert "lens_display" in stop
-        assert "duration_min" in stop
-        assert "importance_tier" in stop
-        assert "start_time" in stop
+        # One row per item — multi-beat stops must NOT fan out into duplicates.
+        by_order = {s["sort_order"]: s for s in trip["stops"]}
+        assert len(by_order) == len(trip["stops"])
+
+        for seeded in seeded_stops:
+            stop = by_order[seeded["sort_order"]]
+            assert stop["poi_id"] == seeded["poi_id"]
+            assert sorted(stop["beat_ids"]) == sorted(seeded["beat_ids"])
+            assert stop["beat_id"] == seeded["primary_beat_id"]
+            assert stop["lens_name"] == seeded["lens_name"]
+            for field in ("poi_name", "lat", "lng", "lens_display", "duration_min",
+                          "importance_tier", "start_time"):
+                assert field in stop
+
+    def test_list_trips_reads_legacy_single_beat_items(self, client, mom_profile_id):
+        """The seeded 'Paris Spring 2026' trip predates M0b: items carry one
+        PLAYS_BEAT edge and no beat_ids/primary_beat_id/lens_name properties.
+        The read path must fall back to edge-derived values."""
+        resp = client.get(f"/api/v1/trips?profile_id={mom_profile_id}")
+        assert resp.status_code == 200
+        legacy = next(
+            (t for t in resp.json() if t["trip_name"] == "Paris Spring 2026"), None
+        )
+        assert legacy is not None, "seed_all should have created 'Paris Spring 2026'"
+        assert legacy["total_stops"] > 0
+        for stop in legacy["stops"]:
+            assert stop["beat_id"], "legacy item must derive beat_id from its edge"
+            assert stop["beat_ids"] == [stop["beat_id"]]
 
     def test_list_trips_requires_valid_profile_id(self, client):
         """A nonexistent profile returns 404."""

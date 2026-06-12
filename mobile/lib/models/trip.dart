@@ -39,8 +39,10 @@ class ItineraryStop {
       lat: (json['lat'] as num).toDouble(),
       lng: (json['lng'] as num).toDouble(),
       beatId: json['beat_id'] as String,
-      lensName: json['lens_name'] as String,
-      lensDisplay: json['lens_display'] as String,
+      // M0b: a stop with no lensed beat has null lens fields in the API
+      // response; render as empty rather than crash.
+      lensName: (json['lens_name'] as String?) ?? '',
+      lensDisplay: (json['lens_display'] as String?) ?? '',
       durationMin: json['duration_min'] as int,
       importanceTier: json['importance_tier'] as int,
       startTime: json['start_time'] as String,
