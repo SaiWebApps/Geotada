@@ -33,6 +33,27 @@ services:
       timeout: 5s
       retries: 30
 
+  # M1 routing engine. Never started by the db-* targets (they are
+  # service-scoped); use `make valhalla-up`. First start builds tiles from
+  # any .osm.pbf in ./valhalla/custom_files (`make valhalla-build-tiles`
+  # downloads the Île-de-France extract there). Tiles live in the bind
+  # mount, so `docker compose down -v` cannot destroy them.
+  valhalla:
+    image: ghcr.io/valhalla/valhalla-scripted:latest
+    container_name: ondoway-valhalla
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./valhalla/custom_files:/custom_files
+    healthcheck:
+      # GET /status answers 200 + version when the service is up (documented
+      # health endpoint). Best-effort: not yet validated against the image's
+      # installed binaries; `make valhalla-status` is the host-side check.
+      test: ["CMD-SHELL", "curl -fs http://localhost:8002/status || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+
 volumes:
   neo4j_data:
   neo4j_test_data:

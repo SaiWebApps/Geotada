@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -130,6 +130,24 @@ db-test-reset: ## Stop test Neo4j and wipe test data
 	docker compose rm -f neo4j-test
 	docker volume rm -f ondoway_neo4j_test_data
 	@echo "✓ Test Neo4j stopped and data wiped."
+
+valhalla-up: ## Start the Valhalla routing engine (first start builds tiles from valhalla/custom_files)
+	docker compose up -d valhalla
+	@echo "Valhalla starting on http://localhost:8002 — first start with a new"
+	@echo "PBF builds tiles (minutes). Check readiness: make valhalla-status"
+
+valhalla-down: ## Stop Valhalla (tiles preserved in valhalla/custom_files)
+	docker compose stop valhalla
+
+valhalla-status: ## Host-side health check against Valhalla's /status endpoint
+	@curl -fs --max-time 3 http://localhost:8002/status && echo " ← Valhalla OK" \
+		|| echo "Valhalla not responding on :8002 (engine falls back to haversine)"
+
+valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for tile building on next start
+	mkdir -p valhalla/custom_files
+	curl -L -o valhalla/custom_files/ile-de-france-latest.osm.pbf \
+		https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf
+	@echo "✓ PBF downloaded. Run 'make valhalla-up' (restart if already running) to build tiles."
 
 backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. Dry-run by default; ARGS="--apply" to write; ARGS="--apply --neo4j" to also update the dev graph.
 	uv run python scripts/backfill_poi_role.py $(ARGS)

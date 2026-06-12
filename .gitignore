@@ -281,3 +281,6 @@ data/paris_test/
 
 # uv.lock is committed (reproducible dependency resolution)
 # Do NOT add uv.lock to this file.
+
+# Valhalla OSM extracts + built tiles (multi-GB, machine-local; make valhalla-build-tiles)
+valhalla/custom_files/
