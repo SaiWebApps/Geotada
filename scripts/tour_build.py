@@ -27,7 +27,7 @@ from pathlib import Path
 from src.connection import create_driver
 from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, Script, TourInput
-from src.tour.density import TourabilityRefused
+from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
@@ -166,7 +166,7 @@ def _project_cost_upper_bound(
 
 
 def _print_red_refusal(
-    exc: TourabilityRefused,
+    exc: TourabilityRefusedError,
     *,
     start_label: str,
     duration_min: int,
@@ -259,7 +259,7 @@ def main() -> int:
         t_select = time.perf_counter()
         try:
             route = select_route(tour_input, snapshot)
-        except TourabilityRefused as exc:
+        except TourabilityRefusedError as exc:
             _print_red_refusal(
                 exc, start_label=start_label, duration_min=args.duration,
                 round_trip=bool(args.round_trip),
