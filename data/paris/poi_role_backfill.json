@@ -1,0 +1,898 @@
+[
+  {
+    "idx": 238,
+    "name": "Parc Monceau",
+    "tier": 4,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Trigger_radius 150m and the description (\"public park,\" follies scattered across it) plus beats like \"Enter the park,\" \"Continue along the alley,\" and \"Wandering through Monceau\" describe walking-through-an-area narration, not a single stop."
+  },
+  {
+    "idx": 239,
+    "name": "Place du Tertre",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete hilltop square (trigger 40m) whose beats have the visitor standing in the place du Tertre observing the artists, La Mère Catherine, and the distant basilica — a destination to stop at."
+  },
+  {
+    "idx": 240,
+    "name": "Palais de Justice",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete building (trigger 10m) described as a fixed judicial complex on the site of the kings' palace, with beats contemplating events that happened there — a stand-before stop."
+  },
+  {
+    "idx": 241,
+    "name": "Square du Vert-Galant",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 small enclosed pocket-park (trigger 40m) whose beats say \"Once you descend the staircase and enter the square\" to a contemplative spot at the island's tip — a destination, not a through-route."
+  },
+  {
+    "idx": 242,
+    "name": "Rue Saint-Honoré",
+    "tier": 5,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5 two-kilometer street (trigger 75m); name is \"Rue …\" and beats narrate addresses passed in sequence (n°93, n°115) along a major artery — walking-along-an-area narration, not a stop."
+  },
+  {
+    "idx": 243,
+    "name": "Crédit Municipal de Paris",
+    "tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 2 but the transit beat explicitly says \"Stop at the imposing Mont de Piete\" (trigger 10m) and beats stand before the discrete building describing the institution inside — a deliberate stop."
+  },
+  {
+    "idx": 244,
+    "name": "Tour Saint-Jacques",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete 52m bell tower (trigger 10m); beats \"Walk into square de la Tour St-Jacques\" and describe standing before the lone Gothic tower — a stand-before stop."
+  },
+  {
+    "idx": 245,
+    "name": "Rue de la Ferronnerie",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "[reviewed] Tier-2 but a street (\"rue\"), trigger_radius 75 (>=50m), and beats narrate walking ALONG it (\"carry straight on along rue de la Ferronnerie\", \"Crossing the boulevard\") — a street-area for walking narration, which the rule classifies as setting, not walk_by_only."
+  },
+  {
+    "idx": 246,
+    "name": "Rue Saint-Antoine",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3 wide artery (trigger 75m); name is \"Rue …\" and beats say \"head west down Rue St. Antoine about four blocks into the Marais,\" narrating the street as a through-route — area narration."
+  },
+  {
+    "idx": 247,
+    "name": "Quai d'Anjou",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3 quay (trigger 75m); name is \"Quai …\" and beats narrate a sequence of addresses passed while walking along the island's northern quay (\"Continue to No. 7,\" \"turn left for No. 29\") — a walking through-route."
+  },
+  {
+    "idx": 248,
+    "name": "Place des Abbesses",
+    "tier": 5,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5 lively square (trigger 40m); beats narrate arriving via rue des Abbesses and noticing features around the square (Métro exit, garden wall) as a neighborhood area rather than a single contemplated object."
+  },
+  {
+    "idx": 249,
+    "name": "Musée Cernuschi",
+    "tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "[reviewed] The transit beat explicitly stages a stop at this discrete museum building (\"stop in front of the Musee Cernuschi to the right\"), satisfying the rule's tier-1/2 'stop' exception (explicit staged stop), so not walk_by_only."
+  },
+  {
+    "idx": 250,
+    "name": "Cathédrale Saint-Alexandre-Nevsky",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete cathedral (trigger 10m); beats describe standing before the Russian church with its five gilded onion domes and entering \"Little Russia\" — a stand-before stop."
+  },
+  {
+    "idx": 251,
+    "name": "Voltaire Statue (Square Honoré-Champion)",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 single statue (trigger 10m); beats reach it by walking through a passageway and note the statue of Voltaire in Square Honoré-Champion — a minor landmark passed, per tier-1/2 default."
+  },
+  {
+    "idx": 252,
+    "name": "Rue de Rivoli",
+    "tier": 5,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 5 long arcaded thoroughfare (trigger 75m); name is \"Rue …\" and beats narrate houses passed along it (n°258, n°230) — a walking-along through-route, not a stop."
+  },
+  {
+    "idx": 253,
+    "name": "Place des Pyramides",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete square (trigger 40m) whose beats say \"Turn right and stop at the gilded statue of Joan of Arc\" — an explicit stop at a single monument."
+  },
+  {
+    "idx": 254,
+    "name": "Quartier de l'Horloge",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 2 but radius 100m and the description names it a \"Quartier\" (a redevelopment district/labyrinth of passageways), an area giving contextual walking narration rather than a single discrete stop."
+  },
+  {
+    "idx": 255,
+    "name": "Rue Charles V",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 minor Marais street; beats are character_story + transit walking through courtyards, a minor reference passed in passing, not a destination to stop at."
+  },
+  {
+    "idx": 256,
+    "name": "Rue de Lappe",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A \"Bastille street\" (rue) with radius 75m whose beats describe walking along it past dance halls and Auvergnat shops/restaurants, contextual area narration rather than a single stop."
+  },
+  {
+    "idx": 257,
+    "name": "Fouquet's",
+    "tier": 5,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete brasserie at radius 10m whose beats describe it as \"the place to enjoy a slow coffee\" and a declared historic monument, a destination you stand before."
+  },
+  {
+    "idx": 258,
+    "name": "Rimbaud Statue (Sully Morland)",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 minor statue/landmark whose beats merely point it out (\"On your left is a modern statue\") while moving toward the central garden, a passing reference."
+  },
+  {
+    "idx": 259,
+    "name": "Église Saint-Pierre de Montmartre",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete church at radius 10m whose beats establish you arriving at and standing before this ancient sanctuary, the default stop-and-listen destination."
+  },
+  {
+    "idx": 260,
+    "name": "Lapin Agile",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 discrete cabaret building at radius 10m that the beats single out as a picturesque destination (\"Just below the vineyard stands the picturesque little cabaret bar\"), a place to stop and contemplate."
+  },
+  {
+    "idx": 261,
+    "name": "Musée Nissim de Camondo",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete museum mansion at radius 10m whose transit beat ends \"Stop behind the first big house... the Musee Nissim de Camondo,\" explicitly a stop-and-listen destination."
+  },
+  {
+    "idx": 262,
+    "name": "Musée Jacquemart-André",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 3 discrete museum mansion at radius 10m described as a \"splendid museum left to the nation,\" a discrete building destination you stop before."
+  },
+  {
+    "idx": 263,
+    "name": "Passage Poncelet",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 small passage at radius 75m whose beats just note a lively fresh-produce market while threading the route through it, a minor through-passage reference not a stop."
+  },
+  {
+    "idx": 264,
+    "name": "Pont de la Concorde",
+    "tier": 4,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "[reviewed] Bridge (rule lists bridges as 'setting'); beat \"stopping at Pont de la Concorde to admire the spectacular views before crossing back over\" uses it as a crossing/vantage, and every other bridge in the set (266 Pont d'Iéna, 292 Pont de la Tournelle, 299 Passerelle) is 'setting'."
+  },
+  {
+    "idx": 265,
+    "name": "Cimetière de Passy",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 cemetery at radius 10m whose beats direct you to \"Go into the Cimetiere de Passy\" and wander among its tombs, a discrete destination you enter and contemplate."
+  },
+  {
+    "idx": 266,
+    "name": "Pont d'Iéna",
+    "tier": 5,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A bridge named in the description as linking the Eiffel Tower to the Trocadéro, with a transit/scene_setter beat reading \"go on downhill towards the Seine and Pont d'Iéna,\" used as a through-route crossing rather than a stop."
+  },
+  {
+    "idx": 267,
+    "name": "Opéra Bastille",
+    "tier": 5,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 5 discrete opera house at radius 10m with rich establishing/architectural beats describing standing before its \"curving glass front,\" a major building destination to stop and listen at."
+  },
+  {
+    "idx": 268,
+    "name": "Rue du Pas-de-la-Mule",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 2 short Marais street at radius 75m whose single beat directs you to \"Walk east out of the place, to no. 6\" toward a shop, a minor reference passed while walking, not a stop."
+  },
+  {
+    "idx": 269,
+    "name": "Quai de la Mégisserie",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A Seine \"quay\" (quai) at radius 75m whose single factoid beat narrates its tanners' history as you pass along the riverbank, a through-route area giving contextual narration."
+  },
+  {
+    "idx": 270,
+    "name": "Rue Sauval",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 minor \"short street near Les Halles\" with a single character_story beat merely noting a birthplace/historic corner, no stop-and-listen framing."
+  },
+  {
+    "idx": 271,
+    "name": "Place du Marché Sainte-Catherine",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 small enclosed neighborhood square reached by turning off rue Saint-Antoine, with a stop_orientation establishing beat and cafe scene_setter — a destination to pause in, not a through-route."
+  },
+  {
+    "idx": 272,
+    "name": "Théâtre de la Ville",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-4 discrete theatre building with a character_story hook about Sarah Bernhardt owning it; a standalone monument you contemplate."
+  },
+  {
+    "idx": 273,
+    "name": "Passage Saint-Paul",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 minor passageway with a single architectural_detail beat noting old bollards; a passing reference, not a destination."
+  },
+  {
+    "idx": 274,
+    "name": "Port de l'Arsenal",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-4 discrete marina basin at 10m radius with a sensory establishing beat inviting you to take in the moorings and garden — a place to pause."
+  },
+  {
+    "idx": 275,
+    "name": "Colonne de Juillet",
+    "tier": 5,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-5 discrete 47m column monument at 10m radius with 8 beats establishing/deepening its history — clearly a stand-and-listen destination, not an area."
+  },
+  {
+    "idx": 276,
+    "name": "Statue de Beaumarchais",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 statue at 10m with a single establishing beat naming the subject; a minor landmark passed by."
+  },
+  {
+    "idx": 277,
+    "name": "Restaurant Bofinger",
+    "tier": 3,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-3 brasserie whose only beat is a transit/scene_setter describing \"walking past Restaurant Bofinger at No. 3\" — narrated in passing, not stopped at."
+  },
+  {
+    "idx": 278,
+    "name": "Marché Bastille",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-3 open-air market stretching along boulevard Richard-Lenoir with a single bare factoid about market days — an area market you traverse, giving contextual walking narration."
+  },
+  {
+    "idx": 279,
+    "name": "Cour Damoye",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 private cobbled passage whose only beat is a transit instruction to walk through it to rue de Lappe — a connector, not a stop."
+  },
+  {
+    "idx": 280,
+    "name": "Barrio Latino",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 bar/club whose single beat is a transit/scene_setter routing you along rue de Charonne to No. 46 — a minor mention while walking."
+  },
+  {
+    "idx": 281,
+    "name": "Passage du Chantier",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 cobbled passageway with one anecdote about furniture workshops; a minor faubourg reference, not a destination."
+  },
+  {
+    "idx": 282,
+    "name": "Quinze-Vingts National Ophthalmology Hospital",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 hospital with a single anecdote explaining the \"Quinze-Vingts\" name as you turn beside it — a minor landmark referenced in passing."
+  },
+  {
+    "idx": 283,
+    "name": "Viaduc des Arts",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-3 linear converted viaduct of sixty arches narrated as \"Walk along avenue Daumesnil and look in the windows under the arcades\" — a corridor walked along, not a single stop."
+  },
+  {
+    "idx": 284,
+    "name": "Roger-Viollet Photo Agency",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 photo agency with one anecdote telling you to \"look in the windows\" at displays — a minor walk-past glance, not a stop-and-listen destination."
+  },
+  {
+    "idx": 285,
+    "name": "George Sand's House (31 Rue de Seine)",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 townhouse with a single character_story beat about George Sand having lived there — a minor residence reference passed on the street."
+  },
+  {
+    "idx": 286,
+    "name": "Café la Palette",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 café (radius 10) where the beat invites \"sitting\" at an outdoor table for a café crème, a destination to stop and listen at."
+  },
+  {
+    "idx": 287,
+    "name": "Richard Wagner's House (14 Rue Jacob)",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 residence (radius 75) marked only by a commemorative plaque, with one character_story beat read while passing, not a stop."
+  },
+  {
+    "idx": 288,
+    "name": "Palais Abbatial de Saint-Germain-des-Prés",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 building (radius 10) with a single factoid beat noting it is \"Today, a Catholic school,\" a minor walk-past reference."
+  },
+  {
+    "idx": 289,
+    "name": "Hôtel de Crillon",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete palace hotel (radius 10) with an anecdote/hook beat contemplating its facade and history, a stop-and-listen destination."
+  },
+  {
+    "idx": 290,
+    "name": "Rue des Francs-Bourgeois",
+    "tier": 4,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-4 named shopping street (radius 75) whose beats read as \"completely circled the place des Vosges\" walking narration, a through-route area not a destination."
+  },
+  {
+    "idx": 291,
+    "name": "Hôtel de Chenizot",
+    "tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-2 mansion (radius 10) whose beat explicitly directs \"Stop at No. 51, Hotel Chenizot, and admire its facade,\" overriding the tier default to a stop."
+  },
+  {
+    "idx": 292,
+    "name": "Pont de la Tournelle",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Name is a bridge (Pont de la Tournelle) and the beat reads as crossing-narration (\"On the bridge is a statue... Look towards the Left Bank\"), a through-route, not a destination."
+  },
+  {
+    "idx": 293,
+    "name": "Rue Lepic",
+    "tier": 5,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-5 \"winding Montmartre street\" (radius 75) with a character_story beat about Van Gogh delivered while walking along it, a contextual area."
+  },
+  {
+    "idx": 294,
+    "name": "Maison Loo",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 pagoda (radius 10) with one hook beat read as \"At the end of the street you will see,\" observed in passing with no stop."
+  },
+  {
+    "idx": 295,
+    "name": "Hôtel Menier",
+    "tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-2 mansion (radius 10) whose beat explicitly directs \"Stop at 5 avenue Van Dyck to view the Menier Mansion,\" overriding the tier default to a stop."
+  },
+  {
+    "idx": 296,
+    "name": "Église de la Sainte-Trinité",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete 19th-century church (radius 10) with an architectural_detail establishing beat, a stand-before destination."
+  },
+  {
+    "idx": 297,
+    "name": "InterContinental Paris Le Grand",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete grand hotel building (radius 10) with an establishing beat about the structure, a stop-and-listen destination."
+  },
+  {
+    "idx": 298,
+    "name": "Impasse Sandrié",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-1 impasse/backstreet (radius 75) whose beat reads \"Go through an alleyway... into a quiet pedestrianized backstreet,\" a through-route walking area."
+  },
+  {
+    "idx": 299,
+    "name": "Passerelle Léopold-Sédar-Senghor",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Name is a footbridge/passerelle (radius 75) and the beat directs \"Cross the Pont de Solferino, also known as Passerelle Leopold Sedar Senghor,\" a crossing through-route."
+  },
+  {
+    "idx": 300,
+    "name": "Bourse de Commerce — Pinault Collection",
+    "tier": 5,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-5 discrete circular museum building (radius 10) with nine beats devoted to the rotunda's architecture and history, a stop-and-listen destination."
+  },
+  {
+    "idx": 301,
+    "name": "Arc de Triomphe du Carrousel",
+    "tier": 5,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-5 discrete triumphal arch (radius 10) with seven beats on the monument itself, a stand-before destination."
+  },
+  {
+    "idx": 302,
+    "name": "Square Jean XXIII",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Cathedral garden (\"the new cathedral gardens\") with sensory beats of sitting under flowering cherry trees and beds of daffodils is a contextual area, not a discrete stop."
+  },
+  {
+    "idx": 303,
+    "name": "Square Rene Viviani",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Described as a \"small Left Bank square\" / garden where \"Parisians sit under the trees,\" an area giving contextual narration rather than a single destination."
+  },
+  {
+    "idx": 304,
+    "name": "Square Paul-Painleve",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 small square (radius 10) whose lone beat is a character_story hook about the Montaigne statue you pass, a minor landmark not a stop."
+  },
+  {
+    "idx": 305,
+    "name": "Square Paul-Langevin",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 small square (radius 10) of statues and a garden wall, a minor landmark narrated in passing rather than a routed destination."
+  },
+  {
+    "idx": 306,
+    "name": "Jardin Carre",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "[reviewed] Tier-1 garden named \"Jardin Carre\"; beat stages \"Enter at 11, rue Descartes... A serene and sprawling green space of topiary\" — a garden area you enter, a setting signal, not walked-past."
+  },
+  {
+    "idx": 307,
+    "name": "Jardin Alpin",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "[reviewed] Named \"Jardin Alpin\" / \"Alpine Garden inside the Jardin des Plantes\" with 2,000+ species — a garden area (rule: name/description is a garden = setting), not a walk-past landmark."
+  },
+  {
+    "idx": 308,
+    "name": "Jardin Tino Rossi",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "[reviewed] Named \"Jardin Tino Rossi\" / \"Peaceful garden on Quai Saint-Bernard\"; the beat describes it as a flower-filled enclave — a garden area, a setting signal, not walked-past."
+  },
+  {
+    "idx": 309,
+    "name": "Institut Catholique",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 discrete Catholic-university building (radius 10) with hook/character_story beats, a minor landmark below the stop default."
+  },
+  {
+    "idx": 310,
+    "name": "9 Quai Malaquais (George Sand)",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 single address (George Sand's house, radius 10) with one character_story hook beat, a minor plaque-style reference passed by."
+  },
+  {
+    "idx": 311,
+    "name": "Square Récamier",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 small square (radius 10) described as \"hard to find,\" a minor Récamier-history landmark narrated in passing despite its stop_orientation beat."
+  },
+  {
+    "idx": 312,
+    "name": "Square Santiago du Chili",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 \"small triangle of a square\" (radius 10) centered on a Saint-Exupéry bust, a minor landmark below the stop default."
+  },
+  {
+    "idx": 313,
+    "name": "Musee Bourdelle",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete museum building (radius 10) with an establishing sidebar describing the museum's collection, matching the tier-3 stop default."
+  },
+  {
+    "idx": 314,
+    "name": "Parc Georges-Brassens",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Named a parc whose beats say \"stroll first toward the left,\" \"circle back toward the east,\" and \"as you cross the main plaza\" — walking narration through a large area, not a single stop."
+  },
+  {
+    "idx": 315,
+    "name": "La Ruche",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 discrete artists'-studio building (radius 10) with zero beats, a minor reference passed in transit."
+  },
+  {
+    "idx": 316,
+    "name": "Parc Montsouris",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A parc (radius 10) whose beats describe Parisians \"pouring into\" it and \"stroll through square de Montsouris,\" contextual walking narration across a large green area, not a discrete stop."
+  },
+  {
+    "idx": 317,
+    "name": "Villa Santos-Dumont",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 leafy cul-de-sac/garden home (radius 10) with one factoid deepen beat noting Brassens moved here, a minor reference played while passing."
+  },
+  {
+    "idx": 318,
+    "name": "Parc de Bagatelle",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-3 garden whose beats describe a \"vast parkland of lakes, lawns, flowers, groves, waterfalls, bridges... cafes\" and walking \"from every winding path,\" i.e. a large area traversed, not a single stop."
+  },
+  {
+    "idx": 319,
+    "name": "Maison de Balzac",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete house-museum: beats describe visiting the \"cottage museum\" to see \"Balzac's desk\" and its garden, a destination you enter and contemplate."
+  },
+  {
+    "idx": 320,
+    "name": "Allée des Cygnes",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "An \"allée\" (riverside walkway) whose lone beat is a transit instruction to \"walk halfway across the lower level,\" i.e. a through-route, not a destination."
+  },
+  {
+    "idx": 321,
+    "name": "Parc des Serres d'Auteuil",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-2 garden/park with trigger_radius 75m described as \"one of the most magnificent garden st[ructures],\" a large green area giving contextual narration."
+  },
+  {
+    "idx": 322,
+    "name": "La Vallée Suisse",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 minor green nook (la vallée) whose hook beat just references an adjacent Musset sculpture passed en route, never a stop."
+  },
+  {
+    "idx": 323,
+    "name": "Jardin Saint-Gilles Grand Veneur",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 \"secret garden\" reached via a \"two-minute walk from Place des Vosges,\" a minor reference passed in passing, not a destination."
+  },
+  {
+    "idx": 324,
+    "name": "La Tartine",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 café (\"a good old cafe\") mentioned for its political associations, a minor landmark walked past."
+  },
+  {
+    "idx": 325,
+    "name": "Square Georges-Cain",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 small square whose beats describe benches and an adjacent orangerie/museum, a minor green space, not a routed stop."
+  },
+  {
+    "idx": 326,
+    "name": "Square Léopold-Achille",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 square whose single hook beat just notes a lawn and the mansions one can \"look up at,\" a minor passed reference."
+  },
+  {
+    "idx": 327,
+    "name": "Clos des Blancs-Manteaux",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 \"small enclosed garden... with a modest charm,\" explicitly minor and incidental, walked past."
+  },
+  {
+    "idx": 328,
+    "name": "Musée de la Vie Romantique",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete house-museum: beats say \"Inside the museum are cases of memorabilia\" of George Sand/Chopin and visitors sit in its garden, a destination you enter."
+  },
+  {
+    "idx": 329,
+    "name": "Square des Batignolles",
+    "tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "[reviewed] Content-rich public garden-square; stop_orientation beat stages a dwell -> stop."
+  },
+  {
+    "idx": 330,
+    "name": "Square d'Orléans",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 square whose single beat is a walking-direction hook to \"the entrance to Square d'Orleans,\" a minor reference passed."
+  },
+  {
+    "idx": 331,
+    "name": "Place Saint-Georges",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 square with n_beats 0 and no content, defaulting to a minor passed landmark."
+  },
+  {
+    "idx": 332,
+    "name": "Square Suzanne-Buisson",
+    "tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "[reviewed] tier-2 Montmartre square with a stop_orientation beat staging an elaborate arrival (\"The most delightful approach to this corner of beauty... climb... take the stairs to\") and dwelling before the Saint-Denis statue/fountain — meets the tier-1-2 stop exception, so walk_by_only is wrong."
+  },
+  {
+    "idx": 333,
+    "name": "Musée de Montmartre",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete house-museum on rue Cortot whose beats describe touring it (\"The museum offers... details,\" busts and remnants inside), a destination you enter and contemplate."
+  },
+  {
+    "idx": 334,
+    "name": "Square Carpeaux",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 1 named \"Square Carpeaux,\" beats call it \"A people's park\" green space with steps to descend and walk west, an area for contextual walking narration rather than a discrete stop."
+  },
+  {
+    "idx": 335,
+    "name": "Square Léon-Serpollet",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 1 \"Square Léon-Serpollet,\" beat describes \"Another people's garden built on terraces\" with an entrance to walk in from rue Cloys — a garden area, not a destination monument."
+  },
+  {
+    "idx": 336,
+    "name": "Parc Turlure",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 1 \"Parc Turlure,\" beat describes \"A neighborhood hilltop green space of many parts\" with a scenic approach to walk through — a park area."
+  },
+  {
+    "idx": 337,
+    "name": "Square Louise-Michel",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 2 \"Square Louise-Michel,\" beat places it as a grassy hill square built into a hillside beneath Sacré-Cœur — a geographic square/garden area for walking narration."
+  },
+  {
+    "idx": 338,
+    "name": "Square des Abbesses",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3 \"Square des Abbesses,\" beat describes \"the little square\" with the Je t'aime Wall a few steps north of the entrance — a square area you enter and stroll, not a discrete building."
+  },
+  {
+    "idx": 339,
+    "name": "Parc Floral",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3 \"Parc Floral,\" beat calls it \"the most beautiful flower garden in Paris\" with hundreds of species and a lake — a large garden/park area."
+  },
+  {
+    "idx": 340,
+    "name": "Jardin de Reuilly",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 2 \"Jardin de Reuilly,\" beat describes \"An inviting meadow of grass and trees... midway along the Promenade Plantee\" — a garden area along a walking route."
+  },
+  {
+    "idx": 341,
+    "name": "Bistro du Peintre",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 \"Bistro du Peintre,\" beats describe a café-restaurant unchanged since 1902 pointed out in passing — a minor venue played while walking past, not a stop."
+  },
+  {
+    "idx": 342,
+    "name": "Square Raoul Nordling",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 1 \"Square Raoul Nordling,\" beat describes \"A melancholy space\" next to a church just off rue Charonne — a small square area for contextual narration."
+  },
+  {
+    "idx": 343,
+    "name": "Parc de Bercy",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 3 \"Parc de Bercy,\" beat calls it \"A newish modern park\" with terraces, sculptures and gardens to the east — a park area."
+  },
+  {
+    "idx": 344,
+    "name": "Cinematheque Française",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier 4 \"Cinémathèque Française,\" beat describes a discrete film-institute building showing films all day with a 40,000-film collection — a destination building, default stop."
+  },
+  {
+    "idx": 345,
+    "name": "Buddhist Temple Lac Daumesnil",
+    "tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 2 \"Buddhist Temple Lac Daumesnil,\" trigger_radius 50 and beat locates \"a Buddhist center, with a Tibetan temple\" across several roads on the southern side of Lac Daumesnil — a dispersed area (radius >=50m) near the lake, not a single contemplated stop."
+  },
+  {
+    "idx": 346,
+    "name": "Square Maurice-Gardette",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 1 \"Square Maurice-Gardette,\" beats describe families strolling the gravel paths around the square's music kiosk, playground and Ping-Pong tables — a square/park area for walking narration."
+  },
+  {
+    "idx": 347,
+    "name": "Square de la Roquette",
+    "tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier 1 \"Square de la Roquette,\" beats describe a square \"built on a kind of butte\" with winding paths and a children's playground that visitors walk through — a park-like square area."
+  },
+  {
+    "idx": 348,
+    "name": "Eglise Notre-Dame de la Croix",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 \"Eglise Notre-Dame de la Croix,\" a single sidebar beat merely points out the church and its wooden sculptures in passing — a minor reference played while walking past."
+  },
+  {
+    "idx": 349,
+    "name": "La Maison des Metallos",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier 1 \"La Maison des Métallos,\" a single sidebar beat points out \"a community center with a cafe, studios\" at number 94 in passing — a minor venue narrated while walking by, not a stop."
+  },
+  {
+    "idx": 350,
+    "name": "Parc de la Villette",
+    "tier": 5,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-5 park described as going \"on and on for miles, past one innovative themed garden after another\" — a large through-walked area, not a single stop."
+  },
+  {
+    "idx": 351,
+    "name": "Parc de Belleville",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Tier-3 park whose only beat narrates walking \"up the hill of rue de Belleville\" through the area, so it reads as contextual walking narration over a park, not a discrete stop."
+  },
+  {
+    "idx": 352,
+    "name": "Jardin Naturel",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 minor nature-reserve garden (trigger_radius 10) described as a small educational reserve, below the stop threshold and not a through-route."
+  },
+  {
+    "idx": 353,
+    "name": "Cemetery of Eglise Saint-Germain de Charonne",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 minor landmark whose beat is pure transit (\"walk down rue Stendhal and descend the staircase\"), a place passed rather than a destination."
+  },
+  {
+    "idx": 354,
+    "name": "Jardin Catherine-Laboure",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 small garden (trigger_radius 10) described as a tidy lunchtime \"haven,\" a minor side-bar landmark, not a through-route area."
+  },
+  {
+    "idx": 355,
+    "name": "Hotel Lutetia",
+    "tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-4 discrete luxury hotel building whose beat invites lingering (\"Afternoon tea in the main salon of the Lutetia\"), a destination to stop at."
+  },
+  {
+    "idx": 356,
+    "name": "Musée Eugène Delacroix",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete apartment/studio museum you enter and contemplate (\"Inside this small uncrowded museum\"), the default stop for a tier-3 building."
+  },
+  {
+    "idx": 357,
+    "name": "Jardin Atlantique",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Named a \"Jardin\" (garden) laid out across a long rooftop slab \"transformed into an ingenious green oasis\" with museums, an area you wander rather than a single stop."
+  },
+  {
+    "idx": 358,
+    "name": "Jardin de la Clinique Saint-Jean de Dieu",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 hidden rose garden (trigger_radius 10) reached via a hospital lobby, a minor side-bar landmark below the stop threshold."
+  },
+  {
+    "idx": 359,
+    "name": "Galignani",
+    "tier": 2,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-2 minor reference with zero beats and only a short description, defaulting to a walk-past landmark."
+  },
+  {
+    "idx": 360,
+    "name": "Square Boucicaut",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 minor commemorative square whose beats are character side-notes, a minor landmark passed rather than a routed destination."
+  },
+  {
+    "idx": 361,
+    "name": "Théâtre du Vieux-Colombier",
+    "tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-3 discrete theatre building (part of the Comédie-Française) presented as a fixed landmark to stop and listen at."
+  },
+  {
+    "idx": 362,
+    "name": "Angelina Paris",
+    "tier": 5,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "Tier-5 discrete establishment (a single tea house) with no area/through-route signals, taking the tier-5 discrete-building stop default."
+  },
+  {
+    "idx": 363,
+    "name": "Jardins du Musee de Cluny",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Named \"Jardins\" — enclosed thematically-arranged gardens you move through (\"these small enclosed gardens feel undiscovered and private\"), an area giving walking narration rather than one stop."
+  },
+  {
+    "idx": 364,
+    "name": "Montagne Sainte-Genevieve",
+    "tier": 3,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Beat opens \"A very ancient quarter. Follow rue d'Ulm north...\" — explicitly a quarter walked through as a route, the canonical setting signal."
+  },
+  {
+    "idx": 365,
+    "name": "Librairie Michael Seksik",
+    "tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "Tier-1 minor book-and-print shop given as a side-bar reference, a walk-past landmark not a stop."
+  }
+]

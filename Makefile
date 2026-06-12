@@ -128,6 +128,9 @@ db-test-reset: ## Stop test Neo4j and wipe test data
 	docker volume rm -f ondoway_neo4j_test_data
 	@echo "✓ Test Neo4j stopped and data wiped."
 
+backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. Dry-run by default; ARGS="--apply" to write; ARGS="--apply --neo4j" to also update the dev graph.
+	uv run python scripts/backfill_poi_role.py $(ARGS)
+
 # ──────────────────────────────────────────────────────────
 # APPLICATION
 # ──────────────────────────────────────────────────────────
