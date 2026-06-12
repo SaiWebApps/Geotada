@@ -221,7 +221,9 @@ class CorpusSnapshot:
 
 # Cypher pulls every active beat for every city POI in one shot. POIs
 # carry their Area memberships as a list; beats carry only what selection
-# and ordering need.
+# and ordering need. ORDER BY p.id because Cypher row order is otherwise
+# unspecified — snapshot.pois must be identical across two loads of the
+# same graph or greedy tie-breaks drift between runs.
 LOAD_PARIS_POIS_CYPHER = """
 MATCH (p:POI {city_name: $city_slug})
 OPTIONAL MATCH (p)-[:WITHIN]->(a:Area)
@@ -235,6 +237,7 @@ RETURN
   p.location.y    AS lat,
   p.location.x    AS lng,
   area_names      AS areas
+ORDER BY p.id
 """
 
 LOAD_PARIS_BEATS_CYPHER = """
@@ -513,7 +516,13 @@ def select_route(input: TourInput, snapshot: CorpusSnapshot) -> Route:
             # when a candidate sits between two waypoints, which the bare
             # ``extra + 1.0`` would resolve to a divide-by-zero.
             value = base / max(1.0, extra + 1.0)
-            if value > best_value:
+            # Exact-value ties break on id (matching every other selection
+            # path) so the pick never depends on candidate iteration order.
+            if value > best_value or (
+                value == best_value
+                and best_candidate is not None
+                and cand.id < best_candidate.id
+            ):
                 best_value = value
                 best_candidate = cand
                 best_extra = extra
