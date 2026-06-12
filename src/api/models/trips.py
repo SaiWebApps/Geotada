@@ -71,6 +71,11 @@ class GeneratedStop(BaseModel):
     script_body: str | None = None
     audio_url: str | None = None
     audio_duration_sec: float | None = None
+    beat_ids: list[str] = Field(
+        default_factory=list,
+        description="All beats narrated at this stop (engine output); beat_id is the primary/first",
+    )
+    dwell_seconds: int = Field(default=0, description="Engine-computed time spent at this stop")
 
 
 class TripGenerateResponse(BaseModel):
@@ -83,4 +88,8 @@ class TripGenerateResponse(BaseModel):
     total_duration_min: int
     anchor_count: int = Field(description="Number of gravity-5 POIs")
     flavour_count: int = Field(description="Number of gravity 1-4 POIs")
+    lens_coverage: dict[str, int] = Field(
+        default_factory=dict,
+        description="Engine lens_coverage: lens slug -> beat count across the tour",
+    )
     stops: list[GeneratedStop]

@@ -186,6 +186,29 @@ class TestGeneratedStop:
         assert stop.script_body is None
         assert stop.audio_url is None
         assert stop.audio_duration_sec is None
+        # M0b additive fields default empty
+        assert stop.beat_ids == []
+        assert stop.dwell_seconds == 0
+
+    def test_generated_stop_multi_beat_fields(self):
+        """T1(M0b): GeneratedStop carries all beat_ids + dwell_seconds from the engine."""
+        stop = GeneratedStop(
+            sort_order=1,
+            poi_id="poi-abc",
+            poi_name="Louvre",
+            lat=48.86,
+            lng=2.34,
+            beat_id="b1",
+            lens_name="art",
+            lens_display="Art",
+            duration_min=10,
+            importance_tier=5,
+            start_time="09:00",
+            beat_ids=["b1", "b2", "b3"],
+            dwell_seconds=600,
+        )
+        assert stop.beat_ids == ["b1", "b2", "b3"]
+        assert stop.dwell_seconds == 600
 
     def test_generated_stop_with_audio_fields(self):
         """T1: GeneratedStop accepts optional script_body, audio_url, audio_duration_sec."""
@@ -271,3 +294,20 @@ class TestTripGenerateResponse:
         assert resp.flavour_count == 0
         assert len(resp.stops) == 1
         assert resp.stops[0].poi_id == "poi-1"
+        # M0b additive field defaults empty when omitted
+        assert resp.lens_coverage == {}
+
+    def test_trip_generate_response_lens_coverage(self):
+        """T1(M0b): response carries the engine's lens_coverage map."""
+        resp = TripGenerateResponse(
+            trip_id="trip-002",
+            trip_name="Lens Trip",
+            profile_id="prof-1",
+            total_stops=0,
+            total_duration_min=0,
+            anchor_count=0,
+            flavour_count=0,
+            stops=[],
+            lens_coverage={"dark_history": 4, "architecture": 2},
+        )
+        assert resp.lens_coverage == {"dark_history": 4, "architecture": 2}
