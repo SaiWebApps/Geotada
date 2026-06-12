@@ -33,7 +33,6 @@ def _poi(
     lng: float,
     areas: tuple[str, ...] = (),
     beat_count: int = 5,
-    matching: int = 0,
 ) -> POI:
     return POI(
         id=pid,
@@ -44,7 +43,6 @@ def _poi(
         lng=lng,
         areas=areas,
         beat_count=beat_count,
-        matching_lens_beat_count=matching,
     )
 
 
@@ -54,6 +52,7 @@ def _snap(
     area_types: dict[str, str] | None = None,
     adjacent: dict[str, set[str]] | None = None,
     beats_by_poi: dict[str, list[BeatRef]] | None = None,
+    lens_neighbors: dict[str, frozenset[str]] | None = None,
 ) -> CorpusSnapshot:
     types = {**{"Paris": "city"}, **(area_types or {})}
     adj = {k: frozenset(v) for k, v in (adjacent or {}).items()}
@@ -84,6 +83,7 @@ def _snap(
         beats_by_poi=beats,
         area_types=types,
         adjacent_areas=adj,
+        lens_neighbors=lens_neighbors or {},
     )
 
 
@@ -256,37 +256,97 @@ def test_score_area_alignment_adjacent_between_spine_and_other():
     assert s > s_other
 
 
-def test_interest_bias_within_cap():
-    p = _poi("p", lat=48.85, lng=2.35, beat_count=10, matching=10)
-    snap = _snap([p])
-    s = poi_score(p, None, frozenset({"hidden_history"}), snap)
-    s0 = poi_score(p, None, frozenset(), snap)
-    # All beats match → bias = base + 0.5 = 1.5 ≤ cap (2.0).
-    assert s > s0
-    assert math.isclose(s / s0, 1.5, rel_tol=1e-9)
+def _lensed_beats(poi_id: str, lenses: tuple[str, ...], *, n: int = 5) -> list[BeatRef]:
+    return [
+        BeatRef(
+            id=f"{poi_id}-b{i}",
+            poi_id=poi_id,
+            est_spoken_seconds=240,
+            active_status="active",
+            lenses=lenses,
+        )
+        for i in range(n)
+    ]
 
 
-def test_interest_is_bias_not_filter():
-    """Lens that no POI matches must not exclude any candidate (rule 41)."""
-    p = _poi("p", tier=5, lat=48.8556, lng=2.3658, beat_count=5, matching=0)
-    snap = _snap([p])
+# history -[:IS_PARENT_OF]-> dark_history, symmetric 1-hop map as the loader builds it
+_HOP_MAP = {
+    "history": frozenset({"dark_history"}),
+    "dark_history": frozenset({"history"}),
+}
+
+
+def test_lens_adjacency_direct_hit_is_full_weight():
+    """§3 (M3): a direct beat-lens hit scores 1.0 — identical to the no-lens run."""
+    p = _poi("p", lat=48.85, lng=2.35)
+    snap = _snap([p], beats_by_poi={"p": _lensed_beats("p", ("hidden_history",))})
+    s_direct = poi_score(p, None, frozenset({"hidden_history"}), snap)
+    s_neutral = poi_score(p, None, frozenset(), snap)
+    assert s_direct > 0
+    assert math.isclose(s_direct, s_neutral, rel_tol=1e-9)
+
+
+def test_lens_adjacency_one_hop_is_point_six_both_directions():
+    """§3 (M3): one IS_PARENT_OF hop scores 0.6 — parent requested reaching a
+    child-lensed beat, and child requested reaching a parent-lensed beat."""
+    p = _poi("p", lat=48.85, lng=2.35)
+    child_beats = _snap(
+        [p],
+        beats_by_poi={"p": _lensed_beats("p", ("dark_history",))},
+        lens_neighbors=_HOP_MAP,
+    )
+    parent_beats = _snap(
+        [p],
+        beats_by_poi={"p": _lensed_beats("p", ("history",))},
+        lens_neighbors=_HOP_MAP,
+    )
+    for snap, requested in ((child_beats, "history"), (parent_beats, "dark_history")):
+        s_hop = poi_score(p, None, frozenset({requested}), snap)
+        s_neutral = poi_score(p, None, frozenset(), snap)
+        assert math.isclose(s_hop / s_neutral, 0.6, rel_tol=1e-9)
+
+
+def test_lens_adjacency_ranks_direct_above_one_hop():
+    direct = _poi("direct", lat=48.8556, lng=2.3658)
+    hop = _poi("hop", lat=48.8557, lng=2.3659)
+    snap = _snap(
+        [direct, hop],
+        beats_by_poi={
+            "direct": _lensed_beats("direct", ("history",)),
+            "hop": _lensed_beats("hop", ("dark_history",)),
+        },
+        lens_neighbors=_HOP_MAP,
+    )
+    s_direct = poi_score(direct, None, frozenset({"history"}), snap)
+    s_hop = poi_score(hop, None, frozenset({"history"}), snap)
+    assert s_direct > s_hop > 0
+
+
+def test_lens_adjacency_miss_is_zero_and_excludes_candidate():
+    """§3 (M3): a thematic miss scores 0.0 AND is excluded from the candidate
+    pool — supersedes the old rule-41 'bias not filter' behavior (the spec's
+    multiplicative form with miss=0.0 makes the lens a hard filter; graceful
+    degradation lives in the no-lens uniform-1.0 branch instead)."""
+    themed = _poi("themed", tier=4, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+    missed = _poi("missed", tier=5, lat=48.8557, lng=2.3659, areas=("Le Marais",))
+    fillers = _density_fillers(PDV)  # unlensed synthetic beats → misses too
+    snap = _snap(
+        [*fillers, themed, missed],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={"themed": _lensed_beats("themed", ("hidden_history",))},
+        lens_neighbors=_HOP_MAP,
+    )
+    assert poi_score(missed, None, frozenset({"hidden_history"}), snap) == 0.0
+
     inp = TourInput(
         start=PDV,
         duration_min=60,
         city_slug="paris",
-        lenses=["lens_no_one_has"],
+        lenses=["hidden_history"],
+        round_trip=True,
     )
-    route = select_route(inp, snap)
-    assert "p" in [r.id for r in route.pois]
-
-
-def test_interest_shifts_ranking_when_one_matches():
-    a = _poi("a", lat=48.8556, lng=2.3658, beat_count=5, matching=0)
-    b = _poi("b", lat=48.8557, lng=2.3659, beat_count=5, matching=5)
-    snap = _snap([a, b])
-    s_a = poi_score(a, None, frozenset({"hidden_history"}), snap)
-    s_b = poi_score(b, None, frozenset({"hidden_history"}), snap)
-    assert s_b > s_a
+    ids = [p.id for p in select_route(inp, snap).pois]
+    assert ids == ["themed"], f"only the themed POI may survive the lens filter, got {ids}"
 
 
 # ---------------------------------------------------------------------------

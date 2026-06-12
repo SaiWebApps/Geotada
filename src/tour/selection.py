@@ -24,6 +24,7 @@ import re
 from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass
+from dataclasses import field as dataclass_field
 from typing import TYPE_CHECKING
 
 from .contract import POI, BeatRef, PhysicalCue, Route, TourabilityAssessment, TourInput
@@ -45,10 +46,16 @@ from .routing import (
 if TYPE_CHECKING:
     from .routing_client import RoutingClient
 
-# §3.2 score weights / caps. Calibrated against golden tests on 2026-04-29.
-INTEREST_BIAS_MAX: float = 2.0
-INTEREST_BIAS_BASE: float = 1.0
-INTEREST_BIAS_SCALE: float = 0.5
+# §3 lens_adjacency hop model (ALGORITHM-SPEC.md, M3): a requested lens scores
+# a POI 1.0 on a direct beat-lens hit, 0.6 when a beat lens is one
+# IS_PARENT_OF hop away (parent OR child), and 0.0 on a miss — a thematic
+# FILTER, not a bias (supersedes the old rule-41 "bias not filter" and the
+# INTEREST_BIAS_* constants it came with). With no lenses requested the
+# factor is uniform 1.0 and selection degrades to importance x richness x
+# alignment x role.
+LENS_ADJACENCY_DIRECT: float = 1.0
+LENS_ADJACENCY_ONE_HOP: float = 0.6
+LENS_ADJACENCY_MISS: float = 0.0
 
 AREA_ALIGNMENT_SPINE: float = 1.0
 AREA_ALIGNMENT_ADJACENT: float = 0.5
@@ -213,6 +220,10 @@ class CorpusSnapshot:
     beats_by_poi: dict[str, tuple[BeatRef, ...]]
     area_types: dict[str, str]  # area_name → area_type (district/neighborhood/...)
     adjacent_areas: dict[str, frozenset[str]]  # area_name → directly-adjacent area names
+    # M3: lens hierarchy for the §3 lens_adjacency hop model. Lowercased lens
+    # name → its IS_PARENT_OF neighbors one hop away, BOTH directions (parent
+    # and children). Empty when a fixture doesn't care about lens hops.
+    lens_neighbors: dict[str, frozenset[str]] = dataclass_field(default_factory=dict)
 
     def beats_for(self, poi_id: str) -> tuple[BeatRef, ...]:
         return self.beats_by_poi.get(poi_id, ())
@@ -283,6 +294,13 @@ WITH a1, a2 WHERE a1 < a2
 RETURN a1, a2, count(*) AS shared_pois
 """
 
+# Lens hierarchy for the §3 lens_adjacency hop model. Lens nodes are global
+# (not city-scoped) by design — the taxonomy is shared across cities.
+LOAD_LENS_HIERARCHY_CYPHER = """
+MATCH (parent:Lens)-[:IS_PARENT_OF]->(child:Lens)
+RETURN parent.name AS parent, child.name AS child
+"""
+
 
 def load_paris_corpus(driver, *, city_slug: str = "paris") -> CorpusSnapshot:
     """Pull a CorpusSnapshot for one city from Neo4j."""
@@ -291,8 +309,24 @@ def load_paris_corpus(driver, *, city_slug: str = "paris") -> CorpusSnapshot:
         beat_records = session.run(LOAD_PARIS_BEATS_CYPHER, city_slug=city_slug).data()
         area_records = session.run(LOAD_AREA_TYPES_CYPHER).data()
         adj_records = session.run(LOAD_AREA_ADJACENCY_CYPHER, city_slug=city_slug).data()
+        lens_records = session.run(LOAD_LENS_HIERARCHY_CYPHER).data()
 
-    return _snapshot_from_records(poi_records, beat_records, area_records, adj_records)
+    return _snapshot_from_records(
+        poi_records, beat_records, area_records, adj_records, lens_records
+    )
+
+
+def _lens_neighbor_map(lens_records: list[dict]) -> dict[str, frozenset[str]]:
+    """Symmetric 1-hop IS_PARENT_OF neighborhood, lowercased both ways."""
+    acc: dict[str, set[str]] = {}
+    for r in lens_records:
+        parent = (r.get("parent") or "").strip().lower()
+        child = (r.get("child") or "").strip().lower()
+        if not parent or not child:
+            continue
+        acc.setdefault(parent, set()).add(child)
+        acc.setdefault(child, set()).add(parent)
+    return {k: frozenset(v) for k, v in acc.items()}
 
 
 def _snapshot_from_records(
@@ -300,6 +334,7 @@ def _snapshot_from_records(
     beat_records: list[dict],
     area_records: list[dict],
     adj_records: list[dict],
+    lens_records: list[dict] | None = None,
 ) -> CorpusSnapshot:
     pois: list[POI] = []
     beats_by_poi_acc: dict[str, list[BeatRef]] = {}
@@ -331,8 +366,9 @@ def _snapshot_from_records(
         pid = r["id"]
         beats = beats_by_poi_acc.get(pid, [])
         beat_count = len(beats)
-        # matching_lens_beat_count is computed lazily per-input, since the
-        # interest set is request-scoped. Default to 0 here.
+        # matching_lens_beat_count is legacy: the M3 lens_adjacency hop model
+        # scans beat lenses directly, so nothing computes it any more. The
+        # contract field stays (spec §5: every existing field preserved).
         pois.append(
             POI(
                 id=pid,
@@ -364,6 +400,7 @@ def _snapshot_from_records(
         beats_by_poi={k: tuple(v) for k, v in beats_by_poi_acc.items()},
         area_types=area_types,
         adjacent_areas=adjacent_areas,
+        lens_neighbors=_lens_neighbor_map(lens_records or []),
     )
 
 
@@ -471,7 +508,11 @@ def select_route(
             continue
         if not _has_active_beats(poi, snapshot):
             continue  # Phase 6: zero-beat POIs are excluded as anchors.
-        candidates.append(_with_interest_count(poi, snapshot, interest))
+        if interest and _lens_adjacency(poi, interest, snapshot) == LENS_ADJACENCY_MISS:
+            # §3 (M3): a thematic miss is EXCLUDED, not down-weighted — filter
+            # here so the greedy, endpoint-pull, and fill pass all agree.
+            continue
+        candidates.append(poi)
 
     if not candidates:
         empty = summarise_route(
@@ -1097,21 +1138,38 @@ def poi_score(
     interest: frozenset[str],
     snapshot: CorpusSnapshot,
 ) -> float:
-    """The §3.2 per-POI score."""
+    """The §3 per-POI score: importance x richness x lens_adjacency x alignment x role."""
     importance = float(poi.tier)
     richness = math.log1p(max(0, poi.beat_count))
-    bias = _interest_bias(poi, interest)
+    adjacency = _lens_adjacency(poi, interest, snapshot)
     alignment = _area_alignment(poi, spine_area, snapshot)
     role_mult = POI_ROLE_MULTIPLIER.get(poi.poi_role, 0.0)
-    return importance * richness * bias * alignment * role_mult
+    return importance * richness * adjacency * alignment * role_mult
 
 
-def _interest_bias(poi: POI, interest: frozenset[str]) -> float:
-    if not interest or poi.beat_count == 0:
-        return INTEREST_BIAS_BASE
-    fraction = poi.matching_lens_beat_count / poi.beat_count
-    bias = INTEREST_BIAS_BASE + INTEREST_BIAS_SCALE * fraction
-    return min(bias, INTEREST_BIAS_MAX)
+def _lens_adjacency(poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot) -> float:
+    """§3 hop model over the POI's active beat lenses (M3, replaces _interest_bias).
+
+    1.0 when any beat lens directly matches a requested lens; 0.6 when any
+    beat lens is one IS_PARENT_OF hop from a requested lens (parent or
+    child); 0.0 otherwise. No requested lenses → uniform 1.0 so selection
+    degrades gracefully to importance x richness x alignment x role.
+    """
+    if not interest:
+        return LENS_ADJACENCY_DIRECT
+    interest_low = {s.lower() for s in interest}
+    neighbors: set[str] = set()
+    for lens in interest_low:
+        neighbors |= snapshot.lens_neighbors.get(lens, frozenset())
+    one_hop = False
+    for beat in snapshot.beats_for(poi.id):
+        for lens in beat.lenses:
+            lens_low = lens.lower()
+            if lens_low in interest_low:
+                return LENS_ADJACENCY_DIRECT
+            if lens_low in neighbors:
+                one_hop = True
+    return LENS_ADJACENCY_ONE_HOP if one_hop else LENS_ADJACENCY_MISS
 
 
 def _area_alignment(poi: POI, spine_area: str | None, snapshot: CorpusSnapshot) -> float:
@@ -1125,15 +1183,6 @@ def _area_alignment(poi: POI, spine_area: str | None, snapshot: CorpusSnapshot) 
     return AREA_ALIGNMENT_OTHER
 
 
-def _with_interest_count(poi: POI, snapshot: CorpusSnapshot, interest: frozenset[str]) -> POI:
-    if not interest:
-        return poi
-    matching = 0
-    interest_low = {s.lower() for s in interest}
-    for beat in snapshot.beats_for(poi.id):
-        if any(lens.lower() in interest_low for lens in beat.lenses):
-            matching += 1
-    return poi.model_copy(update={"matching_lens_beat_count": matching})
 
 
 def _has_active_beats(poi: POI, snapshot: CorpusSnapshot) -> bool:
