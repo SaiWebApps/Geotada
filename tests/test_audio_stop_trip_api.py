@@ -144,3 +144,35 @@ class TestGenerateTripStopAudio:
         )
         assert resp.status_code == 404
         assert "not found" in resp.json()["detail"].lower()
+
+
+@needs_neo4j
+class TestStopAudioStatus:
+    def test_status_false_before_and_true_after_generation(
+        self, client, clean_driver, _temp_audio_storage
+    ):
+        _seed(clean_driver)
+        item1 = f"{TRIP_ID}-item1"
+
+        before = client.get(f"/api/v1/audio/stop-status/{item1}")
+        assert before.status_code == 200, before.text
+        assert before.json()["has_audio"] is False
+        assert before.json()["audio_url"] is None
+
+        with patch("src.audio.pipeline.get_provider", return_value=_Recorder()):
+            gen = client.post(
+                f"/api/v1/audio/generate-trip-stops/{TRIP_ID}", json={"provider": "mock"}
+            )
+        assert gen.status_code == 200, gen.text
+
+        after = client.get(f"/api/v1/audio/stop-status/{item1}")
+        assert after.status_code == 200, after.text
+        data = after.json()
+        assert data["has_audio"] is True
+        assert data["audio_url"] and item1 in data["audio_url"]
+        assert data["duration_sec"] and data["duration_sec"] > 0
+
+    def test_unknown_stop_404(self, client):
+        resp = client.get("/api/v1/audio/stop-status/no-such-stop")
+        assert resp.status_code == 404
+        assert "not found" in resp.json()["detail"].lower()

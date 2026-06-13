@@ -29,6 +29,7 @@ from src.api.models.audio import (
     ProviderInfo,
     ProviderListResponse,
     StopAudioResultItem,
+    StopAudioStatusResponse,
     TripAudioGenerateResponse,
     TripAudioResultItem,
     TripStopAudioGenerateResponse,
@@ -552,4 +553,30 @@ def generate_stop_audio_for_trip(
         skipped=sum(1 for r in results if r.status == "skipped"),
         failed=sum(1 for r in results if r.status == "failed"),
         results=results,
+    )
+
+
+@router.get("/audio/stop-status/{stop_id}", response_model=StopAudioStatusResponse)
+def get_stop_audio_status(stop_id: str, session: Session = Depends(get_session)):
+    """Per-stop audio status by ItineraryItem id (Phase 1, Step 1.4b).
+
+    Additive to /audio/status/{beat_id}: reads the per-stop audio persisted by
+    /audio/generate-trip-stops (Step 1.4a) so mobile can poll/play per stop.
+    404 if the stop doesn't exist.
+    """
+    rec = session.run(
+        "MATCH (i:ItineraryItem {id: $sid}) "
+        "RETURN i.audio_url AS audio_url, i.audio_duration_sec AS duration_sec",
+        sid=stop_id,
+    ).single()
+    if rec is None:
+        raise HTTPException(404, f"Stop '{stop_id}' not found")
+
+    audio_url = rec["audio_url"]
+    has_audio = bool(audio_url)
+    return StopAudioStatusResponse(
+        stop_id=stop_id,
+        has_audio=has_audio,
+        audio_url=audio_url if has_audio else None,
+        duration_sec=rec["duration_sec"] if has_audio else None,
     )

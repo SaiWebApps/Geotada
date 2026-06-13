@@ -173,3 +173,12 @@ class TripStopAudioGenerateResponse(BaseModel):
     skipped: int
     failed: int
     results: list[StopAudioResultItem]
+
+
+class StopAudioStatusResponse(BaseModel):
+    """Per-stop audio status by ItineraryItem id (Phase 1, Step 1.4b)."""
+
+    stop_id: str
+    has_audio: bool
+    audio_url: str | None = None
+    duration_sec: float | None = None
