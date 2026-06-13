@@ -30,6 +30,7 @@ from typing import TYPE_CHECKING
 from .contract import POI, BeatRef, PhysicalCue, Route, TourabilityAssessment, TourInput
 from .density import TourabilityRefusedError
 from .density import assess as assess_tourability
+from .ordering import held_karp_open
 from .routing import (
     HAVERSINE_CORRECTION,
     PACE_KMH,
@@ -605,6 +606,7 @@ def select_route(
     # as the closing anchor so traverses (e.g. Pont Neuf → Île east tip)
     # don't truncate near the start. Re-orders the route end-to-end via
     # insertion-cost optimisation; respects HARD_ANCHOR_CAP and walk budget.
+    pulled_endpoint_id: str | None = None
     if not input.round_trip and selected:
         far_radius_min = radius_m * ENDPOINT_PULL_FAR_FRACTION
         already = {p.id for p in selected}
@@ -634,6 +636,7 @@ def select_route(
                 )
                 if pulled is not selected and pulled[-1].id == cand.id:
                     selected = pulled
+                    pulled_endpoint_id = cand.id
                     break
 
     # Phase 7 fill pass — target_audio is a floor. Greedy +
@@ -660,6 +663,21 @@ def select_route(
     # and demote the smaller-tier of each pair. Demoted POI beats are
     # merged into the host's pool by the harness via Route.demoted_beats.
     selected, demoted_beats = apply_co_located_demotion(selected, snapshot)
+
+    # M4 ORDER: exact Held-Karp pass over the final set — the greedy's
+    # insertion order is a by-product of selection, not an optimum. A pulled
+    # endpoint stays pinned last (if demotion didn't absorb it); round trips
+    # optimize the closed tour.
+    fixed_end = None
+    if pulled_endpoint_id is not None and not input.round_trip:
+        fixed_end = next((p for p in selected if p.id == pulled_endpoint_id), None)
+    selected = held_karp_open(
+        selected,
+        fixed_start=(start_lat, start_lng),
+        fixed_end=fixed_end,
+        round_trip=input.round_trip,
+        routed_cost_fn=leg_fn,
+    )
 
     route = summarise_route(
         selected,
@@ -986,12 +1004,13 @@ def _apply_endpoint_pull(
         if len(incumbents) + 1 > hard_anchor_cap:
             return list(selected)  # endpoint won't fit under cap with allowed drops
 
-        candidate_route = _reorder_with_endpoint(
-            incumbents,
-            endpoint,
-            start_lat=start_lat,
-            start_lng=start_lng,
-            leg_seconds_fn=leg_seconds_fn,
+        # M4: order the trial route exactly (replaces the greedy
+        # best-insertion `_reorder_with_endpoint`), endpoint pinned last.
+        candidate_route = held_karp_open(
+            [*incumbents, endpoint],
+            fixed_start=(start_lat, start_lng),
+            fixed_end=endpoint,
+            routed_cost_fn=leg_seconds_fn,
         )
         walk = _route_walk_seconds(
             candidate_route,
@@ -1030,46 +1049,6 @@ def _route_walk_seconds(
     for (lat1, lng1), (lat2, lng2) in itertools.pairwise(coords):
         total += fn(lat1, lng1, lat2, lng2)
     return total
-
-
-def _reorder_with_endpoint(
-    selected: list[POI],
-    endpoint: POI,
-    *,
-    start_lat: float,
-    start_lng: float,
-    leg_seconds_fn: LegSecondsFn | None = None,
-) -> list[POI]:
-    """Place `endpoint` last and order the remainder via best-insertion."""
-    interior: list[POI] = []
-    pool = list(selected)
-    while pool:
-        best: POI | None = None
-        best_extra: int = 0
-        best_idx: int = 0
-        for cand in pool:
-            extra, idx = insertion_cost_seconds(
-                cand,
-                [*interior, endpoint],
-                start_lat=start_lat,
-                start_lng=start_lng,
-                round_trip=False,
-                leg_seconds_fn=leg_seconds_fn,
-            )
-            if best is None or extra < best_extra:
-                best = cand
-                best_extra = extra
-                best_idx = idx
-        assert best is not None
-        # Never insert *after* the endpoint. interior + [endpoint] has
-        # len(interior) + 1 slots; idx == len(interior) means "before
-        # endpoint", which is fine. idx > len(interior) is impossible
-        # because insertion_cost_seconds bounds idx by len of `ordered`.
-        if best_idx > len(interior):
-            best_idx = len(interior)
-        interior.insert(best_idx, best)
-        pool.remove(best)
-    return [*interior, endpoint]
 
 
 # ---------------------------------------------------------------------------

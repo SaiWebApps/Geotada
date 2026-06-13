@@ -8,8 +8,9 @@ Constants and pure functions used by selection.py:
 - envelope_radius_m: the radius around `start` reachable inside the
   err-short walk budget.
 - compute_dwell_seconds: per-tier expected stop dwell.
-- order_route_greedy_nn: best-insertion ordering used by the greedy
-  selection step (§3.2 marginal_route_cost).
+- insertion_cost_seconds: best-insertion marginal cost used by the greedy
+  selection step (§3.2 marginal_route_cost). Final ordering is exact —
+  see src/tour/ordering.py (M4 Held-Karp).
 - summarise_route: rolls up an ordered POI list into a Route shell with
   transit segments, walk distance, and walk-time totals.
 
