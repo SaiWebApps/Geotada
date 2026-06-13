@@ -9,6 +9,7 @@ from __future__ import annotations
 import wave
 from io import BytesIO
 
+import httpx
 import pytest
 
 from src.audio.provider import (
@@ -20,6 +21,13 @@ from src.audio.provider import (
     get_provider,
     list_providers,
 )
+
+
+class _Resp:
+    """Minimal stand-in for an httpx.Response with a 200 + content."""
+
+    status_code = 200
+    content = b"audio-bytes"
 
 
 class TestProviderRegistry:
@@ -111,3 +119,51 @@ class TestElevenLabsProvider:
         monkeypatch.delenv("ELEVENLABS_VOICE_ID", raising=False)
         with pytest.raises(TTSError, match="ELEVENLABS_VOICE_ID not set"):
             ElevenLabsTTSProvider().generate("test")
+
+
+class TestTTSRetry:
+    """Transient timeouts are retried with backoff (Fix A — offline, mocked)."""
+
+    def test_openai_retries_then_succeeds(self, monkeypatch):
+        monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
+        monkeypatch.setattr("src.audio.provider.time.sleep", lambda *_: None)
+        calls = {"n": 0}
+
+        def fake_post(self, *args, **kwargs):
+            calls["n"] += 1
+            if calls["n"] < 3:  # fail twice, then succeed
+                raise httpx.TimeoutException("transient")
+            return _Resp()
+
+        monkeypatch.setattr(httpx.Client, "post", fake_post)
+        out = OpenAITTSProvider().generate("hello")
+        assert out == b"audio-bytes"
+        assert calls["n"] == 3
+
+    def test_openai_raises_ttserror_after_exhausting_retries(self, monkeypatch):
+        monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
+        monkeypatch.setattr("src.audio.provider.time.sleep", lambda *_: None)
+
+        def always_timeout(self, *args, **kwargs):
+            raise httpx.TimeoutException("transient")
+
+        monkeypatch.setattr(httpx.Client, "post", always_timeout)
+        with pytest.raises(TTSError, match="after 3 attempts"):
+            OpenAITTSProvider().generate("hello")
+
+    def test_elevenlabs_retries_then_succeeds(self, monkeypatch):
+        monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+        monkeypatch.setenv("ELEVENLABS_VOICE_ID", "v")
+        monkeypatch.setattr("src.audio.provider.time.sleep", lambda *_: None)
+        calls = {"n": 0}
+
+        def fake_post(self, *args, **kwargs):
+            calls["n"] += 1
+            if calls["n"] < 2:  # one ConnectError, then succeed
+                raise httpx.ConnectError("transient")
+            return _Resp()
+
+        monkeypatch.setattr(httpx.Client, "post", fake_post)
+        out = ElevenLabsTTSProvider().generate("hello")
+        assert out == b"audio-bytes"
+        assert calls["n"] == 2

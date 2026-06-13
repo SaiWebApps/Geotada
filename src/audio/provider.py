@@ -11,6 +11,7 @@ Usage:
 from __future__ import annotations
 
 import os
+import time
 import wave
 from io import BytesIO
 from typing import Protocol, runtime_checkable
@@ -34,6 +35,46 @@ class TTSProvider(Protocol):
     def generate(self, text: str, *, voice_id: str | None = None) -> bytes:
         """Convert text to audio. Returns raw audio bytes (MP3 or WAV)."""
         ...
+
+
+# ── Transient-error retry (shared by the real HTTP providers) ──
+
+_MAX_TTS_RETRIES = 3
+_TTS_INITIAL_BACKOFF_SEC = 0.5
+
+
+def _post_with_retry(
+    url: str,
+    *,
+    headers: dict[str, str],
+    json: dict[str, object],
+    timeout: float = 60.0,
+) -> httpx.Response:
+    """POST with bounded exponential-backoff retry on TRANSIENT network errors.
+
+    Retries only ``httpx.TimeoutException`` / ``httpx.ConnectError`` (transient:
+    server overload, packet loss, reset) up to ``_MAX_TTS_RETRIES`` attempts
+    (0.5s, 1s backoff). The HTTP response is returned unexamined — the caller
+    interprets status codes (auth/validation/rate-limit are NOT retried here).
+    Raises ``TTSError`` only after every attempt times out. This closes a real
+    production gap: a single transient blip would otherwise fail a user's audio.
+    """
+    backoff = _TTS_INITIAL_BACKOFF_SEC
+    last_exc: Exception | None = None
+    for attempt in range(_MAX_TTS_RETRIES):
+        try:
+            with httpx.Client(
+                transport=httpx.HTTPTransport(proxy=None), timeout=timeout
+            ) as client:
+                return client.post(url, headers=headers, json=json)
+        except (httpx.TimeoutException, httpx.ConnectError) as exc:
+            last_exc = exc
+            if attempt < _MAX_TTS_RETRIES - 1:
+                time.sleep(backoff)
+                backoff *= 2
+    raise TTSError(
+        f"TTS request failed after {_MAX_TTS_RETRIES} attempts: {last_exc}"
+    ) from last_exc
 
 
 # ── Mock Provider ──
@@ -94,17 +135,16 @@ class OpenAITTSProvider:
 
         voice = voice_id or os.getenv("OPENAI_VOICE", self.DEFAULT_VOICE)
 
-        with httpx.Client(transport=httpx.HTTPTransport(proxy=None), timeout=60.0) as client:
-            resp = client.post(
-                self.API_URL,
-                headers={"Authorization": f"Bearer {api_key}"},
-                json={
-                    "model": self.DEFAULT_MODEL,
-                    "input": text,
-                    "voice": voice,
-                    "response_format": "mp3",
-                },
-            )
+        resp = _post_with_retry(
+            self.API_URL,
+            headers={"Authorization": f"Bearer {api_key}"},
+            json={
+                "model": self.DEFAULT_MODEL,
+                "input": text,
+                "voice": voice,
+                "response_format": "mp3",
+            },
+        )
 
         if resp.status_code != 200:
             raise TTSError(f"OpenAI TTS failed ({resp.status_code}): {resp.text[:200]}")
@@ -140,23 +180,22 @@ class ElevenLabsTTSProvider:
 
         url = f"{self.API_BASE}/text-to-speech/{vid}"
 
-        with httpx.Client(transport=httpx.HTTPTransport(proxy=None), timeout=60.0) as client:
-            resp = client.post(
-                url,
-                headers={
-                    "xi-api-key": api_key,
-                    "Content-Type": "application/json",
-                    "Accept": "audio/mpeg",
+        resp = _post_with_retry(
+            url,
+            headers={
+                "xi-api-key": api_key,
+                "Content-Type": "application/json",
+                "Accept": "audio/mpeg",
+            },
+            json={
+                "text": text,
+                "model_id": self.DEFAULT_MODEL,
+                "voice_settings": {
+                    "stability": 0.5,
+                    "similarity_boost": 0.75,
                 },
-                json={
-                    "text": text,
-                    "model_id": self.DEFAULT_MODEL,
-                    "voice_settings": {
-                        "stability": 0.5,
-                        "similarity_boost": 0.75,
-                    },
-                },
-            )
+            },
+        )
 
         if resp.status_code != 200:
             raise TTSError(f"ElevenLabs TTS failed ({resp.status_code}): {resp.text[:200]}")
