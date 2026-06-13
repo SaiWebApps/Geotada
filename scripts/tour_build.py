@@ -26,6 +26,11 @@ from pathlib import Path
 
 from src.connection import create_driver
 from src.tour.beat_select import select_poi_beats
+from src.tour.compose_gate import (
+    ComposeVerificationError,
+    build_full_verifier,
+    compose_and_verify,
+)
 from src.tour.contract import BeatSequence, Script, TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
@@ -302,6 +307,32 @@ def main() -> int:
                 beat_sequence, route, tour_input
             )
             cost_kind = "projected"
+
+        # M7 gate: COMPOSE -> VERIFY (traceability + forbidden + rapidfuzz
+        # provenance + faithfulness) -> exactly one bounded recompose ->
+        # serve or refuse. With the deterministic MockGlueClient a recompose
+        # repeats; with --haiku it re-calls Haiku and can steer off the prior
+        # failure. Chunk text isn't loaded here, so provenance is a no-op
+        # until the corpus backfills source_passage; faithfulness uses the
+        # offline Mock (trusts the corpus).
+        beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
+        verify = build_full_verifier(beat_sequence, beats_by_id)
+        first_script = script
+
+        def _compose(attempt: int, prev: object) -> Script:
+            if attempt == 1:
+                return first_script
+            client = HaikuGlueClient() if args.haiku else MockGlueClient()
+            return generate(beat_sequence, route, tour_input, glue_client=client)
+
+        try:
+            script = compose_and_verify(_compose, verify)
+        except ComposeVerificationError as exc:
+            print(
+                f"✗ VERIFY refused this tour after {exc.attempts} compose "
+                f"attempt(s): {exc}"
+            )
+            return 1
 
         wall_clock = t_select + t_beats + t_gen
 

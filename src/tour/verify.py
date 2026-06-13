@@ -22,6 +22,7 @@ no-ops and the traceability/forbidden gates still apply.
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from typing import Protocol
 
 from rapidfuzz import fuzz
@@ -80,6 +81,52 @@ class MockFaithfulnessChecker:
     def entails(self, key_claims: tuple[str, ...], sentence_text: str) -> bool:
         self.calls.append((key_claims, sentence_text))
         return True
+
+
+FAITHFULNESS_MODEL = "claude-haiku-4-5-20251001"
+_ENTAILMENT_PROMPT = (
+    "You are a strict fact-checker. Given a list of KEY CLAIMS and one "
+    "SENTENCE, answer with exactly 'YES' if the sentence is fully supported "
+    "by the claims, or 'NO' if it adds, contradicts, or overstates anything.\n\n"
+    "KEY CLAIMS:\n{claims}\n\nSENTENCE:\n{sentence}\n\nAnswer (YES or NO):"
+)
+
+
+@dataclass
+class HaikuFaithfulnessChecker:
+    """Real one-call-per-sentence entailment via Anthropic Haiku (dev/CI/prod).
+
+    Mirrors HaikuGlueClient: defers the anthropic import so unit tests never
+    need the SDK, and only runs when wired in explicitly (Mock is the
+    default everywhere else). NOT exercised by ``make test`` — its live
+    behavior needs ANTHROPIC_API_KEY (set on the Render service).
+    """
+
+    model: str = FAITHFULNESS_MODEL
+    max_output_tokens: int = 5
+    calls: int = 0
+    _client: object = field(default=None, repr=False)
+
+    def __post_init__(self) -> None:
+        import anthropic
+
+        self._client = anthropic.Anthropic()
+
+    def entails(self, key_claims: tuple[str, ...], sentence_text: str) -> bool:
+        self.calls += 1
+        rendered = _ENTAILMENT_PROMPT.format(
+            claims="\n".join(f"- {c}" for c in key_claims), sentence=sentence_text
+        )
+        response = self._client.messages.create(  # type: ignore[attr-defined]
+            model=self.model,
+            max_tokens=self.max_output_tokens,
+            messages=[{"role": "user", "content": rendered}],
+        )
+        text = "".join(
+            getattr(b, "text", "") for b in (getattr(response, "content", []) or [])
+        ).strip().upper()
+        # Conservative: only an explicit YES passes; anything else fails closed.
+        return text.startswith("YES")
 
 
 def verify_faithfulness(
