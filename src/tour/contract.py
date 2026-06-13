@@ -267,6 +267,46 @@ class ScriptPOI(BaseModel):
     beat_ids: tuple[str, ...] = ()
 
 
+class RouteOptionStop(BaseModel):
+    """One ordered stop inside a RouteOption (§2.8)."""
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    poi_id: str
+    name: str
+    lat: float
+    lng: float
+    lens: str | None = None  # dominant lens of the stop's beats; None if unlensed
+    visit_or_walk_past: Literal["visit", "walk_past"] = "visit"
+    minutes: int = Field(default=0, ge=0)
+
+
+class RouteOption(BaseModel):
+    """§2.8 output contract — one per flavour, 2-3 per request (M6).
+
+    Fields owned by later milestones keep honest defaults until they land:
+    ``stop_audio`` and ``why_this_works`` are M7 (COMPOSE/VERIFY);
+    ``route_polyline``/``flow_score``/``backtrack_ratio`` pass through the
+    Route slots M3/M4 left default; ``profiles`` is §4 multi-profile;
+    ``offline_package`` is the offline-replay bundle, post-MVP-core.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    route_id: str
+    stops: tuple[RouteOptionStop, ...]
+    stop_audio: dict[int, str] = Field(default_factory=dict)
+    route_polyline: str | None = None
+    eta_seconds: int = Field(..., ge=0)  # honest routed legs + dwell
+    why_this_works: str | None = None
+    lens_summary: dict[str, int] = Field(default_factory=dict)
+    flow_score: float = Field(default=0.0, ge=0)
+    backtrack_ratio: float = Field(default=0.0, ge=0)
+    degraded: bool = False
+    profiles: tuple[str, ...] = ()
+    offline_package: dict | None = None
+
+
 class ValidationReport(BaseModel):
     """Source-traceability + forbidden-phrase scan result for a Script."""
 

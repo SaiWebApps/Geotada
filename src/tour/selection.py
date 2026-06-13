@@ -73,6 +73,12 @@ LENS_ADJACENCY_DIRECT: float = 1.0
 LENS_ADJACENCY_ONE_HOP: float = 0.6
 LENS_ADJACENCY_MISS: float = 0.0
 
+# §2.2 k-flavours (M6): diversity re-runs multiply already-used POIs' scores
+# by DIVERSITY_PENALTY; a candidate flavour whose stop set shares
+# >= JACCARD_OVERLAP_MAX (Jaccard) with any kept flavour is rejected.
+DIVERSITY_PENALTY: float = 0.3
+JACCARD_OVERLAP_MAX: float = 0.60
+
 AREA_ALIGNMENT_SPINE: float = 1.0
 AREA_ALIGNMENT_ADJACENT: float = 0.5
 AREA_ALIGNMENT_OTHER: float = 0.2
@@ -486,12 +492,17 @@ def select_route(
     snapshot: CorpusSnapshot,
     *,
     routing_client: RoutingClient | None = None,
+    score_penalty: dict[str, float] | None = None,
 ) -> Route:
     """Compute the spine, score POIs, run greedy selection. Returns a Route.
 
     M2: ``routing_client`` only enriches the final Route's transits with
     routed leg_seconds/polylines (via summarise_route) — selection scoring
     stays on haversine until M3.
+
+    M6: ``score_penalty`` (poi_id → multiplicative factor) is the diversity
+    knob select_k_routes uses for flavour re-runs; leave None for normal
+    single-route selection.
 
     Phase 6 added two guards before the greedy:
 
@@ -611,7 +622,7 @@ def select_route(
             )
             if consumed_walk + extra > greedy_walk_budget:
                 continue
-            base = poi_score(cand, spine, interest, snapshot)
+            base = poi_score(cand, spine, interest, snapshot, penalty=score_penalty)
             # +1s smoothing prevents division-by-zero on co-located POIs.
             # Phase 7.5: clamp the denominator floor at 1.0 — integer
             # rounding inside ``insertion_cost_seconds`` can yield extra=-1
@@ -659,7 +670,10 @@ def select_route(
         if far_candidates:
             ranked_far = sorted(
                 far_candidates,
-                key=lambda c: (-poi_score(c, spine, interest, snapshot), c.id),
+                key=lambda c: (
+                    -poi_score(c, spine, interest, snapshot, penalty=score_penalty),
+                    c.id,
+                ),
             )[:ENDPOINT_PULL_CANDIDATE_TOP_K]
             for cand in ranked_far:
                 pulled = _apply_endpoint_pull(
@@ -673,6 +687,7 @@ def select_route(
                     walk_budget=walk_budget,
                     hard_anchor_cap=HARD_ANCHOR_CAP,
                     leg_seconds_fn=leg_fn,
+                    score_penalty=score_penalty,
                 )
                 if pulled is not selected and pulled[-1].id == cand.id:
                     selected = pulled
@@ -693,6 +708,7 @@ def select_route(
         start_lat=start_lat,
         start_lng=start_lng,
         leg_seconds_fn=leg_fn,
+        score_penalty=score_penalty,
         round_trip=input.round_trip,
         walk_budget=walk_budget,
         audio_budget=audio_budget,
@@ -732,6 +748,55 @@ def select_route(
         route = route.model_copy(update={"demoted_beats": demoted_beats})
     route = route.model_copy(update={"reach": reach})
     return _attach_tourability_if_yellow(route, assessment)
+
+
+def _jaccard(a: set[str], b: set[str]) -> float:
+    if not a and not b:
+        return 0.0
+    return len(a & b) / len(a | b)
+
+
+def select_k_routes(
+    input: TourInput,
+    snapshot: CorpusSnapshot,
+    k: int = 3,
+    *,
+    routing_client: RoutingClient | None = None,
+) -> list[Route]:
+    """§2.2 k flavours (M6): up to ``k`` distinct stop sets, each
+    independently ordered (M4) and routed (M2/M3).
+
+    select_route is the k=1 delegate. Each additional flavour re-runs the
+    greedy with every already-used POI's score multiplied by
+    DIVERSITY_PENALTY; a candidate whose stop set shares
+    >= JACCARD_OVERLAP_MAX (Jaccard) with any kept flavour ends the search —
+    the penalty is deterministic, so retrying identically cannot diversify
+    further. RED density raises TourabilityRefusedError on the first run,
+    exactly like select_route.
+    """
+    if k < 1:
+        return []
+    first = select_route(input, snapshot, routing_client=routing_client)
+    flavours = [first]
+    if not first.pois:
+        return flavours  # empty route: nothing to diversify against
+
+    while len(flavours) < k:
+        used = {p.id for f in flavours for p in f.pois}
+        penalty = dict.fromkeys(used, DIVERSITY_PENALTY)
+        cand = select_route(
+            input, snapshot, routing_client=routing_client, score_penalty=penalty
+        )
+        if not cand.pois:
+            break
+        cand_ids = {p.id for p in cand.pois}
+        if any(
+            _jaccard(cand_ids, {p.id for p in f.pois}) >= JACCARD_OVERLAP_MAX
+            for f in flavours
+        ):
+            break
+        flavours.append(cand)
+    return flavours
 
 
 def apply_co_located_demotion(
@@ -853,6 +918,7 @@ def _apply_fill_pass(
     audio_budget: int,
     hard_anchor_cap: int,
     leg_seconds_fn: LegSecondsFn | None = None,
+    score_penalty: dict[str, float] | None = None,
 ) -> list[POI]:
     """Phase 7: fill until audio floor is met or walk budget hits 95%.
 
@@ -892,7 +958,7 @@ def _apply_fill_pass(
 
     selected_ids = {p.id for p in selected}
     pool = [c for c in candidates if c.id not in selected_ids]
-    pool.sort(key=lambda c: (-poi_score(c, spine, interest, snapshot), c.id))
+    pool.sort(key=lambda c: (-poi_score(c, spine, interest, snapshot, penalty=score_penalty), c.id))
 
     # On a one-way path with ≥2 stops, treat the last anchor as the
     # endpoint (placed by endpoint-pull) and never insert after it.
@@ -1075,6 +1141,7 @@ def _apply_endpoint_pull(
     walk_budget: int,
     hard_anchor_cap: int,
     leg_seconds_fn: LegSecondsFn | None = None,
+    score_penalty: dict[str, float] | None = None,
 ) -> list[POI]:
     """Insert `endpoint` as the closing stop, dropping at most
     ENDPOINT_PULL_MAX_DROPS weak incumbents to fit walk-budget +
@@ -1089,7 +1156,7 @@ def _apply_endpoint_pull(
             and incumbents
             and drops_used < ENDPOINT_PULL_MAX_DROPS
         ):
-            incumbents = _drop_weakest(incumbents, spine, interest, snapshot)
+            incumbents = _drop_weakest(incumbents, spine, interest, snapshot, score_penalty)
             drops_used += 1
             continue
 
@@ -1114,7 +1181,7 @@ def _apply_endpoint_pull(
             return candidate_route
         if not incumbents or drops_used >= ENDPOINT_PULL_MAX_DROPS:
             return list(selected)  # bounded drops exhausted; abandon pull
-        incumbents = _drop_weakest(incumbents, spine, interest, snapshot)
+        incumbents = _drop_weakest(incumbents, spine, interest, snapshot, score_penalty)
         drops_used += 1
 
 
@@ -1123,8 +1190,11 @@ def _drop_weakest(
     spine: str | None,
     interest: frozenset[str],
     snapshot: CorpusSnapshot,
+    score_penalty: dict[str, float] | None = None,
 ) -> list[POI]:
-    weakest = min(pois, key=lambda p: (poi_score(p, spine, interest, snapshot), p.id))
+    weakest = min(
+        pois, key=lambda p: (poi_score(p, spine, interest, snapshot, penalty=score_penalty), p.id)
+    )
     return [p for p in pois if p.id != weakest.id]
 
 
@@ -1267,14 +1337,21 @@ def poi_score(
     spine_area: str | None,
     interest: frozenset[str],
     snapshot: CorpusSnapshot,
+    *,
+    penalty: dict[str, float] | None = None,
 ) -> float:
-    """The §3 per-POI score: importance x richness x lens_adjacency x alignment x role."""
+    """The §3 per-POI score: importance x richness x lens_adjacency x alignment x role.
+
+    M6: ``penalty`` (poi_id → factor) is the k-flavours diversity knob —
+    POIs already used by kept flavours score lower on re-runs.
+    """
     importance = float(poi.tier)
     richness = math.log1p(max(0, poi.beat_count))
     adjacency = _lens_adjacency(poi, interest, snapshot)
     alignment = _area_alignment(poi, spine_area, snapshot)
     role_mult = POI_ROLE_MULTIPLIER.get(poi.poi_role, 0.0)
-    return importance * richness * adjacency * alignment * role_mult
+    diversity = penalty.get(poi.id, 1.0) if penalty else 1.0
+    return importance * richness * adjacency * alignment * role_mult * diversity
 
 
 def _lens_adjacency(poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot) -> float:

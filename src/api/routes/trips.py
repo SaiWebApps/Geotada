@@ -20,8 +20,9 @@ from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
+from src.tour.options import build_route_option
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_route
+from src.tour.selection import load_paris_corpus, select_k_routes
 
 router = APIRouter(tags=["trips"])
 
@@ -125,11 +126,13 @@ def generate_trip(
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
-        # M2: the client enriches transits with routed leg_seconds/polylines
-        # when the local Valhalla container is up; with it down every call
-        # falls back to haversine instantly and behavior is unchanged.
+        # M2/M3: the client supplies routed leg costs + polylines when the
+        # local Valhalla container is up; with it down every call falls back
+        # to haversine instantly. M6: up to 3 diverse flavours; flavours[0]
+        # is the trip that persists.
         with RoutingClient() as routing_client:
-            route = select_route(tour_input, snapshot, routing_client=routing_client)
+            flavours = select_k_routes(tour_input, snapshot, 3, routing_client=routing_client)
+        route = flavours[0]
     except TourabilityRefusedError as exc:
         a = exc.assessment
         raise HTTPException(
@@ -148,16 +151,18 @@ def generate_trip(
             "No tourable POIs reachable from this start for the requested duration.",
         )
 
-    # Beat plan per route POI, merging beats demoted into a host POI
-    # (same sequence as scripts/tour_build.py).
-    plans = []
-    for poi in route.pois:
-        beats = list(snapshot.beats_for(poi.id))
-        beats.extend(route.demoted_beats.get(poi.id, ()))
-        plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
-    beat_sequence = BeatSequence(poi_beats=tuple(plans))
-
-    script = generate(beat_sequence, route, tour_input)
+    # Per flavour: beat plan (merging beats demoted into a host POI — same
+    # sequence as scripts/tour_build.py) and Script. scripts[0] drives the
+    # persisted trip; every flavour becomes a RouteOption.
+    scripts = []
+    for flavour in flavours:
+        plans = []
+        for poi in flavour.pois:
+            beats = list(snapshot.beats_for(poi.id))
+            beats.extend(flavour.demoted_beats.get(poi.id, ()))
+            plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
+        scripts.append(generate(BeatSequence(poi_beats=tuple(plans)), flavour, tour_input))
+    script = scripts[0]
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     stops = route_script_to_stops(script.selected_pois, beats_by_id, body.start_time)
@@ -200,6 +205,13 @@ def generate_trip(
     total_duration = sum(s["duration_min"] for s in stops)
     anchor_count = sum(1 for s in stops if s["importance_tier"] == 5)
 
+    options = [
+        build_route_option(
+            flavour, fl_script, beats_by_id, route_id=f"{result['trip_id']}-opt{i + 1}"
+        )
+        for i, (flavour, fl_script) in enumerate(zip(flavours, scripts, strict=True))
+    ]
+
     return TripGenerateResponse(
         trip_id=result["trip_id"],
         trip_name=result["trip_name"],
@@ -210,6 +222,7 @@ def generate_trip(
         flavour_count=len(stops) - anchor_count,
         lens_coverage=script.lens_coverage,
         stops=stops_out,
+        options=options,
     )
 
 

@@ -5,28 +5,12 @@ from __future__ import annotations
 import uuid
 from typing import TYPE_CHECKING, Any
 
+from src.tour.options import dominant_lens
+
 if TYPE_CHECKING:
     from neo4j import Session
 
     from src.tour.contract import BeatRef, ScriptPOI
-
-
-def _dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) -> str | None:
-    """The most common lens across a stop's beats, or None if no beat is lensed.
-
-    Computed from the beats themselves (BeatRef.lenses) — never fabricated. Ties
-    break deterministically by lens name so the result is stable across runs.
-    """
-    counts: dict[str, int] = {}
-    for bid in beat_ids:
-        ref = beats_by_id.get(bid)
-        if ref is None:
-            continue
-        for lens in ref.lenses:
-            counts[lens] = counts.get(lens, 0) + 1
-    if not counts:
-        return None
-    return sorted(counts, key=lambda lname: (-counts[lname], lname))[0]
 
 
 def route_script_to_stops(
@@ -60,7 +44,7 @@ def route_script_to_stops(
                 "lng": sp.lng,
                 "beat_ids": beat_ids,
                 "primary_beat_id": beat_ids[0] if beat_ids else None,
-                "lens_name": _dominant_lens(sp.beat_ids, beats_by_id),
+                "lens_name": dominant_lens(sp.beat_ids, beats_by_id),
                 "duration_min": duration_min,
                 "importance_tier": sp.tier,
                 "start_time": time_str,

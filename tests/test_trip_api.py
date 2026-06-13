@@ -206,6 +206,24 @@ class TestTripGenerateEngine:
         # audio-already-exists fast path reads these fields).
         assert any(s["script_body"] for s in data["stops"])
 
+    def test_options_surface_k_flavours(self, ile_response):
+        """M6: the response carries 1-3 RouteOptions; options[0] mirrors the
+        persisted trip; pairwise Jaccard over stop sets stays under 0.60."""
+        options = ile_response["options"]
+        assert 1 <= len(options) <= 3
+        assert [s["poi_id"] for s in options[0]["stops"]] == [
+            s["poi_id"] for s in ile_response["stops"]
+        ]
+        id_sets = [{s["poi_id"] for s in o["stops"]} for o in options]
+        for i in range(len(id_sets)):
+            for j in range(i + 1, len(id_sets)):
+                overlap = len(id_sets[i] & id_sets[j]) / len(id_sets[i] | id_sets[j])
+                assert overlap < 0.60, f"options {i},{j} share {overlap:.0%}"
+        for option in options:
+            assert option["route_id"].startswith(ile_response["trip_id"])
+            assert option["eta_seconds"] > 0
+            assert option["stops"], "an option without stops is not an option"
+
     def test_stop_order_matches_select_route(self, ile_response, ile_engine_route):
         expected = [p.id for p in ile_engine_route.pois]
         got = [s["poi_id"] for s in ile_response["stops"]]

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 
+from src.tour.contract import RouteOption
+
 
 class TripGenerateRequest(BaseModel):
     """Input model for POST /trips/generate."""
@@ -103,3 +105,8 @@ class TripGenerateResponse(BaseModel):
         description="Engine lens_coverage: lens slug -> beat count across the tour",
     )
     stops: list[GeneratedStop]
+    options: list[RouteOption] = Field(
+        default_factory=list,
+        description="M6 k-flavours (§2.8): up to 3 distinct tour options; options[0] "
+        "is the persisted trip. Computed per request, not persisted.",
+    )
