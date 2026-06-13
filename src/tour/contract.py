@@ -82,6 +82,14 @@ class BeatRef(BaseModel):
     Phase 7.5 added optional ``physical_cues`` + ``pronunciation`` so the
     refined cold-open hoist (Fix 1) and synthesized opener (Fix 2) can
     compose deterministically without re-querying Neo4j.
+
+    M7 added ``source_passage``/``source_chunk_slug``/``key_claims`` for the
+    VERIFY layer: ``source_passage`` is the verbatim span the beat was
+    extracted from (rapidfuzz-matched against the source chunk for
+    provenance) and ``key_claims`` are the atomic facts a beat-cited
+    sentence must follow from (the faithfulness entailment pass). All three
+    are optional — the corpus extraction pipeline backfills them; until then
+    the provenance/faithfulness checks skip beats that lack them.
     """
 
     model_config = ConfigDict(frozen=True, extra="ignore")
@@ -103,6 +111,9 @@ class BeatRef(BaseModel):
     script_body: str | None = None
     physical_cues: tuple[PhysicalCue, ...] = ()
     pronunciation: str | None = None
+    source_passage: str | None = None
+    source_chunk_slug: str | None = None
+    key_claims: tuple[str, ...] = ()
 
 
 class TransitSegment(BaseModel):
@@ -308,16 +319,32 @@ class RouteOption(BaseModel):
 
 
 class ValidationReport(BaseModel):
-    """Source-traceability + forbidden-phrase scan result for a Script."""
+    """Source-traceability + forbidden-phrase + (M7) provenance/faithfulness
+    result for a Script. ``passed`` gates serving — a failing report blocks
+    audio (§2.6).
+
+    M7 added two independent VERIFY "teeth":
+    - ``provenance_failures``: (beat_id, rapidfuzz_score) for beats whose
+      ``source_passage`` did not match its source chunk above threshold.
+    - ``faithfulness_failures``: (sentence, reason) for beat-cited sentences
+      that the entailment pass found unsupported by the beat's ``key_claims``.
+    """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     untraceable_sentences: tuple[Sentence, ...] = ()
     forbidden_phrase_hits: tuple[tuple[Sentence, str], ...] = ()
+    provenance_failures: tuple[tuple[str, float], ...] = ()
+    faithfulness_failures: tuple[tuple[Sentence, str], ...] = ()
 
     @property
     def passed(self) -> bool:
-        return not self.untraceable_sentences and not self.forbidden_phrase_hits
+        return not (
+            self.untraceable_sentences
+            or self.forbidden_phrase_hits
+            or self.provenance_failures
+            or self.faithfulness_failures
+        )
 
 
 class Script(BaseModel):

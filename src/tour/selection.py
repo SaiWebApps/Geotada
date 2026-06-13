@@ -298,6 +298,9 @@ RETURN
   b.active_status       AS active_status,
   b.physical_cues       AS physical_cues,
   b.pronunciation       AS pronunciation,
+  b.source_passage      AS source_passage,
+  b.source_chunk_slug   AS source_chunk_slug,
+  b.key_claims          AS key_claims,
   lens_names            AS lenses
 """
 
@@ -381,6 +384,9 @@ def _snapshot_from_records(
             script_body=body if isinstance(body, str) and body.strip() else None,
             physical_cues=_decode_physical_cues(r.get("physical_cues")),
             pronunciation=_clean(r.get("pronunciation")),
+            source_passage=_clean(r.get("source_passage")),
+            source_chunk_slug=_clean(r.get("source_chunk_slug")),
+            key_claims=tuple(s.strip() for s in (r.get("key_claims") or ()) if s and s.strip()),
         )
         beats_by_poi_acc.setdefault(ref.poi_id, []).append(ref)
 
