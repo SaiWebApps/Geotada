@@ -125,8 +125,16 @@ Step 1.4b — Serve per-stop audio status + url by STOP.
   Proof:    make test-local
   Done when: green, pasted.
 
-Step 1.4c — Mobile polls + plays the per-stop narration audio.
-  Change:   point the itinerary player's poll/play at the per-stop url from 1.4b (instead of per-beat).
+Step 1.4c — Backend: surface stop_id + per-stop audio in GET /trips.  [DONE 165f252]
+  Change:   list_trips_for_profile returns item.id AS stop_id and coalesce(item.audio_url, pb.audio_url)
+            (+ duration); GeneratedStop gains stop_id — so the client can ADDRESS a stop and read its
+            per-stop narration audio. (Discovered mid-1.4: the read path exposed neither.)
+  Tests:    integ: after generate-trip-stops, GET /trips exposes stop_id + the per-stop 'stops/...' url.
+  Proof:    make test-local → 948 passed, 0 failed.
+
+Step 1.4d — Mobile polls + plays the per-stop narration audio.  [PENDING]
+  Change:   point the itinerary flow at the per-stop endpoints (POST generate-trip-stops + GET
+            stop-status/{stop_id}) and play the per-stop url, instead of per-beat.
   Tests:    funct: dev server end-to-end → the app receives a per-stop narration url for every stop.
             manual: YOU run make flutter-ios, generate a Paris trip, tap Confirm & Prepare, and CONFIRM
                     each stop plays multi-sentence narration (cold-open → beat → transit → beat →
@@ -134,6 +142,13 @@ Step 1.4c — Mobile polls + plays the per-stop narration audio.
   Proof:    make flutter-test + the manual checklist above.
   Done when: funct green + pasted AND you confirm the listen.
 ```
+
+**Phase 1 status:** 1.1 (e54dbb9) → 1.2 (2b9686c) → 1.3 (7e04c40) → 1.4a (9ad2f82) → 1.4b (7551e2b)
+→ 1.4c (165f252) DONE; **1.4d** (mobile + manual listen) PENDING.
+
+**Audio-infra fixes (surfaced during 1.4 while getting the bar green — root-caused, not skipped):**
+- d8d5b59 — TTS providers retry transient timeouts (real resilience gap + intermittent functional failure).
+- 8c0ee75 — WER `_normalize` folds accents (Whisper strips diacritics; fair eval, threshold unchanged).
 
 **Phase 1 delivers:** a real, continuous, audible tour — the single biggest gap — with no new
 algorithm, no LLM, no destination work. The stitched narration is a genuinely shippable interim (a
