@@ -7,7 +7,7 @@ run, NO corpus. See specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
 from __future__ import annotations
 
 from src.api.crud.trips import route_script_to_stops
-from src.tour.contract import BeatRef, ScriptPOI
+from src.tour.contract import BeatRef, Script, ScriptPOI, Sentence, TourInput, ValidationReport
 
 
 def _poi(pid: str, name: str, *, tier: int, beat_ids: tuple[str, ...], dwell: int) -> ScriptPOI:
@@ -85,3 +85,47 @@ def test_clock_advances_by_dwell():
 
 def test_empty_selection_yields_no_stops():
     assert route_script_to_stops([], {}, "09:00") == []
+
+
+def _script(pois: list[ScriptPOI], sentences: list[Sentence]) -> Script:
+    return Script(
+        city_slug="paris",
+        generated_at="2026-06-13T00:00:00+00:00",
+        inputs=TourInput(start=(48.85, 2.35), duration_min=60, city_slug="paris"),
+        total_audio_seconds=0,
+        total_walking_seconds=0,
+        total_walk_distance_m=0,
+        total_planned_seconds=0,
+        selected_pois=tuple(pois),
+        lens_coverage={},
+        script=tuple(sentences),
+        validation=ValidationReport(),
+    )
+
+
+def test_narration_attached_per_stop_when_script_passed():
+    pois = [
+        _poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600),
+        _poi("p2", "Notre-Dame", tier=4, beat_ids=("b2",), dwell=300),
+    ]
+    script = _script(
+        pois,
+        [
+            Sentence(text="Settle in.", source_id="GLUE_PACING", source_type="glue", stop_idx=0),
+            Sentence(
+                text="The tower opened in 1889.", source_id="b1", source_type="beat", stop_idx=0
+            ),
+            Sentence(
+                text="The cathedral began in 1160.", source_id="b2", source_type="beat", stop_idx=1
+            ),
+        ],
+    )
+    stops = route_script_to_stops(pois, {}, "09:00", script=script)
+    assert stops[0]["narration"] == "Settle in. The tower opened in 1889."
+    assert stops[1]["narration"] == "The cathedral began in 1160."
+
+
+def test_narration_empty_when_no_script():
+    pois = [_poi("p1", "A", tier=5, beat_ids=("b1",), dwell=600)]
+    stops = route_script_to_stops(pois, {}, "09:00")
+    assert stops[0]["narration"] == ""

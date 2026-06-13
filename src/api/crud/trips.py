@@ -6,17 +6,20 @@ import uuid
 from typing import TYPE_CHECKING, Any
 
 from src.tour.options import dominant_lens
+from src.tour.render_md import stop_narration_text
 
 if TYPE_CHECKING:
     from neo4j import Session
 
-    from src.tour.contract import BeatRef, ScriptPOI
+    from src.tour.contract import BeatRef, Script, ScriptPOI
 
 
 def route_script_to_stops(
     selected_pois: list[ScriptPOI] | tuple[ScriptPOI, ...],
     beats_by_id: dict[str, BeatRef],
     start_time: str,
+    *,
+    script: Script | None = None,
 ) -> list[dict[str, Any]]:
     """Adapt the engine's ordered ScriptPOIs into the stop dicts create_trip_with_stops expects.
 
@@ -25,9 +28,15 @@ def route_script_to_stops(
     (so single-beat read paths still work); the per-stop lens is the dominant lens of
     its beats (computed, not fabricated); the clock advances by each stop's
     `dwell_seconds`. See specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+
+    Phase 1 (Step 1.2): when ``script`` is passed, each stop also carries its
+    ``narration`` — the stitched per-stop text (cold-open, transit glue, beats,
+    closing) from ``stop_narration_text``, the text Phase 1 hands to TTS. Omitted
+    (``""``) when no script is given, so existing callers stay back-compatible.
     """
     parts = start_time.split(":")
     current_hour, current_minute = int(parts[0]), int(parts[1])
+    narration_by_stop = stop_narration_text(script) if script is not None else {}
 
     stops: list[dict[str, Any]] = []
     for idx, sp in enumerate(selected_pois):
@@ -50,6 +59,7 @@ def route_script_to_stops(
                 "start_time": time_str,
                 "area": sp.area,
                 "dwell_seconds": sp.dwell_seconds,
+                "narration": narration_by_stop.get(idx, ""),
             }
         )
 
@@ -76,8 +86,10 @@ def create_trip_with_stops(
     - For each stop: ItineraryItem with HAS_STOP, ASSIGNED_TO, AT_POI, and one
       PLAYS_BEAT edge per beat in the stop's `beat_ids`. The item stores
       `beat_ids` (engine narration order), `primary_beat_id` (= beat_ids[0],
-      for single-beat read paths), and the stop's dominant `lens_name`
-      (nullable). See specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+      for single-beat read paths), the stop's dominant `lens_name` (nullable),
+      and the stitched per-stop `narration` (Phase 1, Step 1.2; nullable — a
+      null/absent value is simply not stored). See
+      specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
     """
     trip_id = str(uuid.uuid4())
 
@@ -118,6 +130,7 @@ def create_trip_with_stops(
             beat_ids: $beat_ids,
             primary_beat_id: $primary_beat_id,
             lens_name: $lens_name,
+            narration: $narration,
             created_at: datetime()
         })
         CREATE (trip)-[:HAS_STOP]->(item)
@@ -142,6 +155,7 @@ def create_trip_with_stops(
             beat_ids=stop["beat_ids"],
             primary_beat_id=stop["primary_beat_id"],
             lens_name=stop["lens_name"],
+            narration=stop.get("narration"),
         ).single()
         # The mid-query MATCH silently drops absent beat ids; fail loudly
         # rather than persist an item whose stored beat_ids cite beats it

@@ -165,7 +165,7 @@ def generate_trip(
     script = scripts[0]
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
-    stops = route_script_to_stops(script.selected_pois, beats_by_id, body.start_time)
+    stops = route_script_to_stops(script.selected_pois, beats_by_id, body.start_time, script=script)
 
     trip_name = body.trip_name or f"Trip ({body.start_date})"
     result = create_trip_with_stops(

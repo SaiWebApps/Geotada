@@ -87,8 +87,9 @@ Step 1.2 — Persist per-stop narration alongside beat_ids.
   Change:   extend route_script_to_stops (src/api/crud/trips.py) to carry narration per stop (from
             1.1); add narration:str to ItineraryItem write in create_trip_with_stops. Additive —
             beat_ids/primary_beat_id untouched. (Neo4j is schemaless for node properties — no migration.)
-            Signature: route_script_to_stops(selected_pois, beats_by_id, start_time, *, script: Script);
-            the caller passes the Script and the fn calls stop_narration_text(script) internally.
+            Signature: route_script_to_stops(selected_pois, beats_by_id, start_time, *,
+            script: Script | None = None) — back-compatible (existing positional callers unaffected);
+            when script is passed the fn calls stop_narration_text(script) and attaches per-stop narration.
   Tests:    unit:  route_script_to_stops returns narration per stop from a hand-built Route/Script
                    (no DB), aligned to sort_order.
             integ: create_trip_with_stops writes narration; read-back equals input (local Neo4j).

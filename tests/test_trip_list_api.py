@@ -191,3 +191,31 @@ class TestListTripsEndpoint:
         """A nonexistent profile returns 404."""
         resp = client.get("/api/v1/trips?profile_id=nonexistent-profile-999")
         assert resp.status_code == 404
+
+    def test_create_trip_persists_per_stop_narration(self, seeded_driver, mom_profile_id):
+        """Step 1.2: create_trip_with_stops writes each stop's `narration` onto the
+        ItineraryItem; reading the property back equals the input string."""
+        stops = _engine_shaped_stops(seeded_driver)[:1]
+        assert stops, "toy seed must provide a POI with beats"
+        expected = "Settle in. This is the stitched opening. Now walk on."
+        stops[0]["narration"] = expected
+
+        with seeded_driver.session(database=get_database()) as s:
+            result = create_trip_with_stops(
+                s,
+                trip_name="Narration Persist Test",
+                profile_id=mom_profile_id,
+                start_date="2026-05-01",
+                end_date="2026-05-03",
+                stops=stops,
+            )
+
+        with seeded_driver.session(database=get_database()) as s:
+            rec = s.run(
+                "MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) "
+                "RETURN i.narration AS narration ORDER BY i.sort_order",
+                tid=result["trip_id"],
+            ).single()
+
+        assert rec is not None
+        assert rec["narration"] == expected
