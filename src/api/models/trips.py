@@ -65,6 +65,10 @@ class GeneratedStop(BaseModel):
     """Output model for each stop in a generated trip."""
 
     sort_order: int
+    stop_id: str | None = Field(
+        default=None,
+        description="ItineraryItem id — addresses this stop for per-stop narration audio (Phase 1)",
+    )
     poi_id: str
     poi_name: str
     lat: float

@@ -224,6 +224,7 @@ def list_trips_for_profile(
                  coalesce(item.lens_name, pb.lens) AS lens_name
             OPTIONAL MATCH (lens:Lens {name: lens_name})
             RETURN item.sort_order AS sort_order,
+                   item.id AS stop_id,
                    poi.id AS poi_id,
                    poi.name AS poi_name,
                    poi.location.latitude AS lat,
@@ -240,8 +241,8 @@ def list_trips_for_profile(
                         THEN substring(toString(item.start_time), 0, 5)
                         ELSE '09:00' END AS start_time,
                    pb.script_body AS script_body,
-                   pb.audio_url AS audio_url,
-                   pb.duration_sec AS audio_duration_sec
+                   coalesce(item.audio_url, pb.audio_url) AS audio_url,
+                   coalesce(item.audio_duration_sec, pb.duration_sec) AS audio_duration_sec
             ORDER BY item.sort_order
         """
         stop_records = session.run(stops_query, tid=trip["trip_id"])

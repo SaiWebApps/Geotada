@@ -219,3 +219,43 @@ class TestListTripsEndpoint:
 
         assert rec is not None
         assert rec["narration"] == expected
+
+    def test_list_trips_surfaces_stop_id_and_per_stop_audio(
+        self, client, seeded_driver, mom_profile_id, monkeypatch, tmp_path
+    ):
+        """Step 1.4c: GET /trips exposes each stop's ItineraryItem id (stop_id) and,
+        once per-stop audio is generated, prefers item.audio_url over the beat's —
+        so mobile can address + play per-stop narration."""
+        monkeypatch.setenv("AUDIO_STORAGE_PATH", str(tmp_path))
+        monkeypatch.setenv("AUDIO_STORAGE", "local")
+
+        stops = _engine_shaped_stops(seeded_driver)
+        assert stops
+        for s in stops:
+            s["narration"] = f"Stop {s['sort_order']}. Welcome here. Walk on."
+        with seeded_driver.session(database=get_database()) as s:
+            result = create_trip_with_stops(
+                s,
+                trip_name="Per-stop audio trip",
+                profile_id=mom_profile_id,
+                start_date="2026-05-01",
+                end_date="2026-05-03",
+                stops=stops,
+            )
+        trip_id = result["trip_id"]
+
+        gen = client.post(
+            f"/api/v1/audio/generate-trip-stops/{trip_id}", json={"provider": "mock"}
+        )
+        assert gen.status_code == 200, gen.text
+        assert gen.json()["generated"] == len(stops)
+
+        resp = client.get(f"/api/v1/trips?profile_id={mom_profile_id}")
+        assert resp.status_code == 200
+        trip = next((t for t in resp.json() if t["trip_id"] == trip_id), None)
+        assert trip is not None
+        for stop in trip["stops"]:
+            assert stop["stop_id"], "ItineraryItem id must be surfaced for per-stop addressing"
+            assert stop["audio_url"] and "stops/" in stop["audio_url"], (
+                "GET /trips must surface the per-stop narration audio, not the beat's"
+            )
