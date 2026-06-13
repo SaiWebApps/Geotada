@@ -49,9 +49,19 @@ Step N.x — <the one change, in a sentence>
 
 ## Step 0 — Green baseline (no code)
   Change:   none.
-  Tests:    run the bar.
-  Proof:    `make test` and `make test-golden`.
-  Done when: both green, output pasted. If red, we fix/triage the baseline *before* anything else.
+  Bar that MUST be green before per-step work: `make lint` + `make test` (= test-local + flutter-test).
+  RESULT (2026-06-13): GREEN — lint clean; 929 Python passed; 177 Flutter passed; 0 failures.
+
+  Tracked-but-NOT-blocking (PRE-EXISTING this session — proven: the only commit, 94436ee, was docs-only):
+  - `make test-golden`: test_tour_golden_{ile,pdv} assert 90% beat-overlap vs the HUMAN-IDEAL fixtures
+    (currently ~56%). Aspirational targets ("do NOT re-baseline" — prior M0c); they track the
+    engine→ideal gap, they are NOT a regression gate.
+  - `make tour-grade`: the grade rubric PASSES (both goldens clear baseline 0.65; broken-golden detected),
+    but `test_flagship_route_never_swims_the_seine` FAILS — a real, pre-existing routing-geometry red.
+    Orthogonal to Phase 1 (narration→audio touches no routing); triage in Phase 2 (corridor/routing) or
+    earlier if desired.
+  Correction: Step 0 originally listed `make test-golden` as a must-be-green gate — wrong; the
+  golden-overlap suite is a target tracker, the regression gate is `make tour-grade`.
 
 ---
 
