@@ -119,6 +119,19 @@ def _group_by_stop(sentences: tuple[Sentence, ...]) -> dict[int, list[Sentence]]
     return groups
 
 
+def stop_narration_text(script: Script) -> dict[int, str]:
+    """Per-stop spoken narration: each stop's sentences joined in order.
+
+    Groups ``script.script`` by ``stop_idx`` (cold-open, transit glue, beat
+    sentences and closing all included) and joins each stop's sentence texts
+    with a single space — the text that becomes one audio file per stop (M0b
+    discards this today; Phase 1 wires it to TTS). Pure: no DB, no audio.
+    Empty script → ``{}``.
+    """
+    grouped = _group_by_stop(script.script)
+    return {idx: " ".join(s.text for s in sents) for idx, sents in grouped.items()}
+
+
 def _render_stop_block(
     sentences: list[Sentence],
     sub_lookup: dict[str, tuple[str | None, str | None]],
