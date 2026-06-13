@@ -60,6 +60,10 @@ def _valhalla_handler(request: httpx.Request) -> httpx.Response:
             },
         )
     if request.url.path == "/isochrone":
+        # Generous box over all Paris test geographies: since M5 the REACH
+        # filter genuinely applies this polygon, so it must cover every
+        # fixture coordinate (the parsing tests only assert its shape).
+        ring = [[2.20, 48.80], [2.45, 48.80], [2.45, 48.92], [2.20, 48.92], [2.20, 48.80]]
         return httpx.Response(
             200,
             json={
@@ -68,12 +72,7 @@ def _valhalla_handler(request: httpx.Request) -> httpx.Response:
                     {
                         "type": "Feature",
                         "properties": {"metric": "time"},
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": [
-                                [[2.29, 48.85], [2.35, 48.85], [2.35, 48.89], [2.29, 48.85]]
-                            ],
-                        },
+                        "geometry": {"type": "Polygon", "coordinates": [ring]},
                     }
                 ],
             },

@@ -150,6 +150,26 @@ class TourabilityAssessment(BaseModel):
     one_way_alternative_destination: str | None = None
 
 
+class ReachVerdict(BaseModel):
+    """REACH output (§2.1, M5): how the reachable area was computed and which
+    mode the tour operates in.
+
+    ``mode`` maps the density gate's status: GREEN → standard; YELLOW →
+    ambient (thin) or redirect (a denser one-way destination exists); RED →
+    refuse (selection raises before a Route exists, so a Route never carries
+    refuse in practice). ``degraded`` is True when the Valhalla isochrone was
+    unavailable and REACH fell back to the analytic haversine envelope.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    mode: Literal["standard", "ambient", "redirect", "refuse"]
+    degraded: bool = False
+    walk_minutes: int = Field(..., ge=1)
+    reachable_poi_count: int = Field(default=0, ge=0)
+    alternative_destination: str | None = None
+
+
 class Route(BaseModel):
     """Selected POIs in walking order, with transit segments and budgets.
 
@@ -183,6 +203,8 @@ class Route(BaseModel):
     route_polyline: str | None = None
     backtrack_ratio: float = Field(default=0.0, ge=0)
     flow_score: float = Field(default=0.0, ge=0)
+    # M5: the REACH verdict for the request that produced this route.
+    reach: ReachVerdict | None = None
 
 
 OrderingStrategy = Literal["sub_location", "trigger_address", "narrative_function"]

@@ -27,13 +27,27 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from typing import TYPE_CHECKING
 
-from .contract import POI, BeatRef, PhysicalCue, Route, TourabilityAssessment, TourInput
+from shapely.geometry import Point as _ShapelyPoint
+from shapely.geometry import shape as _shapely_shape
+from shapely.prepared import prep as _shapely_prep
+
+from .contract import (
+    POI,
+    BeatRef,
+    PhysicalCue,
+    ReachVerdict,
+    Route,
+    TourabilityAssessment,
+    TourInput,
+)
 from .density import TourabilityRefusedError
 from .density import assess as assess_tourability
 from .ordering import held_karp_open
 from .routing import (
+    ERR_SHORT,
     HAVERSINE_CORRECTION,
     PACE_KMH,
+    WALK_FRACTION,
     LegSecondsFn,
     compute_dwell_seconds,
     default_leg_seconds,
@@ -502,15 +516,26 @@ def select_route(
     if assessment.status == "RED":
         raise TourabilityRefusedError(assessment)
 
-    # Step 1: envelope filter. Phase 6 also drops 0-active-beat POIs.
+    # Step 1: REACH (§2.1, M5) — Valhalla walking isochrone replaces the
+    # analytic radius (a straight-line circle admits across-the-river POIs no
+    # bridge serves). Falls back to the exact haversine envelope when the
+    # isochrone is unavailable. Phase 6 also drops 0-active-beat POIs.
     radius_m = envelope_radius_m(input.duration_min, round_trip=input.round_trip)
+    iso_minutes = _isochrone_walk_minutes(input.duration_min, round_trip=input.round_trip)
+    reach_contains, reach_degraded = _reach_predicate(
+        (start_lat, start_lng), radius_m, iso_minutes, routing_client
+    )
+    reachable_count = 0
     candidates: list[POI] = []
     for poi in snapshot.pois:
+        in_reach = reach_contains(poi.lat, poi.lng)
+        if in_reach:
+            reachable_count += 1
         if poi.poi_role == "walk_by_only":
             continue  # walk-bys are handled separately (Phase 3 enrichment)
         if poi.tier not in ANCHOR_TIERS:
             continue
-        if haversine_m(start_lat, start_lng, poi.lat, poi.lng) > radius_m:
+        if not in_reach:
             continue
         if not _has_active_beats(poi, snapshot):
             continue  # Phase 6: zero-beat POIs are excluded as anchors.
@@ -519,6 +544,20 @@ def select_route(
             # here so the greedy, endpoint-pull, and fill pass all agree.
             continue
         candidates.append(poi)
+
+    reach = ReachVerdict(
+        mode=(
+            "standard"
+            if assessment.status == "GREEN"
+            else "redirect"
+            if assessment.one_way_alternative_destination
+            else "ambient"
+        ),
+        degraded=reach_degraded,
+        walk_minutes=iso_minutes,
+        reachable_poi_count=reachable_count,
+        alternative_destination=assessment.one_way_alternative_destination,
+    )
 
     if not candidates:
         empty = summarise_route(
@@ -530,6 +569,7 @@ def select_route(
             spine_area=None,
             routing_client=routing_client,
         )
+        empty = empty.model_copy(update={"reach": reach})
         return _attach_tourability_if_yellow(empty, assessment)
 
     # Step 2: spine.
@@ -690,6 +730,7 @@ def select_route(
     )
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})
+    route = route.model_copy(update={"reach": reach})
     return _attach_tourability_if_yellow(route, assessment)
 
 
@@ -890,6 +931,57 @@ def _apply_fill_pass(
         consumed_audio += compute_dwell_seconds(cand.tier)
 
     return selected
+
+
+def _isochrone_walk_minutes(duration_min: int, *, round_trip: bool) -> int:
+    """The walking-time contour REACH asks Valhalla for.
+
+    Mirrors envelope_radius_m's derivation: the err-short walk budget in
+    minutes, halved for round trips (out-and-back reach).
+    """
+    walk_min = duration_min * ERR_SHORT * WALK_FRACTION
+    return max(1, round(walk_min / 2.0 if round_trip else walk_min))
+
+
+def _reach_predicate(
+    start: tuple[float, float],
+    radius_m: float,
+    iso_minutes: int,
+    routing_client: RoutingClient | None,
+):
+    """(contains(lat, lng), degraded) — the REACH membership test (§2.1).
+
+    Primary: point-in-polygon against the Valhalla walking isochrone
+    (prepared shapely geometry; GeoJSON rings are (lng, lat)). Fallback —
+    no client, isochrone refused, or unparseable geometry — is the exact
+    pre-M5 haversine envelope with ``degraded=True``.
+    """
+    if routing_client is not None:
+        iso = routing_client.isochrone(start[0], start[1], iso_minutes)
+        if iso is not None:
+            try:
+                geoms = [
+                    _shapely_shape(f["geometry"])
+                    for f in iso.get("features", ())
+                    if f.get("geometry")
+                ]
+                if geoms:
+                    union = geoms[0]
+                    for g in geoms[1:]:
+                        union = union.union(g)
+                    prepared = _shapely_prep(union)
+                    return (
+                        lambda lat, lng: bool(prepared.covers(_ShapelyPoint(lng, lat))),
+                        False,
+                    )
+            except (KeyError, TypeError, ValueError):
+                pass  # malformed GeoJSON → analytic fallback below
+
+    start_lat, start_lng = start
+    return (
+        lambda lat, lng: haversine_m(start_lat, start_lng, lat, lng) <= radius_m,
+        True,
+    )
 
 
 def _memoized_leg_fn(client: RoutingClient) -> LegSecondsFn:
