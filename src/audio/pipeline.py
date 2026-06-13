@@ -250,6 +250,70 @@ def generate_beat_audio(
 
 
 @dataclass
+class StopAudioResult:
+    """Result of generating audio for one stop's stitched narration (Phase 1)."""
+
+    stop_key: str
+    provider: str
+    storage: str
+    audio_url: str
+    size_bytes: int
+    duration_sec: float
+
+
+def _build_stop_storage_key(stop_key: str, poi_name: str | None = None) -> str:
+    """Deterministic storage key for a stop's narration audio: stops/{slug}/{key}.mp3."""
+    slug = "unknown"
+    if poi_name:
+        slug = poi_name.lower().replace(" ", "_").replace("'", "")
+    return f"stops/{slug}/{stop_key}.mp3"
+
+
+def generate_stop_audio(
+    narration: str,
+    *,
+    stop_key: str,
+    poi_name: str | None = None,
+    provider_name: str | None = None,
+    storage_name: str | None = None,
+    voice_id: str | None = None,
+) -> StopAudioResult:
+    """Generate + store TTS audio for one stop's stitched narration.
+
+    Phase 1 (Step 1.3): mirrors ``generate_beat_audio`` but voices the per-stop
+    narration (cold-open + transit glue + beats + closing) instead of a single
+    beat, and does NOT touch Neo4j — the prepare-trip wiring and per-stop
+    persistence land in Step 1.4. ``MockTTSProvider`` + ``LocalStorageProvider``
+    are the offline defaults so ``make test`` stays free.
+    """
+    if not narration or not narration.strip():
+        raise PipelineError(f"Stop '{stop_key}' has empty narration")
+
+    provider = get_provider(provider_name)
+    try:
+        audio_bytes = provider.generate(narration, voice_id=voice_id)
+    except TTSError as e:
+        raise PipelineError(f"TTS failed for stop '{stop_key}': {e}") from e
+
+    storage = get_storage(storage_name)
+    key = _build_stop_storage_key(stop_key, poi_name)
+    try:
+        audio_url = storage.upload(audio_bytes, key)
+    except StorageError as e:
+        raise PipelineError(f"Storage failed for stop '{stop_key}': {e}") from e
+
+    duration = round(_get_duration(audio_bytes), 2)
+    return StopAudioResult(
+        stop_key=stop_key,
+        provider=provider.name,
+        storage=storage.name,
+        audio_url=audio_url,
+        size_bytes=len(audio_bytes),
+        duration_sec=duration,
+    )
+
+
+@dataclass
 class BatchSummary:
     """Summary statistics for a batch generation run."""
 
