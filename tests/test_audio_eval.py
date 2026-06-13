@@ -43,6 +43,14 @@ class TestNormalize:
         assert _normalize("hub—the") == "hub the"
         assert _normalize("Look up — 2.5 million") == "look up 2 5 million"
 
+    def test_folds_accents(self):
+        # Whisper strips diacritics; the reference must too, or French proper
+        # nouns inflate WER spuriously ("café" vs "cafe").
+        assert _normalize("Café") == "cafe"
+        assert _normalize("Café de Flore") == "cafe de flore"
+        assert _normalize("Élève à Étretat") == "eleve a etretat"
+        assert _normalize("Café, c'est bon!") == "cafe c est bon"
+
 
 class TestWordErrorRate:
     def test_exact_match(self):

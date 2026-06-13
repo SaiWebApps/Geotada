@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 import re
+import unicodedata
 from dataclasses import dataclass
 
 import httpx
@@ -30,7 +31,15 @@ class EvalResult:
 
 
 def _normalize(text: str) -> str:
-    """Lowercase, replace punctuation with spaces, collapse whitespace.
+    """Lowercase, fold accents, replace punctuation with spaces, collapse whitespace.
+
+    Accents are decomposed (NFKD) and the combining marks removed so the
+    reference matches Whisper's behavior: Whisper transcription strips diacritics
+    (``Café`` → ``Cafe``) across models and languages, so comparing
+    accent-preserved reference text against an accent-stripped hypothesis would
+    spuriously inflate WER on French proper nouns (a ~0.03 floor that tips
+    accent-heavy beats over threshold). Folding both to the same ASCII base makes
+    the comparison fair.
 
     Punctuation is replaced with a space (not deleted) so a separator rendered
     differently by the two sources — e.g. the script's spaced em-dash
@@ -38,6 +47,8 @@ def _normalize(text: str) -> str:
     word boundary instead of joining the words into ``hubthe`` and inflating WER.
     """
     text = text.lower()
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if unicodedata.category(c) != "Mn")
     text = re.sub(r"[^\w\s]", " ", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
