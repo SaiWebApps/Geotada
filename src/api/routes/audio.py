@@ -28,8 +28,10 @@ from src.api.models.audio import (
     GenerateResponse,
     ProviderInfo,
     ProviderListResponse,
+    StopAudioResultItem,
     TripAudioGenerateResponse,
     TripAudioResultItem,
+    TripStopAudioGenerateResponse,
 )
 from src.audio.eval import EvalError as AudioEvalError
 from src.audio.eval import evaluate
@@ -38,6 +40,7 @@ from src.audio.pipeline import (
     check_audio_status,
     generate_batch,
     generate_beat_audio,
+    generate_stop_audio,
 )
 from src.audio.provider import TTSError, get_provider, list_providers
 from src.audio.storage import LocalStorageProvider, get_storage
@@ -452,6 +455,98 @@ def generate_audio_for_trip(
             )
 
     return TripAudioGenerateResponse(
+        trip_id=trip_id,
+        generated=sum(1 for r in results if r.status == "generated"),
+        skipped=sum(1 for r in results if r.status == "skipped"),
+        failed=sum(1 for r in results if r.status == "failed"),
+        results=results,
+    )
+
+
+@router.post(
+    "/audio/generate-trip-stops/{trip_id}",
+    response_model=TripStopAudioGenerateResponse,
+)
+def generate_stop_audio_for_trip(
+    trip_id: str,
+    body: GenerateRequest | None = None,
+    session: Session = Depends(get_session),
+):
+    """Generate one composed-narration MP3 per stop (Phase 1, Step 1.4a).
+
+    Iterates the trip's ItineraryItems, voices each stop's stitched ``narration``
+    (Step 1.2) via ``generate_stop_audio``, and stores the result ON THE ITEM
+    (``audio_url``/``audio_duration_sec``), keyed by the item id. This is the
+    per-stop replacement for the per-primary-beat ``/audio/generate-trip``;
+    mobile switches to it in Step 1.4c and the per-beat path is retired later.
+    Items with no narration are skipped; existing audio is skipped unless force.
+    """
+    trip_check = session.run(
+        "MATCH (t:Trip {id: $tid}) RETURN t.id AS id", tid=trip_id
+    ).single()
+    if trip_check is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+
+    rows = session.run(
+        """
+        MATCH (t:Trip {id: $trip_id})-[:HAS_STOP]->(item:ItineraryItem)
+        OPTIONAL MATCH (item)-[:AT_POI]->(poi:POI)
+        RETURN item.id AS stop_id,
+               item.narration AS narration,
+               item.audio_url AS audio_url,
+               poi.name AS poi_name
+        ORDER BY item.sort_order
+        """,
+        trip_id=trip_id,
+    )
+    stops = [dict(r) for r in rows]
+
+    provider_name = body.provider if body else None
+    voice_id = body.voice_id if body else None
+    force = body.force if body else False
+
+    results: list[StopAudioResultItem] = []
+    for stop in stops:
+        stop_id = stop["stop_id"]
+        narration = stop["narration"]
+        if not narration or not narration.strip():
+            results.append(
+                StopAudioResultItem(stop_id=stop_id, status="skipped", reason="no narration")
+            )
+            continue
+        if stop["audio_url"] and not force:
+            results.append(
+                StopAudioResultItem(
+                    stop_id=stop_id,
+                    status="skipped",
+                    reason="already has audio",
+                    audio_url=stop["audio_url"],
+                )
+            )
+            continue
+        try:
+            gen = generate_stop_audio(
+                narration,
+                stop_key=stop_id,
+                poi_name=stop["poi_name"],
+                provider_name=provider_name,
+                voice_id=voice_id,
+            )
+        except PipelineError as e:
+            results.append(StopAudioResultItem(stop_id=stop_id, status="failed", error=str(e)))
+            continue
+        session.run(
+            "MATCH (item:ItineraryItem {id: $sid}) "
+            "SET item.audio_url = $url, item.audio_duration_sec = $dur",
+            sid=stop_id,
+            url=gen.audio_url,
+            dur=gen.duration_sec,
+        )
+        results.append(
+            StopAudioResultItem(stop_id=stop_id, status="generated", audio_url=gen.audio_url)
+        )
+
+    return TripStopAudioGenerateResponse(
         trip_id=trip_id,
         generated=sum(1 for r in results if r.status == "generated"),
         skipped=sum(1 for r in results if r.status == "skipped"),

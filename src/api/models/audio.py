@@ -153,3 +153,23 @@ class TripAudioGenerateResponse(BaseModel):
     skipped: int
     failed: int
     results: list[TripAudioResultItem]
+
+
+class StopAudioResultItem(BaseModel):
+    """Result for one stop in per-stop trip audio generation (Phase 1, Step 1.4a)."""
+
+    stop_id: str
+    status: str = Field(description="generated | skipped | failed")
+    audio_url: str | None = None
+    reason: str | None = None
+    error: str | None = None
+
+
+class TripStopAudioGenerateResponse(BaseModel):
+    """Results of generating one composed-narration MP3 per stop in a trip."""
+
+    trip_id: str
+    generated: int
+    skipped: int
+    failed: int
+    results: list[StopAudioResultItem]
