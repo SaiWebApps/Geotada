@@ -64,8 +64,9 @@ ignore = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--ignore=tests/test_workbench_ui.py -m 'not live and not golden'"
+addopts = "--ignore=tests/test_workbench_ui.py -m 'not live and not golden and not grade'"
 markers = [
     "live: hits a live external service (e.g. Resend email) and needs real creds. Excluded from the default bar via `-m 'not live'`; run with `make test-live`.",
     "golden: compares engine tour output against a human-curated ideal tour using the live dev graph (port 7687). Excluded from the default bar; the fixtures are the TARGET to reach as the engine gains walk-by/spine-narration features — do NOT re-baseline them to current output. Run with `make test-golden`.",
+    "grade: M8 CI regression gate — runs the live pipeline against the dev graph (port 7687) and scores each golden with the GRADE rubric, asserting it clears GRADE_BASELINE. Excluded from the default bar; run with `make tour-grade`.",
 ]
