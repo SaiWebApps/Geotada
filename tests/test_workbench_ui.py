@@ -1636,6 +1636,103 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def _route_tour_preview(self, page, stops):
+        """Helper: mock POST /trips/preview with the given stops payload."""
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {"stops": stops, "spine_area": "Île de la Cité",
+                     "total_audio_min": sum(s.get("minutes", 0) for s in stops)}
+                ),
+            ),
+        )
+
+    def test_tour_stop_audio_caches_on_replay(self, browser_page):
+        """Step 5 (edge): replaying a stop reuses the cached blob (no 2nd /audio/preview), and
+        re-generating does NOT stack the delegated listener (a stacked one fires 2 fetches/click).
+        One delegated listener + the shared ttsAudioCache are the two correctness properties here."""
+        page, _seed_data, _reporter = browser_page
+        # UNIQUE narration: browser_page is module-scoped, so ttsAudioCache persists across
+        # tests. A narration reused by an earlier test would be a cache HIT on the "first"
+        # play here (no fetch). These strings are unique to this test -> first play is a
+        # guaranteed miss, replay a guaranteed hit, regardless of run order.
+        self._route_tour_preview(
+            page,
+            [{"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 5,
+              "narration": "Cache-replay edge test — unique opening line for stop zero."},
+             {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
+              "narration": "Cache-replay edge test — unique line for stop one."}],
+        )
+        audio_calls = []
+        page.on("request", lambda r: audio_calls.append(r.url) if "/audio/preview" in r.url else None)
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.select_option("#ttsProviderSelect", "mock")
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            # Generate TWICE — the second re-render must not duplicate the delegated listener.
+            for _ in range(2):
+                with page.expect_response(lambda r: "/trips/preview" in r.url):
+                    page.locator("#tourGenerateBtn").click()
+                page.wait_for_timeout(200)
+            stops = page.locator("#tourStops .tour-stop")
+            assert stops.count() == 2, f"expected 2 stops after re-generate, got {stops.count()}"
+
+            # First play of stop 0 -> exactly ONE /audio/preview (proves no stacked listener).
+            with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
+                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+            assert ar.value.status == 200
+            page.wait_for_function(
+                "sel => { const el = document.querySelector(sel);"
+                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                arg='.tts-audio[data-tour-stop-audio="0"]', timeout=15000)
+            first_src = page.locator('.tts-audio[data-tour-stop-audio="0"]').get_attribute("src")
+            assert len(audio_calls) == 1, f"expected 1 /audio/preview, got {len(audio_calls)} (listener stacked?)"
+
+            # Replay stop 0 -> cache hit: same blob, NO new /audio/preview.
+            stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+            page.wait_for_timeout(800)
+            assert len(audio_calls) == 1, f"replay refetched ({len(audio_calls)} calls) — cache miss"
+            assert page.locator('.tts-audio[data-tour-stop-audio="0"]').get_attribute("src") == first_src
+            _take_screenshot(page, "step5-tour-cache-replay")
+        finally:
+            page.unroute("**/trips/preview")
+
+    def test_tour_stop_long_narration_plays(self, browser_page):
+        """Step 5 (edge): a long stop narration (> the 4096 TTS cap) plays through the chunked
+        /audio/preview path and decodes — the UI passes the full text, no client truncation."""
+        page, _seed_data, _reporter = browser_page
+        long_narration = ("Settle in by the river. " * 260).strip()  # ~6000 chars, > 4096 cap
+        assert len(long_narration) > 4096
+        self._route_tour_preview(
+            page,
+            [{"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 9,
+              "narration": long_narration}],
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.select_option("#ttsProviderSelect", "mock")
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+            stops = page.locator("#tourStops .tour-stop")
+            assert stops.count() == 1
+            with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
+                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+            assert ar.value.status == 200, "long narration should chunk + return 200, not 422"
+            page.wait_for_function(
+                "sel => { const el = document.querySelector(sel);"
+                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                arg='.tts-audio[data-tour-stop-audio="0"]', timeout=20000)
+            _take_screenshot(page, "step5-tour-long-narration")
+        finally:
+            page.unroute("**/trips/preview")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
