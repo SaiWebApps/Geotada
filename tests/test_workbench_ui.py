@@ -1733,6 +1733,33 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def test_tour_view_then_back_to_poi_restores_workbench(self, browser_page):
+        """Step 6 (seamless): the tour view lives IN the existing detail pane — switching to it and
+        back to a normal POI restores the standard workbench detail with no state leak (the tour
+        form + tour stops are gone; the POI's beat cards return). Proves it's built as part of the
+        workbench, not a bolted-on panel."""
+        page, _seed_data, _reporter = browser_page
+        page.locator("#tourPreviewBtn").click()
+        page.wait_for_timeout(300)
+        assert page.locator("#tourGenerateBtn").is_visible(), "tour form should be in the detail pane"
+        assert not page.locator(MARK_COMPLETE_BTN).is_visible(), "tour view must hide Mark Complete"
+
+        # Switch back to a normal POI — the same detail pane re-renders the standard view.
+        rows = page.locator(WORKLIST_ROW)
+        selected = False
+        for i in range(rows.count()):
+            if "Les Halles Multi-Lens" in (rows.nth(i).text_content() or ""):
+                rows.nth(i).click()
+                page.wait_for_timeout(500)
+                selected = True
+                break
+        assert selected, "expected the 'UI Test — Les Halles Multi-Lens' POI in the worklist"
+
+        assert page.locator("#tourGenerateBtn").count() == 0, "tour form leaked into the POI view"
+        assert page.locator("#tourStops").count() == 0, "tour stops leaked into the POI view"
+        assert page.locator(BEAT_CARD).count() > 0, "standard POI beat cards should re-render"
+        _take_screenshot(page, "step6-tour-back-to-poi")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
