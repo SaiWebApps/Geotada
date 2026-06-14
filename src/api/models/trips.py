@@ -80,6 +80,11 @@ class GeneratedStop(BaseModel):
     importance_tier: int
     start_time: str
     script_body: str | None = None
+    narration: str | None = Field(
+        default=None,
+        description="Stitched per-stop narration (cold-open, beats, transit, closing) voiced as "
+        "this stop's audio (Phase 1); exposed for web verification (Phase 1.5).",
+    )
     audio_url: str | None = None
     audio_duration_sec: float | None = None
     beat_ids: list[str] = Field(

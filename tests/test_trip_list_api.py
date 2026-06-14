@@ -259,3 +259,31 @@ class TestListTripsEndpoint:
             assert stop["audio_url"] and "stops/" in stop["audio_url"], (
                 "GET /trips must surface the per-stop narration audio, not the beat's"
             )
+
+    def test_list_trips_surfaces_narration_text(self, client, seeded_driver, mom_profile_id):
+        """Step 1.5a: GET /trips exposes each stop's stitched narration TEXT so it can be
+        read/verified on web (curl / preview page), not just played."""
+        stops = _engine_shaped_stops(seeded_driver)
+        assert stops
+        expected = {
+            s["sort_order"]: f"Stop {s['sort_order']}. The story for this stop. Walk on."
+            for s in stops
+        }
+        for s in stops:
+            s["narration"] = expected[s["sort_order"]]
+        with seeded_driver.session(database=get_database()) as s:
+            result = create_trip_with_stops(
+                s,
+                trip_name="Narration surface trip",
+                profile_id=mom_profile_id,
+                start_date="2026-05-01",
+                end_date="2026-05-03",
+                stops=stops,
+            )
+
+        resp = client.get(f"/api/v1/trips?profile_id={mom_profile_id}")
+        assert resp.status_code == 200
+        trip = next((t for t in resp.json() if t["trip_id"] == result["trip_id"]), None)
+        assert trip is not None
+        for stop in trip["stops"]:
+            assert stop["narration"] == expected[stop["sort_order"]]

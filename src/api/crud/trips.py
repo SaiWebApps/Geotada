@@ -241,6 +241,7 @@ def list_trips_for_profile(
                         THEN substring(toString(item.start_time), 0, 5)
                         ELSE '09:00' END AS start_time,
                    pb.script_body AS script_body,
+                   item.narration AS narration,
                    coalesce(item.audio_url, pb.audio_url) AS audio_url,
                    coalesce(item.audio_duration_sec, pb.duration_sec) AS audio_duration_sec
             ORDER BY item.sort_order
