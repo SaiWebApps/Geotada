@@ -169,7 +169,7 @@ class TourPlaybackService extends ChangeNotifier {
       _state = TourState.active;
       _playCurrentStop();
     } else if (!_audioService.isPlaying &&
-        _audioService.currentBeatId == currentStop?.beatId) {
+        _audioService.currentBeatId == _audioKeyOf(currentStop)) {
       // Audio completed for current stop — advance index for next geofence
       if (_currentStopIndex + 1 < _stops.length) {
         _currentStopIndex++;
@@ -181,11 +181,17 @@ class TourPlaybackService extends ChangeNotifier {
     }
   }
 
+  /// The audio cache/playback key for a stop: the per-stop ItineraryItem id
+  /// (Step 1.4d) when present, falling back to the legacy per-beat id. Both the
+  /// play call and the completion check below use this so they always agree.
+  String? _audioKeyOf(ItineraryStop? stop) =>
+      stop == null ? null : (stop.stopId ?? stop.beatId);
+
   void _playCurrentStop() {
     if (_currentStopIndex < 0 || _currentStopIndex >= _stops.length) return;
     final stop = _stops[_currentStopIndex];
     if (stop.audioUrl != null) {
-      _audioService.play(stop.beatId, stop.audioUrl!);
+      _audioService.play(_audioKeyOf(stop)!, stop.audioUrl!);
       _state = TourState.active;
       notifyListeners();
     }

@@ -11,9 +11,11 @@ ItineraryStop _makeStop({
   required double lat,
   required double lng,
   String? audioUrl,
+  String? stopId,
 }) {
   return ItineraryStop(
     sortOrder: sortOrder,
+    stopId: stopId,
     poiId: 'poi-$sortOrder',
     poiName: 'Stop $sortOrder',
     lat: lat,
@@ -204,6 +206,67 @@ void main() {
       expect(service.currentStopIndex, 2);
       expect(service.currentStop!.beatId, 'beat-3');
       expect(audioService.currentBeatId, 'beat-3');
+    });
+
+    test('plays per-stop audio addressed by stopId (not beatId)', () async {
+      // Step 1.4d: when a stop carries a per-stop ItineraryItem id, the playback
+      // key is the stopId — the per-stop narration — not the legacy beatId.
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          stopId: 'stop-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/stop-1.mp3',
+        ),
+        _makeStop(
+          sortOrder: 2,
+          beatId: 'beat-2',
+          stopId: 'stop-2',
+          lat: 48.8606,
+          lng: 2.3376,
+          audioUrl: 'https://cdn.ondoway.com/stop-2.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      service.skipToStop(1);
+
+      // The play key is the stopId, not the beatId.
+      expect(service.currentStop!.beatId, 'beat-2');
+      expect(audioService.currentBeatId, 'stop-2');
+
+      // Completion uses the SAME key, so auto-advance still fires.
+      audioService.simulateComplete();
+      expect(service.currentStopIndex, greaterThanOrEqualTo(1));
+    });
+
+    test('falls back to beatId for the play key when stopId is null', () async {
+      // Legacy stops with no per-stop id keep playing by beatId — no regression.
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+        _makeStop(
+          sortOrder: 2,
+          beatId: 'beat-2',
+          lat: 48.8606,
+          lng: 2.3376,
+          audioUrl: 'https://cdn.ondoway.com/beat-2.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      service.skipToStop(1);
+
+      expect(audioService.currentBeatId, 'beat-2');
     });
 
     test('skipToStop ignores invalid index', () async {
