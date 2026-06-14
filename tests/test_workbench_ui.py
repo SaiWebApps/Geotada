@@ -1416,6 +1416,56 @@ class TestDetailViewAndEditing:
 
         _take_screenshot(page, "ac11-beat-edit")
 
+    def test_beat_tts_play_decodes_audio(self, browser_page):
+        """Characterize beat-TTS BEFORE the COMPOSE-era refactor: clicking a beat's
+        Listen button POSTs /audio/preview (mock provider) and the <audio> actually
+        DECODES (readyState>=2) from a blob: URL. Pins ttsPlayBeat's real behavior so
+        the later ttsPlay-core extraction provably preserves it. Hard asserts (this
+        must bite); real browser + real network, no string-grep."""
+        page, _seed_data, _reporter = browser_page
+
+        # Select the multi-lens POI that carries 4 beats with non-empty scripts
+        # (verified present in tests/fixtures/ui_test_fixture.json this session).
+        rows = page.locator(WORKLIST_ROW)
+        selected = False
+        for i in range(rows.count()):
+            if "Les Halles Multi-Lens" in (rows.nth(i).text_content() or ""):
+                rows.nth(i).click()
+                page.wait_for_timeout(500)
+                selected = True
+                break
+        assert selected, "expected the 'UI Test — Les Halles Multi-Lens' POI in the worklist"
+
+        # Use the deterministic offline 'mock' provider (silent WAV, no API key).
+        page.select_option("#ttsProviderSelect", "mock")
+
+        # First beat whose Listen button is enabled (non-empty script_body).
+        play_buttons = page.locator(f"{BEAT_CARD} .tts-play-btn:not([disabled])")
+        assert play_buttons.count() > 0, "expected at least one beat with a playable script"
+        btn = play_buttons.first
+        beat_idx = btn.get_attribute("data-beat-tts")
+        audio_sel = f'.tts-audio[data-beat-audio="{beat_idx}"]'
+
+        # Clicking Listen must hit /audio/preview for real (cache is empty — no prior
+        # test plays TTS); a 200 proves the fetch fired (and is non-vacuous — a cache
+        # replay or error would not produce this request).
+        with page.expect_response(lambda r: "/audio/preview" in r.url) as resp_info:
+            btn.click()
+        resp = resp_info.value
+        assert resp.status == 200, f"/audio/preview returned {resp.status}"
+
+        # preload='none' => the browser only fetches+decodes after play(); assert the
+        # element reaches a blob: src AND HAVE_CURRENT_DATA via polling (this also proves
+        # the audio bytes were non-empty + decodable — stronger than reading the raw body,
+        # which Playwright can't retrieve once the page has consumed the stream).
+        page.wait_for_function(
+            "sel => { const el = document.querySelector(sel);"
+            " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+            arg=audio_sel,
+            timeout=15000,
+        )
+        _take_screenshot(page, "beat-tts-decode")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
