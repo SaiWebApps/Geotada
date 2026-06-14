@@ -438,6 +438,7 @@ def seed_data(api_server):
         "/nodes/POI",
         {
             "name": SEED_POI_NAME,
+            "city_name": "Paris",
             "latitude": 48.8867,
             "longitude": 2.3431,
             "short_description": "Seed POI for UI conflict detection tests",

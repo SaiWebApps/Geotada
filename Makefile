@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -85,6 +85,9 @@ test-live: ## Run live external-service tests (needs real creds, e.g. RESEND_API
 
 tour-audio-gate: db-up ## Live "audio says the story" gate (Step 1.5c): voice a real Paris tour's stitched per-stop narration (OpenAI TTS) + Whisper-eval each vs its narration → WER < 0.15. Live (OpenAI + dev graph 7687); excluded from `make test`. Needs OPENAI_API_KEY in .env.
 	uv run pytest tests/test_audio_says_story.py -m live -v -s
+
+test-workbench: db-up db-test-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API against the test DB (7688).
+	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
 
 test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
 	uv run pytest -m golden -v
