@@ -1,5 +1,8 @@
 class ItineraryStop {
   final int sortOrder;
+  // ItineraryItem id — addresses this stop for per-stop narration audio
+  // (Phase 1). Nullable: legacy/seed trips may not carry it.
+  final String? stopId;
   final String poiId;
   final String poiName;
   final double lat;
@@ -19,6 +22,7 @@ class ItineraryStop {
 
   const ItineraryStop({
     required this.sortOrder,
+    this.stopId,
     required this.poiId,
     required this.poiName,
     required this.lat,
@@ -38,6 +42,7 @@ class ItineraryStop {
   factory ItineraryStop.fromJson(Map<String, dynamic> json) {
     return ItineraryStop(
       sortOrder: json['sort_order'] as int,
+      stopId: json['stop_id'] as String?,
       poiId: json['poi_id'] as String,
       poiName: json['poi_name'] as String,
       lat: (json['lat'] as num).toDouble(),
@@ -59,6 +64,7 @@ class ItineraryStop {
 
   Map<String, dynamic> toJson() => {
         'sort_order': sortOrder,
+        'stop_id': stopId,
         'poi_id': poiId,
         'poi_name': poiName,
         'lat': lat,
@@ -82,6 +88,7 @@ class ItineraryStop {
   }) {
     return ItineraryStop(
       sortOrder: sortOrder,
+      stopId: stopId,
       poiId: poiId,
       poiName: poiName,
       lat: lat,

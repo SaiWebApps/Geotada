@@ -6,6 +6,7 @@ void main() {
     test('fromJson parses all fields correctly', () {
       final json = {
         'sort_order': 1,
+        'stop_id': 'item-789',
         'poi_id': 'poi-123',
         'poi_name': 'Eiffel Tower',
         'lat': 48.8584,
@@ -22,6 +23,7 @@ void main() {
       final stop = ItineraryStop.fromJson(json);
 
       expect(stop.sortOrder, 1);
+      expect(stop.stopId, 'item-789');
       expect(stop.poiId, 'poi-123');
       expect(stop.poiName, 'Eiffel Tower');
       expect(stop.lat, 48.8584);
@@ -50,6 +52,23 @@ void main() {
         'start_time': '09:00',
       };
       expect(ItineraryStop.fromJson(json).transitPolyline, isNull);
+    });
+
+    test('fromJson defaults stopId to null when absent', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'poi-123',
+        'poi_name': 'Eiffel Tower',
+        'lat': 48.8584,
+        'lng': 2.2945,
+        'beat_id': 'beat-456',
+        'lens_name': 'dark_history',
+        'lens_display': 'Dark History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '09:00',
+      };
+      expect(ItineraryStop.fromJson(json).stopId, isNull);
     });
 
     test('fromJson handles integer lat/lng values', () {
