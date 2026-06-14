@@ -132,9 +132,20 @@ Step 1.4c — Backend: surface stop_id + per-stop audio in GET /trips.  [DONE 16
   Tests:    integ: after generate-trip-stops, GET /trips exposes stop_id + the per-stop 'stops/...' url.
   Proof:    make test-local → 948 passed, 0 failed.
 
-Step 1.4d — Mobile polls + plays the per-stop narration audio.  [PENDING]
+Step 1.4d — Mobile polls + plays the per-stop narration audio.  [CODE-COMPLETE 2026-06-14 — on-device listen pending]
   Change:   point the itinerary flow at the per-stop endpoints (POST generate-trip-stops + GET
             stop-status/{stop_id}) and play the per-stop url, instead of per-beat.
+  Atomic sub-steps (each one change + its tests; make flutter-test green + pasted):
+    i   — ItineraryStop.stopId parsed from GET /trips. [af5da10]
+    ii  — TripService.confirmTripStopAudio -> POST /audio/generate-trip-stops/{tripId}. [a647bd1]
+    iii — AudioService.checkStopAudioStatus -> GET /audio/stop-status/{stopId}. [7c2cf55]
+    iv  — TourPlaybackService plays/keys by stopId ?? beatId (one helper feeds play + completion). [cf3dd42]
+    v   — trip_itinerary_page prepare flow: confirm + poll + prefetch all per-stop; page test now
+          authenticates so it actually verifies both per-stop endpoints are hit. [5f6f6f2]
+  Bar at close: make test -> 958 Python + 186 Flutter, 0 fail; make lint clean.
+  REMAINING (user gate): make flutter-ios -> generate a Paris trip -> Confirm & Prepare -> CONFIRM
+  each stop plays the multi-sentence stitched narration (cold-open -> beat -> transit -> beat ->
+  closing), not a lone fact.
   Tests:    funct: dev server end-to-end → the app receives a per-stop narration url for every stop.
             manual: YOU run make flutter-ios, generate a Paris trip, tap Confirm & Prepare, and CONFIRM
                     each stop plays multi-sentence narration (cold-open → beat → transit → beat →
