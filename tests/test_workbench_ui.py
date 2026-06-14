@@ -1666,14 +1666,6 @@ class TestDetailViewAndEditing:
 class TestUploadFlow:
     """Tests for single-POI upload via Mark as Complete and error handling."""
 
-    @pytest.mark.xfail(
-        reason="KNOWN BUG (tracked): workbench single-POI upload is broken for new POIs — "
-        "mapPoiForApi omitted the required city_name (fixed in review.html) AND a further "
-        "blocker remains in the beat/lens upload chain (uploadSinglePoi ~line 3462-3464). "
-        "This test now correctly BITES (it was vacuous before, guarding on a renamed POI). "
-        "Root cause under investigation; remove this xfail when the upload chain is fixed.",
-        strict=False,
-    )
     def test_single_poi_upload(self, browser_page):
         """AC #8: Mark a valid POI as complete, verify progressive upload."""
         page, _seed_data, reporter = browser_page
@@ -1767,7 +1759,10 @@ class TestUploadFlow:
             try:
                 poi_name = "UI Test \u2014 Quiet Garden Corner"
                 encoded = urllib.parse.quote(poi_name, safe="")
-                api_resp = _api_get(f"/graph/poi/{encoded}/beats")
+                # city_name is a required query param on this endpoint; the workbench
+                # uploads with cityName="Paris" (Nominatim display_name.split(",")[0]).
+                city_q = urllib.parse.quote("Paris", safe="")
+                api_resp = _api_get(f"/graph/poi/{encoded}/beats?city_name={city_q}")
                 # API returns {"poi_name": "...", "beats": [...]} — extract beats list
                 if isinstance(api_resp, dict) and "beats" in api_resp:
                     beat_count = len(api_resp["beats"])
