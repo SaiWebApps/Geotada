@@ -1082,6 +1082,16 @@
     renderWorklist();   // clear any active-row highlight
     renderDetail();     // show the tour-preview form
   });
+
+  // Tour-preview state + ONE delegated listener (installed once at init) for the tour view's
+  // Generate button and per-stop Listen buttons. Keyed on data-tour-stop, disjoint from the
+  // incoming beat-TTS handler's data-beat-tts, so they never cross-fire.
+  let tourStops = [];
+  detailBody.addEventListener('click', (e) => {
+    if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
+    const play = e.target.closest('.tts-play-btn[data-tour-stop]');
+    if (play) { ttsPlayTourStop(parseInt(play.dataset.tourStop, 10)); return; }
+  });
   const completionBanner = document.getElementById('completionBanner');
   const mainLayout = document.getElementById('mainLayout');
   const outerLayout = document.getElementById('outerLayout');
@@ -2915,6 +2925,78 @@
     const audioEl = card.querySelector('.tts-audio');
     const cacheKey = `${activeIdx}-${beatIdx}-${ttsTextHash(text)}-${ttsProvider}`;
     await ttsPlay({ text, cacheKey, btn, audioEl });
+  }
+
+  // ── Tour preview: generate (POST /trips/preview) → render stops → play via shared ttsPlay ──
+  async function generateTourPreview() {
+    const startEl = document.getElementById('tourStart');
+    const stopsEl = document.getElementById('tourStops');
+    const genBtn = document.getElementById('tourGenerateBtn');
+    if (!startEl || !stopsEl || !genBtn) return;
+    const parts = startEl.value.split(',').map(s => parseFloat(s.trim()));
+    if (parts.length !== 2 || parts.some(isNaN)) { showError('Enter the start as "lat,lng".'); return; }
+    const [lat, lng] = parts;
+    const duration = parseInt(document.getElementById('tourDuration').value, 10) || 60;
+    const lenses = document.getElementById('tourLenses').value.split(',').map(s => s.trim()).filter(Boolean);
+    const roundTrip = document.getElementById('tourRoundTrip').checked;
+    genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
+    stopsEl.innerHTML = ''; tourStops = [];
+    try {
+      const resp = await fetch(`${API_BASE}/trips/preview`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          center_lat: lat, center_lng: lng, duration_min: duration,
+          lenses: lenses.length ? lenses : null, round_trip: roundTrip,
+        }),
+      });
+      if (!resp.ok) {
+        let msg = `Could not generate a tour (${resp.status}).`;
+        try { const b = await resp.json(); if (b && b.detail) msg = typeof b.detail === 'string' ? b.detail : JSON.stringify(b.detail); } catch (_) { /* keep default */ }
+        showError(msg);
+        return;
+      }
+      renderTourStops(await resp.json());
+    } catch (err) {
+      showError('Tour preview failed: ' + err.message);
+    } finally {
+      genBtn.disabled = false; genBtn.textContent = 'Generate preview';
+    }
+  }
+
+  function renderTourStops(data) {
+    const stopsEl = document.getElementById('tourStops');
+    if (!stopsEl) return;
+    tourStops = (data && data.stops) || [];
+    stopsEl.innerHTML = '';
+    const summary = document.createElement('div');
+    summary.className = 'tour-summary';
+    summary.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
+    summary.textContent = `${tourStops.length} stops · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
+    stopsEl.appendChild(summary);
+    tourStops.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'tour-stop db-beat-card';
+      el.innerHTML = `
+        <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}</h4>
+        <div class="meta">~${s.minutes} min here</div>
+        <div class="script-preview">${escHtml(s.narration || '')}</div>
+        <div class="tts-row">
+          <button class="tts-play-btn" data-tour-stop="${i}" title="Generate and play TTS audio">&#9654; Listen</button>
+          <audio class="tts-audio" data-tour-stop-audio="${i}" controls preload="none"></audio>
+        </div>`;
+      stopsEl.appendChild(el);
+    });
+  }
+
+  async function ttsPlayTourStop(i) {
+    const s = tourStops[i];
+    if (!s) return;
+    const btn = document.querySelector(`.tts-play-btn[data-tour-stop="${i}"]`);
+    const audioEl = document.querySelector(`.tts-audio[data-tour-stop-audio="${i}"]`);
+    if (!btn || !audioEl) return;
+    // Separate cache namespace from beat TTS so the two never collide.
+    const cacheKey = `tour-${i}-${ttsTextHash(s.narration || '')}-${ttsProvider}`;
+    await ttsPlay({ text: s.narration || '', cacheKey, btn, audioEl });
   }
 
   // ── Task 4: Jaccard similarity ──

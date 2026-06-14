@@ -1560,6 +1560,82 @@ class TestDetailViewAndEditing:
         assert not page.locator(DEFER_BTN).is_visible(), "Defer must be hidden in tour mode"
         _take_screenshot(page, "step3-tour-preview-view")
 
+    def test_tour_preview_generates_and_plays(self, browser_page):
+        """Step 4: Generate POSTs /trips/preview, renders the stops, and each stop plays via the
+        shared ttsPlay (real /audio/preview decode). /trips/preview is mocked (its own API tests
+        cover it; the test DB's tier-1 fixture POIs can't produce a tour) — the form->request,
+        the render, and the mock-provider audio decode are all REAL."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "stops": [
+                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 5,
+                             "narration": "Settle in. A grounded opening line."},
+                            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
+                             "narration": "Walk on. Another grounded line."},
+                        ],
+                        "spine_area": "Île de la Cité",
+                        "total_audio_min": 9,
+                    }
+                ),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.select_option("#ttsProviderSelect", "mock")
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
+                page.locator("#tourGenerateBtn").click()
+            assert ri.value.status == 200
+            page.wait_for_timeout(300)
+
+            stops = page.locator("#tourStops .tour-stop")
+            assert stops.count() == 2, f"expected 2 rendered stops, got {stops.count()}"
+            assert "Notre-Dame" in (stops.first.text_content() or ""), "stop name not rendered"
+
+            # Play stop 0 through the shared player -> real POST /audio/preview + real decode.
+            with page.expect_response(lambda r: "/audio/preview" in r.url) as ar:
+                stops.first.locator('.tts-play-btn[data-tour-stop]').click()
+            assert ar.value.status == 200
+            page.wait_for_function(
+                "sel => { const el = document.querySelector(sel);"
+                " return !!el && el.src.startsWith('blob:') && el.readyState >= 2; }",
+                arg='.tts-audio[data-tour-stop-audio="0"]',
+                timeout=15000,
+            )
+            _take_screenshot(page, "step4-tour-generate-play")
+        finally:
+            page.unroute("**/trips/preview")
+
+    def test_tour_preview_untourable_shows_error(self, browser_page):
+        """Step 4: a 422 from /trips/preview surfaces an error toast (no silent failure)."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=422,
+                content_type="application/json",
+                body=json.dumps({"detail": "No tourable route from here."}),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
+                page.locator("#tourGenerateBtn").click()
+            assert ri.value.status == 422
+            page.wait_for_timeout(300)
+            assert page.locator(ERROR_TOAST).is_visible(), "expected an error toast on an untourable 422"
+        finally:
+            page.unroute("**/trips/preview")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
