@@ -51,6 +51,19 @@ def create_app() -> FastAPI:
             raise HTTPException(404, "auth redirect page not found")
         return FileResponse(str(_auth_html), media_type="text/html")
 
+    _tour_preview_html = Path(__file__).resolve().parents[2] / "frontend" / "tour-preview.html"
+
+    @app.get("/tour-preview")
+    async def tour_preview_page():
+        """Phase 1.5 web-first preview: a standalone page that calls /trips/preview
+        + /audio/preview so a tour's per-stop narration can be read and heard in a
+        browser (no app, no profile)."""
+        if not _tour_preview_html.is_file():
+            from fastapi import HTTPException
+
+            raise HTTPException(404, "tour preview page not found")
+        return FileResponse(str(_tour_preview_html), media_type="text/html")
+
     @app.get("/.well-known/apple-app-site-association")
     async def apple_app_site_association():
         from src.api.auth.config import APPLE_TEAM_ID, BUNDLE_ID

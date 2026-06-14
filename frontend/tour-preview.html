@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ondoway · Tour Preview (POC)</title>
+<style>
+  :root { --ink:#1a1814; --mute:#6b6b6b; --line:#ddd8cc; --accent:#c4543a; --bg:#f7f5f0; --card:#fff; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:15px/1.6 system-ui,sans-serif; color:var(--ink); background:var(--bg); }
+  .wrap { max-width: 820px; margin: 0 auto; padding: 24px 18px 80px; }
+  h1 { font-size: 22px; margin: 0 0 2px; }
+  .sub { color: var(--mute); font-size: 13px; margin: 0 0 20px; }
+  form { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; background:var(--card);
+         border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:18px; }
+  label { display:flex; flex-direction:column; font-size:12px; color:var(--mute); gap:3px; }
+  input, select { font:14px system-ui,sans-serif; padding:7px 9px; border:1px solid var(--line);
+                  border-radius:8px; background:#fff; }
+  input[type=text]{ width:170px; } input[type=number]{ width:80px; }
+  .chk { flex-direction:row; align-items:center; gap:6px; font-size:13px; color:var(--ink); }
+  button { font:14px system-ui,sans-serif; padding:8px 16px; border:0; border-radius:8px;
+           background:var(--accent); color:#fff; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:default; }
+  button.play { background:#3a6b7c; padding:6px 12px; font-size:13px; }
+  #status { font-size:13px; color:var(--mute); min-height:18px; margin-bottom:12px; }
+  #status.err { color:var(--accent); }
+  .stop { background:var(--card); border:1px solid var(--line); border-radius:12px;
+          padding:14px 16px; margin-bottom:12px; }
+  .stop h3 { margin:0 0 2px; font-size:16px; }
+  .stop .meta { color:var(--mute); font-size:12px; margin-bottom:8px; }
+  .stop .narr { white-space:pre-wrap; font-size:14.5px; }
+  .stop audio { width:100%; margin-top:10px; }
+  .head { color:var(--mute); font-size:13px; margin: 4px 0 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ondoway · Tour Preview <span style="color:var(--mute);font-weight:400;font-size:14px;">(POC)</span></h1>
+  <p class="sub">Generate a tour and read + hear each stop's narration — no app, no profile, nothing saved.</p>
+
+  <form id="f">
+    <label>From (lat,lng)<input type="text" id="start" value="48.852966,2.349902" /></label>
+    <label>Minutes<input type="number" id="dur" value="60" min="15" max="240" /></label>
+    <label>Lenses (comma)<input type="text" id="lenses" value="historic_arch" /></label>
+    <label class="chk"><input type="checkbox" id="rt" /> round-trip</label>
+    <label>Voice<select id="prov"><option value="openai">openai</option><option value="mock">mock (silent)</option></select></label>
+    <button type="submit" id="go">Generate preview</button>
+  </form>
+
+  <div id="status"></div>
+  <div id="head" class="head"></div>
+  <div id="stops"></div>
+</div>
+
+<script>
+const API = "/api/v1";
+const $ = (id) => document.getElementById(id);
+const status = (msg, err=false) => { $("status").textContent = msg; $("status").className = err ? "err" : ""; };
+
+$("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("go").disabled = true; $("stops").innerHTML = ""; $("head").textContent = "";
+  status("Generating tour…");
+  const [lat, lng] = $("start").value.split(",").map((s) => parseFloat(s.trim()));
+  const lenses = $("lenses").value.split(",").map((s) => s.trim()).filter(Boolean);
+  try {
+    const resp = await fetch(`${API}/trips/preview`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        center_lat: lat, center_lng: lng,
+        duration_min: parseInt($("dur").value, 10),
+        lenses: lenses.length ? lenses : null,
+        round_trip: $("rt").checked,
+      }),
+    });
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      status(`${resp.status}: ${body.detail || "could not generate a tour here"}`, true);
+      return;
+    }
+    const data = await resp.json();
+    $("head").textContent =
+      `${data.stops.length} stops · spine: ${data.spine_area || "—"} · ~${data.total_audio_min} min of audio`;
+    status(`Tour ready. Press “Play narration” on any stop.`);
+    for (const s of data.stops) renderStop(s);
+  } catch (err) {
+    status(`Request failed: ${err}`, true);
+  } finally {
+    $("go").disabled = false;
+  }
+});
+
+function renderStop(s) {
+  const el = document.createElement("div");
+  el.className = "stop";
+  el.innerHTML = `
+    <h3>Stop ${s.sort_order} · ${escapeHtml(s.poi_name)}</h3>
+    <div class="meta">~${s.minutes} min here</div>
+    <div class="narr">${escapeHtml(s.narration)}</div>
+    <button class="play">▶ Play narration</button>
+    <audio controls hidden></audio>`;
+  const btn = el.querySelector(".play");
+  const audio = el.querySelector("audio");
+  btn.addEventListener("click", () => playStop(s.narration, btn, audio));
+  $("stops").appendChild(el);
+}
+
+async function playStop(text, btn, audio) {
+  if (audio.src) { audio.play(); return; }            // already fetched — replay
+  btn.disabled = true; btn.textContent = "Loading voice…";
+  try {
+    const resp = await fetch(`${API}/audio/preview`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text, provider: $("prov").value }),
+    });
+    if (!resp.ok) { btn.textContent = `Audio failed (${resp.status})`; return; }
+    audio.src = URL.createObjectURL(await resp.blob());
+    audio.hidden = false;
+    audio.play();
+    btn.textContent = "▶ Replay";
+  } catch (err) {
+    btn.textContent = "Audio error";
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function escapeHtml(s) {
+  return (s || "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+</script>
+</body>
+</html>
