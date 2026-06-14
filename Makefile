@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -82,6 +82,9 @@ test-functional: ## Run functional tests (needs OPENAI_API_KEY + network access)
 
 test-live: ## Run live external-service tests (needs real creds, e.g. RESEND_API_KEY) — NOT in the default bar
 	uv run pytest -m live -v
+
+tour-audio-gate: db-up ## Live "audio says the story" gate (Step 1.5c): voice a real Paris tour's stitched per-stop narration (OpenAI TTS) + Whisper-eval each vs its narration → WER < 0.15. Live (OpenAI + dev graph 7687); excluded from `make test`. Needs OPENAI_API_KEY in .env.
+	uv run pytest tests/test_audio_says_story.py -m live -v -s
 
 test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
 	uv run pytest -m golden -v
