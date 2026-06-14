@@ -1923,65 +1923,37 @@ class TestUploadFlow:
 class TestConflictDetection:
     """Tests for conflict detection across all Jaccard bands and resolution actions."""
 
-    @pytest.mark.xfail(
-        reason="KNOWN BUG (tracked): 'Mark as Complete' stays hidden/disabled for a conflicting "
-        "POI, so the conflict-resolution path can't complete. The seeded conflict POI "
-        "(Sacré-Cœur) has only 2 beats, so the resolution bands the flow needs are never "
-        "exercised; needs a multi-beat conflict seed + a renderDetail/markCompleteBtn review. "
-        "This test now correctly BITES. Root cause under investigation; remove xfail when fixed.",
-        strict=False,
-    )
     def test_conflict_detection_and_resolution(self, browser_page):
-        """ACs #13-18: Trigger conflict detection on entry #11, verify all bands and actions."""
+        """ACs #13-18: resolve the incoming-Eiffel ↔ seeded-Champ-de-Mars proximity match as
+        'Same Place', then verify all five beat-conflict bands and the resolution actions."""
         page, _seed_data, reporter = browser_page
 
         rows = page.locator(WORKLIST_ROW)
 
-        # Find entry #11 (UI Test Seed — Sacré-Cœur Basilica)
+        # The incoming "UI Test Seed — Eiffel Tower" (5 beats) sits at the seeded
+        # "Champ de Mars Landmark" GPS with a dissimilar name, so it does NOT auto-merge:
+        # it surfaces a PROXIMITY MATCH the editor resolves as "Same Place", which runs beat
+        # conflict detection against the seed's tuned beats (all five bands checked below).
         target = None
         for i in range(rows.count()):
-            row_text = rows.nth(i).text_content() or ""
-            if "Sacré-Cœur" in row_text or "Sacre-Coeur" in row_text:
+            if "Eiffel Tower" in (rows.nth(i).text_content() or ""):
                 target = i
                 break
-
-        if target is None:
-            _safe_assert(
-                reporter,
-                False,
-                "Critical",
-                "Could not find conflict-target POI (Sacré-Cœur Basilica)",
-                "Conflict Detection",
-                ["Search worklist for 'Sacré-Cœur Basilica'"],
-                "Entry #11 in worklist",
-                "Not found",
-                page,
-                "ac13-poi-not-found",
-            )
-            return
+        assert target is not None, (
+            "expected the incoming 'UI Test Seed — Eiffel Tower' POI in the worklist"
+        )
 
         rows.nth(target).click()
         page.wait_for_timeout(2000)
 
-        # Trigger conflict detection via Mark as Complete
-        mc_btn = page.locator(MARK_COMPLETE_BTN)
-        if mc_btn.count() == 0 or not mc_btn.first.is_visible():
-            _safe_assert(
-                reporter,
-                False,
-                "Critical",
-                "Mark as Complete button not visible for conflict POI",
-                "Conflict Detection",
-                ["Navigate to conflict-target POI"],
-                "Button visible",
-                "Not visible",
-                page,
-                "ac13-no-mc-btn",
-            )
-            return
-
-        mc_btn.first.click()
-        page.wait_for_timeout(3000)  # Wait for conflict detection API calls
+        # Resolve the proximity match as "Same Place" -> runs runBeatConflictDetection.
+        same_btn = page.locator(PROXIMITY_SAME_BTN)
+        assert same_btn.count() > 0 and same_btn.first.is_visible(), (
+            "expected a proximity-match panel with a 'Same Place' button for the Eiffel POI "
+            "(it must not auto-merge with the dissimilarly-named Champ de Mars seed)"
+        )
+        same_btn.first.click()
+        page.wait_for_timeout(3000)  # Wait for beat conflict detection API calls
 
         _take_screenshot(page, "ac13-conflict-triggered")
 
@@ -2387,14 +2359,32 @@ class TestConflictDetection:
 
             _take_screenshot(page, screenshot_name)
 
-            # Close merge overlay if open (click cancel/close or press Escape)
+            # Close merge overlay if open (cleanup). The modal backdrop sits at the button's
+            # click point, so a coordinate click (even force) lands on the backdrop. Fire the
+            # Cancel button's own handler directly via el.click() (what a human's click on the
+            # visible button does); the closure assertion below proves it actually closed.
             if has_overlay:
                 close_btns = overlay.locator("button:has-text('Cancel')")
                 if close_btns.count() > 0:
-                    close_btns.first.click()
+                    close_btns.first.evaluate("el => el.click()")
                 else:
                     page.keyboard.press("Escape")
                 page.wait_for_timeout(300)
+                # Confirm the overlay actually closed (so the force-click isn't masking a
+                # stuck modal that would break later state).
+                _safe_assert(
+                    reporter,
+                    page.locator(MERGE_OVERLAY).count() == 0
+                    or not page.locator(MERGE_OVERLAY).first.is_visible(),
+                    "Minor",
+                    "Merge overlay did not close after Cancel",
+                    "Conflict Resolution — Merge",
+                    ["Click Cancel on the merge overlay", "Check the overlay is gone"],
+                    "Merge overlay closed",
+                    "Overlay still visible",
+                    page,
+                    f"{screenshot_name}-not-closed",
+                )
         else:
             _safe_assert(
                 reporter,
