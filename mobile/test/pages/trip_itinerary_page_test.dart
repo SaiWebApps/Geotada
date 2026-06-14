@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,52 @@ import 'package:ondoway/pages/trip_itinerary_page.dart';
 import 'package:ondoway/services/audio_service.dart';
 import 'package:ondoway/services/auth_service.dart';
 import 'package:ondoway/services/trip_service.dart';
+
+// flutter_secure_storage doesn't work in tests — in-memory stand-in so an
+// AuthService can hold a real access token (verifyMagicLink -> _storeTokens).
+class _FakeSecureStorage extends FlutterSecureStorage {
+  final Map<String, String> _store = {};
+  _FakeSecureStorage() : super();
+
+  @override
+  Future<void> write({
+    required String key,
+    required String? value,
+    IOSOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    MacOsOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async {
+    if (value != null) _store[key] = value;
+  }
+
+  @override
+  Future<String?> read({
+    required String key,
+    IOSOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    MacOsOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async =>
+      _store[key];
+
+  @override
+  Future<void> delete({
+    required String key,
+    IOSOptions? iOptions,
+    AndroidOptions? aOptions,
+    LinuxOptions? lOptions,
+    WebOptions? webOptions,
+    MacOsOptions? mOptions,
+    WindowsOptions? wOptions,
+  }) async {
+    _store.remove(key);
+  }
+}
 
 GeneratedTrip _sampleTrip({
   String id = 'trip-1',
@@ -164,9 +211,13 @@ void main() {
       expect(find.text('Historic Architecture'), findsOneWidget);
     });
 
-    testWidgets('confirm and prepare FAB saves trip and triggers audio',
+    testWidgets('confirm and prepare FAB saves trip and triggers PER-STOP audio',
         (tester) async {
-      // Mock the backend: generate-trip for setup, then audio endpoints
+      // Step 1.4d: the page must trigger + poll the PER-STOP endpoints
+      // (generate-trip-stops + stop-status), not the per-beat ones.
+      var perStopTriggered = false;
+      var perStopStatusPolled = false;
+      // Mock the backend: generate-trip for setup, then per-stop audio endpoints
       final mockClient = MockClient((request) async {
         if (request.url.path.contains('/trips/generate')) {
           return http.Response(
@@ -181,6 +232,7 @@ void main() {
               'stops': [
                 {
                   'sort_order': 1,
+                  'stop_id': 'stop-b1',
                   'poi_id': 'poi-1',
                   'poi_name': 'Test POI',
                   'lat': 48.85,
@@ -197,7 +249,8 @@ void main() {
             201,
           );
         }
-        if (request.url.path.contains('/audio/generate-trip/')) {
+        if (request.url.path.contains('/audio/generate-trip-stops/')) {
+          perStopTriggered = true;
           return http.Response(
             jsonEncode({
               'trip_id': 'trip-gen',
@@ -209,13 +262,14 @@ void main() {
             200,
           );
         }
-        if (request.url.path.contains('/audio/status/')) {
+        if (request.url.path.contains('/audio/stop-status/stop-b1')) {
+          perStopStatusPolled = true;
           return http.Response(
             jsonEncode({
+              'stop_id': 'stop-b1',
               'has_audio': true,
-              'audio_url': 'https://cdn.example.com/b1.mp3',
+              'audio_url': 'https://cdn.example.com/stop-b1.mp3',
               'duration_sec': 120,
-              'is_stale': false,
             }),
             200,
           );
@@ -239,12 +293,29 @@ void main() {
       expect(service.lastGenerated, isNotNull);
       expect(service.savedTrips, isEmpty);
 
-      // Build the widget with AuthService providing the token
-      final authClient = MockClient((r) async => http.Response(
-            jsonEncode({'id': 'user-1', 'email': 'test@example.com'}),
+      // Build the widget with an AUTHENTICATED AuthService (real access token),
+      // so the confirm call actually reaches the network instead of throwing on
+      // the null accessToken assertion.
+      final authClient = MockClient((request) async {
+        if (request.url.path.contains('verify')) {
+          return http.Response(
+            jsonEncode({
+              'access_token': 'tok',
+              'refresh_token': 'ref',
+              'token_type': 'bearer',
+            }),
             200,
-          ));
-      final authService = AuthService(httpClient: authClient);
+          );
+        }
+        return http.Response(
+          jsonEncode({'id': 'user-1', 'email': 'test@example.com'}),
+          200,
+        );
+      });
+      final authService =
+          AuthService(storage: _FakeSecureStorage(), httpClient: authClient);
+      await authService.verifyMagicLink('tok');
+      expect(authService.accessToken, isNotNull);
 
       await tester.pumpWidget(
         MultiProvider(
@@ -290,6 +361,16 @@ void main() {
       // saveTrip should have been called
       expect(service.savedTrips.length, 1);
       expect(service.savedTrips.first.tripId, 'trip-gen');
+      // The per-stop generation endpoint was triggered (awaited before the timer).
+      expect(perStopTriggered, isTrue,
+          reason: 'must POST /audio/generate-trip-stops, not the per-beat endpoint');
+
+      // Fire one poll cycle so the per-stop status path runs, then assert it
+      // polled /audio/stop-status/{stopId} (deterministic MockClient).
+      await tester.pump(const Duration(seconds: 3));
+      await tester.pump();
+      expect(perStopStatusPolled, isTrue,
+          reason: 'must poll /audio/stop-status/{stopId}, not /audio/status/{beatId}');
 
       // The page schedules a periodic poll Timer; disposing the tree runs
       // State.dispose(), which cancels it. A leftover pending Timer keeps the

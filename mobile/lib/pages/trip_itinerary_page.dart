@@ -161,7 +161,7 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
 
     // Step 3: Trigger backend audio generation
     try {
-      await tripService.confirmTripAudio(
+      await tripService.confirmTripStopAudio(
         widget.trip.tripId,
         authService.accessToken!,
       );
@@ -190,16 +190,25 @@ class _TripItineraryContentState extends State<_TripItineraryContent> {
             continue;
           }
 
-          final status = await audioService.checkAudioStatus(
-            TripService.baseUrl,
-            stop.beatId,
-          );
+          // Per-stop narration (Step 1.4d): poll + cache by the ItineraryItem
+          // id, falling back to the legacy per-beat id only when a stop has no
+          // stopId (old data) — same key playback uses, so the cache hits.
+          final audioKey = stop.stopId ?? stop.beatId;
+          final status = stop.stopId != null
+              ? await audioService.checkStopAudioStatus(
+                  TripService.baseUrl,
+                  stop.stopId!,
+                )
+              : await audioService.checkAudioStatus(
+                  TripService.baseUrl,
+                  stop.beatId,
+                );
 
           if (status != null && status['has_audio'] == true) {
             final url = status['audio_url'] as String;
-            // Prefetch the audio file to local cache
+            // Prefetch the audio file to local cache, keyed to match playback.
             await audioService.prefetchAudio([
-              BeatAudioInfo(beatId: stop.beatId, audioUrl: url),
+              BeatAudioInfo(beatId: audioKey, audioUrl: url),
             ]);
             // Update the stop's audio URL
             _stops[i] = stop.copyWith(audioUrl: url);
