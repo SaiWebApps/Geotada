@@ -11,6 +11,7 @@ Usage:
 from __future__ import annotations
 
 import os
+import re
 import time
 import wave
 from io import BytesIO
@@ -77,6 +78,44 @@ def _post_with_retry(
     ) from last_exc
 
 
+# ── Long-text chunking (real TTS APIs cap input length) ──
+
+MAX_TTS_CHARS = 4000  # OpenAI tts-1 caps input at ~4096 chars; stay safely under.
+
+
+def _split_for_tts(text: str, max_chars: int = MAX_TTS_CHARS) -> list[str]:
+    """Split text into TTS-sized chunks on sentence boundaries.
+
+    Real TTS APIs cap input length, so a long per-stop narration must be voiced
+    in pieces and concatenated. Splits on sentence enders, greedily packing
+    sentences up to ``max_chars``; an over-long single sentence is hard-split as
+    a last resort. Text already under the cap returns ``[text]`` (single call —
+    unchanged behavior). Concatenated MP3 chunks play back-to-back in browsers
+    and players.
+    """
+    text = text.strip()
+    if len(text) <= max_chars:
+        return [text] if text else []
+    chunks: list[str] = []
+    current = ""
+    for sentence in re.split(r"(?<=[.!?])\s+", text):
+        if len(sentence) > max_chars:
+            if current:
+                chunks.append(current)
+                current = ""
+            for i in range(0, len(sentence), max_chars):
+                chunks.append(sentence[i : i + max_chars])
+            continue
+        if current and len(current) + 1 + len(sentence) > max_chars:
+            chunks.append(current)
+            current = sentence
+        else:
+            current = f"{current} {sentence}" if current else sentence
+    if current:
+        chunks.append(current)
+    return chunks
+
+
 # ── Mock Provider ──
 
 
@@ -135,21 +174,23 @@ class OpenAITTSProvider:
 
         voice = voice_id or os.getenv("OPENAI_VOICE", self.DEFAULT_VOICE)
 
-        resp = _post_with_retry(
-            self.API_URL,
-            headers={"Authorization": f"Bearer {api_key}"},
-            json={
-                "model": self.DEFAULT_MODEL,
-                "input": text,
-                "voice": voice,
-                "response_format": "mp3",
-            },
-        )
+        audio = bytearray()
+        for chunk in _split_for_tts(text):
+            resp = _post_with_retry(
+                self.API_URL,
+                headers={"Authorization": f"Bearer {api_key}"},
+                json={
+                    "model": self.DEFAULT_MODEL,
+                    "input": chunk,
+                    "voice": voice,
+                    "response_format": "mp3",
+                },
+            )
+            if resp.status_code != 200:
+                raise TTSError(f"OpenAI TTS failed ({resp.status_code}): {resp.text[:200]}")
+            audio += resp.content
 
-        if resp.status_code != 200:
-            raise TTSError(f"OpenAI TTS failed ({resp.status_code}): {resp.text[:200]}")
-
-        return resp.content
+        return bytes(audio)
 
 
 # ── ElevenLabs TTS Provider ──
@@ -180,27 +221,29 @@ class ElevenLabsTTSProvider:
 
         url = f"{self.API_BASE}/text-to-speech/{vid}"
 
-        resp = _post_with_retry(
-            url,
-            headers={
-                "xi-api-key": api_key,
-                "Content-Type": "application/json",
-                "Accept": "audio/mpeg",
-            },
-            json={
-                "text": text,
-                "model_id": self.DEFAULT_MODEL,
-                "voice_settings": {
-                    "stability": 0.5,
-                    "similarity_boost": 0.75,
+        audio = bytearray()
+        for chunk in _split_for_tts(text):
+            resp = _post_with_retry(
+                url,
+                headers={
+                    "xi-api-key": api_key,
+                    "Content-Type": "application/json",
+                    "Accept": "audio/mpeg",
                 },
-            },
-        )
+                json={
+                    "text": chunk,
+                    "model_id": self.DEFAULT_MODEL,
+                    "voice_settings": {
+                        "stability": 0.5,
+                        "similarity_boost": 0.75,
+                    },
+                },
+            )
+            if resp.status_code != 200:
+                raise TTSError(f"ElevenLabs TTS failed ({resp.status_code}): {resp.text[:200]}")
+            audio += resp.content
 
-        if resp.status_code != 200:
-            raise TTSError(f"ElevenLabs TTS failed ({resp.status_code}): {resp.text[:200]}")
-
-        return resp.content
+        return bytes(audio)
 
 
 # ── Provider registry ──

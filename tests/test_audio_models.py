@@ -22,16 +22,17 @@ class TestAudioPreviewRequestValidation:
             AudioPreviewRequest(text="")
 
     def test_max_length_exceeded(self):
+        # Cap raised to 20000 (long per-stop narration is chunked by the provider).
         with pytest.raises(ValidationError):
-            AudioPreviewRequest(text="x" * 5001)
+            AudioPreviewRequest(text="x" * 20001)
 
     def test_valid_text_accepted(self):
         req = AudioPreviewRequest(text="Hello world")
         assert req.text == "Hello world"
 
     def test_max_length_boundary_accepted(self):
-        req = AudioPreviewRequest(text="x" * 5000)
-        assert len(req.text) == 5000
+        req = AudioPreviewRequest(text="x" * 20000)
+        assert len(req.text) == 20000
 
     def test_single_char_accepted(self):
         req = AudioPreviewRequest(text="A")

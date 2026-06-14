@@ -12,12 +12,15 @@ from io import BytesIO
 import httpx
 import pytest
 
+from src.api.models.audio import AudioPreviewRequest
 from src.audio.provider import (
+    MAX_TTS_CHARS,
     ElevenLabsTTSProvider,
     MockTTSProvider,
     OpenAITTSProvider,
     TTSError,
     TTSProvider,
+    _split_for_tts,
     get_provider,
     list_providers,
 )
@@ -167,3 +170,57 @@ class TestTTSRetry:
         out = ElevenLabsTTSProvider().generate("hello")
         assert out == b"audio-bytes"
         assert calls["n"] == 2
+
+
+class TestSplitForTts:
+    """Long narration is chunked under the TTS input cap (Fix: the 422 on long stops)."""
+
+    def test_short_text_is_one_chunk(self):
+        assert _split_for_tts("Hello there.") == ["Hello there."]
+
+    def test_empty_text_is_no_chunks(self):
+        assert _split_for_tts("   ") == []
+
+    def test_long_text_splits_on_sentences_under_cap(self):
+        text = "A sentence about Paris and its long history. " * 200  # ~9000 chars
+        chunks = _split_for_tts(text, max_chars=1000)
+        assert len(chunks) > 1
+        assert all(len(c) <= 1000 for c in chunks)
+        # no sentences lost across the split
+        assert sum(c.count("Paris") for c in chunks) == 200
+
+    def test_overlong_single_sentence_is_hard_split(self):
+        text = "x" * 2500  # no sentence boundary to split on
+        chunks = _split_for_tts(text, max_chars=1000)
+        assert len(chunks) == 3
+        assert all(len(c) <= 1000 for c in chunks)
+        assert "".join(chunks) == text
+
+
+class TestTTSChunking:
+    def test_openai_chunks_long_text_and_concatenates(self, monkeypatch):
+        monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
+        inputs: list[str] = []
+
+        def fake_post(self, *args, **kwargs):
+            inputs.append(kwargs["json"]["input"])
+
+            class _R:
+                status_code = 200
+                content = f"<{len(inputs)}>".encode()
+
+            return _R()
+
+        monkeypatch.setattr(httpx.Client, "post", fake_post)
+        long_text = "A sentence about Paris and its remarkable history. " * 120  # ~6000 chars
+
+        out = OpenAITTSProvider().generate(long_text)
+
+        assert len(inputs) >= 2, "long text must be chunked into multiple TTS calls"
+        assert all(len(t) <= MAX_TTS_CHARS for t in inputs), "each chunk under the cap"
+        assert out == b"".join(f"<{i + 1}>".encode() for i in range(len(inputs)))
+
+
+def test_audio_preview_request_accepts_long_narration():
+    # A long stop (6000 chars) was rejected at the old 5000 cap (the 422 bug).
+    AudioPreviewRequest(text="x" * 6000, provider="mock")  # must not raise

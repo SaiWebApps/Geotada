@@ -8,7 +8,9 @@ from pydantic import BaseModel, Field
 class AudioPreviewRequest(BaseModel):
     """Request body for generating a TTS audio preview."""
 
-    text: str = Field(..., min_length=1, max_length=5000)
+    # Long per-stop narration is chunked by the provider (provider._split_for_tts),
+    # so the cap is generous; it only guards absurd payloads, not real stops.
+    text: str = Field(..., min_length=1, max_length=20000)
     provider: str = "mock"
     voice_id: str | None = None
 
