@@ -2813,21 +2813,12 @@
 
   ttsProviderSelect.addEventListener('change', () => { ttsProvider = ttsProviderSelect.value; });
 
-  async function ttsPlayBeat(beatIdx) {
-    const poi = poiData[activeIdx];
-    if (!poi || !poi.beats[beatIdx]) return;
-    const card = detailBody.querySelector(`.beat-card[data-beat-index="${beatIdx}"]`);
-    if (!card) return;
-
-    const textarea = card.querySelector('[data-beat-field="script_body"]');
-    const text = textarea ? textarea.value.trim() : '';
-    if (!text) { showError('No script body text to generate audio for.'); return; }
-
-    const btn = card.querySelector('.tts-play-btn');
-    const audioEl = card.querySelector('.tts-audio');
-
+  // Reusable TTS core: replay from cache or fetch+play `text` through `audioEl`,
+  // with the play-button lifecycle. ONE audio implementation, shared by beat TTS
+  // (ttsPlayBeat) and the tour-preview stops. The origText capture/restore stays
+  // INSIDE here so any caller's button (with any label) restores correctly.
+  async function ttsPlay({ text, cacheKey, btn, audioEl }) {
     // Check cache
-    const cacheKey = `${activeIdx}-${beatIdx}-${ttsTextHash(text)}-${ttsProvider}`;
     if (ttsAudioCache.has(cacheKey)) {
       audioEl.src = ttsAudioCache.get(cacheKey);
       audioEl.classList.add('visible');
@@ -2872,6 +2863,22 @@
       btn.disabled = false;
       btn.innerHTML = origText;
     }
+  }
+
+  async function ttsPlayBeat(beatIdx) {
+    const poi = poiData[activeIdx];
+    if (!poi || !poi.beats[beatIdx]) return;
+    const card = detailBody.querySelector(`.beat-card[data-beat-index="${beatIdx}"]`);
+    if (!card) return;
+
+    const textarea = card.querySelector('[data-beat-field="script_body"]');
+    const text = textarea ? textarea.value.trim() : '';
+    if (!text) { showError('No script body text to generate audio for.'); return; }
+
+    const btn = card.querySelector('.tts-play-btn');
+    const audioEl = card.querySelector('.tts-audio');
+    const cacheKey = `${activeIdx}-${beatIdx}-${ttsTextHash(text)}-${ttsProvider}`;
+    await ttsPlay({ text, cacheKey, btn, audioEl });
   }
 
   // ── Task 4: Jaccard similarity ──
