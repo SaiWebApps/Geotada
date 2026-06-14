@@ -333,3 +333,31 @@ class TestTripGenerateErrors:
         resp = client.post("/api/v1/trips/generate", json=body)
         assert resp.status_code == 422
         assert "sparse" in resp.json()["detail"].lower()
+
+
+class TestPreviewTrip:
+    """POST /trips/preview (Phase 1.5d): engine narration, no profile, no persistence."""
+
+    def test_preview_returns_per_stop_narration(self, client):
+        resp = client.post(
+            "/api/v1/trips/preview",
+            json={
+                "center_lat": ILE_START[0],
+                "center_lng": ILE_START[1],
+                "duration_min": ILE_DURATION_MIN,
+            },
+        )
+        assert resp.status_code == 200, resp.text
+        data = resp.json()
+        assert data["stops"], "preview should return at least one stop"
+        for stop in data["stops"]:
+            assert stop["poi_name"]
+            assert stop["narration"].strip(), "each stop must carry narration text"
+        assert data["total_audio_min"] >= 1
+
+    def test_preview_sparse_origin_422(self, client):
+        resp = client.post(
+            "/api/v1/trips/preview",
+            json={"center_lat": -33.8688, "center_lng": 151.2093, "duration_min": 90},
+        )
+        assert resp.status_code == 422

@@ -15,14 +15,18 @@ from src.api.models.trips import (
     GeneratedStop,
     TripGenerateRequest,
     TripGenerateResponse,
+    TripPreviewRequest,
+    TripPreviewResponse,
+    TripPreviewStop,
 )
 from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.options import build_route_option
+from src.tour.render_md import stop_narration_text
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_k_routes
+from src.tour.selection import load_paris_corpus, select_k_routes, select_route
 
 router = APIRouter(tags=["trips"])
 
@@ -223,6 +227,70 @@ def generate_trip(
         lens_coverage=script.lens_coverage,
         stops=stops_out,
         options=options,
+    )
+
+
+@router.post("/trips/preview", response_model=TripPreviewResponse)
+def preview_trip(
+    body: TripPreviewRequest,
+    driver: Driver = Depends(get_driver),
+):
+    """Web-first preview (Phase 1.5): run the engine and return per-stop narration
+    WITHOUT a profile and WITHOUT persisting a Trip/ItineraryItem.
+
+    Lets a web surface (the preview page; later the workbench) show the assembled
+    story fast. Audio is fetched per stop by the client via POST /audio/preview on
+    each stop's narration text. RED density / no reachable POIs -> 422.
+    """
+    tour_input = TourInput(
+        start=(body.center_lat, body.center_lng),
+        duration_min=body.duration_min or DEFAULT_DURATION_MIN,
+        city_slug="paris",
+        lenses=body.lenses or None,
+        round_trip=body.round_trip,
+    )
+    snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
+    try:
+        with RoutingClient() as routing_client:
+            route = select_route(tour_input, snapshot, routing_client=routing_client)
+    except TourabilityRefusedError as exc:
+        a = exc.assessment
+        raise HTTPException(
+            422,
+            "Area too sparse for a tour of this length: "
+            f"{a.anchor_candidate_count} anchor candidates, "
+            f"{a.reachable_poi_count} reachable POIs.",
+        ) from exc
+
+    if not route.pois:
+        raise HTTPException(
+            422,
+            "No tourable POIs reachable from this start for the requested duration.",
+        )
+
+    plans = []
+    for poi in route.pois:
+        beats = list(snapshot.beats_for(poi.id))
+        beats.extend(route.demoted_beats.get(poi.id, ()))
+        plans.append(select_poi_beats(poi, beats, interest_lenses=tour_input.lenses))
+    script = generate(BeatSequence(poi_beats=tuple(plans)), route, tour_input)
+    per_stop = stop_narration_text(script)
+
+    stops = [
+        TripPreviewStop(
+            sort_order=i + 1,
+            poi_name=sp.name,
+            lat=sp.lat,
+            lng=sp.lng,
+            narration=per_stop.get(i, ""),
+            minutes=round(sp.dwell_seconds / 60),
+        )
+        for i, sp in enumerate(script.selected_pois)
+    ]
+    return TripPreviewResponse(
+        spine_area=route.spine_area,
+        total_audio_min=round(script.total_audio_seconds / 60),
+        stops=stops,
     )
 
 

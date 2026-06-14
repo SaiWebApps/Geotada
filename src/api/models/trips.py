@@ -119,3 +119,34 @@ class TripGenerateResponse(BaseModel):
         description="M6 k-flavours (§2.8): up to 3 distinct tour options; options[0] "
         "is the persisted trip. Computed per request, not persisted.",
     )
+
+
+class TripPreviewRequest(BaseModel):
+    """Web-first preview (Phase 1.5): generate a tour's per-stop narration WITHOUT
+    a profile and WITHOUT persisting anything."""
+
+    center_lat: float = Field(..., ge=-90, le=90)
+    center_lng: float = Field(..., ge=-180, le=180)
+    duration_min: int | None = Field(default=None, ge=1, le=600)
+    lenses: list[str] | None = None
+    round_trip: bool = False
+
+
+class TripPreviewStop(BaseModel):
+    """One stop in a preview: ordered, with its stitched narration text."""
+
+    sort_order: int
+    poi_name: str
+    lat: float
+    lng: float
+    narration: str
+    minutes: int
+
+
+class TripPreviewResponse(BaseModel):
+    """Per-stop narration for a generated tour — no audio, no persistence. The
+    client fetches audio per stop via POST /audio/preview on the narration text."""
+
+    spine_area: str | None = None
+    total_audio_min: int
+    stops: list[TripPreviewStop]
