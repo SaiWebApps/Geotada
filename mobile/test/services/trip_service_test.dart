@@ -328,5 +328,60 @@ void main() {
         throwsA(isA<TripServiceException>()),
       );
     });
+
+    test('confirmTripStopAudio POSTs to the per-STOP generate endpoint',
+        () async {
+      final client = MockClient((request) async {
+        expect(request.method, 'POST');
+        // Per-stop endpoint, NOT the per-beat /audio/generate-trip/{id}.
+        expect(request.url.path, contains('/audio/generate-trip-stops/trip-123'));
+        expect(request.headers['Authorization'], 'Bearer test-token');
+        return http.Response(
+          jsonEncode({
+            'trip_id': 'trip-123',
+            'generated': 4,
+            'skipped': 1,
+            'failed': 0,
+            'results': [],
+          }),
+          200,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+      final result =
+          await service.confirmTripStopAudio('trip-123', 'test-token');
+
+      expect(result['trip_id'], 'trip-123');
+      expect(result['generated'], 4);
+      expect(result['skipped'], 1);
+      expect(result['failed'], 0);
+    });
+
+    test('confirmTripStopAudio throws on 404', () async {
+      final client = MockClient((request) async {
+        return http.Response(jsonEncode({'detail': 'Trip not found'}), 404);
+      });
+
+      final service = TripService(httpClient: client);
+
+      expect(
+        () => service.confirmTripStopAudio('bad-id', 'token'),
+        throwsA(isA<TripServiceException>()),
+      );
+    });
+
+    test('confirmTripStopAudio throws on 500', () async {
+      final client = MockClient((request) async {
+        return http.Response('Internal Server Error', 500);
+      });
+
+      final service = TripService(httpClient: client);
+
+      expect(
+        () => service.confirmTripStopAudio('trip-123', 'token'),
+        throwsA(isA<TripServiceException>()),
+      );
+    });
   });
 }
