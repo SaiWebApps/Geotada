@@ -155,6 +155,9 @@ valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for ti
 backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. Dry-run by default; ARGS="--apply" to write; ARGS="--apply --neo4j" to also update the dev graph.
 	uv run python scripts/backfill_poi_role.py $(ARGS)
 
+tour-build: db-up ## Build one real audio tour from the live Paris graph and render it to markdown. ARGS="--start '48.8566,2.3522' --duration 60 [--lenses historic_arch,...] [--round-trip]".
+	uv run python scripts/tour_build.py $(ARGS)
+
 # ──────────────────────────────────────────────────────────
 # APPLICATION
 # ──────────────────────────────────────────────────────────
