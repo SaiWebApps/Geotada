@@ -985,6 +985,7 @@
       <div class="left-toolbar">
         <input type="file" id="fileInput" accept=".json" style="display:none" />
         <button class="btn btn-primary" id="loadJsonBtn" disabled>Load JSON</button>
+        <button class="btn btn-primary" id="tourPreviewBtn" disabled>Tour Preview</button>
       </div>
       <div class="worklist" id="worklist">
         <div class="worklist-empty">Load a JSON file to begin review.</div>
@@ -1074,6 +1075,13 @@
   const deferBtn = document.getElementById('deferBtn');
   const markCompleteBtn = document.getElementById('markCompleteBtn');
   const ttsProviderSelect = document.getElementById('ttsProviderSelect');
+  const tourPreviewBtn = document.getElementById('tourPreviewBtn');
+  tourPreviewBtn.addEventListener('click', () => {
+    activeSelection = { source: 'tour', idx: -1 };
+    activeIdx = -1;
+    renderWorklist();   // clear any active-row highlight
+    renderDetail();     // show the tour-preview form
+  });
   const completionBanner = document.getElementById('completionBanner');
   const mainLayout = document.getElementById('mainLayout');
   const outerLayout = document.getElementById('outerLayout');
@@ -1228,6 +1236,7 @@
         renderWorklist();
         loadTtsProviders();  // non-blocking — populates provider dropdown
         loadJsonBtn.disabled = false;
+        tourPreviewBtn.disabled = false;
       } catch (lensErr) {
         loadJsonBtn.disabled = true;
         showError('Cannot connect to database — workbench requires a live connection.');
@@ -1944,6 +1953,33 @@
   // ── Render detail panel ──
 
   function renderDetail() {
+    // Tour-preview view (Phase 1.5e): generate + audition a walking tour from this corpus.
+    // Reuses the workbench's own field/button components and the shared ttsPlay player.
+    if (activeSelection.source === 'tour') {
+      detailEmpty.style.display = 'none';
+      detailView.style.display = '';
+      detailTitle.textContent = 'Tour Preview';
+      deferBtn.style.display = 'none';
+      markCompleteBtn.style.display = 'none';
+      const startVal = cityCentre ? `${cityCentre.lat.toFixed(6)},${cityCentre.lng.toFixed(6)}` : '';
+      detailBody.innerHTML = `
+        <div class="tour-preview">
+          <div class="field-group"><label>Start (lat,lng)</label>
+            <input type="text" id="tourStart" value="${escHtml(startVal)}" placeholder="48.8566,2.3522" /></div>
+          <div class="field-row">
+            <div class="field-group"><label>Duration (min)</label>
+              <input type="number" id="tourDuration" value="60" min="15" max="240" /></div>
+            <div class="field-group"><label>Lenses (comma-separated, optional)</label>
+              <input type="text" id="tourLenses" placeholder="historic_arch, dark_history" /></div>
+          </div>
+          <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip</label></div>
+          <button class="btn btn-primary" id="tourGenerateBtn">Generate preview</button>
+          <div id="tourStops" class="tour-stops"></div>
+        </div>`;
+      // Step 4 wires #tourGenerateBtn -> POST /trips/preview and renders #tourStops.
+      return;
+    }
+
     // DB POI detail rendering
     if (activeSelection.source === 'db') {
       const dbPoi = cachedPoiList[activeSelection.idx];

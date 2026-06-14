@@ -1536,6 +1536,30 @@ class TestDetailViewAndEditing:
         )
         _take_screenshot(page, "beat-tts-decode")
 
+    def test_tour_preview_view_opens(self, browser_page):
+        """Step 3: the 'Tour Preview' toolbar button opens a native tour-preview form in the
+        detail panel — workbench components, empty stops, Mark-Complete/Defer hidden. Real
+        browser, hard asserts (the button is enabled once the city is connected)."""
+        page, _seed_data, _reporter = browser_page
+
+        btn = page.locator("#tourPreviewBtn")
+        assert btn.count() == 1, "expected a #tourPreviewBtn in the left toolbar"
+        assert btn.is_enabled(), "Tour Preview button should be enabled after the city connects"
+        btn.click()
+        page.wait_for_timeout(300)
+
+        # The tour-preview form renders with its inputs (built from workbench components).
+        for sel in ("#tourStart", "#tourDuration", "#tourLenses", "#tourRoundTrip", "#tourGenerateBtn"):
+            assert page.locator(sel).count() == 1, f"tour-preview form missing {sel}"
+
+        # Empty state: no stops rendered before generating.
+        assert page.locator("#tourStops .tour-stop").count() == 0, "expected no stops before generating"
+
+        # Mark Complete / Defer are hidden in tour mode (not applicable to a tour preview).
+        assert not page.locator(MARK_COMPLETE_BTN).is_visible(), "Mark Complete must be hidden in tour mode"
+        assert not page.locator(DEFER_BTN).is_visible(), "Defer must be hidden in tour mode"
+        _take_screenshot(page, "step3-tour-preview-view")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
