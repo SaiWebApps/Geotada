@@ -1777,7 +1777,7 @@
         beatFetchController = new AbortController();
 
         try {
-          const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(dbPoi.properties.name)}/beats`, { signal: beatFetchController.signal });
+          const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(dbPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`, { signal: beatFetchController.signal });
           if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
           const data = await resp.json();
           dbPoi._dbBeats = data.beats || [];
@@ -3045,7 +3045,7 @@
 
         // Fetch beats from the closest match for beat-level conflict preview
         try {
-          const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(bestMatch.existingPoi.properties.name)}/beats`);
+          const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(bestMatch.existingPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
           const data = await resp.json();
           poiEntry.existingBeats = data.beats || [];
         } catch (e) {
@@ -3141,7 +3141,7 @@
   async function runBeatConflictDetection(poi, existingPoiName) {
     const result = { existingBeats: [], beatConflicts: [], beatReviewItems: [], errors: [] };
     try {
-      const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(existingPoiName)}/beats`);
+      const resp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(existingPoiName)}/beats?city_name=${encodeURIComponent(cityName)}`);
       const data = await resp.json();
       result.existingBeats = data.beats || [];
     } catch (e) {
@@ -4162,7 +4162,7 @@
   function lazyLoadBeatCount(poi, marker) {
     if (marker._beatCountLoaded) return;
     marker._beatCountLoaded = true;
-    fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.properties.name)}/beats`)
+    fetch(`${API_BASE}/graph/poi/${encodeURIComponent(poi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`)
       .then(r => r.json())
       .then(data => {
         marker._beatCount = (data.beats || []).length;
@@ -4384,8 +4384,8 @@
     let targetBeats = [], sourceBeats = [];
     try {
       const [tResp, sResp] = await Promise.all([
-        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats`).then(r => r.json()),
-        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats`).then(r => r.json()),
+        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`).then(r => r.json()),
+        fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`).then(r => r.json()),
       ]);
       targetBeats = tResp.beats || [];
       sourceBeats = sResp.beats || [];
@@ -4538,7 +4538,7 @@
       // Get max sort_order from target's beats
       let maxSortOrder = 0;
       try {
-        const tResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats`);
+        const tResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(targetPoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
         const tData = await tResp.json();
         for (const b of (tData.beats || [])) {
           if (b.sort_order && b.sort_order > maxSortOrder) maxSortOrder = b.sort_order;
@@ -4589,7 +4589,7 @@
         // Delete old HAS_BEAT edge from source POI → beat
         try {
           // Fetch edges to find the specific HAS_BEAT edge
-          const edgeResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats`);
+          const edgeResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
           // The edge deletion depends on API — try delete by source+target pattern
           await fetch(`${API_BASE}/edges/HAS_BEAT`, {
             method: 'DELETE', headers: {'Content-Type': 'application/json'},

@@ -198,7 +198,7 @@
     "poi_name": "UI Test Seed — Eiffel Tower",
     "latitude": 48.8584,
     "longitude": 2.2945,
-    "short_description": "Conflict test POI — matches seeded Eiffel Tower for conflict detection testing.",
+    "short_description": "Conflict test POI — same GPS as the seeded 'Champ de Mars Landmark' but a different name, so it surfaces a proximity match to resolve.",
     "orientation": "Face the tower from the Champ de Mars looking northwest.",
     "beats": [
       {
@@ -211,28 +211,28 @@
       {
         "script_body": "Jazz clubs once lined the streets around the Champ de Mars drawing musicians from New Orleans and Harlem. After World War I, Black American musicians found a freedom in Paris that Jim Crow denied them at home. Sidney Bechet, Josephine Baker, and Django Reinhardt turned Montparnasse and Saint-Germain into the jazz capital of Europe. Smoky basement clubs along Rue de Rennes hosted late night jam sessions where unknown artists sat in with legends.",
         "physical_cue": "The narrow side streets off Avenue de la Bourdonnais where basement club entrances still have their iron railings.",
-        "lens": "Music & Nightlife History",
+        "lens": "Music Heritage",
         "gravity": 2,
         "source_passage": "Paris jazz history oral archives; Josephine Baker biography."
       },
       {
         "script_body": "Gustave Eiffel himself maintained a private apartment at the summit of the tower where he entertained distinguished guests including Thomas Edison. The apartment was furnished with velvet settees, a grand piano, and scientific instruments. Parisians who had mocked the tower as a metal monstrosity begged for invitations. Eiffel refused nearly all of them, preferring to use the space for meteorological and aerodynamic experiments that contributed to early aviation research.",
         "physical_cue": "The small windows at the very top of the tower mark Eiffel's private apartment.",
-        "lens": "Food & Culinary Culture",
+        "lens": "Science & Technology",
         "gravity": 3,
         "source_passage": "Eiffel personal papers; Societe des Ingenieurs Civils de France."
       },
       {
         "script_body": "When the tower was first unveiled, Parisian artists erupted in fury. A petition signed by Guy de Maupassant, Alexandre Dumas fils, and Charles Garnier called it a disgrace — a factory chimney disfiguring the city's skyline. Maupassant famously ate lunch at the tower's restaurant every day, claiming it was the only place in Paris where he didn't have to look at it. Street artists responded by sketching the tower obsessively, turning protest into a new visual vocabulary that influenced Art Nouveau.",
         "physical_cue": "The esplanade beneath the tower where caricaturists still sketch visitors, continuing a tradition from opening day.",
-        "lens": "Art & Street Culture",
+        "lens": "Street Art",
         "gravity": 3,
         "source_passage": "1887 Artists' Petition; Paris art history archives."
       },
       {
         "script_body": "The Champ de Mars beneath the tower was originally a military drill ground — its name means Field of Mars, the Roman god of war. Before that, the site was farmland and vineyards. Today the long rectangular garden stretching from the tower to the Ecole Militaire supports over 80 species of trees and provides nesting habitat for kestrels, which hunt pigeons from the tower's upper platforms. The falcons have become so established that ornithologists study them as an example of urban raptor adaptation.",
         "physical_cue": "The rows of chestnut and plane trees lining the Champ de Mars beneath the tower.",
-        "lens": "Nature & Green Spaces",
+        "lens": "Parks & Gardens",
         "gravity": 2,
         "source_passage": "Paris urban ecology survey; Museum national d'Histoire naturelle raptor studies."
       }

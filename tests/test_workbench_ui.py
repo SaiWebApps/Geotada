@@ -152,6 +152,57 @@ SEED_BEATS = [
     },
 ]
 
+# ── Eiffel conflict seed ──────────────────────────────────────────────────
+# A second seed POI at the Eiffel Tower's GPS, named so it does NOT auto-merge
+# with the incoming "UI Test Seed — Eiffel Tower" entry (name similarity < 0.5,
+# so mergeIncomingIntoDbPois leaves the incoming POI in the worklist and the
+# proximity-match panel is shown instead). Its three beats are tuned — Jaccard
+# verified offline against review.html's jaccardSimilarity — so the incoming
+# POI's five beats land in every conflict band once the editor clicks "Same
+# Place" (which runs runBeatConflictDetection against this POI):
+#   incoming beat 0 hidden_history -> HARD      (same lens as seed beat 0)
+#   incoming beat 1 music_heritage -> NET-NEW   (no lens match, Jaccard ~0.03)
+#   incoming beat 2 science_tech   -> SOFT      (Jaccard ~0.80 vs seed beat 1)
+#   incoming beat 3 street_art     -> REVIEW    (Jaccard ~0.36 vs seed beat 2)
+#   incoming beat 4 parks_gardens  -> PASS-THRU (no lens match, Jaccard ~0.02)
+EIFFEL_SEED_NAME = "UI Test — Champ de Mars Landmark"
+EIFFEL_SEED_COORDS = (48.8584, 2.2945)
+EIFFEL_SEED_BEATS = [
+    {
+        "lens_slug": "hidden_history",
+        "gravity": 3,
+        "script_body": (
+            "The tower demands sixty tonnes of fresh paint applied by hand every seven "
+            "years to shield its puddled iron lattice from rust. A crew suspended on ropes "
+            "brushes three graduated shades onto the metal so the whole structure reads as "
+            "a single uniform bronze when seen from the ground far below."
+        ),
+    },
+    {
+        "lens_slug": "historic_arch",
+        "gravity": 4,
+        "script_body": (
+            "Gustave Eiffel himself maintained a private apartment at the summit of the "
+            "tower where he entertained distinguished guests including Thomas Edison. The "
+            "apartment was furnished with velvet settees, a grand piano, and scientific "
+            "instruments. Parisians who had mocked the tower as a metal monstrosity begged "
+            "for invitations. Eiffel refused nearly all of them, preferring to use the "
+            "space for quiet study."
+        ),
+    },
+    {
+        "lens_slug": "war_conflict",
+        "gravity": 2,
+        "script_body": (
+            "When the tower was first unveiled, Parisian artists erupted in fury. A "
+            "petition signed by Guy de Maupassant, Alexandre Dumas, and Charles Garnier "
+            "called it a disgrace, a factory chimney disfiguring the city skyline. The "
+            "artists insisted the new iron structure had no place in Paris. Years later "
+            "their loud protest slowly faded as the public embraced it."
+        ),
+    },
+]
+
 # Taggable lenses — derived from definitions.py (single source of truth)
 import contextlib
 
@@ -439,65 +490,75 @@ def seed_data(api_server):
                 lens_id_map[slug] = lid
                 created_ids["lens"].append(lid)
 
-    # --- Create Seed POI ---
-    poi_data = _api_post(
-        "/nodes/POI",
-        {
-            "name": SEED_POI_NAME,
-            "city_name": "Paris",
-            "latitude": 48.8867,
-            "longitude": 2.3431,
-            "short_description": "Seed POI for UI conflict detection tests",
-            "importance_tier": 1,
-            "trigger_radius": 10,
-            "typical_duration_min": 30,
-            "kid_friendly": "yes",
-        },
-    )
-    if not _is_ok(poi_data) or not isinstance(poi_data, dict):
-        pytest.skip(f"Failed to create seed POI: {poi_data}")
-
-    poi_id = _get_id(poi_data)
-    created_ids["poi"].append(poi_id)
-
-    # --- Create Seed Beats + Edges ---
-    for beat_def in SEED_BEATS:
-        beat_data = _api_post(
-            "/nodes/NarrativeBeat",
+    def _create_seed_poi(name: str, lat: float, lng: float, beats: list[dict]) -> str:
+        """Create one seed POI plus its beats, HAS_BEAT edges, and lens tags."""
+        poi_resp = _api_post(
+            "/nodes/POI",
             {
-                "script_body": beat_def["script_body"],
-                "gravity": beat_def["gravity"],
-                "lens": beat_def["lens_slug"],
+                "name": name,
+                "city_name": "Paris",
+                "latitude": lat,
+                "longitude": lng,
+                "short_description": "Seed POI for UI conflict detection tests",
+                "importance_tier": 1,
+                "trigger_radius": 10,
+                "typical_duration_min": 30,
+                "kid_friendly": "yes",
             },
         )
-        if not _is_ok(beat_data) or not isinstance(beat_data, dict):
-            continue
-        beat_id = _get_id(beat_data)
-        created_ids["beat"].append(beat_id)
+        if not _is_ok(poi_resp) or not isinstance(poi_resp, dict):
+            pytest.skip(f"Failed to create seed POI {name!r}: {poi_resp}")
 
-        # Link beat to POI
-        edge_data = _api_post(
-            "/edges/HAS_BEAT",
-            {
-                "source": {"label": "POI", "id": poi_id},
-                "target": {"label": "NarrativeBeat", "id": beat_id},
-            },
-        )
-        if _is_ok(edge_data) and isinstance(edge_data, dict):
-            created_ids["edge_has_beat"].append(_get_id(edge_data))
+        pid = _get_id(poi_resp)
+        created_ids["poi"].append(pid)
 
-        # Tag beat with lens
-        lens_slug = beat_def["lens_slug"]
-        if lens_slug in lens_id_map:
-            tag_data = _api_post(
-                "/edges/TAGGED_WITH",
+        for beat_def in beats:
+            beat_resp = _api_post(
+                "/nodes/NarrativeBeat",
                 {
-                    "source": {"label": "NarrativeBeat", "id": beat_id},
-                    "target": {"label": "Lens", "id": lens_id_map[lens_slug]},
+                    "script_body": beat_def["script_body"],
+                    "gravity": beat_def["gravity"],
+                    "lens": beat_def["lens_slug"],
                 },
             )
-            if _is_ok(tag_data) and isinstance(tag_data, dict):
-                created_ids["edge_tagged_with"].append(_get_id(tag_data))
+            if not _is_ok(beat_resp) or not isinstance(beat_resp, dict):
+                continue
+            bid = _get_id(beat_resp)
+            created_ids["beat"].append(bid)
+
+            # Link beat to POI
+            edge_resp = _api_post(
+                "/edges/HAS_BEAT",
+                {
+                    "source": {"label": "POI", "id": pid},
+                    "target": {"label": "NarrativeBeat", "id": bid},
+                },
+            )
+            if _is_ok(edge_resp) and isinstance(edge_resp, dict):
+                created_ids["edge_has_beat"].append(_get_id(edge_resp))
+
+            # Tag beat with lens
+            lens_slug = beat_def["lens_slug"]
+            if lens_slug in lens_id_map:
+                tag_resp = _api_post(
+                    "/edges/TAGGED_WITH",
+                    {
+                        "source": {"label": "NarrativeBeat", "id": bid},
+                        "target": {"label": "Lens", "id": lens_id_map[lens_slug]},
+                    },
+                )
+                if _is_ok(tag_resp) and isinstance(tag_resp, dict):
+                    created_ids["edge_tagged_with"].append(_get_id(tag_resp))
+        return pid
+
+    # --- Create Seed POIs ---
+    # 1) Sacré-Cœur: an incoming fixture entry sits at the same GPS with a similar name,
+    #    so mergeIncomingIntoDbPois auto-merges it (exercises the merge path).
+    # 2) Champ de Mars: same GPS as the incoming Eiffel entry but a dissimilar name, so it
+    #    does NOT auto-merge — the conflict test resolves the proximity match as "Same Place"
+    #    and walks all five beat-conflict bands against this POI's seeded beats.
+    poi_id = _create_seed_poi(SEED_POI_NAME, 48.8867, 2.3431, SEED_BEATS)
+    _create_seed_poi(EIFFEL_SEED_NAME, *EIFFEL_SEED_COORDS, EIFFEL_SEED_BEATS)
 
     yield {
         "poi_id": poi_id,
@@ -752,19 +813,22 @@ class TestWorkbenchLoadFlow:
         with contextlib.suppress(Exception):
             rows.first.wait_for(state="visible", timeout=5000)
 
+        # .worklist-row counts incoming AND database rows. From the 12-entry fixture, the
+        # Sacre-Coeur entry auto-merges into its seeded POI (-> 11 active incoming rows), and
+        # the two seeded DB POIs (Sacré-Cœur, Champ de Mars) each render a row: 11 + 2 = 13.
         row_count = rows.count()
         _safe_assert(
             reporter,
-            row_count == 12,
+            row_count == 13,
             "Critical",
-            f"Worklist shows {row_count} POIs instead of 12",
+            f"Worklist shows {row_count} POIs instead of 13",
             "Worklist Rendering",
             [
-                "Load 12-entry fixture",
+                "Load 12-entry fixture (Sacre-Coeur auto-merges into its seed)",
                 "Resolve duplicate names",
-                "Check worklist row count",
+                "Check worklist row count (11 incoming + 2 seeded DB rows)",
             ],
-            "12 .worklist-row elements visible",
+            "13 .worklist-row elements visible",
             f"Found {row_count} rows",
             page,
             "ac1-worklist-count",
