@@ -200,8 +200,18 @@ Step 1.5d — Minimal standalone preview page (POC; the one human-facing piece).
             a browser tab (seconds, not an iOS build).
   Proof:    page loads + plays; you confirm it sounds like a tour.
 
-Step 1.5e — Workbench integration (AFTER the POC validates; for the human tester).  [IN PROGRESS 2026-06-14 — atomizing now]
+Step 1.5e — Workbench integration (AFTER the POC validates; for the human tester).  [DONE 2026-06-14]
   Reuses review.html's existing TTS audio player + the Phase-1.5 endpoints.
+  Atomic sub-steps, each one change + its real-browser tests (Playwright via `make test-workbench`):
+    0 — make the suite bite: fatal _safe_assert + de-vacuumed stale guards (caught real upload bug). [c72ba0c]
+    2 — extract shared ttsPlay core from ttsPlayBeat (tour stops reuse it). [37e4357]
+        + parallel bug-fixes folded in: beats-fetch city_name + Eiffel conflict seed. [b2e5ece, 6e54dbc]
+    3 — Tour Preview view: toolbar button + native tour form in the existing detail pane. [6f13179]
+    4 — Generate -> POST /trips/preview -> render stops -> play each via shared ttsPlay (real decode);
+        422 surfaces an error toast. [2aac9c3]
+    5 — playback edges: cache replay (no refetch) + no listener stacking + long narration (chunked). [4d3046f]
+    6 — seamless (tour view <-> POI, no state leak) + full-bar regression. [bfbb2bf]
+  Bar at close: make test-workbench -> 33 passed, 0 xfailed; make test -> 958 Py + 178 Flutter, 0 fail.
 
 Then RESUME mobile 1.4d-ii/iii/iv, where the on-device listen is a final smoke test, not the QA gate.
 
