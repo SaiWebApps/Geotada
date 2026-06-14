@@ -144,7 +144,10 @@ Step 1.4d — Mobile polls + plays the per-stop narration audio.  [PENDING]
 ```
 
 **Phase 1 status:** 1.1 (e54dbb9) → 1.2 (2b9686c) → 1.3 (7e04c40) → 1.4a (9ad2f82) → 1.4b (7551e2b)
-→ 1.4c (165f252) DONE; **1.4d** (mobile + manual listen) PENDING.
+→ 1.4c (165f252) → 1.4d-i (af5da10, mobile model: stopId) DONE.
+**REORDER (2026-06-13, user):** verify narration **WEB-FIRST** (Phase 1.5 below) before finishing the
+mobile cluster — the narration is backend output; web verification is hours + agent-drivable vs days of
+mobile build + a human on-device listen. Mobile **1.4d-ii/iii/iv are PAUSED** pending Phase 1.5.
 
 **Audio-infra fixes (surfaced during 1.4 while getting the bar green — root-caused, not skipped):**
 - d8d5b59 — TTS providers retry transient timeouts (real resilience gap + intermittent functional failure).
@@ -154,6 +157,49 @@ Step 1.4d — Mobile polls + plays the per-stop narration audio.  [PENDING]
 algorithm, no LLM, no destination work. The stitched narration is a genuinely shippable interim (a
 real story, voiced); Phase 4 swaps the *source* of the sentences to the LLM compose using the *same*
 audio plumbing.
+
+---
+
+## Phase 1.5 — Web-first narration verification (reorder, decided 2026-06-13)
+
+> The narration is BACKEND output; mobile + web are both consumers. Verifying the stitched per-stop
+> story on web is hours (mostly agent-drivable) vs days of mobile build + a human on-device listen.
+> Web-first catches stitcher/TTS bugs once, before mobile. It does NOT replace on-device mobile
+> verification (GPS, background audio, the real walk) — it precedes it.
+> Decisions (user): build a STANDALONE preview page first (POC); if it works, integrate into the
+> WORKBENCH (the human tester's surface). **Automate as much as possible** — keep the human to the one
+> subjective call (does it sound like a tour).
+
+Step 1.5a — Expose narration text in GET /trips.  [enabler — nothing can show the story without it]
+  Change:   add narration:str|None to GeneratedStop; add `item.narration AS narration` to
+            list_trips_for_profile RETURN.
+  Tests:    integ: after create_trip_with_stops(narration=...), GET /trips returns each stop's narration.
+  Proof:    make test-local.
+
+Step 1.5b — Automated narration-coherence check (agent-drivable).
+  Change:   a test that generates a real Paris trip and asserts each stop's narration is well-formed —
+            non-empty, multi-sentence, opens (cold-open/SYNTHESIZED_OPENER) and closes (GLUE_CLOSING):
+            the stitcher didn't drop/empty/mis-order stops.
+  Tests:    the check IS the test (live Paris graph; mark golden-style if it would dirty the hermetic bar).
+  Proof:    make test-local (or a dedicated target).
+
+Step 1.5c — Automated "audio says the story" gate (live OpenAI; functional).
+  Change:   voice a sample tour's stops → Whisper-eval each MP3 vs its narration (reuse src/audio/eval.py)
+            → WER gate. The strongest automation; runs unattended.
+  Tests:    functional (live key); marked live/opt-in, not in the hermetic bar.
+  Proof:    the functional run, output pasted.
+
+Step 1.5d — Minimal standalone preview page (POC; the one human-facing piece).
+  Change:   frontend/tour-preview.html: form (lat/lng/duration/profile) → POST /trips/generate →
+            POST /audio/generate-trip-stops → GET /trips → render per-stop narration text + <audio>.
+  Tests:    thin UI smoke (loads + wires the already-tested endpoints); the subjective listen is YOURS in
+            a browser tab (seconds, not an iOS build).
+  Proof:    page loads + plays; you confirm it sounds like a tour.
+
+Step 1.5e — Workbench integration (AFTER the POC validates; for the human tester).  [atomized on arrival]
+  Reuses review.html's existing TTS audio player + the Phase-1.5 endpoints.
+
+Then RESUME mobile 1.4d-ii/iii/iv, where the on-device listen is a final smoke test, not the QA gate.
 
 ---
 
