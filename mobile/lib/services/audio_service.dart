@@ -137,6 +137,27 @@ class AudioService extends ChangeNotifier implements AudioProvider {
     return null;
   }
 
+  /// Check PER-STOP audio status by ItineraryItem id (Phase 1, Step 1.4d).
+  ///
+  /// Additive to [checkAudioStatus] (per-beat): GET /audio/stop-status/{stopId}
+  /// reads the per-stop narration audio persisted by /audio/generate-trip-stops,
+  /// so the itinerary flow polls/plays per stop. Returns the parsed body
+  /// ({has_audio, audio_url, duration_sec}) on 200, null otherwise.
+  Future<Map<String, dynamic>?> checkStopAudioStatus(
+    String baseUrl,
+    String stopId,
+  ) async {
+    try {
+      final resp = await _httpClient.get(
+        Uri.parse('$baseUrl/audio/stop-status/$stopId'),
+      );
+      if (resp.statusCode == 200) {
+        return jsonDecode(resp.body) as Map<String, dynamic>;
+      }
+    } catch (_) {}
+    return null;
+  }
+
   /// Clear all cached audio files.
   Future<void> clearCache() async {
     final dir = await _cacheDirectory();

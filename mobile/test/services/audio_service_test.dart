@@ -60,6 +60,63 @@ void main() {
 
       expect(result, isNull);
     });
+
+    test('checkStopAudioStatus hits the per-STOP endpoint and parses on 200',
+        () async {
+      final client = MockClient((request) async {
+        expect(request.method, 'GET');
+        // Per-stop endpoint, NOT the per-beat /audio/status/{beatId}.
+        expect(request.url.path, contains('/audio/stop-status/stop-7'));
+        return http.Response(
+          jsonEncode({
+            'stop_id': 'stop-7',
+            'has_audio': true,
+            'audio_url': 'https://cdn.example.com/stop-7.mp3',
+            'duration_sec': 95,
+          }),
+          200,
+        );
+      });
+
+      final service = AudioService(httpClient: client);
+      final result = await service.checkStopAudioStatus(
+        'http://localhost:8000/api/v1',
+        'stop-7',
+      );
+
+      expect(result, isNotNull);
+      expect(result!['has_audio'], true);
+      expect(result['audio_url'], 'https://cdn.example.com/stop-7.mp3');
+      expect(result['duration_sec'], 95);
+    });
+
+    test('checkStopAudioStatus returns null on 404', () async {
+      final client = MockClient((request) async {
+        return http.Response('not found', 404);
+      });
+
+      final service = AudioService(httpClient: client);
+      final result = await service.checkStopAudioStatus(
+        'http://localhost:8000/api/v1',
+        'stop-missing',
+      );
+
+      expect(result, isNull);
+    });
+
+    test('checkStopAudioStatus returns null on network error', () async {
+      final client = MockClient((request) async {
+        throw Exception('Network error');
+      });
+
+      final service = AudioService(httpClient: client);
+      final result = await service.checkStopAudioStatus(
+        'http://localhost:8000/api/v1',
+        'stop-7',
+      );
+
+      expect(result, isNull);
+    });
   });
 
   group('BeatAudioInfo', () {
