@@ -2963,6 +2963,7 @@
   function mapPoiForApi(poi, options = {}) {
     const payload = {
       name: options.useExistingName || poi.poi_name,
+      city_name: cityName,
       short_description: poi.short_description || '',
       latitude: poi.latitude,
       longitude: poi.longitude,
