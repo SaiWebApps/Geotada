@@ -1,0 +1,982 @@
+{
+  "chunk_id": "chunk-06",
+  "pois": [
+    {
+      "poi_name": "American Museum of Natural History",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7813,
+      "longitude": -73.974,
+      "trigger_radius": 60,
+      "geocode_source": "known_landmark_address (Central Park W. btw. 77th and 81st sts., per chunk; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.9,
+      "address": "Central Park W. (btw. 77th and 81st sts.)",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    },
+    {
+      "poi_name": "Cathedral of St. John the Divine",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.8038,
+      "longitude": -73.962,
+      "trigger_radius": 50,
+      "geocode_source": "known_landmark_address (1047 Amsterdam Ave. at 112th St., per chunk; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.9,
+      "address": "1047 Amsterdam Ave. (at 112th St.)",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    },
+    {
+      "poi_name": "Museum of Arts and Design",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7677,
+      "longitude": -73.9819,
+      "trigger_radius": 40,
+      "geocode_source": "known_landmark_address (2 Columbus Circle, per chunk; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.9,
+      "address": "2 Columbus Circle",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    },
+    {
+      "poi_name": "New-York Historical Society",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7793,
+      "longitude": -73.974,
+      "trigger_radius": 40,
+      "geocode_source": "known_landmark_address (170 Central Park W. at 77th St., per chunk; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.9,
+      "address": "170 Central Park W. (at 77th St.)",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    },
+    {
+      "poi_name": "The Cloisters",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.8649,
+      "longitude": -73.9316,
+      "trigger_radius": 50,
+      "geocode_source": "known_landmark_address (North end of Fort Tryon Park, per chunk; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.88,
+      "address": "North end of Fort Tryon Park",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    },
+    {
+      "poi_name": "El Museo del Barrio",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7925,
+      "longitude": -73.9514,
+      "trigger_radius": 40,
+      "geocode_source": "known_landmark_address (1230 Fifth Ave. at 104th St., per chunk; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.9,
+      "address": "1230 Fifth Ave. (at 104th St.)",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    },
+    {
+      "poi_name": "Morris-Jumel Mansion",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.8345,
+      "longitude": -73.9382,
+      "trigger_radius": 40,
+      "geocode_source": "known_landmark (oldest house in Manhattan, Washington Heights; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.85,
+      "address": "65 Jumel Terrace (Washington Heights)",
+      "kid_friendly": "yes",
+      "inside_nyc_bbox": true,
+      "outlier": false
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_american_museum_of_natural_history_local_legends_frommers-nyc-2024_discovery_room_dig",
+      "city_name": "new_york",
+      "poi_name": "American Museum of Natural History",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "discovery_room_dig",
+      "sub_location": "discovery-room",
+      "trigger_address": null,
+      "script_body": "Families with children will want to visit the Discovery Room, an educational center where kids can pretend to dig up dinosaur bones, do a scavenger hunt, peer through microscopes, and more. Timed free tickets are given for admission here, so be sure to grab one early in the day before they run out.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Discovery Room"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "discovery room",
+      "physical_cues": [
+        {
+          "cue": "The Discovery Room, where kids dig up dinosaur bones and peer through microscopes",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Discovery Room lets kids pretend to dig up dinosaur bones, do a scavenger hunt, and use microscopes",
+        "Timed free tickets are required and run out"
+      ],
+      "source_passage": "Especially for kids: Families with children will want to visit the Discovery Room, an educational center where kids can pretend to dig up dinosaur bones, do a scavenger hunt, peer through microscopes, and more. Timed free tickets are given for admission here, so be sure to grab one early in the day before they run out.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_american_museum_of_natural_history_local_legends_frommers-nyc-2024_intro_tours_volunteer_guides",
+      "city_name": "new_york",
+      "poi_name": "American Museum of Natural History",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "intro_tours_volunteer_guides",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "First-time visitors should consider taking one of the guided introductory tours that begin at 15 minutes past the hour until 4:15pm. They're led by highly knowledgeable volunteer guides \u2014 who take classes for 6 months \u2014 and the tours vary by guide, each hitting different highlights of the museum.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "volunteer tours",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Introductory tours begin at 15 past the hour until 4:15pm",
+        "Volunteer guides train for 6 months and tours vary by guide"
+      ],
+      "source_passage": "An overview tour: First-time visitors should consider taking one of the guided introductory tours that begin at 15 minutes past the hour until 4:15pm. Led by highly knowledgeable volunteer guides (they take classes for 6 months), tours vary by guide and will hit different highlights of the museum.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_american_museum_of_natural_history_local_legends_frommers-nyc-2024_crowds_inverse_to_weather",
+      "city_name": "new_york",
+      "poi_name": "American Museum of Natural History",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "crowds_inverse_to_weather",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Because the museum is so popular with school groups, it can get crowded, particularly midmorning. And because so many families head here, attendance is often in inverse proportion to the weather: when it's lovely outside, the crowds will be sparse within. When it's blustery or rainy . . . watch out.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "crowd timing",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Museum is popular with school groups, crowded midmorning",
+        "Attendance is inversely proportional to the weather"
+      ],
+      "source_passage": "Timing your visit: Because the museum is so popular with school groups, it can get\ncrowded, particularly midmorning. Also, since so many families head here, attendance\nis often in inverse proportion to the weather: When it\u2019s lovely outside, the crowds will\nbe sparse within. When it\u2019s blustery or rainy . . . watch out.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_cathedral_of_st_john_the_divine_historic_arch_frommers-nyc-2024_largest_unfinished_cathedral",
+      "city_name": "new_york",
+      "poi_name": "Cathedral of St. John the Divine",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "largest_unfinished_cathedral",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Three odd facts make this a fascinating building. First: the largest cathedral in the world isn't St. Peter's in Rome \u2014 which is technically not a cathedral but a basilica \u2014 it's St. John the Divine in upper Manhattan. Second: despite the popish name, it isn't Catholic, it's Episcopalian. Third: though construction began in 1892, the building is still not complete, and many estimate it will take another 100 years to finish. The 121,000-square-foot structure blends Romanesque and Gothic elements, thanks to the varying tastes of the architects who worked on it over the past century. Most striking, it's being built without steel, in the classic Gothic manner \u2014 to that end, in 1979 a master stonecutter was brought from England to train Harlem youths in the art of traditional stonecutting. Much work remains, but what's in place is quite beautiful, especially the Rose Window in the apse, the largest in North America.",
+      "beat_length_class": "anchor",
+      "duration_sec": 64,
+      "kid_friendly": "yes",
+      "entities": [
+        "St. Peter's Basilica",
+        "Rose Window"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "unfinished cathedral",
+      "physical_cues": [
+        {
+          "cue": "The Rose Window in the apse, the largest in North America",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "The 121,000-square-foot structure, built of stone without steel in the classic Gothic manner",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "St. John the Divine is the largest cathedral in the world; St. Peter's is a basilica not a cathedral",
+        "It is Episcopalian, not Catholic",
+        "Construction began 1892 and is unfinished; estimated 100 more years",
+        "121,000 sq ft, blend of Romanesque and Gothic, built without steel",
+        "1979: master stonecutter brought from England to train Harlem youths",
+        "Rose Window in the apse is the largest in North America"
+      ],
+      "source_passage": "Little-known fact: The largest cathedral in the world is not St. Peter\u2019s in\nRome (which is technically not a cathedral but a basilica), it\u2019s St. John the\nDivine in upper Manhattan. Odder fact: Despite the popish name, it isn\u2019t\nCatholic, it\u2019s Episcopalian. Oddest fact: Though construction began on the\ncathedral in 1892, the building is yet to be completed, and many estimate\nthat it will take another 100 years for that to happen. All of which makes\nthis a fascinating building to visit. You\u2019ll see a bit of how the ancient\ncathedrals of Europe were erected\u2014the 121,000-square-foot structure, a\nblend of Romanesque and Gothic elements (thanks to the varying tastes of\nthe architects who worked on it over the past century), is being built without\nsteel, in the classic Gothic manner. (To that end, in 1979 a master\nstonecutter was brought from England to train Harlem youths in the art of\ntraditional stonecutting.) There\u2019s still much work to be done (including a lot\nof fundraising!) but what is in place\u2014and there\u2019s a lot\u2014is quite beautiful,\nespecially the Rose Window in the apse, the largest in North America.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_cathedral_of_st_john_the_divine_historic_worship_frommers-nyc-2024_blessing_of_the_animals",
+      "city_name": "new_york",
+      "poi_name": "Cathedral of St. John the Divine",
+      "parent_poi": null,
+      "lens": "historic_worship",
+      "topic_slug": "blessing_of_the_animals",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Services here tend to be among the most musical and progressive in the city. There's the New Year's Eve service, featuring original work from some of the best composers in town; the Halloween concert; and the Blessing of the Animals, held on the feast day of St. Francis of Assisi, usually early October \u2014 a ceremony in which New Yorkers bring their pets, ranging from puppies to pythons to thoroughbred horses, to be blessed.",
+      "beat_length_class": "mid",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Blessing of the Animals",
+        "St. Francis of Assisi"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "playful",
+      "subject_tag": "animal blessing",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Services are among the most musical and progressive in the city",
+        "New Year's Eve service features original composer work; there is a Halloween concert",
+        "Blessing of the Animals on the feast day of St. Francis of Assisi, early October, brings pets from puppies to pythons to horses"
+      ],
+      "source_passage": "Services here tend to be among the most musical and progressive in the\ncity. I particularly recommend the New Year\u2019s Eve service, featuring\noriginal work from some of the best composers in town; the Halloween\n\nconcert; and the Blessing of the Animals (on the feast day of St. Francis of\nAssisi, usually early Oct), a ceremony in which New Yorkers bring their\npets\u2014ranging from puppies to pythons to thoroughbred horses\u2014to be\nblessed.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_cathedral_of_st_john_the_divine_historic_arch_frommers-nyc-2024_vertical_tour_staircase",
+      "city_name": "new_york",
+      "poi_name": "Cathedral of St. John the Divine",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "vertical_tour_staircase",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Ask about the Vertical Tour, which takes you on a hike up an 11-flight circular staircase to the top of the cathedral, for spectacular views.",
+      "beat_length_class": "micro",
+      "duration_sec": 10,
+      "kid_friendly": "yes",
+      "entities": [
+        "Vertical Tour"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "vertical tour",
+      "physical_cues": [
+        {
+          "cue": "The 11-flight circular staircase climbed on the Vertical Tour",
+          "direction": "up",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The Vertical Tour climbs an 11-flight circular staircase to the top for views"
+      ],
+      "source_passage": "also inquire about the Vertical Tour (offered Fri and some Sat at\n2pm), which takes you on a hike up an 11-flight circular staircase to the top,\nfor spectacular views.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_museum_of_arts_and_design_visual_art_frommers-nyc-2024_locals_over_tourists_design",
+      "city_name": "new_york",
+      "poi_name": "Museum of Arts and Design",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "locals_over_tourists_design",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "It's not easy to get a New Yorker's attention, but this museum does it consistently \u2014 it's one of the few museums in town where you'll see more locals than visitors, drawn in by creative, sometimes wacky, exhibitions on design. One highlighted the pins worn by the late Secretary of State Madeleine Albright; another used visitors' sense of smell to explore how perfumes are created. On the top floor, artists in residence work at their crafts \u2014 furniture, textiles, you name it \u2014 making the exhibits below feel that much more vital.",
+      "beat_length_class": "mid",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "Madeleine Albright"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "design exhibitions",
+      "physical_cues": [
+        {
+          "cue": "Top-floor studios where artists in residence work at furniture, textiles, and other crafts",
+          "direction": "up",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "One of few NYC museums where locals outnumber visitors",
+        "Exhibition highlighted Madeleine Albright's pins; another explored perfume via smell",
+        "Artists in residence work on the top floor"
+      ],
+      "source_passage": "It\u2019s not easy to get a New\nYorker\u2019s attention, but this museum does that consistently\u2014it\u2019s one of the\nfew museums in town where you\u2019ll see more locals than visitors, drawn in\nby creative, sometimes wacky, exhibitions on design. One, for example,\nhighlighted the pins worn by the late Secretary of State Madeleine Albright;\nanother used visitors\u2019 sense of smell to delve into how perfumes are\ncreated. On the top floor, artists in residence work at their crafts\u2014furniture,\ntextiles, you name it\u2014making the exhibits below feel that much more vital.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_historical_society_local_legends_frommers-nyc-2024_oldest_museum_full_attic",
+      "city_name": "new_york",
+      "poi_name": "New-York Historical Society",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "oldest_museum_full_attic",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "When you're NYC's oldest museum, founded in 1804, your attic gets mighty full. In past years that fourth-floor \"attic\" felt like a treasure hunt, its open storage units overflowing with telling artifacts \u2014 a Tiffany lamp here, a pair of historic pistols there, the plaster model head sculptor Daniel Chester French created for Washington's Lincoln Memorial in another corner. Then in 2017 the curators tidied up, replacing the open storage with three not-so-successful permanent galleries: a runway of too-many Tiffany lamps, a room of themed glass cases on facets of city life like \"Childhood,\" \"Fire,\" and \"Collecting,\" and a center for women's history.",
+      "beat_length_class": "anchor",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "Daniel Chester French",
+        "Lincoln Memorial",
+        "Tiffany"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "oldest museum",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "NYC's oldest museum, founded 1804",
+        "Fourth-floor open-storage attic held a Tiffany lamp, historic pistols, and Daniel Chester French's plaster model head for the Lincoln Memorial",
+        "In 2017 open storage was replaced by three permanent galleries: Tiffany lamps, themed glass cases (Childhood, Fire, Collecting), and a women's history center"
+      ],
+      "source_passage": "When you\u2019re NYC\u2019s oldest\nmuseum (founded in 1804), your attic gets mighty full. In past years that\nfourth-floor \u201cattic\u201d felt like a treasure hunt, its open storage units\noverflowing with telling artifacts from the museum\u2019s holdings\u2014a Tiffany\nlamp here, a pair of historic pistols there, the plaster model head created by\nsculptor Daniel Chester French for Washington\u2019s Lincoln Memorial in\nanother corner. Alas, the curators decided to tidy up, and in 2017 replaced\nthe open storage with three not-so-successful permanent galleries. The first\nis a runway of sorts for Tiffany lamps, with too many similar ones on\ndisplay (they\u2019re pretty, but it is overkill). Next is a large room with themed\nglass cases of artifacts that illustrate\u2014but don\u2019t do enough to illuminate\u2014\ndifferent facets of New York City life through the ages (\u201cChildhood,\u201d \u201cFire,\u201d\nand \u201cCollecting\u201d are three of these too-loosely-related exhibits). The third is\na center for women\u2019s history, which has created several yawner exhibits\nsince its opening.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_historical_society_visual_art_frommers-nyc-2024_welcome_film_hudson_audubon",
+      "city_name": "new_york",
+      "poi_name": "New-York Historical Society",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "welcome_film_hudson_audubon",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "On the lower floors, permanent displays include paintings from the Hudson Valley School and Audubon drawings, making the museum feel more dedicated to art than to history. The powers-that-be had the wisdom to keep the superb 18-minute film that welcomes visitors \u2014 reason alone to come here. So too are some, but not all, of the temporary exhibits, which have ranged far beyond the city: one on how Title IX shaped sports in the U.S., another showing how children's books covered the Civil Rights Movement, and a look at the life of Justice Ruth Bader Ginsburg.",
+      "beat_length_class": "mid",
+      "duration_sec": 39,
+      "kid_friendly": "yes",
+      "entities": [
+        "Hudson Valley School",
+        "Audubon",
+        "Title IX",
+        "Civil Rights Movement",
+        "Ruth Bader Ginsburg"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "welcome film",
+      "physical_cues": [
+        {
+          "cue": "Lower-floor galleries of Hudson Valley School paintings and Audubon drawings",
+          "direction": "down",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Lower floors hold Hudson Valley School paintings and Audubon drawings",
+        "An 18-minute welcome film is kept and is reason alone to visit",
+        "Temporary exhibits covered Title IX and sports, children's books on Civil Rights, and Ruth Bader Ginsburg"
+      ],
+      "source_passage": "paintings from the Hudson Valley School, and Audubon drawings, making\nthe museum feel more dedicated to art than to history. Luckily, the powers-\nthat-be had the wisdom to keep the superb 18-minute film that welcomes\nvisitors to the museum. It is reason alone to come here, as are some, but not\nall, of the temporary exhibits\u2014recent offerings have covered life far beyond\nthe city, with one on how Title IX shaped sports in the U.S., another\nshowing how children\u2019s books covered the Civil Rights Movement, and a\nlook at the life of Justice Ruth Bader Ginsburg.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_cloisters_historic_arch_frommers-nyc-2024_salvaged_medieval_mirage",
+      "city_name": "new_york",
+      "poi_name": "The Cloisters",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "salvaged_medieval_mirage",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "An offshoot of the Metropolitan Museum, the Cloisters is the only museum in the United States devoted wholly to medieval art, and it shows its masterworks in a setting that seems airlifted intact from some remote corner of the Pyrenees, or from a castle-lined town in Bavaria. Opened in 1934, the museum was in fact built in the United States, but 30% of its architectural elements \u2014 columns, pedestals, naves, doorframes, exquisite stained-glass windows \u2014 were salvaged from medieval European structures. It's a stunning mirage: even the land across the river was bought by patron John D. Rockefeller to thwart development and ensure the Cloisters' views would forever have a medieval face. At its heart are four cloisters, garden areas centered with a fountain and surrounded by covered walkways of the type seen in every monastery and abbey in Europe.",
+      "beat_length_class": "anchor",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "Metropolitan Museum",
+        "John D. Rockefeller",
+        "Pyrenees",
+        "Bavaria"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "salvaged medieval setting",
+      "physical_cues": [
+        {
+          "cue": "The four cloisters \u2014 garden areas centered on a fountain, ringed by covered walkways",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "The undeveloped land across the river, bought by Rockefeller to preserve the medieval view",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "cloisters",
+          "gloss": "garden areas centered with a fountain and surrounded by covered walkways, of the type seen in every monastery and abbey in Europe"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Offshoot of the Met; only U.S. museum devoted wholly to medieval art",
+        "Opened 1934, built in the U.S. but 30% of architectural elements salvaged from medieval European structures",
+        "John D. Rockefeller bought land across the river to preserve the view",
+        "Four cloisters with fountains and covered walkways at its heart"
+      ],
+      "source_passage": "An offshoot of the\nMetropolitan Museum (p. 224), the Cloisters is the only museum in the\nUnited States devoted wholly to medieval art. And it shows its masterworks\nin a setting that seems to have been airlifted, utterly intact, from some\nremote corner of the Pyrenees, or from a castle-lined town in Bavaria.\nOpened in 1934, the museum was, in fact, built in the United States, but\n30% of its architectural elements\u2014columns, pedestals, naves, doorframes,\nexquisite stained-glass windows\u2014were salvaged from medieval European\nstructures. It\u2019s a stunning mirage\u2014even the land across the river was bought\nby patron John D. Rockefeller to thwart development and ensure that the\nCloisters\u2019 views would forever have a medieval face. At its heart are four\ncloisters, garden areas centered with a fountain and surrounded by covered\nwalkways of the type seen in every monastery and abbey in Europe.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_cloisters_visual_art_frommers-nyc-2024_unicorn_tapestries_narwhal_tooth",
+      "city_name": "new_york",
+      "poi_name": "The Cloisters",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "unicorn_tapestries_narwhal_tooth",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Pay special attention to the Unicorn Tapestries, one of only two full sets with a unicorn theme in the world \u2014 the other is in Paris. These richly detailed tapestries can be read on many levels: many scholars see the unicorn as a symbol of Christ, and the hunt to slay it as evocative of the Passion; others read the work as a metaphor for courtly love, with the hunt as courtship and the final tapestry \u2014 the unicorn trapped inside a wedding-ring-like fence \u2014 symbolizing marriage. Despite this captivity, the unicorn does look happy. They are an evocative slice of a past when nobles only hunted in packs of six, and unicorns were thought to be real \u2014 hence the long narwhal tooth in this room, which medieval people believed came from a unicorn.",
+      "beat_length_class": "anchor",
+      "duration_sec": 50,
+      "kid_friendly": "yes",
+      "entities": [
+        "Unicorn Tapestries",
+        "Passion"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "unicorn tapestries",
+      "physical_cues": [
+        {
+          "cue": "The Unicorn Tapestries, including the final panel of the unicorn inside a wedding-ring-like fence",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "The long narwhal tooth displayed in the same room",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Unicorn Tapestries are one of only two full unicorn-theme sets in the world; the other is in Paris",
+        "Read as a Christ/Passion symbol or as courtly love/marriage",
+        "A narwhal tooth in the room was thought by medieval people to come from a unicorn"
+      ],
+      "source_passage": "Though you can see the entire museum in an hour or so, pay special\nattention to the Unicorn Tapestries, one of only two full sets with a unicorn\ntheme in the world (the other is in Paris). These richly detailed tapestries\ncan be enjoyed on a number of levels: Many scholars see the unicorn as a\nsymbol of Christ, and the hunt to slay it as evocative of the Passion. Others\nwrite that the work is a metaphor for courtly love, with the hunt itself\ncourtship, and the last tapestry of the unicorn trapped inside a wedding\nring\u2013like fence symbolizing marriage (despite this captivity, the unicorn\ndoes look happy). Whatever you decide, they are strikingly beautiful, an\nevocative slice of the past when nobles only hunted in packs of six, and\nunicorns were thought to be real (hence the long narwhal tooth in this room,\nwhich medieval man thought came from unicorns).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_cloisters_visual_art_frommers-nyc-2024_merode_altarpiece_cloisters_cross",
+      "city_name": "new_york",
+      "poi_name": "The Cloisters",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "merode_altarpiece_cloisters_cross",
+      "sub_location": "campin-room",
+      "trigger_address": null,
+      "script_body": "The other must-see items are kept in the climate-controlled Campin Room \u2014 bring a sweater. There you'll find Robert de Campin's breakthrough Merode altarpiece, from around 1425, which placed the Annunciation \u2014 the moment an angel tells the Virgin Mary she will bear the child of God \u2014 in a secular setting rather than a church. It's also dramatic for its use of Jewish objects, including a prayer shawl and a vase with Hebrew-looking lettering, to establish Mary's background. Nearby is the so-called Cloisters Cross, one of only three known ivory crosses preserved from the 12th century \u2014 and the most complex, with over 90 figures and inscriptions painstakingly carved into the walrus-tusk ivory.",
+      "beat_length_class": "anchor",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Campin Room",
+        "Robert de Campin",
+        "Merode altarpiece",
+        "Annunciation",
+        "Virgin Mary",
+        "Cloisters Cross"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "campin room treasures",
+      "physical_cues": [
+        {
+          "cue": "The Merode altarpiece in the climate-controlled Campin Room",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "The Cloisters Cross, carved with over 90 figures in walrus-tusk ivory, displayed nearby",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Campin Room is climate-controlled; bring a sweater",
+        "Robert de Campin's Merode altarpiece (ca. 1425) set the Annunciation in a secular setting and used Jewish objects to establish Mary's background",
+        "The Cloisters Cross is one of only three known 12th-century ivory crosses and the most complex, with over 90 figures carved in walrus-tusk ivory"
+      ],
+      "source_passage": "The other must-see\nitems are kept in the climate-controlled Campin Room (bring a sweater),\nwhere you\u2019ll view Robert de Campin\u2019s breakthrough Merode altarpiece\n(ca. 1425) which placed the Annunciation\u2014the moment when an angel\ninforms the Virgin Mary that she will bear the child of God\u2014in a secular\nsetting rather than a church. It\u2019s also quite dramatic for its use of Jewish\nobjects, including a prayer shawl and a vase with Hebrew-looking lettering,\nto establish Mary\u2019s background. Nearby is the so-called Cloisters Cross,\none of only three known ivory crosses preserved from the 12th century\u2014\nand the most complex, at that, with over 90 figures and inscriptions\npainstakingly carved into the walrus tusk ivory.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_el_museo_del_barrio_visual_art_frommers-nyc-2024_santos_de_palo_collection",
+      "city_name": "new_york",
+      "poi_name": "El Museo del Barrio",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "santos_de_palo_collection",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "This showplace for the art of Latin America and the Caribbean owns hundreds of pre-Columbian pieces, plus contemporary and modern paintings and sculptures, and \u2014 most significantly \u2014 500 Santos de Palo, mostly from Puerto Rico. These hand-carved wooden saints are very beautiful and well worth a visit to see. The museum also throws fun parties for every Latin and Caribbean holiday and hosts changing exhibits.",
+      "beat_length_class": "mid",
+      "duration_sec": 29,
+      "kid_friendly": "yes",
+      "entities": [
+        "Santos de Palo",
+        "Puerto Rico"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "santos de palo",
+      "physical_cues": [
+        {
+          "cue": "The 500 Santos de Palo \u2014 hand-carved wooden saints, mostly from Puerto Rico",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Santos de Palo",
+          "gloss": "hand-carved wooden saints, mostly from Puerto Rico"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Showplace for Latin American and Caribbean art with hundreds of pre-Columbian pieces",
+        "Owns 500 Santos de Palo, hand-carved wooden saints mostly from Puerto Rico",
+        "Throws parties for every Latin and Caribbean holiday"
+      ],
+      "source_passage": "This showplace for the art of Latin\nAmerica and the Caribbean owns hundreds of pre-Columbian pieces,\ncontemporary and modern paintings and sculptures, and, most significantly,\n500 Santos de Palo, mostly from Puerto Rico. These hand-carved, wooden\nsaints are very beautiful and well worth a visit to see. The museum also\n\nthrows fun parties for every Latin and Caribbean holiday and hosts\nchanging exhibits.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_morris_jumel_mansion_war_conflict_frommers-nyc-2024_washington_campaign_hq",
+      "city_name": "new_york",
+      "poi_name": "Morris-Jumel Mansion",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "washington_campaign_hq",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The oldest house in Manhattan, erected in 1765, this mansion was the site of two marquee historic events. General George Washington requisitioned the house after the disastrous Battle of Brooklyn and made it his campaign HQ for four weeks \u2014 much to the chagrin of the Loyalist Morris family, the owners.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "George Washington",
+        "Battle of Brooklyn",
+        "Morris family"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "washington headquarters",
+      "physical_cues": [
+        {
+          "cue": "The mansion itself \u2014 the oldest house in Manhattan, erected in 1765",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Oldest house in Manhattan, erected 1765",
+        "Washington requisitioned it as campaign HQ for four weeks after the Battle of Brooklyn",
+        "The owners were the Loyalist Morris family"
+      ],
+      "source_passage": "The oldest house in\nManhattan, erected in 1765, this mansion was the site of two marquee\nhistoric events. General George Washington requisitioned the house after\nthe disastrous Battle of Brooklyn and made it his campaign HQ for 4\nweeks, much to the chagrin of the Loyalist Morris family (the owners).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_morris_jumel_mansion_famous_residents_frommers-nyc-2024_eliza_jumel_aaron_burr",
+      "city_name": "new_york",
+      "poi_name": "Morris-Jumel Mansion",
+      "parent_poi": null,
+      "lens": "famous_residents",
+      "topic_slug": "eliza_jumel_aaron_burr",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Eliza Jumel, a later owner, married the disgraced former Vice President Aaron Burr in the parlor here. Their marriage was a disaster, ending a year later \u2014 and Burr passed away on the very day the divorce was issued.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "Eliza Jumel",
+        "Aaron Burr"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "burr marriage",
+      "physical_cues": [
+        {
+          "cue": "The parlor where Eliza Jumel married Aaron Burr",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Later owner Eliza Jumel married former VP Aaron Burr in the parlor",
+        "The marriage ended a year later",
+        "Burr died on the day the divorce was issued"
+      ],
+      "source_passage": "Eliza Jumel, a later owner, married disgraced former Vice President Aaron\nBurr in the parlor here. Their marriage was a disaster, ending a year later;\nBurr passed away on the day the divorce was issued.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 5: Exploring \u2014 Especially for Kids",
+        "page": ""
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "book_slug": "frommers-nyc-2024",
+      "source_chunk_slug": "chunk-06-ch05-especially-for-kids",
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ]
+}

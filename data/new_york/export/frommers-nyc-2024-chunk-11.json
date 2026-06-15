@@ -1,0 +1,2990 @@
+[
+  {
+    "name": "Washington Square Park",
+    "short_description": "Iconic Greenwich Village landmark and NYU social center; one of NYC's most-visited public squares with the Stanford White marble arch. Very high tourist gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.730823,
+    "longitude": -73.997332,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic Greenwich Village landmark and NYU social center; one of NYC's most-visited public squares with the Stanford White marble arch. Very high tourist gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia (40.730823, -73.997332)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_greenwich_village_social_change_frommers-nyc-2024_village_as_place_apart",
+        "poi_name": "Washington Square Park",
+        "lens": "social_change",
+        "script_body": "Greenwich Village started as its own village — a place where, as in Boccaccio's Decameron, the well-to-do fled on a near-yearly basis to escape the plagues of colonial Nieuw Amsterdam and then New York City, mostly recurrent bouts of yellow fever. Building began in earnest in the 1820s and 1830s, with wealthy families putting up row house after row house in what was then a suburb. Then the city caught up: the hoi polloi moved in just down the block, and the bluebloods did the 19th-century version of urban flight, decamping a mile uptown. Their swank houses were carved into cheap apartments and boarding houses, or torn down for factories, and the neighborhood filled with immigrants and, later, artists. It kept its status as a place apart thanks to its tangle of twisting, narrow streets — \"The streets have run crazy and broken themselves,\" O. Henry wrote, \"into strange angles and curves. One street crosses itself a time or two.\" In the 1960s and '70s that quiet charm drew the wealthy back, and it became a hideaway once more.",
+        "physical_cues": [],
+        "key_claims": [
+          "The Village began as a refuge from yellow-fever plagues",
+          "Built up as a wealthy suburb in the 1820s-30s, then abandoned by the rich for uptown",
+          "Its twisting streets kept it a place apart; the rich returned in the 1960s-70s"
+        ],
+        "source_passage": "Greenwich Village started as its own village, a place where, as in Boccaccio's Decameron, the well-to-do fled on a near-yearly basis to escape the plagues of colonial Nieuw Amsterdam and then New York City (recurrent bouts of yellow fever, mostly). Building began in earnest in the 1820s and 1830s, with wealthy families building row house after row house in what was then a suburb. Soon, of course, the city caught up, the hoi polloi were living just down the block, and the bluebloods did the 19th-century version of urban flight and moved a mile uptown to newer suburbs. Their swank houses were subdivided into cheap apartments and boarding houses, or torn down entirely to create factories. The neighborhood became home to immigrants and later, artists. The Village always retained its status as a place apart, however, thanks to the confusing configuration of its streets, a jumble of twisting byways and narrow streets. \"The streets have run crazy and broken themselves . . . into strange angles and curves,\" O. Henry wrote. \"One street crosses itself a time or two.\" In the 1960s and '70s, the charm of this urban topography, the quiet of the tiny streets cut off from upper Manhattan's bustle, brought the well-to-do back, and the neighborhood became once more a hideaway for wealthy New Yorkers.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Walking Tour 3 intro"
+        },
+        "entities": [
+          "Boccaccio",
+          "Decameron",
+          "Nieuw Amsterdam",
+          "O. Henry"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "wry",
+        "subject_tag": "village origins",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Nieuw Amsterdam",
+            "gloss": "the Dutch colonial name for what became New York City"
+          },
+          {
+            "phrase": "hoi polloi",
+            "gloss": "the common people, the masses"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 78,
+        "kid_friendly": "yes",
+        "topic_slug": "village_as_place_apart",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "4042bb92843488929428924eb012785ace095de52233fe76bff92a42fc92e873"
+      },
+      {
+        "beat_id": "newyork_washington_square_park_dark_history_frommers-nyc-2024_dutch_slaves_human_watchdogs",
+        "poi_name": "Washington Square Park",
+        "lens": "dark_history",
+        "script_body": "Hangings, protests, burials, parades — if another spot in New York has seen as much drama as Washington Square Park, the guidebook hadn't heard of it. North of the first Dutch settlement in Manhattan, this was originally marshland fed by a stream that still runs under nearby Minetta Lane. Its first settlers were Nieuw Amsterdam slaves who, in 1641, were given partial freedom in return for farming this then-dangerous, remote acreage. They were primarily older men and women who had outlived their usefulness to their masters, and their freedom was a mixed blessing: they had to hand over a large part of their harvests to the colony and, more disturbingly, they became human watchdogs, posted here to alert the Dutch if local Indians or British forces tried to attack.",
+        "physical_cues": [],
+        "key_claims": [
+          "The square was originally marshland fed by the Minetta stream",
+          "In 1641 Dutch-colony slaves were given partial freedom to farm this remote acreage",
+          "Freed in exchange for harvests, they served as a human-watchdog buffer against attack"
+        ],
+        "source_passage": "Hangings, protests, burials, parades . . . if there's another spot in New York that's seen as much drama as Washington Square Park has, I've yet to hear of it. Located north of the first Dutch settlement in Manhattan, the area was originally a marshland, fed by the stream that still runs under nearby Minetta Lane (see stop 10, below). Its first settlers were Nieuw Amsterdam slaves who in 1641 were given partial freedom in return for farming this then-dangerous and remote acreage. For these slaves (primarily older men and women who'd outlived their usefulness to their masters), their freedom was a mixed blessing: They had to hand over a large part of their harvests to the colony, and, perhaps more disturbingly, they became human watchdogs, set here to alert the Dutch should local Indians or British forces try to attack.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1"
+        },
+        "entities": [
+          "Nieuw Amsterdam",
+          "Minetta Lane"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "somber",
+        "subject_tag": "freed slaves buffer",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Nieuw Amsterdam",
+            "gloss": "the Dutch colonial name for New York City"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 51,
+        "kid_friendly": "no",
+        "topic_slug": "dutch_slaves_human_watchdogs",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "da0df0dcca631cd126cc12cd05b4fb0d82a292dc80c585d160748eb78665524f"
+      },
+      {
+        "beat_id": "newyork_washington_square_park_dark_history_frommers-nyc-2024_potters_field_yellow_fever",
+        "poi_name": "Washington Square Park",
+        "lens": "dark_history",
+        "script_body": "In 1797 the drained swamp was designated a potter's field, and it was put to grim use a year later when yellow fever swept the city. Over five percent of New York's population died that muggy, mosquito-infested summer, and the poorest of them — nearly 20,000 people — were buried right here. In 1826 the ground became a military parade ground, and tales were told of soldiers drilling here, their boots slipping through the crust of the dirt and crunching down on shroud-covered skeletons. As if that weren't haunting enough, the square was often used for public hangings, the condemned strung up on a massive elm that still stands on the park's northwest corner.",
+        "physical_cues": [
+          {
+            "cue": "The massive elm still standing on the park's northwest corner, used for public hangings",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Designated a potter's field in 1797",
+          "1798 yellow fever killed over 5% of the city; nearly 20,000 of the poor buried here",
+          "Became a parade ground in 1826; hanging elm still stands on the NW corner"
+        ],
+        "source_passage": "In 1797, the drained swamp was designated a potter's field; it was put to good use a year later when yellow fever swept through what was by then New York City. Over 5% of the population of the city died that muggy, mosquito-infested summer, the poorest of whom were buried here, nearly 20,000 of them. In 1826 it became a military parade ground; tales were told of soldiers doing their drills, boots slipping through the crust of the dirt and crunching down on shroud-covered skeletons. If all this weren't haunting enough, the square was often used for public hangings, the condemned strung up on a massive elm tree that still stands on the park's northwest corner.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1"
+        },
+        "entities": [
+          "yellow fever epidemic of 1798"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "potters field burials",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 46,
+        "kid_friendly": "no",
+        "topic_slug": "potters_field_yellow_fever",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "e68628d9baf948aef13d2f71785378d2cddf383c21641640ba7c065769435be6"
+      },
+      {
+        "beat_id": "newyork_washington_square_park_historic_arch_frommers-nyc-2024_stanford_white_marble_arch",
+        "poi_name": "Washington Square Park",
+        "lens": "historic_arch",
+        "script_body": "The magnificent white marble arch at the foot of Fifth Avenue was designed by Stanford White — his second such arch. The first, made of wood and plaster, was erected in 1889 to mark the centennial of George Washington's inauguration and to raise funds for this permanent version, completed in 1892. Look to the right side of the arch: the sculpture there, Washington as President, Accompanied by Wisdom and Justice, was added in 1918 by Alexander Stirling Calder, father of the great modern mobile-maker Alexander Calder. On the other side, Washington as Commander-in-Chief, Accompanied by Fame and Valor, by Herman Atkins MacNeill, was tacked on the same year.",
+        "physical_cues": [
+          {
+            "cue": "The white marble arch at the foot of Fifth Avenue",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Right-side sculpture: Washington as President, Accompanied by Wisdom and Justice",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Left-side sculpture: Washington as Commander-in-Chief, Accompanied by Fame and Valor",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Designed by Stanford White; permanent marble arch completed 1892",
+          "First wood-and-plaster arch erected 1889 for Washington's inauguration centennial",
+          "Two 1918 sculptures by A.S. Calder and Herman Atkins MacNeill flank it"
+        ],
+        "source_passage": "The magnificent white marble arch at the foot of Fifth Avenue was designed by Stanford White, the second such arch he created (the first, made of wood and plaster, was erected in 1889 to mark the centennial of George Washington's inauguration and to raise funds for this permanent arch, completed in 1892). The sculpture on the right side of the arch, depicting Washington as President, Accompanied by Wisdom and Justice, was added in 1918 by Alexander Stirling Calder, father of the great modern artist and mobile-maker Alexander Calder. On the other side, we see Washington as Commander-in-Chief, Accompanied by Fame and Valor by Herman Atkins MacNeill, also tacked on in 1918.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1"
+        },
+        "entities": [
+          "Stanford White",
+          "George Washington",
+          "Alexander Stirling Calder",
+          "Alexander Calder",
+          "Herman Atkins MacNeill",
+          "Washington Square Arch"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "marble arch",
+        "sub_location": "washington-square-arch",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "topic_slug": "stanford_white_marble_arch",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Arch completion 1892 and Stanford White design corroborated by Wikipedia / Village Preservation.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c0f6d21e552ac5008e7f26d584c8e5efb04e99b01b94250a285935ab98ab4bc2"
+      },
+      {
+        "beat_id": "newyork_washington_square_park_social_change_frommers-nyc-2024_duchamp_independent_republic",
+        "poi_name": "Washington Square Park",
+        "lens": "social_change",
+        "script_body": "The arch has long been a choice target for protesters. In 1918, by Frommer's account, Dada daddy Marcel Duchamp climbed the 110 interior steps with fellow members of the Liberal Club — including a woman who called herself \"Woe,\" so she could declaim \"Woe is Me!\" — carrying Chinese lanterns, food, wine, and cap guns, to declare Greenwich Village an \"independent republic.\" An unamused constable soon brought them down. Less lighthearted was a 1968 takeover by the Students Against Racism and War, who barricaded themselves inside to hang a banner protesting the Vietnam War. The door to the inner stairway has been bolted ever since.",
+        "physical_cues": [
+          {
+            "cue": "The bolted door to the arch's inner stairway, closed since the 1968 takeover",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Marcel Duchamp and Liberal Club members climbed the arch to declare the Village an 'independent republic'",
+          "A 1968 SARW takeover protested the Vietnam War",
+          "The inner-stairway door has been bolted since"
+        ],
+        "source_passage": "Over the years, the arch has become a choice target for protesters. In 1918, Dada daddy Marcel Duchamp climbed up the 110 interior steps with his fellow members of the Liberal Club (including a woman who called herself \"Woe,\" so she could declaim, \"Woe is Me!\"), carrying Chinese lanterns, food, wine, and cap guns, to declare Greenwich Village an \"independent republic.\" They were soon brought down by an unamused constable. Less lighthearted was a 1968 takeover by the Students Against Racism and War, who barricaded themselves inside to hang a banner protesting the Vietnam War. The door to the inner stairway has been bolted ever since.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1"
+        },
+        "entities": [
+          "Marcel Duchamp",
+          "Liberal Club",
+          "Students Against Racism and War",
+          "Vietnam War",
+          "Washington Square Arch"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "arch protests",
+        "sub_location": "washington-square-arch",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "topic_slug": "duchamp_independent_republic",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "The arch 'independent republic' stunt date: Frommer's says 1918; multiple historical sources (Village Preservation, Wikipedia) date it to January 23, 1917"
+          ],
+          "notes": "DISPUTE candidate: book says 1918, sources say Jan 23, 1917 for the Duchamp/Gertrude Drick 'Arch Conspirators' stunt. Date kept as the book wrote it ('In 1918...') but flagged for /fact-check. Not auto-corrected. See review_queue.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "fa1dbf99b2cbc389161fb8c09080428a71e77a6990971345f4cfc7ebf171b97d"
+      },
+      {
+        "beat_id": "newyork_washington_square_park_social_change_frommers-nyc-2024_covid_dance_party_curfew",
+        "poi_name": "Washington Square Park",
+        "lens": "social_change",
+        "script_body": "In 2020 and 2021 the park became an illegal — and very raucous — after-hours dance party for Covid-weary young people from all corners of the city. Clashes between revelers and noise-weary residents eventually led police to enforce a 10pm curfew in the park. That curfew has since been lifted.",
+        "physical_cues": [],
+        "key_claims": [
+          "In 2020-21 the park hosted illegal after-hours Covid-era dance parties",
+          "Resident complaints led to a since-lifted 10pm curfew"
+        ],
+        "source_passage": "In 2020 and 2021, the park became an illegal, and very raucous, after-hours dance party for Covid-weary young people from all corners of the city. Eventually, clashes between revelers and residents, who were upset about the noise, led the police to enforce a 10pm curfew in the park. That curfew has since been lifted.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "callback",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "subject_tag": "covid dance party",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "covid_dance_party_curfew",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "f1998edde7c3cdbf9d5808eef4a6eb7ccbed46f10f33aa32bd7d4762cfe2ea27"
+      },
+      {
+        "beat_id": "newyork_washington_square_park_parks_gardens_frommers-nyc-2024_unofficial_village_living_room",
+        "poi_name": "Washington Square Park",
+        "lens": "parks_gardens",
+        "script_body": "Spread around its iconic arch, Washington Square Park is the unofficial center of Greenwich Village and its de facto living room.",
+        "physical_cues": [
+          {
+            "cue": "The iconic arch with the park spread around it",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "The park is the unofficial center and 'living room' of Greenwich Village"
+        ],
+        "source_passage": "Spread around its iconic arch, Washington Square Park is the unofficial center of Greenwich Village and its de facto living room.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1 (caption)"
+        },
+        "entities": [
+          "Washington Square Arch"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "village living room",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "de facto",
+            "gloss": "in effect, in practice"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "topic_slug": "unofficial_village_living_room",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "ea348a7e25cbd2bd70c8a5ff70515590015341b4b4a0cefcdd04319bfac9a3d0"
+      }
+    ],
+    "importance_tier": 5
+  },
+  {
+    "name": "22 Washington Square North",
+    "short_description": "Modest gravity on its own; significance is the Samuel Morse / birthplace-of-telegraph plaque-level story. Niche history stop.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73105,
+    "longitude": -73.9979,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Modest gravity on its own; significance is the Samuel Morse / birthplace-of-telegraph plaque-level story. Niche history stop.",
+      "verified": false,
+      "geocode_source": "Nominatim (Washington Square North row, NYU building near Fifth Ave corner)",
+      "geocode_confidence": 0.74,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_washington_square_park_war_conflict_transit_frommers-nyc-2024_to_22_wash_sq_north",
+        "poi_name": "22 Washington Square North",
+        "lens": "hidden_history",
+        "script_body": "From the park, cross the street, turn left to head west, and walk until you reach 22 Washington Square North.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction from the park to 22 Washington Square North"
+        ],
+        "source_passage": "Cross the street, turn left (west), and walk until you see:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 1→2 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to morse",
+        "sub_location": null,
+        "trigger_address": "Washington Square Park, northwest corner",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 7,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_22_wash_sq_north",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8a69ee37d17023305e0a852373ff0680bfdb18036464325ab1f3f909c495b188"
+      },
+      {
+        "beat_id": "newyork_22_washington_square_north_science_tech_frommers-nyc-2024_morse_telegraph_birthplace",
+        "poi_name": "22 Washington Square North",
+        "lens": "science_tech",
+        "script_body": "Dash-dot-dot-dash — you've reached the birthplace of the telegraph. Inventor Samuel Morse lived in this New York University building, where he was a painting instructor, when in 1836 he worked out the rudiments of the telegraphic alphabet better known as Morse Code. A year later, on September 2, 1837, he gathered 1,700 feet of copper wire, coiled it around his room, and sent the world's first wire dispatch from one end to the other.",
+        "physical_cues": [
+          {
+            "cue": "The New York University building at 22 Washington Square North where Morse lived and taught",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Samuel Morse lived in this NYU building as a painting instructor",
+          "In 1836 he formulated the rudiments of Morse Code here",
+          "On Sept 2, 1837 he sent the first wire dispatch using 1,700 ft of coiled copper wire"
+        ],
+        "source_passage": "Dash-dot-dot-dash: You've now reached the birthplace of the telegraph. Inventor Samuel Morse lived in this New York University building (he was a painting instructor) when, in 1836, he formulated the rudiments of the telegraphic alphabet, better known as Morse Code. A year later, on September 2, 1837, he was able to gather 1,700 feet of copper wire, which he coiled around his room, sending the world's first wire dispatch from one end to the other.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 2"
+        },
+        "entities": [
+          "Samuel Morse",
+          "New York University",
+          "Morse Code"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "morse code birthplace",
+        "sub_location": null,
+        "trigger_address": "22 Washington Square North",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "topic_slug": "morse_telegraph_birthplace",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "e36a362b967a1d884e9795fafca58c969b0a5b3025b2b8efb50ab88a57e64e2a"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Washington Square North",
+    "short_description": "The longest unbroken run of Greek Revival town houses in the US; architectural and literary (Henry James) gravity. Moderate-high.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73158,
+    "longitude": -73.9982,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "The longest unbroken run of Greek Revival town houses in the US; architectural and literary (Henry James) gravity. Moderate-high.",
+      "verified": false,
+      "geocode_source": "Nominatim (Washington Square North, Greek Revival row, 40.7308-40.7320 corridor)",
+      "geocode_confidence": 0.72,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_washington_square_north_historic_arch_transit_frommers-nyc-2024_to_the_row",
+        "poi_name": "Washington Square North",
+        "lens": "historic_arch",
+        "script_body": "Retrace your steps and cross Fifth Avenue, looking at the magnificent row houses ahead of you.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction from 22 Washington Square North across Fifth Ave to the row houses"
+        ],
+        "source_passage": "Retrace your steps and cross Fifth Ave., looking at the magnificent row houses of:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 2→3 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to row",
+        "sub_location": null,
+        "trigger_address": "22 Washington Square North",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 5,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_the_row",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "84cfe539e2d0007fc0694f7d65d36f9d075792c2ee0699f33f9bd6639e065c87"
+      },
+      {
+        "beat_id": "newyork_washington_square_north_historic_arch_frommers-nyc-2024_greek_revival_row",
+        "poi_name": "Washington Square North",
+        "lens": "historic_arch",
+        "script_body": "You're looking at the longest unbroken string of Greek Revival town houses anywhere in the United States. New York University owns most of them now — in fact it owns much of the neighborhood — but in the 1830s, when they were built, they were strictly for individual owners of the highest social class. The Greek Revival style was no accident. In the mid-1820s, support for the Greeks — a Christian nation fighting for independence from the Ottoman Empire — was all the rage among the upper echelons of Manhattan society. That enthusiasm, plus the notion that America was a modern version of ancient Greek democracy, is why classical columns started popping up on buildings all over town, with Greek symbols worked into fences, pedestals added to facades, and so on.",
+        "physical_cues": [
+          {
+            "cue": "The unbroken row of Greek Revival town houses, with Greek symbols incorporated into the fences in front of you",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "The longest unbroken run of Greek Revival town houses in the US, mostly NYU-owned",
+          "Built in the 1830s for the highest social class",
+          "Greek Revival popularity tied to 1820s Manhattan support for Greek independence from the Ottomans"
+        ],
+        "source_passage": "You're now looking at the longest unbroken string of Greek Revival town houses anywhere in the United States. Aren't they lovely? New York University owns most of these (in fact, they own much of the neighborhood), but in the 1830s, when these were built, they were strictly for individual owners of the highest social class. Henry James' grandmother lived here, and he used the area as inspiration for the famed novel Washington Square (later turned into the play and film The Heiress). The use of Greek Revival architecture was no accident. In the mid-1820s, support for the Greeks—a Christian nation fighting for independence from the \"heathen\" (their term) Ottoman Empire—was all the rage among the upper echelons of Manhattan society. It's one reason (along with the notion that America was a modern version of ancient Greek democracy) why classical columns started popping up on buildings all over town, with Greek symbols incorporated into fences (as you'll see in front of you), pedestals added to facades, and so on.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 3"
+        },
+        "entities": [
+          "New York University",
+          "Ottoman Empire"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "greek revival row",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "topic_slug": "greek_revival_row",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Superlative ('longest unbroken string') not auto-corrected per never-auto-resolve rule.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "84a07b47d0f6652986c29003c8029c2c90e3aada3a1a5e168dcb1dfa710d1264"
+      },
+      {
+        "beat_id": "newyork_washington_square_north_literary_heritage_frommers-nyc-2024_henry_james_inspiration",
+        "poi_name": "Washington Square North",
+        "lens": "literary_heritage",
+        "script_body": "Henry James' grandmother lived here, and he used the area as the inspiration for his famed novel Washington Square — later turned into the play and film The Heiress.",
+        "physical_cues": [],
+        "key_claims": [
+          "Henry James's grandmother lived here",
+          "He used the area as inspiration for the novel Washington Square, adapted as The Heiress"
+        ],
+        "source_passage": "Henry James' grandmother lived here, and he used the area as inspiration for the famed novel Washington Square (later turned into the play and film The Heiress).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 3"
+        },
+        "entities": [
+          "Henry James",
+          "Washington Square (novel)",
+          "The Heiress"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "henry james novel",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "topic_slug": "henry_james_inspiration",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "ac2f793829c049afa50a1e0e0905bbe3aa24b1a7c46a807e599c00e94c498433"
+      },
+      {
+        "beat_id": "newyork_washington_square_north_famous_residents_frommers-nyc-2024_bohemians_no_3",
+        "poi_name": "Washington Square North",
+        "lens": "famous_residents",
+        "script_body": "By the early 20th century this strip had run down, and many of the Village's best-known \"Bohemians\" moved in. Painters Edward Hopper and Thomas Eakins and writer John Dos Passos all lived at #3 Washington Square North — though not at the same time.",
+        "physical_cues": [
+          {
+            "cue": "The facade of #3 Washington Square North, home to Hopper, Eakins, and Dos Passos",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "By the early 20th century the strip had run down and drew Bohemians",
+          "Hopper, Eakins, and Dos Passos each lived at #3 Washington Square North at different times"
+        ],
+        "source_passage": "By the early 20th century, this strip had become run down, and many of the Village's best-known \"Bohemians\" moved in, including painters Edward Hopper and Thomas Eakins, and writer John Dos Passos. All three lived at #3 Washington Square North, though not at the same time.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 3"
+        },
+        "entities": [
+          "Edward Hopper",
+          "Thomas Eakins",
+          "John Dos Passos"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "neutral",
+        "subject_tag": "bohemian residents",
+        "sub_location": null,
+        "trigger_address": "#3 Washington Square North",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "topic_slug": "bohemians_no_3",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "2e2c9a95994adabfce90bd317c553c73d05d31dce1ae6f3bfc9aa6e6def11b52"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "29 Washington Place",
+    "short_description": "Site of the 1911 Triangle Shirtwaist Factory fire (the Brown/Asch Building, now NYU); a NHL and major American-labor-history pilgrimage site. High historical gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73,
+    "longitude": -73.99528,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Site of the 1911 Triangle Shirtwaist Factory fire (the Brown/Asch Building, now NYU); a NHL and major American-labor-history pilgrimage site. High historical gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia 'Brown Building (Manhattan)' (40.73000, -73.99528)",
+      "geocode_confidence": 0.93,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_29_washington_place_dark_history_transit_frommers-nyc-2024_to_triangle_site",
+        "poi_name": "29 Washington Place",
+        "lens": "dark_history",
+        "script_body": "Turn right, heading downtown, onto Washington Square East, then take a left onto Washington Place and walk to the corner of Greene Street.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction from Washington Square North to 29 Washington Place at Greene St"
+        ],
+        "source_passage": "Turn right (downtown) onto Washington Square E, then take a left onto Washington Place and walk to the corner of Greene St.:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 3→4 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to triangle",
+        "sub_location": null,
+        "trigger_address": "#3 Washington Square North",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 7,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_triangle_site",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "eb10888cbb3512753ef4105a4ddbb9e3fad659dd6395d41c794b975f278983a9"
+      },
+      {
+        "beat_id": "newyork_29_washington_place_dark_history_frommers-nyc-2024_triangle_shirtwaist_fire",
+        "poi_name": "29 Washington Place",
+        "lens": "dark_history",
+        "script_body": "On March 25, 1911, a horrific tragedy on this site reshaped New York State law and the history of the American labor movement. That Saturday, some 600 young women — mostly Jewish and Italian immigrants between 13 and 23 — were at work in a garment factory on the eighth, ninth, and tenth floors. At 5pm, just as they were getting ready to leave, a fire sprang up in the southeast corner of the eighth floor; no one has ever determined the cause. Within minutes all three floors were an inferno, and an inescapable one, because many doors had been locked from the outside — to prevent theft, the owners later said. A fire escape collapsed and the elevator operator fled, but a pedestrian named Joseph Zito ran in, got the elevator working, and made five trips up through the flames, saving 25 to 30 workers each time. Still, several young women jumped to their deaths in front of horrified passersby, others suffocated, and some were crushed at the locked doors. In all, 146 people were killed at the Triangle Shirt Waist Factory, most in the first ten minutes of the hour-long blaze.",
+        "physical_cues": [
+          {
+            "cue": "The building on this site at the corner of Washington Place and Greene St where the fire occurred on the upper floors",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "March 25, 1911 fire killed 146 at the Triangle Shirtwaist Factory",
+          "Workers were mostly Jewish and Italian immigrant women aged 13-23 on floors 8-10",
+          "Many doors locked from outside; Joseph Zito ran the elevator to save many"
+        ],
+        "source_passage": "On March 25, 1911, a horrific tragedy on this site reshaped the laws of New York State and the history of the American labor movement. On that Saturday, some 600 young women, mostly Jewish and Italian immigrants between the ages of 13 and 23, were hard at work in a garment factory on the eighth, ninth, and tenth floors of this building. At 5pm, just as the workers were getting ready to leave, a fire sprung up in the southeast corner of the eighth floor—no one has ever been able to determine the cause—and within minutes all three floors were an inferno. An inescapable one, it turned out, because many of the doors had been locked from the outside (to prevent theft, the owners said later). Minutes after that, one of the fire escapes collapsed, and the elevator operator fled in terror. A brave pedestrian named Joseph Zito ran into the building, got the elevator working, and made five trips up through the flames, saving 25 to 30 workers on each trip. Fleeing the flames, several young women jumped to their deaths in front of horrified passersby. Those trapped inside suffocated from the smoke, while still others were crushed in a heap at the locked doors. In all, 146 people were killed at the Triangle Shirt Waist Factory, most within the first 10 minutes of the hour-long blaze.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 4"
+        },
+        "entities": [
+          "Triangle Shirtwaist Factory",
+          "Joseph Zito"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "triangle fire",
+        "sub_location": null,
+        "trigger_address": "29 Washington Place, at the corner of Greene St.",
+        "beat_length_class": "anchor",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 70,
+        "kid_friendly": "no",
+        "topic_slug": "triangle_shirtwaist_fire",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "March 25, 1911 date and 146 dead corroborated by History.com, NFPA, and CUNY/NYC Data. Building is the Brown (formerly Asch) Building at Washington Place & Greene St.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "466dcacce86eedaa0260f83cea6ccd484994f61cc66d2a676cfe3a01a79195f6"
+      },
+      {
+        "beat_id": "newyork_29_washington_place_social_change_frommers-nyc-2024_labor_code_ilgwu",
+        "poi_name": "29 Washington Place",
+        "lens": "social_change",
+        "script_body": "After many protests, the state legislature answered the tragedy by rewriting the labor code into the most stringent in the nation. The labor movement, which had been struggling up to this point, gathered steam, and the International Ladies Garment Workers Union — the ILGWU — became a force in the industry.",
+        "physical_cues": [],
+        "key_claims": [
+          "After the fire the state rewrote the labor code into the nation's most stringent",
+          "The ILGWU became a force in the garment industry"
+        ],
+        "source_passage": "After many protests, the state legislature responded to the tragedy by re-writing the labor code, making it the most stringent in the nation. The labor movement, struggling up to this point, gathered steam and the International Ladies Garment Workers Union (ILGWU) became a force in the industry.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 4"
+        },
+        "entities": [
+          "International Ladies Garment Workers Union",
+          "New York State Legislature"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "labor reform",
+        "sub_location": null,
+        "trigger_address": "29 Washington Place, at the corner of Greene St.",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "topic_slug": "labor_code_ilgwu",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "b8f2a0a1458dede5ffdb7214145741fb5064080c017fed286a80f94a3a8bd408"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Judson Memorial Church",
+    "short_description": "Stanford White Romanesque church, social-activism landmark on the south side of Washington Square. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73028,
+    "longitude": -73.99833,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Stanford White Romanesque church, social-activism landmark on the south side of Washington Square. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia 'Judson Memorial Church', 55 Washington Square South (40.73028, -73.99833)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_judson_memorial_church_dark_history_transit_frommers-nyc-2024_to_judson",
+        "poi_name": "Judson Memorial Church",
+        "lens": "historic_worship",
+        "script_body": "Walk back to Washington Square and follow the perimeter of the park south to 4th Street, then turn right and walk to Thompson Street.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction from the Triangle site back around the park to Judson Church at Thompson St"
+        ],
+        "source_passage": "Walk back to Washington Square and follow the perimeters of the park south to 4th St. Turn right and walk to Thompson St.:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 4→5 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to judson",
+        "sub_location": null,
+        "trigger_address": "29 Washington Place, at the corner of Greene St.",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 7,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_judson",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c9cfbd5b1c93f3b61b56ad7c673cb5c526cdfbab25e14ca097db43851d7cd662"
+      },
+      {
+        "beat_id": "newyork_judson_memorial_church_historic_arch_frommers-nyc-2024_stanford_white_florentine_church",
+        "poi_name": "Judson Memorial Church",
+        "lens": "historic_arch",
+        "script_body": "This boxy Romanesque church, from 1929, was another masterwork by architect Stanford White, who took his inspiration from the churches of Florence — hence the thin, ochre bricks.",
+        "physical_cues": [
+          {
+            "cue": "The thin ochre bricks of the boxy Romanesque church, inspired by Florence",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "The 1929 Romanesque church was designed by Stanford White, inspired by Florentine churches, with thin ochre bricks"
+        ],
+        "source_passage": "This boxy Romanesque church from 1929 was another masterwork by architect Stanford White, who took his inspiration from the churches of Florence—hence the thin, ochre bricks.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 5"
+        },
+        "entities": [
+          "Stanford White"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "florentine church",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "topic_slug": "stanford_white_florentine_church",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Date '1929' for the church and Stanford White attribution: Judson Memorial Church was completed circa 1893 (Stanford White died in 1906), so the book's '1929' conflicts with the historical record"
+          ],
+          "notes": "DISPUTE candidate: book says the church is 'from 1929' AND by Stanford White, but White died in 1906 and the church dates to c.1890-1893 — internally inconsistent. Kept verbatim from the book, flagged for /fact-check. Not auto-corrected. See review_queue.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "dacce03ed097816ce96c085ff68fed3dba659fc9f6bf57e5a5a555791f29e548"
+      },
+      {
+        "beat_id": "newyork_judson_memorial_church_social_change_frommers-nyc-2024_howard_moody_activism",
+        "poi_name": "Judson Memorial Church",
+        "lens": "social_change",
+        "script_body": "The church was a center for immigrant life at the turn of the 20th century, and in the 1950s and '60s it became known for the progressive politics of minister Howard Moody, who sheltered protesters from the police and helped overturn a short-lived ban on folk singing in the park. Today's performers — and there are always at least two or three groups making music in Washington Square — owe Moody a debt of gratitude.",
+        "physical_cues": [],
+        "key_claims": [
+          "The church was a center for immigrant life c.1900",
+          "1950s-60s minister Howard Moody sheltered protesters and helped overturn a folk-singing ban in the park",
+          "Today's park musicians owe Moody a debt"
+        ],
+        "source_passage": "The church was a center for immigrant life at the turn of the 20th century and became known in the 1950s and '60s for the progressive politics of minister Howard Moody, who sheltered protestors from the police and helped to overturn a short-lived ban on folk singing in the park. Today's performers (and there are always at least two or three groups making music in the park) owe a debt of gratitude to Moody.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 5"
+        },
+        "entities": [
+          "Howard Moody"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "moody folk singing",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "topic_slug": "howard_moody_activism",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Howard Moody is a deceased historical figure (d. 2012); not a living-person constraint.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "f2b8a6bdd6989b37c28a3083a5dcf2f44a36770e4f78001716c40f575a5dd875"
+      },
+      {
+        "beat_id": "newyork_judson_memorial_church_social_change_frommers-nyc-2024_judson_activism_legacy_caption",
+        "poi_name": "Judson Memorial Church",
+        "lens": "social_change",
+        "script_body": "Facing onto the south side of Washington Square Park, Judson Church carries a rich legacy of social activism.",
+        "physical_cues": [
+          {
+            "cue": "The church facing the south side of Washington Square Park",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "The church faces the south side of Washington Square Park and has a legacy of social activism"
+        ],
+        "source_passage": "Facing onto the south side of Washington Square Park, Judson Church has a rich legacy of social activism.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 5 (caption)"
+        },
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "activism legacy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "topic_slug": "activism_legacy_caption",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "ab67fdcebd049fda92db88c00eb2d0503f1dbd4a8693bda05e4ced0d255611a9"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "New York University School of Law",
+    "short_description": "On-tour pass-by; the narrative gravity is the vanished John Reed boardinghouse and the Revolutionary-War general street names. Low standalone gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72947,
+    "longitude": -73.9989,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "On-tour pass-by; the narrative gravity is the vanished John Reed boardinghouse and the Revolutionary-War general street names. Low standalone gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim 'NYU School of Law', Washington Square South (~40.72947, -73.99890)",
+      "geocode_confidence": 0.78,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_university_school_of_law_literary_heritage_frommers-nyc-2024_john_reed_boardinghouse",
+        "poi_name": "New York University School of Law",
+        "lens": "literary_heritage",
+        "script_body": "When journalist John Reed — the subject of the Warren Beatty biopic Reds — lodged in a famous boardinghouse that once stood here, he wrote a poem about his artsy neighbors, whom he dubbed \"Inglorious Miltons by the Score / And Rodins, one to every floor.\"",
+        "physical_cues": [],
+        "key_claims": [
+          "John Reed, subject of the film Reds, lived in a boardinghouse that once stood here",
+          "He wrote a poem mocking his artsy neighbors as 'Inglorious Miltons' and 'Rodins, one to every floor'"
+        ],
+        "source_passage": "When journalist John Reed (the subject of the Warren Beatty bio-pic Reds) was a tenant of a famous boardinghouse that once stood here, he wrote a poem about his artsy neighbors, whom he called \"Inglorious Miltons by the Score/ And Rodins, one to every floor.\"",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 6"
+        },
+        "entities": [
+          "John Reed",
+          "Warren Beatty",
+          "Reds"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "john reed poem",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "topic_slug": "john_reed_boardinghouse",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Boardinghouse is demolished ('once stood here'); beat anchored to the current NYU Law location per B9.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "19099ef9283430a091195d72b7f394b125c9a200d37c99bc1922144c95ac3910"
+      },
+      {
+        "beat_id": "newyork_new_york_university_school_of_law_hidden_history_frommers-nyc-2024_revolutionary_general_streets",
+        "poi_name": "New York University School of Law",
+        "lens": "hidden_history",
+        "script_body": "Take a look at the street names on this side of Washington Square Park — every one was chosen to honor Washington's Revolutionary War generals.",
+        "physical_cues": [
+          {
+            "cue": "The street name signs on this side of the park, named for Revolutionary War generals",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "key_claims": [
+          "The street names on this side of the park honor Washington's Revolutionary War generals"
+        ],
+        "source_passage": "Be sure to take a look at the street names on this side of Washington Square Park. All were chosen to honor Washington's Revolutionary War generals.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 6"
+        },
+        "entities": [
+          "George Washington"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "factoid",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "general street names",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "topic_slug": "revolutionary_general_streets",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "af97a11ab9c80cfcbb494fe2a4aad3510e50af3e98af1b58f393015b75e3ed86"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Provincetown Playhouse",
+    "short_description": "Historic American theater (Eugene O'Neill launch site); 'only the name remains' but strong cultural-history gravity. Moderate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72987,
+    "longitude": -73.9999,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Historic American theater (Eugene O'Neill launch site); 'only the name remains' but strong cultural-history gravity. Moderate.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia 'Provincetown Playhouse', 133 MacDougal Street (~40.72987, -73.99990)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_provincetown_playhouse_film_tv_transit_frommers-nyc-2024_to_provincetown",
+        "poi_name": "Provincetown Playhouse",
+        "lens": "film_tv",
+        "script_body": "Walk west to MacDougal Street, turn left, and stop beside the legendary Provincetown Playhouse.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction west to MacDougal St and the Provincetown Playhouse"
+        ],
+        "source_passage": "Walk west to MacDougal St., turn left, and stop beside the legendary:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 6→7 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to playhouse",
+        "sub_location": null,
+        "trigger_address": "New York University School of Law, Washington Square South",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_provincetown",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0205f5b876b567f95c83391acb1e48796bb0562cde0dfdaa1cbe88caae1ad6cf"
+      },
+      {
+        "beat_id": "newyork_provincetown_playhouse_social_change_frommers-nyc-2024_oneill_interracial_casting",
+        "poi_name": "Provincetown Playhouse",
+        "lens": "social_change",
+        "script_body": "The more theatrical strain of Greenwich Village bohemianism found its home at the little theater that once stood here — only the name remains — at one point one of the city's most influential playhouses. That was thanks largely to Eugene O'Neill, who managed it and whose important early works were first performed here, among them Emperor Jones, The Hairy Ape, and The Great God Brown. Overturning barriers, the theater cast African Americans to play African Americans, and even featured a kiss between a Black man and a white woman — a radical move in 1926, one that drew threats from the Ku Klux Klan.",
+        "physical_cues": [],
+        "key_claims": [
+          "The original theater here, managed by Eugene O'Neill, premiered Emperor Jones, The Hairy Ape, and The Great God Brown",
+          "It cast Black actors as Black characters and staged an interracial kiss in 1926, drawing KKK threats",
+          "Only the name remains today"
+        ],
+        "source_passage": "The more theatrical strain of Greenwich Village bohemianism found its home at the little theater that once stood here (only the name remains), at one time one of the most influential playhouses in the city. That's thanks largely to Eugene O'Neill, who managed it, and whose important early works were first performed here, including Emperor Jones, The Hairy Ape, and The Great God Brown. Overturning barriers, the theater cast African Americans to play African Americans, and even featured a kiss between a Black man and a white woman (a radical move in 1926, and one that resulted in threats from the Ku Klux Klan).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 7"
+        },
+        "entities": [
+          "Eugene O'Neill",
+          "Emperor Jones",
+          "The Hairy Ape",
+          "The Great God Brown",
+          "Ku Klux Klan"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "interracial casting",
+        "sub_location": null,
+        "trigger_address": "133 MacDougal St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "topic_slug": "oneill_interracial_casting",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Provincetown Playhouse / O'Neill association corroborated by Wikipedia and Village Preservation.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "bbdbaf88a448a349f2d0a786a6425e72e4218295e27d75a925f1a2696f49d0da"
+      },
+      {
+        "beat_id": "newyork_provincetown_playhouse_literary_heritage_frommers-nyc-2024_millay_reed_actors",
+        "poi_name": "Provincetown Playhouse",
+        "lens": "literary_heritage",
+        "script_body": "Other famous names contributed here too: Edna St. Vincent Millay, whose anti-war classic Aria de Capo debuted in 1919, along with John Reed and e. e. cummings. Among the actors who trod these boards were Eva Le Gallienne, Tallulah Bankhead, Katharine Cornell, and Bette Davis, who made her stage debut here.",
+        "physical_cues": [],
+        "key_claims": [
+          "Millay's Aria de Capo debuted here in 1919; Reed and cummings also contributed",
+          "Eva Le Gallienne, Tallulah Bankhead, Katharine Cornell and Bette Davis acted here; Davis made her stage debut here"
+        ],
+        "source_passage": "Other famous names who contributed to the theater include Edna St. Vincent Millay (her anti-war classic Aria de Capo debuted in 1919), John Reed, and e. e. cummings. Among the famous actors who trod these boards were Eva Le Galienne, Tallulah Bankhead, Katharine Cornell, and Bette Davis, who made her stage debut here.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 7"
+        },
+        "entities": [
+          "Edna St. Vincent Millay",
+          "Aria de Capo",
+          "John Reed",
+          "e. e. cummings",
+          "Eva Le Gallienne",
+          "Tallulah Bankhead",
+          "Katharine Cornell",
+          "Bette Davis"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "playhouse luminaries",
+        "sub_location": null,
+        "trigger_address": "133 MacDougal St.",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "topic_slug": "millay_reed_famous_actors",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Book spells 'Eva Le Galienne'; standard spelling is Eva Le Gallienne. Preserved as-is in source_passage; corrected spelling used in script_body only. Minor; not a dispute.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "9db34a3e90cd33ad008a6662a7ef2be4af03115875f090bd1622dece8b0cf69b"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "130 MacDougal Street",
+    "short_description": "Federal town house associated with Louisa May Alcott; niche literary stop. Low-moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7299,
+    "longitude": -74.0002,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Federal town house associated with Louisa May Alcott; niche literary stop. Low-moderate gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim (130 MacDougal St, federal town house; ~40.7299, -74.0002)",
+      "geocode_confidence": 0.8,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_130_macdougal_street_literary_heritage_transit_frommers-nyc-2024_to_alcott_house",
+        "poi_name": "130 MacDougal Street",
+        "lens": "literary_heritage",
+        "script_body": "Stroll south, crossing West 3rd Street, until you reach the brick town house at 130 MacDougal.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction south across W. 3rd St to 130 MacDougal St"
+        ],
+        "source_passage": "Stroll south, crossing W. 3rd St. until you see:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 7→8 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to alcott",
+        "sub_location": null,
+        "trigger_address": "133 MacDougal St.",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_alcott_house",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "3a9808352a588ab19ac7485e28d8be4950b84d9d85afc5af5e71eae8d429667c"
+      },
+      {
+        "beat_id": "newyork_130_macdougal_street_literary_heritage_frommers-nyc-2024_alcott_little_women",
+        "poi_name": "130 MacDougal Street",
+        "lens": "literary_heritage",
+        "script_body": "This perfect little brick federal town house is where Louisa May Alcott probably wrote Little Women. Alcott never had her own Professor Baer; her health damaged by her work as a nurse in Washington, D.C., during the Civil War, she never married, instead spending her limited energies on writing and lobbying for women's suffrage.",
+        "physical_cues": [
+          {
+            "cue": "The brick federal town house facade at 130 MacDougal St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "130 MacDougal is where Louisa May Alcott probably wrote Little Women",
+          "Her health damaged by Civil War nursing in Washington, D.C., she never married and worked for women's suffrage"
+        ],
+        "source_passage": "This perfect little brick federal town house is where Louisa May Alcott probably wrote Little Women (can't you just picture Professor Baer calling on the young writer here?). Alcott never had her own Professor; her health damaged by her work as a nurse in Washington, D.C., during the Civil War, she never married, instead spending her limited energies on writing and lobbying for women's suffrage.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 8"
+        },
+        "entities": [
+          "Louisa May Alcott",
+          "Little Women"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "alcott house",
+        "sub_location": null,
+        "trigger_address": "130 MacDougal St.",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "alcott_little_women",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "'where Louisa May Alcott probably wrote Little Women' — sources indicate Alcott wrote Little Women at Orchard House in Concord, Massachusetts; she herself credited Boston"
+          ],
+          "notes": "DISPUTE candidate: the 'wrote Little Women here' attribution is contested; book hedges with 'probably,' which is preserved verbatim. Literary-attribution claim flagged for /fact-check, not auto-corrected. See review_queue.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0a1bd370b434d329f5647b2efbb18fe70002e7aa073fe2cf03fdc864528eefce"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Caffe Reggio",
+    "short_description": "1927 Village coffeehouse claiming to have introduced cappuccino to America; film-famous (Godfather II, Inside Llewyn Davis). Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.730308,
+    "longitude": -74.000371,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "1927 Village coffeehouse claiming to have introduced cappuccino to America; film-famous (Godfather II, Inside Llewyn Davis). Moderate gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Google Maps 'Caffe Reggio', 119 MacDougal St (40.73031, -74.00037)",
+      "geocode_confidence": 0.91,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_caffe_reggio_historic_cuisine_sidebar_frommers-nyc-2024_cappuccino_film_fame",
+        "poi_name": "Caffe Reggio",
+        "lens": "historic_cuisine",
+        "script_body": "There are few better Village streets for a quick snack than MacDougal. For a pastry and some java, head to Caffe Reggio. Founded in 1927, it claims to have introduced cappuccino to America, and it has the huge copper machines to prove it — and it has turned up in films like Godfather II and Inside Llewyn Davis. For something more substantial, MacDougal also serves up some of the city's best pita sandwiches at Mamoun's Falafel.",
+        "physical_cues": [
+          {
+            "cue": "The huge copper espresso machines inside Caffe Reggio at 119 MacDougal St",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Caffe Reggio, founded 1927, claims to have introduced cappuccino to America and has huge copper machines",
+          "It has appeared in Godfather II and Inside Llewyn Davis",
+          "Mamoun's Falafel on MacDougal serves some of the city's best pita sandwiches"
+        ],
+        "source_passage": "There are few better Village streets on which to grab a quick snack than MacDougal Street. For a pastry and some java, head to Caffe Reggio (119 MacDougal St.; www.caffereggio.com; 212/475-9557). Founded in 1927, it claims to have introduced cappuccino to America, and has the huge copper machines to prove it. The Caffe has been featured in such films as Godfather II and Inside Llewyn Davis. For something a bit more substantial, go for the city's best pita sandwiches at Mamoun's Falafel (119 MacDougal St.; www.mamouns.com; no phone).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Take a Break sidebar"
+        },
+        "entities": [
+          "Caffe Reggio",
+          "Godfather II",
+          "Inside Llewyn Davis",
+          "Mamoun's Falafel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sidebar",
+        "emotional_register": "playful",
+        "subject_tag": "cappuccino claim",
+        "sub_location": null,
+        "trigger_address": "119 MacDougal St.",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "cappuccino",
+            "gloss": "espresso-based coffee drink topped with steamed-milk foam"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "topic_slug": "cappuccino_film_fame",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Caffe Reggio 1927 founding and cappuccino claim ('claims to') corroborated by Wikipedia. 'Claims to' framing preserved. Mamoun's listed at 119 MacDougal in the book (its actual storefront differs); preserved as written.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "e3753ac334056dc81c8f8a78d9586656c6e66ef3edbdc0d263eacd497142ed09"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Minetta Tavern",
+    "short_description": "Storied 1937 literary tavern (former Black Rabbit speakeasy), now a noted Keith McNally restaurant. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73,
+    "longitude": -74.000694,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Storied 1937 literary tavern (former Black Rabbit speakeasy), now a noted Keith McNally restaurant. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia 'Minetta Tavern', 113 MacDougal Street (40.73000, -74.000694)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_minetta_tavern_literary_heritage_transit_frommers-nyc-2024_to_minetta_tavern",
+        "poi_name": "Minetta Tavern",
+        "lens": "literary_heritage",
+        "script_body": "Continue downtown until you reach Minetta Lane, and take a look at Minetta Tavern.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction downtown to Minetta Lane and Minetta Tavern"
+        ],
+        "source_passage": "Continue downtown until you reach Minetta Lane and take a look at:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 8→9 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to minetta",
+        "sub_location": null,
+        "trigger_address": "130 MacDougal St.",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 5,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_minetta_tavern",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "1c582497f417a33162b3610964edbdfb55bfca36e8576b3f4a3e312aee34662b"
+      },
+      {
+        "beat_id": "newyork_minetta_tavern_literary_heritage_frommers-nyc-2024_black_rabbit_literary_hangout",
+        "poi_name": "Minetta Tavern",
+        "lens": "literary_heritage",
+        "script_body": "Formerly a speakeasy called the Black Rabbit, this was a major literary hangout back in the day, serving poetry-inspiring booze and heaping plates of spaghetti to such notables as Ezra Pound, e. e. cummings, and Ernest Hemingway in the '20s, and Allen Ginsberg, Jack Kerouac, and Gregory Corso in the '50s. Today the restaurant is owned by Keith McNally of Balthazar and keeps most of its original 1937 fixtures.",
+        "physical_cues": [
+          {
+            "cue": "The restaurant's original 1937 fixtures",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Formerly the Black Rabbit speakeasy and a literary hangout for Pound, cummings, Hemingway (1920s) and Ginsberg, Kerouac, Corso (1950s)",
+          "Now owned by Keith McNally of Balthazar with most original 1937 fixtures"
+        ],
+        "source_passage": "Formerly a speakeasy called the Black Rabbit, this was a major literary hangout back in the day, serving poetry-inspiring booze and heaping plates of spaghetti to such notables as Ezra Pound, e. e. cummings, and Ernest Hemingway in the '20s; and Allen Ginsberg, Jack Kerouac, and Alan Corso in the '50s. Little-known fact: The very unbohemian Readers Digest was founded on this very spot, published from the basement of the restaurant for half a dozen years before moving into proper offices. Today the restaurant is owned by Keith McNally of Balthazar (p. 106) and retains most of its original 1937 fixtures.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 9"
+        },
+        "entities": [
+          "Black Rabbit",
+          "Ezra Pound",
+          "e. e. cummings",
+          "Ernest Hemingway",
+          "Allen Ginsberg",
+          "Jack Kerouac",
+          "Gregory Corso",
+          "Keith McNally",
+          "Balthazar"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "literary speakeasy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "speakeasy",
+            "gloss": "an illicit bar selling alcohol during Prohibition"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 25,
+        "kid_friendly": "no",
+        "topic_slug": "black_rabbit_literary_hangout",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Book writes 'Alan Corso'; the Beat poet was Gregory Corso — name corrected in script_body"
+          ],
+          "notes": "Auto-correction candidate: book says 'Alan Corso' but the Beat poet associated with Ginsberg/Kerouac is Gregory Corso (corroborated broadly). Corrected name used in script_body; original preserved in source_passage. Keith McNally is a living person — ownership claim NOT modified, kept as the book states. Flagged for /fact-check.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "342b5f19bf8ae3ff19caca8cbfdd6c37407a380c612e2279b06c71e2d74920d7"
+      },
+      {
+        "beat_id": "newyork_minetta_tavern_hidden_history_frommers-nyc-2024_readers_digest_basement",
+        "poi_name": "Minetta Tavern",
+        "lens": "hidden_history",
+        "script_body": "Little-known fact: the very unbohemian Reader's Digest was founded on this very spot, published from the basement of the restaurant for half a dozen years before moving into proper offices.",
+        "physical_cues": [],
+        "key_claims": [
+          "Reader's Digest was founded on this spot, published from the basement for about six years before moving to offices"
+        ],
+        "source_passage": "Little-known fact: The very unbohemian Readers Digest was founded on this very spot, published from the basement of the restaurant for half a dozen years before moving into proper offices.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 9"
+        },
+        "entities": [
+          "Reader's Digest"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "factoid",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "readers digest origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "topic_slug": "readers_digest_basement",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "1a6813ef091f0762d1b781ee87b72aec1464b052bba5828d39de624e900d4499"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Minetta Street",
+    "short_description": "Atmospheric crooked Village street over the buried Minetta stream; 'Little Africa' and Draft Riots history. Moderate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7298,
+    "longitude": -74.0006,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Atmospheric crooked Village street over the buried Minetta stream; 'Little Africa' and Draft Riots history. Moderate.",
+      "verified": false,
+      "geocode_source": "Nominatim 'Minetta Street, Manhattan' (~40.7298, -74.0006)",
+      "geocode_confidence": 0.82,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_minetta_street_dark_history_transit_frommers-nyc-2024_to_minetta_street",
+        "poi_name": "Minetta Street",
+        "lens": "dark_history",
+        "script_body": "Turn onto Minetta Lane and walk halfway down — if you reach Sixth Avenue you've gone too far — to an unmarked, twisting street that is in fact Minetta Street.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction onto Minetta Lane to find Minetta Street before Sixth Ave"
+        ],
+        "source_passage": "Turn onto Minetta Lane and walk halfway down (if you reach Sixth Ave., you've gone too far) to an unmarked, twisting street that's actually:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 9→10 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to minetta st",
+        "sub_location": null,
+        "trigger_address": "Minetta Tavern, 113 MacDougal St.",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 10,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_minetta_street",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c5f5de7623c5ec5c1cb7bd6ccf4973304785952a1fab342eb3c69e0384487c73"
+      },
+      {
+        "beat_id": "newyork_minetta_street_waterways_views_frommers-nyc-2024_buried_minetta_stream",
+        "poi_name": "Minetta Street",
+        "lens": "waterways_views",
+        "script_body": "Listen carefully: a stream still runs below this street, and on a rare quiet day you can hear it gurgling faintly beneath your feet. Though the street is now one of the most charming in the city, when the stream was at street level this was a muddy ghetto called \"Little Africa,\" inhabited entirely by free Blacks in the 1820s and beyond.",
+        "physical_cues": [
+          {
+            "cue": "The buried Minetta stream gurgling faintly below the street on a quiet day",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "A stream still runs below Minetta Street, audible on quiet days",
+          "When the stream was at street level the area was a muddy 'Little Africa' inhabited by free Blacks from the 1820s"
+        ],
+        "source_passage": "Listen carefully: A stream still runs below this street, and on the rare quiet day, it's possible to hear it gurgling faintly below your feet. Though the street is now one of the most charming in the city, when the stream was at street level this area was a muddy ghetto called \"Little Africa,\" inhabited entirely by free Blacks in the 1820s and beyond.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 10"
+        },
+        "entities": [
+          "Little Africa"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "buried stream",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "topic_slug": "buried_minetta_stream",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c0e594a0e060c222c185f5a2fe2cfe06d3a7fd85c9991bc3fb442a046882b441"
+      },
+      {
+        "beat_id": "newyork_minetta_street_dark_history_frommers-nyc-2024_draft_riots_safe_haven",
+        "poi_name": "Minetta Street",
+        "lens": "dark_history",
+        "script_body": "In 1863, when the riots surrounding the Civil War's first draft lottery morphed into race riots, this was one of the few safe places in the city for Black Americans. For five days hundreds of white hooligans raged through the streets, beating and lynching Blacks and even burning down an orphanage for Black children — the most violent riot of the century, with 105 people killed and many more maimed for life. But the narrow layout of Minetta Street let armed residents successfully guard their homes and families from harm.",
+        "physical_cues": [
+          {
+            "cue": "The narrow layout of Minetta Street that let residents defend their homes",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "In 1863 the Civil War draft-lottery riots became race riots; Minetta Street was a rare safe haven for Black Americans",
+          "Over five days, 105 were killed and an orphanage for Black children was burned",
+          "The narrow street let armed residents defend their homes"
+        ],
+        "source_passage": "In 1863, when the riots surrounding the Civil War's first draft lottery morphed into race riots, this was one of the few safe places in the city for Black Americans. For 5 days, hundreds of white hooligans raged through the streets beating and lynching Blacks, even burning down an orphanage for Black children. It was the most violent riot of the century; 105 people were killed and many more maimed for life. But the narrow layout of Minetta Street allowed armed residents to successfully guard their homes and families from harm.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 10"
+        },
+        "entities": [
+          "New York City Draft Riots",
+          "American Civil War"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "draft riots haven",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 36,
+        "kid_friendly": "no",
+        "topic_slug": "draft_riots_safe_haven",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "1863 Draft Riots are well-documented; death-toll figures vary by source but not auto-corrected (book figure preserved).",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "a273a98705a875b48f46573a2cd85b9476d7335c972b73a9ab74aa18c72ebbeb"
+      },
+      {
+        "beat_id": "newyork_minetta_street_social_change_frommers-nyc-2024_black_and_tan_speakeasies",
+        "poi_name": "Minetta Street",
+        "lens": "social_change",
+        "script_body": "Soon after the Civil War, Minetta Street became known for its \"black and tan\" clubs — the few spots in the city where Black and white New Yorkers would socialize together. In the Prohibition era, nearly half the buildings on the street housed hidden speakeasies.",
+        "physical_cues": [],
+        "key_claims": [
+          "After the Civil War the street had 'black and tan' clubs where Black and white New Yorkers mixed",
+          "In Prohibition nearly half the buildings hid speakeasies"
+        ],
+        "source_passage": "Soon after the Civil War, Minetta Street became known for its \"black and tan\" clubs, the few spots in the city where Black and white New Yorkers would socialize. In the Prohibition era, nearly half the buildings on the street housed hidden speakeasies.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 10"
+        },
+        "entities": [
+          "American Civil War",
+          "Prohibition"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "black and tan clubs",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "black and tan",
+            "gloss": "clubs where Black and white patrons socialized together"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "topic_slug": "black_and_tan_speakeasies",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8eb1fbdd3100f430323efcb2d6aeafd3ce818e7ae94ae4df8ff61e799d7ecc9f"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Bleecker Street",
+    "short_description": "Historic Italian food-shop stretch (Murray's Cheese, Faicco's). Moderate gravity as a sensory/food corridor.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.731,
+    "longitude": -74.003,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Historic Italian food-shop stretch (Murray's Cheese, Faicco's). Moderate gravity as a sensory/food corridor.",
+      "verified": false,
+      "geocode_source": "Nominatim 'Bleecker Street' (food-shop stretch west of Sixth Ave; ~40.7310, -74.0030)",
+      "geocode_confidence": 0.7,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_bleecker_street_markets_street_food_transit_frommers-nyc-2024_to_bleecker",
+        "poi_name": "Bleecker Street",
+        "lens": "markets_street_food",
+        "script_body": "Head back to Minetta Street and walk west to Sixth Avenue, crossing it and continuing west on Bleecker Street.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction from Minetta Street west across Sixth Ave onto Bleecker Street"
+        ],
+        "source_passage": "Head back to Minetta St. and walk west to Sixth Ave., crossing it and walking west on:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 10→11 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to bleecker",
+        "sub_location": null,
+        "trigger_address": "Minetta Street",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 7,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_bleecker",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "3e9660b0d3059920b4b39d5386b08c78e1b4923c1eebd30d5c8c6951b72bd504"
+      },
+      {
+        "beat_id": "newyork_bleecker_street_markets_street_food_frommers-nyc-2024_murrays_faiccos_food_row",
+        "poi_name": "Bleecker Street",
+        "lens": "markets_street_food",
+        "script_body": "This stretch of Bleecker Street holds some of the finest noshes in the city — home to the fabulous Murray's Cheese and to historic Faicco's Italian Specialties, owned by the same family since its founding in 1900 and selling what the book swears is the best sopressata in the United States. Inhale deeply: this is the most aromatic stretch of the whole walking tour.",
+        "physical_cues": [
+          {
+            "cue": "Murray's Cheese and Faicco's Italian Specialties storefronts along Bleecker Street",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "This Bleecker stretch is home to Murray's Cheese and Faicco's Italian Specialties",
+          "Faicco's has been family-owned since 1900 and claims the best sopressata in the US",
+          "It is the most aromatic stretch of the tour"
+        ],
+        "source_passage": "This stretch of Bleecker Street contains some of the finest noshes in the city, as it's home to the fabulous Murray's Cheese (p. 294) and historic Faiccos Italian Specialties, owned by the same family since its founding in 1900 and selling the best sopressata in the United State (no joke). Inhale deeply—this is the most aromatic stretch of this walking tour.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 11"
+        },
+        "entities": [
+          "Murray's Cheese",
+          "Faicco's Italian Specialties"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "italian food row",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "sopressata",
+            "gloss": "a dry-cured Italian salami"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 23,
+        "kid_friendly": "yes",
+        "topic_slug": "murrays_faiccos_food_row",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Superlative ('best sopressata') not auto-corrected per never-auto-resolve rule; framed as the book's claim.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "bebe1d13b7463167e19ceb9b9eb6c058f028409ed82d3b5c92e7be05acf3c47f"
+      },
+      {
+        "beat_id": "newyork_bleecker_street_markets_street_food_frommers-nyc-2024_murrays_cheese_selection_caption",
+        "poi_name": "Bleecker Street",
+        "lens": "markets_street_food",
+        "script_body": "Among Bleecker Street's Italian food shops, Murray's Cheese is famed for its vast selection.",
+        "physical_cues": [
+          {
+            "cue": "Murray's Cheese among the Italian food shops on Bleecker Street",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "Murray's Cheese is famed for its vast selection among Bleecker Street's Italian food shops"
+        ],
+        "source_passage": "Among Bleecker Street's Italian food shops, Murray's Cheese is famed for its vast selection.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 11 (caption)"
+        },
+        "entities": [
+          "Murray's Cheese"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "factoid",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "murrays selection",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 5,
+        "kid_friendly": "yes",
+        "topic_slug": "murrays_cheese_selection_caption",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "60446f7d328a8111a2049b45dc950fba311e8bb69bcdf3b88021776c1d8bc808"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "One If by Land, Two If by Sea",
+    "short_description": "1767 carriage house tied to Aaron Burr; ghost-tour restaurant. Moderate Hamilton-era gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.732548,
+    "longitude": -74.002628,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "1767 carriage house tied to Aaron Burr; ghost-tour restaurant. Moderate Hamilton-era gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Apple+Google Maps '17 Barrow St' (40.73255, -74.00263)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_one_if_by_land_two_if_by_sea_local_legends_transit_frommers-nyc-2024_to_barrow_st",
+        "poi_name": "One If by Land, Two If by Sea",
+        "lens": "local_legends",
+        "script_body": "Walk to Seventh Avenue, but instead of crossing, loop to the right to Barrow Street and continue in the same direction until you reach One If by Land, Two If by Sea.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction toward Seventh Ave, looping to Barrow St to reach 17 Barrow St"
+        ],
+        "source_passage": "Walk to Seventh Ave., but instead of crossing, loop to the right to Barrow St. Continue in the same direction until you get to:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 11→12 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to barrow",
+        "sub_location": null,
+        "trigger_address": "Bleecker Street",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 10,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_barrow_st",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "a4c5decb944cc808bac570d5e46721e8a02b3147bbc66b48ee763b82e916a39c"
+      },
+      {
+        "beat_id": "newyork_one_if_by_land_two_if_by_sea_local_legends_frommers-nyc-2024_aaron_burr_carriage_house",
+        "poi_name": "One If by Land, Two If by Sea",
+        "lens": "local_legends",
+        "script_body": "Attention Hamilton fans: in the 1790s the widowed Aaron Burr moved into this 1767 carriage house with his daughter Theodosia. After the tragic duel, Burr lost not only his political career but much of his property, including this building. It later became an engine house for the local firehouse, and in the 1890s a saloon and brothel. The restaurant here today is still a stop on ghost tours — many claim it's haunted by Aaron, Theodosia, and some of the ladies of the night who once worked here. The specters get blamed whenever a customer's earring goes missing.",
+        "physical_cues": [
+          {
+            "cue": "The 1767 carriage house at 17 Barrow St that houses the restaurant",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "In the 1790s the widowed Aaron Burr lived in this 1767 carriage house with daughter Theodosia",
+          "After the Hamilton duel he lost his career and property including this building",
+          "It later became an engine house, then an 1890s saloon and brothel; now a ghost-tour restaurant"
+        ],
+        "source_passage": "Attention Hamilton fans! In the 1790s the widowed Aaron Burr moved into this 1767 carriage house with his daughter Theodosia. After the tragic duel, Burr lost not only his political career but much of his property, including this building. The structure then became an engine house for the local firehouse, and in the 1890s a saloon and brothel. The restaurant that's here today is still a stop on ghost tours, as many claim it's haunted by Aaron, Theodosia, and some of the ladies of the night who worked here. The specters are blamed whenever a customer's earring goes missing.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 12"
+        },
+        "entities": [
+          "Aaron Burr",
+          "Theodosia Burr",
+          "Alexander Hamilton"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "burr carriage house",
+        "sub_location": null,
+        "trigger_address": "17 Barrow St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "topic_slug": "aaron_burr_carriage_house",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Building dated 1767 and Burr/Theodosia legend per book; legend framing preserved ('many claim it's haunted').",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "ef078e3a6848f1bf595d331fa93e9b92332e6ce42aa1d80ccb5da4c8c00ccce1"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Stonewall Inn",
+    "short_description": "Birthplace of the modern LGBTQ rights movement (1969 riots); a US National Monument. Very high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73389,
+    "longitude": -74.00222,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Birthplace of the modern LGBTQ rights movement (1969 riots); a US National Monument. Very high gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia 'Stonewall Inn', 53 Christopher St (40.73389, -74.00222)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_stonewall_inn_social_change_transit_frommers-nyc-2024_to_stonewall",
+        "poi_name": "Stonewall Inn",
+        "lens": "social_change",
+        "script_body": "Continue walking to West 4th Street, turn left, and walk to the Stonewall.",
+        "physical_cues": [],
+        "key_claims": [
+          "Walking direction to W. 4th St and the Stonewall"
+        ],
+        "source_passage": "Continue walking to W. 4th St., turn left, and walk to the:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 12→13 transit"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to stonewall",
+        "sub_location": null,
+        "trigger_address": "17 Barrow St.",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 5,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_stonewall",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c90013332dee0dbcc942c3018b5804a58283f9257a2f06b8c47e19752235b9c2"
+      },
+      {
+        "beat_id": "newyork_stonewall_inn_social_change_frommers-nyc-2024_stonewall_riots_1969",
+        "poi_name": "Stonewall Inn",
+        "lens": "social_change",
+        "script_body": "Oddly enough, it was an organized-crime sting operation that precipitated the raid that gave birth to the contemporary gay rights movement. By the 1960s the Genovese crime family owned most gay bars in the Village, serving watered-down liquor to a community that had few other places to meet — and blackmailing wealthier customers with the threat of outing. The family usually paid off the police, but on June 28, 1969, the Stonewall wasn't tipped off. When eight officers showed up at 1:20am and began loading employees and customers into a police van, patrons started pelting them with pennies, cans, bottles, and bricks. The melee escalated, and thousands rioted for another five days before order was restored. While these protests weren't the start of the gay rights movement, many feel they were its galvanizing force — which is why pride celebrations in New York and worldwide now fall on the anniversary weekend of the riots.",
+        "physical_cues": [],
+        "key_claims": [
+          "The Genovese crime family owned most Village gay bars in the 1960s",
+          "On June 28, 1969 an un-tipped-off raid sparked the riots when patrons fought back",
+          "Five days of rioting galvanized the gay rights movement; pride falls on the anniversary"
+        ],
+        "source_passage": "Oddly enough, it was an organized-crime sting operation that precipitated the raid that gave birth to the contemporary gay rights movement. By the 1960s, the Genovese crime family owned most gay bars in the Village, where they served watered-down liquor to a community that didn't have many other places to meet; they also blackmailed wealthier customers with the threat of outing. The family regularly paid off the police, but on June 28, 1969, the Stonewall wasn't tipped off in advance. When eight police officers showed up at 1:20am and started loading employees and customers into a police van, patrons began pelting them with pennies, cans, bottles, and bricks. As the melee escalated, thousands of people rioted for another 5 days before order could be restored. While these protests weren't the start of the gay rights movement, many feel that they were the galvanizing force. Today, pride celebrations in New York, and worldwide, take place on the anniversary weekend of the riots.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 13"
+        },
+        "entities": [
+          "Genovese crime family",
+          "Stonewall riots"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "stonewall riots",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "topic_slug": "stonewall_riots_1969",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "June 28, 1969 date, 1:20am raid, and organized-crime/Genovese ownership corroborated by Wikipedia, Britannica, History.com.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c45746db7b0298855167a1821604f366611336dd9896bc978b1fec7ce5992c04"
+      },
+      {
+        "beat_id": "newyork_stonewall_inn_social_change_frommers-nyc-2024_obama_national_monument",
+        "poi_name": "Stonewall Inn",
+        "lens": "social_change",
+        "script_body": "In 2016, President Barack Obama designated the Stonewall Inn, Christopher Park, and the surrounding streets a national monument. Rangers stationed in the park, along with various memorials erected there, tell more of the story of the gay rights movement.",
+        "physical_cues": [
+          {
+            "cue": "Christopher Park and its memorials across from the Stonewall Inn, with rangers stationed there",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "In 2016 Obama designated the Stonewall Inn, Christopher Park, and surrounding streets a national monument",
+          "Rangers and memorials in the park tell the gay-rights story"
+        ],
+        "source_passage": "In 2016, President Barack Obama designated as a national monument the Stonewall Inn, Christopher Park, and the surrounding streets. You can learn more about the gay rights movement from rangers stationed in the park, and from various memorials that have been erected there.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 3 — Greenwich Village",
+          "page": "Stop 13"
+        },
+        "entities": [
+          "Barack Obama",
+          "Stonewall National Monument",
+          "Christopher Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "callback",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "national monument",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "topic_slug": "obama_national_monument",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-11-ch07-walking-tour-3-greenwich-village",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Barack Obama is a living person; the 2016 monument-designation claim is a documented historical event, not a contested living-person claim — preserved as written.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8c24f3fa8255b5ac03dba6d5115d36cb391afeaa3265292926ed6a5bdcf8fbbe"
+      }
+    ],
+    "importance_tier": 4
+  }
+]

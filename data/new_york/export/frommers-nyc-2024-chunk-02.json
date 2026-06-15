@@ -1,0 +1,2894 @@
+[
+  {
+    "name": "Financial District",
+    "short_description": "Manhattan neighborhood, south of Chambers St. Not in existing POI list (which holds specific landmarks). Flagged new_poi for user triage.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.707668,
+    "longitude": -74.009271,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Manhattan neighborhood, south of Chambers St. Not in existing POI list (which holds specific landmarks). Flagged new_poi for user triage.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_financial_district_hidden_history_frommers-nyc-2024_new_amsterdam_birthplace",
+        "poi_name": "Financial District",
+        "lens": "hidden_history",
+        "script_body": "This is where New York City—then New Amsterdam—was born. The area packs the same historic punch as colonial sections of Boston and Philadelphia. It was on Wall Street that George Washington took the oath of office as America's first president, and it was here, at Fraunces Tavern, that the Sons of Liberty gathered to plot the overthrow of the British. At Castle Clinton and then Ellis Island, millions of immigrants flooded the city in the 19th and 20th centuries to get their first glimpse of a “promised land.”",
+        "physical_cues": [],
+        "key_claims": [
+          "NYC, then New Amsterdam, was born here",
+          "George Washington took the oath of office on Wall Street",
+          "Sons of Liberty plotted at Fraunces Tavern",
+          "Immigrants arrived via Castle Clinton then Ellis Island in the 19th-20th centuries"
+        ],
+        "source_passage": "This is where New York City—then New Amsterdam—was born. The area packs the same historic punch as colonial sections of Boston and Philadelphia. It was on Wall Street that George Washington took the oath of office as America’s first president. It was here, at Fraunces Tavern, that the Sons of Liberty gathered to plot the overthrow of the British. It was at Castle Clinton and then Ellis Island that millions of immigrants flooded the city in the 19th and 20th centuries to get their first glimpse of a “promised land.”",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Financial District"
+        },
+        "entities": [
+          "New Amsterdam",
+          "Wall Street",
+          "George Washington",
+          "Fraunces Tavern",
+          "Sons of Liberty",
+          "Castle Clinton",
+          "Ellis Island"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "neighborhood origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "topic_slug": "new_amsterdam_birthplace",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "00829e8fae7824864c72c63b0746ca3e724c507dde56a88a25a9f5315c7ce0d0"
+      },
+      {
+        "beat_id": "newyork_financial_district_local_legends_frommers-nyc-2024_canyons_of_greed_rush_hour",
+        "poi_name": "Financial District",
+        "lens": "local_legends",
+        "script_body": "The great financial movers and shakers have always stalked this area, and a visit to these “canyons of greed” at the beginning of the day or at 5pm—when those men and women in suits and trader's smocks pour onto the streets—is an exciting sight. As recent history has overshadowed other sights, for many visitors this has simply become the place to pay respects at the 9/11 Memorial and Museum.",
+        "physical_cues": [
+          {
+            "cue": "Suited traders pouring onto the streets at 5pm in the financial canyons",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Financial workers pour onto streets at 5pm",
+          "Many visitors come to pay respects at the 9/11 Memorial and Museum"
+        ],
+        "source_passage": "The great financial movers and shakers also stalked the area (and continue to do so today), and a visit to these “canyons of greed” at the beginning of the day or at 5pm, when those men and women in suits and trader’s smocks pour onto the streets, is an exciting sight. As recent history has overshadowed other sights, for many visitors this has simply become the place to pay respects at the 9/11 Memorial and Museum.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Financial District"
+        },
+        "entities": [
+          "9/11 Memorial and Museum"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "canyons of greed",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "topic_slug": "canyons_of_greed_rush_hour",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c5dd34aadc39a8776f0c4cdcefe1d1c070bdffdb13d65a98039a974a8f9e876d"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Chinatown",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.716491,
+    "longitude": -73.99625,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_chinatown_social_change_frommers-nyc-2024_swallowing_neighborhoods",
+        "poi_name": "Chinatown",
+        "lens": "social_change",
+        "script_body": "At points, Chinatown takes on aspects of Shanghai or Beijing: the dense crowds on the streets, the awnings with Chinese characters, the pinging sound of Chinese conversation everywhere. It's a truly transporting area, and one that has been voraciously swallowing up other neighborhoods—Little Italy and the Jewish Lower East Side—for the past few decades.",
+        "physical_cues": [
+          {
+            "cue": "Awnings with Chinese characters and dense street crowds",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Chinatown has expanded into Little Italy and the Jewish Lower East Side over recent decades"
+        ],
+        "source_passage": "At points, Chinatown takes on aspects of Shanghai or Beijing: the dense crowds on the streets, the awnings with Chinese characters, the pinging sound of Chinese conversation everywhere. It’s a fun, truly transporting area to visit and one that’s been voraciously swallowing up other neighborhoods—Little Italy, the Jewish Lower East Side—for the past few decades.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Chinatown"
+        },
+        "entities": [
+          "Shanghai",
+          "Beijing",
+          "Little Italy",
+          "Lower East Side"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "expanding chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "topic_slug": "swallowing_neighborhoods",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "d5038551f3a309a3d56e25f67a88b88d839c14ec0e41ed73f6ead7a15f4e972f"
+      },
+      {
+        "beat_id": "newyork_chinatown_markets_street_food_frommers-nyc-2024_columbus_park_card_games",
+        "poi_name": "Chinatown",
+        "lens": "local_legends",
+        "script_body": "Chinatown's vibrant street life includes outdoor card games in Columbus Park.",
+        "physical_cues": [
+          {
+            "cue": "Outdoor card games in Columbus Park",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Outdoor card games happen in Columbus Park"
+        ],
+        "source_passage": "Chinatown’s vibrant street life includes outdoor card games in Columbus Park.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Chinatown (caption)"
+        },
+        "entities": [
+          "Columbus Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "columbus park games",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 4,
+        "kid_friendly": "yes",
+        "topic_slug": "columbus_park_card_games",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "99f441669039e09459a7ee4b3ae7a7e51dfd22e9ce7aecf3dcafc81fe0ddc581"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Little Italy",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.719273,
+    "longitude": -73.998215,
+    "trigger_radius": 250,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_little_italy_social_change_frommers-nyc-2024_mulberry_street_shadow",
+        "poi_name": "Little Italy",
+        "lens": "social_change",
+        "script_body": "Except for two blocks of Mulberry Street, from Canal to Broome, strung with colored lights, Little Italy has essentially ceased to exist and is really only a tourist-trapping shadow of its former self. There are a handful of worthwhile places to shop for Italian food, eat gelato, or get Italian coffee, but very few real Italian Americans around anymore.",
+        "physical_cues": [
+          {
+            "cue": "Two blocks of Mulberry Street strung with colored lights, from Canal to Broome",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Only two blocks of Mulberry Street (Canal to Broome) remain of Little Italy",
+          "Few real Italian Americans remain in the neighborhood"
+        ],
+        "source_passage": "In fact, except for 2 blocks of Mulberry Street (from Canal to Broome), strung with colored lights, Little Italy has ceased to exist and is really only a tourist-trapping shadow of its former self. There are a handful of worthwhile places to shop for Italian food, eat gelato, or get Italian coffee, but very few real Italian Americans around anymore.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Chinatown (& Little Italy)"
+        },
+        "entities": [
+          "Mulberry Street",
+          "Canal Street",
+          "Broome Street"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "vanishing little italy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "topic_slug": "mulberry_street_shadow",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "28e95f7d8293aee1007bcd445062849c299539e2c18da8ba787d9546256f1f89"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "SoHo",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72288,
+    "longitude": -73.99875,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_soho_historic_arch_frommers-nyc-2024_most_cast_iron_in_world",
+        "poi_name": "SoHo",
+        "lens": "historic_arch",
+        "script_body": "SoHo means “south of Houston Street,” and these formerly industrial blocks of former factories and tenements now draw a lot of boldfaced names. With the arrivistes has come a welcome wagon of hot restaurants, boutiques, spas, and boîtes, which means simply wandering these often-cobblestoned streets, past the cast-iron buildings—SoHo has the most of any area in the world—can be a hoot.",
+        "physical_cues": [
+          {
+            "cue": "Cobblestoned streets lined with cast-iron buildings",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "SoHo means south of Houston Street",
+          "SoHo has the most cast-iron buildings of any area in the world"
+        ],
+        "source_passage": "It’s all in the names. SoHo means “south of Houston Street.” This fashionable neighborhood extends down to Canal St., between Sixth Ave. to the west and Lafayette St. (1 block east of Broadway) to the east. ... And with these arrivistes has come a welcome wagon of hot restaurants, boutiques, spas, and boîtes. Which means simply wandering these often-cobblestoned streets, by the cast-iron buildings (SoHo has the most of any area in the world), can be a hoot.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "TriBeCa, Nolita & SoHo"
+        },
+        "entities": [
+          "Houston Street"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "subject_tag": "cast-iron architecture",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "boîtes",
+            "gloss": "small intimate clubs or bars"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "topic_slug": "most_cast_iron_in_world",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "SoHo has the most cast-iron buildings of any area in the world (superlative)"
+          ],
+          "notes": "Superlative claim ('most of any area in the world') retained verbatim from source; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "d425d0c5875e4c5b5069ae23b3aae0aba2aa6c6ab61f6add8b8b8dd98993fc9e"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Lower East Side",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.715936,
+    "longitude": -73.986806,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_lower_east_side_social_change_frommers-nyc-2024_densest_place_on_earth",
+        "poi_name": "Lower East Side",
+        "lens": "social_change",
+        "script_body": "For millions, this area was once the portal to America. The buildings you see on the Lower East Side were built expressly to house the teeming masses of immigrants who flooded into New York between roughly 1840 and 1930. At the turn of the last century, this was the most densely populated area in the world, with a dozen people to an apartment and pushcarts jamming the streets. Some remnants of that life survive in the old-world fabric and luggage stores along Orchard Street.",
+        "physical_cues": [
+          {
+            "cue": "Old-world fabric and luggage stores along Orchard Street",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "LES buildings were built to house immigrants who arrived ~1840-1930",
+          "At the turn of the century it was the most densely populated area in the world",
+          "A dozen people lived to an apartment"
+        ],
+        "source_passage": "For millions, these areas were once the portal to America. In fact, the buildings you see on the Lower East Side were built expressly to house the teeming masses of immigrants who flooded into New York between roughly 1840 and 1930. At the turn of the last century, this was the most densely populated area in the world, with a dozen people to an apartment and pushcarts jamming the streets. While there are some remnants of that life in the old-world fabric and luggage stores along Orchard Street, these areas are mostly known today for bars, lounges, art galleries, and music clubs.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Lower East Side & East Village"
+        },
+        "entities": [
+          "Orchard Street"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "immigrant portal",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "topic_slug": "densest_place_on_earth",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "the most densely populated area in the world at the turn of the last century (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "bd71692acf54be2874525a3ff037960e324da8631312c1fd7814375ce1c1789e"
+      },
+      {
+        "beat_id": "newyork_lower_east_side_local_legends_frommers-nyc-2024_big_apple_greeter_tours",
+        "poi_name": "Lower East Side",
+        "lens": "local_legends",
+        "script_body": "For 25 years, the non-profit Big Apple Greeter has paired volunteer New Yorkers with visitors for free, highly personal looks at the city. The guides aren't expected to spout history or architecture; instead they introduce tourists to the city they know and love, taking them to areas few outsiders see. The four-hour tours are for individuals and couples—the largest group accepted is five—and are so hugely popular that you should book four weeks in advance, because many would-be participants are turned away.",
+        "physical_cues": [],
+        "key_claims": [
+          "Big Apple Greeter has paired volunteers with visitors for 25 years",
+          "Tours are free, four hours, max five people",
+          "Book four weeks in advance"
+        ],
+        "source_passage": "If you’d like to tour a specific neighborhood with an expert guide, contact Big Apple Greeter (www.bigapplegreeter.org; 212/669-8159). For 25 years this non-profit group has been pairing volunteers with visitors for free and highly personal looks at the city. The guides are not expected to be able to spout history or talk in detail about the architecture of the places you’ll be visiting. Instead, they introduce tourists to the city they know and love deeply, taking them to areas that few outsiders see. The 4-hour tours are for individuals and couples (the largest group they accept is five people) and are hugely popular, so book 4 weeks in advance of arrival (or more), because many would-be participants are turned away.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Free New York City Tours sidebar"
+        },
+        "entities": [
+          "Big Apple Greeter"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "sidebar",
+        "emotional_register": "neutral",
+        "subject_tag": "greeter program",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "topic_slug": "big_apple_greeter_tours",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "ddecd872290fa621595c38b195eb327cbb9f978ecec26349199c1545a533a6f8"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Greenwich Village",
+    "short_description": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.733584,
+    "longitude": -74.002817,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_greenwich_village_social_change_frommers-nyc-2024_haven_for_outsiders",
+        "poi_name": "Greenwich Village",
+        "lens": "social_change",
+        "script_body": "Greenwich Village has always been where the city's outsiders and oddballs found a haven. In Dutch Colonial times it was farmland set outside the walls of the city. At the turn of the 20th century it was a bohemian enclave where artists of all sorts—Mark Twain, Edgar Allan Poe, Eugene O'Neill, and Winslow Homer among them—could find cheap lodging and companionship. In the 1950s it sat at the center of the Beat movement; in the '60s and '70s the area around Christopher Street became the hub of a burgeoning gay rights movement; and in the '80s it was a hotbed of AIDS-related activism.",
+        "physical_cues": [],
+        "key_claims": [
+          "Village was farmland in Dutch Colonial times",
+          "Bohemian enclave at turn of 20th century (Twain, Poe, O'Neill, Homer)",
+          "Center of Beat movement in 1950s",
+          "Christopher Street hub of gay rights movement in 60s-70s",
+          "Hotbed of AIDS activism in 80s"
+        ],
+        "source_passage": "Greenwich Village has always been where the city’s outsiders and oddballs have found a haven. In Dutch Colonial times, it was farmland set outside the walls of the city. At the turn of the 20th century, the area was a bohemian enclave where artists of all sorts (Mark Twain, Edgar Allan Poe, Eugene O’Neill, and Winslow Homer, to name a few) could find cheap lodging and companionship. In the 1950s, it was at the center of the Beat movement; in the ’60s and ’70s, the area around Christopher Street became the hub of a burgeoning gay rights movement (in the ’80s, it was a hotbed of AIDS-related activism).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Greenwich Village"
+        },
+        "entities": [
+          "Mark Twain",
+          "Edgar Allan Poe",
+          "Eugene O'Neill",
+          "Winslow Homer",
+          "Beat movement",
+          "Christopher Street",
+          "gay rights movement"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "bohemian haven",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "topic_slug": "haven_for_outsiders",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0effe535bf2f49bd69a70d5986f5b4a080c3bac178f4c90aca1ccda9dc89edbd"
+      },
+      {
+        "beat_id": "newyork_greenwich_village_famous_residents_frommers-nyc-2024_anderson_cooper_low_skyline",
+        "poi_name": "Greenwich Village",
+        "lens": "famous_residents",
+        "script_body": "High real estate prices have dulled the Village's edge, and you're more likely to see dads with strollers than long-haired poets walking these streets—and that dad might be Anderson Cooper, one of the many celebrities who now call the tree-shaded brownstones of the Village home. Very few buildings in the neighborhood reach 10 stories, and small shops elbow out chain stores, preserving the illusion that you've entered another city altogether.",
+        "physical_cues": [
+          {
+            "cue": "Tree-shaded brownstones, few buildings reaching 10 stories",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Anderson Cooper lives in the Village",
+          "Very few buildings reach 10 stories"
+        ],
+        "source_passage": "Today, high real estate prices have dulled the Village’s edge, and you’re more likely to see dads with strollers than long-haired poets walking these streets. And that dad might be Anderson Cooper, one of the many celebs who now call the tree-shaded brownstones of the Village home sweet home. But the charms of the area are still intact, as is the illusion that you’ve entered another city altogether. Very few buildings in the neighborhood reach 10 stories, and small shops elbow out chain stores.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Greenwich Village"
+        },
+        "entities": [
+          "Anderson Cooper"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "low brownstone village",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "topic_slug": "anderson_cooper_low_skyline",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Anderson Cooper lives in the Village (living person)"
+          ],
+          "notes": "Claim about a living person (Anderson Cooper) retained verbatim from source; never auto-resolve living-people claims. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "73a7e9488b87a65a29365fd3c594704dd17966657a1b3ce2a444872134443c6b"
+      },
+      {
+        "beat_id": "newyork_greenwich_village_hidden_history_frommers-nyc-2024_w4th_goes_rogue",
+        "poi_name": "Greenwich Village",
+        "lens": "hidden_history",
+        "script_body": "The exceptions to Manhattan's grid all lie below 14th Street: these southern parts were the first to be settled and so follow a haphazard non-system of streets and alleys that curve, twist, and sometimes double back on themselves—most famously in Greenwich Village, where West 4th Street goes rogue, angling north to cross West 10th, 11th, 12th, and 13th streets.",
+        "physical_cues": [],
+        "key_claims": [
+          "Below-14th-Street neighborhoods follow a haphazard street system",
+          "W. 4th St. crosses W. 10th, 11th, 12th, and 13th sts. in the Village"
+        ],
+        "source_passage": "These southern parts of Manhattan were the first to be settled, and therefore follow a haphazard non-system of streets and alleys that curve and twist, sometimes doubling back on themselves (most famously in Greenwich Village, where W. 4th St. goes rogue, angling north to cross W. 10th, 11th, 12th, and 13th sts.).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Grid Plan of Manhattan"
+        },
+        "entities": [
+          "West 4th Street",
+          "14th Street"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "rogue w4th street",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "topic_slug": "w4th_goes_rogue",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "295ff818d40e2b9711acfd3aa3212135c494c7fed385061e41307fb6d9ce571c"
+      }
+    ],
+    "importance_tier": 5
+  },
+  {
+    "name": "Meatpacking District",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.740803,
+    "longitude": -74.008069,
+    "trigger_radius": 250,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_meatpacking_district_social_change_frommers-nyc-2024_slaughterhouses_to_nightlife",
+        "poi_name": "Meatpacking District",
+        "lens": "social_change",
+        "script_body": "The so-called Meatpacking District, named for the slaughterhouses that once filled the area west of Greenwich Avenue, has become an extremely popular nightlife destination and a shopping mini-mecca for its handful of super-trendy stores. The book calls it NYC's adult Disneyland, filled with late-night clubs, bars, and restaurants that are unhindered by the city's zoning laws—since there are no schools or churches in this part of town.",
+        "physical_cues": [],
+        "key_claims": [
+          "Named for slaughterhouses west of Greenwich Avenue",
+          "No schools or churches there, so zoning laws don't restrict nightlife"
+        ],
+        "source_passage": "The so-called Meatpacking District, named for the slaughterhouses that once filled the area west of Greenwich Avenue, has become an extremely popular nightlife destination (and a shopping mini-mecca for its handful of super-trendy stores). It’s NYC’s adult Disneyland, filled with late-night clubs, bars, and restaurants that are unhindered by the city’s zoning laws (since there are no schools or churches in this part of town).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Meatpacking District & Chelsea"
+        },
+        "entities": [
+          "Greenwich Avenue"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "subject_tag": "meatpacking transformation",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "topic_slug": "slaughterhouses_to_nightlife",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "3944066ae6a54e581b26efcd8e3e3f27d014dd18daadb1c94cf2aa47339b3e38"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Chelsea",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.746491,
+    "longitude": -74.001528,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_chelsea_visual_art_frommers-nyc-2024_gallery_hopping_capital",
+        "poi_name": "Chelsea",
+        "lens": "visual_art",
+        "script_body": "Manhattan's Chelsea neighborhood is today what SoHo was 10 years ago, and what Greenwich Village was 20 years ago—meaning that if you want to go art gallery hopping, this is where to head. Three final reasons to come: the Whitney Museum, the High Line park (a marvel of urban reclamation), and Little Island, a custom-built pleasure isle in the Hudson.",
+        "physical_cues": [],
+        "key_claims": [
+          "Chelsea is the art gallery district",
+          "Whitney Museum, High Line, and Little Island are key sights"
+        ],
+        "source_passage": "Manhattan’s Chelsea neighborhood is today what SoHo was 10 years ago, and what Greenwich Village was 20 years ago, meaning that if you want to go art gallery hopping, this is where to head. ... Three final reasons to come here: the fab Whitney Museum (p. 191); the High Line park, a marvel of urban reclamation (p. 262); and Little Island (p. 263), a custom-built pleasure isle in the Hudson.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Meatpacking District & Chelsea"
+        },
+        "entities": [
+          "SoHo",
+          "Greenwich Village",
+          "Whitney Museum",
+          "High Line",
+          "Little Island"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "gallery district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "topic_slug": "gallery_hopping_capital",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0801d35f8c1cc66f831d82a06dd71df1b5d0e12271c1747ad1e6b89b7c458f0b"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Flatiron District",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.741072,
+    "longitude": -73.989653,
+    "trigger_radius": 300,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_flatiron_district_social_change_frommers-nyc-2024_ladies_mile_department_stores",
+        "poi_name": "Flatiron District",
+        "lens": "social_change",
+        "script_body": "As you meander through these areas you're likely to see brown street signs proclaiming “Ladies Mile.” It was on this stretch, mostly on Broadway and Park Avenue South, that the first wave of department stores transformed the lives of New Yorkers in the 1850s. Instead of hopping from a dry-goods shop for fabric to a milliner for hats to a cobbler for shoes, women came from all over the city to outfit themselves and their homes in stores that had everything under one roof. Notice the large plate-glass windows on many facades, another department store innovation.",
+        "physical_cues": [
+          {
+            "cue": "Brown street signs proclaiming 'Ladies Mile'",
+            "direction": "here",
+            "feature_type": "plaque"
+          },
+          {
+            "cue": "Large plate-glass windows on many facades",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "First wave of department stores transformed New Yorkers' lives in the 1850s along Broadway and Park Ave South",
+          "Large plate-glass windows were a department store innovation"
+        ],
+        "source_passage": "As you meander through these three bustling, adjoining (and overlapping) areas, you’re likely to see brown street signs proclaiming ladies mile. It was on this stretch, mostly on Broadway and Park Avenue South, that the first wave of department stores transformed the lives of New Yorkers in the 1850s. Instead of hopping from a dry-goods shop for fabric to a milliner for hats to a cobbler for shoes, women from all over the city came here to outfit themselves and their homes in stores that had everything they needed under one roof. Notice the large plate-glass windows on many facades, another department store innovation.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Flatiron District, Union Square & Gramercy Park"
+        },
+        "entities": [
+          "Ladies Mile",
+          "Broadway",
+          "Park Avenue South"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "department store origin",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "topic_slug": "ladies_mile_department_stores",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "3f8032b1d1f2e2392d1cf703bdae6aff4fee8692f9156a051749b18d34ba5a75"
+      },
+      {
+        "beat_id": "newyork_flatiron_district_dark_history_frommers-nyc-2024_brothels_above_the_stores",
+        "poi_name": "Flatiron District",
+        "lens": "dark_history",
+        "script_body": "Above the big plate-glass shop windows, the windows are much smaller—and they point to a second element of the “Ladies Mile”: brothels. When the stores closed for the day, the establishments upstairs opened. And where there's prostitution, theater often follows: the area around Union Square became New York's first show district.",
+        "physical_cues": [
+          {
+            "cue": "Much smaller windows above the shopfronts' plate glass",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Smaller upstairs windows mark former brothels above the Ladies Mile stores",
+          "Union Square became NYC's first show district"
+        ],
+        "source_passage": "Above, the windows are much smaller and point to a second element of the “Ladies Mile”: brothels. When the stores closed for the day, the establishments upstairs opened. And where there’s prostitution, theater often follows. The area around Union Square was New York’s first show district and has become an important off-Broadway theater district again in recent years.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Flatiron District, Union Square & Gramercy Park"
+        },
+        "entities": [
+          "Ladies Mile",
+          "Union Square"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "upstairs brothels",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 20,
+        "kid_friendly": "no",
+        "topic_slug": "brothels_above_the_stores",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "b15e69c54c0215fe0bc687beb42ab27b657cba6d8ff4fd97ce3137052873ce2e"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Gramercy Park",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73795,
+    "longitude": -73.985915,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_gramercy_park_hidden_history_frommers-nyc-2024_only_private_park_keys",
+        "poi_name": "Gramercy Park",
+        "lens": "hidden_history",
+        "script_body": "Gramercy Park is named for the only privately owned park in the city—the keys go to those apartment owners whose windows overlook the park. Around it, beautifully preserved historic homes and clubs include the wisteria-clad home of former Mayor James Harper at 4 Gramercy Park South, the Players Club at number 16 (whose members included Edwin Booth and Mark Twain), and the National Arts Club at number 15, a hangout for Woodrow Wilson and Theodore Dreiser.",
+        "physical_cues": [
+          {
+            "cue": "Wisteria-clad home of Mayor James Harper at 4 Gramercy Park South",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Players Club at 16 Gramercy Park South and National Arts Club at 15",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "Gramercy Park is the only privately owned park in the city; keys go to overlooking apartment owners",
+          "James Harper's home at 4 Gramercy Park S",
+          "Players Club at 16 (Edwin Booth, Mark Twain members)",
+          "National Arts Club at 15 (Woodrow Wilson, Theodore Dreiser)"
+        ],
+        "source_passage": "For the best strolling, head directly to the Gramercy Park area, named for the only privately owned park in the city (the keys go to those apartment owners whose windows overlook the park). Around the park, a number of beautifully preserved historic homes and clubs include the wisteria-clad home of former Mayor James Harper (4 Gramercy Park S), the Players Club (16 Gramercy Park S; its members included Edwin Booth and Mark Twain), and the National Arts Club (15 Gramercy Park S, a hangout for Woodrow Wilson and Theodore Dreiser).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Flatiron District, Union Square & Gramercy Park"
+        },
+        "entities": [
+          "James Harper",
+          "Players Club",
+          "Edwin Booth",
+          "Mark Twain",
+          "National Arts Club",
+          "Woodrow Wilson",
+          "Theodore Dreiser"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "private park keys",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "topic_slug": "only_private_park_keys",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "only privately owned park in the city (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "abab604baf51cc290402787c3297b9ccb71999e7e41e7df2a8dc1aadb65a3866"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "Hudson Yards",
+    "short_description": "Large development; contains The Edge, Vessel, The Shed sub-attractions.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.755906,
+    "longitude": -74.000532,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "30th to 35th St., Tenth Ave. to the river",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Large development; contains The Edge, Vessel, The Shed sub-attractions.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02",
+        "chunk-04"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_hudson_yards_modern_design_frommers-nyc-2024_looks_like_dallas",
+        "poi_name": "Hudson Yards",
+        "lens": "modern_design",
+        "script_body": "Gotham's newest neighborhood, Hudson Yards, looks more like Dallas than New York City—thanks to its gleaming centerpiece mall and the proportions and placement of its skyscrapers. Still, a few attractions make it worth a visit, foremost among them The Shed, a spectacular new arts center.",
+        "physical_cues": [
+          {
+            "cue": "Gleaming centerpiece mall and outsized skyscrapers",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Hudson Yards is Gotham's newest neighborhood",
+          "The Shed is a new arts center there"
+        ],
+        "source_passage": "Gotham’s newest neighborhood looks more like Dallas than New York City, due to its gleaming centerpiece mall and the proportions and placement of its skyscrapers. Still, a few attractions make it worth a visit, foremost among them The Shed (p. 345), a spectacular new arts center.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Hudson Yards"
+        },
+        "entities": [
+          "The Shed"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "newest neighborhood",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "topic_slug": "looks_like_dallas",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "e52b1ed3f4a6bea5d151196873251bf2dce33979ac850e14643e056318967caf"
+      }
+    ],
+    "importance_tier": 5
+  },
+  {
+    "name": "Midtown West",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.75529,
+    "longitude": -74.006741,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_midtown_west_local_legends_frommers-nyc-2024_unlivable_nobody_lives_here",
+        "poi_name": "Midtown West",
+        "lens": "local_legends",
+        "script_body": "Midtown West encompasses several famous places: Madison Square Garden, the Garment District, Rockefeller Center, the Theater District, and Times Square. It's the area most people picture when they think of New York, and the reason so many visitors say, “It's a nice place to visit, but I couldn't ever live there.” Basing their judgment on crowded, loud, pushy midtown, they're absolutely right—which is why so few New Yorkers actually live here. In certain parts there's no residential housing whatsoever.",
+        "physical_cues": [],
+        "key_claims": [
+          "Midtown West contains MSG, Garment District, Rockefeller Center, Theater District, Times Square",
+          "Few New Yorkers live there; some parts have no residential housing"
+        ],
+        "source_passage": "Midtown West, a vast area, encompasses several famous places: Madison Square Garden, the Garment District, Rockefeller Center, the Theater District, and Times Square. It’s the area most people think of when they think of New York, and the reason why so many visitors say with a smirk, “Well, it’s a nice place to visit, but I couldn’t ever live there.” And because they’re basing their judgments on crowded, loud, pushy midtown, they’re absolutely right: It’s unlivable . . . which is why so few New Yorkers actually live in this area. In certain parts of midtown there’s no residential housing whatsoever, and it’s only the tourists who attempt to get a good night’s sleep in this bustling neighborhood.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Times Square & Midtown West"
+        },
+        "entities": [
+          "Madison Square Garden",
+          "Garment District",
+          "Rockefeller Center",
+          "Theater District",
+          "Times Square"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "unlivable midtown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "topic_slug": "unlivable_nobody_lives_here",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "36ebea537de0d42df423c90e893c147203efb5ade93b90039f0067e840b6011b"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Midtown East",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.759822,
+    "longitude": -73.972471,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_midtown_east_historic_arch_frommers-nyc-2024_postwar_skyscraper_rivalry",
+        "poi_name": "Midtown East",
+        "lens": "historic_arch",
+        "script_body": "In the 1950s, Madison, Park, and Lexington avenues started to sprout skyscrapers and were soon rivaling the Wall Street area for office space. That's primarily what you'll find here: people in suits, looming glass towers, and lots of traffic. Among it all are spectacular architectural sights like Grand Central Station, St. Patrick's Cathedral, the Chrysler Building, and the Seagram Building at 52nd and Park Avenue.",
+        "physical_cues": [
+          {
+            "cue": "Looming glass towers along Madison, Park, and Lexington avenues",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "1950s skyscrapers on Madison, Park, Lexington rivaled Wall Street for office space",
+          "Grand Central, St. Patrick's, Chrysler Building, Seagram Building (52nd & Park) are key sights"
+        ],
+        "source_passage": "In the 1950s, Madison, Park, and Lexington avenues started to sprout skyscrapers and were soon rivaling the Wall Street area for office space. That’s primarily what you’ll find here: people in suits, looming glass towers, and lots of traffic. Among all that are some spectacular architectural sights like Grand Central Station (p. 212), St. Patrick’s Cathedral (p. 216), the Chrysler Building (p. 208), and the Seagram Building (52nd and Park Ave.).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Midtown East & Murray Hill"
+        },
+        "entities": [
+          "Madison Avenue",
+          "Park Avenue",
+          "Lexington Avenue",
+          "Grand Central Station",
+          "St. Patrick's Cathedral",
+          "Chrysler Building",
+          "Seagram Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "midtown skyscrapers",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "topic_slug": "postwar_skyscraper_rivalry",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "2e7cc3463490b9324cfaa6bd480cb88269454fd79546c4fd21c56d558acfdb7e"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Upper East Side",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.775479,
+    "longitude": -73.955023,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_upper_east_side_famous_residents_frommers-nyc-2024_gold_coast_richest_zip",
+        "poi_name": "Upper East Side",
+        "lens": "famous_residents",
+        "script_body": "The zip code 10021 is the richest in the world, and it belongs to the Upper East Side—in particular the swank swath of pavement that runs from 61st to 80th streets. Also known as “The Gold Coast” and “Millionaire's Mile,” this is the stomping ground for New York's high society: the Prada-clad women and old-money men who sit on the boards of the neighborhood museums, go to cocktail parties, and endow scholarships for kicks. Their mansions and marble-faced townhouses make for nifty sightseeing.",
+        "physical_cues": [
+          {
+            "cue": "Mansions and marble-faced townhouses from 61st to 80th streets",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "10021 is the richest zip code in the world, on the UES (61st-80th streets)",
+          "Nicknamed The Gold Coast and Millionaire's Mile"
+        ],
+        "source_passage": "10021 is the richest zip code in the world, and it belongs to the Upper East Side; in particular, the swank swath of pavement that runs from 61st to 80th streets. Also known as “The Gold Coast” and “Millionaire’s Mile,” this is the stomping grounds for New York’s high society: the Prada-clad women and old-money men who sit on the boards of the neighborhood museums, go to cocktail parties, and endow scholarships for kicks. Their mansions and marble-faced townhouses make for nifty sightseeing for those interested in architecture, and the shops along Madison Avenue offer a peek into the extravagant fashions adopted by the 1% and the top designers who serve them.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Upper East Side"
+        },
+        "entities": [
+          "The Gold Coast",
+          "Millionaire's Mile",
+          "Madison Avenue"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "richest zip code",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "topic_slug": "gold_coast_richest_zip",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "10021 is the richest zip code in the world (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "5a14c5186ed6d45f5f215ea1ff107c767657af6be8f6e30f9bf347062ad3deaa"
+      },
+      {
+        "beat_id": "newyork_upper_east_side_visual_art_frommers-nyc-2024_museum_mile_concentration",
+        "poi_name": "Upper East Side",
+        "lens": "visual_art",
+        "script_body": "Museums play a key role on the Upper East Side—there's a greater concentration of top-flight museums here than anywhere else in the country, with the exception of the Mall in Washington, D.C. You'll want at least a day to explore Museum Mile, where the Metropolitan, the Guggenheim, the Cooper Hewitt, and more are all clustered.",
+        "physical_cues": [],
+        "key_claims": [
+          "Greater concentration of top-flight museums than anywhere else in the country except the DC Mall",
+          "Museum Mile includes the Met, Guggenheim, Cooper Hewitt"
+        ],
+        "source_passage": "Museums also play a key role on the Upper East Side; there’s a greater concentration of top-flight museums here than anywhere else in the country, with the exception of the Mall in Washington, D.C. You’ll want to spend at least 1 day exploring Museum Mile—the Metropolitan (p. 224), Guggenheim (p. 229), Cooper Hewitt (p. 219), and more are all in the area.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Upper East Side"
+        },
+        "entities": [
+          "Museum Mile",
+          "Metropolitan Museum",
+          "Guggenheim",
+          "Cooper Hewitt"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "museum mile",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "museum_mile_concentration",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "greater concentration of top-flight museums than anywhere else in the country except the DC Mall (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "a71c4b7a71f44df56cf166d27a8957c4c1b0fb2e289471008ce88b8bc6503e74"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Upper West Side",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.787045,
+    "longitude": -73.975416,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_upper_west_side_local_legends_frommers-nyc-2024_suburban_family_vibe",
+        "poi_name": "Upper West Side",
+        "lens": "local_legends",
+        "script_body": "In some ways the Upper West Side has the most suburban vibe of any of Manhattan's neighborhoods. National chain stores line the major thoroughfares and the sidewalks swarm with strollers. It's a popular area for families thanks to its proximity to Central Park, the American Museum of Natural History, and the Children's Museum of Manhattan, and it's home to New York's famous performing arts hub, Lincoln Center.",
+        "physical_cues": [],
+        "key_claims": [
+          "UWS has the most suburban vibe of Manhattan's neighborhoods",
+          "Family-friendly near Central Park, AMNH, Children's Museum; home to Lincoln Center"
+        ],
+        "source_passage": "In some ways, the Upper West Side has the most suburban vibe of any of Manhattan’s neighborhoods. National chain stores line the major thoroughfares and the sidewalks swarm with strollers. It’s a popular area for families thanks to its proximity to Central Park, the American Museum of Natural History, and the Children’s Museum of Manhattan. It’s still an extremely pleasant place to visit with good, if chain-oriented, shopping; a handful of top-notch museums; New York’s famous performing arts hub, Lincoln Center; and, of course, access to the glories of Central Park.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Upper West Side"
+        },
+        "entities": [
+          "Central Park",
+          "American Museum of Natural History",
+          "Children's Museum of Manhattan",
+          "Lincoln Center"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "family neighborhood",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "topic_slug": "suburban_family_vibe",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "ef8ad99d92658d72dd5fae91f4067d67a2294e1b9c3cd603c2bc748e19b320c2"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Harlem",
+    "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.807858,
+    "longitude": -73.945467,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_harlem_social_change_frommers-nyc-2024_african_american_since_1920s",
+        "poi_name": "Harlem",
+        "lens": "social_change",
+        "script_body": "Perhaps the most rapidly transforming neighborhood in the city, Harlem is safer and cleaner than it's been in decades, but may be losing some of its intrinsic character. It has been a largely African-American neighborhood since the 1920s—home to some of the greatest Black writers, politicians, and artists of the 20th century—and is now drawing an increasing number of non-Black residents, lured by lower real estate prices and the beauty of a brownstone-lined community.",
+        "physical_cues": [],
+        "key_claims": [
+          "Harlem has been largely African-American since the 1920s",
+          "Home to great 20th-century Black writers, politicians, artists",
+          "Now drawing more non-Black residents due to lower prices"
+        ],
+        "source_passage": "Perhaps the most rapidly transforming neighborhood in the city, Harlem is safer and cleaner than it’s been in decades . . . but may be losing some of its intrinsic character. A largely African-American neighborhood since the 1920s—and home to some of the greatest Black writers, politicians, and artists of the 20th century—the neighborhood is now drawing an increasing number of non-Black residents, lured here by lower real estate prices and the beauty of a brownstone-lined community.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Harlem"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "harlem gentrification",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "topic_slug": "african_american_since_1920s",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8368163e284be3ea8ce3948da9042ad3700504201233078024a5f6b62e897559"
+      },
+      {
+        "beat_id": "newyork_harlem_historic_arch_frommers-nyc-2024_beaux_arts_brownstones_apollo",
+        "poi_name": "Harlem",
+        "lens": "historic_arch",
+        "script_body": "There's much to see in Harlem, including dozens of well-preserved Beaux Arts brownstones, the Apollo Theater, and a hopping bar scene.",
+        "physical_cues": [
+          {
+            "cue": "Dozens of well-preserved Beaux Arts brownstones",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Harlem has dozens of well-preserved Beaux Arts brownstones, the Apollo Theater, and a bar scene"
+        ],
+        "source_passage": "There’s much to see, including dozens of well-preserved Beaux Arts brownstones, the Apollo Theater, and a hopping bar scene. See walking tour, p. 315.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Harlem"
+        },
+        "entities": [
+          "Apollo Theater"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "beaux arts brownstones",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Beaux Arts",
+            "gloss": "an ornate neoclassical architectural style"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "topic_slug": "beaux_arts_brownstones_apollo",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "74204eb18141bc3d98b342bd98cd485958cf17c6d410c2c986b3ee173b8c356e"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Brooklyn",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.652601,
+    "longitude": -73.949721,
+    "trigger_radius": 1000,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_brooklyn_local_legends_frommers-nyc-2024_largest_most_populous_borough",
+        "poi_name": "Brooklyn",
+        "lens": "local_legends",
+        "script_body": "With 2.6 million residents according to the last census, Brooklyn is the most populous borough of the city, and at 71 square miles it's also the largest. It's very difficult to pin down Brooklyn's personality—it's just too darn big to be summarized in a nutshell.",
+        "physical_cues": [],
+        "key_claims": [
+          "Brooklyn has 2.6 million residents",
+          "It is the most populous and largest (71 sq mi) borough"
+        ],
+        "source_passage": "With 2.6 million residents (according to the last census), Brooklyn is the most populous borough of the city, and at 71 square miles, it’s also the largest. It’s very difficult to pin down Brooklyn’s personality, as it’s just too darn big to be summarized in a nutshell.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Brooklyn"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "borough size",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "topic_slug": "largest_most_populous_borough",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "2.6 million residents",
+            "most populous borough",
+            "71 square miles, largest borough"
+          ],
+          "notes": "Population/area figures and superlative borough rankings retained verbatim; superlatives never auto-corrected. /fact-check to verify figures.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "00af7bf88504948e557f8705b1e382c45b8275d6dfdb39f6b0dcf17a178c9c52"
+      }
+    ],
+    "importance_tier": 5
+  },
+  {
+    "name": "Brooklyn Heights",
+    "short_description": "First NYC historic district; strolling neighborhood with famous promenade. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.696085,
+    "longitude": -73.99503,
+    "trigger_radius": 200,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "First NYC historic district; strolling neighborhood with famous promenade. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_brooklyn_heights_historic_arch_frommers-nyc-2024_first_landmarked_neighborhood",
+        "poi_name": "Brooklyn Heights",
+        "lens": "historic_arch",
+        "script_body": "Brooklyn Heights, right off the Brooklyn Bridge, boasts spectacular views of Manhattan and is one of the borough's two most affluent neighborhoods. Filled with lovely Beaux Arts brownstone buildings, it was the first neighborhood in the city to be landmarked. Not long ago the New York Times found that apartments here were selling, for the first time, for more than apartments in many areas of Manhattan.",
+        "physical_cues": [
+          {
+            "cue": "Beaux Arts brownstones with views of Manhattan across the river",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Brooklyn Heights was the first neighborhood in the city to be landmarked",
+          "NYT found apartments selling for more than many Manhattan areas"
+        ],
+        "source_passage": "The two most affluent neighborhoods are Brooklyn Heights, which is right off the Brooklyn Bridge, boasting spectacular views of Manhattan; and Park Slope, the area surrounding Prospect Park, Frederick Law Olmsted’s other great work of landscape architecture (after Central Park). Both are stellar strolling areas, filled with lovely Beaux Arts brownstone buildings (Brooklyn Heights was the first neighborhood in the city to be landmarked). Not long ago, the New York Times discovered that apartments in these neighborhoods, for the first time, were selling for more than apartments in many areas of Manhattan.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Brooklyn"
+        },
+        "entities": [
+          "Brooklyn Bridge",
+          "New York Times"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "first landmark district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Beaux Arts",
+            "gloss": "an ornate neoclassical architectural style"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "topic_slug": "first_landmarked_neighborhood",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "first neighborhood in the city to be landmarked (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "316e278267e6ef75bdc3423f6daea837ce085f03c8d29b3749fa364a325130e4"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Park Slope",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.670103,
+    "longitude": -73.985972,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_park_slope_parks_gardens_frommers-nyc-2024_olmsted_prospect_park",
+        "poi_name": "Park Slope",
+        "lens": "parks_gardens",
+        "script_body": "Park Slope is the area surrounding Prospect Park, Frederick Law Olmsted's other great work of landscape architecture after Central Park. In Park Slope a constellation of sights includes the Brooklyn Museum, the Brooklyn Botanical Gardens, and Prospect Park itself.",
+        "physical_cues": [],
+        "key_claims": [
+          "Park Slope surrounds Prospect Park, Olmsted's other great work after Central Park",
+          "Sights: Brooklyn Museum, Brooklyn Botanical Gardens, Prospect Park"
+        ],
+        "source_passage": "and Park Slope, the area surrounding Prospect Park, Frederick Law Olmsted’s other great work of landscape architecture (after Central Park). ... and in Park Slope, a constellation of sights including the Brooklyn Museum, the Brooklyn Botanical Gardens, and Prospect Park.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Brooklyn"
+        },
+        "entities": [
+          "Prospect Park",
+          "Frederick Law Olmsted",
+          "Central Park",
+          "Brooklyn Museum",
+          "Brooklyn Botanical Gardens"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "prospect park",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "topic_slug": "olmsted_prospect_park",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "173f3cf0b667f983492d386912a9f67b65d0c295277ed8d494a6673a0ccaf291"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Williamsburg",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.714622,
+    "longitude": -73.95345,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_williamsburg_sacred_traditions_frommers-nyc-2024_hasidic_shtetl_split",
+        "poi_name": "Williamsburg",
+        "lens": "sacred_traditions",
+        "script_body": "Williamsburg has a split personality. Part of it houses one of the largest Hasidic Jewish communities in the world; walk the streets peopled by this sect and you may feel as if you've stepped back into an old-country shtetl—an illusion only somewhat ruined by the incongruous but ever-present cellphones. The other half is hipster heaven, a neighborhood of art galleries, bustling boîtes, and soigné boutiques.",
+        "physical_cues": [
+          {
+            "cue": "Streets peopled by the Hasidic sect on one side, galleries and boutiques on the other",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Part of Williamsburg houses one of the largest Hasidic Jewish communities in the world",
+          "The other half is hipster galleries and boutiques"
+        ],
+        "source_passage": "Williamsburg has a split personality. Part of it houses one of the largest Hasidic Jewish communities in the world. Walk the streets peopled by this sect and you may feel as if you’ve stepped back into an old country shtetl (an illusion only somewhat ruined by the incongruous but ever-present cellphones). The other half is hipster heaven, a neighborhood of art galleries, bustling boîtes, and soigné boutiques.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Brooklyn"
+        },
+        "entities": [
+          "Hasidic Jewish community"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "split personality",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "shtetl",
+            "gloss": "a small Jewish town or village of old-country Eastern Europe"
+          },
+          {
+            "phrase": "boîtes",
+            "gloss": "small intimate clubs or bars"
+          },
+          {
+            "phrase": "soigné",
+            "gloss": "elegant, well-groomed"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "topic_slug": "hasidic_shtetl_split",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "one of the largest Hasidic Jewish communities in the world (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "da3563ec8f7e0848dc54fd5e50323f42403b73fe5f4ebfa9b6e20a84778e252e"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Brighton Beach",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.579644,
+    "longitude": -73.96111,
+    "trigger_radius": 300,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_brighton_beach_local_legends_frommers-nyc-2024_largest_ukrainian_russian_expat",
+        "poi_name": "Brighton Beach",
+        "lens": "local_legends",
+        "script_body": "Eastern Europe makes an appearance in Brighton Beach, which has the largest expat Ukrainian and Russian community in the world. It's not the friendliest area, but fascinating to visit nonetheless, with stores selling endless rows of nesting dolls and Lenin T-shirts, and small-scale nightclubs that out-glitz and out-crass Vegas.",
+        "physical_cues": [
+          {
+            "cue": "Stores selling rows of nesting dolls and Lenin T-shirts",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Brighton Beach has the largest expat Ukrainian and Russian community in the world"
+        ],
+        "source_passage": "Eastern Europe also makes an appearance in Brighton Beach, which has the largest expat Ukrainian and Russian community in the world. It’s not the friendliest area, but fascinating to visit nonetheless, with stores selling endless rows of nesting dolls and Lenin T-shirts, and small-scale nightclubs that out-glitz and out-crass Vegas.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Brooklyn"
+        },
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "expat enclave",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "topic_slug": "largest_ukrainian_russian_expat",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "largest expat Ukrainian and Russian community in the world (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c5e3204f4d8b40be277fd8f1e636952bcedfd118634483307443e7b8c5a807c2"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "The Bronx",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.846651,
+    "longitude": -73.878594,
+    "trigger_radius": 1000,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_bronx_local_legends_frommers-nyc-2024_only_four_reasons_to_visit",
+        "poi_name": "The Bronx",
+        "lens": "local_legends",
+        "script_body": "The author is blunt: to his mind there are only four reasons a tourist should even think of going to the Bronx—Yankee Stadium, the Bronx Zoo, the New York Botanical Garden, and the Italian restaurants and stores of Arthur Avenue. If you have no interest in any of those, you can skip this giant borough without too much regret.",
+        "physical_cues": [],
+        "key_claims": [
+          "Author names four reasons to visit the Bronx: Yankee Stadium, Bronx Zoo, NY Botanical Garden, Arthur Avenue"
+        ],
+        "source_passage": "I may be condemned for this assessment, but to my mind there are only four reasons a tourist should even think of going to the Bronx: Yankee Stadium (p. 375), the Bronx Zoo (p. 237), the New York Botanical Garden (p. 238), and the Italian restaurants and stores of Arthur Avenue (p. 162). If you have no interest in any of these sights or facilities, you can skip this giant borough without too much regret.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Bronx"
+        },
+        "entities": [
+          "Yankee Stadium",
+          "Bronx Zoo",
+          "New York Botanical Garden",
+          "Arthur Avenue"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "four reasons",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "only_four_reasons_to_visit",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "4d2d35305b5f8a06268a62338d37d46345454e6d1bad577c01ba73f9226f4c48"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Queens",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.713508,
+    "longitude": -73.828313,
+    "trigger_radius": 1000,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_queens_social_change_frommers-nyc-2024_archie_bunker_most_international",
+        "poi_name": "Queens",
+        "lens": "social_change",
+        "script_body": "Archie Bunker no longer lives in Queens. The grouchy, bigoted xenophobe at the center of the famed 1970s sitcom All in the Family probably wouldn't recognize the borough today. In just the past 50 years it has gone from a somewhat insulated community of Irish and Italian Americans to the most international community in the United States. A single afternoon can make a visitor feel like a globe-trotter—downing samosas or shopping for saris in very Indian Jackson Heights, breaking plates at a Greek restaurant in Astoria, or buying miracle water and tacos at a Mexican botanica in Corona.",
+        "physical_cues": [],
+        "key_claims": [
+          "Queens went from Irish/Italian American to the most international community in the US over 50 years",
+          "Indian Jackson Heights, Greek Astoria, Mexican Corona"
+        ],
+        "source_passage": "Archie Bunker no longer lives in Queens. In fact, the grouchy, bigoted xenophobe at the center of the famed 1970s sitcom All in the Family probably wouldn’t recognize the borough today. In just the past 50 years it’s gone from being a somewhat insulated community of Irish and Italian Americans to the most international community in the United States. A single afternoon in Queens can make a visitor feel like a globe-trotter, which gives Queens a special appeal, despite the dreary, industrial look of much of it. Whether you’re downing samosas or shopping for saris in very Indian Jackson Heights, breaking plates at a Greek restaurant in Astoria, or buying miracle water and tacos at a Mexican botanica in Corona, there’s much to taste, smell, and experience.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Queens"
+        },
+        "entities": [
+          "Archie Bunker",
+          "All in the Family",
+          "Jackson Heights",
+          "Astoria",
+          "Corona"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "international borough",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "botanica",
+            "gloss": "a shop selling folk medicine, religious goods, and miracle remedies"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "topic_slug": "archie_bunker_most_international",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "most international community in the United States (superlative)"
+          ],
+          "notes": "Superlative retained verbatim; never auto-correct superlatives. /fact-check to verify.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "1908ce04a51becebab543877822feddefbb42e7608471407857ac3afbc62de58"
+      },
+      {
+        "beat_id": "newyork_queens_visual_art_frommers-nyc-2024_four_great_museums",
+        "poi_name": "Queens",
+        "lens": "visual_art",
+        "script_body": "Museums are another big draw, and the borough now rivals Brooklyn for its cultural attractions, boasting four great ones: the Museum of the Moving Image, P.S. 1 Museum of Contemporary Art, the Isamu Noguchi Galleries, and the Louis Armstrong House.",
+        "physical_cues": [],
+        "key_claims": [
+          "Queens has four great museums: Moving Image, P.S. 1, Noguchi, Louis Armstrong House"
+        ],
+        "source_passage": "Museums are another big draw, and the borough now rivals Brooklyn for its cultural attractions, boasting four great ones: the Museum of the Moving Image, P.S. 1 Museum of Contemporary Art, Isamu Noguchi Galleries, and the Louis Armstrong House.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Queens"
+        },
+        "entities": [
+          "Museum of the Moving Image",
+          "P.S. 1 Museum of Contemporary Art",
+          "Isamu Noguchi Galleries",
+          "Louis Armstrong House"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "queens museums",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "topic_slug": "four_great_museums",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "afb092a2135152bb17225e9de2c54d641f508c1e8fef5ea86023c452da2f5a09"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Staten Island",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.583456,
+    "longitude": -74.149605,
+    "trigger_radius": 150,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_staten_island_waterways_views_frommers-nyc-2024_free_ferry_only_reason",
+        "poi_name": "Staten Island",
+        "lens": "waterways_views",
+        "script_body": "The author is blunt about Staten Island: except for the fun and free ferry ride here, and the outlet mall near the ferry terminal, there's little reason for tourists to visit. There are a handful of cultural and historic sites, but none more compelling than those in the other boroughs—and, as he puts it, a mall is a mall is a mall is a mall.",
+        "physical_cues": [],
+        "key_claims": [
+          "The free ferry and the outlet mall near the terminal are the main reasons to visit Staten Island"
+        ],
+        "source_passage": "And I’ll again be blunt: Except for the fun and free ferry ride here, and the outlet mall near the ferry terminal, there’s little reason for tourists to visit. Yes, there are a handful of cultural and historic sites, but none that are more compelling than those in the other boroughs. And a mall is a mall is a mall is a mall . . .",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "Staten Island"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "ferry and mall",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "free_ferry_only_reason",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "96477a24ecb82f7e06f7b392b95b746bc2dc9831c226b0417c8890e08543c951"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "Manhattan",
+    "beats": [
+      {
+        "beat_id": "newyork_manhattan_hidden_history_frommers-nyc-2024_grid_plan_1811",
+        "poi_name": "Manhattan",
+        "lens": "hidden_history",
+        "script_body": "Finding your way around Manhattan is easier than in almost any other city because of the careful plan adopted for its avenues and streets. In the areas above 14th Street, the city fathers imposed a strict grid, leveling hills and tearing down existing homes to create straight, evenly spaced thoroughfares in all but a few places. The grid consists of numbered streets and avenues that cross at right angles—so if you can count to 100, you can get around this surprisingly compact island.",
+        "physical_cues": [],
+        "key_claims": [
+          "Above 14th Street the city fathers imposed a strict grid, leveling hills and tearing down homes",
+          "Grid is numbered streets and avenues crossing at right angles"
+        ],
+        "source_passage": "Finding your way around Manhattan is easier than in almost any other city because of the careful plan that was adopted for laying out the city’s avenues and streets. In the areas above 14th Street, the city fathers imposed a strict grid upon Manhattan, leveling hills and tearing down existing homes to create straight, evenly spaced thoroughfares in all but a few places. The grid consists of numbered streets and avenues that cross each other at right angles. If you can count up to 100, you can get around this surprisingly compact island.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Pauline Frommer",
+          "chapter": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+          "page": "The Grid Plan of Manhattan"
+        },
+        "entities": [
+          "14th Street"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "manhattan grid",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "topic_slug": "grid_plan_above_14th",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-02-ch02-neighborhoods-in-brief",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "d5dadec760f080cd364afe10094d82d218f25ec7c38ff417c337c281e22b0b7e"
+      }
+    ],
+    "importance_tier": 4,
+    "trigger_radius": 2000,
+    "latitude": 40.7831,
+    "longitude": -73.9712
+  }
+]

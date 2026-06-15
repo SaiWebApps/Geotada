@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden tour-grade setup setup-audio upload-paris upload wiki-fetch gen-within-edges fetch-boundary geocode-pois verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -183,11 +183,20 @@ setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 upload-paris: ## Upload full Paris dataset to active Neo4j instance
 	uv run python -m scripts.upload_paris
 
+upload: ## Upload a city dataset to active Neo4j. Usage: make upload CITY=new_york
+	uv run python -m scripts.upload_paris "$(CITY)"
+
 wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
 	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)
 
 gen-within-edges: ## Regenerate data/paris/within_edges.json (POI→Area staging) from areas.json + poi-raw.json
 	uv run python scripts/generate_within_edges.py
+
+fetch-boundary: ## Fetch a city/area OSM boundary polygon. Usage: make fetch-boundary SLUG=new_york RELATION=175905 [FORCE=1]
+	uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" --relation "$(RELATION)"$(if $(FORCE), --force,)
+
+geocode-pois: ## Geocode POIs via Nominatim. Usage: make geocode-pois SLUG=new_york [ALL=1]
+	uv run python -m scripts.geocode_pois --slug "$(SLUG)"$(if $(ALL), --all,)
 
 # ──────────────────────────────────────────────────────────
 # WORKFLOWS

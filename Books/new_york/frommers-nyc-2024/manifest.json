@@ -1,0 +1,96 @@
+{
+  "book_title": "Frommer's New York City 2024 (9th edition)",
+  "author": "Pauline Frommer",
+  "source_file": "Frommers New York City 2024 (Pauline Frommer) (z-library.sk, 1lib.sk, z-lib.sk).pdf",
+  "city": "new_york",
+  "total_pages": 717,
+  "total_chunks": 12,
+  "chunked_at": "2026-06-14",
+  "extraction_note": "Narrative tour-relevant chapters chunked: Best-of (Ch1), Neighborhoods in Brief (Ch2), Exploring attractions by area (Ch5), the 3 Walking Tours (Ch7), and landmark performance venues (Ch8). Excluded as non-tour-landmark listings/logistics: Where to Stay (Ch3), Where to Eat (Ch4), Shopping (Ch6), bars/clubs/TV/comedy/sports (rest of Ch8), Planning (Ch9), itineraries (Ch2 sample-day routes), and the Index. Chunk tails trimmed to end on real prose.",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-ch01-best-of-nyc.txt",
+      "section_title": "Chapter 1: The Best of the Big Apple",
+      "page_range": "12-45",
+      "line_count": 576
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-ch02-neighborhoods-in-brief.txt",
+      "section_title": "Chapter 2: City Layout & NYC Neighborhoods in Brief",
+      "page_range": "69-93",
+      "line_count": 396
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-ch05-top-sights-downtown.txt",
+      "section_title": "Chapter 5: Exploring \u2014 Top Sights & Downtown",
+      "page_range": "310-347",
+      "line_count": 880
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-ch05-midtown.txt",
+      "section_title": "Chapter 5: Exploring \u2014 Midtown (Chelsea, Flatiron, Hudson Yards, Midtown West & East)",
+      "page_range": "348-386",
+      "line_count": 849
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-ch05-uptown.txt",
+      "section_title": "Chapter 5: Exploring \u2014 Uptown (Upper East & West Side)",
+      "page_range": "387-404",
+      "line_count": 338
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-ch05-especially-for-kids.txt",
+      "section_title": "Chapter 5: Exploring \u2014 Especially for Kids",
+      "page_range": "405-412",
+      "line_count": 204
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-ch05-outer-boroughs.txt",
+      "section_title": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+      "page_range": "413-437",
+      "line_count": 508
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-ch05-parks-and-gardens.txt",
+      "section_title": "Chapter 5: Exploring \u2014 Parks & Gardens",
+      "page_range": "438-458",
+      "line_count": 500
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-ch07-walking-tour-1-historic-lower-manhattan.txt",
+      "section_title": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+      "page_range": "525-543",
+      "line_count": 433
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-ch07-walking-tour-2-harlem.txt",
+      "section_title": "Chapter 7: Walking Tour 2 \u2014 Harlem",
+      "page_range": "544-555",
+      "line_count": 261
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-ch07-walking-tour-3-greenwich-village.txt",
+      "section_title": "Chapter 7: Walking Tour 3 \u2014 Greenwich Village",
+      "page_range": "556-569",
+      "line_count": 289
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-ch08-music-theater-landmark-venues.txt",
+      "section_title": "Chapter 8: Theater, Classical Music & Landmark Venues",
+      "page_range": "571-593",
+      "line_count": 523
+    }
+  ]
+}

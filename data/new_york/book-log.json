@@ -1,0 +1,64 @@
+{
+  "frommers-nyc-2024": {
+    "chunk-03": {
+      "beats_extracted": 43,
+      "pois_touched": 28,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-09": {
+      "beats_extracted": 45,
+      "pois_touched": 19,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-10": {
+      "beats_extracted": 25,
+      "pois_touched": 11,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-11": {
+      "beats_extracted": 43,
+      "pois_touched": 14,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-01": {
+      "beats_extracted": 13,
+      "pois_touched": 13,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-02": {
+      "beats_extracted": 34,
+      "pois_touched": 25,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-04": {
+      "beats_extracted": 63,
+      "pois_touched": 27,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-05": {
+      "beats_extracted": 24,
+      "pois_touched": 9,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-06": {
+      "beats_extracted": 15,
+      "pois_touched": 7,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-07": {
+      "beats_extracted": 44,
+      "pois_touched": 21,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-08": {
+      "beats_extracted": 39,
+      "pois_touched": 26,
+      "processed_at": "2026-06-14"
+    },
+    "chunk-12": {
+      "beats_extracted": 18,
+      "pois_touched": 12,
+      "processed_at": "2026-06-14"
+    }
+  }
+}

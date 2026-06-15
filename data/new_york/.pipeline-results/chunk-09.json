@@ -1,0 +1,3065 @@
+{
+  "chunk_id": "chunk-09-ch07-walking-tour-1-historic-lower-manhattan",
+  "chunk_file": "Books/New York/frommers-nyc-2024/chunk-09-ch07-walking-tour-1-historic-lower-manhattan.txt",
+  "pois": [
+    {
+      "poi_name": "Battery Park",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.703564,
+      "longitude": -74.016678,
+      "geocode_source": "Nominatim/latlong.net (cross-checked)",
+      "geocode_confidence": 0.95,
+      "trigger_radius": 60,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-5 candidate: 25-acre waterfront park at Manhattan's southern tip; tour start point with harbor/Statue of Liberty views. High footfall. Importance_tier NOT assigned per task."
+    },
+    {
+      "poi_name": "Castle Clinton",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.703636,
+      "longitude": -74.017288,
+      "geocode_source": "Nominatim/latlong.net + NPS (cross-checked)",
+      "geocode_confidence": 0.97,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-4/5 candidate: National Monument, former fort/Castle Garden/aquarium/immigration depot. Major historic landmark inside Battery Park."
+    },
+    {
+      "poi_name": "Large Flagpole",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.70395,
+      "longitude": -74.01665,
+      "geocode_source": "approximate (between Castle Clinton and Customs House, per book route); no discrete OSM node",
+      "geocode_confidence": 0.45,
+      "trigger_radius": 15,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Minor monument: bas-relief flagpole base depicting the 1626 Minuit 'purchase'. Low standalone gravity; tour seasoning stop. LOW geocode confidence \u2014 flagged for review."
+    },
+    {
+      "poi_name": "National Museum of the American Indian",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.70417,
+      "longitude": -74.01389,
+      "geocode_source": "Nominatim/Wikipedia (Alexander Hamilton U.S. Custom House, 1 Bowling Green)",
+      "geocode_confidence": 0.95,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-4/5 candidate: George Gustav Heye Center inside the landmark Beaux Arts Alexander Hamilton U.S. Custom House (Cass Gilbert, Daniel Chester French sculptures). Free museum, major architecture stop."
+    },
+    {
+      "poi_name": "Bowling Green Park",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.705,
+      "longitude": -74.013611,
+      "geocode_source": "Nominatim/Wikipedia (Bowling Green, NYC)",
+      "geocode_confidence": 0.95,
+      "trigger_radius": 30,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-4/5 candidate: NYC's oldest official park (est. 1733), George III statue toppling, original colonial fence, Charging Bull at uptown end. High gravity historic + photo-op site."
+    },
+    {
+      "poi_name": "Fraunces Tavern",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.703408,
+      "longitude": -74.011329,
+      "geocode_source": "Nominatim/Wikipedia (54 Pearl St at Broad St)",
+      "geocode_confidence": 0.93,
+      "trigger_radius": 20,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-4/5 candidate: 18th-century tavern/museum, Washington's Farewell to Officers, Sons of Liberty, 1975 FALN bombing site. High historic gravity."
+    },
+    {
+      "poi_name": "Goldman Sachs Building",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.704033,
+      "longitude": -74.010945,
+      "geocode_source": "web (85 Broad Street, site of unearthed Lovelace Tavern foundations); approximate",
+      "geocode_confidence": 0.7,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3 candidate: glass-and-brownstone tower over Stone St; archaeological interest = Lovelace's Tavern foundations under sidewalk glass. Book describes it diagonally across from Fraunces; the Lovelace Tavern excavation is documented at 85 Broad St. MODERATE confidence \u2014 book identifies it only as 'Goldman Sachs Building'; flagged for review."
+    },
+    {
+      "poi_name": "Stone Street",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.70417,
+      "longitude": -74.01056,
+      "geocode_source": "Nominatim/Wikipedia (Stone Street Historic District)",
+      "geocode_confidence": 0.9,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3/4 candidate: cobbled Greek Revival historic street, first paved street in New Amsterdam, 1835 fire rebuild. Distinctive streetscape."
+    },
+    {
+      "poi_name": "Mill Lane",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.70425,
+      "longitude": -74.0101,
+      "geocode_source": "approximate (between Stone St and South William St, per Untapped/NYC-MAP descriptions); no discrete OSM node with addresses",
+      "geocode_confidence": 0.55,
+      "trigger_radius": 15,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Minor: shortest street on Manhattan, Stuyvesant surrender legend. Low standalone gravity. LOW-MODERATE geocode confidence \u2014 flagged for review."
+    },
+    {
+      "poi_name": "Hanover Square",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.704583,
+      "longitude": -74.009722,
+      "geocode_source": "Nominatim/Wikipedia (Hanover Square / 1 Hanover Square India House)",
+      "geocode_confidence": 0.92,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3/4 candidate: historic square, first newspaper, cotton exchange, Captain Kidd residence, India House (1850s brownstone banking house)."
+    },
+    {
+      "poi_name": "Wall Street",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.706877,
+      "longitude": -74.011265,
+      "geocode_source": "web/Nominatim (Wall St heart, near NYSE/74 Wall St); street-level anchor",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 40,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-5 candidate: the street itself as Dutch boundary wall + slave-market site (74 Wall St) + 'canyons'. High gravity as a named corridor; geocoded to a representative mid-street point."
+    },
+    {
+      "poi_name": "40 Wall Street",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.7069,
+      "longitude": -74.0097,
+      "geocode_source": "Nominatim/Wikipedia (40 Wall Street / Trump Building)",
+      "geocode_confidence": 0.93,
+      "trigger_radius": 20,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3/4 candidate: neo-Gothic/Art Deco skyscraper, Bank of Manhattan, race-to-the-top vs Chrysler Building. Notable architecture stop."
+    },
+    {
+      "poi_name": "Federal Hall",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.707224,
+      "longitude": -74.010259,
+      "geocode_source": "Nominatim/Wikipedia (Federal Hall National Memorial, 26 Wall St)",
+      "geocode_confidence": 0.96,
+      "trigger_radius": 20,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue."
+    },
+    {
+      "poi_name": "New York Stock Exchange",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.706877,
+      "longitude": -74.011265,
+      "geocode_source": "Nominatim/findlatitudeandlongitude (11 Wall St)",
+      "geocode_confidence": 0.95,
+      "trigger_radius": 20,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-5 candidate: world's most famous exchange; neoclassical facade, buttonwood tree (1792 origin), Fearless Girl statue. Very high gravity."
+    },
+    {
+      "poi_name": "1 Wall Street",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.70722,
+      "longitude": -74.01167,
+      "geocode_source": "Nominatim/Wikipedia (1 Wall Street / former Irving Trust / BNY Mellon)",
+      "geocode_confidence": 0.93,
+      "trigger_radius": 20,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3 candidate: landmark Art Deco skyscraper, fluted limestone facade, cathedral window, soaring lobby. Architecture stop."
+    },
+    {
+      "poi_name": "Trinity Church",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.708061,
+      "longitude": -74.012184,
+      "geocode_source": "Nominatim/Wikipedia (Trinity Church, 89 Broadway at Wall St)",
+      "geocode_confidence": 0.96,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) \u2014 minimal content here."
+    },
+    {
+      "poi_name": "Canyon of Heroes",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.7095,
+      "longitude": -74.0118,
+      "geocode_source": "approximate (Broadway stretch in the Financial District uptown of Trinity Church, per ticker-tape parade route); linear feature",
+      "geocode_confidence": 0.6,
+      "trigger_radius": 40,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3 candidate: Broadway ticker-tape parade route with brass sidewalk plates. Linear feature; geocode is a representative point. LOW-MODERATE confidence \u2014 flagged for review."
+    },
+    {
+      "poi_name": "Zuccotti Park",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.709228,
+      "longitude": -74.011247,
+      "geocode_source": "Nominatim/Wikipedia (Zuccotti Park)",
+      "geocode_confidence": 0.94,
+      "trigger_radius": 25,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-3 candidate: privately owned park, origin of Occupy Wall Street (Sept 2011). Modern political-history stop."
+    },
+    {
+      "poi_name": "The 9/11 Memorial and Museum",
+      "city_name": "new_york",
+      "new_poi": true,
+      "latitude": 40.711449,
+      "longitude": -74.013855,
+      "geocode_source": "Nominatim/latlong.net (National September 11 Memorial & Museum, 180 Greenwich St)",
+      "geocode_confidence": 0.96,
+      "trigger_radius": 40,
+      "inside_nyc_bbox": true,
+      "gravity_note": "Tier-5 candidate: 8-acre memorial plaza with twin tower footprints; tour finish. Very high gravity."
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_battery_park_waterways_views_frommers-nyc-2024_hudson_1609_arrival",
+      "city_name": "new_york",
+      "poi_name": "Battery Park",
+      "parent_poi": null,
+      "lens": "waterways_views",
+      "topic_slug": "hudson_1609_arrival",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Look out at the river. It's the reason this great city was built. When Henry Hudson and his crew of sixteen sailed up it in 1609, mistakenly thinking they'd find Asia at its mouth, little did they know they were setting in motion a chain of events that would still be shaping lives over four hundred years later. Hudson's reports about the trading possibilities of the area \u2014 particularly for valuable animal pelts \u2014 plus his amazement at the great natural harbor here, spurred the Dutch to create settlements. They guessed, rightly, that the harbor of New York would be the linchpin connecting Europe, via the Atlantic, with the interior of this vast and wealthy continent, via the Hudson River. Later, after the building of the Erie Canal, which connected the Hudson with the Great Lakes, New York became the most powerful city in the nation.",
+      "beat_length_class": "anchor",
+      "duration_sec": 60,
+      "kid_friendly": "yes",
+      "entities": [
+        "Henry Hudson",
+        "Dutch",
+        "Atlantic Ocean",
+        "Hudson River",
+        "Erie Canal",
+        "Great Lakes"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "harbor origin",
+      "physical_cues": [
+        {
+          "cue": "Look out at the river and the great natural harbor from the waterfront",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Henry Hudson sailed up the river in 1609 with a crew of 16, seeking Asia",
+        "Hudson's reports on pelts and the harbor spurred Dutch settlement",
+        "Erie Canal connected the Hudson with the Great Lakes, making NYC the nation's most powerful city"
+      ],
+      "source_passage": "Look out at the river. It's the reason this great city was built. When Henry Hudson and his crew of 16 sailed up it in 1609, mistakenly thinking they'd find Asia at its mouth, little did they know they were setting into motion a chain of events that would still be shaping lives over 400 years later. Hudson's reports about the trading possibilities of the area (particularly for valuable animal pelts), plus his amazement at the great natural harbor here, spurred the Dutch to create settlements in the area. They guessed, rightly it turned out, that the harbor of New York would be the linchpin that would connect Europe (via the Atlantic Ocean) with the interior of this vast and wealthy continent (via the Hudson River). Later, after the building of the Erie Canal, which connected the Hudson with the Great Lakes, NYC became the most powerful city in the nation.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 1"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_castle_clinton_war_conflict_frommers-nyc-2024_west_battery_fort_1807",
+      "city_name": "new_york",
+      "poi_name": "Castle Clinton",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "west_battery_fort_1807",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "This circular stone structure \u2014 taller in some earlier incarnations \u2014 has been at the center of New York life over the years. In 1807, the West Battery, as it was then called, was built as a fort on a landfill island in the water off Manhattan, to ward off British invasions. It never saw action, however: during the War of 1812 the British attacked Washington, D.C., instead. In 1817 it was renamed Castle Clinton in honor of Mayor De Witt Clinton, and in 1823 the federal government ceded the site to the city.",
+      "beat_length_class": "mid",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "West Battery",
+        "War of 1812",
+        "De Witt Clinton",
+        "British"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "fort origin",
+      "physical_cues": [
+        {
+          "cue": "The circular stone building you can go inside if it is open",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Built 1807 as the West Battery, a fort on a landfill island, to ward off British invasion",
+        "Never saw action; British attacked Washington D.C. in the War of 1812",
+        "Renamed Castle Clinton in 1817 after Mayor De Witt Clinton; ceded to city in 1823"
+      ],
+      "source_passage": "Though it doesn't look like much now, this circular structure (it was taller in some earlier incarnations) has, over the years, been at the center of New York life. In 1807, the West Battery, as it was then called, was built as a fort on a landfill island in the water off Manhattan to ward off British invasions (it never saw action, however\u2014the Brits attacked Washington, D.C., instead, during the War of 1812). In 1823, the federal government ceded the site\u2014renamed Castle Clinton in 1817, in honor of Mayor De Witt Clinton\u2014to the city, and it became an extremely popular entertainment center called Castle Gardens.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 2"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_castle_clinton_music_heritage_frommers-nyc-2024_castle_garden_jenny_lind",
+      "city_name": "new_york",
+      "poi_name": "Castle Clinton",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "castle_garden_jenny_lind",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "After 1823 the site became an extremely popular entertainment center called Castle Gardens. The 'Swedish Nightingale,' Jenny Lind, was a headliner here in 1850.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [
+        "Castle Gardens",
+        "Jenny Lind"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Jenny Lind concert",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Castle Gardens was a popular entertainment center",
+        "Jenny Lind, the 'Swedish Nightingale,' headlined here in 1850"
+      ],
+      "source_passage": "and it became an extremely popular entertainment center called Castle Gardens (the \"Swedish Nightingale,\" Jenny Lind, was a headliner here in 1850).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 2"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_castle_clinton_social_change_frommers-nyc-2024_immigrant_depot_1855",
+      "city_name": "new_york",
+      "poi_name": "Castle Clinton",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "immigrant_depot_1855",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "In 1855, the space was transformed once more, into the city's first immigrant processing center. Over eight million new arrivals \u2014 a full two-thirds of those who came to the United States at this time \u2014 spent their first hours in the country here, registering their names with the government, exchanging money, and getting information on jobs, medical care, and lodgings. By 1890, the vast number of immigrants, and the growing problem of outsiders scamming them, necessitated a move to a larger and more easily patrolled offshore space: Ellis Island, which you can see from here, to the right of the Statue of Liberty, its main hall reaching into the sky with four little spires.",
+      "beat_length_class": "mid",
+      "duration_sec": 45,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ellis Island",
+        "Statue of Liberty"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "immigrant depot",
+      "physical_cues": [
+        {
+          "cue": "Ellis Island visible from here, to the right of the Statue of Liberty, its main hall topped with four little spires",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "In 1855 became the city's first immigrant processing center",
+        "Over eight million arrivals (two-thirds of US immigrants then) processed here",
+        "By 1890 operations moved to Ellis Island"
+      ],
+      "source_passage": "In 1855, the space was transformed once more, into the city's first immigrant processing center. Over eight million new arrivals, a full two-thirds of those who came to the United States at this time, spent their first hours in the United States here registering their names with the government, exchanging money, and getting information on jobs, medical care, and lodgings. By 1890, the vast number of immigrants\u2014and the growing problem of outsiders scamming them\u2014necessitated a move to a larger and more easily patrolled offshore space, Ellis Island. You can see Ellis Island from here, to the right of the Statue of Liberty. Its main hall reaches into the sky with four little spires.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 2"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_castle_clinton_hidden_history_frommers-nyc-2024_first_aquarium",
+      "city_name": "new_york",
+      "poi_name": "Castle Clinton",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "first_aquarium",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The famed architectural team of McKim, Mead, and White then stepped in and transformed the site into the nation's first aquarium, visited by about ninety million people until it was moved in 1941 to Coney Island. After the site stood empty for many years, the National Parks Service took it over and restored the Castle Clinton of the original fort.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "McKim, Mead, and White",
+        "Coney Island",
+        "National Parks Service"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "first aquarium",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "McKim, Mead, and White turned the site into the nation's first aquarium",
+        "Visited by ~90 million until moved to Coney Island in 1941",
+        "National Parks Service restored it to the original fort"
+      ],
+      "source_passage": "The famed architectural team of McKim, Mead, and White then stepped in and transformed the site into the nation's first aquarium, visited by about 90 million people until it was moved in 1941 to Coney Island. After the site stood empty for many years, the National Parks Service took it over and restored the Castle Clinton of the original fort.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 2"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_castle_clinton_transit_frommers-nyc-2024_to_flagpole",
+      "city_name": "new_york",
+      "poi_name": "Large Flagpole",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "to_flagpole",
+      "sub_location": null,
+      "trigger_address": "Castle Clinton, Battery Park",
+      "script_body": "Walk around Castle Clinton, past the ferry terminal, and head inland \u2014 northeast \u2014 toward the tall buildings. Soon you'll come upon a large flagpole.",
+      "beat_length_class": "micro",
+      "duration_sec": 11,
+      "kid_friendly": "yes",
+      "entities": [
+        "Castle Clinton"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "walk to flagpole",
+      "physical_cues": [
+        {
+          "cue": "Ferry terminal you pass walking around Castle Clinton toward the tall buildings",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "From Castle Clinton, walk past the ferry terminal northeast toward the tall buildings to reach the flagpole"
+      ],
+      "source_passage": "Walk around Castle Clinton, past the ferry terminal, and head inland (northeast) toward the tall buildings. Soon you'll come upon:",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, transit 2\u21923"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_large_flagpole_hidden_history_frommers-nyc-2024_minuit_purchase_1626",
+      "city_name": "new_york",
+      "poi_name": "Large Flagpole",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "minuit_purchase_1626",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At the base of this flagpole is a bas-relief sculpture depicting the historic scene of Dutch official Peter Minuit 'buying' Manhattan from Native American residents in 1626, to consolidate the Dutch colony in one easily defended spot. Just how the 'sale' went down is still a matter of controversy. Most likely the 'sellers' were the Canarsie tribe who, according to a letter by Dutch merchant Peter Schagen, let the island go for sixty guilders \u2014 the equivalent of twenty-four dollars. But did the Indians know they were selling the island, or did they think they were simply accepting shiny trinkets as part of a welcome ceremony? And were the Canarsie even in a position to sell it, as it had long been a communal hunting ground used by a number of tribes? We'll never know the truth, but this is the one place in Manhattan where the most infamous real estate deal in history is memorialized.",
+      "beat_length_class": "anchor",
+      "duration_sec": 62,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Minuit",
+        "Canarsie tribe",
+        "Peter Schagen",
+        "Dutch"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Manhattan purchase",
+      "physical_cues": [
+        {
+          "cue": "Bas-relief sculpture at the base of the flagpole showing the 1626 'purchase' of Manhattan",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "guilders",
+          "gloss": "Dutch currency; sixty guilders, the equivalent of twenty-four dollars"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Bas-relief depicts Peter Minuit 'buying' Manhattan from Native Americans in 1626",
+        "Canarsie tribe likely sold it for 60 guilders (~$24) per Peter Schagen's letter",
+        "Disputed whether the sellers understood the sale or had the right to sell communal hunting ground"
+      ],
+      "source_passage": "At its base is a bas relief sculpture depicting the historic scene of Dutch official Peter Minuit \"buying\" Manhattan from Native American residents in 1626 in order to consolidate the Dutch colony in one easily defended spot. Just how the \"sale\" of the island went down is still a matter of controversy. Most likely the \"sellers\" were the Canarsie tribe who, according to a letter by Dutch merchant Peter Schagen, let the island go for 60 guilders (the equivalent of $24). But did the Indians know they were selling the island, or did they think that they were simply accepting shiny trinkets as part of a welcome ceremony? And were the Canarsie even in a position to sell it, as it had long been a communal hunting ground used by a number of tribes? We'll never know the truth of the matter or even if it happened on this spot, but this is the one place in Manhattan where the most infamous real estate deal in history is memorialized.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 3"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Minuit purchase, Canarsie, 60 guilders/$24, Schagen letter all corroborated by multiple sources (Wikipedia, Gotham Center, NYC LPC)."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_large_flagpole_hidden_history_frommers-nyc-2024_minuit_new_sweden",
+      "city_name": "new_york",
+      "poi_name": "Large Flagpole",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "minuit_new_sweden",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "As for Peter Minuit, he was recalled from his post in Manhattan in 1631, much to his dismay, but returned on behalf of the Swedish government in 1638 to set up a rival 'New Sweden' colony on the Delaware River.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Minuit",
+        "New Sweden",
+        "Delaware River",
+        "Swedish government"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "wry",
+      "subject_tag": "Minuit New Sweden",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Minuit recalled from Manhattan in 1631",
+        "Returned for Sweden in 1638 to found New Sweden on the Delaware River"
+      ],
+      "source_passage": "As for Peter Minuit, he was recalled from his post in Manhattan in 1631 (much to his dismay) but returned on behalf of the Swedish government in 1638 to set up a rival \"New Sweden\" colony on the Delaware River.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 3"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_historic_arch_frommers-nyc-2024_customs_house_origin",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "customs_house_origin",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "You are now standing at the foot of Broadway, the thoroughfare that leads all the way to the top of Manhattan, thirteen miles away. The original Dutch fort stood in this exact place. The building in front of you, designed by Cass Gilbert, was one of the most important structures in the city when it was built \u2014 the Alexander Hamilton U.S. Customs House. Before 1913, when the federal government instituted the personal income tax, the government's revenue came almost entirely from customs on imported goods. A full seventy-five percent of that revenue came from the Port of New York, processed in this grand Beaux Arts colossus, completed in 1907 and comprising over four hundred and fifty thousand square feet of interior space.",
+      "beat_length_class": "anchor",
+      "duration_sec": 47,
+      "kid_friendly": "yes",
+      "entities": [
+        "Broadway",
+        "Cass Gilbert",
+        "Alexander Hamilton U.S. Customs House",
+        "Port of New York"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "customs house origin",
+      "physical_cues": [
+        {
+          "cue": "The grand Beaux Arts Customs House building in front of you at the foot of Broadway",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Beaux Arts",
+          "gloss": "an ornate, classically inspired architectural style"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Standing at the foot of Broadway, which runs 13 miles to the top of Manhattan; original Dutch fort stood here",
+        "Building designed by Cass Gilbert; the Alexander Hamilton U.S. Customs House",
+        "Before 1913 income tax, customs were the main federal revenue; 75% came through the Port of New York",
+        "Beaux Arts building completed 1907, over 450,000 sq ft"
+      ],
+      "source_passage": "You are now standing at the foot of Broadway, the famous thoroughfare that leads all the way to the top of Manhattan, 13 miles away. The original Dutch fort stood in this exact place. But what you see in front of you is a building of just as much significance. Designed by Cass Gilbert, this was one of the most important structures in the city when it was built\u2014the Alexander Hamilton U.S. Customs House. Before 1913, when the federal government instituted the personal income tax, the federal government's revenue came almost entirely from customs on goods imported into the States. And a full 75% of this revenue came from the Port of New York, where it was processed in this appropriately grand Beaux Arts colossus, completed in 1907 and comprising over 450,000 square feet of interior space.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 4"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_visual_art_frommers-nyc-2024_four_continents_sculptures",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "four_continents_sculptures",
+      "sub_location": "facade",
+      "trigger_address": null,
+      "script_body": "It's a wedding cake of an edifice, with dozens of bright white sculptures adorning the gray granite facade. Daniel Chester French was the sculptor \u2014 he also did the seated Lincoln at the Lincoln Memorial in Washington, D.C. \u2014 and his choice of symbols could be read as a treatise on the prejudices of Victorian-era America. The four seated women at the front represent the four 'great' continents. From left to right, they are Asia; the Americas, with South America barely present, tellingly represented by the Aztec-like structure that North America has her foot on; Europe; and Africa. America and Europe look full of vigor and purpose, but Asia has her eyes closed, perhaps in meditation, and Africa \u2014 in a metaphor for her supposed lack of vision and power \u2014 is in a deep slumber. America shelters a new immigrant crouching to her left, pushing forward a winged wheel, those of the Roman god Mercury, divine overseer of commerce.",
+      "beat_length_class": "anchor",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "Daniel Chester French",
+        "Lincoln Memorial",
+        "Mercury"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "four continents",
+      "physical_cues": [
+        {
+          "cue": "Four seated women sculptures across the front of the facade: Asia, the Americas, Europe, Africa, left to right",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Daniel Chester French sculpted the facade figures and the Lincoln Memorial's Lincoln",
+        "Four seated women represent Asia, the Americas, Europe, Africa",
+        "Symbolism reads as Victorian-era racial prejudice; immigrant figure pushes Mercury's winged wheel of commerce"
+      ],
+      "source_passage": "It's a wedding cake of an edifice, with dozens of bright white sculptures adorning the gray granite facade. Daniel Chester French was the sculptor\u2014he also did the moving sculpture of Lincoln at the Lincoln Memorial in Washington, D.C.\u2014and his choice of symbols could be used as a treatise on the prejudices of Victorian-era America. The four women seated at the front represent the four \"great\" continents of the world. From left to right as you look at them, they are Asia; the Americas (South America, barely present, is tellingly represented by the Aztec-like structure that North America has her foot on); Europe; and Africa. America and Europe look full of vigor and purpose, but Asia has her eyes closed (perhaps in meditation?), and Africa\u2014in a metaphor for her lack of vision and power?\u2014is in a deep slumber. America is sheltering a new immigrant who crouches to her left, and the immigrant is pushing forward a wheel with wings on it, those of the Roman god Mercury, the divine overseer of commerce.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 4"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_hidden_history_frommers-nyc-2024_belgium_carving",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "belgium_carving",
+      "sub_location": "facade",
+      "trigger_address": null,
+      "script_body": "At the top of the building are twelve more figures, meant to represent the great trading nations of history: Greece, Rome, Phoenicia, Genoa, Venice, Spain, Holland, Portugal, Denmark, England, France, and Belgium. Why Belgium? The official story is that during World War I, 'vandals' carved 'Belgium' across the shield of the figure that had originally been 'Germany.' No explanation has ever been given for how vandals could surreptitiously make such a big change to one of the most visible and heavily guarded buildings in the city.",
+      "beat_length_class": "mid",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "World War I",
+        "Germany",
+        "Belgium"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "Belgium carving",
+      "physical_cues": [
+        {
+          "cue": "Twelve figures of great trading nations along the top of the building",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Twelve top figures represent trading nations including Belgium",
+        "Belgium replaced an original 'Germany' shield, supposedly carved by 'vandals' in WWI",
+        "No explanation for how vandals altered the heavily guarded building"
+      ],
+      "source_passage": "At the top of the building are 12 more figures, meant to represent the great trading nations of history: Greece, Rome, Phoenicia, Genoa, Venice, Spain, Holland, Portugal, Denmark, England, France, and Belgium. Why Belgium, you ask? The official story is that during World War I, \"vandals\" carved belgium across the shield of the figure that had originally been \"Germany.\" No explanation has ever been given on how vandals could surreptitiously make such a big change to one of the most visible and heavily guarded buildings in the city.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 4"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_national_museum_of_the_american_indian_visual_art_frommers-nyc-2024_rotunda_interior",
+      "city_name": "new_york",
+      "poi_name": "National Museum of the American Indian",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "rotunda_interior",
+      "sub_location": "rotunda",
+      "trigger_address": null,
+      "script_body": "Inside, the rotunda holds WPA murals depicting the great conquistadors \u2014 ironic, given the building now houses the National Museum of the American Indian. The staircase on the right as you enter was meant to evoke the inside of a nautilus shell, and in what is now the museum's study center stand the elaborate, imposing rows of teller windows where merchants once paid their customs taxes. Entry to the museum is free, though there is no permanent exhibition.",
+      "beat_length_class": "mid",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "WPA",
+        "National Museum of the American Indian"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "rotunda murals",
+      "physical_cues": [
+        {
+          "cue": "WPA murals of conquistadors in the rotunda",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "Nautilus-shell staircase on the right as you enter",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "Rows of customs teller windows in the study center",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Rotunda has WPA murals of conquistadors",
+        "Staircase evokes a nautilus shell; study center has old customs teller windows",
+        "Museum entry is free with no permanent exhibition"
+      ],
+      "source_passage": "go inside the building for a peek at the WPA murals in the rotunda (depicting the great conquistadors\u2014ironic, as the building now houses the National Museum of the American Indian ; see p. 177); the staircase on the right as you enter (meant to evoke the look of the inside of a nautilus shell); and, in what is now the study center of the museum, the elaborate, imposing rows of teller windows where merchants would pay their Customs taxes. Entry to the museum is free. Whether you linger will depend on what the current exhibitions hold. There's no permanent exhibition here.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 4"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_parks_gardens_frommers-nyc-2024_first_park_fort_george",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "first_park_fort_george",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "This was the city's first official park, established in 1733. Had you been a soldier during the British Colonial era, you'd have been stationed at the fort that once stood here, Fort George, and likely passed your leisure time lawn bowling where the park now stands \u2014 hence the name, Bowling Green Park.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 21,
+      "kid_friendly": "yes",
+      "entities": [
+        "Fort George"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "first park",
+      "physical_cues": [
+        {
+          "cue": "The green where colonial soldiers once lawn-bowled, on the site of old Fort George",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "City's first official park, est. 1733",
+        "Site of British colonial Fort George; soldiers lawn-bowled here, giving the name"
+      ],
+      "source_passage": "This was the city's first official park (est. 1733). Had you been a soldier during the British Colonial era, you would have been stationed at the fort that once stood here, Fort George, and likely you'd have passed your leisure time lawn bowling where the park now stands (hence the name Bowling Green Park).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 5"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_dark_history_frommers-nyc-2024_king_george_statue_beheaded",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "king_george_statue_beheaded",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "On July 9, 1776, the Declaration of Independence was read aloud near City Hall, and a small battalion of agitated colonists marched here to behead the statue of King George that stood in the center of the park. It had been erected just five years earlier by many of these same men, in gratitude for the king's part in repealing the odious Stamp Act \u2014 the one that provoked the 'no taxation without representation' movement. Though it can't be proven, legend has it that the lead statue was then melted down and used for cannon balls and bullets in the war against the British. The fence that rings the park is the original, one of the few colonial structures of any sort left in Manhattan; when first erected, its spokes had royal crowns at their tips, and these too were destroyed by the colonists.",
+      "beat_length_class": "anchor",
+      "duration_sec": 56,
+      "kid_friendly": "yes",
+      "entities": [
+        "Declaration of Independence",
+        "King George III",
+        "Stamp Act",
+        "City Hall"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "statue toppling",
+      "physical_cues": [
+        {
+          "cue": "The original colonial fence ringing the park, its tips once topped with royal crowns now removed",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "July 9, 1776: colonists marched here and beheaded the King George statue after the Declaration was read near City Hall",
+        "Statue erected ~5 years earlier in gratitude for repeal of the Stamp Act",
+        "Legend: lead melted for cannonballs/bullets",
+        "The ringing fence is the original colonial fence; royal crowns on its tips were destroyed"
+      ],
+      "source_passage": "On July 9, 1776, the Declaration of Independence was read aloud (near City Hall) and a small battalion of agitated colonists marched here to behead the statue of King George that stood in the center of the park. It had been erected just 5 years previously by many of these same men, in gratitude for the king's part in repealing the odious Stamp Act (the one that provoked the \"no taxation without representation\" movement). Though it can't be proven, legend has it that the lead statue was then melted down and used for cannon balls and bullets in the war against the British. The fence that rings the park is the original, one of the few colonial structures of any sort left in Manhattan (when it was first erected, its spokes had royal crowns at their tips; these, too, were destroyed by the colonists).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 5"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "statue 'erected just 5 years previously' (1771)"
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Statue toppling July 9, 1776 and lead-to-bullets legend (Litchfield, CT) corroborated. Minor date nuance: sources date the statue's dedication to Aug 1770 (\u22486 years before, not 5); book hedges with 'just 5 years previously.' Not auto-corrected (single-clause discrepancy, statue was the King George subject; left as flagged for /fact-check)."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_historic_arch_frommers-nyc-2024_white_star_titanic",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "white_star_titanic",
+      "sub_location": null,
+      "trigger_address": "5 Broadway",
+      "script_body": "On your left, the building with the Egyptian motif at 5 Broadway was the headquarters of the White Star shipping line. It was here that distraught relatives came to learn the fate of their loved ones after the sinking of the Titanic. There's a famous photo of a stricken Jacob Astor exiting the building after learning that his son had perished.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "White Star shipping line",
+        "Titanic",
+        "Jacob Astor"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "somber",
+      "subject_tag": "White Star Titanic",
+      "physical_cues": [
+        {
+          "cue": "Building with the Egyptian motif at 5 Broadway, on your left",
+          "direction": "west",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "5 Broadway (Egyptian motif) was the White Star Line HQ",
+        "Relatives came here after the Titanic sinking; famous photo of Jacob Astor learning his son died"
+      ],
+      "source_passage": "On your left, the building with the Egyptian motif (5 Broadway) was the headquarters of the White Star shipping line. It is here that distraught relatives came to learn the fate of their loved ones after the sinking of the Titanic. (There's a famous photo of a stricken Jacob Astor exiting the building after learning that his son had perished.)",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 5"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "Jacob Astor's son perished on the Titanic"
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Body preserves the book verbatim. Note: John Jacob Astor IV himself died on the Titanic; the parent/son relationship as the book frames it should be checked by /fact-check before publication."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_hidden_history_frommers-nyc-2024_standard_oil_rockefeller",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "standard_oil_rockefeller",
+      "sub_location": null,
+      "trigger_address": "26 Broadway",
+      "script_body": "Across the street, to your right at 26 Broadway, is the former headquarters of Standard Oil, the company that made John D. Rockefeller his millions. Depending on where you're standing, you may be able to see the representation of an elaborate oil lamp at the top.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "Standard Oil",
+        "John D. Rockefeller"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Standard Oil HQ",
+      "physical_cues": [
+        {
+          "cue": "Former Standard Oil HQ at 26 Broadway, to your right, with an oil-lamp ornament at the top",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "26 Broadway was Standard Oil's former HQ",
+        "Standard Oil made John D. Rockefeller his millions",
+        "An elaborate oil-lamp representation tops the building"
+      ],
+      "source_passage": "Across the street, to your right at 26 Broadway, is the former headquarters of Standard Oil, the company that made John D. Rockefeller his millions. Depending on where you're standing, you may be able to see the representation of an elaborate oil lamp at the top.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 5"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_visual_art_frommers-nyc-2024_charging_bull_guerrilla",
+      "city_name": "new_york",
+      "poi_name": "Bowling Green Park",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "charging_bull_guerrilla",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At the uptown end of the park stands Charging Bull. In 1989, a recession inspired artist Arturo Di Modica to create the sculpture as a symbol of bull markets to come. The city hadn't asked for this work of boosterism: Di Modica trucked it over to Wall Street in the dead of night and dumped it below a giant Christmas tree in front of the New York Stock Exchange. The seven-thousand-pound statue proved so popular that the city decided to let the 'gift' stay \u2014 though not in its original spot.",
+      "beat_length_class": "mid",
+      "duration_sec": 34,
+      "kid_friendly": "yes",
+      "entities": [
+        "Charging Bull",
+        "Arturo Di Modica",
+        "New York Stock Exchange"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "Charging Bull",
+      "physical_cues": [
+        {
+          "cue": "The Charging Bull statue at the uptown (north) end of Bowling Green Park",
+          "direction": "north",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Arturo Di Modica created Charging Bull in 1989 after a recession, as a bull-market symbol",
+        "He dumped it unbidden by the NYSE under a Christmas tree at night",
+        "The 7,000-pound statue was so popular the city kept it, relocated"
+      ],
+      "source_passage": "Walk to the uptown end of the park to view Charging Bull. In 1989, a recession inspired artist Arturo Di Modica to create the sculpture as a symbol of bull markets to come. The city hadn't asked for this work of boosterism, though: Di Modica trucked it over to Wall Street in the dead of night and dumped it below a giant Christmas tree in front of the N.Y. Stock Exchange. The 7,000-pound statue proved so popular the city decided to let the \"gift\" stay, though not in its original spot.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 5"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fraunces_tavern_war_conflict_frommers-nyc-2024_washington_farewell",
+      "city_name": "new_york",
+      "poi_name": "Fraunces Tavern",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "washington_farewell",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The bad news first: this is not what Fraunces Tavern actually looked like, but a hopeful reconstruction completed in 1904, based on the architectural styles of the period \u2014 about forty percent of the building is original. Nonetheless, it was here that the Sons of Liberty met on dozens of occasions to discuss plans for evicting the British. Once the Revolutionary War was over, Fraunces Tavern was the place where George Washington delivered his famous 'Farewell to the Troops,' and where Alexander Hamilton set up his first Office of the Treasury.",
+      "beat_length_class": "mid",
+      "duration_sec": 35,
+      "kid_friendly": "yes",
+      "entities": [
+        "Fraunces Tavern",
+        "Sons of Liberty",
+        "George Washington",
+        "Alexander Hamilton",
+        "British"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "Washington farewell",
+      "physical_cues": [
+        {
+          "cue": "The 1904 reconstructed tavern building, about 40% original",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Building is a 1904 reconstruction; ~40% original",
+        "Sons of Liberty met here repeatedly to plan evicting the British",
+        "Washington delivered his 'Farewell to the Troops' here; Hamilton set up his first Office of the Treasury here"
+      ],
+      "source_passage": "The bad news first: This is not what Fraunces Tavern actually looked like, but a hopeful reconstruction completed in 1904 and based on the architectural styles of the period (about 40% of the building is original). Nonetheless, it was here that the Sons of Liberty met on dozens of occasions to discuss plans for evicting the British. Once the Revolutionary War was over, Fraunces Tavern was the place where George Washington delivered his famous \"Farewell to the Troops\" and where Alexander Hamilton set up his first Office of the Treasury.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 6"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Washington's Dec 4, 1783 farewell to officers at Fraunces Tavern corroborated."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_fraunces_tavern_dark_history_frommers-nyc-2024_faln_bombing_1975",
+      "city_name": "new_york",
+      "poi_name": "Fraunces Tavern",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "faln_bombing_1975",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "On a more sobering note, in 1975 Fraunces Tavern was bombed by the Armed Forces Puerto Rican National Liberation Front. Four people were killed and dozens injured. The choice of this site had dual reasons: not only is it a symbol of American ideals, it is one of the few important historic buildings in New York with a Caribbean connection \u2014 Samuel Fraunces was an immigrant from the West Indies.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 25,
+      "kid_friendly": "no",
+      "entities": [
+        "Armed Forces Puerto Rican National Liberation Front",
+        "Samuel Fraunces",
+        "West Indies"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "FALN bombing",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1975: Fraunces Tavern bombed by the FALN; four killed, dozens injured",
+        "Targeted as a symbol of American ideals and for its Caribbean connection",
+        "Samuel Fraunces was a West Indies immigrant"
+      ],
+      "source_passage": "On a more sobering note, in 1975 Fraunces Tavern was bombed by the Armed Forces Puerto Rican National Liberation Front. Four people were killed and dozens injured. The choice of this site for the bombing had dual reasons: Not only is it a symbol of American ideals, it is one of the few important historic buildings in New York that has a Caribbean connection, as Samuel Fraunces was an immigrant from the West Indies.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 6"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Jan 24, 1975 FALN bombing, four killed (Berger, Connor, Gezork, Sherburne), dozens injured \u2014 corroborated by US State Dept, CBS, START. Book's group name is a paraphrase of FALN (Fuerzas Armadas de Liberaci\u00f3n Nacional); accurate."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_goldman_sachs_building_hidden_history_frommers-nyc-2024_lovelace_tavern_excavation",
+      "city_name": "new_york",
+      "poi_name": "Goldman Sachs Building",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "lovelace_tavern_excavation",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Directly across the street from the tavern is the headquarters of Goldman Sachs, a massive glass-and-brownstone skyscraper that cuts Stone Street in two. When it was being constructed, crews found the foundations of old Governor Lovelace's Tavern, another colonial-era watering hole and briefly the seat of the colonial government. In a compromise with local archaeologists, part of the site was left open with a glass viewing pane atop it. If you walk the perimeter of the skyscraper in the direction you've been going, you can see these excavations through glass panels in the sidewalk \u2014 at the end of the rows of benches, one under the colonnade, one in the open air. Take a moment to read the plaques and gaze down.",
+      "beat_length_class": "mid",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "Goldman Sachs",
+        "Governor Lovelace's Tavern",
+        "Stone Street"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "neutral",
+      "subject_tag": "Lovelace Tavern dig",
+      "physical_cues": [
+        {
+          "cue": "Glass viewing panels in the sidewalk showing the Lovelace Tavern excavations, at the end of the benches \u2014 one under the colonnade, one in the open air",
+          "direction": "down",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "Plaques beside the excavation panels",
+          "direction": "down",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Goldman Sachs HQ cuts Stone Street in two",
+        "Construction uncovered Governor Lovelace's Tavern foundations, a colonial watering hole and brief seat of colonial government",
+        "Part of the site left visible under sidewalk glass panels with plaques"
+      ],
+      "source_passage": "Directly across the street from the tavern is the headquarters of Goldman Sachs, the massive glass-and-brownstone skyscraper that cuts Stone Street in two. When it was being constructed, crews found the foundations of old Governor Lovelace's Tavern, another colonial-era watering hole, and briefly seat of the colonial government. In a compromise with local archaeologists, part of the site was left open with a glass viewing pane atop it. If you walk around the perimeter of the skyscraper in the same direction that you've been going, you should be able to see these excavations through glass panels in the sidewalk (they're at the end of the rows of benches, one under the colonnade, one in the open air). Take a moment to read the plaques and gaze down.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 7"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Lovelace Tavern foundations unearthed during Goldman Sachs (85 Broad St) construction and preserved under sidewalk glass \u2014 corroborated by Fraunces Tavern Museum, Untapped New York, Bowery Boys."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_pearl_street_markets_street_food_frommers-nyc-2024_oyster_beachy_edge",
+      "city_name": "new_york",
+      "poi_name": "Goldman Sachs Building",
+      "parent_poi": null,
+      "lens": "markets_street_food",
+      "topic_slug": "pearl_street_oysters",
+      "sub_location": null,
+      "trigger_address": "Pearl Street",
+      "script_body": "By the way, this street is known as Pearl because it was once the beachy edge of the island, where residents went to look for oysters. Oysters were one of the most common foods served in New Amsterdam; some biologists have estimated that New York's waters once contained as much as half the entire world's supply.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "New Amsterdam"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Pearl Street oysters",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Pearl Street named for the beachy island edge where residents hunted oysters",
+        "Oysters were a staple in New Amsterdam",
+        "NY waters once held perhaps half the world's oyster supply"
+      ],
+      "source_passage": "By the way, this street is known as Pearl because it was once the beachy edge of the island, and it was where residents went to look for oysters. They were one of the most common foods served in New Amsterdam; some biologists have estimated that New York's waters once contained as much as half the entire world's supply of oysters.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 7"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stone_street_historic_arch_frommers-nyc-2024_great_fire_1835_rebuild",
+      "city_name": "new_york",
+      "poi_name": "Stone Street",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "great_fire_1835_rebuild",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Here you'll have a remarkably accurate snapshot of what the city looked like around 1837. This narrow, winding street was the first to be paved in New Amsterdam and the only one thought to still sit where the Dutch colonists originally placed it. All of the buildings went up immediately after the great fire of 1835, which devastated the city, wiping out twenty square blocks. Many blamed the volunteer firefighters of the time who, working in rival squads for cash payment, spent more time fighting one another than the flames \u2014 a battle Martin Scorsese's 2002 film Gangs of New York dramatically re-creates.",
+      "beat_length_class": "mid",
+      "duration_sec": 38,
+      "kid_friendly": "yes",
+      "entities": [
+        "New Amsterdam",
+        "great fire of 1835",
+        "Martin Scorsese",
+        "Gangs of New York"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "1835 fire rebuild",
+      "physical_cues": [
+        {
+          "cue": "The narrow, winding cobbled street, a snapshot of the city circa 1837",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Stone Street was the first paved street in New Amsterdam and the only one still on its original Dutch placement",
+        "Buildings rebuilt after the 1835 great fire that wiped out 20 blocks",
+        "Rival cash-paid volunteer firefighters fought each other; echoed in Scorsese's 2002 Gangs of New York"
+      ],
+      "source_passage": "Here you'll have a remarkably accurate snapshot of what the city looked like in about 1837. This narrow winding street (it's the next street from Pearl St.) was the first to be paved in New Amsterdam and the only street that is thought to still be where the Dutch colonists originally placed it. All of the buildings were constructed in the period immediately following the great fire of 1835, which devastated the city, wiping out 20 square city blocks. Many blamed the volunteer firefighters of the time who, working in rival squads for cash payment, spent more time fighting one another than fighting the flames (Martin Scorsese's 2002 film Gangs of New York dramatically re-creates a similar firefighter battle).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 8"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_stone_street_historic_arch_frommers-nyc-2024_dutch_gable_no_57",
+      "city_name": "new_york",
+      "poi_name": "Stone Street",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "dutch_gable_no_57",
+      "sub_location": null,
+      "trigger_address": "57 Stone St.",
+      "script_body": "The buildings here are classic Greek Revival \u2014 straight up-and-down brick with granite bases, built as counting houses and warehouses for local merchants. Number 57 Stone Street has a very Dutch steplike gable, added in 1908 by architect C. P. H. Gilbert as a nostalgic nod to New Amsterdam.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "C. P. H. Gilbert",
+        "New Amsterdam"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Dutch gable",
+      "physical_cues": [
+        {
+          "cue": "The Dutch steplike gable atop 57 Stone Street, added 1908",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Greek Revival buildings: brick with granite bases, built as counting houses/warehouses",
+        "57 Stone St has a Dutch steplike gable added 1908 by C. P. H. Gilbert"
+      ],
+      "source_passage": "The buildings we see today are classic Greek Revival structures of straight up-and-down brick with granite bases. They were built as counting houses and warehouses for local merchants. 57 Stone St., you'll notice, has a very Dutch steplike gable, added in 1908 by architect C. P. H. Gilbert as a nostalgic nod to New Amsterdam.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 8"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_mill_lane_local_legends_frommers-nyc-2024_stuyvesant_surrender",
+      "city_name": "new_york",
+      "poi_name": "Mill Lane",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "stuyvesant_surrender",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Mill Lane has the distinction of being the shortest street on Manhattan \u2014 and yes, there was once a mill here. Folk tradition held that it was here that Peter Stuyvesant, the Dutch Director-General of New Amsterdam, signed a treaty of surrender when the British invaded. Thanks to recently uncovered documents, we now know that act actually happened at Stuyvesant's farm, in what is today the East Village. Stuyvesant surrendered unwillingly, having torn to pieces the first letter sent by the British warship commander. City leaders then painstakingly pieced the letter back together; upon seeing its favorable terms \u2014 colonists could keep their land and businesses \u2014 ninety-three leading citizens, including Stuyvesant's seventeen-year-old son, demanded he surrender the colony. Stuyvesant did so but mourned the loss for the rest of his life.",
+      "beat_length_class": "anchor",
+      "duration_sec": 53,
+      "kid_friendly": "yes",
+      "entities": [
+        "Peter Stuyvesant",
+        "New Amsterdam",
+        "British",
+        "East Village"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "Stuyvesant surrender",
+      "physical_cues": [
+        {
+          "cue": "Mill Lane, the shortest street on Manhattan, site of the old mill",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Mill Lane is the shortest street on Manhattan; a mill once stood here",
+        "Legend put Stuyvesant's surrender treaty here; documents show it happened at his farm (today's East Village)",
+        "Stuyvesant tore up the British commander's letter; leaders reassembled it; 93 citizens incl. his 17-year-old son demanded surrender",
+        "Stuyvesant surrendered but mourned the colony's loss for life"
+      ],
+      "source_passage": "Mill Lane has the distinction of being the shortest street on Manhattan (and yes, there was once a mill here). Folk tradition had it that it was here that Peter Stuyvesant, the Dutch Director-General of New Amsterdam, signed a treaty of surrender when the British invaded. Thanks to recently uncovered documents, we know that historic act actually happened at Stuyvesant's farm, in what is today the East Village. Stuyvesant surrendered unwillingly, having torn to pieces the first letter sent by the British warship commander. City leaders then pieced the letter painstakingly back together. Upon seeing the favorable terms it presented the colonists (they would be allowed to keep their land and businesses), 93 leading citizens\u2014including Stuyvesant's 17-year-old son, a traitorous young fogey\u2014demanded Stuyvesant surrender the colony to the British. Stuyvesant did so but mourned the loss of the colony for the rest of his life.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 9"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hanover_square_hidden_history_frommers-nyc-2024_royalist_name_first_newspaper",
+      "city_name": "new_york",
+      "poi_name": "Hanover Square",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "royalist_name_first_newspaper",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Hanover Square is one of the only places in New York City to keep its 'royalist' title after the American Revolution; it was named for the House of Hanover, from which the era's British monarchy was descended. Once the center of the city's social and political life, this was where the colony's first newspaper was published, and the cotton exchange dominated one corner.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "House of Hanover",
+        "American Revolution"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "royalist name",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hanover Square kept its royalist name after the Revolution, named for the House of Hanover",
+        "Was the center of the city's social/political life",
+        "The colony's first newspaper was published here; cotton exchange on one corner"
+      ],
+      "source_passage": "One of the only places in New York City to retain its \"royalist\" title after the American Revolution, it was named for the House of Hanover, from which the era's British monarchy was descended. Once the center of the social and political life of the city, this was where the colony's first newspaper was published. The cotton exchange dominated one corner.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 10"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hanover_square_local_legends_frommers-nyc-2024_captain_kidd_dinner_parties",
+      "city_name": "new_york",
+      "poi_name": "Hanover Square",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "captain_kidd_dinner_parties",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "When he was still considered a respectable citizen, the notorious pirate Captain Kidd lived here in bourgeois splendor with his wife \u2014 the two were known for their grand dinner parties.",
+      "beat_length_class": "micro",
+      "duration_sec": 10,
+      "kid_friendly": "yes",
+      "entities": [
+        "Captain Kidd"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "character_story",
+      "emotional_register": "playful",
+      "subject_tag": "Captain Kidd",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Captain Kidd lived on Hanover Square as a respectable citizen with his wife",
+        "They were known for grand dinner parties"
+      ],
+      "source_passage": "When he was still considered a respectable citizen, notorious pirate Captain Kidd lived here in bourgeois splendor with his wife (they were known for their grand dinner parties).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 10"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_hanover_square_historic_arch_frommers-nyc-2024_india_house_brownstone",
+      "city_name": "new_york",
+      "poi_name": "Hanover Square",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "india_house_brownstone",
+      "sub_location": null,
+      "trigger_address": "India House, west side of Hanover Square",
+      "script_body": "India House, on the west side of the square, is a perfectly preserved example of a brownstone banking house from the 1850s.",
+      "beat_length_class": "micro",
+      "duration_sec": 8,
+      "kid_friendly": "yes",
+      "entities": [
+        "India House"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "India House",
+      "physical_cues": [
+        {
+          "cue": "India House, a preserved 1850s brownstone banking house on the west side of the square",
+          "direction": "west",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "India House on the west side is a preserved 1850s brownstone banking house"
+      ],
+      "source_passage": "India House, on the west side of the square, is a perfectly preserved example of a brownstone banking house from the 1850s.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 10"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_hidden_history_frommers-nyc-2024_dutch_wall_origin",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "dutch_wall_origin",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "You are now standing at what was the boundary of the city during Dutch colonial times. If you'd been alive then, you'd be staring at a nine-foot-high wooden wall, erected to keep out British invaders who, it was thought \u2014 wrongly \u2014 would be more likely to invade by land than by sea.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "Dutch",
+        "British"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "Dutch wall",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Wall Street was the city's boundary in Dutch colonial times",
+        "A 9-foot wooden wall stood here to keep out British invaders feared to attack by land"
+      ],
+      "source_passage": "You are now standing at what was the boundary of the city during Dutch Colonial times. If you had been alive then, you'd be staring at a 9-foot-high wooden wall erected to keep out British invaders, who, it was thought (wrongly), would be more likely to invade by land than by sea.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 11"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_dark_history_frommers-nyc-2024_slave_market_1711",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "slave_market_1711",
+      "sub_location": null,
+      "trigger_address": "74 Wall St.",
+      "script_body": "If you walk to 74 Wall Street, you'll be standing in the heart of what was once the United States' largest slave market, a bastion of inhumanity that held more auctions than any other in the country. The sale of humans began here in 1711 and was not fully outlawed in New York until 1827, making it one of the last two northern states to do so. There's a small plaque about the market at Water and Wall streets, though most scholars think it was actually here, not there.",
+      "beat_length_class": "mid",
+      "duration_sec": 32,
+      "kid_friendly": "no",
+      "entities": [
+        "United States"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "Wall Street slave market",
+      "physical_cues": [
+        {
+          "cue": "Small plaque about the slave market at Water and Wall streets (though scholars place the market here, at 74 Wall St.)",
+          "direction": "here",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "74 Wall St was the heart of the US's largest slave market, with more auctions than any other",
+        "Sale of humans began here in 1711; not fully outlawed in NY until 1827",
+        "A plaque sits at Water and Wall, but scholars place the market at 74 Wall St"
+      ],
+      "source_passage": "If you walk to 74 Wall St. you'll be standing in the heart of what was once the United States' largest slave market, a bastion of inhumanity that held more auctions than any other in the U.S. The sale of humans began here in 1711, and was not fully outlawed in New York until 1827, making it one of the last two northern states to do so. (There's a small plaque about the market at Water and Wall sts., but most scholars think it was actually here, not there.)",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 11"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Wall Street slave market established 1711 and NY abolition completed 1827 corroborated (NYPL, NYC LPC, hmdb plaque). 'Largest in the US' is a superlative \u2014 not auto-corrected; left for /fact-check."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_40_wall_st_modern_design_frommers-nyc-2024_race_to_the_top",
+      "city_name": "new_york",
+      "poi_name": "40 Wall Street",
+      "parent_poi": null,
+      "lens": "modern_design",
+      "topic_slug": "race_to_the_top",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Here is New York's greatest monument to thwarted ambition. Architect H. Craig Severance dreamed of building the tallest building in the world, taller than the Woolworth Building, which had held the record from 1917 to 1930. The trouble was that his former partner and archrival William Van Alen had the same aspiration. In the summer of 1929, at the height of the bubble before Black Tuesday, they began a 'race to the top' \u2014 Severance at 40 Wall Street, Van Alen at the Chrysler Building. In a record eleven months, Severance finished this building for the Bank of Manhattan, certain his structure would be the tallest. But Van Alen then administered the coup de gr\u00e2ce he'd hidden in his elevator shaft: the Chrysler Building's iconic Art Deco spire, which added an unbeatable hundred and twenty-five feet. The Chrysler's own title was snatched away just one year later by the Empire State Building.",
+      "beat_length_class": "anchor",
+      "duration_sec": 58,
+      "kid_friendly": "yes",
+      "entities": [
+        "H. Craig Severance",
+        "William Van Alen",
+        "Woolworth Building",
+        "Chrysler Building",
+        "Bank of Manhattan",
+        "Empire State Building",
+        "Black Tuesday"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "anecdote",
+      "emotional_register": "dramatic",
+      "subject_tag": "skyscraper race",
+      "physical_cues": [
+        {
+          "cue": "Gaze up at 40 Wall Street with its ziggurat-like step-backs of the late-1920s skyscraper",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "coup de gr\u00e2ce",
+          "gloss": "a decisive finishing blow"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Severance wanted to beat the Woolworth Building (record-holder 1917\u201330)",
+        "1929: he raced rival Van Alen, who was building the Chrysler Building",
+        "Severance finished 40 Wall St for the Bank of Manhattan in 11 months",
+        "Van Alen's hidden spire added 125 ft, winning; Chrysler lost the title to the Empire State Building a year later"
+      ],
+      "source_passage": "Here is New York's greatest monument to thwarted ambitions. Architect H. Craig Severance had a dream: He wanted to build the tallest building in the world, taller than the Woolworth Building (which held the record from 1917\u201330). Problem was, his former partner and archrival William Van Alen had the same aspirations, and in the summer of 1929, at the height of the bubble that preceded Black Tuesday (the great stock market crash), they began a \"race to the top,\" Severance at 40 Wall St. and Van Alen at the Chrysler Building (p. 208). In a record 11 months, Severance completed this building for the Bank of Manhattan at 40 Wall St., certain that the Chrysler Building was completed and his structure would be the tallest. But once Severance finished construction, Van Alen administered the coup de gr\u00e2ce that he'd been hiding in the elevator shaft of his building: the Chrysler Building's iconic Art Deco spire, which added an unbeatable 125 feet onto the building. I can only imagine that Severance felt some small measure of satisfaction when the Chrysler's title was snatched from it 1 short year later by the Empire State Building.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 12"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Severance/Van Alen race, Woolworth record 1913/1917\u20131930, Chrysler spire ~125 ft, Empire State surpassing a year later \u2014 corroborated by Wikipedia (40 Wall Street, H. Craig Severance), Skyscraper Museum."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_40_wall_st_historic_arch_frommers-nyc-2024_setbacks_for_light",
+      "city_name": "new_york",
+      "poi_name": "40 Wall Street",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "setbacks_for_light",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Take a moment to gaze up at 40 Wall Street; it's still an impressive achievement and a beautiful building, with all the ziggurat-like step-backs \u2014 cascading layers \u2014 of the prototypical late-'20s skyscraper. Those setbacks were added to let more light reach the street below, a change you'll feel after walking through the 'canyons.'",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "skyscraper setbacks",
+      "physical_cues": [
+        {
+          "cue": "The ziggurat-like step-backs cascading up 40 Wall Street",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "40 Wall St has ziggurat-like step-backs typical of late-1920s skyscrapers",
+        "Setbacks were designed to let more light reach the street"
+      ],
+      "source_passage": "Take a moment to gaze up at 40 Wall St.; it's still an impressive achievement and a beautiful building, with all of the ziggurat-like step-backs (cascading layers) of the prototypical late '20s skyscraper. Those setbacks were added to allow more light to reach the street below\u2014a change you'll feel after having walked through the \"canyons.\"",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 12"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_hall_war_conflict_frommers-nyc-2024_washington_oath_office",
+      "city_name": "new_york",
+      "poi_name": "Federal Hall",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "washington_oath_office",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The most historically significant piece of land in the city, Federal Hall is a quintessential Greek Revival edifice \u2014 a modified version of the Parthenon \u2014 completed in 1842. Note the statue of George Washington: it was here, perhaps on the very spot where the statue now stands, that Washington took the oath of office to become president, though not in this actual building but in an earlier one on this site.",
+      "beat_length_class": "mid",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Federal Hall",
+        "George Washington",
+        "Parthenon"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "Washington oath",
+      "physical_cues": [
+        {
+          "cue": "Statue of George Washington on the steps, perhaps on the very spot of his oath of office",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Federal Hall is a Greek Revival edifice modeled on the Parthenon, completed 1842",
+        "Washington took the presidential oath of office here, on an earlier building on this spot",
+        "A Washington statue marks the spot"
+      ],
+      "source_passage": "The most historically significant piece of land in the city, Federal Hall is a quintessential Greek Revival edifice, a modified version of the Parthenon (can't get much more Greek than that!), completed in 1842. Note the statue of George Washington; it was here, perhaps on the very spot where the statue now stands, that George Washington took the oath of office to become president (though not in this actual building, but in an earlier one located on this spot).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 13"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_hall_social_change_frommers-nyc-2024_zenger_stamp_act_bill_of_rights",
+      "city_name": "new_york",
+      "poi_name": "Federal Hall",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "zenger_stamp_act_bill_of_rights",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "In this former British City Hall \u2014 transformed into 'Federal Hall' when the Brits quit the city \u2014 the famous 1735 Zenger Trial, which helped secure freedom of the press, was held. In 1765 the pre-Revolutionary Stamp Act Congress met here to rail against 'taxation without representation,' and after the war the new nation's first Congress met here to draw up the Bill of Rights. Head inside to see the magnificent rotunda, one of the loveliest public spaces in the city; admission is free.",
+      "beat_length_class": "mid",
+      "duration_sec": 33,
+      "kid_friendly": "yes",
+      "entities": [
+        "Zenger Trial",
+        "Stamp Act Congress",
+        "Bill of Rights",
+        "British"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "founding milestones",
+      "physical_cues": [
+        {
+          "cue": "The magnificent rotunda inside Federal Hall",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Former British City Hall became Federal Hall when the British left",
+        "1735 Zenger Trial (freedom of the press) held here",
+        "1765 Stamp Act Congress met here; after the war the first Congress drew up the Bill of Rights here",
+        "Free admission; magnificent rotunda inside"
+      ],
+      "source_passage": "In this former British City Hall (transformed into \"Federal Hall\" when the Brits quit the city), the famous 1735 Zenger Trial, which helped secure freedom of the press, was held; in 1765, the pre-Revolutionary Stamp Act Congress met to rail against \"taxation without representation\"; and after the war, the new nation's first Congress met here to draw up the Bill of Rights. Head inside to see the magnificent rotunda, one of the loveliest public spaces in the city. Admission is free.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 13"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_federal_hall_dark_history_frommers-nyc-2024_jp_morgan_1920_bombing",
+      "city_name": "new_york",
+      "poi_name": "Federal Hall",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "jp_morgan_1920_bombing",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Note the austere building across the street; it was the headquarters of banker J. P. Morgan \u2014 the window of his former office is above the flagpole. Look closely at the side facing Federal Hall and you'll see it is pocked with small indentations: the scars of the Financial District's first terrorist attack, in 1920. One bright, sunny morning, a horse and carriage loaded with explosives parked here. Moments later a huge explosion shook the street, killing thirty-one people and wounding scores more. The blast was so powerful that all that was ever found of the horse was a horseshoe. Police traced it to a blacksmith who vaguely recalled shoeing the horse of an Italian man, and on that scanty evidence the police and press decided the blast must have been the work of Italian anarchists. No one was ever charged.",
+      "beat_length_class": "anchor",
+      "duration_sec": 53,
+      "kid_friendly": "no",
+      "entities": [
+        "J. P. Morgan",
+        "Italian anarchists"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "1920 bombing",
+      "physical_cues": [
+        {
+          "cue": "Small indentations pocking the side of the J. P. Morgan building facing Federal Hall \u2014 scars of the 1920 bomb",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Window of J. P. Morgan's former office, above the flagpole",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Building across the street was J. P. Morgan's HQ; his office window is above the flagpole",
+        "Its facade is scarred by the Financial District's first terrorist attack, 1920",
+        "A horse-and-carriage bomb killed 31 (per book) and wounded scores; only a horseshoe of the horse survived",
+        "Police traced the horseshoe to a blacksmith; blamed Italian anarchists on scant evidence; no one charged"
+      ],
+      "source_passage": "Note the austere, somewhat anonymous-looking building across the street from the hall; it was the headquarters of banker J. P. Morgan (the window of his former office is above the flagpole). If you look closely at the side of the building that faces Federal Hall, you'll notice that it is pocked with small indentations. These are the scars of the Financial District's first terrorist attack, which occurred in 1920. One bright and sunny morning (isn't it odd that these events always seem to occur on beautiful days?), a horse and carriage loaded with explosives parked here. Moments later a huge explosion shook the street, killing 31 people and wounding scores more. The blast was so powerful that all that was ever found of the horse was a horseshoe. The police used this piece of evidence to trace the blacksmith who made it; he had vague recollections of shoeing the horse of an Italian man, and on this scanty piece of evidence the police (and press) decided that the blast must have been the work of Italian anarchists. No one was ever charged with the crime.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 13"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "death toll '31 people'"
+        ],
+        "status": "disputed",
+        "extractor_state": "clean",
+        "notes": "DISPUTE: Book says 31 killed; multiple authoritative sources (FBI, Britannica, Wikipedia, Ancestry) say 38 killed in the Sept 16, 1920 Wall Street bombing. Death-count claim NOT auto-corrected (sensitive casualty figure; preserve book verbatim in body and let /fact-check adjudicate). Italian-anarchist (Galleanist) suspicion and 'no one charged' corroborated. The blasted building was the J.P. Morgan bank at 23 Wall St, opposite the Sub-Treasury / Federal Hall \u2014 consistent with the book's geography."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_stock_exchange_historic_arch_frommers-nyc-2024_facade_buttonwood",
+      "city_name": "new_york",
+      "poi_name": "New York Stock Exchange",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "facade_buttonwood",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "You are now gazing at the most famous \u2014 some would say infamous \u2014 financial institution in the world. The building's towering columns, crowded ornamental pediment, and huge flag trumpet that this is a place of incomparable might and prestige, far more imposing than the government's plainer Federal Hall across the street. In front of the Exchange is a scraggly buttonwood tree, meant to invoke the buttonwood under which New York's first traders stood in 1792 when they met to begin brokering the Revolutionary War debt \u2014 the first stock market in America.",
+      "beat_length_class": "mid",
+      "duration_sec": 32,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Stock Exchange",
+        "Federal Hall"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "buttonwood origin",
+      "physical_cues": [
+        {
+          "cue": "Towering columns, crowded ornamental pediment, and huge flag on the Exchange facade",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Scraggly buttonwood tree in front of the Exchange",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "NYSE is the world's most famous financial institution, with towering columns and pediment",
+        "More imposing than Federal Hall across the street",
+        "A buttonwood tree out front recalls the 1792 buttonwood where NY's first traders brokered Revolutionary War debt \u2014 America's first stock market"
+      ],
+      "source_passage": "You are now gazing at the most famous (some would say infamous) financial institution in the world. The building's towering columns, crowded ornamental pediment, and huge flag trumpet louder than any opening bell that this is a place of incomparable might and prestige (it's a much more imposing building than the government's plainer Federal Hall across the street). In front of the Stock Exchange is a scraggly buttonwood tree, meant to invoke the buttonwood that New York's first traders stood under in 1792 when they met to begin brokering the Revolutionary War debt\u2014the first stock market in America.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 14"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "1792 Buttonwood Agreement origin corroborated as the founding of the NYSE/first US stock market."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_stock_exchange_visual_art_frommers-nyc-2024_fearless_girl_standoff",
+      "city_name": "new_york",
+      "poi_name": "New York Stock Exchange",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "fearless_girl_standoff",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Also in front is the bronze statue of a fierce young girl, fists on hips \u2014 Fearless Girl. In March of 2017 she was set in a face-off with the Charging Bull in Bowling Green, as a statement on the need for more women working in finance. The bull's sculptor loudly objected to her presence, but she proved such a popular photo op that the city moved her here in 2018.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Fearless Girl",
+        "Charging Bull"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "Fearless Girl",
+      "physical_cues": [
+        {
+          "cue": "Bronze Fearless Girl statue, fists on hips, in front of the Exchange",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Fearless Girl bronze stands in front of the Exchange",
+        "Placed March 2017 facing Charging Bull as a statement on women in finance",
+        "The bull's sculptor objected; the city moved her here in 2018"
+      ],
+      "source_passage": "Also in front is the bronze statue of a fierce young girl, fists on hips\u2014Fearless Girl, she's called. In March of 2017 she was set in a face-off with the Charging Bull statue in Bowling Green (stop 5 on this tour) as a statement on the need for more women working in finance. The bull's sculptor loudly objected to her presence, but she was such a popular photo op, the city moved her here in 2018.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 14"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_1_wall_street_modern_design_frommers-nyc-2024_art_deco_temple_commerce",
+      "city_name": "new_york",
+      "poi_name": "1 Wall Street",
+      "parent_poi": null,
+      "lens": "modern_design",
+      "topic_slug": "art_deco_temple_commerce",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Take a moment to gaze at this absolutely stunning Art Deco building, once one of the priciest addresses in the city. The beautifully fluted, curtainlike limestone of the facade; the spider-web pattern of the cathedral window above the entry; and the sumptuous, soaring lobby remind us of a time when such excess and exquisite workmanship were the norm for places of business \u2014 which, in the heady times before the Stock Exchange crash, were conceived as temples of commerce.",
+      "beat_length_class": "mid",
+      "duration_sec": 32,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "reverent",
+      "subject_tag": "Art Deco facade",
+      "physical_cues": [
+        {
+          "cue": "Fluted, curtainlike limestone facade of 1 Wall Street",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Spider-web pattern of the cathedral window above the entry",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "1 Wall Street is a stunning Art Deco building, once one of the priciest addresses",
+        "Notable for fluted limestone facade, spider-web cathedral window, soaring lobby",
+        "Embodies pre-crash 'temples of commerce' excess"
+      ],
+      "source_passage": "Take a moment to gaze at this absolutely stunning Art Deco building, once one of the priciest addresses in the city. The beautifully fluted, curtainlike limestone of the facade; the spider-web pattern of the cathedral window above the entry; and the sumptuous, soaring lobby remind us of a time when such excess and exquisite workmanship were the norm for places of business (which were, in the heady times before the Stock Exchange crash, conceived as temples of commerce).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 15"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_trinity_church_famous_residents_frommers-nyc-2024_hamilton_graveyard",
+      "city_name": "new_york",
+      "poi_name": "Trinity Church",
+      "parent_poi": null,
+      "lens": "famous_residents",
+      "topic_slug": "hamilton_graveyard",
+      "sub_location": "graveyard",
+      "trigger_address": null,
+      "script_body": "Do wander the graveyard here; it holds the remains of Alexander Hamilton and other notables.",
+      "beat_length_class": "micro",
+      "duration_sec": 6,
+      "kid_friendly": "yes",
+      "entities": [
+        "Alexander Hamilton"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "reverent",
+      "subject_tag": "Hamilton grave",
+      "physical_cues": [
+        {
+          "cue": "Trinity Church graveyard, resting place of Alexander Hamilton",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Trinity Church graveyard holds Alexander Hamilton's remains and other notables"
+      ],
+      "source_passage": "Do wander the graveyard here; it has the remains of Alexander Hamilton and other notables.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 16"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Chunk defers full Trinity Church description to p.183 (separate chunk); only the graveyard/Hamilton callout has self-contained content here."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_canyon_of_heroes_social_change_frommers-nyc-2024_ticker_tape_plates",
+      "city_name": "new_york",
+      "poi_name": "Canyon of Heroes",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "ticker_tape_plates",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Look down as you amble along Broadway at the brass plates naming the ticker-tape parades held along this stretch. Had you been here in the 1930s or '40s, the crowds would have stood shoulder-to-shoulder, and above your head hundreds at the windows would have showered the street with long paper ribbons of stock quotations spewing from their machines. Read the plates: the catalogue of names is a retread of American history and political alliances. Along with athletes, astronauts, and presidents, you'll find parades for the American hostages released from Iran in 1982, pianist Van Cliburn in 1958, and the controversial President Sukarno of Indonesia in 1956.",
+      "beat_length_class": "mid",
+      "duration_sec": 42,
+      "kid_friendly": "yes",
+      "entities": [
+        "Broadway",
+        "Van Cliburn",
+        "President Sukarno",
+        "Iran hostages"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "ticker-tape parades",
+      "physical_cues": [
+        {
+          "cue": "Brass plates set into the Broadway sidewalk naming the ticker-tape parades",
+          "direction": "down",
+          "feature_type": "plaque"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Brass sidewalk plates along Broadway name ticker-tape parades",
+        "In the 1930s\u201340s crowds packed the street while paper ribbons rained from windows",
+        "Honorees include the 1982 Iran hostages, pianist Van Cliburn (1958), and President Sukarno of Indonesia (1956)"
+      ],
+      "source_passage": "Look down as you amble along at the brass plates with names and dates listing the ticker-tape parades that have been held along this swatch of Broadway. Had you been here on one of those occasions in the 1930s or '40s, the crowds around you would have been shoulder-to-shoulder, and above your head, hundreds would have been standing at the windows, showering the street with the long paper ribbons of stock market quotations that spewed from their machines, marking the dance of the stock market. Read the plates. The catalogue of names is an interesting retread of American history and political alliances; along with athletes, astronauts, and presidents, you'll find parades for the American hostages released from Iran (1982), pianist Van Cliburn (1958), and the controversial President Sukarno of Indonesia (1956).",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 17"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_zuccotti_park_social_change_frommers-nyc-2024_occupy_wall_street_2011",
+      "city_name": "new_york",
+      "poi_name": "Zuccotti Park",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "occupy_wall_street_2011",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "There's not much to see anymore, but this private one-block-long park is where the 'Occupy Wall Street' movement started in September of 2011, bringing the concept of the power of the one percent into modern political discourse. Activists occupied the park for almost two months before being forced out on November 15 by the police.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Occupy Wall Street"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "neutral",
+      "subject_tag": "Occupy Wall Street",
+      "physical_cues": [
+        {
+          "cue": "The private one-block-long park where Occupy Wall Street began",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Zuccotti Park is a private one-block park",
+        "Occupy Wall Street started here September 2011, popularizing the 'power of the 1%'",
+        "Activists held the park ~2 months until police forced them out November 15"
+      ],
+      "source_passage": "There's not much to see anymore, but this private 1-block-long park is where the \"Occupy Wall Street\" movement started in September of 2011, bringing the concept of the power of the 1% into modern political discourse. Activists occupied the park for almost 2 months before being forced out on November 15 by the police.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 18"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_9_11_memorial_and_museum_war_conflict_frommers-nyc-2024_tower_footprints_plaza",
+      "city_name": "new_york",
+      "poi_name": "The 9/11 Memorial and Museum",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "tower_footprints_plaza",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Be sure to reserve advance tickets online so you can skip some of the lines at this sobering museum. If you don't have time for the museum, walk around the eight-acre 9/11 Memorial Plaza, which is centered on the one-acre footprints of both towers.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "9/11 Memorial Plaza"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "stop_orientation",
+      "emotional_register": "somber",
+      "subject_tag": "memorial plaza",
+      "physical_cues": [
+        {
+          "cue": "The 8-acre Memorial Plaza centered on the 1-acre footprints of both towers",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Reserve advance tickets to skip lines at the museum",
+        "The 8-acre Memorial Plaza is centered on the 1-acre footprints of both towers"
+      ],
+      "source_passage": "Be sure to reserve advance tickets online so that you can skip some of the lines at this sobering museum. If you don't have time for the museum, be sure to walk around the 8-acre 9/11 Memorial Plaza, which is centered on the 1-acre footprints of both towers. For more information, see p. 168.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, stop 19"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bowling_green_park_transit_frommers-nyc-2024_to_fraunces_tavern",
+      "city_name": "new_york",
+      "poi_name": "Fraunces Tavern",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "to_fraunces_tavern",
+      "sub_location": null,
+      "trigger_address": "Bowling Green Park, near the museum",
+      "script_body": "Walk out of the park, going toward the museum and then along the side of the museum on Whitehall Street until you reach Bridge Street. Turn onto it and walk to Broad Street; take a right, and in front of you will be Fraunces Tavern.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Whitehall Street",
+        "Bridge Street",
+        "Broad Street"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "walk to tavern",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Route: out of Bowling Green Park, past the museum on Whitehall St to Bridge St, then to Broad St, turn right to Fraunces Tavern"
+      ],
+      "source_passage": "Walk out of the park, going toward the museum and then walking on the side of the museum on Whitehall St. until you reach Bridge St. Turn onto it and walk to Broad St. Take a right, and in front of you will be:",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, transit 5\u21926"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_wall_street_transit_frommers-nyc-2024_canyons_of_wall_street",
+      "city_name": "new_york",
+      "poi_name": "Wall Street",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "canyons_of_wall_street",
+      "sub_location": null,
+      "trigger_address": "Hanover Square, uptown point",
+      "script_body": "Continue to the uptown point of the triangle that is Hanover Square and hook a left onto Hanover Street. You're now entering the 'canyons of Wall Street,' so named because the skyscrapers stand so close together that the sidewalk gets little light.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "Hanover Square",
+        "Hanover Street"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "Wall Street canyons",
+      "physical_cues": [
+        {
+          "cue": "The 'canyons' where skyscrapers crowd so close the sidewalk gets little light",
+          "direction": "up",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Route: from Hanover Square's uptown point, hook left onto Hanover Street toward Wall Street",
+        "The 'canyons of Wall Street' are named for tightly packed, light-starved skyscrapers"
+      ],
+      "source_passage": "Continue walking to the uptown point of the triangle that is Hanover Square and hook a left onto Hanover St. You're now entering the \"canyons of Wall Street,\" so named because the skyscrapers are so close together that the sidewalk gets little light.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, transit 10\u219211"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_9_11_memorial_and_museum_transit_frommers-nyc-2024_liberty_st_oculus",
+      "city_name": "new_york",
+      "poi_name": "The 9/11 Memorial and Museum",
+      "parent_poi": null,
+      "lens": "modern_design",
+      "topic_slug": "liberty_st_oculus",
+      "sub_location": null,
+      "trigger_address": "Zuccotti Park, Liberty St.",
+      "script_body": "Continue walking on Liberty Street to Church Street. You'll pass the Oculus. Then follow the signs to the 9/11 Memorial and Museum.",
+      "beat_length_class": "micro",
+      "duration_sec": 8,
+      "kid_friendly": "yes",
+      "entities": [
+        "Liberty Street",
+        "Church Street",
+        "Oculus"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "transition",
+      "beat_type": "transit",
+      "emotional_register": "neutral",
+      "subject_tag": "walk to memorial",
+      "physical_cues": [
+        {
+          "cue": "The Oculus, which you pass on Liberty Street toward Church Street",
+          "direction": "west",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Route: along Liberty St to Church St, past the Oculus, then follow signs to the 9/11 Memorial"
+      ],
+      "source_passage": "Continue walking on Liberty St. to Church St. You'll pass the Oculus (p. 23). Follow the signs to:",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, transit 18\u219219"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_battery_park_stop_orientation_frommers-nyc-2024_river_view_staging",
+      "city_name": "new_york",
+      "poi_name": "Battery Park",
+      "parent_poi": null,
+      "lens": "waterways_views",
+      "topic_slug": "river_view_staging",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "From the subway, walk into Battery Park and toward the river. Find a spot where you can see the water \u2014 that open view of the harbor is where this walk begins.",
+      "beat_length_class": "micro",
+      "duration_sec": 10,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "stop_orientation",
+      "emotional_register": "neutral",
+      "subject_tag": "river staging",
+      "physical_cues": [
+        {
+          "cue": "A spot in Battery Park where you can see the river and harbor",
+          "direction": "south",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Start by walking into Battery Park toward the river and finding a spot where you can see the water"
+      ],
+      "source_passage": "Take subway 4 or 5 to Battery Park; walk from there into Battery Park and toward the river. START: Battery Park: Stand at a spot where you can see the river.",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Frommer's",
+        "chapter": "Chapter 7: Walking Tour 1 \u2014 Historic Lower Manhattan",
+        "page": "Walking Tour 1, Getting There / Start"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ],
+  "review_queue": [
+    {
+      "type": "new_poi_flagged",
+      "severity": "info",
+      "detail": "All 19 POIs are new (New York is a new city; poi-raw.json does not exist). Do not auto-create \u2014 user triages via /poi-generate. Each carries new_poi:true on its beats.",
+      "pois": [
+        "Battery Park",
+        "Castle Clinton",
+        "Large Flagpole",
+        "National Museum of the American Indian",
+        "Bowling Green Park",
+        "Fraunces Tavern",
+        "Goldman Sachs Building",
+        "Stone Street",
+        "Mill Lane",
+        "Hanover Square",
+        "Wall Street",
+        "40 Wall Street",
+        "Federal Hall",
+        "New York Stock Exchange",
+        "1 Wall Street",
+        "Trinity Church",
+        "Canyon of Heroes",
+        "Zuccotti Park",
+        "The 9/11 Memorial and Museum"
+      ]
+    },
+    {
+      "type": "low_geocode_confidence",
+      "severity": "warning",
+      "detail": "POIs geocoded with confidence < 0.70 \u2014 no discrete OSM node; coordinates are approximate route-derived points. Verify before upload.",
+      "pois": [
+        {
+          "poi_name": "Large Flagpole",
+          "confidence": 0.45,
+          "note": "Flagpole/Netherland Memorial Flagpole between Castle Clinton and the Customs House; approximate."
+        },
+        {
+          "poi_name": "Mill Lane",
+          "confidence": 0.55,
+          "note": "Shortest street, between Stone St and South William St; no addressed node."
+        },
+        {
+          "poi_name": "Canyon of Heroes",
+          "confidence": 0.6,
+          "note": "Linear Broadway parade route; geocoded to a representative point uptown of Trinity Church."
+        }
+      ]
+    },
+    {
+      "type": "geocode_identity_ambiguous",
+      "severity": "warning",
+      "detail": "Goldman Sachs Building (0.70): the book names only 'Goldman Sachs Building' across from Fraunces Tavern with Lovelace Tavern foundations under sidewalk glass; the documented Lovelace Tavern excavation is at 85 Broad Street (former Goldman Sachs HQ). Confirm this is the intended building, not Goldman's later 200 West St HQ.",
+      "pois": [
+        "Goldman Sachs Building"
+      ]
+    },
+    {
+      "type": "fact_check_dispute",
+      "severity": "warning",
+      "detail": "1920 Wall Street bombing death toll: book says 31 killed; FBI/Britannica/Wikipedia/Ancestry say 38 killed. NOT auto-corrected (sensitive casualty figure). Beat status set to 'disputed'; body preserves book text verbatim. /fact-check to adjudicate.",
+      "beat_ids": [
+        "newyork_federal_hall_dark_history_frommers-nyc-2024_jp_morgan_1920_bombing"
+      ]
+    },
+    {
+      "type": "fact_check_flag",
+      "severity": "info",
+      "detail": "George III statue 'erected just 5 years previously' \u2014 sources date dedication to Aug 1770 (~6 years before the July 1776 toppling). Book hedges ('just 5 years'); minor, flagged not corrected.",
+      "beat_ids": [
+        "newyork_bowling_green_park_dark_history_frommers-nyc-2024_king_george_statue_beheaded"
+      ]
+    },
+    {
+      "type": "fact_check_flag",
+      "severity": "info",
+      "detail": "White Star / Titanic: book frames Jacob Astor as exiting after his son perished; in fact John Jacob Astor IV died on the Titanic. Body preserves book verbatim; flagged for /fact-check before publication.",
+      "beat_ids": [
+        "newyork_bowling_green_park_historic_arch_frommers-nyc-2024_white_star_titanic"
+      ]
+    },
+    {
+      "type": "superlative_not_auto_resolved",
+      "severity": "info",
+      "detail": "Per never-auto-resolve rule: superlatives left as written, not corrected \u2014 '74 Wall St largest US slave market' and 'most famous financial institution in the world' (NYSE). Established date (1711) and abolition (1827) for the slave market verified.",
+      "beat_ids": [
+        "newyork_wall_street_dark_history_frommers-nyc-2024_slave_market_1711",
+        "newyork_new_york_stock_exchange_historic_arch_frommers-nyc-2024_facade_buttonwood"
+      ]
+    },
+    {
+      "type": "poi_proximity_warning",
+      "severity": "warning",
+      "detail": "Multiple new POIs fall within 100m of each other in the dense Financial District \u2014 expected for a compact walking tour, but flagged per guardrail (new POIs within 100m \u2192 user review). Clusters: (a) Battery Park / Castle Clinton / Large Flagpole all within ~150m at the harbor tip; (b) Stone Street / Mill Lane / Goldman Sachs Building / Hanover Square within ~120m; (c) Federal Hall / NYSE / 40 Wall St / 1 Wall St / Wall Street all clustered at Wall & Broad (several <100m apart); (d) Trinity Church / Canyon of Heroes / Zuccotti Park along Broadway. poi-dedup recommended after geocode.",
+      "clusters": [
+        [
+          "Battery Park",
+          "Castle Clinton",
+          "Large Flagpole"
+        ],
+        [
+          "Stone Street",
+          "Mill Lane",
+          "Goldman Sachs Building",
+          "Hanover Square"
+        ],
+        [
+          "Federal Hall",
+          "New York Stock Exchange",
+          "40 Wall Street",
+          "1 Wall Street",
+          "Wall Street"
+        ],
+        [
+          "Trinity Church",
+          "Canyon of Heroes",
+          "Zuccotti Park"
+        ]
+      ]
+    },
+    {
+      "type": "cross_reference_thin_content",
+      "severity": "info",
+      "detail": "Trinity Church: chunk defers full history/architecture to p.183 (another chunk). Only one micro beat (graveyard/Hamilton) extracted here. Tier-5 candidate with no establishing beat in this chunk \u2014 needs the p.183 chunk extracted before upload to satisfy AC-6 establishing coverage.",
+      "pois": [
+        "Trinity Church"
+      ]
+    },
+    {
+      "type": "establishing_coverage",
+      "severity": "info",
+      "detail": "POIs with no establishing-function beat in this run (importance_tier not assigned per task, so no auto-flag applied): Large Flagpole, Mill Lane, 40 Wall Street, New York Stock Exchange (has 'establishing' architectural beat), Trinity Church, Canyon of Heroes, Zuccotti Park (has establishing). Re-evaluate during /poi-generate when tiers are assigned.",
+      "pois": [
+        "Large Flagpole",
+        "Mill Lane",
+        "40 Wall Street",
+        "Trinity Church",
+        "Canyon of Heroes"
+      ]
+    }
+  ],
+  "summary": {
+    "total_beats": 45,
+    "total_pois": 19,
+    "all_pois_new": true,
+    "beats_per_lens": {
+      "hidden_history": 9,
+      "war_conflict": 4,
+      "dark_history": 4,
+      "social_change": 4,
+      "historic_arch": 6,
+      "visual_art": 3,
+      "modern_design": 2,
+      "parks_gardens": 1,
+      "waterways_views": 2,
+      "local_legends": 2,
+      "markets_street_food": 1,
+      "famous_residents": 1,
+      "music_heritage": 1
+    },
+    "beats_per_poi": {
+      "Battery Park": 2,
+      "Castle Clinton": 5,
+      "Large Flagpole": 2,
+      "National Museum of the American Indian": 4,
+      "Bowling Green Park": 5,
+      "Fraunces Tavern": 2,
+      "Goldman Sachs Building": 2,
+      "Stone Street": 2,
+      "Mill Lane": 1,
+      "Hanover Square": 3,
+      "Wall Street": 3,
+      "40 Wall Street": 2,
+      "Federal Hall": 3,
+      "New York Stock Exchange": 2,
+      "1 Wall Street": 1,
+      "Trinity Church": 1,
+      "Canyon of Heroes": 1,
+      "Zuccotti Park": 1,
+      "The 9/11 Memorial and Museum": 2
+    },
+    "length_class_distribution": {
+      "anchor": 7,
+      "mid": 14,
+      "seasoning": 17,
+      "micro": 7
+    },
+    "structural_beat_types": {
+      "transit": 4,
+      "stop_orientation": 2,
+      "sidebar": 0
+    },
+    "beat_type_distribution": {
+      "anecdote": 8,
+      "event": 8,
+      "architectural_detail": 9,
+      "factoid": 5,
+      "establishing": 2,
+      "character_story": 2,
+      "sensory_observation": 1,
+      "transit": 4,
+      "stop_orientation": 2
+    },
+    "narrative_function_distribution": {
+      "hook": 5,
+      "establishing": 9,
+      "deepen": 13,
+      "climax": 4,
+      "scene_setter": 2,
+      "transition": 4
+    },
+    "emotional_register_distribution": {
+      "neutral": 19,
+      "dramatic": 4,
+      "somber": 5,
+      "playful": 6,
+      "wry": 5,
+      "reverent": 6
+    },
+    "trigger_address_count": 11,
+    "sub_location_count": 5,
+    "inline_foreign_phrases_count": 4,
+    "kid_unfriendly_beats": 3,
+    "fact_check": {
+      "claims_verified": [
+        "Minuit 1626 Manhattan purchase / 60 guilders / Canarsie / Schagen letter",
+        "Castle Clinton 1807 West Battery \u2192 1817 Castle Clinton \u2192 Castle Garden \u2192 Jenny Lind 1850 \u2192 1855 immigrant depot \u2192 Ellis Island 1890",
+        "Bowling Green est. 1733, George III statue toppled July 9 1776, lead melted to bullets, original fence",
+        "Fraunces Tavern Washington's farewell (Dec 4 1783) + 1975 FALN bombing, 4 killed",
+        "Lovelace Tavern foundations under Goldman Sachs sidewalk glass",
+        "Stone Street 1835 great fire rebuild",
+        "Wall Street slave market est. 1711, NY abolition 1827",
+        "40 Wall St / Chrysler race-to-the-top 1929\u201330, Empire State surpasses a year later",
+        "Federal Hall: Zenger 1735, Stamp Act Congress 1765, first Congress / Bill of Rights, Washington oath",
+        "NYSE 1792 Buttonwood origin",
+        "Fearless Girl 2017 standoff, moved 2018",
+        "Occupy Wall Street Sept\u2013Nov 2011"
+      ],
+      "auto_corrections_applied": 0,
+      "disputes": [
+        {
+          "beat_id": "newyork_federal_hall_dark_history_frommers-nyc-2024_jp_morgan_1920_bombing",
+          "claim": "1920 bombing killed 31 people",
+          "book_value": "31",
+          "source_consensus": "38",
+          "sources": [
+            "FBI fbi.gov/history/famous-cases/wall-street-bombing-1920",
+            "Britannica britannica.com/event/Wall-Street-bombing-of-1920",
+            "Wikipedia en.wikipedia.org/wiki/Wall_Street_bombing",
+            "Ancestry ancestry.com historical-insights"
+          ],
+          "action": "not_auto_corrected_sensitive_casualty_figure"
+        }
+      ],
+      "not_auto_resolved": [
+        "superlatives (largest US slave market; most famous financial institution)",
+        "living/recent-figures content (none requiring resolution)",
+        "casualty-count discrepancy (kept verbatim, flagged dispute)"
+      ],
+      "fact_check_source_urls": [
+        "https://en.wikipedia.org/wiki/Peter_Minuit",
+        "https://www.gothamcenter.org/blog/notes-on-the-manhattan-purchase",
+        "https://www.nps.gov/cacl/learn/historyculture/southwest-battery-castle-clinton-1807-1823.htm",
+        "https://www.historiclowermanhattan.org/immigration/castle-clinton-national-monument",
+        "https://en.wikipedia.org/wiki/Bowling_Green_(New_York_City)",
+        "https://www.untappedcities.com/find-the-remnants-of-king-george-iiis-statue-toppled-in-bowling-green-in-1776/",
+        "https://www.state.gov/remembering-the-fraunces-tavern-bombing-and-the-cuban-regimes-continued-support-of-terrorists",
+        "https://www.frauncestavernmuseum.org/lovelace-tavern",
+        "https://www.nypl.org/blog/2015/06/29/slave-market",
+        "https://en.wikipedia.org/wiki/40_Wall_Street",
+        "https://en.wikipedia.org/wiki/H._Craig_Severance",
+        "https://www.fbi.gov/history/famous-cases/wall-street-bombing-1920",
+        "https://www.britannica.com/event/Wall-Street-bombing-of-1920",
+        "https://en.wikipedia.org/wiki/Wall_Street_bombing"
+      ]
+    },
+    "anomaly_check": {
+      "beat_count_in_range": true,
+      "beat_count": 45,
+      "beats_over_200_words": 0,
+      "beats_under_30_words_non_micro": 0,
+      "micro_beats_under_20_words": 7,
+      "missing_source_passages": 0,
+      "all_source_passages_verified_in_chunk": true,
+      "new_pois_within_100m": "flagged in review_queue (expected for compact Financial District walk)"
+    },
+    "geocode": {
+      "all_inside_nyc_bbox": true,
+      "outliers": [],
+      "high_confidence_ge_0.90": 13,
+      "moderate_0.70_to_0.89": 3,
+      "low_lt_0.70": 3
+    },
+    "extractor_state": {
+      "clean": 45,
+      "imported_context": 0,
+      "over_40pct_ceiling": false
+    },
+    "follow_up_actions": [
+      "/poi-generate new_york \u2014 triage and enrich the 19 flagged new POIs; assign importance_tier.",
+      "/poi-geocode new_york --missing-only \u2014 refine low-confidence geocodes (Large Flagpole, Mill Lane, Canyon of Heroes) and confirm Goldman Sachs Building identity.",
+      "/poi-dedup new_york \u2014 after geocode, resolve the dense <100m Financial District clusters.",
+      "/fact-check new_york \u2014 adjudicate the 1920 bombing death-toll dispute (31 vs 38), the George III statue date, and the Astor/Titanic framing; verify the two superlatives.",
+      "Extract the Trinity Church source chunk (book p.183) before upload \u2014 needed for tier-5 establishing coverage."
+    ]
+  }
+}
