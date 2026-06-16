@@ -1,0 +1,1492 @@
+[
+  {
+    "name": "Museum of Arts and Design",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.767332,
+    "longitude": -73.981936,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single multi-floor museum building with described interior studios, a discrete stop.",
+    "_poi_role_source": "MAD offers four floors of superlative design and handicrafts",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Museum of Arts and Design",
+        "lens": "visual_art",
+        "topic_slug": "2000_item_collection",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "2 Columbus Circle",
+        "beat_length_class": "seasoning",
+        "script_body": "The Museum of Arts and Design, known as MAD, holds some 2,000 items in its permanent collection alone, including objects of fashion, design, and jewelry. There is more than enough here to give you a sense of how craft, ornament, and everyday objects become art.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "Museum of Arts and Design"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "permanent collection",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Museum of Arts and Design (MAD) has some 2,000 items in the permanent collection alone, including objects of fashion, design, and jewelry.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "3a78dc8fe40ca4996916de5eecfdd9c20d6e4d1c1d97fdf48dc76686d95dffb9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      },
+      {
+        "city_name": "new_york",
+        "poi_name": "Museum of Arts and Design",
+        "lens": "modern_design",
+        "topic_slug": "controversial_hi_windows",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "2 Columbus Circle",
+        "beat_length_class": "mid",
+        "script_body": "MAD is also known for its radical building renovation, which was not very well received in the architecture world. Particularly controversial were the windows, which appear to spell out the word \"hi.\" Look up at the facade on Columbus Circle and judge for yourself. On the flip side, diners in the ninth-floor restaurant have an excellent view of Central Park.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Museum of Arts and Design",
+          "Central Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "controversial renovation",
+        "physical_cues": [
+          {
+            "cue": "Facade windows that appear to spell out the word \"hi\" on Columbus Circle",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Ninth-floor restaurant with a view of Central Park",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "MAD is also known for its radical building renovation that was not very well received in the architecture world. Particularly controversial were the windows, which appear to spell out the word \"hi.\" On the flip side, diners in the ninth-floor restaurant have an excellent view of Central Park.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "ea85ead71d1164915dac5c4899544286a93f3ffcd8972bee70e1b8d6014063e5",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Plaza Hotel",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "latitude": 40.7644,
+    "longitude": -73.9745,
+    "trigger_radius": 30,
+    "importance_tier": 4,
+    "typical_duration_min": 75,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Plaza Hotel",
+        "lens": "famous_residents",
+        "topic_slug": "frank_lloyd_wright_guggenheim",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "768 5th Ave",
+        "beat_length_class": "mid",
+        "script_body": "Many famous people have stayed at the Plaza Hotel. Architect Frank Lloyd Wright, for example, stayed here while he was designing the Guggenheim. Rooms on the north side of the hotel have a great view of Central Park, and if you're not dressed too shabbily you can probably steal a peek into the lobby.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Plaza Hotel",
+          "Frank Lloyd Wright",
+          "Guggenheim",
+          "Central Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Wright residency",
+        "physical_cues": [
+          {
+            "cue": "Hotel lobby, open for a peek if you're not dressed too shabbily",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "North-side rooms with a Central Park view",
+            "direction": "north",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Many famous people have stayed at the Plaza Hotel. Architect Frank Lloyd Wright, for example, stayed here while designing the Guggenheim. Rooms on the north side of the hotel have a great view of Central Park. If you're not dressed too shabbily you can probably steal a peek into the lobby.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "09384f42ca686c8bc39629baab80956ddff5d979895aa04507ba252494d5c33c",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Museum of Modern Art",
+    "short_description": "World-class art museum, very high tourist gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.761612,
+    "longitude": -73.977499,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum destination, trigger_radius 25m, beats describe standing before specific artworks.",
+    "_poi_role_source": "Van Gogh's Starry Night, its thick brush strokes visible in person",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Museum of Modern Art",
+        "lens": "visual_art",
+        "topic_slug": "helicopter_picasso_old_computers",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "11 W 53rd St",
+        "beat_length_class": "mid",
+        "script_body": "The world-famous Museum of Modern Art, MoMA, holds an extensive and unique collection of contemporary and modern art. There is plenty to see, from a helicopter suspended from the ceiling and a collection of old computers to artwork by Picasso and modern video art. Don't forget to also visit the MoMA Design Store.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Museum of Modern Art",
+          "Picasso",
+          "MoMA Design Store"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "modern art collection",
+        "physical_cues": [
+          {
+            "cue": "Helicopter suspended from the ceiling inside the galleries",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The world-famous Museum of Modern Art (MoMA) has an extensive and unique collection of contemporary and modern art. There is plenty to see here, from a helicopter suspended from the ceiling and a collection of old computers to artwork by Picasso and modern video art. Don't forget to also visit the MoMA Design Store.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "4c9a0003f3ba46be512a8f6b1aae1ffaf512f49dd1ea6495e1e1744553b0ab2c",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Paley Center for Media",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "latitude": 40.7607,
+    "longitude": -73.9776,
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Paley Center for Media",
+        "lens": "film_tv",
+        "topic_slug": "sinatra_star_trek_archive",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "25 W 52nd St",
+        "beat_length_class": "seasoning",
+        "script_body": "Learn all about the history of radio and television at the Paley Center for Media. Here you can watch and hear a Frank Sinatra concert, re-experience the first Star Trek episode, or settle in for a documentary, all drawn from the center's broadcasting archive.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paley Center for Media",
+          "Frank Sinatra",
+          "Star Trek"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "broadcast archive",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Learn all about the history of radio and television at the Paley Center for Media. Watch and hear a Frank Sinatra concert, re-experience the first Star Trek episode, or enjoy a documentary.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "f55a0e8283b975cb74006a493ead9683a06266eee7077a1df47188d7298843ea",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "21 Club",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "latitude": 40.7609,
+    "longitude": -73.9773,
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "21 Club",
+        "lens": "local_legends",
+        "topic_slug": "jockeys_facade_donations",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "21 W 52nd St",
+        "beat_length_class": "mid",
+        "script_body": "21 Club stands for all the history and stories that make New York so fantastic. Since 1930, \"The 21\" has been an institution for \"everyone who is anyone,\" made clear by the enormous number of artifacts donated by famous people over the years. The jockey statues on the facade are proud gifts from Jay van Urk, the Vanderbilts, and many other notables.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "21 Club",
+          "Jay van Urk",
+          "the Vanderbilts"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "jockey statues",
+        "physical_cues": [
+          {
+            "cue": "Jockey statues lining the facade above the entrance",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "21 Club stands for all the history and stories that make New York so fantastic. Since 1930 \"The 21\" has been an institution for \"everyone who is anyone,\" which is made clear by the enormous number of artifacts donated by famous people throughout the years. The jockeys on the façade are proud gifts by Jay van Urk, the Vanderbilts, and many other notables.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "6772d6ca113023d569e9cee93adba058c370c999f896779a8548df220efaad54",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "St. Patrick's Cathedral",
+    "short_description": "Largest Roman Catholic cathedral in the US; distinct from existing 'Old St. Patrick's Cathedral' in SoHo.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.758558,
+    "longitude": -73.976364,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete cathedral building with front spires and Tiffany altar, a single destination.",
+    "_poi_role_source": "The cathedral filling an entire city block at Fifth Ave and 51st St",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "St. Patrick's Cathedral",
+        "lens": "historic_worship",
+        "topic_slug": "largest_gothic_cathedral",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "5th Avenue between 50th and 51st streets",
+        "beat_length_class": "mid",
+        "script_body": "The impressive St. Patrick's Cathedral, built in 1879, is the largest Gothic cathedral in the United States and can seat more than 2,000 people. Be sure to look for the Tiffany altars, the stained-glass windows, and the Pieta, the statue of Mary holding the body of Jesus.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "St. Patrick's Cathedral",
+          "Tiffany",
+          "Pieta"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "gothic cathedral",
+        "physical_cues": [
+          {
+            "cue": "Tiffany altars inside the cathedral",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Stained-glass windows",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The Pieta, a statue of Mary holding the body of Jesus",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Pieta",
+            "gloss": "the statue of Mary holding the body of Jesus"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "The impressive St. Patrick's Cathedral built in 1879 is the largest Gothic cathedral in the United States and can seat more than 2,000 people. Be sure to check out the Tiffany altars, the stained-glass windows, and the Pieta—the statue of Mary holding the body of Jesus.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "744e92d889f45ee9599b4dd1577e496e32659c31e0a39c03b9dbcc9e66f439ca",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Rockefeller Center",
+    "short_description": "Multi-block complex (Top of the Rock, rink, Radio City); high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.759258,
+    "longitude": -73.979957,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A several-blocks-wide complex of 19 buildings you walk through following 'The Channel', trigger_radius 60m.",
+    "_poi_role_source": "The several-blocks-wide collection of 19 buildings forming an airy, light space",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Rockefeller Center",
+        "lens": "historic_arch",
+        "topic_slug": "1928_rockefeller_development",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "45 Rockefeller Plaza",
+        "beat_length_class": "mid",
+        "script_body": "In 1928, John D. Rockefeller bought a piece of property that he developed into office buildings and public promenades. He called it Rockefeller Center. Come here in winter to go ice skating next to the giant Christmas tree, and don't pass up a trip to 30 Rockefeller Plaza and the observation deck, Top of the Rock, with its unobstructed view of Central Park and the Empire State Building.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "John D. Rockefeller",
+          "Rockefeller Center",
+          "30 Rockefeller Plaza",
+          "Top of the Rock",
+          "Central Park",
+          "Empire State Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Rockefeller development",
+        "physical_cues": [
+          {
+            "cue": "Winter ice rink beside the giant Christmas tree",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Top of the Rock observation deck at 30 Rockefeller Plaza, with views of Central Park and the Empire State Building",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "In 1928 John D. Rockefeller bought a piece of property that he developed to include office buildings and public promenades. He called it Rockefeller Center. Come here in the winter to go ice skating next to the giant Christmas tree. You also won't want to pass up a trip to 30 Rockefeller Plaza and the observation deck, Top of the Rock, where you have an unobstructed view of Central Park and the Empire State Building.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "dc49547669e538d1e2acbe09c852d576425d27dad89c62c4501c0431e0c3a29e",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Radio City Music Hall",
+    "short_description": "Art Deco theater, Rockettes / Christmas Spectacular; part of Rockefeller area.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.759812,
+    "longitude": -73.979279,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete theater building you stand at, trigger_radius 25m; not nested under a candidate_parent (Rockefeller Center is in this batch but containment handled separately).",
+    "_poi_role_source": "The exquisite Art Deco features of the music hall's interior",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Radio City Music Hall",
+        "lens": "music_heritage",
+        "topic_slug": "rockettes_christmas_spectacular",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "1260 6th Ave",
+        "beat_length_class": "seasoning",
+        "script_body": "One of the most popular events at Radio City Music Hall is the \"Christmas Spectacular\" with performances by the Rockettes. Radio City Music Hall is the largest covered theater in the world and a beautiful example of art deco style.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Radio City Music Hall",
+          "Christmas Spectacular",
+          "the Rockettes"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "art deco theater",
+        "physical_cues": [
+          {
+            "cue": "Art deco facade and marquee of the music hall",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "One of the most popular events at Radio City Music Hall is the \"Christmas Spectacular\" with performances by the Rockettes. Radio City Music Hall is the largest covered theater in the world and is a beautiful example of art deco style.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "61d39bb680b756f05478a57434f8ba36b278804cf20242512aa2117df72f98e9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Times Square",
+    "short_description": "Most congested pedestrian icon in the Western Hemisphere; very high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.75701,
+    "longitude": -73.985972,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A large pedestrianized square you cross and stand within, framed as an area covering many surrounding buildings rather than a single point.",
+    "_poi_role_source": "Costumed characters and 'painted ladies' roaming the pedestrianized square",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Times Square",
+        "lens": "local_legends",
+        "topic_slug": "red_stairs_tkts_booth",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "Broadway and 7th Avenue between 42nd and 47th streets",
+        "beat_length_class": "mid",
+        "script_body": "With its bright lights, enormous billboards, and constant crowds, Times Square is the pulse of New York City. Under the red stairs you'll find the TKTS Booth, where you can buy discounted tickets, sometimes up to 50 percent off, for shows on and off Broadway and for dance and music performances. Go early, because the lines can be long.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Times Square",
+          "TKTS Booth",
+          "Broadway"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "TKTS booth",
+        "physical_cues": [
+          {
+            "cue": "Red stairs with the TKTS discount-ticket booth underneath",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Bright lights and enormous billboards surrounding the square",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "With its bright lights, enormous billboards, and constant crowds, Times Square is the pulse of New York City. Under the red stairs you'll find the TKTS Booth where you can buy discounted tickets for shows on and off Broadway, and for dance and music performances. Sometimes you can get up to 50 percent off. Go early because the lines can be long.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "4e739314053214007554b53b45e26a78df45c7ffdc29a2f931b66c06ba99dc32",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "International Center of Photography",
+    "short_description": "Major photography museum, Wikipedia article, founded by Cornell Capa. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.718028,
+    "longitude": -73.988611,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum building you enter; small radius.",
+    "_poi_role_source": "The multi-floor museum space across from the Essex Street Market",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "International Center of Photography",
+        "lens": "visual_art",
+        "topic_slug": "world_photos_temporary_exhibits",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "1114 6th Ave, at 43rd St",
+        "beat_length_class": "micro",
+        "script_body": "Take a trip to the International Center of Photography to see unique photos from around the world. There are always plenty of good temporary exhibits on view here.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "International Center of Photography"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "photography exhibits",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Take a trip to the International Center of Photography and see unique photos from around the world. There are always plenty of good temporary exhibits here.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "5f731f08a02d23005608cd38cd31e4967586f82ba262163c114ea4f68e2b860a",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "New York Public Library",
+    "short_description": "Beaux Arts main branch (Stephen A. Schwarzman Building) with lion statues.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753344,
+    "longitude": -73.982152,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single Beaux Arts building you stand before, marked by the lions Patience and Fortitude at the entrance.",
+    "_poi_role_source": "The famous stone lions guarding the entrance",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "New York Public Library",
+        "lens": "historic_arch",
+        "topic_slug": "lions_patience_fortitude",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "476 5th Ave, at 42nd St",
+        "beat_length_class": "mid",
+        "script_body": "The largest branch of the New York Public Library opened in 1911 and is housed in the Stephen A. Schwarzman Building. In the 1930s, Mayor Fiorello LaGuardia gave the marble lions sitting outside the building the nicknames Patience and Fortitude. In doing so, he was emphasizing the very qualities New Yorkers needed to endure the Depression.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "New York Public Library",
+          "Stephen A. Schwarzman Building",
+          "Fiorello LaGuardia",
+          "Patience",
+          "Fortitude",
+          "the Depression"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "marble lions",
+        "physical_cues": [
+          {
+            "cue": "Marble lions Patience and Fortitude flanking the steps outside the building",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The largest branch of the New York Public Library opened in 1911 and is located in the Stephen A. Schwarzman Building. In the 1930s, Mayor Fiorello LaGuardia gave the marble lions that sit outside of the building the nicknames Patience and Fortitude. In doing so he was emphasizing the qualities New Yorkers needed to endure the Depression.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "96971646e106a770e11e79439421278f23b537f958a339c0d09157f423304b60",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Bryant Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753751,
+    "longitude": -73.983543,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A 4-acre park with 120m radius and promenade framing; a contextual area you walk through, and itself a candidate parent.",
+    "_poi_role_source": "a 4-acre lawn surrounded by benches, statuary, and London planetree–shaded promenades",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Bryant Park",
+        "lens": "parks_gardens",
+        "topic_slug": "movies_fashion_week_moved",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "42nd St and 6th Ave",
+        "beat_length_class": "mid",
+        "script_body": "Head to Bryant Park for some rest and relaxation. Grab a coffee and a snack at one of the kiosks, then sit back and take in the tall buildings around you. At the east edge of the park is one of the city's most popular outdoor bars, and in summer there are open-air movies every Monday night. Until 2010, New York Fashion Week was also held here twice a year, before it moved to Lincoln Center.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bryant Park",
+          "New York Fashion Week",
+          "Lincoln Center"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "park life",
+        "physical_cues": [
+          {
+            "cue": "Refreshment kiosks and lawn surrounded by tall buildings",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Popular outdoor bar at the east edge of the park",
+            "direction": "east",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "At the east edge of the park is one of the city's most popular outdoor bars. In the summer there are open-air movies every Monday night. Until 2010, New York Fashion Week was also held here twice a year, but it has since moved to Lincoln Center.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "df09a1b8c66b77e4830efa8a60a4ab70fb6370ffa94bd31393d5f90d831413be",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Grand Central Terminal",
+    "short_description": "Major Beaux Arts transit landmark, Frommer's 'best historic building'. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.752694,
+    "longitude": -73.977253,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single landmark transit building with facade and interior cues you stand before, not an area walked through.",
+    "_poi_role_source": "Beaux Arts interior of Grand Central, restored to its original brilliance",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Grand Central Terminal",
+        "lens": "historic_arch",
+        "topic_slug": "beaux_arts_laser_light_show",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "89 E 42nd St between Madison and Lexington avenues",
+        "beat_length_class": "seasoning",
+        "script_body": "Grand Central Terminal is a Beaux Arts masterpiece that embodies the romanticism of train travel. Its annual Holiday Laser Light Show, a Christmas-themed display projected onto the ceiling of the main hall, begins on November 30 and runs for six weeks. It is very impressive.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "Grand Central Terminal",
+          "Holiday Laser Light Show"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "beaux arts terminal",
+        "physical_cues": [
+          {
+            "cue": "Ceiling of the main hall, surface of the Holiday Laser Light Show",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Grand Central Terminal is a Beaux Arts masterpiece embodying the romanticism of train travel. The annual Holiday Laser Light Show, a Christmas-themed light show projected onto the ceiling of the main hall, begins on November 30 and goes on for six weeks. It's very impressive.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "b407c03c8fa7361200f44ea9c0bdf1fbdb3033778011401c3307407394a7b65d",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Chrysler Building",
+    "short_description": "Iconic Art Deco skyscraper, named by Frommer's as best NYC skyscraper and New Yorkers' favorite. High-gravity landmark.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.751603,
+    "longitude": -73.975344,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single iconic skyscraper you look up at; cues describe standing before one object despite the moderate radius.",
+    "_poi_role_source": "Sleek Art Deco hood-ornament spire of the Chrysler Building",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Chrysler Building",
+        "lens": "modern_design",
+        "topic_slug": "hubcaps_radiator_caps",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "405 Lexington Ave between 42nd and 43rd streets",
+        "beat_length_class": "mid",
+        "script_body": "The Chrysler Building is the crowning achievement of auto-industry giant Walter P. Chrysler. Designs of hubcaps and fenders are worked into the building inside and out, and you'll find waterspouts shaped like radiator caps. The 1,046-foot art deco monument opened in 1930 as the tallest building in the world, only to be dethroned one year later by the Empire State Building.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Chrysler Building",
+          "Walter P. Chrysler",
+          "Empire State Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "automotive ornament",
+        "physical_cues": [
+          {
+            "cue": "Hubcap and fender motifs and radiator-cap-shaped waterspouts on the facade",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Chrysler Building is the crowning achievement of auto industry giant Walter P. Chrysler. Designs of hubcaps and fenders have been incorporated into the building both inside and out. You'll also find waterspouts in the shape of radiator caps. The 1,046-foot-tall (319 meters) building is a unique art deco monument. When it opened in 1930, the Chrysler Building was the tallest building in the world. One year later, it was dethroned by the Empire State Building.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "5ce824165dbbfdd838e4789cc9a05a098318b637e902cdfed2cc79a57cff1a1c",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "The Morgan Library & Museum",
+    "short_description": "J.P. Morgan's library; Gutenberg Bibles, rare manuscripts.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.749268,
+    "longitude": -73.981465,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum building you stand before, with interior cues like the East Room and Gutenberg Bibles.",
+    "_poi_role_source": "Incorporating the mansion once owned by financier JP Morgan, this sumptuous cultural center",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "The Morgan Library & Museum",
+        "lens": "visual_art",
+        "topic_slug": "pierpont_morgan_private_collection",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "225 Madison Ave, at 36th St",
+        "beat_length_class": "mid",
+        "script_body": "The wonderful collection at The Morgan Library & Museum came from the private holdings of wealthy banker and art collector John Pierpont Morgan. In 1924, eleven years after his death, it was opened as a public institution. The collection includes manuscripts, drawings, books, and old Middle Eastern tablets, among other things.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Morgan Library & Museum",
+          "John Pierpont Morgan"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Morgan collection",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The wonderful collection at The Morgan Library & Museum comes from wealthy banker and art collector John Pierpont Morgan's own private collection. In 1924, eleven years after his death, it was opened as a public institution. The collection includes manuscripts, drawings, books, and old Middle Eastern tablets, among other things.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "77006edf1518f925989ad7cfd4e929020703b2e69a3853f79ff9a3eb28ca71c2",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Empire State Building",
+    "short_description": "Iconic global landmark, top observation deck, very high tourist gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.748442,
+    "longitude": -73.985659,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete iconic building you stand at and ascend, trigger_radius 40m, tier 5.",
+    "_poi_role_source": "The view of Manhattan from the observation deck, 1,454 feet up",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Empire State Building",
+        "lens": "historic_arch",
+        "topic_slug": "gm_chrysler_race_tallest",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "20 W 34th St, at 5th Ave",
+        "beat_length_class": "mid",
+        "script_body": "The Empire State Building was the result of a race between the chairmen of General Motors and Chrysler to see who could build the world's tallest building first; General Motors \"won.\" The pencil-shaped tower opened in 1931 and, until 1971, was indeed the tallest building in the world. The view from the 86th floor is as phenomenal as ever.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Empire State Building",
+          "General Motors",
+          "Chrysler"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "tallest building race",
+        "physical_cues": [
+          {
+            "cue": "View from the 86th-floor observation deck",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Empire State Building is the result of a competition between the chairmen of General Motors and Chrysler to see who could be the first to build the world's tallest building (FYI: General Motors \"won\"). The pencil-shaped building opened in 1931 and until 1971 was indeed the tallest building in the world. The view from the 86th floor is still as phenomenal as ever.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "3b41bad32b04160dba677210226b4d42040ee12627bc157949e8ecbcfced82ee",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Flatiron Building",
+    "short_description": "Iconic triangular early skyscraper; high recognition.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.741059,
+    "longitude": -73.989642,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single iconic building you stand before, trigger_radius 30m.",
+    "_poi_role_source": "The 6-foot-wide apex of the building at the Broadway/Fifth Avenue intersection",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Flatiron Building",
+        "lens": "historic_arch",
+        "topic_slug": "1902_triangular_business_district",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "175 5th Ave, at 23rd St",
+        "beat_length_class": "seasoning",
+        "script_body": "The Flatiron Building was designed in 1902 in an attempt to establish a new business district north of Wall Street, and it sits perfectly on a triangular, iron-shaped plot of land. It's usually windy around the iconic building, so be sure to hold on to your hat.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "Flatiron Building",
+          "Wall Street"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "triangular plot",
+        "physical_cues": [
+          {
+            "cue": "Triangular, iron-shaped footprint of the building; wind around its prow",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Flatiron Building was designed in 1902 in an attempt to establish a new business district north of Wall Street and sits perfectly on a triangular, iron-shaped plot of land. It's usually windy around the iconic building, so be sure to hold on to your hat.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "f13a60d714adb4364296f6d411160fe5cc4d8948d70ad4063136fb2b5de9670c",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Theodore Roosevelt Birthplace",
+    "short_description": "National Historic Site at 28 E 20th St — a reconstruction of the 26th president's childhood home, with original furniture and period restorations.",
+    "name_variations": [
+      "Theodore Roosevelt Birthplace National Historic Site"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.738617,
+    "longitude": -73.9890615,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single reconstructed house at a specific address you stand before.",
+    "_poi_role_source": "Facade of the Theodore Roosevelt Birthplace National Historic Site at 28 E 20th St",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Theodore Roosevelt Birthplace",
+        "lens": "famous_residents",
+        "topic_slug": "reconstructed_boyhood_home",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "28 E 20th St between Broadway and Park Ave",
+        "beat_length_class": "seasoning",
+        "script_body": "As a young boy, Theodore Roosevelt, the 26th president of the United States, lived on 20th Street. The Theodore Roosevelt Birthplace is a reconstruction of that house, an interesting place to visit for history buffs and Roosevelt fans alike.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Theodore Roosevelt",
+          "Theodore Roosevelt Birthplace"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Roosevelt boyhood home",
+        "physical_cues": [
+          {
+            "cue": "Reconstructed brownstone house at 28 E 20th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "As a young boy, the 26th president of the United States, Theodore Roosevelt, lived on 20th Street. The Theodore Roosevelt Birthplace, a reconstruction of that house, is an interesting place to visit for history buffs and Roosevelt fans alike.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "3da58e071d7d27ea1e7dbc4f764b86154ec62bb00fe19faa68e12ceb1ad499bf",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Gramercy Park",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73795,
+    "longitude": -73.985915,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "importance_tier": 2,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A park-and-surrounding-square area (radius 120) you walk around viewing the bordering homes and clubs, a contextual area.",
+    "_poi_role_source": "Around it, beautifully preserved historic homes and clubs include the wisteria-clad home",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Gramercy Park",
+        "lens": "hidden_history",
+        "topic_slug": "only_private_park_keys",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "Between 20th and 21st streets and Park and 3rd avenues",
+        "beat_length_class": "mid",
+        "script_body": "Gramercy Park is the only non-public park in New York; only residents living in the area hold a key. In the 19th century most apartments here were intended for the poor, so the apartments at 34 Gramercy Park East were called \"French flats\" to set them apart from the working-class buildings nearby. Go for a drink on the beautiful terrace of the Gramercy Park Hotel.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gramercy Park",
+          "34 Gramercy Park East",
+          "Gramercy Park Hotel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "private park keys",
+        "physical_cues": [
+          {
+            "cue": "Locked iron fence of the private park; key-holders only",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The \"French flats\" building at 34 Gramercy Park East",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "French flats",
+            "gloss": "name given to the 34 Gramercy Park East apartments to distinguish them from working-class buildings"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "Gramercy Park is the only non-public park in New York. Only residents living in the area have a key. In the 19th century, most apartments were intended for the poor. The apartments at 34 Gramercy Park East were therefore called \"French flats\" to distinguish them from those where the working class lived. Go for a drink on the beautiful terrace of the Gramercy Park Hotel.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "d2615e1c82649143f4fa15556fe7fa08f8a12f3adf090af54b16a355840610a5",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Union Square Greenmarket",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-03"
+    },
+    "latitude": 40.7359,
+    "longitude": -73.9911,
+    "trigger_radius": 30,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Union Square Greenmarket",
+        "lens": "markets_street_food",
+        "topic_slug": "1976_140_farmers",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-03-walk3-times-square-union-square",
+        "sub_location": null,
+        "trigger_address": "E 17th St & Union Square West",
+        "beat_length_class": "mid",
+        "script_body": "The Union Square Greenmarket began in 1976 with a handful of farmers and has grown into an enormous market where some 140 regional farmers come to sell their products in peak season. Vendors offer organic fruits and vegetables, bread, cheese, and organic wine, and you can catch cooking demonstrations from famous local chefs and sample their creations.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Union Square Greenmarket"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "farmers market",
+        "physical_cues": [
+          {
+            "cue": "Market stalls along the north and west sides of Union Square",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Union Square Greenmarket began in 1976 with a handful of farmers and has since grown into an enormous market where some 140 regional farmers come to sell their products in the peak season. In the winter the market is somewhat smaller. Vendors sell organic fruits and vegetables, bread, cheese, and organic wine. Be sure to also check out the cooking demonstrations from famous local chefs and sample their creations.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 3: Times Square & Union Square"
+        },
+        "script_body_hash": "2e1fde10f55183101c3f6cb4d08ac193eb405ddcfd9a450db33cff03683e61ef",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  }
+]

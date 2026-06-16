@@ -1,0 +1,1242 @@
+[
+  {
+    "name": "NoLIta",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.7201124,
+    "longitude": -73.9961673,
+    "trigger_radius": 120,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "NoLIta",
+        "lens": "local_legends",
+        "topic_slug": "north_of_little_italy",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "NoLIta is short for \"North of Little Italy\" — a small, square-shaped area hemmed in by East Houston, the Bowery, Broome Street, and Lafayette. It's trendy and compact, and Elizabeth Street in particular is known for its beautiful shops and boutiques.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Little Italy",
+          "Elizabeth Street",
+          "Bowery",
+          "Broome Street",
+          "Lafayette"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "nolita name origin",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The small, trendy NoLIta (short for “North of Little Italy”) is a small, square-shaped area located between East Houston, the Bowery, Broome Street, and Lafayette. Elizabeth Street in particular is well known for its beautiful shops and boutiques.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "1b7375a2fe9bb7d0b08975e8272261cf65d124a74e8d5f4d8bbc2f9c10756ba3",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "SoHo",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72288,
+    "longitude": -73.99875,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 4,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A large neighborhood (radius 350) of cobbled streets and cast-iron lofts you move through, a contextual area.",
+    "_poi_role_source": "Cobblestoned streets lined with cast-iron buildings",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "SoHo",
+        "lens": "historic_arch",
+        "topic_slug": "south_of_houston_factories",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "SoHo is short for \"South of Houston\" Street. It was originally an industrial area full of factories and warehouses, but today this neighborhood of grand cast-iron warehouses is a major trendsetter in the fashion world, packed with luxury boutiques, fashion houses, and art galleries.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Houston Street"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "soho name origin",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "SoHo (short for “South of Houston” Street) was originally an industrial area full of factories and warehouses. Today, however, this hip neighborhood is a major trendsetter in the fashion world. With its grand, cast-iron warehouses, luxury boutiques, fashion houses, and art galleries, SoHo offers some of the best shopping in the city.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "f35df399d85905c0c5ca1bb28e4a35afd4fd10c41b3aa2817c04692203cabf03",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Greenwich Village",
+    "short_description": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.733584,
+    "longitude": -74.002817,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 5,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A neighborhood with large radius described as walked-through streets and alleys, contextual area narration rather than a point.",
+    "_poi_role_source": "you're more likely to see dads with strollers than long-haired poets walking these streets",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "local_legends",
+        "topic_slug": "little_bohemia",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The West Village, part of Greenwich Village, is also known as \"Little Bohemia.\" It's home to many famous people and accommodates their creative lifestyles, with treelined streets and beautiful 18th- and 19th-century architecture on the banks of the Hudson.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "West Village",
+          "Hudson River"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "little bohemia",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Little Bohemia",
+            "gloss": "nickname for the West Village as a haven for artists and creative people"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "The West Village, which is part of Greenwich Village, is also known as “Little Bohemia.” It is home to many famous people and accommodates their creative lifestyles.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "5bd06f7cd856dafb54379b980df2bd96c62107d7ddd479414ce3804361aa38d8",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Meatpacking District",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.740803,
+    "longitude": -74.008069,
+    "trigger_radius": 250,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 3,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A neighborhood (radius 250) explicitly described as a stroll past boutiques and clubs, a contextual walking area.",
+    "_poi_role_source": "A stroll through the Meatpacking District ... takes you past sleek boutiques and roaring nightclubs",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Meatpacking District",
+        "lens": "social_change",
+        "topic_slug": "shady_to_trendy",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At the northwest corner of Greenwich Village lies the Meatpacking District. This used to be a shadier part of the city, but today it's filled with trendy stores and popular restaurants that line the old cobblestone streets, making it a great place for going out.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Greenwich Village"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "meatpacking transformation",
+        "physical_cues": [
+          {
+            "cue": "Old cobblestone streets lined with stores and restaurants",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "At the northwest corner of Greenwich Village lies the Meatpacking District. This used to be a shadier part of the city but today is filled with trendy stores and popular restaurants that line the old cobblestone streets, and is a great place for going out.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "1ced024fc62eb653ee46dc1b1834ced0958f7b2d079cb9b8b24248dab1547a58",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "The High Line",
+    "short_description": "Very popular elevated park, Frommer's parks pick; called 'NYC's coolest park'. High gravity but linear/diffuse.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.747704,
+    "longitude": -74.004891,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 5,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A linear 1.5-mile elevated park you walk along (radius 120), contextual area narration as you move through it.",
+    "_poi_role_source": "Snaking through the Meatpacking District at 30ft above street level, this 1.5-mile urban park",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "historic_arch",
+        "topic_slug": "train_spur_to_park",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The High Line opened in 2009 on an old train-line spur that runs through Chelsea and the Meatpacking District dozens of feet above street level. Until 1980 the line carried goods to and from the area's warehouses; after falling into disuse it was slated for demolition, until local residents came up with the idea of turning it into an elevated park. Because most of the surrounding buildings are relatively low, the High Line offers an amazing view out over the Hudson River and Chelsea.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Chelsea",
+          "Meatpacking District",
+          "Hudson River"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "high line origin",
+        "physical_cues": [
+          {
+            "cue": "Elevated rail line dozens of feet above street level",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "View out over the Hudson River and the Chelsea neighborhood",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Since opening in 2009, the High Line Park has been incredibly popular. It is located on an old train line spur that runs through Chelsea and the Meatpacking District dozens of feet above street level. Until 1980, the train line was used to bring goods to and from the area’s warehouses. After falling into disuse, the line was slated for demolition until local residents came up with the idea of creating an elevated park.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "172975b2a981760abd4f4140ae5314284d9413ea82b0db00b20220c00634ebc9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      },
+      {
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "waterways_views",
+        "topic_slug": "balcony_over_the_city",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "A trip to the High Line feels like walking on a very long balcony that extends all the way through the city. The elevated park sits 30 feet above street level and stretches 1.45 miles from Gansevoort Street to West 34th Street, looking out over the Hudson River, old warehouses, and the streets of Manhattan.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gansevoort Street",
+          "Hudson River"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "elevated balcony walk",
+        "physical_cues": [
+          {
+            "cue": "Elevated walkway 30 feet above the street, like a long balcony",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Views over the Hudson River and old warehouses",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "A trip to the High Line, an elevated park built on a former train viaduct, feels like walking on a very long balcony that extends all the way through the city. The park is 30 feet above street level and stretches 1.45 miles (2.33 km) from Gansevoort Street to West 34th Street. From up here you can look out over the Hudson River, old warehouses, and the streets of Manhattan.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "952d99f5ae9ae34dea209f0993cf461e238b5106a30f583404313ee8244faaa6",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Bowery Mural",
+    "short_description": "Open-air graffiti-art wall at Houston and Bowery, initiated by Tony Goldman and Jeffrey Deitch; Keith Haring painted the first mural there.",
+    "name_variations": [
+      "Houston Bowery Wall",
+      "Houston Street and Bowery Mural",
+      "Bowery Wall"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.72481,
+    "longitude": -73.99368,
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Bowery Mural",
+        "lens": "visual_art",
+        "topic_slug": "keith_haring_first_artist",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Bowery Mural is an open-air canvas — a wall where both well-known and lesser-known artists display their art. It's an initiative of Tony Goldman, Jeffrey Deitch, and Deitch Projects, who control the real estate the wall is part of. The first artist was Keith Haring, who added a piece here in 1982, kicking off nearly fifty years of urban graffiti art in the neighborhood.",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Keith Haring",
+          "Tony Goldman",
+          "Jeffrey Deitch",
+          "Deitch Projects"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "bowery mural origin",
+        "physical_cues": [
+          {
+            "cue": "Large open-air mural wall at the corner of Houston and Bowery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Bowery Mural is actually an open-air canvas—a wall where both well-known and less well-known artists display their art. It’s an initiative from Tony Goldman, Jeffrey Deitch, and Deitch Projects that are responsible for the real estate of which the mural is a part. The first artist was Keith Haring, who added a piece on the wall in 1970 and started almost 50 years of Urban Graffiti Art in the neighborhood.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "7a800bc88c08ab7a0ab056ba47aea764845651f3c5195f9efe3f7e1c5b0aea98",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "corrected"
+      }
+    ]
+  },
+  {
+    "name": "New Museum of Contemporary Art",
+    "short_description": "Major contemporary-art museum on the Bowery, Wikipedia article, landmark SANAA building. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.722239,
+    "longitude": -73.993219,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single landmark museum building you stand before; small radius, building cues.",
+    "_poi_role_source": "The massive steel-and-glass tower rising over the Bowery",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "New Museum of Contemporary Art",
+        "lens": "visual_art",
+        "topic_slug": "emerging_artists_bowery",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The New Museum shows international exhibitions of contemporary art, giving emerging artists a platform that often leads to adventurous works — everything from sound installations to a simulated spaceship interior. In 2007 the museum moved to a bigger home on the Bowery, where you can easily spend hours taking in the art.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bowery"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "emerging art platform",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Visit the New Museum to see international exhibitions of contemporary art, featuring new art and new ideas. Emerging artists are given a platform for their work here, which often leads to exciting and adventurous works, including everything from sound installations to a simulated spaceship interior. In 2007 the museum moved to a bigger home on Bowery, where you can easily spend hours taking in all the artwork.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "197d3a7eb671ffe23d5aea8d4218250870e60f4950cf815295a2778e6dddb55e",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Italian American Museum",
+    "short_description": "Little Italy museum on Mulberry Street in the former Banca Stabile building, chronicling Italian-American history.",
+    "name_variations": [
+      "Italian American Museum NYC"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.71896,
+    "longitude": -73.99762,
+    "trigger_radius": 15,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Italian American Museum",
+        "lens": "social_change",
+        "topic_slug": "temporary_to_permanent",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "This small Little Italy museum began in 1999 as a temporary exhibit. It was met with overwhelming success, which led to the founding of the Italian American Museum in 2001. Here you can learn about the history of Italian Americans and see a variety of cultural exhibits.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Little Italy"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "museum founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "This small museum in Little Italy began in 1999 as a temporary exhibit. It was met with overwhelming success, which led to the opening of the Italian American Museum in 2001. Here you can learn all about the history of Italian Americans and see a variety of cultural exhibits.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "c658d699e849f06b136b5df40888bce9c6aa539405c002788e0d10d043f008da",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Singer Building",
+    "short_description": "Cast-iron-and-terracotta SoHo landmark (the Little Singer Building) at 561 Broadway, built for the Singer Manufacturing Company.",
+    "name_variations": [
+      "Little Singer Building",
+      "561 Broadway"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.72437,
+    "longitude": -73.9982,
+    "trigger_radius": 15,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Singer Building",
+        "lens": "historic_arch",
+        "topic_slug": "cast_iron_starting_point",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Singer Building is an excellent place to start exploring SoHo's cast-iron architecture. It was erected in 1902 by the Singer Manufacturing Company, known primarily for sewing machines, and today houses offices and apartments.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Singer Manufacturing Company"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "singer cast iron",
+        "physical_cues": [
+          {
+            "cue": "Cast-iron facade of the Singer Building at 561 Broadway",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Singer Building is an excellent place to start if you’re looking to explore SoHo’s cast-iron architecture. The building was erected in 1902 by the Singer Manufacturing Company, known primarily for sewing machines. Today the building houses numerous offices and apartments.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "7c9a6f53ab394a89b6265104633ae4d141c89d9b5468a5ef0b73865d81f51dc0",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "105 Mercer Street",
+    "short_description": "Small SoHo house, built 1831, that became one of the neighborhood's brothels when SoHo was the city's red-light district.",
+    "name_variations": [],
+    "kid_friendly": "no",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.7236,
+    "longitude": -73.99932,
+    "trigger_radius": 12,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "105 Mercer Street",
+        "lens": "dark_history",
+        "topic_slug": "soho_brothel_red_light",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The small, unassuming house at 105 Mercer Street has a remarkable history. One year after it was built in 1831, it became one of SoHo's most thriving brothels — a reminder that this neighborhood was once the city's red-light district.",
+        "duration_sec": 22,
+        "kid_friendly": "no",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "mercer brothel",
+        "physical_cues": [
+          {
+            "cue": "Small house at 105 Mercer Street, between Prince and Spring streets",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The small, unassuming house at 105 Mercer Street has a rather remarkable history. One year after it was built in 1831, it became one of SoHo’s most thriving brothels. It’s hard to imagine that, back in the day, SoHo was once the city’s red-light district.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "4ab63491ed9cdf3ac02911c76c0d6fced1958ca7b870ac084a3da24eeb8e70e7",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Greene Street",
+    "short_description": "SoHo street lined with cast-iron architecture, including the 'King of Greene Street' building at nos. 72-76.",
+    "name_variations": [
+      "King of Greene Street"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.72394,
+    "longitude": -74.00073,
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Greene Street",
+        "lens": "historic_arch",
+        "topic_slug": "king_of_greene_street",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": "72-76 Greene St",
+        "beat_length_class": "seasoning",
+        "script_body": "Some of SoHo's most beautiful cast-iron buildings stand on Greene Street. The building at numbers 72-76, known as the \"King of Greene Street,\" is one of the prime examples of the style in the neighborhood — take a step back to fully admire its tall windows and Corinthian columns.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "King of Greene Street"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "king of greene",
+        "physical_cues": [
+          {
+            "cue": "The 'King of Greene Street' cast-iron building at nos. 72-76, with tall windows and Corinthian columns",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "You’ll find some of SoHo’s most beautiful cast-iron buildings on Greene Street. The building at numbers 72-76, known as the “King of Greene Street,” is one of the prime examples of this type of architecture in the neighborhood. Take a step back to fully admire the tall windows and Corinthian columns.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "d25821febdf852c0370c19c71c13662f61612bda0c22a76ad70aa3d50a4964f9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "66 Perry Street",
+    "short_description": "A West Village apartment building famous as Carrie Bradshaw's home in Sex and the City.",
+    "name_variations": [
+      "66 Perry St"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7352974,
+    "longitude": -74.0038389,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A specific apartment building facade at a single address.",
+    "_poi_role_source": "Façade of 66 Perry Street, the Sex and the City apartment building",
+    "typical_duration_min": 15,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "66 Perry Street",
+        "lens": "film_tv",
+        "topic_slug": "carrie_bradshaw_townhouse",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "For years the townhouse at 66 Perry Street was the backdrop for the series Sex and the City — the home of main character Carrie Bradshaw, set here in the West Village. Since then this quaint street has surged in popularity, and every day fans come to pose for a photo in front of the charming brownstone.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sex and the City",
+          "Carrie Bradshaw"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "carrie bradshaw house",
+        "physical_cues": [
+          {
+            "cue": "The brownstone townhouse stoop at 66 Perry Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "For years the townhouse at 66 Perry Street was the backdrop for the series Sex and the City. The show’s main character, Carrie Bradshaw, lived here in the West Village, and since then this quaint street has seen a rise in popularity. Every day, countless fans come here to pose for a photo in front of the charming brownstone.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "0ef365aff3d0eac1e4044e4b4e63b3de49e3448db6cbbe1bfbcb6bda76156520",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Whitney Museum of American Art",
+    "short_description": "Major American-art museum, Renzo Piano building, Wikipedia article, top Frommer's headline sight, adjacent to High Line. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.739613,
+    "longitude": -74.00898,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single landmark museum building you stand before and enter; small radius, building cues.",
+    "_poi_role_source": "The Renzo Piano building next to the High Line park",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Whitney Museum of American Art",
+        "lens": "visual_art",
+        "topic_slug": "gertrude_vanderbilt_founding",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Whitney Museum of American Art holds America's most diverse forms of artistic expression from the 20th and 21st centuries — Jasper Johns, Andy Warhol, paintings, sculptures, videos, and performance art. It was established in 1931 by the wealthy sculptor and art collector Gertrude Vanderbilt Whitney with 700 works from her own collection; today the permanent collection holds around 18,000 pieces. Its well-known Whitney Biennial spotlights young, unknown talents.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gertrude Vanderbilt Whitney",
+          "Jasper Johns",
+          "Andy Warhol",
+          "Whitney Biennial"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "whitney founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Whitney Museum of American Art is a collection of America’s most diverse forms of artistic expression from the 20th and 21st centuries. See works from Jasper Johns and Andy Warhol, along with everything from paintings and sculptures to videos and performance art. The Whitney Biennial, which spotlights young, unknown talents, is particularly well known. The museum was established in 1931 by the wealthy sculptor and art collector Gertrude Vanderbilt Whitney with 700 works from her own collection.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "27dfeb5251618d2955dd14fbaaeef78efb5e5638a3d876ab080d0bd109076d44",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "verified"
+      },
+      {
+        "city_name": "new_york",
+        "poi_name": "Whitney Museum of American Art",
+        "lens": "modern_design",
+        "topic_slug": "renzo_piano_2015",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Architect Renzo Piano designed the new Whitney building at 99 Gansevoort Street, which opened in early 2015 at the foot of the High Line.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "Renzo Piano"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "renzo piano building",
+        "physical_cues": [
+          {
+            "cue": "The Renzo Piano-designed Whitney building at 99 Gansevoort Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Architect Renzo Piano designed the new Whitney building, which opened in early 2015.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "99e0634c8c8f9aecc23ef59da75369d2424256c9c49fac840917550d3cc71e62",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Bookmarc",
+    "short_description": "West Village bookshop opened by fashion designer Marc Jacobs in 2010, known for curated coffee-table books and book launches.",
+    "name_variations": [
+      "Bookmarc NYC"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.73548,
+    "longitude": -74.00461,
+    "trigger_radius": 12,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Bookmarc",
+        "lens": "famous_residents",
+        "topic_slug": "marc_jacobs_bookshop",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Fashion designer Marc Jacobs opened the bookshop Bookmarc in 2010 to celebrate his love of books, selling coffee-table books and other gems in a selection he curates himself. It's also a launch spot — Richard Hell, Grace Coddington, and Anjelica Huston all held their book launches here.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Marc Jacobs",
+          "Richard Hell",
+          "Grace Coddington",
+          "Anjelica Huston"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "marc jacobs bookshop",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "We all know Marc Jacobs is a fashion designer, but that didn’t stop him from opening a bookshop in 2010—just so he could celebrate his love of books. At Bookmarc they sell coffee table books and other gems in a selection curated by Marc Jacobs himself. And Bookmarc NYC is the place to be for book presentations. Richard Hell, Grace Coddington, and Anjelica Huston all held their book launches here.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "3e5c312bcfd200e0b8741e17ad139e9756000f2473e1976d71c6ba6e04ba2743",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Magnolia Bakery",
+    "short_description": "West Village bakery whose cupcakes were made famous by the TV series Sex and the City.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.7358,
+    "longitude": -74.005,
+    "trigger_radius": 12,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Magnolia Bakery",
+        "lens": "film_tv",
+        "topic_slug": "sex_and_the_city_cupcakes",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "You'll know you're close to Magnolia Bakery when you start seeing people carrying white boxes. Inside are the cupcakes made famous by the TV series Sex and the City — though if you're not in the mood for a cupcake, the banana pudding is the other thing to try.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sex and the City"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "magnolia cupcakes",
+        "physical_cues": [
+          {
+            "cue": "People passing by carrying white Magnolia Bakery boxes",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "You’ll know you’re close to Magnolia Bakery when you begin to see people passing by carrying white boxes. Inside are the delicious cupcakes made famous by the TV series Sex and the City. If you’re not in the mood for a cupcake, try the banana pudding.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "376fa458f73dc6315627c269c28ce5979bff1c3c57799934567e01197751fb1c",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Stonewall Inn",
+    "short_description": "Birthplace of the modern LGBTQ rights movement (1969 riots); a US National Monument. Very high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73389,
+    "longitude": -74.00222,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "parent_poi": "Greenwich Village",
+    "_poi_role_reasoning": "A single named storefront/monument you stand before, modest radius, located within Greenwich Village.",
+    "_poi_role_source": "The Stonewall Inn storefront on Christopher Street, site of the June 1969 raid",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Stonewall Inn",
+        "lens": "social_change",
+        "topic_slug": "1969_clash_christopher_park",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In June 1969, a violent clash at the Stonewall Inn, near Christopher Park, sparked the fight for equal rights for gays and lesbians. Since then the park and its surroundings have become a symbol of gay liberation, and Christopher Street nearby is lined with LGBTQ bars and shops.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Christopher Park",
+          "Christopher Street"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "stonewall uprising",
+        "physical_cues": [
+          {
+            "cue": "Stonewall Inn near Christopher Park, with LGBTQ bars and shops along Christopher Street",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "In June of 1969, a violent clash at the Stonewall Inn near Christopher Park led to the start of the fight for equal rights for gays and lesbians. Since then, the park and its surrounding area have been the symbol of gay liberation. In the vicinity, especially on Christopher Street, there are a variety of LGBTQ bars and shops.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "ec43761bf021963b077c55f3c2c454eb5857bbdfb3c422cabe0c354bc05c3b60",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "verified"
+      }
+    ]
+  },
+  {
+    "name": "Chelsea Market",
+    "short_description": "Food hall and shopping arcade in the former Nabisco factory where Oreo cookies were made, beneath the High Line.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-02"
+    },
+    "latitude": 40.74221,
+    "longitude": -74.00601,
+    "trigger_radius": 25,
+    "importance_tier": 4,
+    "typical_duration_min": 75,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Chelsea Market",
+        "lens": "hidden_history",
+        "topic_slug": "oreo_factory_food_hall",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-02-walk2-nolita-soho-westvillage-highline",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Oreo cookies were once made in this old factory building. Today Chelsea Market is a place for food and shopping, with many options inside — the lobster roll at Lobster Place is highly recommended — and a hall where you can sit and people-watch, or take your food upstairs to the High Line.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Oreo",
+          "Lobster Place",
+          "The High Line"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "oreo factory market",
+        "physical_cues": [
+          {
+            "cue": "The old factory building now housing Chelsea Market's food hall",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Oreo cookies were once made in this old factory building. Today Chelsea Market is a place to come for good food and shopping. There are many food options available here, but the lobster roll at Lobster Place is highly recommended. Look for a place to sit in the hall and enjoy people-watching as you eat. If there are no free tables, take your food outside and head upstairs to the High Line.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 2: NoLIta, SoHo, West Village & High Line"
+        },
+        "script_body_hash": "042a3330fa7ba6b1efbf085a98c802086dae7f3866799ba0ccef3a4f6f3873c6",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  }
+]

@@ -137,5 +137,42 @@
       "pois_touched": 17,
       "processed_at": "2026-06-15"
     }
+  },
+  "moon-nyc-walks": {
+    "chunk-01": {
+      "beats_extracted": 18,
+      "pois_touched": 18,
+      "processed_at": "2026-06-16"
+    },
+    "chunk-02": {
+      "beats_extracted": 19,
+      "pois_touched": 17,
+      "processed_at": "2026-06-16"
+    },
+    "chunk-03": {
+      "beats_extracted": 21,
+      "pois_touched": 20,
+      "processed_at": "2026-06-16"
+    },
+    "chunk-04": {
+      "beats_extracted": 23,
+      "pois_touched": 23,
+      "processed_at": "2026-06-16"
+    },
+    "chunk-05": {
+      "beats_extracted": 20,
+      "pois_touched": 17,
+      "processed_at": "2026-06-16"
+    },
+    "chunk-06": {
+      "beats_extracted": 13,
+      "pois_touched": 11,
+      "processed_at": "2026-06-16"
+    },
+    "chunk-07": {
+      "beats_extracted": 12,
+      "pois_touched": 12,
+      "processed_at": "2026-06-16"
+    }
   }
 }

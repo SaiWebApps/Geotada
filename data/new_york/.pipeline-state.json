@@ -1,7 +1,7 @@
 {
-  "stage": "gravity_done",
+  "stage": "complete",
   "city": "new_york",
-  "book": "lonely-planet-new-york-city",
+  "book": "moon-nyc-walks",
   "chunks_total": [
     "chunk-01",
     "chunk-02",
@@ -9,100 +9,29 @@
     "chunk-04",
     "chunk-05",
     "chunk-06",
-    "chunk-07",
-    "chunk-08",
-    "chunk-09",
-    "chunk-10",
-    "chunk-11",
-    "chunk-12",
-    "chunk-13",
-    "chunk-14",
-    "chunk-15"
+    "chunk-07"
   ],
   "chunks_completed": [
-    "chunk-05",
-    "chunk-03",
-    "chunk-07",
-    "chunk-02",
-    "chunk-08",
     "chunk-01",
-    "chunk-09",
-    "chunk-11",
-    "chunk-14",
+    "chunk-02",
+    "chunk-03",
     "chunk-04",
-    "chunk-12"
+    "chunk-05",
+    "chunk-06",
+    "chunk-07"
   ],
   "chunks_failed": [],
-  "chunks_pending": [
-    "chunk-06",
-    "chunk-10",
-    "chunk-13",
-    "chunk-15"
-  ],
-  "chunk_paths": {
-    "chunk-01": "Books/new_york/lonely-planet-new-york-city/chunk-01-lower-manhattan-financial-district.txt",
-    "chunk-02": "Books/new_york/lonely-planet-new-york-city/chunk-02-soho-chinatown.txt",
-    "chunk-03": "Books/new_york/lonely-planet-new-york-city/chunk-03-east-village-lower-east-side.txt",
-    "chunk-04": "Books/new_york/lonely-planet-new-york-city/chunk-04-west-village-chelsea-meatpacking.txt",
-    "chunk-05": "Books/new_york/lonely-planet-new-york-city/chunk-05-union-square-flatiron-gramercy.txt",
-    "chunk-06": "Books/new_york/lonely-planet-new-york-city/chunk-06-midtown.txt",
-    "chunk-07": "Books/new_york/lonely-planet-new-york-city/chunk-07-upper-east-side.txt",
-    "chunk-08": "Books/new_york/lonely-planet-new-york-city/chunk-08-upper-west-side-central-park.txt",
-    "chunk-09": "Books/new_york/lonely-planet-new-york-city/chunk-09-harlem-upper-manhattan.txt",
-    "chunk-10": "Books/new_york/lonely-planet-new-york-city/chunk-10-brooklyn.txt",
-    "chunk-11": "Books/new_york/lonely-planet-new-york-city/chunk-11-queens.txt",
-    "chunk-12": "Books/new_york/lonely-planet-new-york-city/chunk-12-understand-history.txt",
-    "chunk-13": "Books/new_york/lonely-planet-new-york-city/chunk-13-understand-nyc-table-arts-scene.txt",
-    "chunk-14": "Books/new_york/lonely-planet-new-york-city/chunk-14-understand-city-skyline-queer-city.txt",
-    "chunk-15": "Books/new_york/lonely-planet-new-york-city/chunk-15-understand-nyc-on-screen.txt"
-  },
-  "new_pois_created": 94,
-  "gravity_scored": true,
+  "chunks_pending": [],
+  "new_pois_created": 38,
+  "gravity_scored": "new_pois_only",
   "export_validated": true,
-  "started_at": "2026-06-15",
-  "note": "NYC book #2 (Lonely Planet). Dedup context built from current 192 POIs / 406 beats (Frommer's). Frommer's run preserved in .pipeline-state.frommers.json",
-  "agent_ids": {
-    "chunk-01": "a5d0af86a0442d7ab",
-    "chunk-02": "a2ed329987d31a25e",
-    "chunk-03": "a3385c8527cda2428",
-    "chunk-04": "a7707455bf2731032",
-    "chunk-05": "ac6a442e020bd9f63",
-    "chunk-06": "a1abbad02d7f9424b",
-    "chunk-07": "a519745054e0c6a05",
-    "chunk-08": "a9d8494392e09a38d",
-    "chunk-09": "a01dd93fe1735d9dd",
-    "chunk-10": "aa799c558a75b2ff4",
-    "chunk-11": "a2ddee5f47882458c",
-    "chunk-12": "a6975be77f9ff3375",
-    "chunk-13": "a92f0e053463d262c",
-    "chunk-14": "acd8838576e7da0f1",
-    "chunk-15": "a880e5dfb500f8d46"
-  },
-  "models": {
-    "opus": [
-      "chunk-01",
-      "chunk-04",
-      "chunk-06",
-      "chunk-08",
-      "chunk-10",
-      "chunk-12",
-      "chunk-14"
-    ],
-    "sonnet": [
-      "chunk-02",
-      "chunk-03",
-      "chunk-05",
-      "chunk-07",
-      "chunk-09",
-      "chunk-11",
-      "chunk-13",
-      "chunk-15"
-    ]
-  },
-  "task_dir": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/25acef5c-7d8c-43c5-a279-8703bfa07aae/tasks",
-  "total_beats": 502,
-  "ungrounded_dropped": 8,
-  "lp_beats_added": 502,
-  "lp_new_pois": 94,
-  "lp_existing_enriched": 61
+  "started_at": "2026-06-16",
+  "batching": "waves of 2, Phase A only; consolidated Phase B at end",
+  "wave": 4,
+  "wave_chunks": [
+    "chunk-07"
+  ],
+  "results_dir": "data/new_york/.pipeline-results/moon-nyc-walks",
+  "distribution_gate": "GREEN (test reframed to intent-based shape checks)",
+  "uploaded": "local Neo4j (693 POIs, 2593 beats)"
 }
