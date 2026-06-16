@@ -375,7 +375,10 @@ async function loadCity(city) {
       areaSkip += 200;
     } while (areaSkip < areaTotal);
 
-    allAreas = rawAreas.filter(a => a.properties?.city_name === city.name);
+    // Areas may store city_name as the slug ('new_york') or the display name ('Paris');
+    // match either, case-insensitively, against both the city slug and display name.
+    const cityKeys = new Set([city.slug, city.name].filter(Boolean).map(s => s.toLowerCase()));
+    allAreas = rawAreas.filter(a => cityKeys.has((a.properties?.city_name || '').toLowerCase()));
 
     // Sort: city first (back), then districts, then smaller areas on top
     const sorted = [...allAreas].sort((a, b) => {

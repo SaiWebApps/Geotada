@@ -189,8 +189,11 @@ upload: ## Upload a city dataset to active Neo4j. Usage: make upload CITY=new_yo
 wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
 	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)
 
-gen-within-edges: ## Regenerate data/paris/within_edges.json (POI→Area staging) from areas.json + poi-raw.json
-	uv run python scripts/generate_within_edges.py
+gen-within-edges: ## Regenerate data/{CITY}/within_edges.json (POI→Area staging). Usage: make gen-within-edges CITY=new_york
+	uv run python scripts/generate_within_edges.py --slug "$(or $(CITY),paris)"
+
+upload-areas: ## Upload a city's Area nodes + WITHIN edges to active Neo4j (API must be up). Usage: make upload-areas CITY=new_york
+	uv run python scripts/upload_areas.py --slug "$(CITY)"
 
 fetch-boundary: ## Fetch a city/area OSM boundary polygon. Usage: make fetch-boundary SLUG=new_york RELATION=175905 [FORCE=1]
 	uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" --relation "$(RELATION)"$(if $(FORCE), --force,)

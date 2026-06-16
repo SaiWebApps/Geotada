@@ -1,0 +1,4031 @@
+{
+  "_meta": {
+    "generated_by": "scripts/generate_within_edges.py",
+    "city_name": "new_york",
+    "total_pois": 284,
+    "total_areas": 37,
+    "poi_to_area_count": 760,
+    "area_to_area_count": 36,
+    "orphans": []
+  },
+  "poi_to_area": [
+    {
+      "poi_name": "1 Wall Street",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "1 Wall Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "1 Wall Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "130 MacDougal Street",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "130 MacDougal Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "130 MacDougal Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "22 Washington Square North",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "22 Washington Square North",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "22 Washington Square North",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "29 Washington Place",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "29 Washington Place",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "29 Washington Place",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "4-16 W. 122nd St.",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "4-16 W. 122nd St.",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "4-16 W. 122nd St.",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "40 Wall Street",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "40 Wall Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "40 Wall Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "55 W. 125th St.",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "55 W. 125th St.",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "55 W. 125th St.",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "555 Edgecombe Avenue",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "555 Edgecombe Avenue",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "555 Edgecombe Avenue",
+      "area_name": "Washington Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "66 Perry Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "66 Perry Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "66 Perry Street",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "9/11 Memorial and Museum",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "9/11 Memorial and Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Abingdon Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Abingdon Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Abingdon Square",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Abyssinian Baptist Church",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Abyssinian Baptist Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Abyssinian Baptist Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "African Burial Ground National Monument",
+      "area_name": "Civic Center",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "African Burial Ground National Monument",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Alphabet City Community Gardens",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Alphabet City Community Gardens",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Alphabet City Community Gardens",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "American Folk Art Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "American Folk Art Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "American Folk Art Museum",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "American Museum of Natural History",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "American Museum of Natural History",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "American Museum of Natural History",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Apollo Theater",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Apollo Theater",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Apollo Theater",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Artechouse",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Artechouse",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Artechouse",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Artists Space",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Artists Space",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Asia Society and Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Asia Society and Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Asia Society and Museum",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Astor Place",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Astor Place",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Astor Place",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "BRIC House",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "BRIC House",
+      "area_name": "Fort Greene",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "BRIC House",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bargemusic",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bargemusic",
+      "area_name": "DUMBO",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Bargemusic",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Battery Park",
+      "area_name": "Battery Park City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Battery Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Battery Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Beacon Theatre",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Beacon Theatre",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Beacon Theatre",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Belvedere Castle",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Belvedere Castle",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bethesda Terrace",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bethesda Terrace",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bleecker Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bleecker Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bleecker Street",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Blue Note",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Blue Note",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Blue Note",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Blumstein's Department Store",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Blumstein's Department Store",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Blumstein's Department Store",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bowling Green Park",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Bowling Green Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bowling Green Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brighton Beach",
+      "area_name": "Brighton Beach",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brighton Beach",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brighton Beach",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Broken Kilometer",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Broken Kilometer",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Broken Kilometer",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Bronx Zoo",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bronx Zoo",
+      "area_name": "The Bronx",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Academy of Music",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Academy of Music",
+      "area_name": "Fort Greene",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brooklyn Academy of Music",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Botanic Garden",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Botanic Garden",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Brewery",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Brewery",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Brewery",
+      "area_name": "Williamsburg",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brooklyn Bridge",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Bridge",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Bridge Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Bridge Park",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brooklyn Bridge Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Children's Museum",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Children's Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Heights",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Heights",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brooklyn Heights",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Heights Promenade",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Heights Promenade",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Brooklyn Heights Promenade",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Museum",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Brooklyn Navy Yard",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Navy Yard",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bryant Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bryant Park",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Bryant Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Bushwick Collective",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Bushwick Collective",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Caffe Reggio",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Caffe Reggio",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Caffe Reggio",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Canyon of Heroes",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Canyon of Heroes",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Canyon of Heroes",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Carnegie Hall",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Carnegie Hall",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Carnegie Hall",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Castle Clinton",
+      "area_name": "Battery Park City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Castle Clinton",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Castle Clinton",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Cathedral of St. John the Divine",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Cathedral of St. John the Divine",
+      "area_name": "Morningside Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Cathedral of St. John the Divine",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Center for Brooklyn History",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Center for Brooklyn History",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Center for Brooklyn History",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Central Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Central Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Central Park Zoo",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Central Park Zoo",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Chelsea",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chelsea",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Chelsea",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Chelsea Gallery District",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chelsea Gallery District",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Chelsea Gallery District",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Chelsea Hotel",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chelsea Hotel",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Chelsea Hotel",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Cherry Lane Theatre",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Cherry Lane Theatre",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Cherry Lane Theatre",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Children's Museum of Manhattan",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Children's Museum of Manhattan",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Children's Museum of Manhattan",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chinatown",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chinatown",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Chinatown",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Christopher Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Christopher Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Christopher Park",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chrysler Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Chrysler Building",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Chrysler Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "City Center",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "City Center",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "City Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "City Hall",
+      "area_name": "Civic Center",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "City Hall",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "City Reliquary",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "City Reliquary",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "City Reliquary",
+      "area_name": "Williamsburg",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Cleopatra's Needle",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Cleopatra's Needle",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Coffey Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Coffey Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Collyer Park",
+      "area_name": "East Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Collyer Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Collyer Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Columbia University",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Columbia University",
+      "area_name": "Morningside Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Columbia University",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Columbus Park",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Columbus Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Columbus Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Comedy Cellar",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Comedy Cellar",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Comedy Cellar",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Coney Art Walls",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Coney Art Walls",
+      "area_name": "Coney Island",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Coney Art Walls",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Coney Island",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Coney Island",
+      "area_name": "Coney Island",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Coney Island",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Conservatory Garden",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Conservatory Garden",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Conservatory Water",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Conservatory Water",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Cooper Hewitt National Design Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Cooper Hewitt National Design Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Cooper Hewitt National Design Museum",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Dakota Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Dakota Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Dakota Building",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "David H. Koch Theater",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "David H. Koch Theater",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "David H. Koch Theater",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Delacorte Theater",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Delacorte Theater",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Domino Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Domino Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Domino Park",
+      "area_name": "Williamsburg",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Donald Judd Home Studio",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Donald Judd Home Studio",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Donald Judd Home Studio",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Drawing Center",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Drawing Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Drawing Center",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "East River Park",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "East River Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "East River Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "East River State Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "East River State Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "East River State Park",
+      "area_name": "Williamsburg",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Eastern States Buddhist Temple",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Eastern States Buddhist Temple",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Eastern States Buddhist Temple",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "El Museo del Barrio",
+      "area_name": "East Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "El Museo del Barrio",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "El Museo del Barrio",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Ellis Island National Museum of Immigration",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Empire State Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Empire State Building",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Empire State Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Empire Stores",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Empire Stores",
+      "area_name": "DUMBO",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Empire Stores",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Federal Hall",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Federal Hall",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Federal Hall",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Federal Reserve Bank of New York",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Federal Reserve Bank of New York",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Federal Reserve Bank of New York",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Financial District",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Financial District",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Financial District",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Flatiron Building",
+      "area_name": "Flatiron District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Flatiron Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Flatiron Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Flatiron District",
+      "area_name": "Flatiron District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Flatiron District",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Flatiron District",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Flushing Meadows Corona Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Flushing Meadows Corona Park",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fort Greene Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fort Greene Park",
+      "area_name": "Fort Greene",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Fort Greene Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Fotografiska",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Fotografiska",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fotografiska",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Fraunces Tavern",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Fraunces Tavern",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fraunces Tavern",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Frick Collection",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Frick Collection",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Frick Collection",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Fulton Ferry Landing",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Fulton Ferry Landing",
+      "area_name": "DUMBO",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Fulton Ferry Landing",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Gagosian",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Gagosian",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Gagosian",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Gantry Plaza State Park",
+      "area_name": "Long Island City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Gantry Plaza State Park",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "General Theological Seminary",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "General Theological Seminary",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "General Theological Seminary",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "General Ulysses S Grant National Memorial",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "General Ulysses S Grant National Memorial",
+      "area_name": "Morningside Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "General Ulysses S Grant National Memorial",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Goldman Sachs Building",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Goldman Sachs Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Goldman Sachs Building",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Governors Island",
+      "area_name": "Governors Island",
+      "area_type": "island"
+    },
+    {
+      "poi_name": "Governors Island",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Governors Island",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Grace Church",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Grace Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Grace Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Gracie Mansion",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Gracie Mansion",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Gracie Mansion",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Gramercy Park",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Gramercy Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Gramercy Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Grand Central Terminal",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Grand Central Terminal",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Grand Central Terminal",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Green-Wood Cemetery",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Green-Wood Cemetery",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Greenwich Village",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Greenwich Village",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Greenwich Village",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hale House",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hale House",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hale House",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hall des Lumières",
+      "area_name": "Civic Center",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hall des Lumières",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hamilton Grange",
+      "area_name": "Hamilton Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hamilton Grange",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hamilton Grange",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hamilton Heights Historic District",
+      "area_name": "Hamilton Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hamilton Heights Historic District",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hamilton Heights Historic District",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hanover Square",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Hanover Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hanover Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Harlem",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Harlem",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Harlem",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hudson River Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hudson River Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Hudson Yards",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Hudson Yards",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Industry City",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Industry City",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "International Center of Photography",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "International Center of Photography",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "International Center of Photography",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Intrepid Sea, Air & Space Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Intrepid Sea, Air & Space Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Invisible Dog",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Invisible Dog",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Inwood Hill Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Inwood Hill Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Isamu Noguchi Garden Museum",
+      "area_name": "Long Island City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Isamu Noguchi Garden Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Isamu Noguchi Garden Museum",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jackie Robinson Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jackie Robinson Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jackie Robinson Museum",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Jacqueline Kennedy Onassis Reservoir",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jacqueline Kennedy Onassis Reservoir",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jane's Carousel",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jane's Carousel",
+      "area_name": "DUMBO",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Jane's Carousel",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jefferson Market Library",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Jefferson Market Library",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Jefferson Market Library",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Joe's Pub",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Joe's Pub",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Joe's Pub",
+      "area_name": "NoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Joyce Theater",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Joyce Theater",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Joyce Theater",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Judson Memorial Church",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Judson Memorial Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Judson Memorial Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Junior's Restaurant",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Junior's Restaurant",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Kaufman Astoria Studios",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Kaufman Astoria Studios",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Langston Hughes House",
+      "area_name": "East Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Langston Hughes House",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Langston Hughes House",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Large Flagpole",
+      "area_name": "Battery Park City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Large Flagpole",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Large Flagpole",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Leslie-Lohman Museum of Art",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Leslie-Lohman Museum of Art",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Leslie-Lohman Museum of Art",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Lincoln Center",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Lincoln Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Lincoln Center",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Little Island",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Little Island",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Little Italy",
+      "area_name": "Little Italy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Little Italy",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Louis Armstrong House Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Louis Armstrong House Museum",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Lower East Side",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Lower East Side",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Lower East Side",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Madison Square Park",
+      "area_name": "Flatiron District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Madison Square Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Madison Square Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Mahayana Temple",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Mahayana Temple",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Mahayana Temple",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Manhattan",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Manhattan",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Manhattan",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Marcus Garvey Park",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Marcus Garvey Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Marcus Garvey Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "McCarren Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "McCarren Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Meatpacking District",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Meatpacking District",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Meatpacking District",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Merchant's House Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Merchant's House Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Merchant's House Museum",
+      "area_name": "NoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Metropolitan Life Tower",
+      "area_name": "Flatiron District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Metropolitan Life Tower",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Metropolitan Life Tower",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Metropolitan Museum of Art",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Metropolitan Museum of Art",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Metropolitan Opera House",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Metropolitan Opera House",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Metropolitan Opera House",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Midtown East",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Midtown East",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Midtown East",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Midtown West",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Midtown West",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Midtown West",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Mill Lane",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Mill Lane",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Mill Lane",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Minetta Street",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Minetta Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Minetta Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Minetta Tavern",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Minetta Tavern",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Minetta Tavern",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Mmuseumm",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Mmuseumm",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Morris-Jumel Mansion",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Morris-Jumel Mansion",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Morris-Jumel Mansion",
+      "area_name": "Washington Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Mt. Olivet Baptist Church",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Mt. Olivet Baptist Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Mt. Olivet Baptist Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Mulberry Street",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Mulberry Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Mulberry Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum at Eldridge Street",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum at Eldridge Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum at Eldridge Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of Arts and Design",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Arts and Design",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of Arts and Design",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of Broadway",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Broadway",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of Chinese in America",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Chinese in America",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of Contemporary African Diasporan Arts",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Contemporary African Diasporan Arts",
+      "area_name": "Fort Greene",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of Contemporary African Diasporan Arts",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of Jewish Heritage",
+      "area_name": "Battery Park City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of Jewish Heritage",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Modern Art",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Modern Art",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of Modern Art",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of Sex",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of Sex",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of Sex",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of the City of New York",
+      "area_name": "East Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of the City of New York",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of the City of New York",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of the Dog",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of the Dog",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of the Moving Image",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of the Moving Image",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "National Arts Club",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "National Arts Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "National Arts Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "National Museum of Mathematics",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "National Museum of Mathematics",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "National Museum of Mathematics",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "National Museum of the American Indian",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "National Museum of the American Indian",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "National Museum of the American Indian",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Neue Galerie New York",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Neue Galerie New York",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Neue Galerie New York",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New Museum of Contemporary Art",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New Museum of Contemporary Art",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Aquarium",
+      "area_name": "Brighton Beach",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York Aquarium",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Aquarium",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York Botanical Garden",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York Botanical Garden",
+      "area_name": "The Bronx",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York City Fire Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York City Fire Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York City Fire Museum",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York Earth Room",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Earth Room",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York Earth Room",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York Hall of Science",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York Hall of Science",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Public Library",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Public Library",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York Public Library",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York Stock Exchange",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York Stock Exchange",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Stock Exchange",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York Transit Museum",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York Transit Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York University",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York University",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York University",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New York University School of Law",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "New York University School of Law",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New York University School of Law",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New-York Historical Society",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "New-York Historical Society",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "New-York Historical Society",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Nicholas Roerich Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Nicholas Roerich Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Nicholas Roerich Museum",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Nom Wah Tea Parlor",
+      "area_name": "Chinatown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Nom Wah Tea Parlor",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Nom Wah Tea Parlor",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Old St. Patrick's Cathedral",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "One If by Land, Two If by Sea",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "One If by Land, Two If by Sea",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "One If by Land, Two If by Sea",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "One World Observatory",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "One World Observatory",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "P.S. 1 Contemporary Art Center",
+      "area_name": "Long Island City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "P.S. 1 Contemporary Art Center",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "PDT",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "PDT",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Pace Gallery",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Pace Gallery",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Pace Gallery",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Park Avenue Armory",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Park Avenue Armory",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Park Avenue Armory",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Park Slope",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Park Slope",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Park Slope",
+      "area_name": "Park Slope",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Pier 17",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Pier 17",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Pier 17",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Pier 45",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Pier 45",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Pier 45",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Plymouth Church",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Plymouth Church",
+      "area_name": "Brooklyn Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Plymouth Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Prospect Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Prospect Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Provincetown Playhouse",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Provincetown Playhouse",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Provincetown Playhouse",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Queens",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Queens",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Queens County Farm Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Queens County Farm Museum",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Queens Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Queens Museum",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Radio City Music Hall",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Radio City Music Hall",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Radio City Music Hall",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Red Hook Winery",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Red Hook Winery",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Rise NY",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Rise NY",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Riverside Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Riverside Church",
+      "area_name": "Morningside Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Riverside Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Riverside Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Riverside Park",
+      "area_name": "Morningside Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Riverside Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Rockaway Beach",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Rockaway Beach",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Rockefeller Center",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Rockefeller Center",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Rockefeller Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Roosevelt Island Tram",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Roosevelt Island Tram",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Roosevelt Island Tram",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Rubin Museum of Art",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Rubin Museum of Art",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Rubin Museum of Art",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Salmagundi Club",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Salmagundi Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Salmagundi Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Schomburg Center for Research in Black Culture",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Schomburg Center for Research in Black Culture",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Schomburg Center for Research in Black Culture",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "SculptureCenter",
+      "area_name": "Long Island City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "SculptureCenter",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sheep Meadow",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sheep Meadow",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sheridan Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sheridan Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sheridan Square",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Silvercup Studios",
+      "area_name": "Long Island City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Silvercup Studios",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Skyscraper Museum",
+      "area_name": "Battery Park City",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Skyscraper Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Skyscraper Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "SoHo",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "SoHo",
+      "area_name": "SoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Socrates Sculpture Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Socrates Sculpture Park",
+      "area_name": "Queens",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Solomon R. Guggenheim Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Solomon R. Guggenheim Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Solomon R. Guggenheim Museum",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "South Street Seaport Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "South Street Seaport Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "St Marks Place",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St Marks Place",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. Patrick's Cathedral",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. Patrick's Cathedral",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. Patrick's Cathedral",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "St. Paul's Chapel",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. Paul's Chapel",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Staten Island",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Staten Island",
+      "area_name": "Staten Island",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Staten Island Ferry",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Staten Island Ferry",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Staten Island Ferry",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Statue of Liberty",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Statue of Liberty",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Steiner Studios",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Steiner Studios",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Stone Street",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Stone Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Stone Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Stonewall Inn",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Stonewall Inn",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Stonewall Inn",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Straus Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Straus Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Straus Park",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Strawberry Fields",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Strawberry Fields",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Studio Museum in Harlem",
+      "area_name": "Harlem",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Studio Museum in Harlem",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Studio Museum in Harlem",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Summit One Vanderbilt",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Summit One Vanderbilt",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Summit One Vanderbilt",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sunset Park",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sunset Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sylvan Terrace",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Sylvan Terrace",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Sylvan Terrace",
+      "area_name": "Washington Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Temple Emanu-El",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Temple Emanu-El",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Temple Emanu-El",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Bronx",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Bronx",
+      "area_name": "The Bronx",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Carousel",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Carousel",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Carousel",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Cloisters",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Cloisters",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Dairy",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Dairy",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Edge",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Edge",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Edge",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Great Lawn",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Great Lawn",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The High Line",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The High Line",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The High Line",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Jewish Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Jewish Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Jewish Museum",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Little Red Lighthouse",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Little Red Lighthouse",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Morgan Library & Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Morgan Library & Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Museum at FIT",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Museum at FIT",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Museum at FIT",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Public Theater",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Public Theater",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Public Theater",
+      "area_name": "NoHo",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Ramble",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Ramble",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Shed",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Shed",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Shed",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Tenement Museum",
+      "area_name": "Lower East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Tenement Museum",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Tenement Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Woolworth Building",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Theodore Roosevelt Birthplace",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Theodore Roosevelt Birthplace",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Theodore Roosevelt Birthplace",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Times Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Times Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Tom's Restaurant",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Tom's Restaurant",
+      "area_name": "Morningside Heights",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Tom's Restaurant",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Tompkins Square Park",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Tompkins Square Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Trinity Church",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Trinity Church",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Trinity Church",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "USCGC Lilac",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "USCGC Lilac",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Union Square",
+      "area_name": "Gramercy",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Union Square",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Union Square",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "United Nations",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "United Nations",
+      "area_name": "Midtown",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "United Nations",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Upper East Side",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Upper East Side",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Upper East Side",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Upper West Side",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Upper West Side",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Upper West Side",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Vessel",
+      "area_name": "Chelsea",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Vessel",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Vessel",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Village Vanguard",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Village Vanguard",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Village Vanguard",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Wall Street",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Wall Street",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Wall Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Washington Square North",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Washington Square North",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Washington Square North",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Washington Square Park",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Washington Square Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Washington Square Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Weeksville Heritage Center",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Weeksville Heritage Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "White Columns",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "White Columns",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "White Columns",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Whitney Museum of American Art",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Whitney Museum of American Art",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Whitney Museum of American Art",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Williamsburg",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Williamsburg",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Williamsburg",
+      "area_name": "Williamsburg",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Williamsburg Bridge",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Williamsburg Bridge",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Wollman Rink",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Wollman Rink",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Wyckoff House Museum",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Wyckoff House Museum",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Zuccotti Park",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Zuccotti Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Zuccotti Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    }
+  ],
+  "area_to_area": [
+    {
+      "child_name": "Battery Park City",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Brighton Beach",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Brooklyn",
+      "child_type": "district",
+      "parent_name": "New York City",
+      "parent_type": "city"
+    },
+    {
+      "child_name": "Brooklyn Heights",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Chelsea",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Chinatown",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Civic Center",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Coney Island",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "DUMBO",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "East Harlem",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "East Village",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Financial District",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Flatiron District",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Fort Greene",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Governors Island",
+      "child_type": "island",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Gramercy",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Greenwich Village",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Hamilton Heights",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Harlem",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Little Italy",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Long Island City",
+      "child_type": "neighborhood",
+      "parent_name": "Queens",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Lower East Side",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Manhattan",
+      "child_type": "district",
+      "parent_name": "New York City",
+      "parent_type": "city"
+    },
+    {
+      "child_name": "Midtown",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Morningside Heights",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "NoHo",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Park Slope",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Queens",
+      "child_type": "district",
+      "parent_name": "New York City",
+      "parent_type": "city"
+    },
+    {
+      "child_name": "SoHo",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Staten Island",
+      "child_type": "district",
+      "parent_name": "New York City",
+      "parent_type": "city"
+    },
+    {
+      "child_name": "The Bronx",
+      "child_type": "district",
+      "parent_name": "New York City",
+      "parent_type": "city"
+    },
+    {
+      "child_name": "Upper East Side",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Upper West Side",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Washington Heights",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "West Village",
+      "child_type": "neighborhood",
+      "parent_name": "Manhattan",
+      "parent_type": "district"
+    },
+    {
+      "child_name": "Williamsburg",
+      "child_type": "neighborhood",
+      "parent_name": "Brooklyn",
+      "parent_type": "district"
+    }
+  ]
+}
