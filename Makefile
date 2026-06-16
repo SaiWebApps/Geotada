@@ -155,6 +155,12 @@ valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for ti
 backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. Dry-run by default; ARGS="--apply" to write; ARGS="--apply --neo4j" to also update the dev graph.
 	uv run python scripts/backfill_poi_role.py $(ARGS)
 
+survey-area-candidates: ## Survey POIs that are physical extents modelled as undersized points. Usage: make survey-area-candidates CITY=new_york [ARGS="--json data/new_york/.area-candidates.json"]
+	uv run python scripts/survey_area_candidates.py --city $(CITY) $(ARGS)
+
+fix-area-radii: ## Correct trigger_radius for undersized physical-extent POIs from real OSM extents. Dry-run by default; ARGS="--apply" to write. Usage: make fix-area-radii CITY=new_york [ARGS="--apply"]
+	uv run python scripts/fix_area_trigger_radii.py --city $(CITY) $(ARGS)
+
 # ──────────────────────────────────────────────────────────
 # APPLICATION
 # ──────────────────────────────────────────────────────────

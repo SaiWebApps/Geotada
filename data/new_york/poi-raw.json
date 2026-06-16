@@ -103,7 +103,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7057,
     "longitude": -73.9964,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1330,7 +1330,7 @@
     "kid_friendly": "yes",
     "latitude": 40.703564,
     "longitude": -74.016678,
-    "trigger_radius": 60,
+    "trigger_radius": 270,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1471,7 +1471,7 @@
     "kid_friendly": "yes",
     "latitude": 40.705,
     "longitude": -74.013611,
-    "trigger_radius": 30,
+    "trigger_radius": 40,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1988,7 +1988,7 @@
     "kid_friendly": "yes",
     "latitude": 40.709228,
     "longitude": -74.011247,
-    "trigger_radius": 25,
+    "trigger_radius": 60,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2176,7 +2176,7 @@
     "kid_friendly": "yes",
     "latitude": 40.8049,
     "longitude": -73.9442,
-    "trigger_radius": 60,
+    "trigger_radius": 270,
     "city_name": "new_york",
     "_pipeline": {
       "address": "Mount Morris Park area, Fifth Ave between 120th-124th St",
@@ -2505,7 +2505,7 @@
     "kid_friendly": "yes",
     "latitude": 40.730823,
     "longitude": -73.997332,
-    "trigger_radius": 40,
+    "trigger_radius": 210,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3443,7 +3443,7 @@
     "kid_friendly": "yes",
     "latitude": 40.782773,
     "longitude": -73.965363,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3499,7 +3499,7 @@
     "kid_friendly": "yes",
     "latitude": 40.714106,
     "longitude": -73.968275,
-    "trigger_radius": 120,
+    "trigger_radius": 220,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3555,7 +3555,7 @@
     "kid_friendly": "yes",
     "latitude": 40.747704,
     "longitude": -74.004891,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3611,7 +3611,7 @@
     "kid_friendly": "yes",
     "latitude": 40.661774,
     "longitude": -73.97109,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -4440,7 +4440,7 @@
     "kid_friendly": "yes",
     "latitude": 40.755906,
     "longitude": -74.000532,
-    "trigger_radius": 60,
+    "trigger_radius": 250,
     "city_name": "new_york",
     "_pipeline": {
       "address": "30th to 35th St., Tenth Ave. to the river",
@@ -7305,7 +7305,7 @@
     "kid_friendly": "yes",
     "latitude": 40.862243,
     "longitude": -73.877154,
-    "trigger_radius": 150,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "200th St. and Kazimiroff Blvd., Bronx",
@@ -7360,7 +7360,7 @@
     "kid_friendly": "yes",
     "latitude": 40.667662,
     "longitude": -73.963626,
-    "trigger_radius": 150,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "900 Washington Ave. (at Eastern Pkwy.), Brooklyn",
@@ -7580,7 +7580,7 @@
     "kid_friendly": "yes",
     "latitude": 40.652203,
     "longitude": -73.991077,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "Main entrance Fifth Ave. at 25th St., Sunset Park, Brooklyn",
@@ -8955,7 +8955,7 @@
     "kid_friendly": "yes",
     "latitude": 40.698289,
     "longitude": -73.99993,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -9175,7 +9175,7 @@
     "kid_friendly": "yes",
     "latitude": 40.746094,
     "longitude": -74.010013,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -9230,7 +9230,7 @@
     "kid_friendly": "yes",
     "latitude": 40.80688,
     "longitude": -73.96866,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -10486,7 +10486,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7148572,
     "longitude": -74.0000602,
-    "trigger_radius": 10,
+    "trigger_radius": 130,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -10778,7 +10778,7 @@
     "kid_friendly": "yes",
     "latitude": 40.718547,
     "longitude": -73.9741379,
-    "trigger_radius": 20,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -11616,7 +11616,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7335823,
     "longitude": -74.0023869,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -11716,7 +11716,7 @@
     "kid_friendly": "yes",
     "latitude": 40.742203,
     "longitude": -73.9879655,
-    "trigger_radius": 30,
+    "trigger_radius": 160,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -12110,7 +12110,7 @@
     "kid_friendly": "yes",
     "latitude": 40.8018814,
     "longitude": -73.9681908,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -12762,7 +12762,7 @@
     "kid_friendly": "yes",
     "latitude": 40.8722736,
     "longitude": -73.9254271,
-    "trigger_radius": 30,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13059,7 +13059,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6973713,
     "longitude": -73.9973894,
-    "trigger_radius": 15,
+    "trigger_radius": 280,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13157,7 +13157,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6914756,
     "longitude": -73.9756224,
-    "trigger_radius": 20,
+    "trigger_radius": 260,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13206,7 +13206,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7135811,
     "longitude": -73.9717,
-    "trigger_radius": 20,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13255,7 +13255,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7211592,
     "longitude": -73.9528793,
-    "trigger_radius": 20,
+    "trigger_radius": 390,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13304,7 +13304,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7217727,
     "longitude": -73.9621944,
-    "trigger_radius": 15,
+    "trigger_radius": 170,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13451,7 +13451,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6442221,
     "longitude": -74.0075907,
-    "trigger_radius": 20,
+    "trigger_radius": 330,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13748,7 +13748,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6775468,
     "longitude": -74.0085991,
-    "trigger_radius": 15,
+    "trigger_radius": 180,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -13995,7 +13995,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7463469,
     "longitude": -73.9580029,
-    "trigger_radius": 10,
+    "trigger_radius": 380,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -14044,7 +14044,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7682536,
     "longitude": -73.9367115,
-    "trigger_radius": 10,
+    "trigger_radius": 130,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -14144,7 +14144,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7405689,
     "longitude": -73.8428304,
-    "trigger_radius": 30,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -14194,7 +14194,7 @@
     "kid_friendly": "yes",
     "latitude": 40.5809824,
     "longitude": -73.8229247,
-    "trigger_radius": 30,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
