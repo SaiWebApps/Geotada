@@ -1,0 +1,2941 @@
+[
+  {
+    "name": "9/11 Memorial and Museum",
+    "short_description": "Top-tier global landmark. Full Wikipedia article, primary Frommer's headline sight, ~3M+ annual visitors. Among NYC's most-visited attractions.",
+    "name_variations": [
+      "The 9/11 Memorial and Museum"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.711449,
+    "longitude": -74.013855,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Top-tier global landmark. Full Wikipedia article, primary Frommer's headline sight, ~3M+ annual visitors. Among NYC's most-visited attractions.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia consensus)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 2400000,
+        "google_review_count": 92823,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 83.5,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 2,400,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). 2024 annual report: 2.4M museum visitors + 11.6M to the outdoor memorial. Google review count from Maps listing. Wikipedia article is long, w",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_9_11_memorial_and_museum_hidden_history_lonely-planet-new-york-city_rockefeller_twin_towers_dream",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "hidden_history",
+        "topic_slug": "rockefeller_twin_towers_dream",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "As Midtown bulked up with postwar skyscrapers and the financial center marched north, banker David Rockefeller and his brother, Governor Nelson Rockefeller, dreamed up the Twin Towers as a way to revitalize downtown.",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "David Rockefeller",
+          "Nelson Rockefeller",
+          "Twin Towers"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Twin Towers origin",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "David Rockefeller and Governor Nelson Rockefeller dreamed up the Twin Towers to revitalize downtown"
+        ],
+        "source_passage": "There were few evident controls on business, as Midtown bulked up with skyscrapers after the war. The financial center marched north, while banker David Rockefeller and his brother, Governor Nelson Rockefeller, dreamed up the Twin Towers to revitalize downtown.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7c9f77f65f50598e9306e4c1458e6d38146c4259167aefd0895446a4ffd95e9b",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_9_11_memorial_and_museum_dark_history_lonely-planet-new-york-city_september_11_2001_attacks",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "dark_history",
+        "topic_slug": "september_11_2001_attacks",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On September 11, 2001, terrorists flew two hijacked planes into the World Trade Center's Twin Towers, turning the whole complex to dust and rubble and killing nearly 3000 people. Downtown Manhattan took months to recover from the ghastly fumes wafting from the ruins, as forlorn missing-person posters grew ragged on brick walls. While the city mourned its dead and recovery crews coughed through the debris, residents braved constant terrorist alerts and an anthrax scare — yet shock and grief drew people together, uniting the often fractious citizenry in a determined effort not to succumb to despair.",
+        "duration_sec": 39,
+        "kid_friendly": "no",
+        "entities": [
+          "World Trade Center",
+          "Twin Towers"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "September 11",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "On Sept 11, 2001 two hijacked planes hit the Twin Towers, killing nearly 3000",
+          "Downtown took months to recover from fumes; missing-person posters covered walls",
+          "Grief united the citizenry against despair"
+        ],
+        "source_passage": "On September 11, 2001, terrorists flew two hijacked planes into the World Trade Center's Twin Towers, turning the whole complex to dust and rubble and killing nearly 3000 people. Downtown Manhattan took months to recover from the ghastly fumes wafting from the ruins as forlorn missingperson posters grew ragged on brick walls. While the city mourned its dead and recovery crews coughed their way through the debris, residents braved constant terrorist alerts and an anthrax scare. Shock and grief drew people together, uniting the oft-fractious citizenry in a determined effort not to succumb to despair.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "60f2553e64ba1a7dba86ee807df14235428435cb6494f4bb47f1c3f609c2ef6a",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Bowling Green Park",
+    "short_description": "Tier-4/5 candidate: NYC's oldest official park (est. 1733), George III statue toppling, original colonial fence, Charging Bull at uptown end. High gravity historic + photo-op site.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.705,
+    "longitude": -74.013611,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4/5 candidate: NYC's oldest official park (est. 1733), George III statue toppling, original colonial fence, Charging Bull at uptown end. High gravity historic + photo-op site.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Bowling Green, NYC)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "No official visitor count; 74 Yelp reviews; NYC's oldest park (1733); Charging Bull sculpture drives very high foot traffic; Wikipedia article covers history and monuments at moderate depth; search interest driven by Charging Bull queries",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_bowling_green_park_dark_history_lonely-planet-new-york-city_great_negro_plot_1741",
+        "city_name": "new_york",
+        "poi_name": "Bowling Green Park",
+        "lens": "dark_history",
+        "topic_slug": "great_negro_plot_1741",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In 1741 a spate of fires broke out across the city, including one at Fort George — then the home of Lieutenant Governor George Clarke and the colonial fort that stood here at the foot of the island. The blazes were blamed on African-American slaves, and rumors spread of a plot by rebellious Black New Yorkers and poorer white settlers to burn down the city. Despite contradictory accounts and a lack of solid evidence, the so-called Great Negro Plot led to the arrest and execution of numerous enslaved people and their alleged co-conspirators.",
+        "duration_sec": 38,
+        "kid_friendly": "no",
+        "entities": [
+          "Fort George",
+          "George Clarke",
+          "Great Negro Plot"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "Great Negro Plot",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "A 1741 fire struck Fort George, home of Lt Gov George Clarke",
+          "Fires blamed on slaves sparked rumors of a plot to burn the city",
+          "The Great Negro Plot led to arrests and executions despite weak evidence"
+        ],
+        "source_passage": "In 1741, a spate of fires occurred across the city, including one at Fort George, then home of Lieutenant Governor George Clarke. The blazes were widely blamed on African-American slaves, and rumors quickly spread of a plan by rebellious blacks and poorer white settlers to burn down New York City. Despite contradictory accounts and a lack of solid evidence, the socalled Great Negro Plot led to the arrest and execution of numerous slaves and their alleged co-conspirators.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5e2a64cd9cce7e1fc4dcde672de12f8bfd07c4742be1160ee0c37e6db27ed0ee",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_bowling_green_park_war_conflict_lonely-planet-new-york-city_washington_1776_retreat",
+        "city_name": "new_york",
+        "poi_name": "Bowling Green Park",
+        "lens": "war_conflict",
+        "topic_slug": "washington_1776_retreat",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "As war loomed, Patriots clashed in public spaces with Tories loyal to the king, while Lieutenant Colonel Alexander Hamilton became a fierce anti-British organizer. Revolutionary battle began in August 1776, when General George Washington's army lost about a quarter of its men in just a couple of days. He retreated, and fire engulfed much of the colony — but the British soon left and Washington's army reclaimed the city, celebrating with banquets and fireworks here at Bowling Green.",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alexander Hamilton",
+          "George Washington",
+          "Patriots",
+          "Tories"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "1776 revolution",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Revolutionary battle began August 1776; Washington lost ~a quarter of his men in days and retreated",
+          "The British later left and Washington reclaimed the city",
+          "Celebrations with banquets and fireworks were held at Bowling Green"
+        ],
+        "source_passage": "Patriots clashed in public spaces with Tories, who were loyal to the king, while Lieutenant Colonel Alexander Hamilton, an intellectual, became a fierce anti-British organizer. Citizens fled the city, sensing the oncoming war, and revolutionary battle began in August of 1776, when General George Washington's army lost about a quarter of its men in just a couple of days. He retreated, and fire encompassed much of the colony. But soon the British left and Washington's army reclaimed their city. After a series of celebrations, banquets and fireworks at Bowling Green, General Washington bade farewell to his officers at what is now the Fraunces Tavern Museum and retired as commander in chief.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bf09aaa195a6c7115462930f3f6f993b579bdccf41b34d09d410f68f12f5bbc3",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.652601,
+    "longitude": -73.949721,
+    "trigger_radius": 1000,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Brooklyn'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Brooklyn, Kings County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 15000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 87.6,
+        "assigned_gravity": 5,
+        "reasoning": "~15M visitors pre-pandemic (second most visited NYC borough); approaching that figure again post-pandemic. Brooklyn Bridge Park drew 5M+ in 2019. Wikipedia article is extremely extensive covering all aspects of the borough.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_brooklyn_social_change_lonely-planet-new-york-city_sanger_first_birth_control_clinic",
+        "city_name": "new_york",
+        "poi_name": "Brooklyn",
+        "lens": "social_change",
+        "topic_slug": "sanger_first_birth_control_clinic",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Alongside the suffragists holding street-corner rallies for the vote, nurse and midwife Margaret Sanger opened the first birth-control clinic in Brooklyn — where 'purity police' promptly arrested her. After her release from jail in 1921, she formed the American Birth Control League, now Planned Parenthood, which provided services for young women and researched safe methods of birth control.",
+        "duration_sec": 26,
+        "kid_friendly": "no",
+        "entities": [
+          "Margaret Sanger",
+          "American Birth Control League",
+          "Planned Parenthood"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Sanger birth control",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Margaret Sanger opened the first birth-control clinic in Brooklyn and was arrested by 'purity police'",
+          "After release in 1921 she formed the American Birth Control League, now Planned Parenthood"
+        ],
+        "source_passage": "Nurse and midwife Margaret Sanger opened the first birth-control clinic in Brooklyn, where 'purity police' promptly arrested her. After her release from jail in 1921 she formed the American Birth Control League (now Planned Parenthood), which provided services for young women and researched methods of safe birth control.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e53bcc0be0f002d9ac215e6d1177df2d57b19c05c67e1207468677f123966e74",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Bridge",
+    "short_description": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7057,
+    "longitude": -73.9964,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+      "verified": false,
+      "geocode_source": "web_search (latitude.to / Wikipedia)",
+      "geocode_confidence": 0.85,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "No official annual pedestrian/visitor count published by a managing authority. ~29,000 pedestrians per day estimated from travel sources. Wikipedia is a 'Good Article' with comprehensive technical and historical coverage. Extremely high search prominence globally.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_brooklyn_bridge_science_tech_lonely-planet-new-york-city_roebling_winter_freezes_solution",
+        "city_name": "new_york",
+        "poi_name": "Brooklyn Bridge",
+        "lens": "science_tech",
+        "topic_slug": "roebling_winter_freezes_solution",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "German-born engineer John Roebling set out to solve the winter freezes that kept shutting down the ferry between downtown Manhattan and Brooklyn, then an independent city. He designed a soaring symphony of spun wire and Gothic arches to span the East River, and his Brooklyn Bridge accelerated the fusion of the neighboring cities.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "John Roebling",
+          "East River",
+          "Brooklyn"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Roebling bridge design",
+        "physical_cues": [
+          {
+            "cue": "The spun-wire cables and Gothic arches spanning the East River",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Roebling sought to solve winter freezes that shut down the Manhattan-Brooklyn ferry",
+          "He designed a bridge of spun wire and Gothic arches over the East River",
+          "The bridge accelerated the fusion of the two cities"
+        ],
+        "source_passage": "Another vision was realized by German-born engineer John Roebling, who sought a solution to a series of winter freezes that had shut down the ferry system connecting downtown Manhattan to Brooklyn, then an independent city. He designed a soaring symphony of spun wire and Gothic arches to span the East River, and his Brooklyn Bridge accelerated the fusion of the neighboring cities.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d15d60eb7891d98d273b46c074d3bb95a7b8aa9ac67c0235fad28c678696fea2",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_brooklyn_bridge_historic_arch_lonely-planet-new-york-city_1883_penny_crossing",
+        "city_name": "new_york",
+        "poi_name": "Brooklyn Bridge",
+        "lens": "historic_arch",
+        "topic_slug": "1883_penny_crossing",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Brooklyn Bridge opened with fanfare on May 24, 1883. After New York mayor Franklin Edson and Brooklyn mayor Seth Low led President Chester Arthur and Governor Grover Cleveland across, more than 150,000 members of the public followed — each paying a penny for the honor.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Franklin Edson",
+          "Seth Low",
+          "Chester Arthur",
+          "Grover Cleveland"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "1883 opening",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The bridge opened May 24, 1883",
+          "Mayors Edson and Low led President Arthur and Governor Cleveland across",
+          "More than 150,000 people crossed, each paying a penny"
+        ],
+        "source_passage": "New York's Brooklyn Bridge opened with suitable fanfare on May 24, 1883. After New York mayor Franklin Edson and Brooklyn mayor Seth Low led President Chester Arthur and Governor Grover Cleveland across the structure, more than 150,000 members of the public followed suit, each paying a penny for the honor.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "91d688b64aa2448ebd63d0f2512ae52e28ea17c23a3e7105e89e25367c36d8ef",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Castle Clinton",
+    "short_description": "Tier-4/5 candidate: National Monument, former fort/Castle Garden/aquarium/immigration depot. Major historic landmark inside Battery Park.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.703636,
+    "longitude": -74.017288,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4/5 candidate: National Monument, former fort/Castle Garden/aquarium/immigration depot. Major historic landmark inside Battery Park.",
+      "verified": false,
+      "geocode_source": "Nominatim/latlong.net + NPS (cross-checked)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 3929749,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 69.6,
+        "assigned_gravity": 3,
+        "reasoning": "3,929,749 NPS recreation visits in 2023; inflated by Statue of Liberty ferry ticketing inside the fort; 43 Yelp reviews; Wikipedia article is extensive covering fort history, aquarium era, and immigration station use; Google review count not pinned",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_castle_clinton_social_change_lonely-planet-new-york-city_castle_garden_immigrant_depot",
+        "city_name": "new_york",
+        "poi_name": "Castle Clinton",
+        "lens": "social_change",
+        "topic_slug": "castle_garden_immigrant_depot",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Before Ellis Island, the immigrant landing station at Castle Garden — here at the foot of Manhattan — was one of the two gateways through which arriving newcomers passed on their way straight to the Lower East Side.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Castle Garden",
+          "Ellis Island",
+          "Lower East Side"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Castle Garden depot",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Castle Garden was an immigrant landing station alongside Ellis Island",
+          "Arrivals went straight from it to the Lower East Side"
+        ],
+        "source_passage": "The journey from immigrant landing stations at Castle Garden and Ellis Island led straight to the Lower East Side.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f90cb4929a1685df41324c6bd0cb7a1a7231c99274cb50741dcbedf470e9e52d",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Central Park",
+    "short_description": "Flagship NYC park, repeatedly cited (most unforgettable experiences, best family, best parks). Very high gravity but diffuse — finer sub-points needed.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.782773,
+    "longitude": -73.965363,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Flagship NYC park, repeatedly cited (most unforgettable experiences, best family, best parks). Very high gravity but diffuse — finer sub-points needed.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Central Park'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Central Park, New York County, New York, 11025, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 42000000,
+        "google_review_count": 246261,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 99.6,
+        "assigned_gravity": 5,
+        "reasoning": "~42M annual visitors; most visited urban park in the US. Google Maps review count ~246K as of 2023 (Top Local Manager data). Multiple Wikipedia articles including popular culture sub-article.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_central_park_parks_gardens_lonely-planet-new-york-city_1855_green_reform_pigs",
+        "city_name": "new_york",
+        "poi_name": "Central Park",
+        "lens": "parks_gardens",
+        "topic_slug": "1855_green_reform_pigs",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Central Park was conceived as a grand project to boost the health of people crammed into tiny tenement apartments — an 843-acre public park. Work began in 1855 in an area so far uptown that some immigrants kept pigs, sheep and goats on the land. From the start the park was both a vision of green reform and a boon to real-estate speculation.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Central Park"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "Central Park origins",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Central Park was an 843-acre public park begun in 1855",
+          "The area was so far uptown some immigrants kept pigs, sheep and goats there",
+          "It was both green reform and a boon to real-estate speculation"
+        ],
+        "source_passage": "And there was yet another grand project afoot – one to boost the health of the people crammed into tiny tenement apartments – in the form of an 843acre public park. Begun in 1855 in an area so far uptown that some immigrants kept pigs, sheep and goats there, Central Park was both a vision of green reform and a boon to real-estate speculation.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "87bc785c4da2c64e0f3f598d14568d6c599f26bb6b78e87b2f37330d407eff83",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_central_park_dark_history_lonely-planet-new-york-city_depression_hoovervilles",
+        "city_name": "new_york",
+        "poi_name": "Central Park",
+        "lens": "dark_history",
+        "topic_slug": "depression_hoovervilles",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "When the stock market crashed in 1929, the Great Depression descended, and the once-grand Central Park blossomed with shacks derisively called Hoovervilles, after the president who refused to help the needy. The city scraped through on grit, rent parties and public-works projects, until Mayor Fiorello La Guardia found a friend in President Franklin Roosevelt and worked his Washington connections to bring relief money home.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Great Depression",
+          "Hoovervilles",
+          "Fiorello La Guardia",
+          "Franklin Roosevelt"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "Hoovervilles",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The 1929 crash brought the Great Depression",
+          "Central Park filled with shacks called Hoovervilles after President Hoover",
+          "Mayor La Guardia worked with FDR to bring relief money to the city"
+        ],
+        "source_passage": "The stock market crashed in 1929, beginning the Great Depression of the 1930s, which the city dealt with through a combination of grit, endurance, rent parties, militancy and a slew of public-works projects. The once-grand Central Park blossomed with shacks, derisively called Hoovervilles, after the president who refused to help the needy. But Mayor Fiorello La Guardia found a friend in President Franklin Roosevelt, and worked his Washington connections to great effect to bring relief money – and subsequent prosperity – home.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e8f63b515e8b174fbca71d8deff5ddc8d7b42aaadb7d1c6fb4d915fe5f17bca6",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chinatown",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.716491,
+    "longitude": -73.99625,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Chinatown'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Chinatown, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 76.5,
+        "assigned_gravity": 4,
+        "reasoning": "No published annual visitor figure for neighborhood. Described as one of the most-visited NYC neighborhoods by tourists; major cultural draw. Wikipedia has solid article.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_chinatown_dark_history_lonely-planet-new-york-city_five_points_first_slum",
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "dark_history",
+        "topic_slug": "five_points_first_slum",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The 19th century brought hard setbacks — the Great Fire of 1835, the bloody Draft Riots of 1863, massive cholera epidemics, and the serious poverty and crime of Five Points, the city's first slum, which stood right where Chinatown now lies.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Five Points",
+          "Draft Riots of 1863",
+          "Great Fire of 1835"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "Five Points slum",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Five Points was the city's first slum",
+          "It stood where Chinatown now lies"
+        ],
+        "source_passage": "The 19th century brought with it plenty of setbacks: the Great Fire of 1835, the bloody Draft Riots of 1863, massive cholera epidemics, rising tensions among 'old' and new immigrants, and the serious poverty and crime of Five Points, the city's first slum, located where Chinatown now lies.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1f2c9d0c750ede0362ce52dce36f14bc021644e85c581cf6120f6d347f2b4efc",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Coney Island",
+    "short_description": "Famous seaside amusement district, family-experience pick. Moderate-high gravity but geographically diffuse.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.576508,
+    "longitude": -73.992942,
+    "trigger_radius": 150,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Famous seaside amusement district, family-experience pick. Moderate-high gravity but geographically diffuse.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Coney Island'",
+        "trigger_radius_reasoning": "Island-scale POI",
+        "notes": "Coney Island, Brooklyn, Kings County, New York, 11224, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 79.5,
+        "assigned_gravity": 4,
+        "reasoning": "~5–6M annual visitors per multiple sources (NYC Parks data cited 11.4M beach visits in one season). Wikipedia article is extensive covering history, amusement area development. Google review count not confirmed.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_coney_island_hidden_history_lonely-planet-new-york-city_dutch_place_names_origins",
+        "city_name": "new_york",
+        "poi_name": "Coney Island",
+        "lens": "hidden_history",
+        "topic_slug": "dutch_place_names_origins",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The name Coney Island is a relic of Dutch New Amsterdam: it comes from Konijneneiland, meaning 'rabbits island.' Many New York place names carry the same Dutch fingerprints — Gramercy from Krom Moerasje, 'crooked lake,' and Bowery from bouwerij, an old word for 'farm.'",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "New Amsterdam",
+          "Gramercy",
+          "Bowery"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Dutch place names",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Konijneneiland",
+            "gloss": "rabbits island"
+          },
+          {
+            "phrase": "Krom Moerasje",
+            "gloss": "crooked lake"
+          },
+          {
+            "phrase": "bouwerij",
+            "gloss": "old-fashioned word for farm"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Coney Island derives from the Dutch Konijneneiland ('rabbits island')",
+          "Gramercy derives from Krom Moerasje ('crooked lake')",
+          "Bowery derives from bouwerij ('farm')"
+        ],
+        "source_passage": "Coney Island: Konijneneiland ('rabbits island')\nGramercy: Krom Moerasje ('crooked lake')\nBowery: bouwerij (old-fashioned word for 'farm')",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dd272423d906daaa395e03a56006c21b776340450b096292c40dd77178bdeee5",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Financial District",
+    "short_description": "Manhattan neighborhood, south of Chambers St. Not in existing POI list (which holds specific landmarks). Flagged new_poi for user triage.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.707668,
+    "longitude": -74.009271,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Manhattan neighborhood, south of Chambers St. Not in existing POI list (which holds specific landmarks). Flagged new_poi for user triage.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Financial District'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Financial District, Lower Manhattan, Manhattan, New York County, New York, 10045, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "No neighborhood-specific visitor count published. Home to Wall Street, NYSE, 9/11 Memorial (~3M visitors/yr to the Memorial itself). Wikipedia article is well-developed with demographics, economics, citations.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_financial_district_hidden_history_lonely-planet-new-york-city_new_amsterdam_trading_post_1624",
+        "city_name": "new_york",
+        "poi_name": "Financial District",
+        "lens": "hidden_history",
+        "topic_slug": "new_amsterdam_trading_post_1624",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In 1624 the Dutch West India Company sent 110 settlers to begin a trading post here in Lower Manhattan, calling their colony New Amsterdam. Their arrival touched off bloody battles with the unshakable Lenape. It all came to a head in 1626 when the colony's first governor, Peter Minuit, became the city's first — but certainly not the last — unscrupulous property developer, purchasing Manhattan's 14,000 acres for 60 guilders, about 24 dollars, plus some beads and various European tools.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Dutch West India Company",
+          "New Amsterdam",
+          "Peter Minuit",
+          "Lenape"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "subject_tag": "New Amsterdam founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Dutch West India Company sent 110 settlers in 1624 to found New Amsterdam in Lower Manhattan",
+          "Peter Minuit purchased Manhattan's 14,000 acres in 1626 for 60 guilders ($24), beads and tools"
+        ],
+        "source_passage": "The Dutch West India Company sent 110 settlers to begin a trading post here in 1624. They settled in Lower Manhattan and called their colony New Amsterdam, touching off bloody battles with the unshakable Lenape. It all came to a head in 1626, when the colony's first governor, Peter Minuit, became the city's first – but certainly not the last – unscrupulous property developer, by purchasing Manhattan's 14,000 acres from the Lenape for 60 guilders ($24), some beads and various European tools.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d36d45f99aeec8ffbee36e04cc28b8601b5af3117a40cbb9ac3822fa992fa4e2",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_financial_district_war_conflict_lonely-planet-new-york-city_1664_english_surrender",
+        "city_name": "new_york",
+        "poi_name": "Financial District",
+        "lens": "war_conflict",
+        "topic_slug": "1664_english_surrender",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "By 1664 the English showed up in battleships, ready for a fight. Stuyvesant was tired, though, and avoided bloodshed by surrendering without a shot. King Charles II promptly renamed the colony after his brother, the Duke of York. New York became a prosperous British port — its population reaching 11,000 by the mid-1700s — growing in prominence as the change point for the exchange of slaves and goods between worlds.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Peter Stuyvesant",
+          "King Charles II",
+          "Duke of York",
+          "New Amsterdam"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "1664 surrender",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "In 1664 the English arrived in battleships and Stuyvesant surrendered without a shot",
+          "Charles II renamed the colony New York after his brother the Duke of York",
+          "Population reached 11,000 by the mid-1700s"
+        ],
+        "source_passage": "By 1664, the English showed up in battleships, ready for a fight. Stuyvesant was tired, though, and avoided bloodshed by surrendering without a shot. King Charles II promptly renamed the colony after his brother, the Duke of York. New York became a prosperous British port with a population of 11,000 by the mid-1700s. The city grew in prominence as the change point for the exchange of slaves and goods between worlds.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "871e61ee4962ab801224cce7bd564ebc47a3852bbbd7f12dcb9fdff191a48ca1",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_financial_district_dark_history_lonely-planet-new-york-city_ford_to_city_drop_dead",
+        "city_name": "new_york",
+        "poi_name": "Financial District",
+        "lens": "dark_history",
+        "topic_slug": "ford_to_city_drop_dead",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "By the early 1970s, deficits had created a serious fiscal crisis that effectively demoted Mayor Abraham Beame to a figurehead. President Ford's refusal to lend federal aid — summed up by the Daily News headline 'Ford to City, Drop Dead' — marked the nadir of the relationship between the US and the city it loved to hate. Massive layoffs decimated the working class, and untended bridges, roads and parks reeked of hard times.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Abraham Beame",
+          "President Ford",
+          "Daily News"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "subject_tag": "fiscal crisis 1970s",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Early-1970s deficits demoted Mayor Beame to a figurehead",
+          "Ford refused federal aid; the Daily News ran 'Ford to City, Drop Dead'",
+          "Layoffs decimated the working class and infrastructure decayed"
+        ],
+        "source_passage": "By the early 1970s, deficits had created a serious fiscal crisis, effectively demoting the elected mayor Abraham Beame to a figurehead, turning over the city's real financial power to Governor Carey and his appointees. President Ford's refusal to lend federal aid – summed up nicely by the Daily News headline 'Ford to City, Drop Dead' – marked the nadir of the relationship between the US and the city it loved to hate. As massive layoffs decimated the city's working class, untended bridges, roads and parks reeked of hard times.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6378f8ef6a0eefcd212464116201e1b6e909bddfdcf3a180fa6432d65c3a9054",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Greenwich Village",
+    "short_description": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.733584,
+    "longitude": -74.002817,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Greenwich Village'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Greenwich Village, 7th Avenue South, West Village, Manhattan, New York County, New York, 10014, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "Wikipedia article is extensive covering history, culture, notable residents, landmarks. One of NYC's most searched neighborhoods; no aggregate annual visitor count found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_greenwich_village_social_change_lonely-planet-new-york-city_negroe_lots_freed_slaves",
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "social_change",
+        "topic_slug": "negroe_lots_freed_slaves",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Under the Dutch, some enslaved people were partially freed after long service and granted what were called 'Negroe Lots' — parcels of land near what is today Greenwich Village, the Lower East Side and City Hall.",
+        "duration_sec": 14,
+        "kid_friendly": "no",
+        "entities": [
+          "Dutch West India Company",
+          "Lower East Side",
+          "City Hall"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "Negroe Lots",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Some enslaved people were partially freed and given 'Negroe Lots' near today's Greenwich Village, Lower East Side and City Hall"
+        ],
+        "source_passage": "After long service, some were partially freed and given 'Negroe Lots' near today's Greenwich Village, the Lower East Side and City Hall.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a25fe2235b7aba390b5aa116d10338b581a82af62dbc51ed835f087d011a920e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_greenwich_village_literary_heritage_lonely-planet-new-york-city_beats_abstract_expressionism",
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "literary_heritage",
+        "topic_slug": "beats_abstract_expressionism",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The 1950s and '60s ushered in an era of legendary creativity and anti-establishment expression centered in Greenwich Village. One movement was abstract expressionism, a large-scale outbreak of American painters — Mark Rothko, Jackson Pollock and Helen Frankenthaler among them — who offended and intrigued with incomprehensible squiggles and exuberant energy. Then there were the writers: Beat poets Allen Ginsberg and Jack Kerouac and novelist-playwright Jane Bowles, who gathered in Village coffeehouses to exchange ideas, often finding inspiration in the folk music of burgeoning names such as Bob Dylan.",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "entities": [
+          "Mark Rothko",
+          "Jackson Pollock",
+          "Helen Frankenthaler",
+          "Allen Ginsberg",
+          "Jack Kerouac",
+          "Jane Bowles",
+          "Bob Dylan"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "Beats and painters",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The 1950s-60s creative era centered in Greenwich Village",
+          "Abstract expressionists included Rothko, Pollock and Frankenthaler",
+          "Beat writers Ginsberg, Kerouac and Bowles gathered in Village coffeehouses, drawn to folk music like Bob Dylan's"
+        ],
+        "source_passage": "The 1950s and '60s ushered in an era of legendary creativity and antiestablishment expression, with many of its creators centered in Greenwich Village. One movement was abstract expressionism, a large-scale outbreak of American painters – Mark Rothko, Jackson Pollock and Helen Frankenthaler among them – who offended and intrigued with incomprehensible squiggles, blotches and exuberant energy. Then there were the writers, such as Beat poets Allen Ginsberg and Jack Kerouac and novelist/playwright Jane Bowles. They gathered in Village coffeehouses to exchange ideas and find inspiration, which was often found in the form of folk music from burgeoning big names, such as Bob Dylan.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8db17fb7aa0a0f675926611d3813ffbe7d90dd51b50015c07e9fe2da0ae63011",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Hanover Square",
+    "short_description": "Tier-3/4 candidate: historic square, first newspaper, cotton exchange, Captain Kidd residence, India House (1850s brownstone banking house).",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.704583,
+    "longitude": -74.009722,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3/4 candidate: historic square, first newspaper, cotton exchange, Captain Kidd residence, India House (1850s brownstone banking house).",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Hanover Square / 1 Hanover Square India House)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "Small public square in Financial District; no visitor count; Wikipedia article (Hanover Square, Manhattan) covers history and India House at moderate depth; search results dominated by restaurants and residential buildings at that address",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_hanover_square_dark_history_lonely-planet-new-york-city_great_fire_1835",
+        "city_name": "new_york",
+        "poi_name": "Hanover Square",
+        "lens": "dark_history",
+        "topic_slug": "great_fire_1835",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "On December 16, 1835, a gas line broke in a dry-goods store near Hanover Square. The fire spread fast — south down Stone St and northeast toward Wall St — and raged for over a day, destroying much of what remained of the original Dutch and British colonial city.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Great Fire of 1835",
+          "Stone St",
+          "Wall St"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Great Fire 1835",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "On Dec 16, 1835 a gas-line break near Hanover Square started a fire",
+          "It spread south down Stone St and northeast toward Wall St, raging over a day",
+          "It destroyed much of the original Dutch and British colonial city"
+        ],
+        "source_passage": "On December 16, 1835, a gas line broke in a dry-goods store near Hanover Square, causing a massive fire to quickly spread south down Stone St and northeast toward Wall St. Raging for over a day, it destroyed much of what remained of the original Dutch and British colonial city.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7e1c3a04f8d094127c223efee9615e3b8d9e2cf47b1378d346a8c5ac230e1903",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Harlem",
+    "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.807858,
+    "longitude": -73.945467,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Harlem'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Harlem, Manhattan Community Board 10, Manhattan, New York County, New York, 10027, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 80.1,
+        "assigned_gravity": 4,
+        "reasoning": "NYC government commercial district assessment cites >5M domestic and international tourists annually. Apollo Theater, food, jazz, civil rights history are draws. Wikipedia article is extensive with deep historical and cultural content.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_harlem_music_heritage_lonely-planet-new-york-city_jazz_age_harlem_renaissance",
+        "city_name": "new_york",
+        "poi_name": "Harlem",
+        "lens": "music_heritage",
+        "topic_slug": "jazz_age_harlem_renaissance",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The 1920s brought the Jazz Age, when Prohibition outlawed alcohol and fueled bootlegging, speakeasies and organized crime. As the Great Migration carried Black Americans north from the South, Harlem became the center of the Harlem Renaissance — a flowering of poetry, music and painting whose innovative spirit still inspires. Harlem's daring nightlife in the '20s and '30s drew the flappers and gin-soaked revelers who marked the complete failure of Prohibition and foreshadowed the liberated nightlife New Yorkers enjoy today.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jazz Age",
+          "Prohibition",
+          "Great Migration",
+          "Harlem Renaissance"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "Harlem Renaissance",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The 1920s Jazz Age and Prohibition fueled bootlegging and speakeasies",
+          "The Great Migration made Harlem the center of the Harlem Renaissance",
+          "Harlem's '20s-'30s nightlife marked Prohibition's failure"
+        ],
+        "source_passage": "The 1920s saw the dawning of the Jazz Age, when Prohibition outlawed the sale of alcohol, encouraging bootlegging and speakeasies, as well as organized crime. Babe Ruth reigned at Yankee Stadium and the Great Migration from the South led to the Harlem Renaissance, when the neighborhood became a center of African American culture and society. It produced poetry, music, painting and an innovative attitude that continues to influence and inspire. Harlem's daring nightlife in the 1920s and '30s attracted the flappers and gin-soaked revelers who marked the complete failure of Prohibition, and provided a foretaste of the liberated nightlife New Yorkers enjoy today.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "54ef7ccc2f584e62a0a79b0c1991fa6e7dee1c263a6c4f091759f70a3b179e51",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Lower East Side",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.715936,
+    "longitude": -73.986806,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Lower East Side'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Lower East Side, Manhattan Community Board 3, Manhattan, New York County, New York, 10002, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Described as one of the most visited NYC neighborhoods. Known for immigration history, nightlife, food. No official count. Wikipedia article is comprehensive with extensive historical content.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_lower_east_side_social_change_lonely-planet-new-york-city_immigrant_landing_to_les",
+        "city_name": "new_york",
+        "poi_name": "Lower East Side",
+        "lens": "social_change",
+        "topic_slug": "immigrant_landing_to_les",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "By the turn of the 20th century, elevated trains carried a million people a day in and out of the city, and the metropolis overflowed with immigrants arriving from southern Italy and Eastern Europe — boosting the population to around three million. The journey from the immigrant landing stations at Castle Garden and Ellis Island led straight to the Lower East Side, where streets reflected these myriad origins with shop signs in Yiddish, Italian, German and Chinese.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Castle Garden",
+          "Ellis Island"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "immigrant influx",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "By 1900 elevated trains carried a million people a day; population reached ~3 million",
+          "Immigrants arrived from southern Italy and Eastern Europe via Castle Garden and Ellis Island",
+          "They settled the Lower East Side with shop signs in Yiddish, Italian, German and Chinese"
+        ],
+        "source_passage": "By the turn of the 20th century, elevated trains carried one million people a day in and out of the city. At this point, the city was simply overflowing with the masses of immigrants arriving from southern Italy and Eastern Europe, who had boosted the metropolis's population to around three million. The journey from immigrant landing stations at Castle Garden and Ellis Island led straight to the Lower East Side. There, streets reflected these myriad origins with shop signs in Yiddish, Italian, German and Chinese.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5c8109b497ad51896d028e22311e8a25c022322fa0ee7e612d3101394149c8f7",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Manhattan",
+    "short_description": "The central borough and island of New York City; its street grid above 14th St makes it famously navigable.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7831,
+    "longitude": -73.9712,
+    "trigger_radius": 2000,
+    "city_name": "new_york",
+    "importance_tier": 4,
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Borough/island container POI; grid-plan orientation beat.",
+      "verified": false,
+      "geocode_source": "manual_centroid",
+      "geocode_confidence": "MEDIUM",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": null,
+        "assigned_gravity": 4,
+        "reasoning": "Borough-scale container POI (grid orientation); tier 4 as a famous area, not a single stop. Added in export-consistency fix.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-15"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_manhattan_hidden_history_lonely-planet-new-york-city_lenape_hilly_island_name",
+        "city_name": "new_york",
+        "poi_name": "Manhattan",
+        "lens": "hidden_history",
+        "topic_slug": "lenape_hilly_island_name",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Long before European conquest, this island belonged to the Lenape, whose name means 'Original People.' They foraged, hunted and fished the regional bounty for some 11,000 years before the first Europeans sailed through the Narrows, leaving behind spear points, arrowheads, bone heaps and shell mounds. Some of their pathways still lie beneath streets such as Broadway. In their Munsee language the word Manhattan may have meant simply 'hilly island' — though others trace it to a more colorful phrase, 'place of general inebriation.'",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lenape",
+          "Munsee",
+          "Broadway",
+          "the Narrows"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "Manhattan name origin",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Manhattan",
+            "gloss": "may have meant 'hilly island' in the Lenape language of Munsee"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "The Lenape ('Original People') lived here ~11,000 years before Europeans",
+          "Some Lenape pathways lie beneath streets such as Broadway",
+          "Manhattan may mean 'hilly island' or 'place of general inebriation' in Munsee"
+        ],
+        "source_passage": "Long before the days of European conquest, the swath that would eventually become NYC belonged to Native Americans known as the Lenape (Original People), who resided in a series of seasonal campsites. Around 11,000 years before the first Europeans sailed through the Narrows, the Lenape people foraged, hunted and fished the regional bounty. Spear points, arrowheads, bone heaps and shell mounds testify to their presence. Some of their pathways still lie beneath streets such as Broadway. In the Lenape language of Munsee, the term Manhattan may have translated as 'hilly island.' Others trace the meaning to a more colorful phrase: 'place of general inebriation.'",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a34c9668e2522bb46bd49323da531942228cc931c7e8bce223ae2b3c90459704",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_manhattan_social_change_lonely-planet-new-york-city_robert_moses_landmarks_commission",
+        "city_name": "new_york",
+        "poi_name": "Manhattan",
+        "lens": "social_change",
+        "topic_slug": "robert_moses_landmarks_commission",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "No one shaped the physical city of the 20th century more than urban planner Robert Moses — wonderfully or tragically, depending on whom you ask. He was the mastermind behind the Triborough Bridge, the Verrazzano-Narrows Bridge, the West Side Hwy and the Long Island parkway system, plus endless highways, tunnels and bridges. His vision did away with intimate neighborhoods of brownstones and town houses in favor of sweeping parks and soaring towers — and his efforts to bulldoze neighborhoods so enraged preservationists that their pushback led to the Landmarks Preservation Commission being formed in 1965.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Robert Moses",
+          "Triborough Bridge",
+          "Verrazzano-Narrows Bridge",
+          "Landmarks Preservation Commission"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Robert Moses",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Robert Moses shaped the 20th-century city more than anyone",
+          "He built the Triborough Bridge, Verrazzano-Narrows Bridge, West Side Hwy and Long Island parkways",
+          "Preservationist pushback against his demolitions led to the 1965 Landmarks Preservation Commission"
+        ],
+        "source_passage": "Robert Moses, an urban planner who would influence the physical shape of the city more than anyone else in the 20th century – either wonderfully or tragically, depending on whom you ask. He was the mastermind behind the Triborough Bridge (now the Robert F Kennedy Bridge), Jones Beach State Park, the Verrazzano–Narrows Bridge, the West Side Hwy and the Long Island parkway system – not to mention endless highways, tunnels and bridges. His vision was one of doing away with intimate neighborhoods of brownstones and town houses, and of creating sweeping parks and soaring towers. The approach got preservationists fired up and their efforts to stop him from bulldozing neighborhoods led to the Landmarks Preservation Commission being formed in 1965.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ad945a649084e107b6facb45c229d849adeb5d608cf04fcf286c92f346bf2da3",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "New York Stock Exchange",
+    "short_description": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.706877,
+    "longitude": -74.011265,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+      "verified": false,
+      "geocode_source": "web_search (distancesto / findlatitudeandlongitude)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Interior public tours closed permanently after 9/11. Exterior viewable from street. No visitor/tour count applicable. Very high search interest as a financial landmark. Wikipedia article is extensive with full market history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_stock_exchange_hidden_history_lonely-planet-new-york-city_hamilton_founded_nyse",
+        "city_name": "new_york",
+        "poi_name": "New York Stock Exchange",
+        "lens": "hidden_history",
+        "topic_slug": "hamilton_founded_nyse",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "After the Revolution, Alexander Hamilton became Washington's secretary of the treasury and set about rebuilding New York — working to establish the New York Stock Exchange. But people distrusted a capital sitting next to the financial power of Wall St merchants, and New Yorkers soon lost the seat of the presidency to Philadelphia.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alexander Hamilton",
+          "George Washington",
+          "Wall St",
+          "Philadelphia"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Hamilton founds NYSE",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Hamilton became Washington's treasury secretary and worked to establish the NYSE",
+          "Distrust of a capital beside Wall St merchants cost New York the presidency to Philadelphia"
+        ],
+        "source_passage": "Alexander Hamilton, meanwhile, began rebuilding New York and became Washington's secretary of the treasury, working to establish the New York Stock Exchange. But people distrusted a capitol located adjacent to the financial power of Wall St merchants, and New Yorkers lost the seat of the presidency to Philadelphia shortly thereafter.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c40dfd495da93d8aa9503b6f4175138fba7f43cc78eeb9ca639c41e7ad0d4bdf",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_new_york_stock_exchange_social_change_lonely-planet-new-york-city_dot_com_giuliani_cleanup",
+        "city_name": "new_york",
+        "poi_name": "New York Stock Exchange",
+        "lens": "social_change",
+        "topic_slug": "dot_com_giuliani_cleanup",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "After the early-1990s real-estate crash, the dot-com market roared in, turning geeks into millionaires and the New York Stock Exchange into a speculator's fun park. Buoyed by tax receipts from IPO profits, the city launched a frenzy of building and partying unparalleled since the 1920s. With pro-business Mayor Rudy Giuliani targeting high-crime areas and using statistics to focus police, crime dropped, restaurants boomed and New York became America's safest big city — though things were faltering again as the new millennium dawned.",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "entities": [
+          "dot-com market",
+          "Rudy Giuliani"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "subject_tag": "dot-com boom",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The dot-com market turned the NYSE into a speculator's fun park",
+          "IPO tax receipts funded a 1920s-scale building and partying frenzy",
+          "Giuliani's statistics-driven policing made New York America's safest big city"
+        ],
+        "source_passage": "And then the dot-com market roared in, turning geeks into millionaires and the New York Stock Exchange into a speculator's fun park. Buoyed by tax receipts from IPO (initial public offering) profits, the city launched a frenzy of building, boutique-ing and partying unparalleled since the 1920s. The energetic mayor succeeded in making New York America's safest big city, by targeting highcrime areas and using statistics to focus police presence. Crime dropped, restaurants boomed, real-estate prices sizzled, and Sex & the City beamed a vision of sophisticated singles in Manolos around the world. Still, things were faltering in New York at the dawn of the new millennium.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "addfc1b305b3c1d1d2a7cb1cd317d7913eb444a1a8ea18ff293bfb3b6df0e6e9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_new_york_stock_exchange_dark_history_lonely-planet-new-york-city_hurricane_sandy_2012",
+        "city_name": "new_york",
+        "poi_name": "New York Stock Exchange",
+        "lens": "dark_history",
+        "topic_slug": "hurricane_sandy_2012",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In 2012, superstorm Hurricane Sandy struck New York. A prestorm surge on October 28 turned parts of Brooklyn and New Jersey into a New World Venice, but Sandy saved her ultimate blow for the next day — cyclonic winds and drenching rain caused severe flooding and property damage, including to the subway system, the Hugh L Carey Tunnel and the World Trade Center site. A major power blackout plunged much of Lower Manhattan into surreal darkness, and trading at the New York Stock Exchange was suspended for two days.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hurricane Sandy",
+          "Hugh L Carey Tunnel",
+          "World Trade Center"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Hurricane Sandy",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Hurricane Sandy hit NYC in 2012; an Oct 28 prestorm surge flooded Brooklyn and New Jersey",
+          "Sandy caused severe flooding to the subway, Hugh L Carey Tunnel and WTC site",
+          "A blackout darkened Lower Manhattan and the NYSE suspended trading for two days"
+        ],
+        "source_passage": "Fury of the meteorological kind hit New York in 2012, in the form of superstorm Hurricane Sandy. While a prestorm surge on October 28 turned parts of Brooklyn and New Jersey into a New World Venice, Sandy saved her ultimate blow for the following day. Cyclonic winds and drenching rain pounded the city, causing severe flooding and property damage, including to the NYC subway system, Hugh L Carey Tunnel and the World Trade Center site. A major power blackout plunged much of Lower Manhattan into surreal darkness, while trading at the New York Stock Exchange was suspended for two days.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "9074efd70dade4a7e56f7bdc7f46a1b321d6db8b6a0b36d14b5a0e19ae2f5389",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "SoHo",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72288,
+    "longitude": -73.99875,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'SoHo'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "SoHo, Manhattan, New York County, New York, 10012, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Major shopping/architecture tourism draw; frequently called one of NYC's most-photographed neighborhoods. No official annual visitor count published. Wikipedia article is extensive covering cast-iron district history, culture, demographics.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_soho_social_change_lonely-planet-new-york-city_1970s_punk_warehouse_renaissance",
+        "city_name": "new_york",
+        "poi_name": "SoHo",
+        "lens": "social_change",
+        "topic_slug": "1970s_punk_warehouse_renaissance",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The traumatic '70s — which hit bottom in 1977 with a citywide blackout and the terrorizing serial killer David Berkowitz — saw rents fall, which nourished an exciting alternative culture. Artists staged performances in abandoned schools, opened galleries in unused storefronts and revived the hair-dye industry with the punk-rock aesthetic. Ramones-loving punks turned former warehouses into pulsing meccas of nightlife, transforming the old industrial precincts of SoHo and Tribeca into America's center of tattooing and independent filmmaking.",
+        "duration_sec": 33,
+        "kid_friendly": "no",
+        "entities": [
+          "David Berkowitz",
+          "Ramones",
+          "Tribeca"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "wry",
+        "subject_tag": "punk renaissance",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The 1977 blackout and serial killer David Berkowitz marked the decade's low point",
+          "Falling rents nourished an alternative punk culture",
+          "Punks transformed SoHo and Tribeca warehouses into nightlife and the center of tattooing and indie filmmaking"
+        ],
+        "source_passage": "The traumatic '70s – which reached a low point in 1977 with a citywide blackout and terrorizing serial killer David Berkowitz – saw rents fall, which helped nourish an exciting alternative culture that staged performances in abandoned schools, opened galleries in unused storefronts and breathed new life into the hair-dye industry with the advent of the punk-rock aesthetic. Ramones-loving punks turned former warehouses into pulsing meccas of nightlife, transforming the former industrial precincts of SoHo and Tribeca.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cc8a01c35391a45b22dc5a7fa73b7330394d8bae3f2c2ce2322a9682e69855ab",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Staten Island",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.583456,
+    "longitude": -74.149605,
+    "trigger_radius": 150,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Staten Island'",
+        "trigger_radius_reasoning": "Island-scale POI",
+        "notes": "Staten Island, Richmond County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 51.2,
+        "assigned_gravity": 2,
+        "reasoning": "Borough-level POI; often called 'the forgotten borough'. No aggregate annual visitor count published. Wikipedia article covers history, geography, and demographics extensively. Tourism is notably weaker than other boroughs.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_staten_island_hidden_history_lonely-planet-new-york-city_verrazzano_1524_kidnap",
+        "city_name": "new_york",
+        "poi_name": "Staten Island",
+        "lens": "hidden_history",
+        "topic_slug": "verrazzano_1524_kidnap",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The first European to muscle in came aboard the French vessel La Dauphine, piloted by the Florentine Giovanni da Verrazzano. He explored the Upper Bay in 1524, deemed it a 'very beautiful lake,' and — while anchored off Staten Island — attempted to kidnap some of the Native Americans he encountered. His was the opening move in several decades of European raids on Lenape villages that cultivated the Lenape's deep mistrust of outsiders.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Giovanni da Verrazzano",
+          "La Dauphine",
+          "Lenape",
+          "Upper Bay"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Verrazzano arrival",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "La Dauphine",
+            "gloss": "the French vessel Verrazzano piloted"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Verrazzano explored the Upper Bay in 1524 aboard La Dauphine",
+          "He attempted to kidnap Native Americans while anchored off Staten Island",
+          "His arrival began decades of European raids on Lenape villages"
+        ],
+        "source_passage": "The Lenape people lived here undisturbed until European explorers muscled in, firstly via French vessel La Dauphine, piloted by Florentine Giovanni da Verrazzano. He explored the Upper Bay in 1524, deemed it a 'very beautiful lake' and, while anchored at Staten Island, attempted to kidnap some of the Native Americans he encountered. This began several decades of European explorers raiding Lenape villages, and cultivated the Lenape's deep mistrust of outsiders.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "70994e3e97df236e3b754aefbbae92862aab020e9ce4628accc503a27851bccd",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Stone Street",
+    "short_description": "Tier-3/4 candidate: cobbled Greek Revival historic street, first paved street in New Amsterdam, 1835 fire rebuild. Distinctive streetscape.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.70417,
+    "longitude": -74.01056,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3/4 candidate: cobbled Greek Revival historic street, first paved street in New Amsterdam, 1835 fire rebuild. Distinctive streetscape.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Stone Street Historic District)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No visitor count; pedestrian dining street between 85 Broad St and Hanover Square; annual Oyster Festival draws ~10,000 per event; Wikipedia article (Stone Street, Manhattan) covers Dutch colonial origins and landmark status at moderate depth; search interest is local/dining-oriented",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_stone_street_social_change_lonely-planet-new-york-city_stuyvesant_slave_workforce",
+        "city_name": "new_york",
+        "poi_name": "Stone Street",
+        "lens": "social_change",
+        "topic_slug": "stuyvesant_slave_workforce",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "After Willem Kieft let the colony fall into disrepair, Peter Stuyvesant stepped in to fix the demoralized settlement — making peace with the Lenape, establishing markets and a night watch, repairing the fort and digging a canal under what is now Canal St. His vision of an orderly trading port drew on his time as governor of Curacao, and the booming Caribbean sugar economy inspired an investment in slave trading that pushed New Amsterdam's enslaved workforce to 20 percent of the population. By the 1650s, warehouses, workshops and gabled houses were spreading back from the river's edge on Pearl St.",
+        "duration_sec": 41,
+        "kid_friendly": "no",
+        "entities": [
+          "Peter Stuyvesant",
+          "Willem Kieft",
+          "New Amsterdam",
+          "Lenape",
+          "Curacao",
+          "Pearl St",
+          "Canal St"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber",
+        "subject_tag": "Stuyvesant slave economy",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Stuyvesant repaired the settlement, made peace with the Lenape, dug a canal under today's Canal St",
+          "Caribbean sugar economy drove slave trading to 20% of New Amsterdam's population",
+          "By the 1650s gabled houses spread back from Pearl St"
+        ],
+        "source_passage": "Peter Stuyvesant stepped in and busily set about fixing the demoralized settlement, making peace with the Lenape, establishing markets and a night watch, repairing the fort, digging a canal (under the current Canal St) and authorizing a municipal wharf. His vision of an orderly and prosperous trading port was partially derived from his previous experience as governor of Curaçao. The burgeoning sugar economy in the Caribbean inspired an investment in slave trading that soon boosted New Amsterdam's slave workforce to 20% of the population. By the 1650s, warehouses, workshops and gabled houses were spreading back from the dense establishments at the river's edge on Pearl St.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4fa35c7eaf5a5575083b1a671fc12e0b79837f3b7eabde41e8607a81eeb4ada0",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Bronx",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.846651,
+    "longitude": -73.878594,
+    "trigger_radius": 1000,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'The Bronx'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "The Bronx, Bronx County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Borough-level POI; no aggregate annual visitor figure published for the borough as a whole. Bronx Zoo alone draws 2M+ visitors/year. Wikipedia article on The Bronx is extensive covering history, demographics, culture, hip-hop origins, and major institutions.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_the_bronx_music_heritage_lonely-planet-new-york-city_hip_hop_birth_south_bronx",
+        "city_name": "new_york",
+        "poi_name": "The Bronx",
+        "lens": "music_heritage",
+        "topic_slug": "hip_hop_birth_south_bronx",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "During the 1970s a wave of arson attacks reduced blocks of apartment houses in the South Bronx to cinders. Amid the smoke, an influential hip-hop culture was born, fueled by the percussive rhythms of Puerto Rican salsa. Rock Steady Crew, led by 'Crazy Legs' Richie Colon, pioneered athletic, competitive break dancing; DJ Kool Herc spun vinyl for all-night break-beat parties; and Afrika Bambaataa, another founding hip-hop DJ, formed Zulu Nation, bringing DJs, break dancers and graffiti writers together to end violence.",
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "entities": [
+          "Rock Steady Crew",
+          "Crazy Legs Richie Colon",
+          "DJ Kool Herc",
+          "Afrika Bambaataa",
+          "Zulu Nation"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "hip-hop birth",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1970s arson reduced South Bronx apartment blocks to cinders",
+          "Hip-hop was born there, fueled by Puerto Rican salsa",
+          "Rock Steady Crew, DJ Kool Herc and Afrika Bambaataa's Zulu Nation were founding forces"
+        ],
+        "source_passage": "During the 1970s a wave of arson attacks reduced blocks of apartment houses in the South Bronx to cinders. Amid the smoke, an influential hiphop culture was born, fueled by the percussive rhythms of Puerto Rican salsa. Rock Steady Crew, led by 'Crazy Legs' Richie Colón, pioneered athletic, competitive break dancing. DJ Kool Herc spun vinyl for break beat all-night dance parties. Afrika Bambaataa, another founding hip-hop DJ, formed Zulu Nation, bringing DJs, break dancers and graffiti writers together to end violence.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "fd079979710c8a37f13e98ba000281bba695148d9f976b24fd62cf739ca2d999",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_bronx_street_art_lonely-planet-new-york-city_lee_163_basquiat_graffiti",
+        "city_name": "new_york",
+        "poi_name": "The Bronx",
+        "lens": "street_art",
+        "topic_slug": "lee_163_basquiat_graffiti",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Daring graffiti dazzled the public with train-long graphics. The best-known 'masterpiece' belied the writers' reputation as vandals: Lee 163, with the Fab 5 crew, painted a whole subway car with the message 'Merry Christmas, New York.' Some of these maestros of the spray can infiltrated the art world — most notably Jean-Michel Basquiat.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lee 163",
+          "Fab 5 crew",
+          "Jean-Michel Basquiat"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "graffiti masterpieces",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Lee 163, with the Fab 5 crew, painted a whole subway car reading 'Merry Christmas, New York'",
+          "Some graffiti writers entered the art world, notably Jean-Michel Basquiat"
+        ],
+        "source_passage": "Daring examples of graffiti dazzled the public with train-long graphics. The best-known 'masterpiece' belied the graf writers' reputation as vandals: Lee 163, with the Fab 5 crew, painted a whole car of trains with the message 'Merry Christmas, New York.' Some of these maestros of the spray can infiltrated the art world, most notably Jean-Michel Basquiat.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b4f1fb19a818e2e9b24e286da04e236227c279a190af7f8ebec874c75767ff56",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Tenement Museum",
+    "short_description": "Highly regarded immigration museum, National Trust site, Wikipedia article, major Frommer's headline sight. Moderate-high gravity. Note: original tenement is 97 Orchard; visitor center/coords at 103 Orchard.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.718768,
+    "longitude": -73.990074,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Highly regarded immigration museum, National Trust site, Wikipedia article, major Frommer's headline sight. Moderate-high gravity. Note: original tenement is 97 Orchard; visitor center/coords at 103 Orchard.",
+      "verified": false,
+      "geocode_source": "web_search (Apple/Google Maps, 103 Orchard St visitor center)",
+      "geocode_confidence": 0.93,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 225000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 55.5,
+        "assigned_gravity": 2,
+        "reasoning": "~225,000 annual visitors per NPS/museum sources; 6,931 TripAdvisor reviews; dedicated Wikipedia article (Lower East Side Tenement Museum) with substantial history, founding, and exhibit detail; strong search interest among NYC cultural museums",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_the_tenement_museum_social_change_lonely-planet-new-york-city_jacob_riis_other_half",
+        "city_name": "new_york",
+        "poi_name": "The Tenement Museum",
+        "lens": "social_change",
+        "topic_slug": "jacob_riis_other_half",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "By the late 19th century all sorts of folks were living in squalor — crammed into packed tenements, shivering in soup lines and shoveling snow for nickels — while newly wealthy financiers built European-style chateaux on Fifth Ave. Reporter and photographer Jacob Riis exposed the widening gap between the classes in the New York Tribune and in his now-classic 1890 book, How the Other Half Lives, eventually forcing the city to pass much-needed housing reforms.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jacob Riis",
+          "How the Other Half Lives",
+          "New York Tribune",
+          "Fifth Ave"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber",
+        "subject_tag": "Riis housing reform",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Late-19th-century poor crammed into tenements while the wealthy built Fifth Ave chateaux",
+          "Jacob Riis exposed the class gap in the New York Tribune and his 1890 book How the Other Half Lives",
+          "His work forced the city to pass housing reforms"
+        ],
+        "source_passage": "All sorts of folks were living in squalor by the late 19th century, when the immigration processing center at Ellis Island opened, welcoming one million newcomers in just its first year. They crammed into packed tenements, shivered in soup lines and shoveled snow for nickels. Reporter and photographer Jacob Riis illuminated the widening gap between the classes by writing about it in the New York Tribune and in his now-classic 1890 book, How the Other Half Lives, eventually forcing the city to pass much-needed housing reforms.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1aba94d74e41a3261c22e3f43c0f79bb8c63e01ce6b178233a38076c33698fba",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Times Square",
+    "short_description": "Most congested pedestrian icon in the Western Hemisphere; very high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.75701,
+    "longitude": -73.985972,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Broadway at Seventh Ave., ~46th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Most congested pedestrian icon in the Western Hemisphere; very high gravity.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.92,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02",
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Times Square'",
+        "trigger_radius_reasoning": "Open square",
+        "notes": "Times Square, Manhattan Community Board 5, Manhattan, New York County, New York, 10036, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 50000000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "~50M annual visitors; handles up to 400,000/day on peak days. America's most visited destination. Wikipedia article is extremely deep with extensive cultural, architectural, and historical coverage.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_times_square_war_conflict_lonely-planet-new-york-city_wwii_troops_partying",
+        "city_name": "new_york",
+        "poi_name": "Times Square",
+        "lens": "war_conflict",
+        "topic_slug": "wwii_troops_partying",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-12-understand-history",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "World War II brought troops galore to the city, ready to party down to their last dollar in Times Square before being shipped off to Europe. As the local factories converted to war industries and hummed — newly staffed by women and African American workers — the wartime boom created a housing crunch that gave New York its much-imitated, tenant-protecting Rent Control Law.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "World War II",
+          "Rent Control Law"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "WWII Times Square",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "WWII troops partied in Times Square before shipping to Europe",
+          "War factories were staffed by women and African American workers",
+          "The wartime housing crunch produced NYC's Rent Control Law"
+        ],
+        "source_passage": "WWII brought troops galore to the city, ready to party down to their last dollar in Times Square, before being shipped off to Europe. Converted to war industries, the local factories hummed, staffed by women and African American workers who had rarely had access to good, unionized jobs. The explosion of wartime activity led to a huge housing crunch that brought New York its much-imitated, tenant-protecting Rent Control Law.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: History"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6045c284a4b28280fe0af043a567234f697e8c586b500679d93d3f9a6f9c0422",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,3343 @@
+[
+  {
+    "name": "9/11 Memorial and Museum",
+    "short_description": "Top-tier global landmark. Full Wikipedia article, primary Frommer's headline sight, ~3M+ annual visitors. Among NYC's most-visited attractions.",
+    "name_variations": [
+      "The 9/11 Memorial and Museum"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.711449,
+    "longitude": -74.013855,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Top-tier global landmark. Full Wikipedia article, primary Frommer's headline sight, ~3M+ annual visitors. Among NYC's most-visited attractions.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia consensus)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 2400000,
+        "google_review_count": 92823,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 83.5,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 2,400,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). 2024 annual report: 2.4M museum visitors + 11.6M to the outdoor memorial. Google review count from Maps listing. Wikipedia article is long, w",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "new_york_9_11_memorial_and_museum_modern_design_lonely-planet-new-york-city_reflecting_absence_water",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "modern_design",
+        "topic_slug": "reflecting_absence_water",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "reflecting-pools",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Surrounded by a plaza planted with more than 400 white oak trees, the 9/11 Memorial's reflecting pools occupy the footprints of the ill-fated Twin Towers. From their rim, a cascade of water pours 30ft down toward a central void. The flow is richly symbolic, beginning as thousands of smaller streams, merging into a massive torrent of collective confusion, and ending with a slow journey toward an abyss. Bronze panels frame the pools, inscribed with the names of those who died in the attacks of September 11, 2001, and in the World Trade Center car bombing on February 26, 1993. Designed by Michael Arad and Peter Walker, the pools are titled Reflecting Absence.",
+        "duration_sec": 50,
+        "kid_friendly": "no",
+        "entities": [
+          "Reflecting Absence",
+          "Twin Towers",
+          "Michael Arad",
+          "Peter Walker"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "subject_tag": "reflecting pools",
+        "physical_cues": [
+          {
+            "cue": "The two reflecting pools in the Twin Towers' footprints, water cascading 30ft toward a central void",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Bronze panels around the pools inscribed with victims' names",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Plaza planted with 400+ white oak trees",
+          "Pools occupy the Twin Towers' footprints; water pours 30ft down",
+          "Bronze panels list names from 9/11/2001 and the 2/26/1993 WTC bombing",
+          "Designed by Michael Arad and Peter Walker; titled Reflecting Absence"
+        ],
+        "source_passage": "Surrounded by a plaza planted with more than 400 white oak trees, the 9/11 Memorial's reflecting pools occupy the footprints of the ill-fated Twin Towers. From their rim, a cascade of water pours 30ft down toward a central void. The flow of the water is richly symbolic, beginning as thousands of smaller streams, merging into a massive torrent of collective confusion, and ending with a slow journey toward an abyss. Bronze panels frame the pools, inscribed with the names of those who died in the attacks of September 11, 2001, and in the World Trade Center (WTC) car bombing on February 26, 1993. Designed by Michael Arad and Peter Walker, the pools are both striking and deeply poignant.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "40bfecf44b2155dc6da9f4b3de8f870e699b5e404f47cb2f77720219ff819631",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_9_11_memorial_and_museum_war_conflict_lonely-planet-new-york-city_tridents_survivors_staircase",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "war_conflict",
+        "topic_slug": "tridents_survivors_staircase",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "museum-lobby",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The museum's glass entrance pavilion eerily evokes a toppled tower. On the escalator descent to the subterranean lobby, visitors stand in the shadow of two steel tridents, originally embedded in the bedrock at the base of the North Tower. Each over 80ft tall and weighing 50 tons, they once provided the structural support that allowed the towers to soar over 1360ft into the sky, and they remained standing in the subsequent sea of rubble, becoming immediate symbols of resilience. Among more than 10,300 objects in the collection are the Vesey Street Stairs, dubbed the Survivors' Staircase, which allowed hundreds of workers to flee the WTC site on the morning of 9/11.",
+        "duration_sec": 55,
+        "kid_friendly": "no",
+        "entities": [
+          "North Tower",
+          "Vesey Street Stairs",
+          "Survivors' Staircase",
+          "World Trade Center"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "subject_tag": "steel tridents",
+        "physical_cues": [
+          {
+            "cue": "Two steel tridents, each over 80ft tall, in the shadow of which visitors descend",
+            "direction": "down",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The Vesey Street Survivors' Staircase",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Glass entrance pavilion evokes a toppled tower",
+          "Two steel tridents from the North Tower base, each 80ft+ and 50 tons",
+          "Towers soared over 1360ft",
+          "Survivors' Staircase (Vesey Street Stairs) let hundreds flee on 9/11"
+        ],
+        "source_passage": "Standing between the reflective pools, the museum's glass entrance pavilion eerily evokes a toppled tower. Inside the entrance, an escalator leads down to the museum's subterranean main lobby. On the descent, visitors stand in the shadow of two steel tridents, originally embedded in the bedrock at the base of the North Tower. Each over 80ft tall and weighing 50 tons, they once provided the structural support that allowed the towers to soar over 1360ft into the sky. They remained standing in the subsequent sea of rubble, becoming immediate symbols of resilience. The tridents are two of more than 10,300 objects in the museum's collection. Among these are the Vesey Street Stairs. Dubbed the Survivors' Staircase, they allowed hundreds of workers to flee the WTC site on the morning of 9/11.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c2fe03383177304d90d026a6c375c2107ce408b004e0d2d0881e8df70f550e19",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_9_11_memorial_and_museum_dark_history_lonely-planet-new-york-city_gschaar_two_dollar_bill",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "dark_history",
+        "topic_slug": "gschaar_two_dollar_bill",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "in-memoriam-gallery",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "At the bottom of the Survivors' Staircase is the moving In Memoriam gallery, its walls lined with photographs and names of those who perished. Among the personal effects on display is a dust-covered wallet belonging to Robert Joseph Gschaar, an insurance underwriter who worked on level 92 of the South Tower. The wallet's contents include a photograph of his wife, Myrta, and a $2 bill: when he proposed, Gschaar gave her a $2 bill as a symbol of their second chance at happiness, theirs being a second marriage for both, and he kept another with him.",
+        "duration_sec": 47,
+        "kid_friendly": "no",
+        "entities": [
+          "In Memoriam gallery",
+          "Robert Joseph Gschaar",
+          "Myrta Gschaar",
+          "South Tower"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "somber",
+        "subject_tag": "gschaar wallet",
+        "physical_cues": [
+          {
+            "cue": "Robert Gschaar's dust-covered wallet displayed in the In Memoriam gallery",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "In Memoriam gallery sits at the bottom of the Survivors' Staircase",
+          "Gschaar's wallet is displayed; he worked on level 92 of the South Tower",
+          "It held a photo of wife Myrta and a $2 bill",
+          "He gave Myrta a $2 bill as a symbol of a second chance and kept one himself"
+        ],
+        "source_passage": "At the bottom of these stairs is the moving In Memoriam gallery, its walls lined with the photographs and names of those who perished. Interactive touch screens and a central reflection room shed light on the victims' lives. Their humanity is further fleshed out by the numerous personal effects on display. Among these is a dust-covered wallet belonging to Robert Joseph Gschaar, an insurance underwriter who worked on level 92 of the South Tower. The wallet's contents include a photograph of Gschaar's wife, Myrta, and a $2 bill: when he proposed, Gschaar gave her a $2 bill as a symbol of their second chance at happiness (theirs was a second marriage for them both); he kept another with him.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "74d348e1ce2564ef33bfb99188c98adddd50bb4c55efd3c0e52f147a6c74baca",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_9_11_memorial_and_museum_war_conflict_lonely-planet-new-york-city_engine_21_foundation_hall",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "war_conflict",
+        "topic_slug": "engine_21_foundation_hall",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "foundation-hall",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Around the corner from the In Memoriam gallery is the NYC Fire Department's Engine Company 21, one of the largest artifacts on display, its burnt-out cab a testament to the inferno faced by those at the scene. It stands at the entrance to the main historical exhibition, divided into Events of the Day, Before 9/11 and After 9/11. The exhibition spills into the monumental Foundation Hall, flanked by a massive section of the original slurry wall, built to hold back the waters of the Hudson River during the towers' construction. The hall is also home to the last steel column removed during the cleanup, adorned with messages and mementos of recovery workers, first responders and loved ones.",
+        "duration_sec": 56,
+        "kid_friendly": "no",
+        "entities": [
+          "Engine Company 21",
+          "NYC Fire Department",
+          "Foundation Hall",
+          "Hudson River"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "subject_tag": "foundation hall",
+        "physical_cues": [
+          {
+            "cue": "The burnt-out cab of Fire Department Engine Company 21",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The slurry wall and last steel column in Foundation Hall",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Engine Company 21's burnt-out cab is on display",
+          "Main exhibition divided into Events of the Day, Before 9/11, After 9/11",
+          "Foundation Hall is flanked by the original slurry wall holding back the Hudson",
+          "It holds the last steel column removed during cleanup, covered with messages"
+        ],
+        "source_passage": "Around the corner from the In Memoriam gallery is the NYC Fire Department's Engine Company 21. One of the largest artifacts on display, its burnt-out cab is testament to the inferno faced by those at the scene. The fire engine stands at the entrance to the museum's main historical exhibition. Divided into three sections - Events of the Day, Before 9/11 and After 9/11 - its collection of videos, audio recordings, images, objects and testimonies provide a rich, meditative exploration of the tragedy. The historical exhibition spills into the monumental Foundation Hall, flanked by a massive section of the original slurry wall, built to hold back the waters of the Hudson River during the towers' construction. It's also home to the last steel column removed during the cleanup, adorned with the messages and mementos of recovery workers, first responders and loved ones of the victims.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "03cccd79a7b7e742f0f14a6da7d0a964973805b657c1d85b1293dcebcf353134",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_9_11_memorial_and_museum_modern_design_lonely-planet-new-york-city_calatrava_oculus",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "modern_design",
+        "topic_slug": "calatrava_oculus",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "oculus",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The image of a flying dove allegedly inspired Santiago Calatrava's dramatic white Oculus above the new WTC Transportation Hub. Made from 36,500 tons of steel, the arresting structure streams natural light into the $3.9-billion transit center, which serves 250,000 train commuters daily. A whopping 2.5 times bigger than Grand Central Terminal, it also features multiple levels of retail and dining space. Every year on September 11, the central skylight is opened for 102 minutes, the length of time from the first attack to the collapse of the second tower.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Santiago Calatrava",
+          "Oculus",
+          "WTC Transportation Hub",
+          "Grand Central Terminal"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "calatrava oculus",
+        "physical_cues": [
+          {
+            "cue": "Calatrava's white winged Oculus above the WTC Transportation Hub",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "A flying dove allegedly inspired Calatrava's Oculus",
+          "Made of 36,500 tons of steel; $3.9-billion transit center serving 250,000 commuters daily",
+          "2.5 times bigger than Grand Central Terminal",
+          "Skylight opens 102 minutes every September 11"
+        ],
+        "source_passage": "The image of a flying dove allegedly inspired Santiago Calatrava's dramatic white Oculus above the new WTC Transportation Hub. Made from 36,500 tons of steel, the arresting structure streams natural light into the $3.9-billion transit center, which serves 250,000 train commuters daily. A whopping 2.5 times bigger than Grand Central Terminal, it also features multiple levels of retail and dining space. Every year on September 11, the central skylight is opened for 102 minutes, the length of time from the first attack to the collapse of the second tower.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "11dd3e0bb73e5df274c3832e530d263f8fb0ba82a28f432d91a14c630c99fb98",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_9_11_memorial_and_museum_local_legends_lonely-planet-new-york-city_angel_of_9_11",
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "local_legends",
+        "topic_slug": "angel_of_9_11",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "One of the Memorial Museum's most famous and curious artifacts is the so-called 'Angel of 9/11,' the eerie outline of a woman's anguished face on a twisted girder believed to originate from the point where American Airlines Flight 11 slammed into the North Tower. Experts have a more prosaic explanation: natural corrosion and sheer coincidence.",
+        "duration_sec": 24,
+        "kid_friendly": "no",
+        "entities": [
+          "Angel of 9/11",
+          "American Airlines Flight 11",
+          "North Tower"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "angel girder",
+        "physical_cues": [
+          {
+            "cue": "The twisted girder bearing the 'Angel of 9/11' face",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The 'Angel of 9/11' is a face-like outline on a twisted girder",
+          "Said to come from where Flight 11 hit the North Tower",
+          "Experts attribute it to natural corrosion and coincidence"
+        ],
+        "source_passage": "One of the Memorial Museum's most famous (and curious) artifacts is the so-called 'Angel of 9/11,' the eerie outline of a woman's anguished face on a twisted girder believed to originate from the point where American Airlines Flight 11 slammed into the North Tower. (Experts have a more prosaic explanation: natural corrosion and sheer coincidence.)",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a16b3e3084f6fd2c37958b1a65e3625865eb3fdca98ee175ba73738ee456f2ce",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "African Burial Ground National Monument",
+    "short_description": "National Park Service monument, dedicated Wikipedia article, one of the most important US archaeological finds. Moderate-high gravity; niche but nationally significant.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71444,
+    "longitude": -74.00444,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "National Park Service monument, dedicated Wikipedia article, one of the most important US archaeological finds. Moderate-high gravity; niche but nationally significant.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / NPS)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 45000,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 31.2,
+        "assigned_gravity": 2,
+        "reasoning": "manual override: NPS National Monument, nationally significant; genuinely low-traffic but monument status warrants T2 | NPS press kit states 'over 45,000 visitors' annually; a separate NPS source cited 32,465 in 2025. Wikipedia article is extensive with 47+ refs. Google review count not found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_african_burial_ground_national_monument_dark_history_lonely-planet-new-york-city_400_caskets_1991",
+        "city_name": "new_york",
+        "poi_name": "African Burial Ground National Monument",
+        "lens": "dark_history",
+        "topic_slug": "400_caskets_1991_discovery",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In 1991, construction workers here uncovered more than 400 stacked wooden caskets, just 16ft to 28ft below street level. The boxes contained the remains of both enslaved and free African Americans from the 17th and 18th centuries; from 1697, nearby Trinity Church had refused them burial in its graveyard. Today, a poignant memorial site and a visitor center with four rooms of educational displays honor the estimated 15,000 men, women and children buried in America's largest and oldest African cemetery.",
+        "duration_sec": 42,
+        "kid_friendly": "no",
+        "entities": [
+          "Trinity Church"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "burial ground discovery",
+        "physical_cues": [
+          {
+            "cue": "The memorial site marking America's largest, oldest African cemetery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1991 workers uncovered 400+ wooden caskets, 16-28ft below street level",
+          "Remains of enslaved and free African Americans from the 17th-18th centuries",
+          "From 1697, Trinity Church refused them burial",
+          "An estimated 15,000 buried in America's largest, oldest African cemetery"
+        ],
+        "source_passage": "In 1991, construction workers here uncovered more than 400 stacked wooden caskets, just 16ft to 28ft below street level. The boxes contained the remains of both enslaved and free African Americans from the 17th and 18th centuries (from 1697, nearby Trinity Church refused them burial in its graveyard). Today, a poignant memorial site and a visitor center with four rooms of educational displays honor the estimated 15,000 men, women and children buried in America's largest and oldest African cemetery.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "86f51cc27e239f0313447e37384d11126a9adb20d19795008b5d9241a96449ac",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Battery Park",
+    "short_description": "Tier-5 candidate: 25-acre waterfront park at Manhattan's southern tip; tour start point with harbor/Statue of Liberty views. High footfall. Importance_tier NOT assigned per task.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.703564,
+    "longitude": -74.016678,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5 candidate: 25-acre waterfront park at Manhattan's southern tip; tour start point with harbor/Statue of Liberty views. High footfall. Importance_tier NOT assigned per task.",
+      "verified": false,
+      "geocode_source": "Nominatim/latlong.net (cross-checked)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 7000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 83.9,
+        "assigned_gravity": 4,
+        "reasoning": "Estimated 7–15 million annual visitors depending on methodology (counts Statue of Liberty ferry transit); Google review count not pinned from search; Wikipedia article (The Battery, Manhattan) is extensive covering history, monuments, and redesigns; dominant transit hub for harbor tourism",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "new_york_battery_park_hidden_history_lonely-planet-new-york-city_first_dutch_settlement_1625",
+        "city_name": "new_york",
+        "poi_name": "Battery Park",
+        "lens": "hidden_history",
+        "topic_slug": "first_dutch_settlement_1625",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Skirting the southern edge of Manhattan, this 12-acre oasis lures with public artworks, meandering walkways and perennial gardens; its memorials include tributes to those who died in the Korean War and to the Italian navigator Giovanni da Verrazzano. The first Dutch settlement on Manhattan was founded here in 1625, and the city's first battery was later erected in its defense.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Korean War",
+          "Giovanni da Verrazzano"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "first dutch settlement",
+        "physical_cues": [
+          {
+            "cue": "The 12-acre park with perennial gardens and the Verrazzano memorial",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "12-acre park with public artworks and memorials to the Korean War and Giovanni da Verrazzano",
+          "First Dutch settlement on Manhattan founded here in 1625",
+          "The city's first battery was erected here in its defense"
+        ],
+        "source_passage": "Skirting the southern edge of Manhattan, this 12-acre oasis lures with public artworks, meandering walkways and perennial gardens. Its memorials include tributes to those who died in the Korean War and Italian navigator Giovanni da Verrazzano. The first Dutch settlement on Manhattan was founded here in 1625, and the city's first battery was later erected in its defense.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "49b845a8d5d8ad91ba9ad3866883c1893a8898d8bf18291acd4c94bdf9c24798",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Bowling Green Park",
+    "short_description": "Tier-4/5 candidate: NYC's oldest official park (est. 1733), George III statue toppling, original colonial fence, Charging Bull at uptown end. High gravity historic + photo-op site.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.705,
+    "longitude": -74.013611,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4/5 candidate: NYC's oldest official park (est. 1733), George III statue toppling, original colonial fence, Charging Bull at uptown end. High gravity historic + photo-op site.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Bowling Green, NYC)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "No official visitor count; 74 Yelp reviews; NYC's oldest park (1733); Charging Bull sculpture drives very high foot traffic; Wikipedia article covers history and monuments at moderate depth; search interest driven by Charging Bull queries",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_bowling_green_park_hidden_history_lonely-planet-new-york-city_minuit_purchase_charging_bull",
+        "city_name": "new_york",
+        "poi_name": "Bowling Green Park",
+        "lens": "hidden_history",
+        "topic_slug": "minuit_purchase_charging_bull",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "New York's oldest public park is purportedly the spot where Dutch settler Peter Minuit paid Native Americans the equivalent of $24 to purchase Manhattan Island. At its northern edge stands Arturo Di Modica's 7000lb bronze Charging Bull, placed here permanently after it mysteriously appeared in front of the New York Stock Exchange in 1989, two years after a market crash.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Peter Minuit",
+          "Arturo Di Modica",
+          "Charging Bull",
+          "New York Stock Exchange"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "minuit charging bull",
+        "physical_cues": [
+          {
+            "cue": "Arturo Di Modica's 7000lb bronze Charging Bull at the park's northern edge",
+            "direction": "north",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "NYC's oldest public park; purportedly where Minuit bought Manhattan for $24",
+          "7000lb bronze Charging Bull by Arturo Di Modica at the northern edge",
+          "It mysteriously appeared in front of the NYSE in 1989, two years after a crash"
+        ],
+        "source_passage": "New York's oldest public park is purportedly the spot where Dutch settler Peter Minuit paid Native Americans the equivalent of $24 to purchase Manhattan Island. At its northern edge stands Arturo Di Modica's 7000lb bronze Charging Bull, placed here permanently after it mysteriously appeared in front of the New York Stock Exchange in 1989, two years after a market crash.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "54184a0ad69a60ed8dc47906c889e0a13caab1992cfbd6be1f3756f85610e4b7",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "City Hall",
+    "short_description": "Federal-style seat of NYC government since 1812, with a coffered rotunda, the Governor's Room, and Washington's writing table on view via twice-weekly tours.",
+    "name_variations": [
+      "New York City Hall"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.713282,
+    "longitude": -74.006978,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-01. gravity: Tier-3 historic seat of city government since 1812 with Trumbull portraits and Washington artifacts.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 60,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 60 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_city_hall_historic_arch_lonely-planet-new-york-city_governors_room_trumbull",
+        "city_name": "new_york",
+        "poi_name": "City Hall",
+        "lens": "historic_arch",
+        "topic_slug": "governors_room_trumbull",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This Federal-style beauty has been home to NYC's government since 1812, and free guided tours run twice weekly. Tours take in the building's elegant coffered rotunda, the City Council chamber, and the Governor's Room, where you'll see portraits by John Trumbull, George Washington's writing table, and the remnants of a flag flown at the first president's 1789 inaugural ceremony.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "John Trumbull",
+          "George Washington",
+          "City Council"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "governors room",
+        "physical_cues": [
+          {
+            "cue": "The coffered rotunda and the Governor's Room with Trumbull portraits and Washington's writing table",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Federal-style building, NYC government seat since 1812",
+          "Free guided tours twice weekly",
+          "Governor's Room holds Trumbull portraits, Washington's writing table, and remnants of a flag from the 1789 inauguration"
+        ],
+        "source_passage": "This Federal-style beauty has been home to NYC's government since 1812, and free guided tours of the building run twice weekly. Tours take in the building's elegant coffered rotunda, the City Council chamber, and the Governor's Room, which is where you'll see portraits by John Trumbull, George Washington's writing table and the remnants of a flag flown at the first president's 1789 inaugural ceremony.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "15dd7d416eceaa8352adefe1b5a81de6ad8de558cd90387888a374bb1b1fdce2",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Ellis Island National Museum of Immigration",
+    "short_description": "Top-tier national landmark, full Wikipedia article, NPS site, ~12M historical immigrants processed, major Frommer's sight. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.699475,
+    "longitude": -74.039559,
+    "trigger_radius": 80,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Top-tier national landmark, full Wikipedia article, NPS site, ~12M historical immigrants processed, major Frommer's sight. High gravity.",
+      "verified": false,
+      "geocode_source": "web_search (alltopsights / iloveny)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "NPS counts Ellis Island jointly with Statue of Liberty National Monument (3.72M combined in 2024); no Ellis Island-only figure published. Wikipedia article is extensive. Search interest high but secondary to Statue of Liberty.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "new_york_ellis_island_national_museum_of_immigration_social_change_lonely-planet-new-york-city_twelve_million_arrivals",
+        "city_name": "new_york",
+        "poi_name": "Ellis Island National Museum of Immigration",
+        "lens": "social_change",
+        "topic_slug": "twelve_million_arrivals",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The most famous port of entry in the world, and a physical symbol of the American immigrant story, Ellis Island is now a National Monument. Operating only from 1892 to 1924, it nonetheless processed some 12 million new arrivals. An estimated 40% of Americans today descend from those millions, making this island central to the story of modern America.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "twelve million arrivals",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Operated 1892-1924",
+          "Processed some 12 million new arrivals",
+          "~40% of Americans descend from those millions"
+        ],
+        "source_passage": "The most famous port of entry in the world, and a physical symbol of the American immigrant story, Ellis Island is now a National Monument. Operating only from 1892 to 1924, it nonetheless processed some 12 million new arrivals. An estimated 40% of Americans today descend from those millions, making this island central to the story of modern America.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "fd8176e606cc19ce4921f2dbb8b7f390bbb048ed53a2fdfdcc8c7fc4abd5fcce",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_ellis_island_national_museum_of_immigration_famous_residents_lonely-planet-new-york-city_houdini_valentino_cary_grant",
+        "city_name": "new_york",
+        "poi_name": "Ellis Island National Museum of Immigration",
+        "lens": "famous_residents",
+        "topic_slug": "houdini_valentino_cary_grant",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Among the millions who came through in search of a new beginning were some who would become household names: Hungarian Erik Weisz, who became Harry Houdini; Italian Rodolfo Guglielmi, who became Rudolph Valentino; Frenchwoman Lily Chauchoin, who became Claudette Colbert; and Brit Archibald Alexander Leach, who became Cary Grant.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Erik Weisz",
+          "Harry Houdini",
+          "Rodolfo Guglielmi",
+          "Rudolph Valentino",
+          "Lily Chauchoin",
+          "Claudette Colbert",
+          "Archibald Alexander Leach",
+          "Cary Grant"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "famous immigrants",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Erik Weisz became Harry Houdini",
+          "Rodolfo Guglielmi became Rudolph Valentino",
+          "Lily Chauchoin became Claudette Colbert",
+          "Archibald Alexander Leach became Cary Grant"
+        ],
+        "source_passage": "Among them were Hungarian Erik Weisz (Harry Houdini), Italian Rodolfo Guglielmi (Rudolph Valentino), Frenchwoman Lily Chauchoin (Claudette Colbert) and Brit Archibald Alexander Leach (Cary Grant).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2d79593d5f88e2dc43cd0b5e1701ea3733b19c725dc257861e429a7afb8c26a9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_ellis_island_national_museum_of_immigration_dark_history_lonely-planet-new-york-city_through_americas_gate",
+        "city_name": "new_york",
+        "poi_name": "Ellis Island National Museum of Immigration",
+        "lens": "dark_history",
+        "topic_slug": "through_americas_gate",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "great-hall",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On the museum's 2nd floor, the exhibition Through America's Gate examines the step-by-step process faced by the newly arrived in the beautiful, vaulted Great Hall, including the chalk-marking of those suspected of illness, a wince-inducing eye examination, and 29 questions. The companion exhibition, Peak Immigration Years: 1880-1924, explores the motives behind the immigrants' journeys and the challenges they faced once free to begin their new American lives, alongside a collection of old photographs that offer intimate glimpses into their daily lives.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Through America's Gate",
+          "Peak Immigration Years"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "arrival inspection",
+        "physical_cues": [
+          {
+            "cue": "The vaulted Great Hall where new arrivals were processed",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Through America's Gate shows the arrival process: chalk-marking, eye examination, 29 questions",
+          "It is set in the vaulted Great Hall",
+          "Peak Immigration Years: 1880-1924 covers motives and challenges"
+        ],
+        "source_passage": "Through America's Gate examines the step-by-step process faced by the newly arrived (including the chalk-marking of those suspected of illness, a wince-inducing eye examination, and 29 questions) in the beautiful, vaulted Great Hall, while Peak Immigration Years: 1880-1924 explores the motives behind the immigrants' journeys and the challenges they faced once free to begin their new American lives. Particularly interesting is the collection of old photographs, which offers intimate glimpses into the daily lives of these courageous new Americans.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "16ae4834154775f502f54afb8fa1cb371aa630cc1b4e1323dcbe1cb6a036ed03",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_ellis_island_national_museum_of_immigration_historic_arch_lonely-planet-new-york-city_registry_room_guastavino",
+        "city_name": "new_york",
+        "poi_name": "Ellis Island National Museum of Immigration",
+        "lens": "historic_arch",
+        "topic_slug": "registry_room_guastavino",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "registry-room",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Architects Edward Lippincott Tilton and William A Boring won the contract after the original wooden building burnt down in 1897, and having attended the Ecole des Beaux-Arts in Paris, they opted for a beaux-arts aesthetic. The Main Building evokes a grand train station, with majestic triple-arched entrances, decorative Flemish bond brickwork, and granite cornerstones and belvederes. Inside, the 338ft-long Registry Room takes the breath away. Its original plaster ceiling was severely damaged by an explosion of munition barges at nearby Black Tom Wharf, a blessing in disguise, as the rebuilt version was adorned with striking herringbone-patterned tiles by Rafael Guastavino.",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edward Lippincott Tilton",
+          "William A Boring",
+          "Ecole des Beaux-Arts",
+          "Black Tom Wharf",
+          "Rafael Guastavino"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "registry room ceiling",
+        "physical_cues": [
+          {
+            "cue": "The 338ft-long Registry Room with its herringbone-patterned Guastavino tiled ceiling",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Triple-arched entrances and Flemish bond brickwork of the Main Building",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Ecole des Beaux-Arts",
+            "gloss": "the Paris school of fine arts"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Tilton and Boring won the contract after the 1897 fire",
+          "They trained at the Ecole des Beaux-Arts and used a beaux-arts aesthetic",
+          "338ft Registry Room ceiling damaged by Black Tom Wharf munitions explosion",
+          "Rebuilt with herringbone tiles by Rafael Guastavino"
+        ],
+        "source_passage": "With the Main Building, architects Edward Lippincott Tilton and William A Boring created a suitably impressive and imposing 'prologue' to America. The duo won the contract after the original wooden building burnt down in 1897. Having attended the Ecole des Beaux-Arts in Paris, it's not surprising that they opted for a beaux-arts aesthetic for the project. The building evokes a grand train station, with majestic triple-arched entrances, decorative Flemish bond brickwork, and granite cornerstones and belvederes. Inside, it's the 338ft-long Registry Room on the 2nd floor that takes the breath away. The original plaster ceiling was severely damaged by an explosion of munition barges at nearby Black Tom Wharf. It was a blessing in disguise - the rebuilt version was adorned with striking herringbone-patterned tiles by Rafael Guastavino.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bb39192931b95fe9ca8bd90f1db426235aeb64ad4eb75a1bcab0d7d457441873",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_ellis_island_national_museum_of_immigration_dark_history_lonely-planet-new-york-city_hospital_of_all_nations",
+        "city_name": "new_york",
+        "poi_name": "Ellis Island National Museum of Immigration",
+        "lens": "dark_history",
+        "topic_slug": "hospital_of_all_nations",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "hospital",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At the turn of the 20th century, the hospital on Ellis Island, now defunct, was one of the world's largest. Consisting of 22 buildings and dubbed the 'Hospital of All Nations,' it was America's front line in the fight against 'imported' diseases. A guided 'Hard Hat Tour' of the unrestored hospital can be booked when you reserve your ticket online.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hospital of All Nations"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "island hospital",
+        "physical_cues": [
+          {
+            "cue": "The unrestored hospital buildings, accessible on the Hard Hat Tour",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Ellis Island hospital was one of the world's largest",
+          "It comprised 22 buildings, dubbed 'Hospital of All Nations'",
+          "A 'Hard Hat Tour' of the unrestored hospital can be booked"
+        ],
+        "source_passage": "At the turn of the 20th century, the hospital on Ellis Island (now defunct) was one of the world's largest. Consisting of 22 buildings and dubbed the 'Hospital of All Nations,' it was America's front line in the fight against 'imported' diseases. The institution's fascinating history is vividly relayed in writer-producer Lorie Conway's documentary and accompanying book Forgotten Ellis Island. A guided 'Hard Hat Tour' ($58.50) of the unrestored hospital can be booked when you reserve your ticket online.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3aed5e8e214f2462ec8d2ad8927f6b50edf7cacc1aeb785e5aff2c8e0f1feaa9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_ellis_island_national_museum_of_immigration_social_change_lonely-planet-new-york-city_annie_moore_first_immigrant",
+        "city_name": "new_york",
+        "poi_name": "Ellis Island National Museum of Immigration",
+        "lens": "social_change",
+        "topic_slug": "annie_moore_first_immigrant",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Ellis Island's very first immigrant was 17-year-old Anna 'Annie' Moore. After a 12-day journey in steerage from County Cork, Ireland, Annie arrived on January 1, 1892, accompanied by her brothers Phillip and Anthony; the three were headed to America to join their parents, who had migrated to New York City four years earlier. She later married German immigrant Joseph Augustus Schayer and gave birth to at least 11 children, only five of whom survived. Annie died on December 6, 1924, and was laid to rest at Calvary Cemetery, Queens.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Anna 'Annie' Moore",
+          "Joseph Augustus Schayer",
+          "County Cork",
+          "Calvary Cemetery"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "somber",
+        "subject_tag": "annie moore",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Annie Moore, 17, was Ellis Island's first immigrant",
+          "Arrived Jan 1, 1892 from County Cork after 12 days in steerage, with brothers Phillip and Anthony",
+          "Married Joseph Augustus Schayer; 11 children, five surviving",
+          "Died Dec 6, 1924; buried at Calvary Cemetery, Queens"
+        ],
+        "source_passage": "Ellis Island's very first immigrant was 17-year-old Anna 'Annie' Moore. After a 12-day journey in steerage from County Cork, Ireland, Annie arrived on January 1, 1892, accompanied by her brothers Phillip and Anthony; the three were headed to America to join their parents, who had migrated to New York City four years earlier. She later married German immigrant Joseph Augustus Schayer and gave birth to at least 11 children, only five of whom survived. Annie died on December 6, 1924, and was laid to rest at Calvary Cemetery, Queens.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cb04681eec9f9d2da1f441be0eaf03a86b7461f6479c175e409470e271fbe8ca",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Federal Hall",
+    "short_description": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.707224,
+    "longitude": -74.010259,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Federal Hall National Memorial, 26 Wall St)",
+      "geocode_confidence": 0.96,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 200000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 46.3,
+        "assigned_gravity": 2,
+        "reasoning": "~200,000 annual interior visitors; 15 million pass by annually; 473 TripAdvisor reviews; 66 Yelp reviews; Wikipedia article (Federal Hall) is extensive covering Washington's inauguration, original 1703 structure, and current Greek Revival building; free NPS site",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_federal_hall_social_change_lonely-planet-new-york-city_zenger_libel_trial",
+        "city_name": "new_york",
+        "poi_name": "Federal Hall",
+        "lens": "social_change",
+        "topic_slug": "zenger_libel_trial_free_press",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "A Greek Revival masterpiece, Federal Hall houses a museum dedicated to postcolonial New York. Its themes include George Washington's inauguration, Alexander Hamilton's relationship with the city, and the struggles of John Peter Zenger, a printer who on this site in 1734 was jailed, tried and eventually acquitted of libel for exposing government corruption in his newspaper.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "John Peter Zenger",
+          "George Washington",
+          "Alexander Hamilton"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "zenger trial",
+        "physical_cues": [
+          {
+            "cue": "The Greek Revival facade of Federal Hall",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Greek Revival building housing a museum of postcolonial New York",
+          "Themes: Washington's inauguration, Hamilton, and John Peter Zenger",
+          "Zenger was jailed, tried and acquitted of libel on this site in 1734"
+        ],
+        "source_passage": "A Greek Revival masterpiece, Federal Hall houses a museum dedicated to postcolonial New York. Themes include George Washington's inauguration, Alexander Hamilton's relationship with the city, and the struggles of John Peter Zenger, a printer who on this site in 1734 was jailed, tried and eventually acquitted of libel for exposing government corruption in his newspaper.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a0ce9f3a9f18753e61425c9b82b9faaecfb711a123ff711cc5070a4bdfdec4a4",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Fraunces Tavern",
+    "short_description": "Tier-4/5 candidate: 18th-century tavern/museum, Washington's Farewell to Officers, Sons of Liberty, 1975 FALN bombing site. High historic gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.703408,
+    "longitude": -74.011329,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4/5 candidate: 18th-century tavern/museum, Washington's Farewell to Officers, Sons of Liberty, 1975 FALN bombing site. High historic gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (54 Pearl St at Broad St)",
+      "geocode_confidence": 0.93,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 25000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 40.0,
+        "assigned_gravity": 3,
+        "reasoning": "manual override: Revolutionary landmark (Washington's 1783 Farewell to Officers) under-ranked by low footfall/search | Museum sees 25,000+ annual visitors; 232 TripAdvisor reviews (4.4 stars); 57 Yelp reviews; Wikipedia article is extensive (1719 building, Washington's farewell address, Sons of the ",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_fraunces_tavern_war_conflict_lonely-planet-new-york-city_washington_1783_farewell",
+        "city_name": "new_york",
+        "poi_name": "Fraunces Tavern",
+        "lens": "war_conflict",
+        "topic_slug": "washington_1783_farewell_speech",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Combining five early-18th-century structures, this unique museum, restaurant and bar pays homage to the nation-shaping events of 1783, the momentous year in which the British officially relinquished control of New York following the end of the Revolutionary War. It was here that General George Washington gave a farewell speech to the officers of the Continental Army in the 2nd-floor dining room before returning to his home at Mt Vernon.",
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "entities": [
+          "George Washington",
+          "Continental Army",
+          "Mt Vernon",
+          "Revolutionary War"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "washington farewell",
+        "physical_cues": [
+          {
+            "cue": "The 2nd-floor dining room where Washington gave his farewell speech",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "The five combined early-18th-century structures",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Five early-18th-century structures combined",
+          "Commemorates 1783, when Britain relinquished control of New York",
+          "Washington gave his farewell to Continental Army officers in the 2nd-floor dining room before returning to Mt Vernon"
+        ],
+        "source_passage": "Combining five early-18th-century structures, this unique museum/restaurant/bar pays homage to the nation-shaping events of 1783, the momentous year in which the British officially relinquished control of New York following the end of the Revolutionary War, and General George Washington gave a farewell speech to the officers of the Continental Army in the 2nd-floor dining room before returning to his home at Mt Vernon.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e9aaa21b1e631d31d0a0c578a1b3ebfa74b95522d6601f50970e2d51ac876fba",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Governors Island",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.688654,
+    "longitude": -74.018276,
+    "trigger_radius": 150,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Independent top-level POI. Flagged for /poi-generate.",
+      "verified": false,
+      "geocode_source": "wikipedia (Governors Island, NY Harbor)",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Governors Island'",
+        "trigger_radius_reasoning": "Island-scale POI",
+        "notes": "Governors Island, Manhattan, New York County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 970000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 66.2,
+        "assigned_gravity": 3,
+        "reasoning": "Record 970k+ individual visitors in 2024; seasonal (ferry-dependent); 799 TripAdvisor reviews for National Monument listing; Wikipedia article is extensive covering military history, National Monument status, and current public use.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_governors_island_war_conflict_lonely-planet-new-york-city_reagan_gorbachev_summit",
+        "city_name": "new_york",
+        "poi_name": "Governors Island",
+        "lens": "war_conflict",
+        "topic_slug": "reagan_gorbachev_summit",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Originally named 'Nut Island,' or Paggank, by the indigenous Lenape people, the island was renamed first by the Dutch and then dubbed Governors Island when it became a military installation. Besides serving as a fort in the Revolutionary War, the Union Army's central recruiting station during the Civil War, and the take-off point for Wilbur Wright's famous 1909 flight around the Statue of Liberty, Governors Island is where the 1988 Reagan-Gorbachev summit signaled the beginning of the end of the Cold War. You can visit the spot where that summit took place at the Admiral's House, a grand, colonnaded military residence completed in 1843.",
+        "duration_sec": 51,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lenape",
+          "Paggank",
+          "Wilbur Wright",
+          "Reagan",
+          "Gorbachev",
+          "Admiral's House",
+          "Union Army"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "cold war summit",
+        "physical_cues": [
+          {
+            "cue": "The Admiral's House, a colonnaded 1843 military residence in Nolan Park",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Paggank",
+            "gloss": "the Lenape name for the island, meaning 'Nut Island'"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Originally 'Nut Island' (Paggank) to the Lenape; renamed by Dutch, then Governors Island",
+          "Served as a Revolutionary War fort and Civil War recruiting station",
+          "Take-off point for Wilbur Wright's 1909 flight around the Statue of Liberty",
+          "Site of the 1988 Reagan-Gorbachev summit, at the 1843 Admiral's House"
+        ],
+        "source_passage": "Originally named 'Nut Island' (Paggank) by the indigenous Lenape people, the island was renamed first by the Dutch and then, when it became a military installation, dubbed Governors Island. Besides serving as a successful military fort in the Revolutionary War, the Union Army's central recruiting station during the Civil War, and the take-off point for Wilbur Wright's famous 1909 flight around the Statue of Liberty, Governors Island is where the 1988 Reagan/Gorbachev summit signaled the beginning of the end of the Cold War. You can visit the spot where that famous summit took place at the Admiral's House, a grand, colonnaded military residence completed in 1843 that's part of the elegant ghost-town area of Nolan Park.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e27414f4fb712b8ba037cd54158fb248afe096a3432f7bd932c578081d71b846",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_governors_island_historic_arch_lonely-planet-new-york-city_fort_jay_castle_williams",
+        "city_name": "new_york",
+        "poi_name": "Governors Island",
+        "lens": "historic_arch",
+        "topic_slug": "fort_jay_castle_williams",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In the northern corner stands star-shaped Fort Jay, built in 1794 and rebuilt 15 years later, a failed attempt to prevent the British from invading Manhattan; nearby is Colonels Row, eight lovely 19th-century brick officers' quarters; and the red sandstone Castle Williams, a 19th-century fort with 8ft-thick walls, later converted to a military penitentiary.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Fort Jay",
+          "Colonels Row",
+          "Castle Williams"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "island forts",
+        "physical_cues": [
+          {
+            "cue": "Star-shaped Fort Jay and the red sandstone Castle Williams",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Star-shaped Fort Jay built 1794, rebuilt 15 years later against a British invasion",
+          "Colonels Row: eight 19th-century brick officers' quarters",
+          "Red sandstone Castle Williams, 8ft-thick walls, became a military penitentiary"
+        ],
+        "source_passage": "In the northern corner, there's star-shaped Fort Jay, built in 1794 and rebuilt 15 years later, a failed attempt to prevent the British from invading Manhattan; Colonels Row, a collection of eight lovely 19th-century brick officers' quarters; and the red sandstone Castle Williams, a 19th-century fort with 8ft-thick walls, which was later converted to a military penitentiary.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "16eeaed2f45afbc38000de092f58cf13a355bd5a26b5d938e96c2d0b2dd19109",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Museum of Jewish Heritage",
+    "short_description": "Major Holocaust memorial museum, Wikipedia article, Battery Park City. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.70621,
+    "longitude": -74.01875,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major Holocaust memorial museum, Wikipedia article, Battery Park City. Moderate-high gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / Yelp)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 51.2,
+        "assigned_gravity": 2,
+        "reasoning": "No annual visitor count found in any source. Wikipedia states 2M+ visitors since opening in 1997 (cumulative). Wikipedia article is extensive covering history, architecture, and exhibitions.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_museum_of_jewish_heritage_historic_arch_lonely-planet-new-york-city_six_sided_star_of_david",
+        "city_name": "new_york",
+        "poi_name": "Museum of Jewish Heritage",
+        "lens": "historic_arch",
+        "topic_slug": "six_sided_star_of_david",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This evocative waterfront museum explores all aspects of modern Jewish identity and culture, with a core exhibition across three themed floors: Jewish Life a Century Ago, Jewish Renewal, and The War Against the Jews, a detailed exploration of the Holocaust through thousands of personal artifacts, photographs, films and survivor testimony. Also commemorating Holocaust victims is the external installation Garden of Stones, a narrow pathway of 18 boulders supporting living trees. The building itself consists of six sides, symbolizing the Star of David and the six million Jews who perished in WWII.",
+        "duration_sec": 46,
+        "kid_friendly": "no",
+        "entities": [
+          "Garden of Stones",
+          "Star of David",
+          "The War Against the Jews"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "somber",
+        "subject_tag": "six sided museum",
+        "physical_cues": [
+          {
+            "cue": "The six-sided building symbolizing the Star of David",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Garden of Stones installation of 18 boulders supporting living trees",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Core exhibition on three floors: Jewish Life a Century Ago, Jewish Renewal, The War Against the Jews",
+          "Garden of Stones: 18 boulders supporting living trees",
+          "Six-sided building symbolizing the Star of David and the six million who perished in WWII"
+        ],
+        "source_passage": "This evocative waterfront museum explores all aspects of modern Jewish identity and culture, from religious traditions to artistic accomplishments. The museum's core exhibition covers three themed floors: Jewish Life a Century Ago, Jewish Renewal and The War Against the Jews - a detailed exploration of the Holocaust through thousands of personal artifacts, photographs, documentary films and survivor testimony. Also commemorating Holocaust victims is the external installation Garden of Stones, a narrow pathway of 18 boulders supporting living trees. The building itself consists of six sides, symbolizing the Star of David and the six million Jews who perished in WWII.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "23665662ab4ec96e2ff02984e3ec6984f49e42c4a2d2ec14dbc86a9aa1fff72a",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "National Museum of the American Indian",
+    "short_description": "Tier-4/5 candidate: George Gustav Heye Center inside the landmark Beaux Arts Alexander Hamilton U.S. Custom House (Cass Gilbert, Daniel Chester French sculptures). Free museum, major architecture stop.",
+    "name_variations": [
+      "National Museum of the American Indian, George Gustav Heye Center"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.70417,
+    "longitude": -74.01389,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4/5 candidate: George Gustav Heye Center inside the landmark Beaux Arts Alexander Hamilton U.S. Custom House (Cass Gilbert, Daniel Chester French sculptures). Free museum, major architecture stop.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Alexander Hamilton U.S. Custom House, 1 Bowling Green)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 239435,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 36.8,
+        "assigned_gravity": 3,
+        "reasoning": "manual override: Smithsonian museum in landmark Custom House, free admission ~239K visitors; signals undersold significance | Smithsonian/Wikipedia report 239,435 visitors in 2022 (most recent confirmed figure). Free admission. Wikipedia article (George Gustav Heye Center) is extensive with exhibiti",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_national_museum_of_the_american_indian_historic_arch_lonely-planet-new-york-city_cass_gilbert_custom_house",
+        "city_name": "new_york",
+        "poi_name": "National Museum of the American Indian",
+        "lens": "historic_arch",
+        "topic_slug": "cass_gilbert_custom_house_rotunda",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "An affiliate of the Smithsonian Institution, this elegant tribute to Native American culture occupies Cass Gilbert's spectacular 1907 Custom House, one of NYC's finest beaux-arts buildings. Beyond a vast elliptical rotunda capped by a 140-ton skylight, sleek galleries host changing exhibitions of Native American art, culture, life and beliefs. The permanent collection includes stunning decorative arts, textiles and ceremonial objects documenting diverse native cultures across the Americas, while the imagiNATIONS Activity Center explores their technologies.",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "entities": [
+          "Smithsonian Institution",
+          "Cass Gilbert",
+          "Custom House",
+          "imagiNATIONS Activity Center"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "custom house rotunda",
+        "physical_cues": [
+          {
+            "cue": "The vast elliptical rotunda capped by a 140-ton skylight",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Cass Gilbert's 1907 beaux-arts Custom House facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Smithsonian affiliate in Cass Gilbert's 1907 Custom House",
+          "Elliptical rotunda capped by a 140-ton skylight",
+          "Permanent collection of decorative arts, textiles, ceremonial objects across the Americas",
+          "imagiNATIONS Activity Center explores native technologies"
+        ],
+        "source_passage": "An affiliate of the Smithsonian Institution, this elegant tribute to Native American culture occupies Cass Gilbert's spectacular 1907 Custom House, one of NYC's finest beaux-arts buildings. Beyond a vast elliptical rotunda capped by a 140-ton skylight, sleek galleries play host to changing exhibitions featuring Native American art, culture, life and beliefs. The museum's permanent collection includes stunning decorative arts, textiles and ceremonial objects that document the diverse native cultures across the Americas, while the imagiNATIONS Activity Center explores their technologies.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ce265f9fdc15787fadda9cb5f3dd80deab2b48988a189eb2c836ad8e4eac452e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "New York Stock Exchange",
+    "short_description": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.706877,
+    "longitude": -74.011265,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+      "verified": false,
+      "geocode_source": "web_search (distancesto / findlatitudeandlongitude)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Interior public tours closed permanently after 9/11. Exterior viewable from street. No visitor/tour count applicable. Very high search interest as a financial landmark. Wikipedia article is extensive with full market history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "new_york_new_york_stock_exchange_visual_art_lonely-planet-new-york-city_fearless_girl_moved_2018",
+        "city_name": "new_york",
+        "poi_name": "New York Stock Exchange",
+        "lens": "visual_art",
+        "topic_slug": "fearless_girl_moved_2018",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Home to the world's best-known stock exchange, the NYSE is an iconic symbol of US capitalism. Behind its portentous neoclassical facade, about one billion shares change hands daily, a sight no longer publicly viewable due to security concerns; feel free to gawk outside the building, protected by barricades and police. Directly across the cobblestones of Broad St stands the renowned Fearless Girl statue by Kristen Visbal, which was moved here in 2018 from its original spot outside Bowling Green.",
+        "duration_sec": 39,
+        "kid_friendly": "yes",
+        "entities": [
+          "New York Stock Exchange",
+          "Fearless Girl",
+          "Kristen Visbal",
+          "Bowling Green"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "fearless girl",
+        "physical_cues": [
+          {
+            "cue": "The neoclassical NYSE facade behind barricades on Wall Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Fearless Girl statue across the cobblestones of Broad St",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "NYSE is the world's best-known stock exchange; ~one billion shares trade daily",
+          "Trading floor no longer publicly viewable",
+          "Fearless Girl by Kristen Visbal stands across Broad St",
+          "It was moved here in 2018 from outside Bowling Green"
+        ],
+        "source_passage": "Home to the world's best-known stock exchange (the NYSE), Wall Street is an iconic symbol of US capitalism. Behind the portentous neoclassical facade, about one billion shares change hands daily, a sight no longer publicly viewable due to security concerns. Feel free to gawk outside the building, protected by barricades and police. Directly across the cobblestones of Broad St stands the renowned Fearless Girl statue by Kristen Visbal, which was moved here in 2018 from its original spot outside Bowling Green.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "abffa59990cff3eec27241ef86f26215b651eb40f7a5432a3fb0d7bce95ad9bd",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "One World Observatory",
+    "short_description": "Observation deck atop One World Trade Center (Western Hemisphere's tallest building). High gravity, major ticketed Frommer's sight.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71302,
+    "longitude": -74.01319,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Observation deck atop One World Trade Center (Western Hemisphere's tallest building). High gravity, major ticketed Frommer's sight.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia One WTC)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 76.5,
+        "assigned_gravity": 4,
+        "reasoning": "Estimates range from 2.5M to 3.8M annually; cumulative total reported as 10M+ since 2015 opening. No single authoritative annual figure confirmed. Wikipedia coverage is moderate.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "new_york_one_world_observatory_modern_design_lonely-planet-new-york-city_spire_1776_feet",
+        "city_name": "new_york",
+        "poi_name": "One World Observatory",
+        "lens": "modern_design",
+        "topic_slug": "spire_1776_feet",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Leaping from the northwestern corner of the World Trade Center site, the 104-floor tower is architect David M Childs' redesign of Daniel Libeskind's original 2002 concept. The loftiest building in America and currently the tallest in the Western Hemisphere, this tapered giant soars with chamfered edges, forming a series of isosceles triangles that, seen from the base, reach to infinity. Crowning the structure is a 408ft cable-stayed spire, co-designed by sculptor Kenneth Snelson, which brings the building's total height to 1776ft, a symbolic reference to the year of American independence. The tower's footprint equals those of the original Twin Towers, and its observation decks match the heights of those in the old complex.",
+        "duration_sec": 56,
+        "kid_friendly": "yes",
+        "entities": [
+          "David M Childs",
+          "Daniel Libeskind",
+          "Kenneth Snelson",
+          "World Trade Center",
+          "Twin Towers"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "1776ft spire",
+        "physical_cues": [
+          {
+            "cue": "The tapered tower with chamfered edges forming isosceles triangles, seen from the base looking up",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The 408ft cable-stayed spire crowning the tower",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "104-floor tower; David Childs redesigned Libeskind's 2002 concept",
+          "Tallest in the Western Hemisphere",
+          "408ft cable-stayed spire (co-designed by Kenneth Snelson) brings total to 1776ft",
+          "Footprint equals the original Twin Towers; observation decks match old heights"
+        ],
+        "source_passage": "Leaping from the northwestern corner of the World Trade Center site, the 104-floor tower is architect David M Childs' redesign of Daniel Libeskind's original 2002 concept. Not only the loftiest building in America, this tapered giant is currently the tallest building in the Western Hemisphere - not to mention the sixth tallest in the world by pinnacle height. The tower soars skywards with chamfered edges, resulting in a series of isosceles triangles that, seen from the building's base, reach to infinity. Crowning the structure is a 408ft cable-stayed spire. Co-designed by sculptor Kenneth Snelson, it brings the building's total height to 1776ft, a symbolic reference to the year of American independence. Indeed, symbolism feeds several aspects of the building: the tower's footprint is equal to those of the original Twin Towers, while the observation decks match the heights of those in the old complex.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ed554525b31cd0d8575ac9cd015ce80f3cf2508a8c404c962614ecae950236af",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_one_world_observatory_local_legends_lonely-planet-new-york-city_howling_antenna",
+        "city_name": "new_york",
+        "poi_name": "One World Observatory",
+        "lens": "local_legends",
+        "topic_slug": "howling_antenna",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "One thing not foreseen by the architects and engineers was the antenna's noisy disposition: the strong winds that race through its lattice design produce a haunting, howling sound known to keep some locals up at night.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "howling antenna",
+        "physical_cues": [
+          {
+            "cue": "The lattice antenna atop the tower that howls in high wind",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Wind through the antenna's lattice design produces a howling sound that keeps locals up at night"
+        ],
+        "source_passage": "One thing not foreseen by the architects and engineers, though, was the antenna's noisy disposition: the strong winds that race through its lattice design produce a haunting, howling sound known to keep some locals up at night.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "30a1537b7d1dc0e927edce394ae814fd62dc15da12e9bb9e35af730776992eb4",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_one_world_observatory_science_tech_lonely-planet-new-york-city_sky_pod_47_seconds",
+        "city_name": "new_york",
+        "poi_name": "One World Observatory",
+        "lens": "science_tech",
+        "topic_slug": "sky_pod_47_seconds",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "observatory",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The One World Observatory experience begins at the ground-floor Global Welcome Center, where an electronic world map highlights the homelands of the building's visitors, with data relayed from ticket scans. After a Voices exhibition on 144 video screens, you step inside one of five Sky Pod elevators, among the fastest in the world. As they begin their 1250ft skyward journey, LED wall panels turn the ride into a time machine, watching Manhattan's evolution from forested island to teeming concrete jungle. Forty-seven seconds and 500 years later, you're on level 102.",
+        "duration_sec": 47,
+        "kid_friendly": "yes",
+        "entities": [
+          "One World Observatory",
+          "Global Welcome Center",
+          "Sky Pod"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "sky pod elevators",
+        "physical_cues": [
+          {
+            "cue": "The Sky Pod elevators with LED wall panels showing Manhattan's evolution",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Experience begins at the Global Welcome Center with an electronic world map from ticket-scan data",
+          "Voices exhibition on 144 video screens",
+          "Five Sky Pod elevators rise 1250ft in 47 seconds, with LED time-machine panels"
+        ],
+        "source_passage": "While the observatory spans levels 100 to 102, the experience begins at the ground-floor Global Welcome Center, where an electronic world map highlights the many homelands of the building's visitors (with data relayed from ticket scans). The bitter bickering that plagued much of the project's development is all but forgotten in the adjoining Voices exhibition, where architects and construction workers wax lyrical about the tower's formation on 144 video screens. After a quick rundown of the site's geology, the real thrills begin as you step inside one of five Sky Pod elevators, among the fastest in the world. As the elevators begin their 1250ft skyward journey, LED wall panels kick into action. Suddenly you're in a veritable time machine, watching Manhattan's evolution from forested island to teeming concrete jungle. Forty-seven seconds (and 500 years) later, you're on level 102.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f63b35adc56634958cbf64bfc5cf2b43dd72270407ba1b3002833ebbfb90ea75",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_one_world_observatory_famous_residents_lonely-planet-new-york-city_conde_nast_tenant",
+        "city_name": "new_york",
+        "poi_name": "One World Observatory",
+        "lens": "famous_residents",
+        "topic_slug": "conde_nast_tenant",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "One World Trade Center's most famous tenant is Conde Nast Publications, which made the move from 4 Times Square in 2014. The company's portfolio includes high-end magazines like Vogue, Vanity Fair, GQ, Architectural Digest, Wired and, aptly enough, The New Yorker. Its headquarters are nothing short of fabulous, complete with a dramatic spiral staircase and a glamorous cafeteria with a million-dollar view.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Conde Nast Publications",
+          "Vogue",
+          "Vanity Fair",
+          "GQ",
+          "The New Yorker"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "conde nast tenant",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Conde Nast moved into One WTC from 4 Times Square in 2014",
+          "Its titles include Vogue, Vanity Fair, GQ, Architectural Digest, Wired, The New Yorker",
+          "Its HQ has a dramatic spiral staircase and glamorous cafeteria"
+        ],
+        "source_passage": "Its most famous tenant is Conde Nast Publications, which made the move from 4 Times Square in 2014. The company's portfolio includes high-end magazines like Vogue, Vanity Fair, GQ, Architectural Digest, Wired and - aptly enough - The New Yorker. As is to be expected, the company's headquarters are nothing short of fabulous, complete with dramatic spiral staircase and a glamorous cafeteria with gourmet bites and a million-dollar view.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "92c2a299996c421c703c2465de46781a20a368bc83f95da56d9efbf3b2169609",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Pier 17",
+    "short_description": "Redeveloped pier at South Street Seaport with restaurants, a rooftop concert venue, and a waterfront Riverdeck with views of the Brooklyn and Manhattan Bridges.",
+    "name_variations": [
+      "Pier 17 South Street Seaport"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7055221,
+    "longitude": -74.0015738,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-01. gravity: Tier-2 dining/entertainment pier; main draw is the waterfront Riverdeck views, not a deep historical stop.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 43,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 43 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_pier_17_waterways_views_lonely-planet-new-york-city_riverdeck_bridge_views",
+        "city_name": "new_york",
+        "poi_name": "Pier 17",
+        "lens": "waterways_views",
+        "topic_slug": "riverdeck_bridge_views",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Formerly a shopping center, this large pier off South Street Seaport has been redeveloped for dining and entertainment, with upmarket restaurants and a rooftop bar and outdoor concert venue. The best reason to visit is the expansive Riverdeck, which offers built-in wooden loungers right on the water, with grand views of the Brooklyn and Manhattan Bridges, Governors Island and Brooklyn on the opposite shore.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Riverdeck",
+          "Brooklyn Bridge",
+          "Manhattan Bridge",
+          "Governors Island"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "riverdeck views",
+        "physical_cues": [
+          {
+            "cue": "The Riverdeck wooden loungers with views of the Brooklyn and Manhattan Bridges",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Formerly a shopping center, now dining and entertainment with a rooftop concert venue",
+          "The Riverdeck has built-in wooden loungers on the water",
+          "Views of the Brooklyn and Manhattan Bridges, Governors Island and Brooklyn"
+        ],
+        "source_passage": "Formerly a shopping center, this large pier off South Street Seaport has been redeveloped for dining and entertainment, with several upmarket restaurants and a rooftop bar and outdoor concert venue. The best reason to visit, however, is the expansive Riverdeck, which offers built-in wooden loungers right on the water, where you can revel in grand views of the Brooklyn and Manhattan Bridges, Governors Island and Brooklyn on the opposite shore, as ferries cheerily ply their routes to and fro.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4585f4e6daacf384ab8e357617e7d5d222106e9da4acc586ccd1e49e6277948e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Skyscraper Museum",
+    "short_description": "Small specialty museum, has Wikipedia entry. Low gravity. Coordinate derived from address proximity (exact building coords not directly returned); flagged for geocode verification.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7053,
+    "longitude": -74.0186,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Small specialty museum, has Wikipedia entry. Low gravity. Coordinate derived from address proximity (exact building coords not directly returned); flagged for geocode verification.",
+      "verified": false,
+      "geocode_source": "web_search (derived from 39 Battery Place, adjacent to Museum of Jewish Heritage at 36 Battery Place)",
+      "geocode_confidence": 0.7,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 27.8,
+        "assigned_gravity": 1,
+        "reasoning": "No visitor count found; small niche museum open Wed–Sat with free admission. Wikipedia article is moderate: covers founding, location, and select exhibitions but lacks visitor data.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "new_york_skyscraper_museum_modern_design_lonely-planet-new-york-city_design_engineering_gallery",
+        "city_name": "new_york",
+        "poi_name": "Skyscraper Museum",
+        "lens": "modern_design",
+        "topic_slug": "design_engineering_gallery",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "This compact, high-gloss gallery examines skyscrapers as objects of design, engineering and urban renewal. Temporary exhibitions dominate the space, exploring everything from New York's new generation of superslim residential towers to the world's new breed of supertalls, while permanent fixtures include information on the design and construction of the Empire State Building and World Trade Center.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Empire State Building",
+          "World Trade Center"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "skyscraper gallery",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Gallery examining skyscrapers as design, engineering and urban renewal",
+          "Temporary shows cover superslim towers and supertalls",
+          "Permanent fixtures on the Empire State Building and World Trade Center"
+        ],
+        "source_passage": "Fans of phallic architecture will appreciate this compact, high-gloss gallery, examining skyscrapers as objects of design, engineering and urban renewal. Temporary exhibitions dominate the space, with past exhibitions exploring everything from New York's new generation of superslim residential towers to the world's new breed of supertalls. Permanent fixtures include information on the design and construction of the Empire State Building and World Trade Center.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "aa621e2b4a30f8e3b0472be24e63bd3be319b9f0e29b38465e98ccfc9f079cfa",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "St. Paul's Chapel",
+    "short_description": "Oldest church building in Manhattan (1766), Wikipedia article, George Washington connection, 9/11 relief site. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71132,
+    "longitude": -74.0092,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Oldest church building in Manhattan (1766), Wikipedia article, George Washington connection, 9/11 relief site. Moderate-high gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / Google Maps)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 1000000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 58.3,
+        "assigned_gravity": 2,
+        "reasoning": "Travel source states 1M+ visitors annually; Trinity Church cluster (Trinity + St. Paul's) cited at 3M combined by the church itself. St. Paul's is Manhattan's oldest surviving church building (1766). Wikipedia article is extensive.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_st_pauls_chapel_historic_worship_lonely-planet-new-york-city_little_chapel_that_stood",
+        "city_name": "new_york",
+        "poi_name": "St. Paul's Chapel",
+        "lens": "historic_worship",
+        "topic_slug": "little_chapel_that_stood",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "After his inauguration in 1789, George Washington worshipped at this Classical Revival brownstone chapel, built in 1766 and narrowly avoiding destruction in the fire of 1776. It avoided disaster again on September 11, 2001, when the destruction of the World Trade Center a mere block away left the chapel untouched. Now famous as 'The Little Chapel That Stood,' St Paul's offered round-the-clock refuge, spiritual and emotional support, and food service to first responders and rescue workers.",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "George Washington",
+          "World Trade Center"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "chapel that stood",
+        "physical_cues": [
+          {
+            "cue": "The 1766 Classical Revival brownstone chapel, a block from the WTC site",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Washington worshipped here after his 1789 inauguration",
+          "Built 1766; survived the fire of 1776",
+          "Survived 9/11 though the WTC was a block away",
+          "Known as 'The Little Chapel That Stood'; gave refuge to first responders"
+        ],
+        "source_passage": "After his inauguration in 1789, George Washington worshipped at this Classical Revival brownstone chapel, built in 1766 and narrowly avoiding destruction in the fire of 1776. It avoided disaster again on September 11, 2001, when the destruction of the World Trade Center a mere block away left the chapel untouched. Now famous as 'The Little Chapel That Stood,' St Paul's offered round-the-clock refuge, spiritual and emotional support, and food service to first responders and rescue workers.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "435ea11e4f7c1830fb57c3bfea53f99ee82628b3801bf28e3b66a8a847603b1e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Statue of Liberty",
+    "short_description": "World-famous monument, extensive Wikipedia coverage, UNESCO World Heritage Site, ~4M annual visitors. Top-tier gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.689247,
+    "longitude": -74.044502,
+    "trigger_radius": 80,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "World-famous monument, extensive Wikipedia coverage, UNESCO World Heritage Site, ~4M annual visitors. Top-tier gravity.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 3722029,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 86.1,
+        "assigned_gravity": 5,
+        "reasoning": "NPS official count 3,722,029 in 2024 (includes Liberty Island + Ellis Island combined under Statue of Liberty National Monument). Wikipedia article is extensive. One of the most searched NYC attractions globally.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "new_york_statue_of_liberty_science_tech_lonely-planet-new-york-city_eiffel_framework",
+        "city_name": "new_york",
+        "poi_name": "Statue of Liberty",
+        "lens": "science_tech",
+        "topic_slug": "eiffel_framework",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Bartholdi spent almost 20 years turning his dream into reality: a hollow copper colossus mounted in New York Harbor. The project was hindered by serious financial problems but helped by the fund-raising efforts of newspaper publisher Joseph Pulitzer, and by poet Emma Lazarus, whose ode to Lady Liberty was part of a campaign for the pedestal, designed by American architect Richard Morris Hunt. Bartholdi's work was also delayed by structural challenges, a problem resolved by the metal-framework mastery of railway engineer Gustave Eiffel, yes, of the famous tower. Completed in France in 1884, the statue was shipped to NYC as 350 pieces packed into 214 crates and reassembled over four months on the US-made granite pedestal.",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frederic-Auguste Bartholdi",
+          "Joseph Pulitzer",
+          "Emma Lazarus",
+          "Richard Morris Hunt",
+          "Gustave Eiffel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "eiffel framework",
+        "physical_cues": [
+          {
+            "cue": "The hollow copper statue mounted on its granite pedestal",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Eiffel solved the statue's internal metal framework",
+          "Joseph Pulitzer fund-raised; Emma Lazarus wrote a fundraising ode",
+          "Richard Morris Hunt designed the pedestal",
+          "Completed in France 1884; shipped as 350 pieces in 214 crates, reassembled in four months"
+        ],
+        "source_passage": "Bartholdi spent almost 20 years turning his dream - to create the hollow copper colossus and mount it in New York Harbor - into reality. Along the way the project was hindered by serious financial problems but helped in part by the fund-raising efforts of newspaper publisher Joseph Pulitzer. Lending a further hand was poet Emma Lazarus, whose ode to Lady Liberty was part of a fund-raising campaign for the statue's pedestal, designed by American architect Richard Morris Hunt. Bartholdi's work on the statue was also delayed by structural challenges - a problem resolved by the metal-framework mastery of railway engineer Gustave Eiffel (yes, of the famous tower). The work of art was finally completed in France in 1884, a bit behind schedule for the centennial. It was shipped to NYC as 350 pieces packed into 214 crates, reassembled over a span of four months and placed on the US-made granite pedestal.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5a0797616e41edaf0ee28d07abc5f7b815e4e60e42ddab234bb72b89715a47a9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_statue_of_liberty_social_change_lonely-planet-new-york-city_mother_of_exiles_lazarus",
+        "city_name": "new_york",
+        "poi_name": "Statue of Liberty",
+        "lens": "social_change",
+        "topic_slug": "mother_of_exiles_lazarus",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Lady Liberty has been gazing sternly toward 'unenlightened Europe' since 1886. Dubbed the 'Mother of Exiles,' she's often read as a symbolic admonishment to an unjust old world. Emma Lazarus' 1883 poem 'The New Colossus' articulates the challenge: 'Give me your tired, your poor, your huddled masses yearning to breathe free, the wretched refuse of your teeming shore.'",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Emma Lazarus",
+          "The New Colossus",
+          "Mother of Exiles"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "scene_setter",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "new colossus poem",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "She has gazed toward Europe since 1886",
+          "Dubbed the 'Mother of Exiles'",
+          "Emma Lazarus' 1883 poem 'The New Colossus' is quoted"
+        ],
+        "source_passage": "Lady Liberty has been gazing sternly toward 'unenlightened Europe' since 1886. Dubbed the 'Mother of Exiles,' she's often interpreted as a symbolic admonishment to an unjust old world. Emma Lazarus' 1883 poem 'The New Colossus' articulates this challenge: 'Give me your tired, your poor, your huddled masses yearning to breathe free, the wretched refuse of your teeming shore.'",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c334f3828306f48152bcbbce9d8969594cc2fb237e691b0ddff733b5897ca8be",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_statue_of_liberty_local_legends_lonely-planet-new-york-city_dedication_ticker_tape",
+        "city_name": "new_york",
+        "poi_name": "Statue of Liberty",
+        "lens": "local_legends",
+        "topic_slug": "dedication_ticker_tape",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Her spectacular October 1886 dedication included New York's first ticker-tape parade and a flotilla of almost 300 vessels. The Lady was placed under the administration of the National Park Service in 1933, and in 1984 a restoration of her oxidized copper began, the same year she made it onto the UN's list of World Heritage Sites.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "National Park Service",
+          "UN World Heritage Sites"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "1886 dedication",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "October 1886 dedication featured NYC's first ticker-tape parade and ~300 vessels",
+          "Placed under NPS administration in 1933",
+          "Restoration began 1984, same year as World Heritage listing"
+        ],
+        "source_passage": "Its spectacular October 1886 dedication included New York's first ticker-tape parade and a flotilla of almost 300 vessels. The Lady was placed under the administration of the National Park Service in 1933; a restoration of her oxidized copper began in 1984, the same year she made it onto the UN's list of World Heritage Sites.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bd2334a9bfaaa32667bec323ba2cf9d281d85ce99c536e2e5037302e5ae28e59",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "new_york_statue_of_liberty_local_legends_lonely-planet-new-york-city_crown_162_steps",
+        "city_name": "new_york",
+        "poi_name": "Statue of Liberty",
+        "lens": "local_legends",
+        "topic_slug": "crown_162_steps",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": "crown",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Visitors who reserve in advance can climb the steep 162 steps from the pedestal level up to Lady Liberty's crown, where the city and harbor views are breathtaking. Crown access is extremely limited, with up to a six-month lead time, a maximum of four tickets per customer, and children required to be at least 4ft tall.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "crown climb",
+        "physical_cues": [
+          {
+            "cue": "The 162 narrow steps spiralling up to the crown",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "162 steps from pedestal to crown",
+          "Crown access limited; up to six-month lead time",
+          "Max four tickets per customer; children must be at least 4ft tall"
+        ],
+        "source_passage": "Folks who reserve their tickets in advance are able to climb the (steep) 162 steps from the top of the pedestal level to Lady Liberty's crown, from where the city and harbor views are breathtaking. Be advised: crown access is extremely limited, and the only way in is to reserve your spot in advance; the further ahead you can do it, the better (a six-month lead time is allowed). Each customer can reserve a maximum of four crown tickets, and children must be at least 4ft tall to be admitted.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "96ef276f1673950b8fb1528ef8884521502a770f7781724ff136e9a2272bceab",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Woolworth Building",
+    "short_description": "Landmark skyscraper ('Cathedral of Commerce'), full Wikipedia article, former world's tallest building. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.712265,
+    "longitude": -74.007892,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Landmark skyscraper ('Cathedral of Commerce'), full Wikipedia article, former world's tallest building. Moderate-high gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Apple Maps / Wikipedia)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Guided tours offered by Woolworth Tours NYC (lobby and vault); no annual visitor count published. Historical observation deck drew ~300K/yr before closure in 1941. Wikipedia article is extensive covering full architectural and ownership history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_the_woolworth_building_historic_arch_lonely-planet-new-york-city_cathedral_of_commerce_secrets",
+        "city_name": "new_york",
+        "poi_name": "The Woolworth Building",
+        "lens": "historic_arch",
+        "topic_slug": "cathedral_of_commerce_secrets",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The world's tallest building upon its completion in 1913, surpassed only by the Chrysler Building in 1930, Cass Gilbert's 60-story, 792ft-tall Woolworth Building is a neo-Gothic marvel, elegantly clad in masonry and terra-cotta. The breathtaking lobby, a spectacle of dazzling, Byzantine-like mosaics, is accessible only on prebooked guided tours, which also reveal the building's more curious original features, among them a subway entrance and a secret swimming pool.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Cass Gilbert",
+          "Woolworth Building",
+          "Chrysler Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "cathedral of commerce",
+        "physical_cues": [
+          {
+            "cue": "The neo-Gothic terra-cotta-clad facade rising 792ft",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Byzantine-like mosaic lobby (tours only)",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "World's tallest building when completed 1913; surpassed by Chrysler in 1930",
+          "Cass Gilbert's 60-story, 792ft neo-Gothic building clad in masonry and terra-cotta",
+          "Byzantine-like mosaic lobby accessible only on prebooked tours",
+          "Curious features include a subway entrance and a secret swimming pool"
+        ],
+        "source_passage": "The world's tallest building upon completion in 1913 (it was only surpassed in height by the Chrysler Building in 1930), Cass Gilbert's 60-story, 792ft-tall Woolworth Building is a neo-Gothic marvel, elegantly clad in masonry and terra-cotta. The breathtaking lobby - a spectacle of dazzling, Byzantine-like mosaics - is accessible only on prebooked guided tours, which also offer insight into the building's more curious original features, among them a subway entrance and a secret swimming pool.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "98bfb7fdf0e8ab8d4c4112da0601a416665c8c57e539c7983dbe7539e191eb86",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Trinity Church",
+    "short_description": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) — minimal content here.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.708061,
+    "longitude": -74.012184,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) — minimal content here.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Trinity Church, 89 Broadway at Wall St)",
+      "geocode_confidence": 0.96,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Trinity Church cluster (Trinity + St. Paul's) self-reports 3M annual visitors combined; individual split not published. Wikipedia article is extensive with full rector list, architectural detail, and property holdings (~$6B endowment).",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_trinity_church_historic_worship_lonely-planet-new-york-city_tallest_1846_messiah",
+        "city_name": "new_york",
+        "poi_name": "Trinity Church",
+        "lens": "historic_worship",
+        "topic_slug": "tallest_1846_messiah",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "New York City's tallest building upon its consecration in 1846, Trinity Church features a 280ft-high bell tower and a richly colored stained-glass window over the altar. Founding Father and first secretary of the Treasury, and now Broadway superstar, Alexander Hamilton lies in its serene cemetery. The church's excellent musical program includes the organ-recital series Pipes at One on Fridays, evening choral performances of new works co-commissioned by Trinity, and an annual December rendition of Handel's Messiah.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alexander Hamilton",
+          "Pipes at One",
+          "Handel's Messiah"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "1846 tallest church",
+        "physical_cues": [
+          {
+            "cue": "The 280ft bell tower",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The richly colored stained-glass window over the altar",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Alexander Hamilton's grave in the cemetery",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "NYC's tallest building when consecrated in 1846",
+          "280ft bell tower; stained-glass window over the altar",
+          "Alexander Hamilton is buried in the cemetery",
+          "Music program includes Pipes at One and an annual December Messiah"
+        ],
+        "source_passage": "New York City's tallest building upon consecration in 1846, Trinity Church features a 280ft-high bell tower and a richly colored stained-glass window over the altar. Famous residents of its serene cemetery include Founding Father and first secretary of the Treasury (and now Broadway superstar) Alexander Hamilton, while its excellent musical program includes organ-recital series Pipes at One (1pm Friday), and evening choral performances including new works co-commissioned by Trinity and an annual December rendition of Handel's Messiah.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b599ec6dae4c94d792684ddd355a9e027092388e4d30437835f6be2c0aa3ec31",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "USCGC Lilac",
+    "short_description": "The last existing steam-powered lighthouse tender in the US, launched 1933 and decommissioned 1972, now berthed at Pier 25 in Tribeca as a museum ship.",
+    "name_variations": [
+      "Lilac",
+      "US Coast Guard Cutter Lilac"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7205283,
+    "longitude": -74.0140206,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-01. gravity: Tier-2 niche museum ship; the last steam-powered US lighthouse tender. Specialist maritime appeal, small footprint.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 41,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 41 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_uscgc_lilac_science_tech_lonely-planet-new-york-city_last_steam_lighthouse_tender",
+        "city_name": "new_york",
+        "poi_name": "USCGC Lilac",
+        "lens": "science_tech",
+        "topic_slug": "last_steam_lighthouse_tender",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-01-lower-manhattan-financial-district",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Lovers of all things maritime can step aboard the US Coast Guard Cutter Lilac, the last existing steam-powered lighthouse tender in the US, which once brought supplies to lighthouses and their keepers before American lighthouses were automated. Launched in 1933, Lilac was decommissioned in 1972 and since 2011 has been berthed at Pier 25, undergoing restoration work and serving as an educational and community resource.",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "USCGC Lilac",
+          "US Coast Guard"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "lighthouse tender",
+        "physical_cues": [
+          {
+            "cue": "The steam-powered cutter Lilac berthed at Pier 25",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Lilac is the last existing steam-powered lighthouse tender in the US",
+          "Supplied lighthouses before US lighthouses were automated",
+          "Launched 1933, decommissioned 1972",
+          "Berthed at Pier 25 since 2011, under restoration"
+        ],
+        "source_passage": "Lovers of all things maritime can step aboard the US Coast Guard Cutter Lilac, the last existing steam-powered lighthouse tender in the US, which once brought supplies to lighthouses and their keepers before American lighthouses were automated. Launched in 1933, Lilac was decommissioned in 1972 and since 2011 has been berthed at Pier 25, undergoing restoration work and serving as an educational and community resource.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Lower Manhattan & the Financial District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "53da21e1ce13790097fb4b3f794ebda0afd40e9acc45f5cd0dc2f39b43225fb1",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  }
+]

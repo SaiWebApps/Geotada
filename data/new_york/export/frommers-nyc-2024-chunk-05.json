@@ -221,12 +221,14 @@
     "importance_tier": 1
   },
   {
-    "name": "Frick Madison",
+    "name": "Frick Collection",
     "short_description": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
-    "name_variations": [],
+    "name_variations": [
+      "Frick Madison"
+    ],
     "kid_friendly": "yes",
-    "latitude": 40.7735,
-    "longitude": -73.9641,
+    "latitude": 40.7711,
+    "longitude": -73.9674,
     "trigger_radius": 35,
     "city_name": "new_york",
     "_pipeline": {
@@ -242,7 +244,26 @@
       "parent_poi": null,
       "source_chunks": [
         "chunk-05"
-      ]
+      ],
+      "geocode_audit": {
+        "source": "source_address",
+        "confidence": "LOW",
+        "placement": "Knowledge-based fallback (Nominatim miss); verify manually",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Nominatim miss — kept agent knowledge-based coordinate"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Frick Madison (Breuer building) was the temp location Mar 2021–Mar 2024. Main Frick Collection reopened 70th St on Apr 17, 2025 after $330M renovation; already selling out all time slots. Historical annual visitors ~300k. No 2024/2025 published figures. Wikipedia covers under 'Frick Collection' arti",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
     },
     "_meta": {
       "created_by": "pipeline-batch",
@@ -250,10 +271,11 @@
       "book_slug": "frommers-nyc-2024",
       "created_at": "2026-06-14"
     },
+    "importance_tier": 3,
     "beats": [
       {
         "beat_id": "newyork_frick_madison_famous_residents_frommers-nyc-2024_frick_robber_baron_sins",
-        "poi_name": "Frick Madison",
+        "poi_name": "Frick Collection",
         "lens": "famous_residents",
         "script_body": "For decades the beloved Frick Collection has been housed in the ornate neoclassical mansion of Henry Clay Frick, the union-busting industrialist whose sins include partial responsibility for the deadly Johnstown Flood of 1889. Frommer's casts him among history's wealthy sleazeballs — the robber baron who created his own temple of culture. Part of touring the museum was always imagining the lifestyle of the tycoon before his death in 1919.",
         "physical_cues": [],
@@ -310,7 +332,7 @@
       },
       {
         "beat_id": "newyork_frick_madison_social_change_frommers-nyc-2024_renovation_move_to_breuer",
-        "poi_name": "Frick Madison",
+        "poi_name": "Frick Collection",
         "lens": "social_change",
         "script_body": "A long-overdue renovation begun in late 2020 shuttered the Frick mansion for at least three years, moving the collection temporarily a few blocks north to the original building of the Whitney Museum of American Art. With the relocation, the Frick experience becomes less about the man and his mansion and more about the art and artists in the collection — which, Frommer's suggests, may be more appropriate.",
         "physical_cues": [],
@@ -365,7 +387,7 @@
       },
       {
         "beat_id": "newyork_frick_madison_visual_art_frommers-nyc-2024_vermeer_one_work_per_room",
-        "poi_name": "Frick Madison",
+        "poi_name": "Frick Collection",
         "lens": "visual_art",
         "script_body": "Because there is more interior room at the Madison building than at the original mansion, the curators have done something rare in museum land — surfaced the entire collection and devoted entire rooms to just one or two works of art, underscoring which pieces are the Frick's stars. Among them are three of only 34 works Jan Vermeer is known to have painted, plus seminal pieces by Bellini, El Greco, Hans Holbein, John Constable, and J. M. W. Turner.",
         "physical_cues": [
@@ -429,8 +451,7 @@
         },
         "script_body_hash": "dcfbb81289cadb2cd80bb74712e1b263e7075929f56dbd2cefe769f94d7e077f"
       }
-    ],
-    "importance_tier": 3
+    ]
   },
   {
     "name": "The Jewish Museum",

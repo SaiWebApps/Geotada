@@ -60,5 +60,82 @@
       "pois_touched": 12,
       "processed_at": "2026-06-14"
     }
+  },
+  "lonely-planet-new-york-city": {
+    "chunk-01": {
+      "beats_extracted": 37,
+      "pois_touched": 20,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-02": {
+      "beats_extracted": 30,
+      "pois_touched": 17,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-03": {
+      "beats_extracted": 26,
+      "pois_touched": 8,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-04": {
+      "beats_extracted": 48,
+      "pois_touched": 27,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-05": {
+      "beats_extracted": 18,
+      "pois_touched": 7,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-06": {
+      "beats_extracted": 56,
+      "pois_touched": 20,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-07": {
+      "beats_extracted": 24,
+      "pois_touched": 11,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-08": {
+      "beats_extracted": 34,
+      "pois_touched": 21,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-09": {
+      "beats_extracted": 29,
+      "pois_touched": 17,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-10": {
+      "beats_extracted": 65,
+      "pois_touched": 38,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-11": {
+      "beats_extracted": 27,
+      "pois_touched": 13,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-12": {
+      "beats_extracted": 32,
+      "pois_touched": 21,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-13": {
+      "beats_extracted": 24,
+      "pois_touched": 17,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-14": {
+      "beats_extracted": 32,
+      "pois_touched": 28,
+      "processed_at": "2026-06-15"
+    },
+    "chunk-15": {
+      "beats_extracted": 20,
+      "pois_touched": 17,
+      "processed_at": "2026-06-15"
+    }
   }
 }

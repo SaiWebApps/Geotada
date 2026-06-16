@@ -1,0 +1,1470 @@
+[
+  {
+    "name": "Flatiron Building",
+    "short_description": "Iconic triangular early skyscraper; high recognition.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.741059,
+    "longitude": -73.989642,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "175 Fifth Ave. (at 23rd St.)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic triangular early skyscraper; high recognition.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.96,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Flatiron Building'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Flatiron Building, 175, 5th Avenue, Flatiron District, Manhattan Community Board 5, Manhattan, New York County, New York, 10010, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Exterior-only landmark (interior not publicly accessible); no ticketed visitor count published. Draws millions of passerby tourists annually. Wikipedia article covers architectural history, design by Daniel Burnham, and cultural significance in depth.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_flatiron_building_historic_arch_lonely_planet_new_york_city_burnham_triangular_prow",
+        "city_name": "new_york",
+        "poi_name": "Flatiron Building",
+        "lens": "historic_arch",
+        "topic_slug": "burnham_triangular_prow",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Designed by Daniel Burnham and built in 1902, the 20-story Flatiron Building has a narrow triangular footprint that resembles the prow of a massive ship. It also features a beaux-arts limestone and terracotta facade that gets more complex and beautiful the longer you stare at it. Until 1909 it was the world's tallest building.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "Daniel Burnham"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "triangular ship prow design",
+        "physical_cues": [
+          {
+            "cue": "Flatiron Building's narrow triangular prow at Broadway, Fifth Ave and 23rd St; beaux-arts limestone and terracotta facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Designed by Daniel Burnham, built 1902, 20 stories",
+          "Triangular footprint resembles a ship's prow",
+          "Beaux-arts limestone and terracotta facade",
+          "World's tallest building until 1909"
+        ],
+        "source_passage": "Designed by Daniel Burnham and built in 1902, the 20-story Flatiron Building has a narrow triangular footprint that resembles the prow of a massive ship. It also features a beaux-arts limestone and terracotta facade that gets more complex and beautiful the longer you stare at it. Until 1909 it was the world's tallest building.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "World's tallest building until 1909 — Frommer's chunk already extracted this; LP adds same claim, consistent"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1374bd8476a4759de06bdc8adffd8753c2798253076e45fd842c4f6ccc600a5c",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_flatiron_building_literary_heritage_lonely_planet_new_york_city_munsey_o_henry_stieglitz",
+        "city_name": "new_york",
+        "poi_name": "Flatiron Building",
+        "lens": "literary_heritage",
+        "topic_slug": "munsey_o_henry_stieglitz",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Publisher Frank Munsey was one of the building's first tenants. From his 18th-floor offices he published Munsey's Magazine, which featured the work of short-story writer O Henry. His musings, the paintings of John Sloan and photographs of Alfred Stieglitz best immortalized the Flatiron back in the day. Actress Katharine Hepburn once quipped that she'd like to be admired as much as the grand old building.",
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frank Munsey",
+          "Munsey's Magazine",
+          "O Henry",
+          "John Sloan",
+          "Alfred Stieglitz",
+          "Katharine Hepburn"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Munsey O Henry literary tenants",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Frank Munsey was a first tenant, published Munsey's Magazine on 18th floor",
+          "Munsey's Magazine featured O Henry's short stories",
+          "Katharine Hepburn quipped she'd like to be admired as much as the building"
+        ],
+        "source_passage": "Publisher Frank Munsey was one of the building's first tenants. From his 18th-floor offices he published Munsey's Magazine, which featured the work of short-story writer O Henry. His musings, the paintings of John Sloan and photographs of Alfred Stieglitz best immortalized the Flatiron back in the day. Actress Katharine Hepburn once quipped that she'd like to be admired as much as the grand old building.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "67858fc7045b64ee61d7d28e533c09ed7acf3501d00cf4bdc0a4eb5360556042",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_flatiron_building_modern_design_lonely_planet_new_york_city_hotel_conversion_prow_art_space",
+        "city_name": "new_york",
+        "poi_name": "Flatiron Building",
+        "lens": "modern_design",
+        "topic_slug": "hotel_conversion_prow_art_space",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": "flatiron-prow-art-space",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "While there are plans to transform the Flatiron into a luxurious five-star hotel, progress is on hold until the final business tenants willingly vacate the premises. In the meantime, the ground floor of the building's 'prow' has been transformed into a glassed-in art space. Past installations have included a life-size 3D-cutout replica of Edward Hopper's 1942 painting Nighthawks, its angular diner remarkably similar to the Flatiron's distinctive shape.",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edward Hopper",
+          "Nighthawks"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "prow art space Nighthawks",
+        "physical_cues": [
+          {
+            "cue": "Glassed-in art space at the ground-floor prow of the Flatiron Building at Broadway and Fifth Ave",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Plans to convert Flatiron to five-star hotel are on hold pending tenant vacations",
+          "Ground floor prow is a glassed-in art space",
+          "Past installation included life-size 3D-cutout replica of Hopper's 1942 Nighthawks"
+        ],
+        "source_passage": "While there are plans to transform the Flatiron into a luxurious five-star hotel, progress is on hold until the final business tenants willingly vacate the premises. In the meantime, the ground floor of the building's 'prow' has been transformed into a glassed-in art space. Past installations have included a life-size 3D-cutout replica of Edward Hopper's 1942 painting Nighthawks, its angular diner remarkably similar to the Flatiron's distinctive shape.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Hotel conversion plans status may have changed since publication"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "198387c3df187297e7c7a75519b8c6b3f15160991f3335c044a83887f002b53c",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Gramercy Park",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73795,
+    "longitude": -73.985915,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Gramercy Park'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Gramercy Park, Manhattan Community Board 6, Manhattan, New York County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "Primarily a wealthy residential enclave; the park itself is private (key-access only). Limited tourist draw. NYC Tourism site lists it but notes few attractions. Wikipedia covers the private park and history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_gramercy_park_hidden_history_lonely_planet_new_york_city_krom_moerasje_ruggles_drain",
+        "city_name": "new_york",
+        "poi_name": "Gramercy Park",
+        "lens": "hidden_history",
+        "topic_slug": "krom_moerasje_ruggles_drain",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Manhattan's early Dutch settlers named the area now known as Gramercy 'Krom Moerasje' — meaning Little Crooked Swamp. The swamp would meet its end in 1831, when lawyer and public official Samuel Ruggles purchased the land, had the swamp drained, and carved the territory into 108 lots. Forty-two of these were set aside for an English-style private park, to be held in perpetuity by the residents of its surrounding 66 lots.",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Samuel Ruggles"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Dutch swamp origin naming",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Krom Moerasje",
+            "gloss": "Little Crooked Swamp"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Dutch settlers called the area 'Krom Moerasje' meaning Little Crooked Swamp",
+          "Samuel Ruggles drained the swamp in 1831 and carved 108 lots",
+          "42 lots set aside for English-style private park, held by residents of surrounding 66 lots"
+        ],
+        "source_passage": "Manhattan's early Dutch settlers named the area now known as Gramercy 'Krom Moerasje' (Little Crooked Swamp). The swamp would meet its end in 1831, when lawyer and public official Samuel Ruggles purchased the land. He had the swamp drained and the land carved into 108 lots. Forty-two of these were set aside for an English-style private park, to be held in perpetuity by the residents of its surrounding 66 lots.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "84cf1da0eaa152819c5565f8ce34f48ac37d1bc8bbade2f2bc2a612ee58c291c",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_gramercy_park_social_change_lonely_planet_new_york_city_draft_riots_union_soldiers_access",
+        "city_name": "new_york",
+        "poi_name": "Gramercy Park",
+        "lens": "social_change",
+        "topic_slug": "draft_riots_union_soldiers_access",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Almost two centuries later, Gramercy Park remains a private oasis. Only once has it been made accessible to nonresidents, when Union soldiers were permitted inside during the Draft Riots of 1863.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "Draft Riots of 1863"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "one-time public access 1863",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Gramercy Park remains private",
+          "Only opened to nonresidents once — Union soldiers during Draft Riots of 1863"
+        ],
+        "source_passage": "Almost two centuries later, Gramercy Park remains a private oasis. Only once has it been made accessible to nonresidents, when Union soldiers were permitted inside during the Draft Riots of 1863.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cbe45e98208891ff6fa1d8f499184f111e3228400113b4e75a9cf064017b5a0f",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_gramercy_park_famous_residents_lonely_planet_new_york_city_harper_stanford_white_illustrious",
+        "city_name": "new_york",
+        "poi_name": "Gramercy Park",
+        "lens": "famous_residents",
+        "topic_slug": "harper_stanford_white_illustrious",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": "4 Gramercy Park W",
+        "beat_length_class": "mid",
+        "script_body": "Gramercy Park has had its fair share of illustrious residents. The town house at 4 Gramercy Park W was home to American publisher James Harper from 1847 to 1869. Mayor of New York City from 1844 to 1845, Harper's flouncy 'mayor's lights' still grace the front of the building. Another famous local was Stanford White, eponymous designer of the triumphal arch in Washington Square.",
+        "duration_sec": 39,
+        "kid_friendly": "yes",
+        "entities": [
+          "James Harper",
+          "Stanford White",
+          "Washington Square"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Harper White famous residents",
+        "physical_cues": [
+          {
+            "cue": "Townhouse at 4 Gramercy Park W with Harper's 'mayor's lights' still on the facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Publisher James Harper lived at 4 Gramercy Park W from 1847 to 1869",
+          "Harper was NYC Mayor 1844–1845",
+          "Harper's 'mayor's lights' still on the front of the building",
+          "Stanford White, designer of Washington Square's triumphal arch, also lived in the area"
+        ],
+        "source_passage": "Gramercy Park has had its fair share of illustrious residents. The town house at 4 Gramercy Park W was home to American publisher James Harper from 1847 to 1869. Mayor of New York City from 1844 to 1845, Harper's flouncy 'mayor's lights' still grace the front of the building. Another famous local was Stanford White, eponymous designer of the triumphal arch in Washington Square.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bc724483f65a4ac59a7c0621f26bb640eb2d86b60b11d1c0c7f6505026b4f24a",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Madison Square Park",
+    "short_description": "Historic public park in the Flatiron District, home to Shake Shack and rotating art installations, framed by the Flatiron Building and Metropolitan Life Tower.",
+    "name_variations": [
+      "Mad Sq",
+      "Madison Sq Park"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.742203,
+    "longitude": -73.9879655,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-05. gravity: Major midtown park with Shake Shack, public art, and iconic skyline views; historically displayed Statue of Liberty torch arm 1876–1882.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 70 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_madison_square_park_hidden_history_lonely_planet_new_york_city_liberty_torch_1876",
+        "city_name": "new_york",
+        "poi_name": "Madison Square Park",
+        "lens": "hidden_history",
+        "topic_slug": "liberty_torch_1876",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Between 1876 and 1882 the torch-bearing arm of the Statue of Liberty was on display here in Madison Square Park, and in 1879 the first Madison Square Garden arena was constructed at Madison Ave and 26th St.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Statue of Liberty",
+          "Madison Square Garden"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Liberty torch display",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Statue of Liberty's torch-bearing arm displayed in Madison Square Park 1876–1882",
+          "First Madison Square Garden arena built 1879 at Madison Ave and 26th St"
+        ],
+        "source_passage": "Between 1876 and 1882 the torch-bearing arm of the Statue of Liberty was on display here, and in 1879 the first Madison Square Garden arena was constructed at Madison Ave and 26th St.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cd3c8d5274fc97799f01ddc749c07196982967e28e246755f240825fa0ea1b40",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_madison_square_park_parks_gardens_lonely_planet_new_york_city_northern_boundary_oasis",
+        "city_name": "new_york",
+        "poi_name": "Madison Square Park",
+        "lens": "parks_gardens",
+        "topic_slug": "northern_boundary_oasis",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Madison Square Park defined the northern reaches of Manhattan until the island's population exploded after the Civil War. These days it's a much-welcome oasis from Manhattan's relentless pace, with a popular children's playground, dog-run area and the Shake Shack burger joint. It's also one of the city's most cultured parks, with specially commissioned art installations and, in the warmer months, activities ranging from literary discussions to live-music gigs.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Shake Shack"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "park history oasis",
+        "physical_cues": [
+          {
+            "cue": "Madison Square Park between 23rd and 26th Sts, with children's playground, dog run, and Shake Shack",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Park defined northern reaches of Manhattan until after Civil War",
+          "Has children's playground, dog-run, Shake Shack, and commissioned art installations"
+        ],
+        "source_passage": "This park defined the northern reaches of Manhattan until the island's population exploded after the Civil War. These days it's a much-welcome oasis from Manhattan's relentless pace, with a popular children's playground, dog-run area and the Shake Shack burger joint. It's also one of the city's most cultured parks, with specially commissioned art installations and (in the warmer months) activities ranging from literary discussions to live-music gigs.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "de710f265759a03eff349dc889376c50661dc4853fa7ec87a53432fadaf1fa3b",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_madison_square_park_waterways_views_lonely_planet_new_york_city_skyline_landmarks_view",
+        "city_name": "new_york",
+        "poi_name": "Madison Square Park",
+        "lens": "waterways_views",
+        "topic_slug": "skyline_landmarks_view",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Madison Square Park is the perfect spot from which to gaze up at the landmarks that surround it, including the Flatiron Building to the southwest, the Metropolitan Life Tower to the southeast and the New York Life Insurance Building, topped with a gilded spire, to the northeast.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Flatiron Building",
+          "Metropolitan Life Tower",
+          "New York Life Insurance Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "reverent",
+        "subject_tag": "landmark skyline panorama",
+        "physical_cues": [
+          {
+            "cue": "Flatiron Building visible to the southwest, Metropolitan Life Tower to the southeast, New York Life Insurance Building with gilded spire to the northeast",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Flatiron Building is to the southwest of Madison Square Park",
+          "Metropolitan Life Tower is to the southeast",
+          "New York Life Insurance Building with gilded spire is to the northeast"
+        ],
+        "source_passage": "It's also the perfect spot from which to gaze up at the landmarks that surround it, including the Flatiron Building to the southwest, the Metropolitan Life Tower to the southeast and the New York Life Insurance Building, topped with a gilded spire, to the northeast.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b80a799cece48c0d611c7daf0e30836cf7248678ecff5bc72eb22e8230765f7a",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Metropolitan Life Tower",
+    "short_description": "700-foot Italianate clock tower at 1 Madison Ave, completed 1909, modeled on the campanile in Venice's Piazza San Marco by architect Napoleon LeBrun.",
+    "name_variations": [
+      "Met Life Tower",
+      "Metropolitan Life Insurance Tower"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7412742,
+    "longitude": -73.9873539,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-05. gravity: Striking historic landmark with Venetian campanile inspiration; visible from Madison Square Park.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 59,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 59 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_metropolitan_life_tower_historic_arch_lonely_planet_new_york_city_lebrun_campanile_venice",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Life Tower",
+        "lens": "historic_arch",
+        "topic_slug": "lebrun_campanile_venice",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Completed in 1909, this 700ft-high clock tower soaring above Madison Square Park's southeastern corner is the work of Napoleon LeBrun, a Philadelphia-born architect of French stock. Italophiles may feel a certain déjà vu gazing at the tower, as LeBrun's inspiration was Venice's world-famous campanile (bell tower) in Piazza San Marco. Ironically, this New World version is now older than its muse: the original Venetian tower collapsed in 1902, with its replacement not completed until 1912.",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Napoleon LeBrun",
+          "campanile",
+          "Piazza San Marco"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "campanile Venice inspiration",
+        "physical_cues": [
+          {
+            "cue": "700ft Metropolitan Life Tower clock tower at 1 Madison Ave, southeastern corner of Madison Square Park",
+            "direction": "east",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "campanile",
+            "gloss": "bell tower"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Completed 1909, 700ft high, designed by Napoleon LeBrun",
+          "Inspired by Venice's campanile in Piazza San Marco",
+          "Original Venetian campanile collapsed 1902; replacement completed 1912 — newer than NYC version"
+        ],
+        "source_passage": "Completed in 1909, this 700ft-high clock tower soaring above Madison Square Park's southeastern corner is the work of Napoleon LeBrun, a Philadelphia-born architect of French stock. Italophiles may feel a certain déjà vu gazing at the tower as LeBrun's inspiration was Venice's worldfamous campanile (bell tower) in Piazza San Marco. Ironically, this New World version is now older than its muse: the original Venetian tower collapsed in 1902, with its replacement not completed until 1912.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "103a87dadee7ccab5c4bbedf55b44c86000b9e8e972ac31182ab36b4d86bf7ab",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "National Arts Club",
+    "short_description": "Arts organization founded in 1898 in a Calvert Vaux-designed mansion at 15 Gramercy Park South, once home to governor Samuel Tilden.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7377541,
+    "longitude": -73.9866814,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-05. gravity: Architecturally significant Vaux building with free gallery access; historically notable for Tilden residency.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 57,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 57 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_national_arts_club_historic_arch_lonely_planet_new_york_city_calvert_vaux_tilden_mansion",
+        "city_name": "new_york",
+        "poi_name": "National Arts Club",
+        "lens": "historic_arch",
+        "topic_slug": "calvert_vaux_tilden_mansion",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": "15 Gramercy Park S",
+        "beat_length_class": "mid",
+        "script_body": "Founded in 1898 to promote public interest in the arts, the National Arts Club holds art exhibitions with free admission to the public during weekdays. Calvert Vaux — one of the creators of Central Park — designed the building itself, with a picture-lined front parlor adorned with a beautiful, vaulted stained-glass panel. The mansion was once home to Samuel J Tilden, a former New York governor and the failed 1876 presidential candidate.",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Calvert Vaux",
+          "Samuel J Tilden",
+          "Central Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Vaux Tilden mansion arts",
+        "physical_cues": [
+          {
+            "cue": "Facade of National Arts Club at 15 Gramercy Park S — Calvert Vaux-designed mansion with front parlor and vaulted stained-glass panel",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Founded 1898 to promote public interest in the arts",
+          "Calvert Vaux, co-creator of Central Park, designed the building",
+          "Building features a vaulted stained-glass panel in the front parlor",
+          "Samuel J Tilden, former NY governor and failed 1876 presidential candidate, once lived here"
+        ],
+        "source_passage": "Founded in 1898 to promote public interest in the arts, the National Arts Club holds art exhibitions, with free admission to the public during weekdays; check the website for upcoming shows as well as evening events. Calvert Vaux – one of the creators of Central Park – designed the building itself, with a picture-lined front parlor adorned with a beautiful, vaulted stained-glass panel. The mansion was once home to Samuel J Tilden, a former New York governor and the failed 1876 presidential candidate.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b494e4963c46f0973a7b412a1f5037101d660632903ca36cacc356337c8f1fc7",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Theodore Roosevelt Birthplace",
+    "short_description": "National Historic Site at 28 E 20th St — a reconstruction of the 26th president's childhood home, with original furniture and period restorations.",
+    "name_variations": [
+      "Theodore Roosevelt Birthplace National Historic Site"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.738617,
+    "longitude": -73.9890615,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-05. gravity: NPS site; presidential birthplace with guided tours and original furnishings.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 56,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 56 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_theodore_roosevelt_birthplace_historic_arch_lonely_planet_new_york_city_reconstruction_original_furniture",
+        "city_name": "new_york",
+        "poi_name": "Theodore Roosevelt Birthplace",
+        "lens": "historic_arch",
+        "topic_slug": "reconstruction_original_furniture",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": "28 E 20th St",
+        "beat_length_class": "mid",
+        "script_body": "This National Historic Site is a bit of a cheat, since the physical house where the 26th president was actually born was demolished in his own lifetime. But this building is a worthy reconstruction by his relatives, who took painstaking steps to bring together original furniture from the residence with true-to-the-period restorations.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Theodore Roosevelt"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "Roosevelt birthplace reconstruction",
+        "physical_cues": [
+          {
+            "cue": "Facade of the Theodore Roosevelt Birthplace National Historic Site at 28 E 20th St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Original house where Theodore Roosevelt (26th president) was born was demolished in his lifetime",
+          "Current building is a reconstruction by his relatives with original furniture and period restorations"
+        ],
+        "source_passage": "This National Historic Site is a bit of a cheat, since the physical house where the 26th president was actually born was demolished in his own lifetime. But this building is a worthy reconstruction by his relatives, who took painstaking steps to bring together original furniture from the residence with true-to-the-period restorations.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0771723e9225eb03ae5292171bcd70d4afbddbfcc96a3d53e28d50163a814b13",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Union Square",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "name_variations": [
+      "Union Square Park"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.736072,
+    "longitude": -73.990189,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Independent top-level POI. Flagged for /poi-generate.",
+      "verified": false,
+      "geocode_source": "wikipedia (Union Square, 14th-17th Sts.)",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02",
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Union Square'",
+        "trigger_radius_reasoning": "Open square",
+        "notes": "Union Square, Manhattan Community Board 5, Manhattan, New York County, New York, 10003, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 76.5,
+        "assigned_gravity": 4,
+        "reasoning": "Major transit hub and public gathering space; farmers market is a tourist draw. No official visitor count for the neighborhood. Wikipedia article has decent depth on history and greenmarket.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_union_square_park_social_change_lonely_planet_new_york_city_ladies_mile_civil_war_protest",
+        "city_name": "new_york",
+        "poi_name": "Union Square",
+        "lens": "social_change",
+        "topic_slug": "ladies_mile_civil_war_protest",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Opened in 1831, Union Square quickly became the central gathering place for those who lived in the mansions nearby. Concert halls and artist societies enhanced the cultured atmosphere, and high-end shopping proliferated along Broadway, which was dubbed 'Ladies' Mile.' When the Civil War broke out, the vast public space was center stage for protesters of all sorts, from union workers to political activists. By the height of WWI, the area had fallen largely into disuse, allowing politically and socially driven organizations like the American Civil Liberties Union, the Communist and Socialist Parties, and the Ladies' Garment Workers Union to move in. Many decades later, the square remains a popular site for political and social protests.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "American Civil Liberties Union",
+          "Communist Party",
+          "Socialist Party",
+          "Ladies' Garment Workers Union"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "protest square history",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Union Square opened 1831 as gathering place for mansion residents",
+          "Broadway dubbed 'Ladies' Mile' for high-end shopping",
+          "ACLU, Communist and Socialist Parties, Ladies' Garment Workers Union moved in by WWI era"
+        ],
+        "source_passage": "Opened in 1831, Union Square quickly became the central gathering place for those who lived in the mansions nearby. Concert halls and artist societies further enhanced the cultured atmosphere, and high-end shopping quickly proliferated along Broadway, which was dubbed 'Ladies' Mile.' When the Civil War broke out, the vast public space (large by New York standards, of course) was center stage for protesters of all sorts, from union workers to political activists. By the height of WWI, the area had fallen largely into disuse, allowing politically and socially driven organizations like the American Civil Liberties Union, the Communist and Socialist Parties, and the Ladies' Garment Workers Union to move in. Many decades later, the square remains a popular site for political and social protests, as well as one of NYC's best regular farmers markets.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "fa0e772a391c8a71cd40505ec573502b8b7f889859c660642948f13ea15d45c2",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_union_square_park_dark_history_lonely_planet_new_york_city_warhol_shooting_decker_building",
+        "city_name": "new_york",
+        "poi_name": "Union Square",
+        "lens": "dark_history",
+        "topic_slug": "warhol_shooting_decker_building",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": "33 Union Sq West",
+        "beat_length_class": "mid",
+        "script_body": "Andy Warhol moved his Factory to the 6th floor of the Decker Building at 33 Union Sq West. It was here, on June 3, 1968, that disgruntled writer Valerie Solanas shot Warhol three times, seriously wounding him. The ground floor of the building is now occupied by a brightly colored candy-store chain — very Warholian.",
+        "duration_sec": 31,
+        "kid_friendly": "no",
+        "entities": [
+          "Andy Warhol",
+          "Valerie Solanas",
+          "The Factory",
+          "Decker Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Warhol Factory shooting",
+        "physical_cues": [
+          {
+            "cue": "Decker Building at 33 Union Sq West, where Warhol's Factory occupied the 6th floor; ground floor now a brightly colored candy-store chain",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Warhol's Factory was on 6th floor of Decker Building at 33 Union Sq West",
+          "Valerie Solanas shot Warhol three times on June 3, 1968"
+        ],
+        "source_passage": "After over a century of the continuous push-and-pull between dapper-dom and political protest, a third – artistic, if not thoroughly hippie-ish – ingredient was tossed into the mix when Andy Warhol moved his Factory to the 6th floor of the Decker Building at 33 Union Sq West. It was here, on June 3, 1968, that disgruntled writer Valerie Solanas shot Warhol three times, seriously wounding him. The ground floor of the building is now occupied by a brightly colored candy-store chain – very Warholian.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cfd9fe7ada8563d50924f2acc84274c0097c5236ad5f41d956cfe7b187cb2866",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_union_square_park_visual_art_lonely_planet_new_york_city_metronome_time_display",
+        "city_name": "new_york",
+        "poi_name": "Union Square",
+        "lens": "visual_art",
+        "topic_slug": "metronome_time_display",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On the southeastern side of the square is a massive art installation that either earns confused stares or simply gets overlooked by passersby. Metronome is a symbolic representation of the passage of time with two parts: a digital clock with a puzzling display of numbers, and a wand-like apparatus with smoke puffing out of concentric rings. The 14 numbers must be split into two groups of seven: the seven from the left tell the current time — hour, minute, second, tenth-of-a-second — and the seven from the right are meant to be read in reverse order; they represent the remaining amount of time in the day.",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "entities": [
+          "Metronome"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "subject_tag": "Metronome art installation",
+        "physical_cues": [
+          {
+            "cue": "Metronome art installation on the southeastern side of Union Square — digital number display and smoke-emitting wand apparatus",
+            "direction": "east",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Metronome has a digital clock and a wand-like apparatus with smoke puffing from concentric rings",
+          "Left 7 digits = current time; right 7 digits reversed = remaining time in the day"
+        ],
+        "source_passage": "Trumping both on the southeastern side of the square is a massive art installation that either earns confused stares or simply gets overlooked by passersby. A symbolic representation of the passage of time, Metronome has two parts: a digital clock with a puzzling display of numbers, and a wand-like apparatus with smoke puffing out of concentric rings. We'll let you ponder the latter while we give you the skinny on what exactly the winking orange digits denote: the 14 numbers must be split into two groups of seven: the seven from the left tell the current time (hour, minute, second, tenth-of-a-second) and the seven from the right are meant to be read in reverse order; they represent the remaining amount of time in the day.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "161182b6ce2e75b7f1ceacbe6e335dcc0f175650e481463a6ae47a5984e5910c",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_union_square_park_visual_art_lonely_planet_new_york_city_washington_gandhi_statues",
+        "city_name": "new_york",
+        "poi_name": "Union Square",
+        "lens": "visual_art",
+        "topic_slug": "washington_gandhi_statues",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "A walk around Union Square reveals an imposing equestrian statue of George Washington — one of the first public pieces of art in New York City — and a statue of peacemaker Mahatma Gandhi.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "George Washington",
+          "Mahatma Gandhi"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Washington Gandhi statues",
+        "physical_cues": [
+          {
+            "cue": "Equestrian statue of George Washington and statue of Mahatma Gandhi in Union Square",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "George Washington equestrian statue is one of the first public art pieces in NYC",
+          "Mahatma Gandhi statue also present in the square"
+        ],
+        "source_passage": "Of the permanent offerings is an imposing equestrian statue of George Washington (one of the first public pieces of art in New York City) and a statue of peacemaker Mahatma Gandhi.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "326ec326bfeef894b34d0fc7c9f7bb997e5c4ece4464359f0820e49070368abc",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_union_square_park_local_legends_lonely_planet_new_york_city_dsw_view_empire_state",
+        "city_name": "new_york",
+        "poi_name": "Union Square",
+        "lens": "local_legends",
+        "topic_slug": "dsw_view_empire_state",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "For an unforgettable, sweeping view of Union Square and the Empire State Building beyond, head to DSW, a 3rd-floor discount shoe store at the southern end of the square, or the cafe of the Whole Foods supermarket next door.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Empire State Building",
+          "DSW",
+          "Whole Foods"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "local_legends",
+        "emotional_register": "playful",
+        "subject_tag": "secret shoe store view",
+        "physical_cues": [
+          {
+            "cue": "DSW discount shoe store on the 3rd floor at the southern end of Union Square, with views toward the Empire State Building",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "DSW 3rd floor offers sweeping view of Union Square and Empire State Building",
+          "Whole Foods cafe next door also has the view"
+        ],
+        "source_passage": "For an unforgettable, sweeping view of Union Square and the Empire State Building beyond, hit DSW, a 3rd-floor discount shoe store at the southern end of the square, or the cafe of the Whole Foods supermarket next door.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2f45a771ce6598f6ef00006510e8551281e9346f1f1d04db31fa488033378ffc",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_union_square_park_markets_street_food_lonely_planet_new_york_city_greenmarket_top_chefs",
+        "city_name": "new_york",
+        "poi_name": "Union Square",
+        "lens": "markets_street_food",
+        "topic_slug": "greenmarket_top_chefs",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-05-union-square-flatiron-gramercy",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Don't be surprised if you spot some of New York's top chefs prodding the produce here: Union Square's greenmarket is arguably the city's most famous. The stalls peddle anything and everything from upstate fruit and vegetables to artisanal breads, cheeses and cider.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Union Square Greenmarket"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Greenmarket chef scene",
+        "physical_cues": [
+          {
+            "cue": "Union Square Greenmarket stalls along E 17th St between Broadway and Park Ave South",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Union Square Greenmarket is arguably NYC's most famous farmers market",
+          "Top chefs shop here for produce"
+        ],
+        "source_passage": "Don't be surprised if you spot some of New York's top chefs prodding the produce here: Union Square's green market is arguably the city's most famous. Whet your appetite trawling the stalls, which peddle anything and everything from upstate fruit and vegetables to artisanal breads, cheeses and cider.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Union Square, Flatiron District & Gramercy"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6830d6cfc8a6badf0b309b03f18e626044224bce5e66febe4eb1fc43c920a86d",
+        "related_beats": []
+      }
+    ]
+  }
+]

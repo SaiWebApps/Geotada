@@ -1,0 +1,1969 @@
+[
+  {
+    "name": "Alphabet City Community Gardens",
+    "short_description": "A network of community gardens carved from abandoned lots in Alphabet City, providing green space and cultural programming to a historically low-income, mainly Hispanic neighborhood.",
+    "name_variations": [
+      "Alphabet City gardens",
+      "Loisada gardens"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7249,
+    "longitude": -73.9776,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-03. gravity: Collective cultural asset of Alphabet City; sidebar in LP but noted as neighborhood-defining; multiple named gardens",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 26,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 26 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_alphabet_city_community_gardens_social_change_lonely-planet-new-york-city_loisada_abandoned_lots_gardens",
+        "city_name": "new_york",
+        "poi_name": "Alphabet City Community Gardens",
+        "lens": "social_change",
+        "topic_slug": "loisada_abandoned_lots_gardens",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "A network of gardens was carved out of abandoned lots to provide the low-income and mainly Hispanic neighborhood — nicknamed 'Loisada,' for the local pronunciation of 'Lower East Side' — with communal backyards. Trees and flowers were planted, sandboxes were built, found-art sculptures erected and domino games played, all within green spaces wedged between buildings or even claiming entire blocks. Some were destroyed — in the face of much protest — to make way for the projects of developers, but plenty of green spots have held their ground.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "Loisada community gardens",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Loisada",
+            "gloss": "local pronunciation of 'Lower East Side' in the Hispanic community"
+          }
+        ],
+        "pronunciation": "loy-SAH-dah",
+        "key_claims": [
+          "Gardens carved from abandoned lots for low-income mainly Hispanic Alphabet City",
+          "'Loisada' is the local pronunciation of 'Lower East Side'",
+          "Some gardens destroyed to make way for development"
+        ],
+        "source_passage": "A network of gardens was carved out of abandoned lots to provide the low-income and mainly Hispanic neighborhood (nicknamed 'Loisada,' for the local pronunciation of 'Lower East Side') with communal backyards. Trees and flowers were planted, sandboxes were built, found-art sculptures erected and domino games played – all within green spaces wedged between buildings or even claiming entire blocks. And while some were destroyed – in the face of much protest – to make way for the projects of developers, plenty of green spots have held their ground.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dca330bb50016afe36be86a477422bab3c2cd5e83dafecc51446b068f96ba77c",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_alphabet_city_community_gardens_parks_gardens_lonely-planet-new-york-city_le_petit_versailles_arts",
+        "city_name": "new_york",
+        "poi_name": "Alphabet City Community Gardens",
+        "lens": "parks_gardens",
+        "topic_slug": "le_petit_versailles_arts",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": "346 E Houston St",
+        "beat_length_class": "seasoning",
+        "script_body": "Le Petit Versailles at 346 E Houston St at Ave C is a unique marriage of a verdant oasis and an electrifying arts organization, offering a range of quirky performances and screenings to the public.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Le Petit Versailles"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Le Petit Versailles garden",
+        "physical_cues": [
+          {
+            "cue": "Facade and garden entrance of Le Petit Versailles at 346 E Houston St at Ave C",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Le Petit Versailles",
+            "gloss": "The Little Versailles — named for the French palace gardens"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Le Petit Versailles is at 346 E Houston St at Ave C",
+          "Combines garden oasis with arts programming"
+        ],
+        "source_passage": "Le Petit Versailles ( MAP GOOGLE MAP ; % 212-529-8815; www.alliedproductions.org; 346 E Houston St, at Ave C, East Village; h 2-7pm Wed-Sun Apr-Oct; b F, J/M/Z to Delancey-Essex Sts) is a unique marriage of a verdant oasis and an electrifying arts organization, offering a range of quirky performances and screenings to the public.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Le Petit Versailles gloss 'named for the French palace gardens' is extractor-supplied; source gives no etymology"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7b34595e2749b6035ed16c4ee2a7f74d69e9190e51297642f06aa2f59d4f9456",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_alphabet_city_community_gardens_parks_gardens_lonely-planet-new-york-city_sixth_b_garden_koi_willows",
+        "city_name": "new_york",
+        "poi_name": "Alphabet City Community Gardens",
+        "lens": "parks_gardens",
+        "topic_slug": "sixth_b_garden_koi_willows",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": "E 6th St & Ave B",
+        "beat_length_class": "seasoning",
+        "script_body": "The 6th & B Garden at E 6th St & Ave B is a well-organized space that hosts free music events, workshops and yoga sessions. La Plaza Cultural at 674 E 9th St at Ave C graces its twin plots with three dramatic weeping willows and a koi pond.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "6th & B Garden",
+          "La Plaza Cultural"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "6th B garden La Plaza Cultural",
+        "physical_cues": [
+          {
+            "cue": "Entrance to 6th & B Garden at E 6th St and Ave B",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "La Plaza Cultural",
+            "gloss": "The Cultural Plaza"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "6th & B Garden hosts free music, workshops and yoga",
+          "La Plaza Cultural at 674 E 9th St has three weeping willows and a koi pond"
+        ],
+        "source_passage": "The 6th & B Garden ( MAP GOOGLE MAP ; www.6bgarden.org; E 6th St & Ave B, East Village; h 1-6pm Sat & Sun Apr-Oct; b 6 to Astor Pl; L to 1st Ave) is a well-organized space that hosts free music events, workshops and yoga sessions; check the website for details. Three dramatic weeping willows and a koi pond grace the twin plots of La Plaza Cultural.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "La Plaza Cultural gloss 'The Cultural Plaza' is extractor-supplied translation; source does not provide one"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "9f254313df6091152ed5fa97b2bb8a15431ed459f7202b968b065f1314867de2",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Astor Place",
+    "short_description": "A crossroads square in the East Village anchored by the iconic Alamo sculpture ('The Cube'), former home of the Astor Opera House and site of the violent 1849 Astor Place Riots.",
+    "name_variations": [
+      "Astor Place Square"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7298497,
+    "longitude": -73.9913897,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-03. gravity: Historically significant public square; home to iconic public sculpture; gateway to East Village",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 67,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 67 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_astor_place_dark_history_lonely-planet-new-york-city_astor_place_riots_1849",
+        "city_name": "new_york",
+        "poi_name": "Astor Place",
+        "lens": "dark_history",
+        "topic_slug": "astor_place_riots_1849",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Astor Place was also the site of the notorious Astor Place riots, a class struggle pitting immigrants against nativists that broke out between supporters of two rival Shakespearean actors, Edwin Forrest and William Macready. Police fired shots into the crowd, resulting in over two dozen deaths and more than 120 people injured.",
+        "duration_sec": 33,
+        "kid_friendly": "no",
+        "entities": [
+          "Astor Place riots",
+          "Edwin Forrest",
+          "William Macready"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Astor Place riots",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Astor Place riots pitted immigrants against nativists over two rival Shakespearean actors",
+          "Police fired shots, over two dozen deaths, more than 120 injured"
+        ],
+        "source_passage": "The square was also the site of the notorious Astor Place riots, a class struggle pitting immigrants against nativists that broke out between supporters of two rival Shakespearean actors, Edwin Forrest and William Macready. Police fired shots into the crowd, resulting in over two dozen deaths and more than 120 people injured.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "599e6917b7be2989573df9a73e1b38f1e5924211064fc3d5021d85fb44ca89e1",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_astor_place_visual_art_lonely-planet-new-york-city_alamo_cube_cor_ten_steel",
+        "city_name": "new_york",
+        "poi_name": "Astor Place",
+        "lens": "visual_art",
+        "topic_slug": "alamo_cube_cor_ten_steel",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Anchoring the square is a curious sculpture affectionately known to locals as 'The Cube' — actually named Alamo. It weighs over 1800lb and is made entirely of COR-TEN steel. A favorite meeting spot for neighborhood dwellers.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alamo"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "subject_tag": "Alamo Cube sculpture",
+        "physical_cues": [
+          {
+            "cue": "The Alamo sculpture ('The Cube') at the center of Astor Place — a large COR-TEN steel cube",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Alamo (The Cube) weighs over 1800lb",
+          "Made entirely of COR-TEN steel"
+        ],
+        "source_passage": "Even with the Alamo, an iconic piece of public art more often referred to as 'The Cube,' restored after several years absence, this is not the Astor Place of old. A favorite meeting spot for neighborhood dwellers, this work of art – actually named Alamo – weighs over 1800lb and is made entirely of COR-TEN steel.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e8ab8e7afb5fb880ddd51279093471d0f6c89a869726b4961ed7cd2f960e5aee",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_astor_place_historic_arch_lonely-planet-new-york-city_astor_opera_house_elite",
+        "city_name": "new_york",
+        "poi_name": "Astor Place",
+        "lens": "historic_arch",
+        "topic_slug": "astor_opera_house_elite",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Originally Astor Place was the home of the Astor Opera House — now gone — which attracted the city's wealthy elite for regular performances in the mid-1800s.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Astor Opera House"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Astor Opera House elite",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Astor Opera House stood at Astor Place (now gone)",
+          "Attracted wealthy elite in mid-1800s"
+        ],
+        "source_passage": "Originally Astor Place was the home of the Astor Opera House (now gone), which attracted the city's wealthy elite for regular performances in the mid-1800s.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "df6496486b638f370c9c10e29124a922a67e85a5c08c3ff691b4831fb646709d",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "East River Park",
+    "short_description": "A waterfront park along the Lower East Side with ballfields, running and biking paths, a 5,000-seat amphitheater, and views of the Williamsburg, Manhattan, and Brooklyn Bridges.",
+    "name_variations": [
+      "East River Esplanade"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.718547,
+    "longitude": -73.9741379,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-03. gravity: Neighborhood waterfront park with bridge views; modest importance relative to cultural anchors in this chunk",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 43,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 43 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_east_river_park_waterways_views_lonely-planet-new-york-city_bridge_views_amphitheater",
+        "city_name": "new_york",
+        "poi_name": "East River Park",
+        "lens": "waterways_views",
+        "topic_slug": "bridge_views_amphitheater",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In addition to the great ballparks, running and biking paths, and 5000-seat amphitheater that hosts concerts, East River Park has cool, natural breezes and fine views of the Williamsburg, Manhattan and Brooklyn Bridges.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Williamsburg Bridge",
+          "Manhattan Bridge",
+          "Brooklyn Bridge"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "bridge views park amenities",
+        "physical_cues": [
+          {
+            "cue": "Views of the Williamsburg, Manhattan and Brooklyn Bridges from East River Park's waterfront",
+            "direction": "east",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "5000-seat amphitheater",
+          "Views of Williamsburg, Manhattan and Brooklyn Bridges"
+        ],
+        "source_passage": "In addition to the great ballparks, running and biking paths, 5000-seat amphitheater that hosts concerts, and expansive patches of green, this park has cool, natural breezes and fine views of the Williamsburg, Manhattan and Brooklyn Bridges.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "05c1c8472bdf3df7eb4bef394ac0e8d1752a57ecb4b38abb9b3a0b0cae12783b",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Museum at Eldridge Street",
+    "short_description": "National Historic Landmark 1887 synagogue, Wikipedia article. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71472,
+    "longitude": -73.99361,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "National Historic Landmark 1887 synagogue, Wikipedia article. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia Eldridge Street Synagogue / Yelp)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 40000,
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 21.3,
+        "assigned_gravity": 1,
+        "reasoning": "Wikipedia article cites 40,000 annual visitors by 2014 (post-restoration trajectory); a travel source also cites ~30,000. Small Lower East Side synagogue museum. Wikipedia article is extensive with detailed restoration and congregation history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_museum_at_eldridge_street_historic_worship_lonely-planet-new-york-city_synagogue_restored_1887",
+        "city_name": "new_york",
+        "poi_name": "Museum at Eldridge Street",
+        "lens": "historic_worship",
+        "topic_slug": "synagogue_restored_1887",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This landmark house of worship, built in 1887, was a center of Jewish life before suffering a decline in the congregation in the late 1920s. After WWII, the main sanctuary was closed off and services relocated to the basement. The badly deteriorated synagogue was restored following a 20-year, $20-million restoration that was completed in 2007, and it now shines with its original splendor.",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "synagogue decline and restoration",
+        "physical_cues": [
+          {
+            "cue": "Restored interior of the Eldridge Street Synagogue, shining with original splendor after the 2007 restoration",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Built in 1887",
+          "Congregation declined in late 1920s",
+          "Sanctuary closed after WWII, services moved to basement",
+          "20-year, $20-million restoration completed 2007"
+        ],
+        "source_passage": "This landmark house of worship, built in 1887, was a center of Jewish life before suffering a decline in the congregation in the late 1920s. After WWII, the main sanctuary was closed off and services relocated to the basement. The badly deteriorated synagogue was restored following a 20year-long, $20-million restoration that was completed in 2007, and it now shines with its original splendor – it's a real stunner.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d5a81ed4b193ecc31f83d50f1d2c65dac05da6cb62dc6c251ef62102d1425cf9",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_museum_at_eldridge_street_social_change_lonely-planet-new-york-city_jewish_life_exhibits",
+        "city_name": "new_york",
+        "poi_name": "Museum at Eldridge Street",
+        "lens": "social_change",
+        "topic_slug": "jewish_life_exhibits",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In addition to the restored portion of the synagogue, there's a hall of exhibits and artifacts about the history of Jewish life on the Lower East Side, as well as special events and seminars.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Jewish heritage exhibits",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Hall of exhibits and artifacts about history of Jewish life on the Lower East Side"
+        ],
+        "source_passage": "In addition to the restored portion of the synagogue, there's a hall of exhibits and artifacts about the history of Jewish life on the Lower East Side, as well as special events and seminars.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3483b3009951db735f421a7377d5c4f6864e80d8784ae872adc0764582168863",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "New Museum of Contemporary Art",
+    "short_description": "Major contemporary-art museum on the Bowery, Wikipedia article, landmark SANAA building. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.722239,
+    "longitude": -73.993219,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major contemporary-art museum on the Bowery, Wikipedia article, landmark SANAA building. Moderate-high gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Apple Maps / Wikipedia)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No annual visitor count found; not in Art Newspaper top-100 list (declined to report or below threshold). Founded 1977, only NYC museum dedicated exclusively to contemporary art. Wikipedia article is moderate: covers history, leadership, and programs but omits attendance data.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_new_museum_of_contemporary_art_modern_design_lonely-planet-new-york-city_sanaa_stacked_boxes",
+        "city_name": "new_york",
+        "poi_name": "New Museum of Contemporary Art",
+        "lens": "modern_design",
+        "topic_slug": "sanaa_stacked_boxes",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": "facade",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The New Museum's building is the brainchild of Japanese firm SANAA — a partnership between Kazuyo Sejima and Ryue Nishizawa. In 2010, SANAA won the coveted Pritzker Prize (think the Oscars of architecture) for its contributions to the world of design. Their trademark vanishing facades are known worldwide for abiding by a strict adherence to a form-follows-function design aesthetic, sometimes taking the land plot's footprint into the overall shape of the structure. The box-atop-box scheme provides a striking counterpoint to the clusters of crimson brick and iron fire escapes outside, while alluding to the geometric exhibition chasms within.",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "entities": [
+          "SANAA",
+          "Kazuyo Sejima",
+          "Ryue Nishizawa",
+          "Pritzker Prize"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "SANAA Pritzker architecture",
+        "physical_cues": [
+          {
+            "cue": "Stacked off-white box-atop-box facade of the New Museum at 235 Bowery, viewed from across the street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": "SAH-nah",
+        "key_claims": [
+          "SANAA designed the building (Kazuyo Sejima and Ryue Nishizawa)",
+          "SANAA won the Pritzker Prize in 2010"
+        ],
+        "source_passage": "The building's structure is the brainchild of hot Japanese firm SANAA – a partnership between two great minds, Kazuyo Sejima and Ryue Nishizawa. In 2010 SANAA won the coveted Pritzker Prize (think the Oscars of architecture) for its contributions to the world of design. Its trademark vanishing facades are known worldwide for abiding by a strict adherence to a form-follows-function design aesthetic, sometimes taking the land plot's footprint into the overall shape of the structure. The box-atop-box scheme provides a striking counterpoint to the clusters of crimson brick and iron fire escapes outside, while alluding to the geometric exhibition chasms within.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "971c15afd89d5534b7e6f6867b9de854f2decb78743c758f718e043ee02f5e3d",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_new_museum_of_contemporary_art_social_change_lonely-planet-new-york-city_marcia_tucker_new_art_new_ideas",
+        "city_name": "new_york",
+        "poi_name": "New Museum of Contemporary Art",
+        "lens": "social_change",
+        "topic_slug": "marcia_tucker_new_art_new_ideas",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Founded in 1977 by Marcia Tucker and housed in five different locations over the years, the museum's mission statement is simple: 'New art, new ideas.' The institution gave gallery space to artists Keith Haring, Jeff Koons, Joan Jonas, Mary Kelly, and Andres Serrano at the beginning of their careers, and continues to show contemporary heavy-hitters. The city's sole museum dedicated to contemporary art has brought a steady menu of edgy works in new forms.",
+        "duration_sec": 43,
+        "kid_friendly": "yes",
+        "entities": [
+          "Marcia Tucker",
+          "Keith Haring",
+          "Jeff Koons",
+          "Joan Jonas",
+          "Mary Kelly",
+          "Andres Serrano"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "museum founding mission",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Founded 1977 by Marcia Tucker",
+          "Mission: 'New art, new ideas'",
+          "Early shows featured Keith Haring, Jeff Koons, Joan Jonas, Mary Kelly, Andres Serrano"
+        ],
+        "source_passage": "Founded in 1977 by Marcia Tucker and housed in five different locations over the years, the museum's mission statement is simple: 'New art, new ideas.' The institution gave gallery space to artists Keith Haring, Jeff Koons, Joan Jonas, Mary Kelly and Andres Serrano at the beginning of their careers, and continues to show contemporary heavy-hitters. The city's sole museum dedicated to contemporary art has brought a steady menu of edgy works in new forms, such as seemingly random, discarded materials fused together and displayed in the middle of a vast room.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4359b54a014720ae627009c2adb1ba4beb26449dbc15aed7bbd1d2708ef79722",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_new_museum_of_contemporary_art_local_legends_lonely-planet-new-york-city_pay_what_you_wish_thursdays",
+        "city_name": "new_york",
+        "poi_name": "New Museum of Contemporary Art",
+        "lens": "local_legends",
+        "topic_slug": "pay_what_you_wish_thursdays",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "To save cash, stop by on Thursday evening between 7pm and 9pm, when admission is 'pay what you wish.' Depending on the show, the crowds can be sizable — the book recommends lining up by 6:45pm.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "sidebar",
+        "emotional_register": "playful",
+        "subject_tag": "pay what you wish entry",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Thursday 7–9pm is pay-what-you-wish admission",
+          "Book recommends arriving by 6:45pm"
+        ],
+        "source_passage": "To save cash, stop by on Thursday evening between 7pm and 9pm, when admission is 'pay what you wish.' Depending on the show, the crowds can be sizable. We recommend lining up by 6:45pm.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0687d51b3f022574e3b5025ec2ef81e6cfd009fea231fb0afef420da3bfc684c",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "St Marks Place",
+    "short_description": "A three-block stretch of East Village street running from Astor Place to Tompkins Square Park, dense with historical associations from jazz to punk rock to literary history.",
+    "name_variations": [
+      "East 8th Street",
+      "St. Mark's Place",
+      "St. Marks Place"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7281016,
+    "longitude": -73.9864861,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-03. gravity: Top Experience in Lonely Planet; storied street with layered musical, literary, and countercultural history; well-known NYC landmark",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 69,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 69 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_st_marks_place_historic_arch_lonely-planet-new-york-city_three_blocks_storytelling",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "historic_arch",
+        "topic_slug": "three_blocks_storytelling",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "St Marks Place is easily one of NYC's most famous streets, yet also one of the city's smallest — occupying only three blocks between Astor Place and Tompkins Square Park. The road is jam-packed with historical tidbits that would delight any trivia buff: almost every building lining these blocks is rife with tales from a time when the East Village embodied a far more lawless spirit.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Astor Place",
+          "Tompkins Square Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "St Marks overview",
+        "physical_cues": [
+          {
+            "cue": "The three-block stretch of St Marks Place between Astor Place and Tompkins Square Park",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "St Marks Place runs only three blocks, between Astor Place and Tompkins Square Park"
+        ],
+        "source_passage": "Easily one of NYC's most famous streets, St Marks Place is also one of the city's smallest, occupying only three blocks between Astor Place and Tompkins Square Park. The road, however, is jam-packed with historical tidbits that would delight any trivia buff.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6f3a3c2f9b35ccb361cdc41621ed3211360d7b02667a2fdd54bc67a20ebab7bc",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_st_marks_place_music_heritage_lonely-planet-new-york-city_five_spot_thelonious_monk",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "music_heritage",
+        "topic_slug": "five_spot_thelonious_monk",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": "2 St Marks Place",
+        "beat_length_class": "seasoning",
+        "script_body": "The bar at 2 St Marks Place was once the famous Five-Spot, where jazz fiend Thelonious Monk got his start in the 1950s.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Five-Spot",
+          "Thelonious Monk"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "reverent",
+        "subject_tag": "Five-Spot jazz club",
+        "physical_cues": [
+          {
+            "cue": "Facade of 2 St Marks Place, former location of the Five-Spot jazz club",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "2 St Marks Place was formerly the Five-Spot bar/jazz club",
+          "Thelonious Monk got his start there in the 1950s"
+        ],
+        "source_passage": "The bar at 2 St Marks Place was once the famous Five-Spot, where jazz fiend Thelonious Monk got his start in the 1950s.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "49252fa6bffb295afe1362903e02b6112622ec6ecdd51b5a6feecebf7b4136eb",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_st_marks_place_famous_residents_lonely-planet-new-york-city_eliza_hamilton_fenimore_cooper",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "famous_residents",
+        "topic_slug": "eliza_hamilton_fenimore_cooper",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": "4 St Marks Place",
+        "beat_length_class": "seasoning",
+        "script_body": "Alexander Hamilton's widow Eliza lived at 4 St Marks Place in the 1830s; author James Fenimore Cooper — who wrote Last of the Mohicans — lived next door at number 6; and Yoko Ono's Fluxus artists descended upon the building in the 1960s.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Eliza Hamilton",
+          "James Fenimore Cooper",
+          "Yoko Ono",
+          "Fluxus"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Hamilton Cooper Fluxus residents",
+        "physical_cues": [
+          {
+            "cue": "Facade of 4 St Marks Place, where Eliza Hamilton lived in the 1830s",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Eliza Hamilton (Alexander Hamilton's widow) lived at 4 St Marks in the 1830s",
+          "James Fenimore Cooper lived at 6 St Marks",
+          "Yoko Ono's Fluxus artists were at the building in the 1960s"
+        ],
+        "source_passage": "Alexander Hamilton's widow Eliza lived in 4 St Marks Place in the 1830s; author James Fenimore Cooper (Last of the Mohicans) lived next door in number 6; and Yoko Ono's Fluxus artists descended upon the building in the 1960s.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8696249b20ceef17c475b07e39733ef96f45515ccea70a0dd29fdeb03fb9e25b",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_st_marks_place_music_heritage_lonely-planet-new-york-city_led_zeppelin_physical_graffiti_cover",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "music_heritage",
+        "topic_slug": "led_zeppelin_physical_graffiti_cover",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": "96 St Marks Place",
+        "beat_length_class": "seasoning",
+        "script_body": "The buildings at 96 and 98 St Marks Place are immortalized on the cover of Led Zeppelin's Physical Graffiti album.",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "entities": [
+          "Led Zeppelin",
+          "Physical Graffiti"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Led Zeppelin album cover",
+        "physical_cues": [
+          {
+            "cue": "Buildings at 96 and 98 St Marks Place, immortalized on the cover of Led Zeppelin's Physical Graffiti",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "96 and 98 St Marks Place appear on the cover of Led Zeppelin's Physical Graffiti"
+        ],
+        "source_passage": "The buildings at 96 and 98 St Marks Place are immortalized on the cover of Led Zepellin's Physical Graffiti album.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [
+          {
+            "field": "source_passage",
+            "original": "Led Zepellin",
+            "corrected_to": "Led Zeppelin",
+            "reason": "Typo in source text; correct spelling is 'Led Zeppelin'",
+            "source_urls": [
+              "https://en.wikipedia.org/wiki/Physical_Graffiti",
+              "https://en.wikipedia.org/wiki/Led_Zeppelin"
+            ]
+          }
+        ],
+        "disputes": [],
+        "fact_check": {
+          "status": "corrected",
+          "source_passage_verified": true,
+          "corrections": [
+            {
+              "field": "source_passage",
+              "original": "Led Zepellin",
+              "corrected_to": "Led Zeppelin",
+              "reason": "Typo in source text; correct spelling is 'Led Zeppelin'",
+              "source_urls": [
+                "https://en.wikipedia.org/wiki/Physical_Graffiti",
+                "https://en.wikipedia.org/wiki/Led_Zeppelin"
+              ]
+            }
+          ],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2a98e3d9bc72495004428933fb5d03d7192f16c686dda08df36b8bf3421fd403",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_st_marks_place_literary_heritage_lonely-planet-new-york-city_sine_jeff_buckley_david_gray",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "literary_heritage",
+        "topic_slug": "sine_jeff_buckley_david_gray",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": "122 St Marks Place",
+        "beat_length_class": "seasoning",
+        "script_body": "Though it closed in the 1990s, 122 St Marks Place was the location of a popular cafe called Sin-é, where Jeff Buckley and David Gray often performed.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sin-é",
+          "Jeff Buckley",
+          "David Gray"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Sin-e cafe performers",
+        "physical_cues": [
+          {
+            "cue": "Facade of 122 St Marks Place, former location of cafe Sin-é",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Sin-é",
+            "gloss": "That's It (Irish-language name of the East Village cafe)"
+          }
+        ],
+        "pronunciation": "shin-AY",
+        "key_claims": [
+          "122 St Marks Place was the cafe Sin-é, closed in the 1990s",
+          "Jeff Buckley and David Gray performed there"
+        ],
+        "source_passage": "Though it closed in the 1990s, 122 St Marks Place was the location of a popular cafe called Sin-é, where Jeff Buckley and David Gray often performed.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Sin-é gloss as 'That's It' in Irish — extractor-supplied, not in source text"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "108b31806c749378e466eac8c642d24501acbc3827a7b5cd721d0da3731b99f7",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_st_marks_place_street_art_lonely-planet-new-york-city_mosaic_trail_jim_power",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "street_art",
+        "topic_slug": "mosaic_trail_jim_power",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "As you walk St Marks Place, keep an eye out for the tile-encrusted street poles of the Mosaic Trail. In the mid-1980s, a local Vietnam vet named Jim Power began decorating lampposts with bits of tile, mirror, ceramics, beads and coins as a way to deal with his PTSD and imbue the streets with colorful — and often political — art. Many of them portray local East Village landmarks or figures, such as 'CBGB,' 'Patti Smith' and 'PDT (Please Don't Tell).'",
+        "duration_sec": 53,
+        "kid_friendly": "yes",
+        "entities": [
+          "Mosaic Trail",
+          "Jim Power",
+          "CBGB",
+          "Patti Smith",
+          "PDT"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Mosaic Trail PTSD art",
+        "physical_cues": [
+          {
+            "cue": "Tile-encrusted lampposts of the Mosaic Trail along St Marks Place between Astor Pl and Ave A",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Jim Power began Mosaic Trail in mid-1980s",
+          "Power is a local Vietnam vet who decorated lampposts to cope with PTSD"
+        ],
+        "source_passage": "As you walk, keep an eye out for the tile-encrusted street poles of the Mosaic Trail. In the mid-1980s, a local Vietnam vet named Jim Power began decorating lampposts with bits of tile, mirror, ceramics, beads and coins as a way to deal with his PTSD and imbue the streets with colorful (and often political) art. Many of them portray local East Village landmarks or figures, such as 'CBGB,' 'Patti Smith' and 'PDT (Please Don't Tell)'.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3c9ca72a944c4b95ccad9e6b8e73eddc84ecb84fcd97fc75e57385b287bf2529",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_st_marks_place_social_change_lonely-planet-new-york-city_punk_rock_trash_vaudeville",
+        "city_name": "new_york",
+        "poi_name": "St Marks Place",
+        "lens": "social_change",
+        "topic_slug": "punk_rock_trash_vaudeville",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The East Village was once the home base for emerging punk-rock acts — many would frequent the clothing shops along St Marks. Although most joints have gone the way of the dodo in favor of more tourist-friendly wares, mainstay Trash & Vaudeville is still around, though it had to move from St Marks Place to a few blocks over due to rising rents.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Trash & Vaudeville"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "punk rock scene decline",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "East Village was home base for punk-rock acts",
+          "Trash & Vaudeville moved from St Marks due to rising rents"
+        ],
+        "source_passage": "The East Village was once the home base for emerging punk-rock acts – many would frequent the clothing shops along St Marks. Although most joints have gone the way of the dodo in favor of more tourist-friendly wares, there are still a few spots that remain. Mainstay Trash & Vaudeville is still around, though it had to move from St Marks Pl to a few blocks over due to rising rents.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5e2b90d15aab4b4be3058d3661c32c0f7fe383bb9298381e5fee67d837602c14",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "The Tenement Museum",
+    "short_description": "Highly regarded immigration museum, National Trust site, Wikipedia article, major Frommer's headline sight. Moderate-high gravity. Note: original tenement is 97 Orchard; visitor center/coords at 103 Orchard.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.718768,
+    "longitude": -73.990074,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Highly regarded immigration museum, National Trust site, Wikipedia article, major Frommer's headline sight. Moderate-high gravity. Note: original tenement is 97 Orchard; visitor center/coords at 103 Orchard.",
+      "verified": false,
+      "geocode_source": "web_search (Apple/Google Maps, 103 Orchard St visitor center)",
+      "geocode_confidence": 0.93,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 225000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 55.5,
+        "assigned_gravity": 2,
+        "reasoning": "~225,000 annual visitors per NPS/museum sources; 6,931 TripAdvisor reviews; dedicated Wikipedia article (Lower East Side Tenement Museum) with substantial history, founding, and exhibit detail; strong search interest among NYC cultural museums",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_the_tenement_museum_social_change_lonely-planet-new-york-city_immigrant_life_tenements",
+        "city_name": "new_york",
+        "poi_name": "The Tenement Museum",
+        "lens": "social_change",
+        "topic_slug": "immigrant_life_tenements",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Spread across two 19th-century tenements in the gentrifying Lower East Side, this wonderful, immersive museum gives some sense of what life was like in the poorest parts of the world's greatest city in the 19th and early 20th centuries. For access, you must take one of numerous tours that illuminate particular aspects of the period, the people and the places.",
+        "duration_sec": 23,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lower East Side Tenement Museum"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "museum overview",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Museum spread across two 19th-century tenements",
+          "Access by guided tour only"
+        ],
+        "source_passage": "Spread across two 19th-century tenements in the gentrifying Lower East Side, this wonderful, immersive museum gives some sense of what life was like in the poorest parts of the world's greatest city in the 19th and early 20th centuries. For access, you must take one of numerous tours that illuminate particular aspects of the period, the people and the places.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "337d5a0078fb89533c0447c3e10878835d9182a603c130ce2911e6b61a82f4ad",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_the_tenement_museum_dark_history_lonely-planet-new-york-city_squalid_conditions_hard_times",
+        "city_name": "new_york",
+        "poi_name": "The Tenement Museum",
+        "lens": "dark_history",
+        "topic_slug": "squalid_conditions_hard_times",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": "hard-times-tour",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The 'Hard Times' tour, one of the most popular, visits apartments from two periods — the 1870s and the 1930s. There you'll see the squalid conditions tenants faced: in the early days there was a wretched communal outhouse and no electricity or running water. Recorded testimony from a surviving member of the Baldizzi family, who lived here during the Depression, makes it easier to relate to what you see. Other tours focus on Irish immigrants and the harsh discrimination they faced, sweatshop workers and 'shop life,' with a tour through a recreated 1870s German beer hall.",
+        "duration_sec": 48,
+        "kid_friendly": "no",
+        "entities": [
+          "Baldizzi family"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "somber",
+        "subject_tag": "Hard Times tour",
+        "physical_cues": [
+          {
+            "cue": "Recreated 1870s and 1930s apartments visible on the Hard Times tour",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Hard Times tour visits 1870s and 1930s apartments",
+          "Early tenants had communal outhouse and no electricity or running water",
+          "Baldizzi family oral history from Depression era"
+        ],
+        "source_passage": "'Hard Times,' one of the most popular tours, visits apartments from two periods – the 1870s and the 1930s. There you'll see the squalid conditions tenants faced – in the early days there was a wretched communal outhouse and no electricity or running water – and what life was like for the families who lived there. Recorded testimony from a surviving member of the Baldizzi family, who lived here during the Depression, makes it easier to relate to what you see. Other tours focus on Irish immigrants and the harsh discrimination they faced, sweatshop workers and 'shop life' (with a tour through a recreated 1870s German beer hall).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3db795e2034887064ab4e530ea64319d0312343836acc8e53d0d03c696723aa7",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_the_tenement_museum_local_legends_lonely-planet-new-york-city_meet_victoria_living_history",
+        "city_name": "new_york",
+        "poi_name": "The Tenement Museum",
+        "lens": "local_legends",
+        "topic_slug": "meet_victoria_living_history",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": "97-orchard-street",
+        "trigger_address": "97 Orchard St",
+        "beat_length_class": "mid",
+        "script_body": "Travel back to 1916 and meet Victoria Confino, a 14-year-old girl from a Greek Sephardic family. Played by a costumed interpreter, Victoria 'lives' at 97 Orchard St, interacting with visitors and answering questions about what her life was like in those days. Visitors are free to handle household objects — it's especially recommended for kids. This one-hour tour is held on Saturday and Sunday year-round, daily during the summer.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Victoria Confino"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "Victoria Confino interpreter",
+        "physical_cues": [
+          {
+            "cue": "Facade of 97 Orchard St, the building where Victoria 'lives'",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Victoria Confino is a 14-year-old Greek Sephardic girl set in 1916",
+          "Played by costumed interpreter at 97 Orchard St",
+          "Tour held Saturday and Sunday year-round, daily in summer"
+        ],
+        "source_passage": "Travel back to 1916 and meet Victoria Confino, a 14-year-old girl from a Greek Sephardic family. Played by a costumed interpreter, Victoria 'lives' at 97 Orchard St, interacting with visitors and answering questions about what her life was like in those days. It's especially recommended for kids, as visitors are free to handle household objects. This one-hour tour is held on Saturday and Sunday year-round, daily during the summer.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6f54676a16cde4ffa4706161824a8cf3bcae0c0356eb1f74d7c3be0373672db4",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_the_tenement_museum_social_change_lonely-planet-new-york-city_neighborhood_walking_tours_food",
+        "city_name": "new_york",
+        "poi_name": "The Tenement Museum",
+        "lens": "social_change",
+        "topic_slug": "neighborhood_walking_tours_food",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": "neighborhood-tours",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "A great way to understand the immigrant experience is on a walking tour around the neighborhood. These tours, ranging from 90 minutes to two hours, explore a variety of topics. 'Foods of the Lower East Side' looks at the ways traditional foods have shaped American cuisine; 'Outside the Home' and 'Building on the Lower East Side' look at life beyond the apartment — where immigrants stored and lost their life savings, the churches and synagogues so integral to community life, and the meeting halls where poorly paid workers gathered to fight for better conditions.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "immigrant neighborhood tours",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Tours range 90 minutes to two hours",
+          "Foods of the Lower East Side tour examines how traditional foods shaped American cuisine"
+        ],
+        "source_passage": "A great way to understand the immigrant experience is on a walking tour around the neighborhood. These tours, ranging from 90 minutes to two hours, explore a variety of topics. 'Foods of the Lower East Side' looks at the ways traditional foods have shaped American cuisine; 'Outside the Home' and 'Building on the Lower East Side' look at life beyond the apartment – where immigrants stored (and lost) their life savings, the churches and synagogues so integral to community life, and the meeting halls where poorly paid workers gathered to fight for better conditions.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2ac9d890b64011b8b16ac4eb99fb31df09db3b17ecf05de6534ee3188871d615",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Tompkins Square Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.726486,
+    "longitude": -73.981684,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Independent top-level POI. Flagged for /poi-generate.",
+      "verified": false,
+      "geocode_source": "wikipedia (East Village, btw Aves A and B, 7th-10th Sts.)",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Tompkins Square Park'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Tompkins Square Park, Manhattan Community Board 3, Manhattan, New York County, New York, 10009, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "No official annual count; 10.5-acre East Village neighborhood park; heavy local daily use; notable for 1874 and 1988 riots (each with own Wikipedia articles); main Wikipedia article covers history, riots, and facilities at moderate-to-extensive depth.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_tompkins_square_park_parks_gardens_lonely-planet-new-york-city_daniel_tompkins_10_5_acres",
+        "city_name": "new_york",
+        "poi_name": "Tompkins Square Park",
+        "lens": "parks_gardens",
+        "topic_slug": "daniel_tompkins_10_5_acres",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The 10.5-acre Tompkins Square Park honors Daniel Tompkins, who served as governor of New York from 1807 to 1817, and as the nation's vice president after that, under James Monroe. Dating from 1879, the park is like a friendly town square for locals, who gather for chess at concrete tables, picnics on the lawn, and spontaneous guitar or drum jams on various grassy knolls. It also has basketball courts, a fun-to-watch dog run, a mini public swimming pool for kids, and frequent summer concerts.",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "entities": [
+          "Daniel Tompkins",
+          "James Monroe"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Tompkins park history",
+        "physical_cues": [
+          {
+            "cue": "Open green of Tompkins Square Park with concrete chess tables, dog run, and playground visible",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Park is 10.5 acres, dating from 1879",
+          "Honors Daniel Tompkins, NY governor 1807-1817, then VP under James Monroe"
+        ],
+        "source_passage": "This 10.5-acre park dating from 1879 is like a friendly town square for locals, who gather for chess at concrete tables, picnics on the lawn, and spontaneous guitar or drum jams on various grassy knolls. It's also the site of basketball courts, a fun-to-watch dog run (a fenced-in area where humans can unleash their canines), a mini–public swimming pool for kids, frequent summer concerts and an always-lively playground.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f3e6928c3b6fb62f6ad9ab08ad729663f9126f25aea414e97abba4eee09980a6",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_tompkins_square_park_social_change_lonely-planet-new-york-city_1988_riot_tent_city_yuppies",
+        "city_name": "new_york",
+        "poi_name": "Tompkins Square Park",
+        "lens": "social_change",
+        "topic_slug": "1988_riot_tent_city_yuppies",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In the 1980s the park was a dirty, needle-strewn homeless encampment, unusable for folks wanting a place to stroll or picnic. A contentious turning point came when police razed the band shell and evicted more than 100 squatters living in a tent city in 1988 — and again in 1991. That first eviction turned violent: the Tompkins Square Riot ushered in the first wave of yuppies in the dog run, fashionistas lolling on the grass, and undercover narcotics agents trying to pass as druggie punk kids.",
+        "duration_sec": 61,
+        "kid_friendly": "no",
+        "entities": [
+          "Tompkins Square Riot"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "tent city eviction yuppification",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1988 police evicted more than 100 squatters from tent city",
+          "1991 second eviction",
+          "Tompkins Square Riot turned violent"
+        ],
+        "source_passage": "In the 1980s it was a dirty, needle-strewn, homeless encampment, unusable for folks wanting a place to stroll or picnic. A contentious turning point came when police razed the band shell and evicted more than 100 squatters living in a tent city in the park in 1988 (and again in 1991). That first eviction turned violent; the Tompkins Square Riot, as it came to be known, ushered in the first wave of yuppies in the dog run, fashionistas lolling on the grass and undercover narcotics agents trying to pass as druggie punk kids.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5232b3550ab5ac0a16054d026da586a79f8e9d2c23d8317ea2ee3539063f9dc6",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_tompkins_square_park_music_heritage_lonely-planet-new-york-city_charlie_parker_jazz_festival",
+        "city_name": "new_york",
+        "poi_name": "Tompkins Square Park",
+        "lens": "music_heritage",
+        "topic_slug": "charlie_parker_jazz_festival",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-03-east-village-lower-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "These days there's not much drama in Tompkins Square Park, outside of the occasional music and arts festival that attempts to briefly reclaim the park's bohemian glory days — such as the Charlie Parker Jazz Festival held here every August.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Charlie Parker Jazz Festival"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "callback",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "Charlie Parker festival",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Charlie Parker Jazz Festival held at Tompkins Square Park every August"
+        ],
+        "source_passage": "These days there's not much drama, outside of the occasional music and arts festival that attempts to briefly reclaim the park's bohemian glory days – such as the Charlie Parker Jazz Festival held here every August.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "East Village & Lower East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "35fa72df9bbcf148cae493ee95a71b9726bca74d1981534d4b20d2cbc5d4e9f2",
+        "related_beats": []
+      }
+    ]
+  }
+]

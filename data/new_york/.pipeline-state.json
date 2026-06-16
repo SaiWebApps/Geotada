@@ -1,82 +1,108 @@
 {
-  "stage": "complete",
+  "stage": "gravity_done",
   "city": "new_york",
-  "book": "frommers-nyc-2024",
+  "book": "lonely-planet-new-york-city",
   "chunks_total": [
-    "chunk-03",
-    "chunk-09",
-    "chunk-10",
-    "chunk-11"
-  ],
-  "chunks_completed": [
-    "chunk-03",
-    "chunk-09",
-    "chunk-10",
-    "chunk-11"
-  ],
-  "chunks_failed": [],
-  "chunks_pending": [],
-  "new_pois_created": 191,
-  "gravity_scored": true,
-  "export_validated": true,
-  "started_at": "2026-06-14",
-  "agent_outputs": {
-    "chunk-03": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a6b17e608e8534e98.output",
-    "chunk-09": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a761b46d346636d73.output",
-    "chunk-10": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a9aaafa537dfaaf31.output",
-    "chunk-11": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/aff07b54da2e7ee95.output",
-    "chunk-01": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/ad8d884ceafa6eb17.output",
-    "chunk-02": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a1de0846f731764f6.output",
-    "chunk-04": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a30a23707adf8152c.output",
-    "chunk-05": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a6c639629af47b836.output",
-    "chunk-06": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/af64f1da17e14aed3.output",
-    "chunk-07": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/ab170be5bfc76d0e3.output",
-    "chunk-08": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a5204f6a127fd14c2.output",
-    "chunk-12": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/ae19a371575535bad.output"
-  },
-  "batch2_chunks": [
     "chunk-01",
     "chunk-02",
+    "chunk-03",
     "chunk-04",
     "chunk-05",
     "chunk-06",
     "chunk-07",
     "chunk-08",
-    "chunk-12"
-  ],
-  "chunks_completed_batch1": [
-    "chunk-03",
     "chunk-09",
     "chunk-10",
-    "chunk-11"
-  ],
-  "chunks_completed_batch2": [
-    "chunk-01",
-    "chunk-06",
+    "chunk-11",
     "chunk-12",
-    "chunk-02",
+    "chunk-13",
+    "chunk-14",
+    "chunk-15"
+  ],
+  "chunks_completed": [
     "chunk-05",
+    "chunk-03",
     "chunk-07",
+    "chunk-02",
     "chunk-08",
-    "chunk-04"
+    "chunk-01",
+    "chunk-09",
+    "chunk-11",
+    "chunk-14",
+    "chunk-04",
+    "chunk-12"
   ],
-  "note_network": "batch-2 agents report WebFetch/Bash network DENIED -> geocodes are model-knowledge, no web fact-check. Main convo HAS network -> re-geocode via Nominatim in Phase B; run /fact-check after.",
-  "total_beats": 406,
-  "geocoded": true,
-  "gravity_agents": {
-    "1": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a286679e450aefcf1.output",
-    "2": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a5a99d9cbd6ef6089.output",
-    "3": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a08f25abb3bba78c3.output",
-    "4": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/aa3d87625544284bd.output",
-    "5": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a8a80e26c33dba04e.output",
-    "6": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a6d3af9c16e60199c.output",
-    "7": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/acfc63c8a3e12b667.output",
-    "8": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/af5843b34379dd73b.output",
-    "9": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/12918caf-f455-4635-aada-932a33ad1c37/tasks/a7e68b0a0d24137b2.output"
+  "chunks_failed": [],
+  "chunks_pending": [
+    "chunk-06",
+    "chunk-10",
+    "chunk-13",
+    "chunk-15"
+  ],
+  "chunk_paths": {
+    "chunk-01": "Books/new_york/lonely-planet-new-york-city/chunk-01-lower-manhattan-financial-district.txt",
+    "chunk-02": "Books/new_york/lonely-planet-new-york-city/chunk-02-soho-chinatown.txt",
+    "chunk-03": "Books/new_york/lonely-planet-new-york-city/chunk-03-east-village-lower-east-side.txt",
+    "chunk-04": "Books/new_york/lonely-planet-new-york-city/chunk-04-west-village-chelsea-meatpacking.txt",
+    "chunk-05": "Books/new_york/lonely-planet-new-york-city/chunk-05-union-square-flatiron-gramercy.txt",
+    "chunk-06": "Books/new_york/lonely-planet-new-york-city/chunk-06-midtown.txt",
+    "chunk-07": "Books/new_york/lonely-planet-new-york-city/chunk-07-upper-east-side.txt",
+    "chunk-08": "Books/new_york/lonely-planet-new-york-city/chunk-08-upper-west-side-central-park.txt",
+    "chunk-09": "Books/new_york/lonely-planet-new-york-city/chunk-09-harlem-upper-manhattan.txt",
+    "chunk-10": "Books/new_york/lonely-planet-new-york-city/chunk-10-brooklyn.txt",
+    "chunk-11": "Books/new_york/lonely-planet-new-york-city/chunk-11-queens.txt",
+    "chunk-12": "Books/new_york/lonely-planet-new-york-city/chunk-12-understand-history.txt",
+    "chunk-13": "Books/new_york/lonely-planet-new-york-city/chunk-13-understand-nyc-table-arts-scene.txt",
+    "chunk-14": "Books/new_york/lonely-planet-new-york-city/chunk-14-understand-city-skyline-queer-city.txt",
+    "chunk-15": "Books/new_york/lonely-planet-new-york-city/chunk-15-understand-nyc-on-screen.txt"
   },
-  "gravity_batches_done": [
-    0
-  ],
-  "uploaded": true,
-  "uploaded_at": "2026-06-15"
+  "new_pois_created": 94,
+  "gravity_scored": true,
+  "export_validated": true,
+  "started_at": "2026-06-15",
+  "note": "NYC book #2 (Lonely Planet). Dedup context built from current 192 POIs / 406 beats (Frommer's). Frommer's run preserved in .pipeline-state.frommers.json",
+  "agent_ids": {
+    "chunk-01": "a5d0af86a0442d7ab",
+    "chunk-02": "a2ed329987d31a25e",
+    "chunk-03": "a3385c8527cda2428",
+    "chunk-04": "a7707455bf2731032",
+    "chunk-05": "ac6a442e020bd9f63",
+    "chunk-06": "a1abbad02d7f9424b",
+    "chunk-07": "a519745054e0c6a05",
+    "chunk-08": "a9d8494392e09a38d",
+    "chunk-09": "a01dd93fe1735d9dd",
+    "chunk-10": "aa799c558a75b2ff4",
+    "chunk-11": "a2ddee5f47882458c",
+    "chunk-12": "a6975be77f9ff3375",
+    "chunk-13": "a92f0e053463d262c",
+    "chunk-14": "acd8838576e7da0f1",
+    "chunk-15": "a880e5dfb500f8d46"
+  },
+  "models": {
+    "opus": [
+      "chunk-01",
+      "chunk-04",
+      "chunk-06",
+      "chunk-08",
+      "chunk-10",
+      "chunk-12",
+      "chunk-14"
+    ],
+    "sonnet": [
+      "chunk-02",
+      "chunk-03",
+      "chunk-05",
+      "chunk-07",
+      "chunk-09",
+      "chunk-11",
+      "chunk-13",
+      "chunk-15"
+    ]
+  },
+  "task_dir": "/private/tmp/claude-501/-Users-adamserblowski-Geotada/25acef5c-7d8c-43c5-a279-8703bfa07aae/tasks",
+  "total_beats": 502,
+  "ungrounded_dropped": 8,
+  "lp_beats_added": 502,
+  "lp_new_pois": 94,
+  "lp_existing_enriched": 61
 }
