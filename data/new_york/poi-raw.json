@@ -14615,7 +14615,10 @@
     "latitude": 40.7813,
     "longitude": -73.9626,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "A year after her husband was assassinated in Dallas, former First Lady Jacqueline Kennedy"
   },
   {
     "name": "105 Mercer Street",
@@ -14654,7 +14657,10 @@
     "latitude": 40.7236,
     "longitude": -73.99932,
     "trigger_radius": 12,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific house you walk to and stand at.",
+    "_poi_role_source": "Small SoHo house, built 1831, that became one of the neighborhood's brothels when SoHo was"
   },
   {
     "name": "21 Club",
@@ -14693,7 +14699,10 @@
     "latitude": 40.7609,
     "longitude": -73.9773,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "21 Club stands for all the history and stories that make New York so fantastic. Since 1930"
   },
   {
     "name": "726 Madison Avenue",
@@ -14732,7 +14741,10 @@
     "latitude": 40.7672,
     "longitude": -73.9692,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "726 Madison Avenue was built in 1932 for the Bank of Manhattan Company. The building's Geo"
   },
   {
     "name": "Astor Row",
@@ -14774,7 +14786,10 @@
     "latitude": 40.8126,
     "longitude": -73.9407,
     "trigger_radius": 30,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A row of 28 set-back townhouses experienced along its length as you walk the block.",
+    "_poi_role_source": "A row of 28 set-back townhouses with wooden porches on the south side of West 130th Street"
   },
   {
     "name": "Aylsmere apartments",
@@ -14813,7 +14828,10 @@
     "latitude": 40.7797067,
     "longitude": -73.9765985,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "The Aylsmere apartments are located in a beautiful Renaissance building decorated with bri"
   },
   {
     "name": "Bookmarc",
@@ -14854,7 +14872,10 @@
     "latitude": 40.73548,
     "longitude": -74.00461,
     "trigger_radius": 12,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific coffee you walk to and stand at.",
+    "_poi_role_source": "West Village bookshop opened by fashion designer Marc Jacobs in 2010, known for curated co"
   },
   {
     "name": "Bowery Mural",
@@ -14897,7 +14918,10 @@
     "latitude": 40.72481,
     "longitude": -73.99368,
     "trigger_radius": 25,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific mural you walk to and stand at.",
+    "_poi_role_source": "Open-air graffiti-art wall at Houston and Bowery, initiated by Tony Goldman and Jeffrey De"
   },
   {
     "name": "Café Carlyle",
@@ -14936,7 +14960,10 @@
     "latitude": 40.7741,
     "longitude": -73.9633,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "Anyone who thinks cabaret is a thing of the past definitely ought to come to Café Carlyle"
   },
   {
     "name": "Chelsea Market",
@@ -14975,7 +15002,10 @@
     "latitude": 40.74221,
     "longitude": -74.00601,
     "trigger_radius": 25,
-    "importance_tier": 4
+    "importance_tier": 4,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "Indoor food-hall arcade you move through end to end, not a single point.",
+    "_poi_role_source": "Food hall and shopping arcade in the former Nabisco factory where Oreo cookies were made, "
   },
   {
     "name": "Creel and Gow",
@@ -15014,7 +15044,10 @@
     "latitude": 40.7692628,
     "longitude": -73.9632655,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "Creel and Gow offers an impressive selection of bric-a-brac and feels more like a museum t"
   },
   {
     "name": "Edith and Ernesto Fabbri House",
@@ -15053,7 +15086,10 @@
     "latitude": 40.7654,
     "longitude": -73.9707,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "At 11 East 62nd Street, you'll find the Edith and Ernesto Fabbri House. Edith Shepard Fabb"
   },
   {
     "name": "Filthy Rich Barbershop",
@@ -15095,7 +15131,10 @@
     "latitude": 40.7148,
     "longitude": -73.956,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific barbershop you walk to and stand at.",
+    "_poi_role_source": "Williamsburg barbershop on Havemeyer Street, an institution since 2006 known for trendy cu"
   },
   {
     "name": "Greene Street",
@@ -15136,7 +15175,10 @@
     "latitude": 40.72394,
     "longitude": -74.00073,
     "trigger_radius": 20,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A SoHo street experienced along its length for its cast-iron frontages.",
+    "_poi_role_source": "SoHo street lined with cast-iron architecture, including the 'King of Greene Street' build"
   },
   {
     "name": "Heckscher Ballfields",
@@ -15175,7 +15217,10 @@
     "latitude": 40.77055,
     "longitude": -73.97865,
     "trigger_radius": 40,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "An open recreation field in Central Park you move across rather than stand at a point.",
+    "_poi_role_source": "Heckscher Ballfields has six softball and baseball diamonds, and there's nearly always a t"
   },
   {
     "name": "Italian American Museum",
@@ -15216,7 +15261,10 @@
     "latitude": 40.71896,
     "longitude": -73.99762,
     "trigger_radius": 15,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific museum you walk to and stand at.",
+    "_poi_role_source": "Little Italy museum on Mulberry Street in the former Banca Stabile building, chronicling I"
   },
   {
     "name": "Knickerbocker Club",
@@ -15255,7 +15303,10 @@
     "latitude": 40.7656,
     "longitude": -73.9713,
     "trigger_radius": 25,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "The Knickerbocker Club is another of the many private clubs on 5th Avenue. The building da"
   },
   {
     "name": "Magnolia Bakery",
@@ -15294,7 +15345,10 @@
     "latitude": 40.7358,
     "longitude": -74.005,
     "trigger_radius": 12,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific bakery you walk to and stand at.",
+    "_poi_role_source": "West Village bakery whose cupcakes were made famous by the TV series Sex and the City."
   },
   {
     "name": "Manhattan Beach",
@@ -15335,7 +15389,10 @@
     "latitude": 40.5779,
     "longitude": -73.9389,
     "trigger_radius": 40,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A beach experienced along its length as you move by the water.",
+    "_poi_role_source": "Small family beach in Brooklyn next to Brighton Beach, favored for picnics and barbecuing "
   },
   {
     "name": "Metropolitan Club",
@@ -15374,7 +15431,10 @@
     "latitude": 40.7641,
     "longitude": -73.9719,
     "trigger_radius": 25,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "In 1891 the Metropolitan Club was established under the chairmanship of banker J. P. Morga"
   },
   {
     "name": "Municipal Building",
@@ -15417,7 +15477,10 @@
     "latitude": 40.71306,
     "longitude": -74.00389,
     "trigger_radius": 75,
-    "importance_tier": 3
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific building you walk to and stand at.",
+    "_poi_role_source": "The monumental 1909 Manhattan Municipal Building at 1 Centre Street, built to add office s"
   },
   {
     "name": "National Jazz Museum in Harlem",
@@ -15459,7 +15522,10 @@
     "latitude": 40.8093,
     "longitude": -73.941,
     "trigger_radius": 15,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific museum you walk to and stand at.",
+    "_poi_role_source": "A small Harlem museum on West 129th Street dedicated to the history of jazz in New York, o"
   },
   {
     "name": "Naumburg Bandshell",
@@ -15498,7 +15564,10 @@
     "latitude": 40.7716,
     "longitude": -73.9719,
     "trigger_radius": 30,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "The neoclassical Naumburg Bandshell was built in Central Park in 1923. Since then, artists"
   },
   {
     "name": "Nicolas Roerich Museum",
@@ -15537,7 +15606,10 @@
     "latitude": 40.8029241,
     "longitude": -73.9690126,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "The Nicolas Roerich Museum is a small, eccentric museum in a typical Upper West Side townh"
   },
   {
     "name": "NoLIta",
@@ -15576,7 +15648,10 @@
     "latitude": 40.7201124,
     "longitude": -73.9961673,
     "trigger_radius": 120,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "A neighborhood you move through, not a single point.",
+    "_poi_role_source": "The small, trendy NoLIta (short for “North of Little Italy”) is a small, square-shaped are"
   },
   {
     "name": "Paley Center for Media",
@@ -15615,7 +15690,10 @@
     "latitude": 40.7607,
     "longitude": -73.9776,
     "trigger_radius": 25,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "Learn all about the history of radio and television at the Paley Center for Media. Watch a"
   },
   {
     "name": "Partners Coffee",
@@ -15658,7 +15736,10 @@
     "latitude": 40.7186,
     "longitude": -73.9577,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific coffee you walk to and stand at.",
+    "_poi_role_source": "Williamsburg coffeehouse on North 6th Street that began as Toby's Estate, specializing in "
   },
   {
     "name": "Plaza Hotel",
@@ -15697,7 +15778,10 @@
     "latitude": 40.7644,
     "longitude": -73.9745,
     "trigger_radius": 30,
-    "importance_tier": 4
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "Many famous people have stayed at the Plaza Hotel. Architect Frank Lloyd Wright, for examp"
   },
   {
     "name": "Republic of Booza",
@@ -15739,7 +15823,10 @@
     "latitude": 40.7178,
     "longitude": -73.9617,
     "trigger_radius": 15,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific shop you walk to and stand at.",
+    "_poi_role_source": "Williamsburg ice cream shop billed as the first in the United States to sell booza, an ela"
   },
   {
     "name": "Roosevelt House",
@@ -15778,7 +15865,10 @@
     "latitude": 40.7669,
     "longitude": -73.9665,
     "trigger_radius": 20,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "The Roosevelt House is actually two houses with one shared entrance. Sarah Delano Roosevel"
   },
   {
     "name": "Singer Building",
@@ -15820,7 +15910,10 @@
     "latitude": 40.72437,
     "longitude": -73.9982,
     "trigger_radius": 15,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific building you walk to and stand at.",
+    "_poi_role_source": "Cast-iron-and-terracotta SoHo landmark (the Little Singer Building) at 561 Broadway, built"
   },
   {
     "name": "The Bar Room",
@@ -15859,7 +15952,10 @@
     "latitude": 40.7621,
     "longitude": -73.9656,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "Behind the brown doors at the Bar Room hide an old-style bar and restaurant. A beautiful m"
   },
   {
     "name": "The Gutter",
@@ -15902,7 +15998,10 @@
     "latitude": 40.7222,
     "longitude": -73.9568,
     "trigger_radius": 15,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific bowling you walk to and stand at.",
+    "_poi_role_source": "One of Williamsburg's three bowling alleys, on North 14th Street; opened in 2007 with a 19"
   },
   {
     "name": "The Knitting Factory",
@@ -15944,7 +16043,10 @@
     "latitude": 40.7137,
     "longitude": -73.9514,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "A well-known name on the New York music scene; like The Bitter End and Arlene's Grocery, i"
   },
   {
     "name": "The Pierre",
@@ -15983,7 +16085,10 @@
     "latitude": 40.7647,
     "longitude": -73.9722,
     "trigger_radius": 20,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific site you walk to and stand at.",
+    "_poi_role_source": "Since 1930, The Pierre has been one of the most elegant hotels in New York City. Treat you"
   },
   {
     "name": "Union Square Greenmarket",
@@ -16022,7 +16127,10 @@
     "latitude": 40.7359,
     "longitude": -73.9911,
     "trigger_radius": 30,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "setting",
+    "_poi_role_reasoning": "An open-air market you move through among the stalls.",
+    "_poi_role_source": "The Union Square Greenmarket began in 1976 with a handful of farmers and has since grown i"
   },
   {
     "name": "West side of Park Avenue, from 68th to 69th streets",
@@ -16061,7 +16169,10 @@
     "latitude": 40.7686,
     "longitude": -73.9658,
     "trigger_radius": 30,
-    "importance_tier": 1
+    "importance_tier": 1,
+    "poi_role": "walk_by_only",
+    "_poi_role_reasoning": "A block frontage passed along the route and tied to an event; minor pass-by seasoning.",
+    "_poi_role_source": "The houses on the west side of Park Avenue, from 68th to 69th streets, were saved from dem"
   },
   {
     "name": "Williamsburg Art & Historical Center",
@@ -16104,6 +16215,9 @@
     "latitude": 40.7106,
     "longitude": -73.9668,
     "trigger_radius": 25,
-    "importance_tier": 2
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "_poi_role_reasoning": "A specific gallery you walk to and stand at.",
+    "_poi_role_source": "Williamsburg's best-known art gallery, housed in the former Kings County Savings Bank buil"
   }
 ]
