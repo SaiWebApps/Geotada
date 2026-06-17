@@ -927,7 +927,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7057,
     "longitude": -73.9964,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_meta": {
       "created_by": "pipeline-batch",
@@ -997,7 +997,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7148572,
     "longitude": -74.0000602,
-    "trigger_radius": 10,
+    "trigger_radius": 130,
     "city_name": "new_york",
     "_meta": {
       "created_by": "pipeline-batch:lonely-planet-new-york-city",

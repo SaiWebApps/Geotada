@@ -339,7 +339,7 @@
     "kid_friendly": "yes",
     "latitude": 40.667662,
     "longitude": -73.963626,
-    "trigger_radius": 150,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "900 Washington Ave. (at Eastern Pkwy.), Brooklyn",
@@ -625,7 +625,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7057,
     "longitude": -73.9964,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -966,7 +966,7 @@
     "kid_friendly": "yes",
     "latitude": 40.698289,
     "longitude": -73.99993,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1695,7 +1695,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6973713,
     "longitude": -73.9973894,
-    "trigger_radius": 15,
+    "trigger_radius": 280,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2729,7 +2729,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6775468,
     "longitude": -74.0085991,
-    "trigger_radius": 15,
+    "trigger_radius": 180,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3243,7 +3243,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7217727,
     "longitude": -73.9621944,
-    "trigger_radius": 15,
+    "trigger_radius": 170,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3460,7 +3460,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6914756,
     "longitude": -73.9756224,
-    "trigger_radius": 20,
+    "trigger_radius": 260,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3733,7 +3733,7 @@
     "kid_friendly": "yes",
     "latitude": 40.652203,
     "longitude": -73.991077,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "Main entrance Fifth Ave. at 25th St., Sunset Park, Brooklyn",
@@ -4199,7 +4199,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7211592,
     "longitude": -73.9528793,
-    "trigger_radius": 20,
+    "trigger_radius": 390,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -4732,7 +4732,7 @@
     "kid_friendly": "yes",
     "latitude": 40.661774,
     "longitude": -73.97109,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -5227,9 +5227,9 @@
       "Sunset Park (Brooklyn)"
     ],
     "kid_friendly": "yes",
-    "latitude": 40.6442221,
-    "longitude": -74.0075907,
-    "trigger_radius": 20,
+    "latitude": 40.64798,
+    "longitude": -74.00375,
+    "trigger_radius": 330,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -5557,7 +5557,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7135811,
     "longitude": -73.9717,
-    "trigger_radius": 20,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",

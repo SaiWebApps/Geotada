@@ -723,7 +723,7 @@
     "kid_friendly": "yes",
     "latitude": 40.8049,
     "longitude": -73.9442,
-    "trigger_radius": 60,
+    "trigger_radius": 270,
     "city_name": "new_york",
     "_pipeline": {
       "address": "Mount Morris Park area, Fifth Ave between 120th-124th St",

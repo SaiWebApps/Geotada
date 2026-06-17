@@ -154,7 +154,7 @@
     "kid_friendly": "yes",
     "latitude": 40.862243,
     "longitude": -73.877154,
-    "trigger_radius": 150,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "200th St. and Kazimiroff Blvd., Bronx",
@@ -249,7 +249,7 @@
     "kid_friendly": "yes",
     "latitude": 40.667662,
     "longitude": -73.963626,
-    "trigger_radius": 150,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "900 Washington Ave. (at Eastern Pkwy.), Brooklyn",
@@ -1243,7 +1243,7 @@
     "kid_friendly": "yes",
     "latitude": 40.652203,
     "longitude": -73.991077,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "Main entrance Fifth Ave. at 25th St., Sunset Park, Brooklyn",

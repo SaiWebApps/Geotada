@@ -487,7 +487,7 @@
     "kid_friendly": "yes",
     "latitude": 40.742203,
     "longitude": -73.9879655,
-    "trigger_radius": 30,
+    "trigger_radius": 160,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",

@@ -910,7 +910,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7335823,
     "longitude": -74.0023869,
-    "trigger_radius": 10,
+    "trigger_radius": 30,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1746,7 +1746,7 @@
     "kid_friendly": "yes",
     "latitude": 40.746094,
     "longitude": -74.010013,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2529,132 +2529,6 @@
     ]
   },
   {
-    "name": "Rubin Museum of Art",
-    "short_description": "Himalayan art museum on former Barney's site.",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.740096,
-    "longitude": -73.997738,
-    "trigger_radius": 25,
-    "city_name": "new_york",
-    "_pipeline": {
-      "address": "150 W. 17th St.",
-      "discovery_sources": [
-        "Frommer's New York City 2024"
-      ],
-      "discovery_notes": "Himalayan art museum on former Barney's site.",
-      "verified": false,
-      "geocode_source": "known_landmark",
-      "geocode_confidence": 0.84,
-      "geocode_needs_verification": false,
-      "parent_poi": null,
-      "source_chunks": [
-        "chunk-04"
-      ],
-      "geocode_audit": {
-        "source": "OpenStreetMap Nominatim",
-        "confidence": "MEDIUM",
-        "placement": "Nominatim best match for 'Rubin Museum of Art'",
-        "trigger_radius_reasoning": "Large public building entrance",
-        "notes": "Rubin Museum of Art, 150, West 17th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10011, United States"
-      },
-      "gravity_audit": {
-        "official_visitors": null,
-        "google_review_count": null,
-        "google_trends": "low",
-        "wikipedia_depth": "moderate",
-        "guidebook_presence": "COMMON",
-        "raw_composite": 42.8,
-        "assigned_gravity": 2,
-        "reasoning": "Closed its physical NYC location on October 6, 2024; transitioned to a 'global museum without walls' model. No annual visitor count found prior to closure. Wikipedia article 'Rubin Museum of Himalayan Art' confirmed; moderate coverage of collection and history.",
-        "scored_at": "2026-06-15",
-        "formula_version": "nyc_gravity_v1_2026_06_15"
-      }
-    },
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14"
-    },
-    "importance_tier": 2,
-    "beats": [
-      {
-        "beat_id": "newyork_rubin_museum_of_art_sacred_traditions_lonely-planet-new-york-city_himalayan_first_in_west",
-        "city_name": "new_york",
-        "poi_name": "Rubin Museum of Art",
-        "lens": "sacred_traditions",
-        "topic_slug": "himalayan_first_in_west",
-        "book_slug": "lonely-planet-new-york-city",
-        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
-        "sub_location": null,
-        "trigger_address": null,
-        "beat_length_class": "mid",
-        "script_body": "The Rubin is the first museum in the Western world to dedicate itself to the art of the Himalayas and surrounding regions. Its collection spans 1,500 years to the present and includes Chinese embroidered textiles, Nepalese gilt-copper bodhisattvas, Pakistani stone sculptures, intricate Bhutanese paintings, and ritual objects and dance masks from various Tibetan regions. Rotating exhibitions have included Victorious Ones, made up of sculptures and paintings of the Jinas, the 24 founding teachers of Jainism.",
-        "duration_sec": 30,
-        "kid_friendly": "yes",
-        "entities": [
-          "Victorious Ones",
-          "Jinas"
-        ],
-        "sensory_anchor": true,
-        "narrative_function": "establishing",
-        "beat_type": "establishing",
-        "emotional_register": "reverent",
-        "subject_tag": "himalayan art",
-        "physical_cues": [
-          {
-            "cue": "Galleries of Himalayan art: gilt-copper bodhisattvas, Tibetan dance masks, Bhutanese paintings",
-            "direction": "here",
-            "feature_type": "interior"
-          }
-        ],
-        "inline_foreign_phrases": [
-          {
-            "phrase": "bodhisattvas",
-            "gloss": "enlightened beings of Buddhism"
-          },
-          {
-            "phrase": "Jinas",
-            "gloss": "the 24 founding teachers of Jainism"
-          }
-        ],
-        "pronunciation": null,
-        "key_claims": [
-          "first Western museum dedicated to Himalayan art",
-          "collection spans 1,500 years",
-          "Chinese textiles, Nepalese gilt-copper bodhisattvas, Pakistani stone sculptures, Bhutanese paintings, Tibetan dance masks",
-          "Victorious Ones exhibition of the Jinas, 24 founding teachers of Jainism"
-        ],
-        "source_passage": "The Rubin is the first museum in the Western world to dedicate itself to the art of the Himalayas and surrounding regions. Its impressive collection spans 1500 years to the present day, and includes Chinese embroidered textiles, Nepalese gilt-copper bodhisattvas, Pakistani stone sculptures and intricate Bhutanese paintings, as well as ritual objects and dance masks from various Tibetan regions. Fascinating rotating exhibitions have included Victorious Ones, comprising sculptures and paintings of the Jinas, the 24 founding teachers of Jainism.",
-        "source_attribution": {
-          "book_title": "Lonely Planet New York City",
-          "author": "Ali Lemer et al.",
-          "chapter": "West Village, Chelsea & the Meatpacking District"
-        },
-        "confidence": "HIGH",
-        "corrections": [],
-        "disputes": [],
-        "_meta": {
-          "prompt_version": "unified_v2",
-          "generated_at": "2026-06-15T00:00:00Z",
-          "city_name": "new_york"
-        },
-        "script_body_hash": "a47fd587210a3eca638e4e7b0450deeb859c3296886f34d85d5c812b8aba3148",
-        "related_beats": [],
-        "fact_check": {
-          "status": "unverified",
-          "source_passage_verified": true,
-          "corrections": [],
-          "disputes": [],
-          "flagged_claims": [],
-          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
-          "checked_at": null
-        }
-      }
-    ]
-  },
-  {
     "name": "Salmagundi Club",
     "short_description": "One of the oldest art clubs in the US (founded 1871), set in a historic brownstone on Fifth Ave below Union Square, with gallery spaces focused on representational American art.",
     "name_variations": [
@@ -2878,7 +2752,7 @@
     "kid_friendly": "yes",
     "latitude": 40.747704,
     "longitude": -74.004891,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3424,7 +3298,7 @@
     "kid_friendly": "yes",
     "latitude": 40.730823,
     "longitude": -73.997332,
-    "trigger_radius": 40,
+    "trigger_radius": 210,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",

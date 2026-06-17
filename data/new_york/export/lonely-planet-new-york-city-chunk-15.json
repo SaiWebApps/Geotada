@@ -6,7 +6,7 @@
     "kid_friendly": "yes",
     "latitude": 40.703564,
     "longitude": -74.016678,
-    "trigger_radius": 60,
+    "trigger_radius": 270,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -115,7 +115,7 @@
     "kid_friendly": "yes",
     "latitude": 40.7057,
     "longitude": -73.9964,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -350,7 +350,7 @@
     "kid_friendly": "yes",
     "latitude": 40.782773,
     "longitude": -73.965363,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",

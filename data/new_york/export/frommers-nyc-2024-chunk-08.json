@@ -6,7 +6,7 @@
     "kid_friendly": "yes",
     "latitude": 40.782773,
     "longitude": -73.965363,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1740,7 +1740,7 @@
     "kid_friendly": "yes",
     "latitude": 40.703564,
     "longitude": -74.016678,
-    "trigger_radius": 60,
+    "trigger_radius": 270,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -1907,7 +1907,7 @@
     "kid_friendly": "yes",
     "latitude": 40.698289,
     "longitude": -73.99993,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2107,7 +2107,7 @@
     "kid_friendly": "yes",
     "latitude": 40.714106,
     "longitude": -73.968275,
-    "trigger_radius": 120,
+    "trigger_radius": 220,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2319,7 +2319,7 @@
     "kid_friendly": "yes",
     "latitude": 40.747704,
     "longitude": -74.004891,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2417,7 +2417,7 @@
     "kid_friendly": "yes",
     "latitude": 40.746094,
     "longitude": -74.010013,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2736,7 +2736,7 @@
     "kid_friendly": "yes",
     "latitude": 40.661774,
     "longitude": -73.97109,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -2973,7 +2973,7 @@
     "kid_friendly": "yes",
     "latitude": 40.80688,
     "longitude": -73.96866,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",
@@ -3324,7 +3324,7 @@
     "kid_friendly": "yes",
     "latitude": 40.730823,
     "longitude": -73.997332,
-    "trigger_radius": 40,
+    "trigger_radius": 210,
     "city_name": "new_york",
     "_pipeline": {
       "address": "",

@@ -294,7 +294,7 @@
     "kid_friendly": "yes",
     "latitude": 40.6973713,
     "longitude": -73.9973894,
-    "trigger_radius": 15,
+    "trigger_radius": 280,
     "city_name": "new_york",
     "_meta": {
       "created_by": "pipeline-batch:lonely-planet-new-york-city",
@@ -367,7 +367,7 @@
     "kid_friendly": "yes",
     "latitude": 40.661774,
     "longitude": -73.97109,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_meta": {
       "created_by": "pipeline-batch",
@@ -444,7 +444,7 @@
     "kid_friendly": "yes",
     "latitude": 40.746094,
     "longitude": -74.010013,
-    "trigger_radius": 120,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_meta": {
       "created_by": "pipeline-batch",
@@ -590,7 +590,7 @@
     "kid_friendly": "yes",
     "latitude": 40.5809824,
     "longitude": -73.8229247,
-    "trigger_radius": 30,
+    "trigger_radius": 500,
     "city_name": "new_york",
     "_meta": {
       "created_by": "pipeline-batch:lonely-planet-new-york-city",

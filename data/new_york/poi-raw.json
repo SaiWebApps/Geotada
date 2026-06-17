@@ -5701,61 +5701,6 @@
     "_poi_role_source": "the museum of NYC's premier design school"
   },
   {
-    "name": "Rubin Museum of Art",
-    "short_description": "Himalayan art museum on former Barney's site.",
-    "name_variations": [],
-    "kid_friendly": "yes",
-    "latitude": 40.740096,
-    "longitude": -73.997738,
-    "trigger_radius": 25,
-    "city_name": "new_york",
-    "_pipeline": {
-      "address": "150 W. 17th St.",
-      "discovery_sources": [
-        "Frommer's New York City 2024"
-      ],
-      "discovery_notes": "Himalayan art museum on former Barney's site.",
-      "verified": false,
-      "geocode_source": "known_landmark",
-      "geocode_confidence": 0.84,
-      "geocode_needs_verification": false,
-      "parent_poi": null,
-      "source_chunks": [
-        "chunk-04"
-      ],
-      "geocode_audit": {
-        "source": "OpenStreetMap Nominatim",
-        "confidence": "MEDIUM",
-        "placement": "Nominatim best match for 'Rubin Museum of Art'",
-        "trigger_radius_reasoning": "Large public building entrance",
-        "notes": "Rubin Museum of Art, 150, West 17th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10011, United States"
-      },
-      "gravity_audit": {
-        "official_visitors": null,
-        "google_review_count": null,
-        "google_trends": "low",
-        "wikipedia_depth": "moderate",
-        "guidebook_presence": "COMMON",
-        "raw_composite": 42.8,
-        "assigned_gravity": 2,
-        "reasoning": "Closed its physical NYC location on October 6, 2024; transitioned to a 'global museum without walls' model. No annual visitor count found prior to closure. Wikipedia article 'Rubin Museum of Himalayan Art' confirmed; moderate coverage of collection and history.",
-        "scored_at": "2026-06-15",
-        "formula_version": "nyc_gravity_v1_2026_06_15"
-      }
-    },
-    "_meta": {
-      "created_by": "pipeline-batch",
-      "city_name": "new_york",
-      "book_slug": "frommers-nyc-2024",
-      "created_at": "2026-06-14"
-    },
-    "importance_tier": 2,
-    "poi_role": "stop",
-    "parent_poi": null,
-    "_poi_role_reasoning": "A discrete museum you stand inside, trigger_radius 25m.",
-    "_poi_role_source": "The central circular stairway that the founders thought resembled a mandala"
-  },
-  {
     "name": "Chelsea Gallery District",
     "short_description": "250+ contemporary art galleries; container anchor for gallery seasoning beats.",
     "name_variations": [],
@@ -16219,5 +16164,697 @@
     "poi_role": "stop",
     "_poi_role_reasoning": "A specific gallery you walk to and stand at.",
     "_poi_role_source": "Williamsburg's best-known art gallery, housed in the former Kings County Savings Bank buil"
+  },
+  {
+    "name": "Brooklyn Public Library",
+    "short_description": "The 1941 art moderne flagship of the Brooklyn Public Library system at Grand Army Plaza, shaped like an open book; holds the Brooklyn Collection and the complete Brooklyn Eagle archive.",
+    "name_variations": [
+      "Central Library",
+      "Brooklyn Public Library Central Library",
+      "Central Branch"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.672482,
+    "longitude": -73.968208,
+    "trigger_radius": 25,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Architecturally landmarked flagship of a 60-branch system, anchoring Grand Army Plaza beside Prospect Park and the Botanic Garden; notable open-book art deco facade and Brooklyn Eagle/Whitman archive give it standalone tour gravity, but it is a secondary stop relative to tier-5 Prospect Park / Brooklyn Museum, so tier 3.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM / latlong.net",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 178,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 3,
+        "reasoning": "Landmarked art-moderne flagship at Grand Army Plaza, NYC-Tourism listed, extensive Wikipedia; a notable Brooklyn stop, tier 3."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 3
+  },
+  {
+    "name": "Café Wha?",
+    "short_description": "Greenwich Village music club at 115 MacDougal Street that hosted early Bruce Springsteen and Richard Pryor; still presents jazz, soul, R&B.",
+    "name_variations": [
+      "Cafe Wha?",
+      "Café Wha?"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7301,
+    "longitude": -74.0003,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Famous MacDougal Street club tied to Dylan and Hendrix early careers; durable Village landmark. Tier-3.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 487,
+        "tripadvisor": 574,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 2,
+        "reasoning": "Historic MacDougal St music club (Dylan/Hendrix lore); well-reviewed Village venue, tier 2."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 2
+  },
+  {
+    "name": "Carl Schurz Park",
+    "short_description": "Hilly 15-acre riverside park in Yorkville on Manhattan's Upper East Side, overlooking the East River at Hell Gate; site of Gracie Mansion and a ten-block riverside promenade.",
+    "name_variations": [
+      "Carl Schurz Park Conservancy",
+      "Carl Schurz Park, Yorkville"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "setting",
+    "latitude": 40.7745,
+    "longitude": -73.9442,
+    "trigger_radius": 120,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Named public park spanning ~15 acres with a riverfront promenade and Gracie Mansion (the NYC mayor's official residence) within its bounds; a destination-grade green space, not a pocket park. Tier-3: it is a genuine stop with views and history but not a top-tier marquee museum. Large area-like extent warrants a wider trigger_radius (~120m). No existing POI named Carl Schurz Park in the corpus; Gracie Mansion exists separately and sits inside it (parent/child relationship — Gracie Mansion is the contained landmark).",
+      "verified": false,
+      "geocode_source": "Nominatim OSM / NYC Parks published coordinates",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 161,
+        "tripadvisor": 97,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 3,
+        "reasoning": "Riverside UES park containing Gracie Mansion with a 10-block East River promenade; well-reviewed 'oasis', tier 3."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 3
+  },
+  {
+    "name": "Citarella",
+    "short_description": "Upper West Side gourmet seafood market founded 1912 in Harlem, now a flagship fish-and-cheese emporium on Broadway.",
+    "name_variations": [
+      "Citarella Gourmet Market",
+      "Citarella Upper West Side"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7813,
+    "longitude": -73.9805,
+    "trigger_radius": 10,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Storefront gourmet shop, neighborhood-scale draw on the UWS gourmet-food trail. Tier 4, default 10m radius. 2135 Broadway at 75th St geocoded.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 148,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 2,
+        "reasoning": "Long-established UWS gourmet seafood market; local institution, modest tourism gravity — tier 2."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 2
+  },
+  {
+    "name": "Kettle of Fish",
+    "short_description": "Greenwich Village bar at 59 Christopher Street where Ginsberg, Kerouac and friends spent many nights.",
+    "name_variations": [
+      "Kettle of Fish"
+    ],
+    "kid_friendly": "no",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7335,
+    "longitude": -74.0028,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Beat-era bar (since relocated to Christopher St); minor literary watering hole. Tier-4.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_audit": {
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "none",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 1,
+        "reasoning": "Beat-era Village bar; minor literary watering hole — tier 1."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 1
+  },
+  {
+    "name": "Madame Tussauds New York",
+    "short_description": "Times Square wax museum, the New York branch of the London waxworks, with 200+ celebrity wax figures plus Film & TV, Sports, and Marvel 4D experiences.",
+    "name_variations": [
+      "Madame Tussauds",
+      "Madame Tussauds Wax Museum",
+      "nycwax"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7565,
+    "longitude": -73.9882,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Major branded Times Square tourist attraction with high foot traffic, but a commercial entertainment venue rather than a civic/architectural landmark. Tier 3. Coordinates derived from confirmed street address on the 42nd St block between 7th and 8th Avenues; flag for geocode verification.",
+      "verified": false,
+      "geocode_source": "Address-confirmed (234 W 42nd St, NY 10036, between 7th & 8th Aves); Nominatim direct fetch blocked in sandbox",
+      "geocode_confidence": "MEDIUM",
+      "gravity_audit": {
+        "google_review_count": null,
+        "tripadvisor": "thousands",
+        "official_visitors": "millions/yr (described)",
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 3,
+        "reasoning": "Major branded Times Square wax museum, millions of visitors/yr and high search interest, but a commercial chain attraction not essential to NYC's essence — notable, tier 3."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 3
+  },
+  {
+    "name": "Museum of American Finance",
+    "short_description": "Finance museum at 48 Wall Street displaying a Gold Rush gold bar, the 1929 Great Crash ticker tape, and currency security features.",
+    "name_variations": [
+      "Museum of American Finance"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7064,
+    "longitude": -74.009,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Mid-tier museum mentioned as a Wall Street sub-attraction. Within ~100m of existing '40 Wall Street' / Wall Street / Federal Reserve POIs — PROXIMITY flag. Genuinely new but minor; tier-3 advisory.",
+      "verified": false,
+      "geocode_source": "address 48 Wall St (Nominatim/curl blocked in this run)",
+      "geocode_confidence": "MEDIUM",
+      "gravity_audit": {
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 1,
+        "reasoning": "Small niche Wall St finance museum (physical space since shuttered); minimal active demand — deep-cut tier 1."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 1
+  },
+  {
+    "name": "Patchin Place",
+    "short_description": "Tiny gated Greenwich Village mews near Washington Square, home to poet e. e. cummings, playwright Eugene O'Neill, and journalist John Reed.",
+    "name_variations": [
+      "Patchin Place"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "setting",
+    "latitude": 40.7338,
+    "longitude": -73.9995,
+    "trigger_radius": 20,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Celebrated literary mews with strong famous-resident density (cummings, O'Neill, Reed); evocative walk-by stop. Tier-3.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 1,
+        "reasoning": "Tiny gated literary mews (cummings/O'Neill/Reed); a walk-by curiosity, no footfall — tier 1."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 1
+  },
+  {
+    "name": "Smalls Jazz Club",
+    "short_description": "Basement jazz club at 183 West 10th Street presenting up-and-coming talent in a hole-in-the-wall space.",
+    "name_variations": [
+      "Smalls",
+      "Smalls Jazz Club"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7338,
+    "longitude": -74.0026,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Respected intimate Village jazz basement; secondary venue. Tier-4.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 445,
+        "google_trends": "moderate",
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 2,
+        "reasoning": "Respected intimate Village jazz basement, strong review base but niche; tier 2."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 2
+  },
+  {
+    "name": "St. Mark's Church in-the-Bowery",
+    "short_description": "One of New York's oldest churches at 131 East 10th Street, built on the site of Peter Stuyvesant's bowery chapel; Stuyvesant is buried here.",
+    "name_variations": [
+      "St. Mark's Church in-the-Bowery",
+      "St. Marks Church in the Bowery"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7287,
+    "longitude": -73.9866,
+    "trigger_radius": 25,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Second-oldest church in NYC, burial place of Peter Stuyvesant, landmark East Village cultural venue (Poetry Project, Danspace). Solid tier-3 standalone POI.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 16,
+        "tripadvisor": 50,
+        "google_trends": "low",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 2,
+        "reasoning": "Second-oldest church in Manhattan, Stuyvesant's burial site; high notability though low footfall — tier 2."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 2
+  },
+  {
+    "name": "The Bitter End",
+    "short_description": "New York's oldest rock club at 147 Bleecker Street, opened 1961; launched and hosted Bob Dylan, Stevie Wonder, Woody Allen.",
+    "name_variations": [
+      "The Bitter End"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.73,
+    "longitude": -73.9996,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Iconic, continuously operating Greenwich Village music venue with deep Dylan/folk-revival history. Tier-3.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 268,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 2,
+        "reasoning": "NYC's oldest rock club (1961), continuous Bleecker St venue; engaged-traveler draw, tier 2."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 2
+  },
+  {
+    "name": "The Duplex",
+    "short_description": "Greenwich Village cabaret and piano-bar standby at 61 Christopher Street with multiple stages.",
+    "name_variations": [
+      "The Duplex",
+      "Duplex"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7339,
+    "longitude": -74.0019,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Long-running neighborhood cabaret; minor stop. Tier-4.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_audit": {
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 1,
+        "reasoning": "Greenwich Village cabaret/piano bar; minor neighborhood venue — tier 1."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 1
+  },
+  {
+    "name": "The Stone",
+    "short_description": "Not-for-profit East Village space (16 Avenue C) dedicated to avant-garde and experimental jazz, founded by John Zorn.",
+    "name_variations": [
+      "The Stone"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7227,
+    "longitude": -73.9787,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Niche experimental-jazz venue; the original Avenue C location has since relocated. Minor, tier-4; geocode LOW because address may be stale.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "LOW",
+      "gravity_audit": {
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 1,
+        "reasoning": "Niche not-for-profit experimental-jazz space (since relocated); very specialized — tier 1."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 1
+  },
+  {
+    "name": "Time Warner Center",
+    "short_description": "Mixed-use complex at Columbus Circle with shopping, dining, the Mandarin Oriental hotel, and Jazz at Lincoln Center venues.",
+    "name_variations": [
+      "The Shops at Columbus Circle",
+      "Deutsche Bank Center",
+      "Time Warner Center Columbus Circle"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7686,
+    "longitude": -73.9829,
+    "trigger_radius": 40,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Major Columbus Circle landmark complex; home to Jazz at Lincoln Center and Mandarin Oriental. Tourist-relevant but primarily commercial; tier 3. Radius widened to 40m for the large building footprint.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 128,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 3,
+        "reasoning": "Major Columbus Circle complex (Shops, Jazz at Lincoln Center, Mandarin Oriental); landmark building with extensive coverage, tier 3."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 3
+  },
+  {
+    "name": "Trash and Vaudeville",
+    "short_description": "Punk and rock-fashion shop on St. Mark's Place, dressing rock stars and rebels since 1975.",
+    "name_variations": [
+      "Trash and Vaudeville"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7283,
+    "longitude": -73.9874,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Iconic but small East Village punk-clothing store; walk-by color, tier-4.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "MEDIUM",
+      "gravity_audit": {
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "assigned_gravity": 1,
+        "reasoning": "Iconic-but-small St. Mark's punk-fashion shop; subcultural seasoning — tier 1."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 1
+  },
+  {
+    "name": "White Horse Tavern",
+    "short_description": "Western Greenwich Village tavern at 567 Hudson Street, formerly a longshoremen's bar, later a literary haunt of Mailer, Baldwin, and Anaïs Nin.",
+    "name_variations": [
+      "White Horse Tavern"
+    ],
+    "kid_friendly": "no",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7349,
+    "longitude": -74.0066,
+    "trigger_radius": 15,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Historic literary watering hole (Dylan Thomas legend, Beat-era hangout); durable Village landmark. Tier-3.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": null,
+        "yelp": 500,
+        "tripadvisor": 215,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 2,
+        "reasoning": "Historic West Village literary tavern (Dylan Thomas); strong local review base, adds texture — tier 2."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 2
+  },
+  {
+    "name": "Zabar's",
+    "short_description": "Beloved family-owned Upper West Side delicatessen since 1934, famed for smoked salmon, coffee, and matzo ball soup.",
+    "name_variations": [
+      "Zabars",
+      "Zabar's Deli"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "poi_role": "stop",
+    "latitude": 40.7841,
+    "longitude": -73.9789,
+    "trigger_radius": 10,
+    "_poi_role_source": "pipeline-batch heuristic (confirm via poi_role classification)",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "National Geographic Walking New York (2nd Edition)"
+      ],
+      "discovery_notes": "Iconic UWS food institution and tourist destination in its own right, but storefront-scale. Tier 4, default 10m radius. 2245 Broadway between 80th and 81st Sts geocoded.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "gravity_audit": {
+        "google_review_count": 5990,
+        "yelp": 1426,
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "assigned_gravity": 3,
+        "reasoning": "Iconic UWS food institution and genuine tourist destination (~6K Google / 1.4K Yelp reviews); a NYC name-brand stop, tier 3."
+      }
+    },
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "generated_at": "2026-06-17T00:00:00Z",
+      "city_name": "new_york",
+      "source_book": "national-geographic-walking-nyc"
+    },
+    "importance_tier": 3
   }
 ]

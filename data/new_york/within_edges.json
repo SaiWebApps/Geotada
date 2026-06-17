@@ -2,9 +2,9 @@
   "_meta": {
     "generated_by": "scripts/generate_within_edges.py",
     "city_name": "new_york",
-    "total_pois": 322,
+    "total_pois": 338,
     "total_areas": 37,
-    "poi_to_area_count": 867,
+    "poi_to_area_count": 911,
     "area_to_area_count": 36,
     "orphans": []
   },
@@ -735,6 +735,16 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Brooklyn Public Library",
+      "area_name": "Brooklyn",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Brooklyn Public Library",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Bryant Park",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -790,6 +800,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Café Wha?",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Café Wha?",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Café Wha?",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "Canyon of Heroes",
       "area_name": "Financial District",
       "area_type": "neighborhood"
@@ -803,6 +828,21 @@
       "poi_name": "Canyon of Heroes",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Carl Schurz Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Carl Schurz Park",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Carl Schurz Park",
+      "area_name": "Upper East Side",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "Carnegie Hall",
@@ -1018,6 +1058,21 @@
       "poi_name": "Chrysler Building",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Citarella",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Citarella",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Citarella",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "City Center",
@@ -2105,6 +2160,21 @@
       "area_type": "district"
     },
     {
+      "poi_name": "Kettle of Fish",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Kettle of Fish",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Kettle of Fish",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Knickerbocker Club",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -2221,6 +2291,16 @@
     },
     {
       "poi_name": "Lower East Side",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Madame Tussauds New York",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Madame Tussauds New York",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -2561,6 +2641,21 @@
     },
     {
       "poi_name": "Museum at Eldridge Street",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Museum of American Finance",
+      "area_name": "Financial District",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Museum of American Finance",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Museum of American Finance",
       "area_name": "New York City",
       "area_type": "city"
     },
@@ -3115,6 +3210,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "Patchin Place",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Patchin Place",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Patchin Place",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Pier 17",
       "area_name": "Financial District",
       "area_type": "neighborhood"
@@ -3365,21 +3475,6 @@
       "area_type": "neighborhood"
     },
     {
-      "poi_name": "Rubin Museum of Art",
-      "area_name": "Chelsea",
-      "area_type": "neighborhood"
-    },
-    {
-      "poi_name": "Rubin Museum of Art",
-      "area_name": "Manhattan",
-      "area_type": "district"
-    },
-    {
-      "poi_name": "Rubin Museum of Art",
-      "area_name": "New York City",
-      "area_type": "city"
-    },
-    {
       "poi_name": "Salmagundi Club",
       "area_name": "Greenwich Village",
       "area_type": "neighborhood"
@@ -3485,6 +3580,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Smalls Jazz Club",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Smalls Jazz Club",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Smalls Jazz Club",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "SoHo",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -3536,6 +3646,16 @@
     },
     {
       "poi_name": "St Marks Place",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "St. Mark's Church in-the-Bowery",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "St. Mark's Church in-the-Bowery",
       "area_name": "Manhattan",
       "area_type": "district"
     },
@@ -3750,6 +3870,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "The Bitter End",
+      "area_name": "Greenwich Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Bitter End",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Bitter End",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "The Bronx",
       "area_name": "New York City",
       "area_type": "city"
@@ -3793,6 +3928,21 @@
       "poi_name": "The Dairy",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "The Duplex",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Duplex",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "The Duplex",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "The Edge",
@@ -3970,6 +4120,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "The Stone",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "The Stone",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "The Stone",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
       "poi_name": "The Tenement Museum",
       "area_name": "Lower East Side",
       "area_type": "neighborhood"
@@ -4005,6 +4170,21 @@
       "area_type": "city"
     },
     {
+      "poi_name": "Time Warner Center",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Time Warner Center",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Time Warner Center",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Times Square",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -4036,6 +4216,16 @@
     },
     {
       "poi_name": "Tompkins Square Park",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Trash and Vaudeville",
+      "area_name": "East Village",
+      "area_type": "neighborhood"
+    },
+    {
+      "poi_name": "Trash and Vaudeville",
       "area_name": "Manhattan",
       "area_type": "district"
     },
@@ -4255,6 +4445,21 @@
       "area_type": "neighborhood"
     },
     {
+      "poi_name": "White Horse Tavern",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "White Horse Tavern",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "White Horse Tavern",
+      "area_name": "West Village",
+      "area_type": "neighborhood"
+    },
+    {
       "poi_name": "Whitney Museum of American Art",
       "area_name": "Manhattan",
       "area_type": "district"
@@ -4328,6 +4533,21 @@
       "poi_name": "Wyckoff House Museum",
       "area_name": "New York City",
       "area_type": "city"
+    },
+    {
+      "poi_name": "Zabar's",
+      "area_name": "Manhattan",
+      "area_type": "district"
+    },
+    {
+      "poi_name": "Zabar's",
+      "area_name": "New York City",
+      "area_type": "city"
+    },
+    {
+      "poi_name": "Zabar's",
+      "area_name": "Upper West Side",
+      "area_type": "neighborhood"
     },
     {
       "poi_name": "Zuccotti Park",

@@ -1332,7 +1332,7 @@
     "kid_friendly": "yes",
     "latitude": 40.755906,
     "longitude": -74.000532,
-    "trigger_radius": 60,
+    "trigger_radius": 250,
     "city_name": "new_york",
     "_pipeline": {
       "address": "30th to 35th St., Tenth Ave. to the river",
