@@ -13449,8 +13449,8 @@
       "Sunset Park (Brooklyn)"
     ],
     "kid_friendly": "yes",
-    "latitude": 40.6442221,
-    "longitude": -74.0075907,
+    "latitude": 40.64798,
+    "longitude": -74.00375,
     "trigger_radius": 330,
     "city_name": "new_york",
     "_pipeline": {

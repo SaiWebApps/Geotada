@@ -90,8 +90,11 @@ def main() -> None:
     if not cand_path.exists():
         raise SystemExit(f"{cand_path} missing — run survey_area_candidates.py --json first")
 
+    # Consider EVERY flagged extent, not just the survey's heuristic tiers — the
+    # survey's tier depends on a per-city size table, but the real arbiter is the
+    # live OSM extent fetched below (only-increase keeps already-correct radii safe).
     candidates = json.loads(cand_path.read_text())["candidates"]
-    targets = {c["name"] for c in candidates if c["tier"].startswith(("1", "2"))}
+    targets = {c["name"] for c in candidates}
 
     pois = json.loads((base / "poi-raw.json").read_text())
     by_name = {p["name"]: p for p in pois}
@@ -101,6 +104,10 @@ def main() -> None:
         p = by_name.get(name)
         if p is None or p.get("latitude") is None:
             skipped.append((name, "no POI / no coords"))
+            continue
+        if p.get("poi_role") == "walk_by_only":
+            # Walk-by seasoning is intentionally small (silence-budget); don't inflate.
+            skipped.append((name, "walk_by_only — left small by design"))
             continue
         try:
             m = nominatim(f"{name}, {args.city_query}")

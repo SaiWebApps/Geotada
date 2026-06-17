@@ -494,7 +494,7 @@
     "importance_tier": 5,
     "latitude": 48.846222,
     "longitude": 2.337051,
-    "trigger_radius": 100,
+    "trigger_radius": 390,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 5 discrete building/monument, default stop",
     "city_name": "paris"
@@ -2040,7 +2040,7 @@
     "importance_tier": 4,
     "latitude": 48.860764,
     "longitude": 2.393646,
-    "trigger_radius": 100,
+    "trigger_radius": 500,
     "poi_role": "setting",
     "_poi_role_reasoning": "Tier 5, large footprint area (trigger_radius=100m or area keywords in name/description)",
     "city_name": "paris"
@@ -2102,7 +2102,7 @@
     "importance_tier": 3,
     "latitude": 48.884898,
     "longitude": 2.330804,
-    "trigger_radius": 10,
+    "trigger_radius": 340,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris"
@@ -2163,7 +2163,7 @@
     "importance_tier": 3,
     "latitude": 48.839956,
     "longitude": 2.327684,
-    "trigger_radius": 10,
+    "trigger_radius": 410,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 4 discrete building/monument, default stop",
     "city_name": "paris"
@@ -13198,7 +13198,7 @@
     "importance_tier": 3,
     "latitude": 48.85717,
     "longitude": 2.341516,
-    "trigger_radius": 40,
+    "trigger_radius": 50,
     "poi_role": "stop",
     "_poi_role_reasoning": "Tier 3 small enclosed pocket-park (trigger 40m) whose beats say \"Once you descend the staircase and enter the square\" to a contemplative spot at the island's tip — a destination, not a through-route."
   },
@@ -17308,7 +17308,7 @@
     "kid_friendly": "yes",
     "latitude": 48.852574,
     "longitude": 2.350971,
-    "trigger_radius": 15,
+    "trigger_radius": 130,
     "_pipeline": {
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
@@ -17348,7 +17348,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8513,
     "longitude": 2.3418,
-    "trigger_radius": 15,
+    "trigger_radius": 60,
     "_pipeline": {
       "source_chunk": "chunk-02a-vert-galant-jean-xxiii-rene-viviani",
       "source_book": "hidden_gardens_of_paris",
@@ -18336,7 +18336,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8875484,
     "longitude": 2.3162267,
-    "trigger_radius": 10,
+    "trigger_radius": 130,
     "_pipeline": {
       "source_chunk": "chunk-07a-monceau-vie-romantique-batignolles",
       "source_book": "hidden_gardens_of_paris",
@@ -18447,7 +18447,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8881918,
     "longitude": 2.3372245,
-    "trigger_radius": 10,
+    "trigger_radius": 50,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -18522,7 +18522,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8916601,
     "longitude": 2.331571,
-    "trigger_radius": 10,
+    "trigger_radius": 80,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -18559,7 +18559,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8920023,
     "longitude": 2.3384538,
-    "trigger_radius": 10,
+    "trigger_radius": 110,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -18633,7 +18633,7 @@
     "kid_friendly": "yes",
     "latitude": 48.885382,
     "longitude": 2.3435393,
-    "trigger_radius": 10,
+    "trigger_radius": 140,
     "_pipeline": {
       "source_chunk": "chunk-07b-suzanne-buisson-montmartre",
       "source_book": "hidden_gardens_of_paris",
@@ -18818,7 +18818,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8526572,
     "longitude": 2.38156,
-    "trigger_radius": 10,
+    "trigger_radius": 40,
     "_pipeline": {
       "source_chunk": "chunk-08a-promenade-plantee-parc-floral",
       "source_book": "hidden_gardens_of_paris",
@@ -18973,7 +18973,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8617295,
     "longitude": 2.3790253,
-    "trigger_radius": 10,
+    "trigger_radius": 90,
     "_pipeline": {
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
@@ -19010,7 +19010,7 @@
     "kid_friendly": "yes",
     "latitude": 48.8596137,
     "longitude": 2.3846173,
-    "trigger_radius": 10,
+    "trigger_radius": 110,
     "_pipeline": {
       "source_chunk": "chunk-08b-maurice-gardette-roquette",
       "source_book": "hidden_gardens_of_paris",
@@ -19904,7 +19904,7 @@
     "importance_tier": 2,
     "latitude": 48.86475,
     "longitude": 2.32892,
-    "trigger_radius": 75,
+    "trigger_radius": 270,
     "poi_role": "stop",
     "_poi_role_reasoning": "Sub-POI within Jardin des Tuileries; discrete enough to stand and listen",
     "city_name": "paris"

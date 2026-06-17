@@ -349,5 +349,20 @@
       "source": "OSM/Nominatim (manual)",
       "reason": "confirmed the park (hilltop, move-through); OSM leisure/park half-diag 332m. NOTE: pin sits ~530m off the park centroid \u2014 flag for geocode review"
     }
+  ],
+  "pin_fixes": [
+    {
+      "name": "Sunset Park",
+      "old": [
+        40.644222,
+        -74.007591
+      ],
+      "new": [
+        40.64798,
+        -74.00375
+      ],
+      "source": "OSM way/149616466 (leisure/park) centroid",
+      "reason": "pin sat ~530m SW of the park; moved to park centroid"
+    }
   ]
 }
