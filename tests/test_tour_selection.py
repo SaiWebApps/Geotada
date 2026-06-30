@@ -1342,3 +1342,138 @@ def test_frozen_end_none_ordered_ids_routed_path():
         f"end=None routed ordering drifted from the Step 2.0d frozen "
         f"baseline; expected {_FROZEN_END_NONE_ORDER_ROUTED}, got {ids}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Step 2.5 — open-walk B* == existing endpoint-pull far anchor.
+#
+# Assertion-only (no production change). On the open-walk path
+# (end=None, round_trip=False) the route's closing stop is the same
+# far-envelope anchor the existing _apply_endpoint_pull machinery pins via
+# held_karp_open(fixed_end=...). We re-derive that anchor B* by replaying
+# select_route's verbatim endpoint-pull contract (the far-radius filter at
+# selection.py:944-951, the score/id ranking at :953-959, and the
+# first-that-fits _apply_endpoint_pull accept at :960-977) on the route's
+# own non-far prefix, then assert select_route's emitted last stop equals it.
+# The test fails if any of that wiring (far filter, ranking, pull, or the
+# fixed_end pin-through to held_karp_open at :1021-1029) breaks.
+# ---------------------------------------------------------------------------
+
+
+def test_open_walk_bstar_equals_endpoint_pull():
+    """Open-walk (end=None) last stop == the _apply_endpoint_pull far anchor.
+
+    A single tier-5 far-envelope anchor sits unambiguously beyond
+    ENDPOINT_PULL_FAR_FRACTION x radius, east of a near-start cluster the
+    greedy fills first. We:
+
+      1. Run select_route (end=None, round_trip=False) and capture its
+         ordered POIs.
+      2. Independently rebuild B* by feeding the route's non-far prefix and
+         the far candidate through the *same* production helper select_route
+         uses — _apply_endpoint_pull with fixed_end pinned via
+         held_karp_open — and confirm that helper returns the far anchor as
+         its closing stop.
+      3. Assert select_route's emitted last stop equals that re-derived B*,
+         and that no fixed end / corridor gate was in play (end is None).
+    """
+    from src.tour.routing import (
+        default_leg_seconds,
+        walk_budget_seconds,
+    )
+    from src.tour.selection import (
+        ENDPOINT_PULL_FAR_FRACTION,
+        HARD_ANCHOR_CAP,
+        _apply_endpoint_pull,
+        pick_spine_area,
+    )
+
+    start = (48.85675, 2.341033)  # Pont Neuf coords
+    duration_min = 90
+    radius_m = envelope_radius_m(duration_min, round_trip=False)
+    far_floor = radius_m * ENDPOINT_PULL_FAR_FRACTION
+
+    # Near-start cluster: greedy fills these first (all well inside the far
+    # floor, so none of them can be the endpoint-pull anchor).
+    near = [
+        _poi(
+            f"near-{i}",
+            tier=4,
+            lat=start[0] + 0.0001 * i,
+            lng=start[1] + 0.0008 * i,
+            areas=("Île de la Cité",),
+            beat_count=6,
+        )
+        for i in range(1, 4)
+    ]
+    # Exactly one far-envelope anchor, ~1km east — unambiguously the only POI
+    # past the far floor, so the endpoint-pull candidate set is a singleton.
+    far_anchor = _poi(
+        "far",
+        tier=5,
+        lat=start[0] - 0.0030,
+        lng=start[1] + 0.0140,
+        areas=("Île de la Cité",),
+        beat_count=10,
+    )
+    snap = _snap([*near, far_anchor], area_types={"Île de la Cité": "island"})
+
+    inp = TourInput(start=start, duration_min=duration_min, city_slug="paris", round_trip=False)
+    # Open walk: no fixed destination, so the §2.3 corridor gate never arms
+    # and the §2.4 B-materialization branch is never taken — the only force
+    # acting on the final stop is the endpoint-pull contract under test.
+    assert inp.end is None
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+    assert "far" in ids, f"far-envelope anchor must be selected; got {ids}"
+
+    # Sanity: the far anchor really is the sole POI past the far floor (so the
+    # endpoint-pull candidate ranking has a single, unambiguous winner).
+    past_floor = [
+        p for p in (*near, far_anchor) if haversine_m(*start, p.lat, p.lng) >= far_floor
+    ]
+    assert [p.id for p in past_floor] == ["far"], (
+        f"test fixture invalid: expected only 'far' past {far_floor:.0f}m, "
+        f"got {[p.id for p in past_floor]}"
+    )
+
+    # Re-derive B* with the verbatim production helper. The route's prefix
+    # (everything before the closing far anchor) is the incumbent set the
+    # endpoint-pull pins 'far' after; held_karp_open may reorder the prefix,
+    # so compare against the set, not the order.
+    prefix = [p for p in route.pois if p.id != "far"]
+    spine = pick_spine_area(*start, [*near, far_anchor], snap)
+    pulled = _apply_endpoint_pull(
+        prefix,
+        far_anchor,
+        spine=spine,
+        interest=frozenset(),
+        snapshot=snap,
+        start_lat=start[0],
+        start_lng=start[1],
+        walk_budget=walk_budget_seconds(duration_min),
+        hard_anchor_cap=HARD_ANCHOR_CAP,
+        leg_seconds_fn=None,  # open-walk haversine path → default_leg_seconds
+    )
+    # The helper must actually have pinned the far anchor (not abandoned the
+    # pull), and that anchor is exactly what select_route emitted as the last
+    # stop — i.e. the open-walk B* is the endpoint-pull far anchor, reused
+    # verbatim. The prefix order matches too (both go through held_karp_open
+    # with the same fixed_end and the same default_leg_seconds divisor).
+    assert pulled[-1].id == "far"
+    assert pulled is not prefix, "endpoint-pull must have applied, not no-op'd"
+    bstar = pulled[-1].id
+    assert ids[-1] == bstar, (
+        f"open-walk last stop {ids[-1]!r} must equal the endpoint-pull far "
+        f"anchor B* {bstar!r}"
+    )
+    assert [p.id for p in route.pois] == [p.id for p in pulled], (
+        f"open-walk order must match the endpoint-pull/held_karp_open result; "
+        f"route={ids} pulled={[p.id for p in pulled]}"
+    )
+    # Cross-check the divisor reuse claim explicitly: default_leg_seconds is
+    # the open-walk cost fn, and the far anchor is reachable under the walk
+    # budget through it (otherwise the pull would have abandoned).
+    assert default_leg_seconds(*start, far_anchor.lat, far_anchor.lng) <= walk_budget_seconds(
+        duration_min
+    )
