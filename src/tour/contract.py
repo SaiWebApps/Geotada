@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 class TourInput(BaseModel):
@@ -24,10 +24,24 @@ class TourInput(BaseModel):
     round_trip: bool = False
     theme_hint: str | None = None
     start_label: str | None = None
+    end: tuple[float, float] | None = Field(
+        default=None,
+        description=(
+            "(lat, lng) destination B; None = no fixed destination (open walk / loop). "
+            "Mutually exclusive with round_trip. B-materialization for ORDER (Steps 2.3/2.4): "
+            "snap to the nearest in-corridor corpus POI when one is within ~150m, otherwise "
+            "synthesize a sentinel POI at this exact coordinate."
+        ),
+    )
 
-    @field_validator("start")
+    @field_validator("start", "end")
     @classmethod
-    def _check_latlng(cls, v: tuple[float, float]) -> tuple[float, float]:
+    def _check_latlng(
+        cls, v: tuple[float, float] | None
+    ) -> tuple[float, float] | None:
+        # `end` is optional; `start` is required so pydantic rejects None before here.
+        if v is None:
+            return v
         lat, lng = v
         if not (-90.0 <= lat <= 90.0):
             raise ValueError(f"lat out of range: {lat}")
@@ -42,6 +56,14 @@ class TourInput(BaseModel):
             return None
         cleaned = [s.strip() for s in v if s and s.strip()]
         return cleaned or None
+
+    @model_validator(mode="after")
+    def _end_round_trip_mutex(self) -> TourInput:
+        # A user-given destination and "return to A" are contradictory (spec §1).
+        # A field_validator can't see round_trip, so the cross-field check lives here.
+        if self.end is not None and self.round_trip:
+            raise ValueError("end and round_trip are mutually exclusive")
+        return self
 
 
 class POI(BaseModel):

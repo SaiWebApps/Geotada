@@ -88,6 +88,52 @@ def test_tour_input_requires_city_slug():
         TourInput(start=(48.0, 2.0), duration_min=60, city_slug="")
 
 
+def test_tour_input_accepts_end_destination():
+    inp = TourInput(
+        start=(48.8553, 2.3653), end=(48.8738, 2.2950), duration_min=90, city_slug="paris"
+    )
+    assert inp.end == (48.8738, 2.2950)
+
+
+def test_tour_input_end_defaults_to_none():
+    inp = TourInput(start=(48.8553, 2.3653), duration_min=60, city_slug="paris")
+    assert inp.end is None
+
+
+def test_tour_input_rejects_bad_end_lat():
+    with pytest.raises(ValidationError):
+        TourInput(start=(48.0, 2.0), end=(120.0, 2.0), duration_min=60, city_slug="paris")
+
+
+def test_tour_input_rejects_bad_end_lng():
+    with pytest.raises(ValidationError):
+        TourInput(start=(48.0, 2.0), end=(48.0, 200.0), duration_min=60, city_slug="paris")
+
+
+def test_tour_input_end_and_round_trip_are_mutually_exclusive():
+    with pytest.raises(ValidationError):
+        TourInput(
+            start=(48.0, 2.0),
+            end=(48.87, 2.29),
+            duration_min=60,
+            city_slug="paris",
+            round_trip=True,
+        )
+
+
+def test_tour_input_round_trip_without_end_ok():
+    inp = TourInput(start=(48.0, 2.0), duration_min=60, city_slug="paris", round_trip=True)
+    assert inp.round_trip is True
+    assert inp.end is None
+
+
+def test_tour_input_end_round_trips_through_model_dump():
+    inp = TourInput(start=(48.0, 2.0), end=(48.87, 2.29), duration_min=60, city_slug="paris")
+    revived = TourInput(**inp.model_dump())
+    assert revived.end == (48.87, 2.29)
+    assert revived == inp
+
+
 def test_poi_dataclass_roundtrip():
     p = POI(
         id="poi-1",
