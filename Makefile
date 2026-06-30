@@ -96,7 +96,7 @@ test-workbench: db-up db-test-up ## Real-browser Playwright UI suite for the wor
 test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
 	uv run pytest -m golden -v
 
-tour-grade: db-up ## M8 GRADE regression gate: score each golden tour against the rubric on the live dev graph (port 7687). Excluded from `make test`.
+tour-grade: db-up valhalla-up ## M8 GRADE regression gate: score each golden tour against the rubric on the live dev graph (port 7687). Excluded from `make test`. Requires Valhalla — without real routing the engine falls back to haversine (straight lines), which cross water and trip the never-swim-the-Seine audit with a FALSE red.
 	uv run pytest -m grade -v
 
 # ──────────────────────────────────────────────────────────
