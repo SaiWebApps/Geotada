@@ -106,6 +106,46 @@ LENS_RELEVANCE_NO_LENS: float = 1.0  # no lenses requested → uniform
 # weight — a gentle dimming, not a cliff.
 PROXIMITY_DECAY_SECONDS: float = 600.0
 
+# §3 band classifier (ALGORITHM-SPEC.md, Phase 3 Step 3.2). The continuous
+# spotlight score maps to one of five output bands:
+#   headline | full | short | vignette | silent
+# The output-facing collapse is dwell (headline/full/short) vs vignette;
+# "silent" means excluded for this user. The thresholds below are INITIAL,
+# principled anchors -- they are refined in the Step 3.5 golden re-baseline,
+# NOT frozen here.
+#
+# Anchoring (on-path, proximity == 1.0, so spotlight == gravity x lens):
+#   - tier-1 off-genre miss  = 1 x 0.25 = 0.25  (canonical SILENT case)
+#   - tier-5 off-genre miss  = 5 x 0.25 = 1.25  (high-gravity landmark; must
+#                                                 clear to at least VIGNETTE)
+#   - tier-1 1-hop           = 1 x 0.6  = 0.60
+#   - tier-3 direct hit      = 3 x 1.0  = 3.0
+#   - tier-5 direct hit      = 5 x 1.0  = 5.0   (canonical HEADLINE case)
+# Thresholds are lower-inclusive cut points on the spotlight score:
+BAND_THRESHOLD_HEADLINE: float = 4.0  # >= 4.0 -> headline (tier-4/5 strong hit)
+BAND_THRESHOLD_FULL: float = 2.0  # >= 2.0 -> full stop
+BAND_THRESHOLD_SHORT: float = 1.0  # >= 1.0 -> short stop
+BAND_THRESHOLD_VIGNETTE: float = 0.5  # >= 0.5 -> walk-past vignette; below -> silent
+#
+# The §3 silence invariant is structural, NOT a pure score threshold: silence
+# requires BOTH a lens miss AND low gravity. A high-gravity landmark
+# (tier >= BAND_LANDMARK_TIER) is NEVER silent -- lens alone can dim it to a
+# vignette but never to silence ("the only silence is low-gravity AND
+# off-genre"). This guard floors such a POI at VIGNETTE even if a large
+# proximity detour would otherwise push its score below the silent cut.
+BAND_LANDMARK_TIER: int = 4
+
+# The five band labels, ordered loudest -> quietest. "silent" means excluded.
+BAND_HEADLINE: str = "headline"
+BAND_FULL: str = "full"
+BAND_SHORT: str = "short"
+BAND_VIGNETTE: str = "vignette"
+BAND_SILENT: str = "silent"
+
+# Output-facing collapse: the dwell bands (a real stop) vs the vignette band
+# (one line as you pass). "silent" is neither -- it is excluded.
+DWELL_BANDS: frozenset[str] = frozenset({BAND_HEADLINE, BAND_FULL, BAND_SHORT})
+
 # §2.2 k-flavours (M6): diversity re-runs multiply already-used POIs' scores
 # by DIVERSITY_PENALTY; a candidate flavour whose stop set shares
 # >= JACCARD_OVERLAP_MAX (Jaccard) with any kept flavour is rejected.
@@ -1809,6 +1849,53 @@ def spotlight(
         * lens_relevance(poi, lenses=lenses, snapshot=snapshot)
         * proximity(marginal_detour_seconds)
     )
+
+
+def band_for_spotlight(spotlight_score: float, *, tier: int) -> str:
+    """§3 band classifier — map a spotlight score (+ POI tier) to an output band.
+
+    Returns one of ``"headline"`` | ``"full"`` | ``"short"`` | ``"vignette"`` |
+    ``"silent"``. The dwell bands (headline/full/short) are a real stop; the
+    vignette band is one line as you pass; ``"silent"`` means excluded for this
+    user. Use ``is_dwell_band`` / ``DWELL_BANDS`` for the output-facing collapse.
+
+    PURE and ADDITIVE — this does NOT touch select_route's selection (the
+    tier/lens gates stay until Step 3.5). Thresholds are INITIAL anchors
+    (BAND_THRESHOLD_*), refined in the Step 3.5 golden re-baseline.
+
+    The §3 silence invariant is encoded STRUCTURALLY, not as a bare score
+    threshold: silence requires BOTH a lens miss AND low gravity. A high-gravity
+    landmark (``tier >= BAND_LANDMARK_TIER``) is therefore floored at
+    ``vignette`` even if a large proximity detour drove its score below the
+    silent cut -- "lens alone never silences a landmark on the user's path"
+    (and a detour alone never does either). Only a genuinely low-gravity,
+    off-genre POI (low tier whose score fell below BAND_THRESHOLD_VIGNETTE)
+    goes silent.
+    """
+    if spotlight_score >= BAND_THRESHOLD_HEADLINE:
+        return BAND_HEADLINE
+    if spotlight_score >= BAND_THRESHOLD_FULL:
+        return BAND_FULL
+    if spotlight_score >= BAND_THRESHOLD_SHORT:
+        return BAND_SHORT
+    if spotlight_score >= BAND_THRESHOLD_VIGNETTE:
+        return BAND_VIGNETTE
+    # Below the vignette cut. A high-gravity landmark never goes silent on
+    # score alone -- floor it at vignette (the §3 invariant). Only a
+    # low-gravity POI that also missed on lens (the joint condition that
+    # produced this low score) is truly silent.
+    if tier >= BAND_LANDMARK_TIER:
+        return BAND_VIGNETTE
+    return BAND_SILENT
+
+
+def is_dwell_band(band: str) -> bool:
+    """Output-facing collapse: True for a dwell stop (headline/full/short).
+
+    ``vignette`` is a walk-past line (not a dwell stop); ``silent`` is
+    excluded. Both return False.
+    """
+    return band in DWELL_BANDS
 
 
 def _area_alignment(poi: POI, spine_area: str | None, snapshot: CorpusSnapshot) -> float:

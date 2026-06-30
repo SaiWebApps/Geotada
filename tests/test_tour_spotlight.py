@@ -20,10 +20,22 @@ from itertools import pairwise
 
 from src.tour.contract import POI, BeatRef
 from src.tour.selection import (
+    BAND_FULL,
+    BAND_HEADLINE,
+    BAND_LANDMARK_TIER,
+    BAND_SHORT,
+    BAND_SILENT,
+    BAND_THRESHOLD_FULL,
+    BAND_THRESHOLD_HEADLINE,
+    BAND_THRESHOLD_SHORT,
+    BAND_THRESHOLD_VIGNETTE,
+    BAND_VIGNETTE,
     LENS_FLOOR,
     PROXIMITY_DECAY_SECONDS,
     CorpusSnapshot,
+    band_for_spotlight,
     gravity,
+    is_dwell_band,
     lens_relevance,
     proximity,
     spotlight,
@@ -322,3 +334,136 @@ def test_spotlight_no_lens_uses_uniform_relevance():
     snap = _snap([p], beats_by_poi={"p": _lensed_beats("p", ("anything",))})
     got = spotlight(p, lenses=None, snapshot=snap, marginal_detour_seconds=0.0)
     assert math.isclose(got, gravity(3) * 1.0 * 1.0, rel_tol=1e-12)
+
+
+# ---------------------------------------------------------------------------
+# Step 3.2 — band_for_spotlight: spotlight -> headline/full/short/vignette/silent
+# ---------------------------------------------------------------------------
+#
+# The thresholds are lower-inclusive cut points on the spotlight score
+# (BAND_THRESHOLD_*). For a high-tier POI (tier >= BAND_LANDMARK_TIER) the
+# §3 silence invariant floors the band at vignette regardless of score.
+
+
+def test_band_thresholds_are_ordered_and_positive():
+    # The cut points must be a strictly descending positive ladder, else the
+    # if/elif chain in band_for_spotlight would shadow a band.
+    cuts = [
+        BAND_THRESHOLD_HEADLINE,
+        BAND_THRESHOLD_FULL,
+        BAND_THRESHOLD_SHORT,
+        BAND_THRESHOLD_VIGNETTE,
+    ]
+    for hi, lo in pairwise(cuts):
+        assert hi > lo > 0.0
+
+
+def test_band_headline_boundary_lower_inclusive():
+    # At exactly the headline cut -> headline; a hair below -> full.
+    assert band_for_spotlight(BAND_THRESHOLD_HEADLINE, tier=5) == BAND_HEADLINE
+    assert band_for_spotlight(BAND_THRESHOLD_HEADLINE + 1.0, tier=5) == BAND_HEADLINE
+    assert band_for_spotlight(BAND_THRESHOLD_HEADLINE - 1e-9, tier=5) == BAND_FULL
+
+
+def test_band_full_boundary_lower_inclusive():
+    assert band_for_spotlight(BAND_THRESHOLD_FULL, tier=4) == BAND_FULL
+    assert band_for_spotlight(BAND_THRESHOLD_FULL - 1e-9, tier=4) == BAND_SHORT
+
+
+def test_band_short_boundary_lower_inclusive():
+    assert band_for_spotlight(BAND_THRESHOLD_SHORT, tier=2) == BAND_SHORT
+    assert band_for_spotlight(BAND_THRESHOLD_SHORT - 1e-9, tier=2) == BAND_VIGNETTE
+
+
+def test_band_vignette_boundary_lower_inclusive_for_low_tier():
+    # At the vignette cut -> vignette; below it a LOW-tier POI goes silent.
+    assert band_for_spotlight(BAND_THRESHOLD_VIGNETTE, tier=1) == BAND_VIGNETTE
+    assert band_for_spotlight(BAND_THRESHOLD_VIGNETTE - 1e-9, tier=1) == BAND_SILENT
+
+
+def test_band_full_ladder_via_real_spotlight_scores():
+    """Drive the classifier with REAL spotlight scores (on-path, proximity 1.0)
+    so the thresholds are exercised against the actual gravity x lens product,
+    not hand-fed numbers."""
+
+    def band(tier: int, lens: str) -> str:
+        p = _poi("a", tier=tier)
+        s = _snap(
+            [p],
+            beats_by_poi={"a": _lensed_beats("a", (lens,))},
+            lens_neighbors=_HOP_MAP,
+        )
+        score = spotlight(p, lenses=frozenset({"history"}), snapshot=s)
+        return band_for_spotlight(score, tier=tier)
+
+    # tier-5 direct (5.0) -> headline; tier-4 direct (4.0) -> headline.
+    assert band(5, "history") == BAND_HEADLINE
+    assert band(4, "history") == BAND_HEADLINE
+    # tier-5 one-hop (3.0) -> full; tier-2 direct (2.0) -> full.
+    assert band(5, "dark_history") == BAND_FULL
+    assert band(2, "history") == BAND_FULL
+    # tier-1 direct (1.0) -> short; tier-5 miss (1.25) -> short.
+    assert band(1, "history") == BAND_SHORT
+    assert band(5, "street_art") == BAND_SHORT
+    # tier-1 one-hop (0.6) -> vignette; tier-2 miss (0.5) -> vignette.
+    assert band(1, "dark_history") == BAND_VIGNETTE
+    assert band(2, "street_art") == BAND_VIGNETTE
+    # tier-1 miss (0.25) -> SILENT (low gravity AND off-genre).
+    assert band(1, "street_art") == BAND_SILENT
+
+
+def test_silence_invariant_high_gravity_off_genre_is_not_silent():
+    """§3 invariant: a high-gravity off-genre landmark clears to at least
+    vignette -- lens alone never silences it, and even a huge proximity detour
+    that drives its score below the silent cut must NOT make it silent."""
+    # tier-5 off-genre on-path (score 1.25) is already a short stop.
+    assert band_for_spotlight(5.0 * LENS_FLOOR, tier=5) == BAND_SHORT
+    # Now drive the score arbitrarily low (as a huge detour would) -- the
+    # landmark guard floors it at vignette, never silent.
+    for landmark_tier in range(BAND_LANDMARK_TIER, 6):
+        b = band_for_spotlight(0.0, tier=landmark_tier)
+        assert b == BAND_VIGNETTE, f"tier {landmark_tier} must never be silent"
+        assert b != BAND_SILENT
+
+
+def test_silence_invariant_low_gravity_off_genre_is_silent():
+    """§3 invariant, other half: a genuinely low-gravity off-genre POI (its
+    score fell below the vignette cut) IS silent -- that is the ONLY silence."""
+    # tier-1 off-genre miss = 0.25 < BAND_THRESHOLD_VIGNETTE -> silent.
+    miss_score = 1.0 * LENS_FLOOR
+    assert miss_score < BAND_THRESHOLD_VIGNETTE
+    for low_tier in range(1, BAND_LANDMARK_TIER):
+        assert band_for_spotlight(miss_score, tier=low_tier) == BAND_SILENT
+
+
+def test_silence_invariant_via_real_spotlight_low_vs_high_gravity():
+    """End-to-end through spotlight(): same off-genre lens, the low-tier POI
+    goes silent while the high-tier landmark does not."""
+    low = _poi("low", tier=1)
+    high = _poi("high", tier=5)
+    snap = _snap(
+        [low, high],
+        beats_by_poi={
+            "low": _lensed_beats("low", ("street_art",)),
+            "high": _lensed_beats("high", ("street_art",)),
+        },
+    )
+    lenses = frozenset({"war_conflict"})
+    low_band = band_for_spotlight(
+        spotlight(low, lenses=lenses, snapshot=snap), tier=low.tier
+    )
+    high_band = band_for_spotlight(
+        spotlight(high, lenses=lenses, snapshot=snap), tier=high.tier
+    )
+    assert low_band == BAND_SILENT
+    assert high_band != BAND_SILENT
+
+
+def test_dwell_vs_vignette_collapse():
+    """The output-facing collapse: headline/full/short are dwell stops;
+    vignette and silent are NOT dwell."""
+    assert is_dwell_band(BAND_HEADLINE)
+    assert is_dwell_band(BAND_FULL)
+    assert is_dwell_band(BAND_SHORT)
+    assert not is_dwell_band(BAND_VIGNETTE)
+    assert not is_dwell_band(BAND_SILENT)
