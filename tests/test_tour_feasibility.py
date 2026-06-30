@@ -29,7 +29,14 @@ from src.tour.routing import (
     smallest_duration_min_for_walk_seconds,
     walk_budget_seconds,
 )
-from src.tour.selection import CorpusSnapshot, select_k_routes, select_route
+from src.tour.selection import (
+    CorpusSnapshot,
+    bearing,
+    in_wedge,
+    poi_score,
+    select_k_routes,
+    select_route,
+)
 
 PDV = (48.8555, 2.3656)
 
@@ -145,9 +152,12 @@ def test_far_end_short_budget_raises_with_gap_and_alternatives():
     assert exc.gap_minutes >= 1
     assert exc.gap_minutes == math.ceil((t_ab - budget) / 60)
 
-    # Exactly a loop and an extend alternative, both structured.
+    # At least a loop and an extend alternative, both structured. (Step 2.2b
+    # may also add a 'closer_b' when an in-budget anchor exists — the fillers
+    # here are in budget — so this is a subset check, not exact equality. The
+    # closer_b path has its own dedicated tests below.)
     kinds = {alt.kind for alt in exc.alternatives}
-    assert kinds == {"loop", "extend"}
+    assert {"loop", "extend"} <= kinds
     by_kind = {alt.kind: alt for alt in exc.alternatives}
 
     loop = by_kind["loop"]
@@ -252,3 +262,246 @@ def test_end_none_and_within_budget_end_produce_routes_no_refusal():
     )
     assert open_route is not None
     assert near_route is not None
+
+
+# ---------------------------------------------------------------------------
+# Step 2.2b — closer_b: bearing/±45° wedge helper + empty-wedge fallback.
+#
+# All synthetic. Every expectation is DERIVED from the live functions
+# (bearing, in_wedge, poi_score, walk_budget_seconds, default_leg_seconds) so
+# a test fails only if the BEHAVIOUR is wrong, never against a hardcoded value.
+# ---------------------------------------------------------------------------
+
+# A duration whose walk budget is large enough that some anchors fit and some
+# do not — chosen so the test can place candidates on both sides of the budget.
+CLOSER_DURATION = 30
+
+
+def _anchor(poi_id: str, dlat: float, dlng: float, *, tier: int = 5, beats: int = 8) -> POI:
+    """A tier-≥3 'stop' anchor offset (dlat, dlng) degrees from PdV."""
+    return POI(
+        id=poi_id,
+        name=poi_id,
+        tier=tier,
+        poi_role="stop",
+        lat=PDV[0] + dlat,
+        lng=PDV[1] + dlng,
+        areas=("Le Marais",),
+        beat_count=beats,
+    )
+
+
+def _in_budget(poi: POI, duration_min: int = CLOSER_DURATION) -> bool:
+    """Live: is the routed A→poi leg inside the walk budget?"""
+    t = default_leg_seconds(PDV[0], PDV[1], poi.lat, poi.lng)
+    return t <= walk_budget_seconds(duration_min)
+
+
+def _score(poi: POI, snap: CorpusSnapshot) -> float:
+    """Live poi_score with the same neutral-spine/no-interest call the
+    closer_b scan uses inside select_route."""
+    return poi_score(poi, None, frozenset(), snap)
+
+
+def _closer_b(exc: TourabilityRefusedError) -> FeasibilityAlternative | None:
+    return next((a for a in exc.alternatives if a.kind == "closer_b"), None)
+
+
+def _assert_not_red(inp: TourInput, snap: CorpusSnapshot) -> None:
+    """The 2.2a/2.2b branch only runs when density is not RED (RED raises
+    earlier at the gate). Assert that via the live assessor so each closer_b
+    test provably exercises the branch."""
+    from src.tour.density import assess as assess_tourability
+
+    assert assess_tourability(inp, snap.pois, snap.beats_by_poi).status != "RED"
+
+
+def test_closer_b_wedge_hit_picks_highest_score_inside_wedge():
+    """With in-budget anchors inside the ±45° wedge toward B, closer_b targets
+    the highest-poi_score one inside the wedge — not the higher-scoring anchor
+    that sits OUTSIDE the wedge."""
+    # B is far east (over budget → triggers the 2.2a refusal).
+    end = FAR_EAST_END
+    # in-wedge anchors: strongly EAST (large dlng, tiny dlat) → bearing ≈ 90°,
+    # inside the east-pointing ±45° wedge. Both in budget. wedge_high has more
+    # beats → strictly higher poi_score than wedge_low.
+    wedge_low = _anchor("wedge-lo", 0.0, 0.0040, tier=5, beats=4)
+    wedge_high = _anchor("wedge-hi", 0.00005, 0.0045, tier=5, beats=12)
+    # out-of-wedge anchors: strongly NORTH (large dlat, ~0 dlng) → bearing ≈ 0°,
+    # outside the east wedge. north_top has the single highest score of all and
+    # MUST be ignored because the wedge is non-empty. The remaining north pads
+    # bring the rich-anchor count to ≥6 so density clears via the rich-pool
+    # escape hatch (fill ≥ 1.5 AND anchors ≥ 6) without forcing a tight cluster.
+    north_top = _anchor("north-top", 0.0024, 0.0, tier=5, beats=40)
+    north_pads = [
+        _anchor(f"north-pad-{i}", 0.0014 + 0.0002 * i, 0.00005 * (i - 1), tier=5, beats=6)
+        for i in range(4)
+    ]
+    anchors = [wedge_low, wedge_high, north_top, *north_pads]
+    snap = _snap(anchors)
+
+    inp = TourInput(start=PDV, end=end, duration_min=CLOSER_DURATION, city_slug="paris")
+    _assert_not_red(inp, snap)
+
+    # Preconditions, all derived from live functions.
+    for a in anchors:
+        assert _in_budget(a)
+    assert in_wedge(PDV[0], PDV[1], end[0], end[1], wedge_low.lat, wedge_low.lng)
+    assert in_wedge(PDV[0], PDV[1], end[0], end[1], wedge_high.lat, wedge_high.lng)
+    for a in (north_top, *north_pads):
+        assert not in_wedge(PDV[0], PDV[1], end[0], end[1], a.lat, a.lng)
+    # The out-of-wedge anchor genuinely outscores both in-wedge ones, proving
+    # the wedge gate (not raw score) drives the pick.
+    assert _score(north_top, snap) > _score(wedge_high, snap) > _score(wedge_low, snap)
+
+    with pytest.raises(TourabilityRefusedError) as excinfo:
+        select_route(inp, snap)
+    cb = _closer_b(excinfo.value)
+
+    assert cb is not None
+    assert cb.kind == "closer_b"
+    assert cb.drop_end is True
+    assert cb.duration_min == CLOSER_DURATION
+    # Highest-score anchor INSIDE the wedge wins.
+    assert cb.poi_id == wedge_high.id
+    assert (cb.lat, cb.lng) == (wedge_high.lat, wedge_high.lng)
+    # loop + extend still present and intact.
+    kinds = {a.kind for a in excinfo.value.alternatives}
+    assert {"loop", "extend"} <= kinds
+
+
+def test_closer_b_empty_wedge_falls_back_to_highest_score_in_budget():
+    """When NO in-budget anchor sits inside the ±45° wedge toward B, closer_b
+    falls back to the highest-poi_score in-budget anchor regardless of
+    bearing."""
+    end = FAR_EAST_END  # wedge points east
+    # All anchors strongly NORTH (large dlat, ~0 dlng) — outside the east wedge
+    # — but in budget. fallback_top has the most beats → highest poi_score.
+    north_a = _anchor("north-a", 0.0010, 0.0, tier=5, beats=5)
+    north_b = _anchor("north-b", 0.0014, 0.00005, tier=5, beats=8)
+    north_c = _anchor("north-c", 0.0018, -0.00005, tier=5, beats=14)
+    fallback_top = _anchor("north-top", 0.0022, 0.0, tier=5, beats=30)
+    anchors = [north_a, north_b, north_c, fallback_top]
+    snap = _snap(anchors)
+
+    inp = TourInput(start=PDV, end=end, duration_min=CLOSER_DURATION, city_slug="paris")
+    _assert_not_red(inp, snap)
+
+    # Precondition: the wedge is empty over EVERY anchor, and all are in budget.
+    for a in anchors:
+        assert _in_budget(a)
+        assert not in_wedge(PDV[0], PDV[1], end[0], end[1], a.lat, a.lng)
+    # fallback_top is the unique highest score.
+    best = min(anchors, key=lambda p: (-_score(p, snap), p.id))
+    assert best.id == fallback_top.id
+
+    with pytest.raises(TourabilityRefusedError) as excinfo:
+        select_route(inp, snap)
+    cb = _closer_b(excinfo.value)
+
+    assert cb is not None
+    # Empty-wedge fallback = highest-score in-budget anchor overall.
+    assert cb.poi_id == fallback_top.id
+    assert (cb.lat, cb.lng) == (fallback_top.lat, fallback_top.lng)
+
+
+def test_closer_b_omitted_when_no_anchor_within_budget():
+    """When NO tier-≥3 anchor lies inside the walk budget, closer_b is omitted
+    (loop + extend still offered).
+
+    Density is kept out of RED by near-start TIER-2 'stop' POIs (audio fill,
+    but NOT closer_b anchors — closer_b requires tier ≥ 3). The only tier-≥3
+    anchors sit far east, beyond the walk budget, so closer_b finds nothing to
+    offer."""
+    end = FAR_EAST_END
+    # Tier-2 'stop' near the start: counts toward density fill (role+beats) but
+    # is NOT a closer_b anchor (tier < 3). Beats tuned to land density YELLOW
+    # (0.5 ≤ fill < 1.0 with zero tier-≥3 anchor candidates), which still
+    # reaches the 2.2a branch (only RED raises early).
+    fill_pois = [_anchor("t2-fill", 0.0003, 0.0, tier=2, beats=2)]
+    # The only tier-≥3 anchor is far east, beyond the walk budget.
+    far_anchor = _anchor("far-anchor", 0.0, 0.060, tier=5, beats=20)
+    snap = _snap([*fill_pois, far_anchor])
+
+    inp = TourInput(start=PDV, end=end, duration_min=CLOSER_DURATION, city_slug="paris")
+    # Preconditions (live): density is not RED (so the 2.2a branch is reached),
+    # and NO tier-≥3 anchor is within the walk budget.
+    _assert_not_red(inp, snap)
+    tier3plus = [p for p in snap.pois if p.tier >= 3]
+    assert tier3plus and all(not _in_budget(p) for p in tier3plus)
+
+    with pytest.raises(TourabilityRefusedError) as excinfo:
+        select_route(inp, snap)
+    exc = excinfo.value
+    assert exc.assessment.status != "RED"  # branch reached, not early RED raise
+    # loop + extend present, closer_b absent.
+    kinds = {a.kind for a in exc.alternatives}
+    assert kinds == {"loop", "extend"}
+    assert _closer_b(exc) is None
+
+
+def test_closer_b_tie_break_is_lowest_id():
+    """Two in-budget, in-wedge anchors with IDENTICAL poi_score tie-break on
+    ascending id."""
+    end = FAR_EAST_END
+    # Same tier + beats + role → identical poi_score (neutral spine, no lenses).
+    # Both strongly EAST → inside the wedge, in budget. Ids chosen so the
+    # ascending-id winner ("aaa-tie") is the one INSERTED SECOND, proving the
+    # pick is id-driven, not iteration-order-driven.
+    tie_hi = _anchor("zzz-tie", 0.0, 0.0042, tier=5, beats=10)
+    tie_lo = _anchor("aaa-tie", 0.00005, 0.0044, tier=5, beats=10)
+    # NORTH padding anchors (out of wedge) so density clears the rich-pool
+    # escape hatch (≥6 rich anchors); they never enter the in-wedge pool so
+    # they cannot win the closer_b pick.
+    pads = [
+        _anchor(f"north-pad-{i}", 0.0014 + 0.0002 * i, 0.00005 * (i - 1), tier=5, beats=6)
+        for i in range(4)
+    ]
+    anchors = [tie_hi, tie_lo, *pads]  # tie_hi before tie_lo on purpose
+    snap = _snap(anchors)
+
+    inp = TourInput(start=PDV, end=end, duration_min=CLOSER_DURATION, city_slug="paris")
+    _assert_not_red(inp, snap)
+
+    for a in (tie_hi, tie_lo):
+        assert _in_budget(a)
+        assert in_wedge(PDV[0], PDV[1], end[0], end[1], a.lat, a.lng)
+    for a in pads:
+        assert _in_budget(a)
+        assert not in_wedge(PDV[0], PDV[1], end[0], end[1], a.lat, a.lng)
+    # Identical scores (the precondition that makes id the tie-break).
+    assert _score(tie_lo, snap) == _score(tie_hi, snap)
+    # The tied pair outscores neither relevant: both are in-wedge so the pool
+    # is exactly {tie_hi, tie_lo}; the winner is the lower id.
+    with pytest.raises(TourabilityRefusedError) as excinfo:
+        select_route(inp, snap)
+    cb = _closer_b(excinfo.value)
+
+    assert cb is not None
+    assert cb.poi_id == "aaa-tie"  # ascending id wins the tie
+
+
+def test_bearing_and_wedge_helpers_are_self_consistent():
+    """The wedge membership test agrees with the bearing angular gap at the
+    ±45° boundary — a real geometric check on the helpers themselves."""
+    a_lat, a_lng = PDV
+    # Due east axis.
+    axis_lat, axis_lng = PDV[0], PDV[1] + 0.01
+    axis_b = bearing(a_lat, a_lng, axis_lat, axis_lng)
+    # A point due-east is dead-centre in the wedge.
+    assert in_wedge(a_lat, a_lng, axis_lat, axis_lng, PDV[0], PDV[1] + 0.005)
+    # A point due-north is ~90° off the east axis → outside a 45° half-wedge.
+    north_b = bearing(a_lat, a_lng, PDV[0] + 0.01, PDV[1])
+    gap = abs((axis_b - north_b + 180) % 360 - 180)
+    assert gap > 45.0
+    assert not in_wedge(a_lat, a_lng, axis_lat, axis_lng, PDV[0] + 0.01, PDV[1])
+
+
+def test_end_none_unchanged_by_closer_b_logic():
+    """Step-2.0d invariance: an open walk (end=None) never enters the 2.2a/2.2b
+    branch, so no closer_b is computed and a Route is returned."""
+    snap = _snap([*_density_fillers(PDV), _anchor("east-anchor", 0.0006, 0.0012)])
+    inp = TourInput(start=PDV, duration_min=CLOSER_DURATION, city_slug="paris")
+    assert inp.end is None
+    route = select_route(inp, snap)
+    assert route is not None

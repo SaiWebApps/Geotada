@@ -92,14 +92,26 @@ class FeasibilityAlternative(NamedTuple):
     - ``"loop"`` — drop the fixed destination B and walk an open loop from A.
     - ``"extend"`` — keep B but lengthen the tour to ``duration_min`` so the
       routed A→B leg fits inside the walk budget.
+    - ``"closer_b"`` (Step 2.2b) — keep the requested duration but aim the user
+      at a nearer destination B' that IS reachable inside the walk budget.
+      Carries the chosen anchor's ``poi_id``/``lat``/``lng`` so the harness can
+      offer it as the new endpoint.
     ``duration_min`` is the recommended duration for the alternative (the
-    requested duration for ``loop``; the A→B-correct extended duration for
-    ``extend``). ``drop_end`` is True when the alternative discards B.
+    requested duration for ``loop`` and ``closer_b``; the A→B-correct extended
+    duration for ``extend``). ``drop_end`` is True when the alternative discards
+    the originally-requested B (``loop`` and ``closer_b``; ``closer_b`` swaps in
+    its own target).
+
+    ``poi_id``/``lat``/``lng`` carry the closer_b target. They default to None
+    and stay None for ``loop`` and ``extend`` (which carry no target POI).
     """
 
     kind: str
     duration_min: int
     drop_end: bool
+    poi_id: str | None = None
+    lat: float | None = None
+    lng: float | None = None
 
 
 class TourabilityRefusedError(Exception):
@@ -114,8 +126,10 @@ class TourabilityRefusedError(Exception):
        the routed A→B leg already exceeds the walk budget, so no in-budget tour
        can reach B. Carries ``gap_minutes`` (how many minutes the A→B leg
        overshoots the walk budget) plus a tuple of ``alternatives``
-       (``FeasibilityAlternative`` — a 'loop' from A and an 'extend' to a longer
-       duration). The ``assessment`` is still attached for context.
+       (``FeasibilityAlternative`` — a 'loop' from A, an 'extend' to a longer
+       duration, and, when at least one anchor is reachable inside the walk
+       budget, a 'closer_b' pointing at a nearer destination B'). The
+       ``assessment`` is still attached for context.
     """
 
     def __init__(

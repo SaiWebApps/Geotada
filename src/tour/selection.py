@@ -490,6 +490,129 @@ def _decode_physical_cues(raw) -> tuple[PhysicalCue, ...]:
 
 
 # ---------------------------------------------------------------------------
+# Step 2.2b — closer_b geometry (bearing + ±45° wedge)
+# ---------------------------------------------------------------------------
+
+# Half-angle of the directional wedge around the A→B bearing. A candidate B'
+# counts as "in the same direction" when its A→B' bearing lies within ±45° of
+# the A→B bearing — a 90°-wide cone pointing at the originally-requested B.
+CLOSER_B_WEDGE_HALF_ANGLE_DEG: float = 45.0
+
+
+def bearing(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
+    """Compass bearing in degrees [0, 360) from (lat1,lng1) toward (lat2,lng2).
+
+    Euclidean (equirectangular) bearing: longitude differences are scaled by
+    cos(mean latitude) so a degree of longitude is weighted like the local
+    east-west distance. 0° = due north, 90° = due east. Adequate for the
+    short, in-city A→B' separations the wedge test compares — we never need
+    great-circle bearing precision here, only relative direction.
+    """
+    mean_lat_rad = math.radians((lat1 + lat2) / 2.0)
+    dx = (lng2 - lng1) * math.cos(mean_lat_rad)  # east component
+    dy = lat2 - lat1  # north component
+    # atan2(east, north) gives a clockwise-from-north compass bearing.
+    return math.degrees(math.atan2(dx, dy)) % 360.0
+
+
+def _angular_diff_deg(a: float, b: float) -> float:
+    """Smallest absolute difference between two bearings, in [0, 180]."""
+    diff = abs(a - b) % 360.0
+    return diff if diff <= 180.0 else 360.0 - diff
+
+
+def in_wedge(
+    origin_lat: float,
+    origin_lng: float,
+    axis_lat: float,
+    axis_lng: float,
+    target_lat: float,
+    target_lng: float,
+    *,
+    half_angle_deg: float = CLOSER_B_WEDGE_HALF_ANGLE_DEG,
+) -> bool:
+    """True iff ``target`` lies inside the ±half_angle wedge around the
+    origin→axis bearing.
+
+    The wedge is centred on the bearing from ``origin`` to ``axis`` (the A→B
+    direction). ``target`` (a candidate B') is inside when the angular gap
+    between its origin→target bearing and the axis bearing is ≤ ``half_angle``.
+    """
+    axis_bearing = bearing(origin_lat, origin_lng, axis_lat, axis_lng)
+    target_bearing = bearing(origin_lat, origin_lng, target_lat, target_lng)
+    return _angular_diff_deg(axis_bearing, target_bearing) <= half_angle_deg
+
+
+def _closer_b_alternative(
+    *,
+    start_lat: float,
+    start_lng: float,
+    end_lat: float,
+    end_lng: float,
+    duration_min: int,
+    interest: frozenset[str],
+    snapshot: CorpusSnapshot,
+    leg_cost_fn: LegSecondsFn,
+) -> FeasibilityAlternative | None:
+    """Build the Step 2.2b 'closer_b' alternative, or None when none fits.
+
+    Scans the anchor-eligible POIs (the SAME pool select_route's greedy draws
+    from: ``poi_role`` in the eligible roles, ``tier`` in ``ANCHOR_TIERS``, ≥1
+    active beat) and keeps those whose routed A→B' leg fits inside the walk
+    budget — using the very divisor the caller passes (``leg_fn or
+    default_leg_seconds``), never straight-line haversine.
+
+    Among the in-budget anchors:
+    - If any lie inside the ±45° wedge around the A→B bearing, pick the highest
+      ``poi_score`` (tie-break ascending ``id``) inside the wedge.
+    - Otherwise (empty wedge), fall back to the highest ``poi_score`` (tie-break
+      ascending ``id``) in-budget anchor regardless of bearing.
+
+    Returns None when no anchor is reachable inside the walk budget, so the
+    refusal omits closer_b entirely in that case. ``spine`` is None at this
+    pre-selection point, so ``poi_score`` evaluates with neutral area
+    alignment (the rank still reflects tier x richness x lens fit x role).
+    """
+    budget = walk_budget_seconds(duration_min)
+
+    in_budget: list[POI] = []
+    for poi in snapshot.pois:
+        if poi.poi_role not in POI_ROLE_MULTIPLIER or POI_ROLE_MULTIPLIER[poi.poi_role] <= 0.0:
+            continue
+        if poi.tier not in ANCHOR_TIERS:
+            continue
+        if not _has_active_beats(poi, snapshot):
+            continue
+        t_ab_prime = leg_cost_fn(start_lat, start_lng, poi.lat, poi.lng)
+        if t_ab_prime <= budget:
+            in_budget.append(poi)
+
+    if not in_budget:
+        return None
+
+    def _rank_key(p: POI) -> tuple[float, str]:
+        # Highest poi_score first (negate), ascending id as the deterministic
+        # tie-break — mirrors every other selection ranking in this module.
+        return (-poi_score(p, None, interest, snapshot), p.id)
+
+    in_wedge_anchors = [
+        p
+        for p in in_budget
+        if in_wedge(start_lat, start_lng, end_lat, end_lng, p.lat, p.lng)
+    ]
+    pool = in_wedge_anchors if in_wedge_anchors else in_budget
+    target = min(pool, key=_rank_key)
+    return FeasibilityAlternative(
+        kind="closer_b",
+        duration_min=duration_min,
+        drop_end=True,
+        poi_id=target.id,
+        lat=target.lat,
+        lng=target.lng,
+    )
+
+
+# ---------------------------------------------------------------------------
 # Selection (pure)
 # ---------------------------------------------------------------------------
 
@@ -565,6 +688,23 @@ def select_route(
                     drop_end=False,
                 ),
             )
+            # Step 2.2b: when at least one anchor is reachable inside the walk
+            # budget, also offer a 'closer_b' pointing at a nearer destination
+            # B' — preferring an anchor in the A→B direction (±45° wedge),
+            # falling back to the highest-scoring in-budget anchor otherwise.
+            # Omitted entirely when no anchor fits the budget.
+            closer_b = _closer_b_alternative(
+                start_lat=start_lat,
+                start_lng=start_lng,
+                end_lat=input.end[0],
+                end_lng=input.end[1],
+                duration_min=input.duration_min,
+                interest=interest,
+                snapshot=snapshot,
+                leg_cost_fn=leg_cost_fn,
+            )
+            if closer_b is not None:
+                alternatives = (*alternatives, closer_b)
             raise TourabilityRefusedError(
                 assessment,
                 (
@@ -1464,9 +1604,12 @@ def _attach_tourability_if_yellow(route: Route, assessment: TourabilityAssessmen
 
 
 __all__ = [
+    "CLOSER_B_WEDGE_HALF_ANGLE_DEG",
     "HAVERSINE_CORRECTION",
     "PACE_KMH",
     "CorpusSnapshot",
+    "bearing",
+    "in_wedge",
     "load_paris_corpus",
     "pick_spine_area",
     "poi_score",
