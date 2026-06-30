@@ -1776,9 +1776,9 @@ class TestDetailViewAndEditing:
                     {
                         "stops": [
                             {"sort_order": 1, "poi_name": "Hotel de Ville", "minutes": 5,
-                             "narration": "Start the walk here."},
+                             "lat": 48.8564, "lng": 2.3522, "narration": "Start the walk here."},
                             {"sort_order": 2, "poi_name": "Destination", "minutes": 0,
-                             "narration": "End the walk here, or carry on."},
+                             "lat": 48.8606, "lng": 2.3376, "narration": "End the walk here, or carry on."},
                         ],
                         "spine_area": "Île de la Cité",
                         "total_audio_min": 5,
@@ -1805,6 +1805,12 @@ class TestDetailViewAndEditing:
             stops = page.locator("#tourStops .tour-stop")
             assert stops.count() == 2, f"expected 2 stops, got {stops.count()}"
             assert "Destination" in (stops.last.text_content() or ""), "route must end at the Destination"
+            # The A→B route is drawn on the persistent map: a connecting line + numbered pins.
+            route = page.evaluate("() => window.__lastTourRoute")
+            assert route and route.get("stops") == 2 and route.get("line") is True, (
+                f"route not drawn on the map: {route}"
+            )
+            assert page.locator(".tour-route-pin").count() == 2, "expected 2 numbered route pins on the map"
             _take_screenshot(page, "ab-destination-route")
         finally:
             page.unroute("**/trips/preview")
@@ -1851,6 +1857,9 @@ class TestDetailViewAndEditing:
             assert "Extend to 95 min" in txt, "the extend alternative should be readable"
             assert "closer destination" in txt.lower(), "the closer_b alternative should be shown"
             assert "{" not in txt, "must not dump raw JSON to the user"
+            # A refusal means no route — the map route is cleared.
+            route = page.evaluate("() => window.__lastTourRoute")
+            assert route and route.get("stops") == 0, f"route should be cleared on a refusal: {route}"
             _take_screenshot(page, "ab-infeasible-alternatives")
         finally:
             page.unroute("**/trips/preview")

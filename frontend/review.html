@@ -174,6 +174,13 @@
     border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-weight: 600;
   }
   #persistent-map .leaflet-popup-content .popup-merge-btn:hover { opacity: 0.85; }
+  /* A→B tour route pins on the persistent map (numbered, in walking order). */
+  .tour-route-pin span {
+    display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; background: #3b82f6; color: #fff;
+    border-radius: 50%; font-size: 12px; font-weight: 700; border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
   .merge-banner {
     position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
     background: var(--purple); color: #fff; padding: 8px 16px; border-radius: 6px;
@@ -1039,6 +1046,7 @@
   let map = null;
   let marker = null;
   let addressMarker = null;
+  let tourRouteLayer = null;  // Leaflet layer for the A→B tour route (pins + connecting line)
   let geocodeAbortController = null;
   let geofenceCircle = null;
 
@@ -2992,6 +3000,7 @@
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
     tourStops = [];
+    drawTourRoute([]);  // no route on a refusal — clear any prior line/pins
     stopsEl.innerHTML = '';
     const box = document.createElement('div');
     box.className = 'tour-refusal db-beat-card';
@@ -3017,10 +3026,38 @@
     stopsEl.appendChild(box);
   }
 
+  // Plot the A→B route on the persistent map: numbered pins in walking order +
+  // a connecting line, from the stop coordinates the preview returns. (Honest
+  // sketch through the ordered stops; the exact routed polyline is future work.)
+  function drawTourRoute(stops) {
+    if (tourRouteLayer && persistentMap) { persistentMap.removeLayer(tourRouteLayer); }
+    tourRouteLayer = null;
+    const located = (stops || []).filter(s => typeof s.lat === 'number' && typeof s.lng === 'number');
+    const pts = located.map(s => [s.lat, s.lng]);
+    window.__lastTourRoute = { stops: pts.length, line: pts.length >= 2 };
+    if (!persistentMap || pts.length === 0) return;
+    tourRouteLayer = L.layerGroup();
+    if (pts.length >= 2) {
+      L.polyline(pts, { color: '#3b82f6', weight: 3, opacity: 0.85 }).addTo(tourRouteLayer);
+    }
+    located.forEach((s, i) => {
+      L.marker([s.lat, s.lng], {
+        icon: L.divIcon({
+          className: 'tour-route-pin',
+          html: `<span>${s.sort_order != null ? s.sort_order : i + 1}</span>`,
+          iconSize: [22, 22],
+        }),
+      }).bindPopup(escHtml(s.poi_name || '')).addTo(tourRouteLayer);
+    });
+    tourRouteLayer.addTo(persistentMap);
+    persistentMap.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
+  }
+
   function renderTourStops(data) {
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
     tourStops = (data && data.stops) || [];
+    drawTourRoute(tourStops);
     stopsEl.innerHTML = '';
     const summary = document.createElement('div');
     summary.className = 'tour-summary';
