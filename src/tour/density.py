@@ -30,6 +30,7 @@ roster (303 POIs in Paris) — well under 50 ms.
 from __future__ import annotations
 
 from collections.abc import Iterable
+from typing import NamedTuple
 
 from .contract import POI, BeatRef, TourabilityAssessment, TourInput
 from .routing import (
@@ -84,15 +85,50 @@ WORDS_PER_SECOND: float = 2.5
 ALTERNATIVE_DURATION_BUCKETS: tuple[int, ...] = (60, 90, 120, 180)
 
 
-class TourabilityRefusedError(Exception):
-    """Raised by selection when density.assess() returns RED.
+class FeasibilityAlternative(NamedTuple):
+    """One actionable way out of a feasibility refusal.
 
-    Carries the assessment so the harness can surface fill_ratio,
-    anchor_candidate_count, and the recommended alternatives.
+    ``kind`` is the alternative class:
+    - ``"loop"`` — drop the fixed destination B and walk an open loop from A.
+    - ``"extend"`` — keep B but lengthen the tour to ``duration_min`` so the
+      routed A→B leg fits inside the walk budget.
+    ``duration_min`` is the recommended duration for the alternative (the
+    requested duration for ``loop``; the A→B-correct extended duration for
+    ``extend``). ``drop_end`` is True when the alternative discards B.
     """
 
-    def __init__(self, assessment: TourabilityAssessment, message: str | None = None):
+    kind: str
+    duration_min: int
+    drop_end: bool
+
+
+class TourabilityRefusedError(Exception):
+    """Raised by selection when a tour cannot be built.
+
+    Two refusal causes share this exception:
+
+    1. **Density RED** (Phase 6) — ``density.assess()`` returns RED. Carries the
+       ``assessment`` so the harness can surface fill_ratio,
+       anchor_candidate_count, and the recommended alternatives.
+    2. **Fixed-destination infeasibility** (Step 2.2a) — a fixed end B exists but
+       the routed A→B leg already exceeds the walk budget, so no in-budget tour
+       can reach B. Carries ``gap_minutes`` (how many minutes the A→B leg
+       overshoots the walk budget) plus a tuple of ``alternatives``
+       (``FeasibilityAlternative`` — a 'loop' from A and an 'extend' to a longer
+       duration). The ``assessment`` is still attached for context.
+    """
+
+    def __init__(
+        self,
+        assessment: TourabilityAssessment,
+        message: str | None = None,
+        *,
+        gap_minutes: int | None = None,
+        alternatives: tuple[FeasibilityAlternative, ...] = (),
+    ):
         self.assessment = assessment
+        self.gap_minutes = gap_minutes
+        self.alternatives = alternatives
         super().__init__(message or self._default_message(assessment))
 
     @staticmethod
@@ -363,6 +399,7 @@ __all__ = [
     "YELLOW_ANCHOR_CANDIDATES_MIN",
     "YELLOW_CLUSTER_COMPACTNESS_MAX",
     "YELLOW_FILL_RATIO_MIN",
+    "FeasibilityAlternative",
     "TourabilityAssessment",
     "TourabilityRefusedError",
     "assess",

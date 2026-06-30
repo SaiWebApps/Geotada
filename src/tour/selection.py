@@ -40,7 +40,7 @@ from .contract import (
     TourabilityAssessment,
     TourInput,
 )
-from .density import TourabilityRefusedError
+from .density import FeasibilityAlternative, TourabilityRefusedError
 from .density import assess as assess_tourability
 from .ordering import held_karp_open
 from .routing import (
@@ -54,6 +54,7 @@ from .routing import (
     envelope_radius_m,
     haversine_m,
     insertion_cost_seconds,
+    smallest_duration_min_for_walk_seconds,
     summarise_route,
     target_audio_seconds,
     walk_budget_seconds,
@@ -532,6 +533,47 @@ def select_route(
     assessment = assess_tourability(input, snapshot.pois, snapshot.beats_by_poi)
     if assessment.status == "RED":
         raise TourabilityRefusedError(assessment)
+
+    # Step 2.2a: fixed-destination feasibility. When a fixed end B exists, the
+    # routed A→B leg alone must fit inside the walk budget — otherwise no
+    # in-budget tour can reach B and the greedy would silently emit a route
+    # that never gets there. Compute the routed leg time with the SAME divisor
+    # the greedy uses (leg_fn when a routing client is given, else the
+    # pace-corrected haversine) — NEVER a straight-line haversine, which would
+    # admit across-the-river endpoints no bridge serves. Raise BEFORE the
+    # greedy so it propagates on the first flavour through select_k_routes,
+    # exactly like RED density. (end is None for open/loop walks — they never
+    # enter this branch, so the Step-2.0d invariance baseline is untouched.)
+    if input.end is not None:
+        leg_cost_fn = leg_fn or default_leg_seconds
+        t_ab = leg_cost_fn(start_lat, start_lng, input.end[0], input.end[1])
+        budget = walk_budget_seconds(input.duration_min)
+        if t_ab > budget:
+            overshoot_s = t_ab - budget
+            gap_minutes = math.ceil(overshoot_s / 60)
+            alternatives = (
+                # Drop B and loop from A at the requested duration.
+                FeasibilityAlternative(
+                    kind="loop", duration_min=input.duration_min, drop_end=True
+                ),
+                # Keep B but extend to the smallest duration whose walk budget
+                # covers the routed A→B leg (A→B-correct; NOT
+                # density.max_supportable_duration_min).
+                FeasibilityAlternative(
+                    kind="extend",
+                    duration_min=smallest_duration_min_for_walk_seconds(t_ab),
+                    drop_end=False,
+                ),
+            )
+            raise TourabilityRefusedError(
+                assessment,
+                (
+                    f"Destination unreachable in {input.duration_min} min: routed A→B "
+                    f"leg {t_ab}s exceeds walk budget {budget}s by {gap_minutes} min."
+                ),
+                gap_minutes=gap_minutes,
+                alternatives=alternatives,
+            )
 
     # Step 1: REACH (§2.1, M5) — Valhalla walking isochrone replaces the
     # analytic radius (a straight-line circle admits across-the-river POIs no

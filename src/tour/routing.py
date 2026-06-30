@@ -103,6 +103,25 @@ def walk_budget_seconds(duration_min: int) -> int:
     return round(duration_min * ERR_SHORT * WALK_FRACTION * 60)
 
 
+def smallest_duration_min_for_walk_seconds(target_seconds: int) -> int:
+    """Smallest integer duration (minutes) whose walk budget covers ``target_seconds``.
+
+    Returns the least ``d >= 1`` with ``walk_budget_seconds(d) >= target_seconds``.
+    Used by the Step 2.2a feasibility refusal to recommend an 'extend' duration
+    that would make a fixed A→B leg fit inside the walk budget. This is the
+    A→B-correct inverse of ``walk_budget_seconds`` — NOT
+    ``density.max_supportable_duration_min`` (which is fill-driven and None on
+    GREEN). ``walk_budget_seconds`` is monotonic non-decreasing in ``d``, so a
+    linear scan from 1 returns the exact threshold.
+    """
+    if target_seconds <= walk_budget_seconds(1):
+        return 1
+    d = 1
+    while walk_budget_seconds(d) < target_seconds:
+        d += 1
+    return d
+
+
 def compute_dwell_seconds(tier: int) -> int:
     return DWELL_SECONDS_BY_TIER.get(tier, 0)
 
