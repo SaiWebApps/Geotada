@@ -13,6 +13,19 @@ class TripGenerateRequest(BaseModel):
     profile_id: str = Field(..., description="Profile node whose PREFERS_LENS edges select beats")
     center_lat: float = Field(..., ge=-90, le=90, description="Latitude of search center")
     center_lng: float = Field(..., ge=-180, le=180, description="Longitude of search center")
+    end_lat: float | None = Field(
+        default=None,
+        ge=-90,
+        le=90,
+        description="Optional fixed-destination latitude (B). With end_lng, threads into "
+        "TourInput.end; mutually exclusive with round_trip (rejected by the engine).",
+    )
+    end_lng: float | None = Field(
+        default=None,
+        ge=-180,
+        le=180,
+        description="Optional fixed-destination longitude (B). Pairs with end_lat.",
+    )
     radius_m: int = Field(default=3000, le=10000, description="Search radius in meters")
     max_stops: int = Field(default=10, le=30, description="Cap on itinerary items")
     duration_min: int | None = Field(
@@ -127,6 +140,8 @@ class TripPreviewRequest(BaseModel):
 
     center_lat: float = Field(..., ge=-90, le=90)
     center_lng: float = Field(..., ge=-180, le=180)
+    end_lat: float | None = Field(default=None, ge=-90, le=90)
+    end_lng: float | None = Field(default=None, ge=-180, le=180)
     duration_min: int | None = Field(default=None, ge=1, le=600)
     lenses: list[str] | None = None
     round_trip: bool = False

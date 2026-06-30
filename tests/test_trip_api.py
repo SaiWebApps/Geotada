@@ -25,8 +25,9 @@ from neo4j.exceptions import AuthError, ServiceUnavailable
 from src.api.app import create_app
 from src.api.dependencies import get_driver, get_session
 from src.tour.contract import TourInput
+from src.tour.density import TourabilityRefusedError
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_route
+from src.tour.selection import load_paris_corpus, select_k_routes, select_route
 from tests.conftest import needs_neo4j
 from tests.test_tour_golden_pdv import _parse_env_file  # same .env-read-only pattern
 
@@ -327,12 +328,128 @@ class TestTripGenerateErrors:
         assert "not found" in resp.json()["detail"].lower()
 
     def test_sparse_origin_refused_422(self, client):
-        """The density gate's RED refusal maps to 422 (replaces the old
-        'no POIs in radius' check). Sydney is far from every Paris POI."""
+        """The density gate's RED refusal maps to a structured 422 body. Sydney
+        is far from every Paris POI, so there is no fixed-destination overshoot:
+        gap_minutes is None and alternatives is empty (those only appear for an
+        A→B feasibility refusal, exercised in TestTripGenerateFixedDestination)."""
         body = _body(NOLENS_PROFILE_ID, center_lat=-33.8688, center_lng=151.2093)
         resp = client.post("/api/v1/trips/generate", json=body)
         assert resp.status_code == 422
-        assert "sparse" in resp.json()["detail"].lower()
+        detail = resp.json()["detail"]
+        assert isinstance(detail, dict)
+        assert isinstance(detail["reason"], str) and detail["reason"]
+        assert detail["gap_minutes"] is None
+        assert detail["alternatives"] == []
+
+
+# Versailles palace — a real Paris-region coordinate ~14km SW of the Île start.
+# The routed A→B leg (or its haversine fallback) is hours long, dwarfing any
+# tour walk budget, so a fixed-end A→B request from the Île GREEN start lands in
+# the Step-2.2 fixed-destination feasibility refusal — never density-RED (the
+# Île start stays GREEN at 90 min). Far enough that no selected POI snaps within
+# B_SNAP_PROXIMITY_M, so the engine synthesizes a sentinel at B's exact coord.
+VERSAILLES_END = (48.8049, 2.1204)
+
+
+@needs_neo4j
+class TestTripGenerateFixedDestination:
+    """Step 2.6: end_lat/end_lng thread into TourInput.end; the route ends at B,
+    and an unreachable B yields a structured 422 mirroring the Step-2.2 error."""
+
+    def test_no_end_request_unchanged(self, ile_response, ile_engine_route):
+        """A request WITHOUT end_lat/end_lng is the legacy open-walk path: the
+        engine's end=None route is unchanged, so its last stop is unchanged."""
+        engine_last = ile_engine_route.pois[-1].id
+        api_last = ile_response["stops"][-1]["poi_id"]
+        assert api_last == engine_last
+
+    def test_ab_request_route_ends_at_b(self, client, snapshot, ile_engine_route):
+        """An in-budget A→B request returns a route ending at B. B is the coord
+        of a real POI the open Île route selected, so B-materialization snaps B
+        onto a selected anchor: the API's final stop is the engine's fixed-end
+        route's final POI (derived live, both via RoutingClient)."""
+        # A selected anchor from the open route → guaranteed in-corridor and
+        # reachable, so the A→B request is feasible (no refusal).
+        b_poi = ile_engine_route.pois[-1]
+        b_end = (b_poi.lat, b_poi.lng)
+        with RoutingClient() as rc:
+            engine_route = select_route(
+                TourInput(
+                    start=ILE_START,
+                    duration_min=ILE_DURATION_MIN,
+                    city_slug="paris",
+                    lenses=None,
+                    round_trip=False,
+                    end=b_end,
+                ),
+                snapshot,
+                routing_client=rc,
+            )
+        resp = client.post(
+            "/api/v1/trips/generate",
+            json=_body(NOLENS_PROFILE_ID, end_lat=b_end[0], end_lng=b_end[1]),
+        )
+        assert resp.status_code == 201, resp.text
+        got = [s["poi_id"] for s in resp.json()["stops"]]
+        expected = [p.id for p in engine_route.pois]
+        assert got == expected, (
+            f"API order diverged from fixed-end select_route: {got} vs {expected}"
+        )
+        # The route literally ends at B (the materialized fixed_end).
+        assert got[-1] == engine_route.pois[-1].id
+
+    def test_over_budget_ab_returns_structured_422(self, client, snapshot):
+        """An A→B request whose routed A→B leg exceeds the walk budget returns a
+        422 whose JSON body matches the live Step-2.2 TourabilityRefusedError:
+        {reason, gap_minutes, alternatives:[{kind,...}]} with the kind enum
+        (loop/extend, plus closer_b when an anchor fits the budget)."""
+        # Reproduce the endpoint's own engine call to derive the truth live —
+        # robust whether Valhalla is up (routed leg) or down (haversine).
+        tour_input = TourInput(
+            start=ILE_START,
+            duration_min=ILE_DURATION_MIN,
+            city_slug="paris",
+            lenses=None,
+            round_trip=False,
+            end=VERSAILLES_END,
+        )
+        with (
+            RoutingClient() as rc,
+            pytest.raises(TourabilityRefusedError) as caught,
+        ):
+            select_k_routes(tour_input, snapshot, 3, routing_client=rc)
+        exc = caught.value
+        # Guard: this must be the FIXED-DESTINATION feasibility refusal (carries
+        # gap_minutes + alternatives), not a plain density-RED refusal.
+        assert exc.gap_minutes is not None and exc.gap_minutes > 0
+        assert exc.alternatives, "fixed-destination refusal must offer alternatives"
+        expected_kinds = [a.kind for a in exc.alternatives]
+        assert {"loop", "extend"} <= set(expected_kinds)
+        assert set(expected_kinds) <= {"loop", "extend", "closer_b"}
+
+        resp = client.post(
+            "/api/v1/trips/generate",
+            json=_body(NOLENS_PROFILE_ID, end_lat=VERSAILLES_END[0], end_lng=VERSAILLES_END[1]),
+        )
+        assert resp.status_code == 422, resp.text
+        detail = resp.json()["detail"]
+        assert isinstance(detail, dict)
+        assert detail["reason"] == str(exc)
+        assert detail["gap_minutes"] == exc.gap_minutes
+        # The structured alternatives mirror the engine's FeasibilityAlternative
+        # tuple field-for-field (kind enum + duration_min/drop_end/poi_id/lat/lng).
+        assert [a["kind"] for a in detail["alternatives"]] == expected_kinds
+        assert detail["alternatives"] == [
+            {
+                "kind": a.kind,
+                "duration_min": a.duration_min,
+                "drop_end": a.drop_end,
+                "poi_id": a.poi_id,
+                "lat": a.lat,
+                "lng": a.lng,
+            }
+            for a in exc.alternatives
+        ]
 
 
 class TestPreviewTrip:

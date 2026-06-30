@@ -35,6 +35,46 @@ router = APIRouter(tags=["trips"])
 DEFAULT_DURATION_MIN = 60
 
 
+def _end_point(end_lat: float | None, end_lng: float | None) -> tuple[float, float] | None:
+    """Fixed-destination (lat, lng) B for TourInput.end, or None when unset.
+
+    Both coordinates must be present to form an endpoint; a lone end_lat or
+    end_lng is treated as no endpoint (TourInput.end stays None — the
+    end=None identity path is unchanged).
+    """
+    if end_lat is None or end_lng is None:
+        return None
+    return (end_lat, end_lng)
+
+
+def _refusal_detail(exc: TourabilityRefusedError) -> dict:
+    """Structured 422 body from a Step-2.2 feasibility/density refusal.
+
+    Shape (mirrors the FeasibilityAlternative NamedTuple from src/tour/density.py):
+        {reason, gap_minutes, alternatives: [{kind, duration_min, drop_end,
+                                              poi_id, lat, lng}, ...]}
+    gap_minutes is None for plain density-RED refusals (no fixed destination);
+    alternatives is [] there too. For a fixed-destination overshoot it carries
+    the routed-leg gap and the loop/extend/closer_b alternatives (closer_b
+    includes its target poi_id/lat/lng).
+    """
+    return {
+        "reason": str(exc),
+        "gap_minutes": exc.gap_minutes,
+        "alternatives": [
+            {
+                "kind": alt.kind,
+                "duration_min": alt.duration_min,
+                "drop_end": alt.drop_end,
+                "poi_id": alt.poi_id,
+                "lat": alt.lat,
+                "lng": alt.lng,
+            }
+            for alt in exc.alternatives
+        ],
+    }
+
+
 def _resolve_lenses(session: Session, body: TripGenerateRequest) -> list[str] | None:
     """Lens precedence: request -> profile PREFERS_LENS -> None (engine unbiased).
 
@@ -126,6 +166,7 @@ def generate_trip(
         city_slug="paris",
         lenses=lenses,
         round_trip=body.round_trip,
+        end=_end_point(body.end_lat, body.end_lng),
     )
 
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
@@ -138,13 +179,7 @@ def generate_trip(
             flavours = select_k_routes(tour_input, snapshot, 3, routing_client=routing_client)
         route = flavours[0]
     except TourabilityRefusedError as exc:
-        a = exc.assessment
-        raise HTTPException(
-            422,
-            "Area too sparse for a tour of this length: "
-            f"{a.anchor_candidate_count} anchor candidates, "
-            f"{a.reachable_poi_count} reachable POIs.",
-        ) from exc
+        raise HTTPException(422, _refusal_detail(exc)) from exc
 
     # A non-RED assessment can still yield an empty route (e.g. YELLOW by fill
     # ratio with no tier-3+ anchor candidates). Refuse before persisting —
@@ -248,19 +283,14 @@ def preview_trip(
         city_slug="paris",
         lenses=body.lenses or None,
         round_trip=body.round_trip,
+        end=_end_point(body.end_lat, body.end_lng),
     )
     snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
     try:
         with RoutingClient() as routing_client:
             route = select_route(tour_input, snapshot, routing_client=routing_client)
     except TourabilityRefusedError as exc:
-        a = exc.assessment
-        raise HTTPException(
-            422,
-            "Area too sparse for a tour of this length: "
-            f"{a.anchor_candidate_count} anchor candidates, "
-            f"{a.reachable_poi_count} reachable POIs.",
-        ) from exc
+        raise HTTPException(422, _refusal_detail(exc)) from exc
 
     if not route.pois:
         raise HTTPException(
