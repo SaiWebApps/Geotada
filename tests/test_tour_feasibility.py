@@ -26,6 +26,8 @@ from src.tour.contract import POI, BeatRef, TourInput
 from src.tour.density import FeasibilityAlternative, TourabilityRefusedError
 from src.tour.routing import (
     default_leg_seconds,
+    envelope_radius_m,
+    haversine_m,
     smallest_duration_min_for_walk_seconds,
     walk_budget_seconds,
 )
@@ -505,3 +507,123 @@ def test_end_none_unchanged_by_closer_b_logic():
     assert inp.end is None
     route = select_route(inp, snap)
     assert route is not None
+
+
+# ---------------------------------------------------------------------------
+# Step 2.3 — corridor (time-ellipse) reach filter when end is set.
+#
+# When a fixed end B exists AND the routed A→B leg fits the walk budget (so the
+# 2.2a refusal does NOT fire), only anchors whose routed detour A→poi→B still
+# fits the budget — t(A,poi)+t(poi,B) ≤ walk_budget_seconds — earn candidacy.
+# A POI on the A-B axis is admitted; a far off-axis POI (in REACH, but whose
+# two-focus detour overruns the budget) is rejected from the candidate pool,
+# so it never appears in the route. The end=None path is LITERALLY unchanged.
+#
+# All synthetic; every expectation is DERIVED from the live cost / REACH
+# functions (default_leg_seconds, walk_budget_seconds, envelope_radius_m,
+# haversine_m), never a hardcoded leg time.
+# ---------------------------------------------------------------------------
+
+# A fixed end due east of PdV whose routed A→B leg fits the walk budget, so
+# Step 2.2a does NOT refuse and selection proceeds to the candidate loop.
+CORRIDOR_END = (PDV[0], PDV[1] + 0.0064)
+# Duration chosen so (a) the walk budget covers the direct A→B leg (2.2a is
+# silent), (b) a near-REACH-edge off-axis detour still overruns it, and (c) the
+# anchor cap (duration // 10, here 6) exceeds the 4 density fillers + on-axis
+# anchor, so every corridor-admitted candidate is actually selected — letting
+# the route's POIs stand in for the post-corridor candidate pool.
+CORRIDOR_DURATION = 60
+
+
+def _corridor_admits(poi: POI, end: tuple[float, float], duration_min: int) -> bool:
+    """Live two-focus corridor predicate: does A→poi→B fit the walk budget?"""
+    t_a = default_leg_seconds(PDV[0], PDV[1], poi.lat, poi.lng)
+    t_b = default_leg_seconds(poi.lat, poi.lng, end[0], end[1])
+    return t_a + t_b <= walk_budget_seconds(duration_min)
+
+
+def _in_reach(poi: POI, duration_min: int) -> bool:
+    """Live: does the POI sit inside the one-way REACH envelope of the start?"""
+    radius_m = envelope_radius_m(duration_min, round_trip=False)
+    return haversine_m(PDV[0], PDV[1], poi.lat, poi.lng) <= radius_m
+
+
+def test_corridor_admits_on_axis_poi_for_fixed_end():
+    """A strong anchor sitting on the A-B axis satisfies the two-focus corridor
+    (t(A,poi)+t(poi,B) ≤ budget) and IS selected into the route."""
+    end = CORRIDOR_END
+    duration = CORRIDOR_DURATION
+    # Midway between A and B on the due-east axis → its detour ≈ the direct
+    # A→B leg, well inside the budget. Rich tier-5 anchor so the greedy picks it.
+    on_axis = _anchor("on-axis", 0.0, 0.0032, tier=5, beats=20)
+    snap = _snap([*_density_fillers(PDV), on_axis])
+
+    inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
+    _assert_not_red(inp, snap)
+    # Preconditions (live): the A→B leg fits the budget (no 2.2a refusal) and the
+    # on-axis anchor clears the corridor predicate.
+    assert default_leg_seconds(PDV[0], PDV[1], end[0], end[1]) <= walk_budget_seconds(duration)
+    assert _corridor_admits(on_axis, end, duration)
+
+    route = select_route(inp, snap)
+    assert route is not None
+    assert on_axis.id in {p.id for p in route.pois}
+
+
+def test_corridor_rejects_far_off_axis_poi_for_fixed_end():
+    """A far off-axis anchor that is inside REACH and rich enough to outscore
+    everything is STILL excluded from the route, because its two-focus detour
+    t(A,poi)+t(poi,B) overruns the walk budget — the corridor gate drops it."""
+    end = CORRIDOR_END  # axis points due east
+    duration = CORRIDOR_DURATION
+    # Off-axis: due NORTH near the REACH-radius edge. t(A,off) alone nearly
+    # exhausts the budget, so the A→off→B detour blows well past it — yet it is
+    # the single richest anchor, so its absence can only be the corridor gate.
+    off_axis = _anchor("off-axis", 0.0065, 0.0, tier=5, beats=40)
+    # On-axis control: a rich anchor on the segment that the corridor admits, so
+    # the route is non-empty and we are comparing pool membership, not emptiness.
+    on_axis = _anchor("on-axis", 0.0, 0.0032, tier=5, beats=20)
+    snap = _snap([*_density_fillers(PDV), off_axis, on_axis])
+
+    inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
+    _assert_not_red(inp, snap)
+
+    # Preconditions, all live-derived:
+    # 1. No 2.2a refusal (A→B fits budget).
+    assert default_leg_seconds(PDV[0], PDV[1], end[0], end[1]) <= walk_budget_seconds(duration)
+    # 2. off_axis is genuinely INSIDE REACH (so REACH is not what excludes it)…
+    assert _in_reach(off_axis, duration)
+    # 3. …but its two-focus detour overruns the budget → corridor rejects it.
+    assert not _corridor_admits(off_axis, end, duration)
+    # 4. on_axis passes the corridor (route stays non-empty).
+    assert _corridor_admits(on_axis, end, duration)
+    # 5. off_axis is the richest anchor — absent the corridor it WOULD be picked,
+    #    so its absence isolates the corridor gate (not score / greedy budget).
+    assert _score(off_axis, snap) > _score(on_axis, snap)
+
+    route = select_route(inp, snap)
+    assert route is not None
+    pool_ids = {p.id for p in route.pois}
+    assert off_axis.id not in pool_ids  # corridor-rejected, never selected
+    assert on_axis.id in pool_ids       # corridor-admitted, selected
+
+
+def test_corridor_filter_does_not_touch_end_none_pool():
+    """Step-2.0d invariance: with end=None the corridor gate is skipped, so a
+    far off-axis anchor that the fixed-end corridor would reject is STILL a
+    candidate and gets selected. Same corpus, same duration — only end differs."""
+    duration = CORRIDOR_DURATION
+    # The very anchor the fixed-end corridor rejects (off-axis, in REACH).
+    off_axis = _anchor("off-axis", 0.0065, 0.0, tier=5, beats=40)
+    snap = _snap([*_density_fillers(PDV), off_axis])
+
+    # Sanity: under a fixed end this anchor IS corridor-rejected…
+    assert _in_reach(off_axis, duration)
+    assert not _corridor_admits(off_axis, CORRIDOR_END, duration)
+
+    # …but with end=None the gate never runs, so it remains in the pool.
+    open_inp = TourInput(start=PDV, duration_min=duration, city_slug="paris")
+    assert open_inp.end is None
+    open_route = select_route(open_inp, snap)
+    assert open_route is not None
+    assert off_axis.id in {p.id for p in open_route.pois}

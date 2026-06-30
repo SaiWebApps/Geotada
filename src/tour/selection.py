@@ -724,6 +724,28 @@ def select_route(
     reach_contains, reach_degraded = _reach_predicate(
         (start_lat, start_lng), radius_m, iso_minutes, routing_client
     )
+    # Step 2.3: corridor (time-ellipse) reach filter for fixed-destination
+    # walks. When a fixed end B exists, an anchor only earns candidacy if the
+    # routed detour through it — A→poi→B — still fits inside the walk budget:
+    # ``t(A, poi) + t(poi, B) <= walk_budget_seconds(duration_min)``. This is
+    # the two-focus (A, B) ellipse whose string length is the walk budget,
+    # measured with the SAME divisor the greedy uses (``leg_fn or
+    # default_leg_seconds``) — NEVER straight-line haversine, which would admit
+    # across-the-river anchors no bridge serves. ``end is None`` for open/loop
+    # walks: ``corridor_admits`` is None and the gate is skipped entirely, so
+    # the candidate pool on that path is LITERALLY unchanged (Step-2.0d
+    # identity baseline holds).
+    corridor_admits = None
+    if input.end is not None:
+        corridor_leg_fn = leg_fn or default_leg_seconds
+        end_lat, end_lng = input.end
+        corridor_budget = walk_budget_seconds(input.duration_min)
+
+        def corridor_admits(lat: float, lng: float) -> bool:
+            t_a_poi = corridor_leg_fn(start_lat, start_lng, lat, lng)
+            t_poi_b = corridor_leg_fn(lat, lng, end_lat, end_lng)
+            return t_a_poi + t_poi_b <= corridor_budget
+
     reachable_count = 0
     candidates: list[POI] = []
     for poi in snapshot.pois:
@@ -741,6 +763,10 @@ def select_route(
         if interest and _lens_adjacency(poi, interest, snapshot) == LENS_ADJACENCY_MISS:
             # §3 (M3): a thematic miss is EXCLUDED, not down-weighted — filter
             # here so the greedy, endpoint-pull, and fill pass all agree.
+            continue
+        if corridor_admits is not None and not corridor_admits(poi.lat, poi.lng):
+            # Step 2.3: fixed-end corridor gate — drop anchors whose A→poi→B
+            # detour overruns the walk budget. Skipped when end is None.
             continue
         candidates.append(poi)
 
