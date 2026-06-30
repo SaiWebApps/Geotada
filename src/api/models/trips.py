@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel, Field, field_validator
 
 from src.tour.contract import RouteOption
@@ -156,6 +158,11 @@ class TripPreviewStop(BaseModel):
     lng: float
     narration: str
     minutes: int
+    # Phase 3 spotlight model (spec s7). Additive with behavior-preserving
+    # defaults: a full dwell stop with a zero score until Step 3.5 wires the
+    # spotlight effect into selection.
+    band: Literal["dwell", "vignette"] = "dwell"
+    spotlight: float = 0.0
 
 
 class TripPreviewResponse(BaseModel):
@@ -165,3 +172,6 @@ class TripPreviewResponse(BaseModel):
     spine_area: str | None = None
     total_audio_min: int
     stops: list[TripPreviewStop]
+    # Phase 3 spotlight model (spec s7): per-corridor lens density surfaced to
+    # the user. None until REACH measures and fills it (later in Phase 3).
+    lens_coverage_note: str | None = None

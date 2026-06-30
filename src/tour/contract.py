@@ -312,6 +312,11 @@ class RouteOptionStop(BaseModel):
     lens: str | None = None  # dominant lens of the stop's beats; None if unlensed
     visit_or_walk_past: Literal["visit", "walk_past"] = "visit"
     minutes: int = Field(default=0, ge=0)
+    # Phase 3 spotlight model (spec s7). Additive with behavior-preserving
+    # defaults: until Step 3.5 wires the spotlight effect into selection, every
+    # stop is a full dwell with a zero score, so nothing downstream changes.
+    band: Literal["dwell", "vignette"] = "dwell"  # spotlight output band (spec s3)
+    spotlight: float = Field(default=0.0, ge=0)  # the computed spotlight score
 
 
 class RouteOption(BaseModel):
@@ -338,6 +343,10 @@ class RouteOption(BaseModel):
     degraded: bool = False
     profiles: tuple[str, ...] = ()
     offline_package: dict | None = None
+    # Phase 3 spotlight model (spec s7): per-corridor lens density surfaced to
+    # the user. None until REACH measures and fills it (later in Phase 3), so
+    # the default preserves today's behavior.
+    lens_coverage_note: str | None = None
 
 
 class ValidationReport(BaseModel):

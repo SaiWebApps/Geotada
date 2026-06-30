@@ -8,7 +8,13 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from src.api.models.trips import GeneratedStop, TripGenerateRequest, TripGenerateResponse
+from src.api.models.trips import (
+    GeneratedStop,
+    TripGenerateRequest,
+    TripGenerateResponse,
+    TripPreviewResponse,
+    TripPreviewStop,
+)
 
 
 class TestTripGenerateRequest:
@@ -359,3 +365,59 @@ class TestTripGenerateResponse:
             lens_coverage={"dark_history": 4, "architecture": 2},
         )
         assert resp.lens_coverage == {"dark_history": 4, "architecture": 2}
+
+
+class TestTripPreviewSpotlightFields:
+    """Step 3.3 (spec s7): the /trips/preview serializer types gain the spotlight
+    fields additively — band/spotlight per stop, lens_coverage_note on the
+    response — with behavior-preserving defaults."""
+
+    def _base_stop_kwargs(self) -> dict:
+        return dict(
+            sort_order=1,
+            poi_name="Notre-Dame",
+            lat=48.853,
+            lng=2.349,
+            narration="The flying buttresses...",
+            minutes=5,
+        )
+
+    def test_preview_stop_band_spotlight_default(self):
+        """Omitting the new fields yields a full dwell at score 0.0, so existing
+        callers that do not set them keep today's behavior."""
+        stop = TripPreviewStop(**self._base_stop_kwargs())
+        assert stop.band == "dwell"
+        assert stop.spotlight == 0.0
+
+    def test_preview_stop_band_spotlight_explicit(self):
+        """The fields actually carry non-default values when set."""
+        stop = TripPreviewStop(**self._base_stop_kwargs(), band="vignette", spotlight=0.37)
+        assert stop.band == "vignette"
+        assert stop.spotlight == 0.37
+
+    def test_preview_stop_band_rejects_unknown_value(self):
+        """band is a Literal — an out-of-vocabulary band is rejected, not coerced."""
+        with pytest.raises(ValidationError):
+            TripPreviewStop(**self._base_stop_kwargs(), band="headline")
+
+    def test_preview_response_lens_coverage_note_defaults_none(self):
+        """Omitting lens_coverage_note defaults None (REACH fills it later in
+        Phase 3); the default keeps the preview response shape unchanged."""
+        resp = TripPreviewResponse(total_audio_min=12, stops=[])
+        assert resp.lens_coverage_note is None
+
+    def test_preview_response_round_trips_with_spotlight_fields(self):
+        """A full preview response with the new fields set survives a model_dump
+        -> model_validate round-trip, proving the serializer carries them."""
+        stop = TripPreviewStop(**self._base_stop_kwargs(), band="vignette", spotlight=0.5)
+        resp = TripPreviewResponse(
+            spine_area="Ile de la Cite",
+            total_audio_min=12,
+            stops=[stop],
+            lens_coverage_note="only 2 places on this route speak to film and TV",
+        )
+        rebuilt = TripPreviewResponse.model_validate(resp.model_dump())
+        assert rebuilt == resp
+        assert rebuilt.stops[0].band == "vignette"
+        assert rebuilt.stops[0].spotlight == 0.5
+        assert rebuilt.lens_coverage_note == "only 2 places on this route speak to film and TV"

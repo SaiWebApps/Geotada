@@ -19,6 +19,7 @@ from src.tour.contract import (
     BeatSequence,
     Route,
     RouteOption,
+    RouteOptionStop,
     Script,
     ScriptPOI,
     TourInput,
@@ -251,3 +252,48 @@ def test_route_option_contract_round_trips():
     route, script, beats_by_id = _hand_built_route_and_script()
     opt = build_route_option(route, script, beats_by_id, route_id="rt")
     assert RouteOption.model_validate(opt.model_dump()) == opt
+
+
+def test_route_option_stop_spotlight_fields_default_behavior_preserving():
+    """Step 3.3 (spec s7): RouteOptionStop gains band + spotlight with additive
+    defaults — every stop is a full dwell at score 0.0 until Step 3.5 wires the
+    spotlight effect. build_route_option does not set them yet, so it must emit
+    the defaults."""
+    route, script, beats_by_id = _hand_built_route_and_script()
+    opt = build_route_option(route, script, beats_by_id, route_id="rt")
+    assert opt.stops, "fixture must produce at least one stop"
+    for stop in opt.stops:
+        assert stop.band == "dwell"
+        assert stop.spotlight == 0.0
+
+
+def test_route_option_lens_coverage_note_defaults_none():
+    """Step 3.3 (spec s7): RouteOption gains lens_coverage_note, defaulting None
+    until REACH measures per-corridor lens density later in Phase 3."""
+    route, script, beats_by_id = _hand_built_route_and_script()
+    opt = build_route_option(route, script, beats_by_id, route_id="rt")
+    assert opt.lens_coverage_note is None
+
+
+def test_route_option_round_trips_with_explicit_spotlight_fields():
+    """The new fields survive a full model_dump -> model_validate round-trip when
+    set to non-default values, so the contract actually carries them."""
+    stop = RouteOptionStop(
+        poi_id="p1",
+        name="Anchor",
+        lat=48.85,
+        lng=2.35,
+        band="vignette",
+        spotlight=0.42,
+    )
+    opt = RouteOption(
+        route_id="rt",
+        stops=(stop,),
+        eta_seconds=600,
+        lens_coverage_note="only 2 places on this route speak to film and TV",
+    )
+    rebuilt = RouteOption.model_validate(opt.model_dump())
+    assert rebuilt == opt
+    assert rebuilt.stops[0].band == "vignette"
+    assert rebuilt.stops[0].spotlight == 0.42
+    assert rebuilt.lens_coverage_note == "only 2 places on this route speak to film and TV"

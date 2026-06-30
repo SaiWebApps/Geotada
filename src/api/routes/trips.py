@@ -314,6 +314,10 @@ def preview_trip(
             lng=sp.lng,
             narration=per_stop.get(i, ""),
             minutes=round(sp.dwell_seconds / 60),
+            # Phase 3 spotlight model (spec s7). Default band/spotlight until
+            # Step 3.5 wires the spotlight effect into selection.
+            band="dwell",
+            spotlight=0.0,
         )
         for i, sp in enumerate(script.selected_pois)
     ]
@@ -321,6 +325,8 @@ def preview_trip(
         spine_area=route.spine_area,
         total_audio_min=round(script.total_audio_seconds / 60),
         stops=stops,
+        # Per-corridor lens coverage note ships later in Phase 3 (REACH).
+        lens_coverage_note=None,
     )
 
 
