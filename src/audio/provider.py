@@ -12,12 +12,13 @@ from __future__ import annotations
 
 import os
 import re
-import time
 import wave
 from io import BytesIO
 from typing import Protocol, runtime_checkable
 
 import httpx
+
+from src.audio._http import TRANSIENT_NETWORK_EXC, post_with_retry
 
 
 class TTSError(Exception):
@@ -51,31 +52,28 @@ def _post_with_retry(
     json: dict[str, object],
     timeout: float = 60.0,
 ) -> httpx.Response:
-    """POST with bounded exponential-backoff retry on TRANSIENT network errors.
+    """POST a TTS request with bounded retry on transient failures.
 
-    Retries only ``httpx.TimeoutException`` / ``httpx.ConnectError`` (transient:
-    server overload, packet loss, reset) up to ``_MAX_TTS_RETRIES`` attempts
-    (0.5s, 1s backoff). The HTTP response is returned unexamined — the caller
-    interprets status codes (auth/validation/rate-limit are NOT retried here).
-    Raises ``TTSError`` only after every attempt times out. This closes a real
-    production gap: a single transient blip would otherwise fail a user's audio.
+    Delegates to the shared :func:`post_with_retry`, which retries transient
+    network errors AND transient Cloudflare/gateway statuses (incl. the 404
+    "Invalid URL" edge artifact) up to ``_MAX_TTS_RETRIES`` attempts. The HTTP
+    response is returned unexamined — the caller interprets status codes
+    (auth/validation are NOT retried). Raises ``TTSError`` only after every
+    attempt raised a network transient: a single blip can't fail a user's audio.
     """
-    backoff = _TTS_INITIAL_BACKOFF_SEC
-    last_exc: Exception | None = None
-    for attempt in range(_MAX_TTS_RETRIES):
-        try:
-            with httpx.Client(
-                transport=httpx.HTTPTransport(proxy=None), timeout=timeout
-            ) as client:
-                return client.post(url, headers=headers, json=json)
-        except (httpx.TimeoutException, httpx.ConnectError) as exc:
-            last_exc = exc
-            if attempt < _MAX_TTS_RETRIES - 1:
-                time.sleep(backoff)
-                backoff *= 2
-    raise TTSError(
-        f"TTS request failed after {_MAX_TTS_RETRIES} attempts: {last_exc}"
-    ) from last_exc
+    try:
+        return post_with_retry(
+            url,
+            headers=headers,
+            json=json,
+            timeout=timeout,
+            max_attempts=_MAX_TTS_RETRIES,
+            initial_backoff=_TTS_INITIAL_BACKOFF_SEC,
+        )
+    except TRANSIENT_NETWORK_EXC as exc:
+        raise TTSError(
+            f"TTS request failed after {_MAX_TTS_RETRIES} attempts: {exc}"
+        ) from exc
 
 
 # ── Long-text chunking (real TTS APIs cap input length) ──

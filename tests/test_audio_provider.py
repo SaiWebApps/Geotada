@@ -129,7 +129,7 @@ class TestTTSRetry:
 
     def test_openai_retries_then_succeeds(self, monkeypatch):
         monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
-        monkeypatch.setattr("src.audio.provider.time.sleep", lambda *_: None)
+        monkeypatch.setattr("src.audio._http.time.sleep", lambda *_: None)
         calls = {"n": 0}
 
         def fake_post(self, *args, **kwargs):
@@ -145,7 +145,7 @@ class TestTTSRetry:
 
     def test_openai_raises_ttserror_after_exhausting_retries(self, monkeypatch):
         monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
-        monkeypatch.setattr("src.audio.provider.time.sleep", lambda *_: None)
+        monkeypatch.setattr("src.audio._http.time.sleep", lambda *_: None)
 
         def always_timeout(self, *args, **kwargs):
             raise httpx.TimeoutException("transient")
@@ -157,7 +157,7 @@ class TestTTSRetry:
     def test_elevenlabs_retries_then_succeeds(self, monkeypatch):
         monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
         monkeypatch.setenv("ELEVENLABS_VOICE_ID", "v")
-        monkeypatch.setattr("src.audio.provider.time.sleep", lambda *_: None)
+        monkeypatch.setattr("src.audio._http.time.sleep", lambda *_: None)
         calls = {"n": 0}
 
         def fake_post(self, *args, **kwargs):

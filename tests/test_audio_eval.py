@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from unittest.mock import patch
 
+import httpx
 import pytest
 
 from src.audio.eval import (
@@ -97,11 +98,57 @@ class TestSetSimilarity:
         assert _set_similarity([], ["a"]) == 0.0
 
 
+class _FakeResp:
+    """Minimal httpx.Response stand-in for transcribe's status/json/text use."""
+
+    def __init__(self, status_code: int, payload: dict):
+        self.status_code = status_code
+        self._payload = payload
+
+    def json(self):
+        return self._payload
+
+    @property
+    def text(self):
+        return str(self._payload)
+
+
 class TestTranscribe:
     def test_missing_api_key_raises(self, monkeypatch):
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
         with pytest.raises(EvalError, match="OPENAI_API_KEY not set"):
             transcribe(b"fake audio")
+
+    def test_transient_cloudflare_404_is_retried_then_succeeds(self, monkeypatch):
+        # Reproduces the observed flake: a Cloudflare 404 "Invalid URL" on the
+        # first Whisper attempt, healthy on the second — transcribe must retry,
+        # not fail the live audio bar.
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        monkeypatch.setattr("src.audio._http.time.sleep", lambda *_: None)
+        calls = {"n": 0}
+
+        def fake_post(self, *args, **kwargs):
+            calls["n"] += 1
+            if calls["n"] == 1:
+                return _FakeResp(404, {"detail": {"message": "Invalid URL"}, "error": {}})
+            return _FakeResp(200, {"text": "hello world"})
+
+        monkeypatch.setattr(httpx.Client, "post", fake_post)
+        out = transcribe(b"audio-bytes", filename="x.mp3")
+        assert out == "hello world"
+        assert calls["n"] == 2
+
+    def test_persistent_404_raises_evalerror(self, monkeypatch):
+        # A genuinely persistent 404 still surfaces as an EvalError after retries.
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        monkeypatch.setattr("src.audio._http.time.sleep", lambda *_: None)
+
+        def always_404(self, *args, **kwargs):
+            return _FakeResp(404, {"detail": "nope"})
+
+        monkeypatch.setattr(httpx.Client, "post", always_404)
+        with pytest.raises(EvalError, match="Whisper API failed"):
+            transcribe(b"audio-bytes")
 
 
 class TestEvaluate:
