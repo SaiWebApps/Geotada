@@ -74,6 +74,38 @@ LENS_ADJACENCY_DIRECT: float = 1.0
 LENS_ADJACENCY_ONE_HOP: float = 0.6
 LENS_ADJACENCY_MISS: float = 0.0
 
+# §3 spotlight model (ALGORITHM-SPEC.md, Phase 3). Lens is genre/tone, not a
+# gate: every corridor POI is eligible and a continuous spotlight score
+# allocates dwell. spotlight = gravity(tier) x lens_relevance x proximity.
+#
+# Crucially distinct from the legacy _lens_adjacency above, whose MISS=0.0
+# makes lens a HARD FILTER (the current select_route gate). lens_relevance
+# below shares the SAME direct/1-hop/miss CLASSIFICATION but maps a miss to a
+# POSITIVE FLOOR (LENS_FLOOR) — a miss DIMS, it never zeroes. This is purely
+# additive (Step 3.1): select_route's selection is untouched until Step 3.5.
+#
+# LENS_FLOOR (=0.25): lens_relevance on a thematic miss. A landmark on the
+# user's path still clears the floor on gravity → at least a brief mention;
+# "the only silence is low-gravity AND off-genre" (§3).
+LENS_FLOOR: float = 0.25
+LENS_RELEVANCE_DIRECT: float = 1.0  # direct lens hit
+LENS_RELEVANCE_ONE_HOP: float = 0.6  # parent/child 1-hop via lens_neighbors
+LENS_RELEVANCE_NO_LENS: float = 1.0  # no lenses requested → uniform
+
+# proximity(poi, route) — the on-path bonus. 1.0 when the POI sits on the A-B
+# line (zero marginal detour) and decays as the routed detour off that line
+# grows. Exponential decay exp(-detour_seconds / PROXIMITY_DECAY_SECONDS):
+#   - 1.0 at detour 0 (perfectly on-path),
+#   - strictly monotonically decreasing in detour,
+#   - ALWAYS > 0 (never zeroes) — so proximity alone can never silence a POI,
+#     preserving the §3 invariant that the ONLY silence is low-gravity AND
+#     off-genre (and keeping the multiplicative objective's factors ≥ 0, §9.5).
+# PROXIMITY_DECAY_SECONDS is the e-folding constant: at this many seconds of
+# marginal detour the proximity factor falls to 1/e (~0.368). 600s (10 min)
+# means a POI a 10-min detour off the direct line keeps ~37% of its on-path
+# weight — a gentle dimming, not a cliff.
+PROXIMITY_DECAY_SECONDS: float = 600.0
+
 # §2.2 k-flavours (M6): diversity re-runs multiply already-used POIs' scores
 # by DIVERSITY_PENALTY; a candidate flavour whose stop set shares
 # >= JACCARD_OVERLAP_MAX (Jaccard) with any kept flavour is rejected.
@@ -1655,8 +1687,30 @@ def _lens_adjacency(poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot
     child); 0.0 otherwise. No requested lenses → uniform 1.0 so selection
     degrades gracefully to importance x richness x alignment x role.
     """
-    if not interest:
+    relation = _lens_relation(poi, interest, snapshot)
+    if relation == "no_lens" or relation == "direct":
         return LENS_ADJACENCY_DIRECT
+    if relation == "one_hop":
+        return LENS_ADJACENCY_ONE_HOP
+    return LENS_ADJACENCY_MISS
+
+
+def _lens_relation(
+    poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot
+) -> str:
+    """Classify a POI's relation to the requested lenses (shared §3 logic).
+
+    Returns one of ``"no_lens"`` (no lenses requested), ``"direct"`` (a beat
+    lens directly matches a requested lens), ``"one_hop"`` (a beat lens is one
+    IS_PARENT_OF hop — parent OR child — from a requested lens), or
+    ``"miss"`` (neither). This is the single source of truth for the
+    direct/1-hop/miss decision: both the legacy ``_lens_adjacency`` (hard
+    filter, miss → 0.0) and the new ``lens_relevance`` (spotlight floor,
+    miss → LENS_FLOOR) map these labels onto their own weights, so the two
+    can never drift apart on classification.
+    """
+    if not interest:
+        return "no_lens"
     interest_low = {s.lower() for s in interest}
     neighbors: set[str] = set()
     for lens in interest_low:
@@ -1666,10 +1720,95 @@ def _lens_adjacency(poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot
         for lens in beat.lenses:
             lens_low = lens.lower()
             if lens_low in interest_low:
-                return LENS_ADJACENCY_DIRECT
+                return "direct"
             if lens_low in neighbors:
                 one_hop = True
-    return LENS_ADJACENCY_ONE_HOP if one_hop else LENS_ADJACENCY_MISS
+    return "one_hop" if one_hop else "miss"
+
+
+# ---------------------------------------------------------------------------
+# §3 spotlight model (Phase 3) — pure scoring, ADDITIVE (no selection change)
+# ---------------------------------------------------------------------------
+
+
+def gravity(tier: int) -> float:
+    """Gravity ∝ importance_tier (1..5) — the §3 'how much it pulls' factor.
+
+    Monotonic (strictly increasing) in tier, reusing the SAME linear tier
+    weighting ``poi_score`` already applies (``importance = float(poi.tier)``)
+    so the spotlight stays consistent with the existing objective. A tier-5
+    landmark pulls 5x a tier-1 footnote. Always > 0 for valid tiers (1..5).
+    """
+    return float(tier)
+
+
+def lens_relevance(
+    poi: POI, *, lenses: frozenset[str] | None, snapshot: CorpusSnapshot
+) -> float:
+    """§3 lens_relevance — a POSITIVE-FLOORED genre factor (never a gate).
+
+    - 1.0 on a direct lens hit,
+    - 0.6 on a parent/child 1-hop via ``snapshot.lens_neighbors``,
+    - LENS_FLOOR (0.25) on a miss — a miss DIMS, it never zeroes,
+    - 1.0 (uniform) when ``lenses`` is None/empty.
+
+    Shares its direct/1-hop/miss classification with ``_lens_adjacency`` via
+    ``_lens_relation`` — the ONLY difference is the miss maps to LENS_FLOOR
+    here instead of 0.0. Because the floor is strictly positive, lens alone
+    can never silence a POI; only the combined spotlight (low gravity AND a
+    miss) can drop one below an output band (§3).
+    """
+    interest = lenses or frozenset()
+    relation = _lens_relation(poi, interest, snapshot)
+    if relation == "no_lens":
+        return LENS_RELEVANCE_NO_LENS
+    if relation == "direct":
+        return LENS_RELEVANCE_DIRECT
+    if relation == "one_hop":
+        return LENS_RELEVANCE_ONE_HOP
+    return LENS_FLOOR
+
+
+def proximity(marginal_detour_seconds: float = 0.0) -> float:
+    """§3 proximity — the on-path bonus, decaying with marginal detour.
+
+    1.0 when the POI is exactly on the A-B line (``marginal_detour_seconds``
+    == 0) and exponentially decaying as the routed detour off that line grows:
+    ``exp(-marginal_detour_seconds / PROXIMITY_DECAY_SECONDS)``. The decay is
+    strictly monotonically decreasing in detour and ALWAYS > 0, so proximity
+    alone never zeroes a POI (preserving the §3 silence invariant). Negative
+    detours (a POI that shortens the route — rare, from integer routing
+    rounding) are clamped to 0 so proximity caps at 1.0.
+    """
+    detour = max(0.0, marginal_detour_seconds)
+    return math.exp(-detour / PROXIMITY_DECAY_SECONDS)
+
+
+def spotlight(
+    poi: POI,
+    *,
+    lenses: frozenset[str] | None,
+    snapshot: CorpusSnapshot,
+    marginal_detour_seconds: float = 0.0,
+) -> float:
+    """§3 continuous spotlight score = gravity x lens_relevance x proximity.
+
+    PURE and ADDITIVE — this Step 3.1 function does NOT touch select_route's
+    selection (the tier/lens gates stay until Step 3.5). It scores how much of
+    the user's time and audio a POI earns; downstream steps map the score onto
+    output bands (headline / full / short / vignette / silent).
+
+    All three factors are ≥ 0 (the §9.5 multiplicative-objective invariant),
+    and gravity is > 0 for any valid tier while lens_relevance is ≥ LENS_FLOOR
+    > 0 and proximity is > 0 — so the spotlight of any real POI is strictly
+    positive. A lens miss merely DIMS it (xLENS_FLOOR); the silence band is a
+    downstream threshold decision, not a zero here.
+    """
+    return (
+        gravity(poi.tier)
+        * lens_relevance(poi, lenses=lenses, snapshot=snapshot)
+        * proximity(marginal_detour_seconds)
+    )
 
 
 def _area_alignment(poi: POI, spine_area: str | None, snapshot: CorpusSnapshot) -> float:
@@ -1711,12 +1850,18 @@ def _attach_tourability_if_yellow(route: Route, assessment: TourabilityAssessmen
 __all__ = [
     "CLOSER_B_WEDGE_HALF_ANGLE_DEG",
     "HAVERSINE_CORRECTION",
+    "LENS_FLOOR",
     "PACE_KMH",
+    "PROXIMITY_DECAY_SECONDS",
     "CorpusSnapshot",
     "bearing",
+    "gravity",
     "in_wedge",
+    "lens_relevance",
     "load_paris_corpus",
     "pick_spine_area",
     "poi_score",
+    "proximity",
     "select_route",
+    "spotlight",
 ]
