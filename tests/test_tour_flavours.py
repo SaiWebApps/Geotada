@@ -226,12 +226,22 @@ def _hand_built_route_and_script():
         "b2": BeatRef(id="b2", poi_id="p1", lenses=("hidden_history",)),
         "b3": BeatRef(id="b3", poi_id="p2", lenses=()),
     }
-    return route, script, beats_by_id
+    # Step 3.4: build_route_option now scores spotlight/band, so it needs the
+    # snapshot (POI tiers for gravity, beat lenses for lens_relevance). Mirror
+    # the route's POIs and their beats exactly.
+    snapshot = _snap(
+        list(pois),
+        beats_by_poi={pid: [b for b in beats_by_id.values() if b.poi_id == pid]
+                      for pid in ("p1", "p2")},
+    )
+    return route, script, beats_by_id, snapshot
 
 
 def test_build_route_option_maps_engine_outputs():
-    route, script, beats_by_id = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="trip-1-opt1")
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    opt = build_route_option(
+        route, script, beats_by_id, route_id="trip-1-opt1", snapshot=snapshot
+    )
 
     assert opt.route_id == "trip-1-opt1"
     assert [s.poi_id for s in opt.stops] == ["p1", "p2"]
@@ -249,30 +259,81 @@ def test_build_route_option_maps_engine_outputs():
 
 
 def test_route_option_contract_round_trips():
-    route, script, beats_by_id = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt")
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
     assert RouteOption.model_validate(opt.model_dump()) == opt
 
 
-def test_route_option_stop_spotlight_fields_default_behavior_preserving():
-    """Step 3.3 (spec s7): RouteOptionStop gains band + spotlight with additive
-    defaults — every stop is a full dwell at score 0.0 until Step 3.5 wires the
-    spotlight effect. build_route_option does not set them yet, so it must emit
-    the defaults."""
-    route, script, beats_by_id = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt")
+def test_build_route_option_populates_spotlight_and_band_per_stop():
+    """Step 3.4 (spec s3.1/s7): every selected stop carries a strictly positive
+    spotlight score and a band. The fixture requests no lens, so lens_relevance
+    is uniform 1.0 and on-corridor proximity is 1.0, giving spotlight == gravity
+    == tier: p1 (tier 5) = 5.0 -> headline -> dwell; p2 (tier 3) = 3.0 -> full ->
+    dwell. The score must be computed, not the 0.0 default."""
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
     assert opt.stops, "fixture must produce at least one stop"
     for stop in opt.stops:
-        assert stop.band == "dwell"
-        assert stop.spotlight == 0.0
+        assert stop.spotlight > 0.0
+        assert stop.band in ("dwell", "vignette")
+    by_id = {s.poi_id: s for s in opt.stops}
+    # No lens requested -> spotlight collapses to gravity (tier).
+    assert by_id["p1"].spotlight == pytest.approx(5.0)
+    assert by_id["p2"].spotlight == pytest.approx(3.0)
+    # tier-5 (5.0 >= 4.0 headline) and tier-3 (3.0 >= 2.0 full) are both dwell.
+    assert by_id["p1"].band == "dwell"
+    assert by_id["p2"].band == "dwell"
 
 
-def test_route_option_lens_coverage_note_defaults_none():
-    """Step 3.3 (spec s7): RouteOption gains lens_coverage_note, defaulting None
-    until REACH measures per-corridor lens density later in Phase 3."""
-    route, script, beats_by_id = _hand_built_route_and_script()
-    opt = build_route_option(route, script, beats_by_id, route_id="rt")
+def test_build_route_option_lens_dims_off_genre_stop_to_vignette():
+    """Step 3.4: a requested lens DIMS an off-genre stop via lens_relevance.
+    A tier-3 stop whose beats miss the lens scores 3 x LENS_FLOOR (0.25) = 0.75,
+    below the short/full cuts -> vignette band; the on-genre tier-5 anchor stays
+    a headline dwell. Proves the spotlight (not a fixed default) drives the band."""
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    # Request a lens that only p1's beats carry; p2's beat is unlensed (a miss).
+    lensed_script = script.model_copy(
+        update={
+            "inputs": TourInput(
+                start=(48.85, 2.35), duration_min=60, city_slug="paris",
+                lenses=["hidden_history"],
+            )
+        }
+    )
+    opt = build_route_option(
+        route, lensed_script, beats_by_id, route_id="rt", snapshot=snapshot
+    )
+    by_id = {s.poi_id: s for s in opt.stops}
+    assert by_id["p1"].spotlight == pytest.approx(5.0)  # tier 5 x direct hit 1.0
+    assert by_id["p1"].band == "dwell"
+    assert by_id["p2"].spotlight == pytest.approx(0.75)  # tier 3 x LENS_FLOOR 0.25
+    assert by_id["p2"].band == "vignette"
+
+
+def test_route_option_lens_coverage_note_none_without_lens():
+    """Step 3.4 (s3.1): no lens requested -> nothing to surface -> note is None."""
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
     assert opt.lens_coverage_note is None
+
+
+def test_route_option_lens_coverage_note_reflects_corridor_density():
+    """Step 3.4 (s3.1): with a lens requested, the note reports how many route
+    POIs speak to it. p1's beats hit hidden_history; p2's beat is unlensed (a
+    miss). So 1 of 2 places speak to the lens."""
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    lensed_script = script.model_copy(
+        update={
+            "inputs": TourInput(
+                start=(48.85, 2.35), duration_min=60, city_slug="paris",
+                lenses=["hidden_history"],
+            )
+        }
+    )
+    opt = build_route_option(
+        route, lensed_script, beats_by_id, route_id="rt", snapshot=snapshot
+    )
+    assert opt.lens_coverage_note == "1 of 2 places on this route speak to the chosen lens(es)."
 
 
 def test_route_option_round_trips_with_explicit_spotlight_fields():

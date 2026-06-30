@@ -3,11 +3,29 @@
 Pure functions over engine outputs (Route + Script + the snapshot's beat
 refs). The API layer wraps these into responses; M7 fills stop_audio and
 the grounded why_this_works.
+
+Phase 3 Step 3.4: populate the spotlight model on the output. Each stop
+carries its computed ``spotlight`` score (s3.1) and its collapsed output
+``band`` ("dwell" vs "vignette"); the option carries a per-corridor
+``lens_coverage_note`` (s3.1) when lenses were requested. This is ANNOTATION
+ONLY -- which stops are selected and their ORDER are decided upstream in
+select_route by the existing gates, so the Step-2.0d identity baseline is
+untouched. Selected (on-corridor) stops score at proximity 1.0 (detour 0),
+so spotlight == gravity x lens_relevance, always strictly positive.
 """
 
 from __future__ import annotations
 
-from .contract import BeatRef, Route, RouteOption, RouteOptionStop, Script
+from .contract import POI, BeatRef, Route, RouteOption, RouteOptionStop, Script
+from .selection import (
+    LENS_FLOOR,
+    CorpusSnapshot,
+    band_for_spotlight,
+    gravity,
+    is_dwell_band,
+    lens_relevance,
+    spotlight,
+)
 
 
 def dominant_lens(beat_ids: tuple[str, ...], beats_by_id: dict[str, BeatRef]) -> str | None:
@@ -35,25 +53,34 @@ def build_route_option(
     beats_by_id: dict[str, BeatRef],
     *,
     route_id: str,
+    snapshot: CorpusSnapshot,
 ) -> RouteOption:
     """Assemble one flavour's RouteOption from its Route + Script.
 
     eta_seconds is the honest routed estimate: per-leg routed time when the
     leg was routed (leg_seconds), the pace-corrected haversine otherwise,
     plus every stop's dwell.
+
+    Step 3.4 (s3.1/s7): each stop is annotated with its ``spotlight`` score and
+    collapsed output ``band``, and the option carries a per-corridor
+    ``lens_coverage_note``. ANNOTATION ONLY -- the stop set and order come from
+    select_route's gates upstream; this only describes them. ``snapshot``
+    supplies each POI's tier (gravity) and beat lenses (lens_relevance);
+    ``script.inputs.lenses`` is the requested genre. Selected stops are
+    on-corridor, so proximity is the on-path default (detour 0 -> 1.0) and
+    spotlight == gravity x lens_relevance, which is strictly positive.
     """
     roles = {p.id: p.poi_role for p in route.pois}
+    pois_by_id: dict[str, POI] = {p.id: p for p in route.pois}
+    lenses_fs = frozenset(script.inputs.lenses or ())
     stops = tuple(
-        RouteOptionStop(
-            poi_id=sp.id,
-            name=sp.name,
-            lat=sp.lat,
-            lng=sp.lng,
-            lens=dominant_lens(sp.beat_ids, beats_by_id),
-            visit_or_walk_past=(
-                "walk_past" if roles.get(sp.id, "stop") == "walk_by_only" else "visit"
-            ),
-            minutes=round(sp.dwell_seconds / 60),
+        _build_stop(
+            sp,
+            poi=pois_by_id.get(sp.id),
+            role=roles.get(sp.id, "stop"),
+            beats_by_id=beats_by_id,
+            lenses=lenses_fs,
+            snapshot=snapshot,
         )
         for sp in script.selected_pois
     )
@@ -70,4 +97,70 @@ def build_route_option(
         flow_score=route.flow_score,
         backtrack_ratio=route.backtrack_ratio,
         degraded=route.reach.degraded if route.reach is not None else False,
+        lens_coverage_note=_lens_coverage_note(route.pois, lenses=lenses_fs, snapshot=snapshot),
     )
+
+
+def _build_stop(
+    sp,
+    *,
+    poi: POI | None,
+    role: str,
+    beats_by_id: dict[str, BeatRef],
+    lenses: frozenset[str],
+    snapshot: CorpusSnapshot,
+) -> RouteOptionStop:
+    """One RouteOptionStop with its Step 3.4 spotlight + band annotation.
+
+    Falls back to gravity-only scoring (no lens dimming) when the POI is not in
+    ``route.pois`` -- e.g. a synthesized fixed-end B sentinel that carries no
+    beats. The sentinel still gets a positive spotlight from its tier so the
+    "every selected stop has a band" invariant holds.
+    """
+    if poi is not None:
+        score = spotlight(poi, lenses=lenses, snapshot=snapshot)
+        tier = poi.tier
+    else:
+        # No corpus POI behind this stop (sentinel). Score on tier alone with a
+        # uniform lens factor -- no beats means no lens dimming to apply.
+        tier = sp.tier
+        score = gravity(tier)
+    band = "dwell" if is_dwell_band(band_for_spotlight(score, tier=tier)) else "vignette"
+    return RouteOptionStop(
+        poi_id=sp.id,
+        name=sp.name,
+        lat=sp.lat,
+        lng=sp.lng,
+        lens=dominant_lens(sp.beat_ids, beats_by_id),
+        visit_or_walk_past=("walk_past" if role == "walk_by_only" else "visit"),
+        minutes=round(sp.dwell_seconds / 60),
+        band=band,
+        spotlight=score,
+    )
+
+
+def _lens_coverage_note(
+    pois: tuple[POI, ...],
+    *,
+    lenses: frozenset[str],
+    snapshot: CorpusSnapshot,
+) -> str | None:
+    """Per-corridor lens density (s3.1): how many route POIs speak to the lens.
+
+    Returns None when no lens was requested (nothing to surface). Otherwise
+    counts the route POIs whose beats hit the requested lenses -- a hit is any
+    ``lens_relevance`` above the floor (a direct or one-hop match; a miss sits
+    at LENS_FLOOR). The note states "N of M places on this route speak to the
+    chosen lens(es)" so the user can judge whether to broaden the genre before
+    composing (s3.1: REACH measures and surfaces coverage, never silently ships
+    an off-tone tour).
+    """
+    if not lenses:
+        return None
+    total = len(pois)
+    if total == 0:
+        return "No places on this route speak to the chosen lens(es)."
+    hits = sum(
+        1 for p in pois if lens_relevance(p, lenses=lenses, snapshot=snapshot) > LENS_FLOOR
+    )
+    return f"{hits} of {total} places on this route speak to the chosen lens(es)."

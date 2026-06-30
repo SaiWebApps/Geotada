@@ -246,7 +246,11 @@ def generate_trip(
 
     options = [
         build_route_option(
-            flavour, fl_script, beats_by_id, route_id=f"{result['trip_id']}-opt{i + 1}"
+            flavour,
+            fl_script,
+            beats_by_id,
+            route_id=f"{result['trip_id']}-opt{i + 1}",
+            snapshot=snapshot,
         )
         for i, (flavour, fl_script) in enumerate(zip(flavours, scripts, strict=True))
     ]
