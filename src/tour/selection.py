@@ -230,6 +230,24 @@ ENDPOINT_PULL_CANDIDATE_TOP_K: int = 5
 ENDPOINT_PULL_RESERVED_BUDGET_FRACTION: float = 0.25
 
 
+# Step 2.4 (2026-06-30) — fixed-destination B-materialization (HYBRID).
+# When the request carries a fixed end B, ORDER must pin a concrete POI as
+# the last stop. If a selected (already in-corridor) POI sits within this
+# many metres of B, snap B onto it — the user's "end here" is satisfied by
+# walking to that real anchor. Otherwise synthesize a sentinel POI at B's
+# exact coordinate and add it to the selected set so Held-Karp can pin it.
+# Geometric haversine proximity (like DEMOTION_PROXIMITY_M) is the right
+# metric here: this is a "the destination *is* this place" judgment, not a
+# routed-detour budget question (the corridor gate already enforced that).
+B_SNAP_PROXIMITY_M: float = 150.0
+# poi_role / tier for a synthesized B sentinel. role 'stop' marks it a
+# plain ordered stop (not an anchor the greedy would have scored); a
+# neutral mid tier keeps it from skewing any tier-weighted pass that might
+# see it downstream — it carries no beats, so it contributes no audio.
+B_SENTINEL_POI_ROLE: str = "stop"
+B_SENTINEL_TIER: int = 3
+
+
 # ---------------------------------------------------------------------------
 # Snapshot
 # ---------------------------------------------------------------------------
@@ -613,6 +631,56 @@ def _closer_b_alternative(
 
 
 # ---------------------------------------------------------------------------
+# Step 2.4 — fixed-destination B-materialization (HYBRID)
+# ---------------------------------------------------------------------------
+
+
+def _materialize_fixed_end_b(
+    selected: list[POI],
+    *,
+    end_lat: float,
+    end_lng: float,
+) -> tuple[list[POI], POI]:
+    """Resolve a fixed end B to a concrete POI inside ``selected`` for ORDER.
+
+    HYBRID rule (locked):
+    - If a selected POI sits within ``B_SNAP_PROXIMITY_M`` of B, snap B onto
+      the nearest such POI (ties broken by ascending id for determinism) and
+      return it unchanged — ``selected`` is returned as-is.
+    - Otherwise synthesize a sentinel POI at B's *exact* coordinate
+      (``poi_role='stop'``, neutral tier, no beats) and return a new list
+      with the sentinel appended, so Held-Karp can pin it as ``fixed_end``.
+
+    All members of ``selected`` are already in-corridor on the fixed-end path
+    (the §2.3 corridor gate filtered the candidate pool), so the snap pool is
+    exactly ``selected``. The returned POI is guaranteed present in the
+    returned list — the precondition ``held_karp_open(fixed_end=...)`` enforces.
+    """
+    nearest: POI | None = None
+    nearest_dist = float("inf")
+    for poi in selected:
+        d = haversine_m(end_lat, end_lng, poi.lat, poi.lng)
+        # Strictly-closer keeps the first-seen on a tie; the explicit id
+        # tie-break below makes the choice independent of list order.
+        if d < nearest_dist or (d == nearest_dist and nearest is not None and poi.id < nearest.id):
+            nearest_dist = d
+            nearest = poi
+
+    if nearest is not None and nearest_dist <= B_SNAP_PROXIMITY_M:
+        return selected, nearest
+
+    sentinel = POI(
+        id=f"__end_b__{end_lat:.6f}_{end_lng:.6f}",
+        name="Destination",
+        tier=B_SENTINEL_TIER,
+        poi_role=B_SENTINEL_POI_ROLE,
+        lat=end_lat,
+        lng=end_lng,
+    )
+    return [*selected, sentinel], sentinel
+
+
+# ---------------------------------------------------------------------------
 # Selection (pure)
 # ---------------------------------------------------------------------------
 
@@ -938,8 +1006,19 @@ def select_route(
     # insertion order is a by-product of selection, not an optimum. A pulled
     # endpoint stays pinned last (if demotion didn't absorb it); round trips
     # optimize the closed tour.
+    #
+    # Step 2.4: when the request carries a fixed end B, materialize B (HYBRID:
+    # snap to the nearest in-corridor selected POI within ~150m, else
+    # synthesize a sentinel at B's exact coord and add it to ``selected``) and
+    # pin it as ``fixed_end`` so the route literally ends at B. This SUPERSEDES
+    # the endpoint-pull-derived fixed_end on the fixed-end path. The end-is-None
+    # branch is LITERALLY unchanged (Step-2.0d identity baseline holds).
     fixed_end = None
-    if pulled_endpoint_id is not None and not input.round_trip:
+    if input.end is not None and selected:
+        selected, fixed_end = _materialize_fixed_end_b(
+            selected, end_lat=input.end[0], end_lng=input.end[1]
+        )
+    elif pulled_endpoint_id is not None and not input.round_trip:
         fixed_end = next((p for p in selected if p.id == pulled_endpoint_id), None)
     selected = held_karp_open(
         selected,
