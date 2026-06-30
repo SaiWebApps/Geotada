@@ -1982,7 +1982,9 @@
             <div class="field-group"><label>Lenses (comma-separated, optional)</label>
               <input type="text" id="tourLenses" placeholder="historic_arch, dark_history" /></div>
           </div>
-          <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip</label></div>
+          <div class="field-group"><label>Destination B (lat,lng, optional)</label>
+            <input type="text" id="tourEnd" placeholder="48.8606,2.3376 — blank = open walk" /></div>
+          <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip (mutually exclusive with a destination)</label></div>
           <button class="btn btn-primary" id="tourGenerateBtn">Generate preview</button>
           <div id="tourStops" class="tour-stops"></div>
         </div>`;
@@ -2939,6 +2941,21 @@
     const duration = parseInt(document.getElementById('tourDuration').value, 10) || 60;
     const lenses = document.getElementById('tourLenses').value.split(',').map(s => s.trim()).filter(Boolean);
     const roundTrip = document.getElementById('tourRoundTrip').checked;
+    // Optional destination B (A→B directional walk). Both coords required.
+    const endEl = document.getElementById('tourEnd');
+    let endLat = null, endLng = null;
+    if (endEl && endEl.value.trim()) {
+      const eparts = endEl.value.split(',').map(s => parseFloat(s.trim()));
+      if (eparts.length !== 2 || eparts.some(isNaN)) {
+        showError('Enter the destination as "lat,lng" or leave it blank.');
+        return;
+      }
+      [endLat, endLng] = eparts;
+      if (roundTrip) {
+        showError('A destination and round-trip are mutually exclusive — clear one.');
+        return;
+      }
+    }
     genBtn.disabled = true; genBtn.textContent = '⏳ Generating…';
     stopsEl.innerHTML = ''; tourStops = [];
     try {
@@ -2947,12 +2964,18 @@
         body: JSON.stringify({
           center_lat: lat, center_lng: lng, duration_min: duration,
           lenses: lenses.length ? lenses : null, round_trip: roundTrip,
+          end_lat: endLat, end_lng: endLng,
         }),
       });
       if (!resp.ok) {
-        let msg = `Could not generate a tour (${resp.status}).`;
-        try { const b = await resp.json(); if (b && b.detail) msg = typeof b.detail === 'string' ? b.detail : JSON.stringify(b.detail); } catch (_) { /* keep default */ }
-        showError(msg);
+        let detail = null;
+        try { detail = (await resp.json()).detail; } catch (_) { /* keep null */ }
+        // Step 2.6 structured refusal: {reason, gap_minutes, alternatives:[...]}.
+        if (detail && typeof detail === 'object' && Array.isArray(detail.alternatives)) {
+          renderTourRefusal(detail);
+        } else {
+          showError(typeof detail === 'string' ? detail : `Could not generate a tour (${resp.status}).`);
+        }
         return;
       }
       renderTourStops(await resp.json());
@@ -2961,6 +2984,37 @@
     } finally {
       genBtn.disabled = false; genBtn.textContent = 'Generate preview';
     }
+  }
+
+  // Render a Step-2.6 structured feasibility refusal (A→B over budget / sparse origin)
+  // as readable, actionable alternatives — never a raw JSON dump.
+  function renderTourRefusal(detail) {
+    const stopsEl = document.getElementById('tourStops');
+    if (!stopsEl) return;
+    tourStops = [];
+    stopsEl.innerHTML = '';
+    const box = document.createElement('div');
+    box.className = 'tour-refusal db-beat-card';
+    box.innerHTML = `
+      <h4>⚠ Can't build this tour</h4>
+      <div class="script-preview">${escHtml(detail.reason || 'No tourable route from here.')}</div>
+      ${detail.gap_minutes != null ? `<div class="meta">Over budget by ~${detail.gap_minutes} min.</div>` : ''}`;
+    const alts = (detail.alternatives || []).map((a) => {
+      if (a.kind === 'loop') return `Loop from the start (drop the destination) — ${a.duration_min} min`;
+      if (a.kind === 'extend') return `Extend to ${a.duration_min} min to keep the destination`;
+      if (a.kind === 'closer_b') {
+        const co = (a.lat != null && a.lng != null) ? ` (${a.lat.toFixed(4)}, ${a.lng.toFixed(4)})` : '';
+        return `Aim for a closer destination${co}`;
+      }
+      return String(a.kind);
+    });
+    if (alts.length) {
+      const ul = document.createElement('ul');
+      ul.className = 'tour-alternatives';
+      alts.forEach((t) => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+      box.appendChild(ul);
+    }
+    stopsEl.appendChild(box);
   }
 
   function renderTourStops(data) {

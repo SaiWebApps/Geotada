@@ -1760,6 +1760,101 @@ class TestDetailViewAndEditing:
         assert page.locator(BEAT_CARD).count() > 0, "standard POI beat cards should re-render"
         _take_screenshot(page, "step6-tour-back-to-poi")
 
+    def test_tour_preview_ab_destination_sends_end_and_renders(self, browser_page):
+        """A→B (Phase 2): filling Destination sends end_lat/end_lng to /trips/preview and the
+        rendered route ends at the destination. /trips/preview mocked (the engine path is unit-
+        + API-tested; the test DB can't produce a real tour) — the form->request->render is REAL."""
+        page, _seed_data, _reporter = browser_page
+        captured = {}
+
+        def _handler(route):
+            captured["body"] = route.request.post_data
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "stops": [
+                            {"sort_order": 1, "poi_name": "Hotel de Ville", "minutes": 5,
+                             "narration": "Start the walk here."},
+                            {"sort_order": 2, "poi_name": "Destination", "minutes": 0,
+                             "narration": "End the walk here, or carry on."},
+                        ],
+                        "spine_area": "Île de la Cité",
+                        "total_audio_min": 5,
+                    }
+                ),
+            )
+
+        page.route("**/trips/preview", _handler)
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            page.locator("#tourEnd").fill("48.8606,2.3376")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+
+            # The request carried the destination (A→B), not just a center.
+            assert captured.get("body"), "no /trips/preview request body captured"
+            sent = json.loads(captured["body"])
+            assert sent.get("end_lat") == 48.8606, f"end_lat not sent: {sent}"
+            assert sent.get("end_lng") == 2.3376, f"end_lng not sent: {sent}"
+
+            stops = page.locator("#tourStops .tour-stop")
+            assert stops.count() == 2, f"expected 2 stops, got {stops.count()}"
+            assert "Destination" in (stops.last.text_content() or ""), "route must end at the Destination"
+            _take_screenshot(page, "ab-destination-route")
+        finally:
+            page.unroute("**/trips/preview")
+
+    def test_tour_preview_ab_infeasible_shows_alternatives(self, browser_page):
+        """A→B over budget: the Step-2.6 structured 422 renders readable loop/extend/closer_b
+        alternatives in the stops area — never a raw JSON dump."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=422,
+                content_type="application/json",
+                body=json.dumps(
+                    {"detail": {
+                        "reason": "Destination unreachable in 90 min: routed A→B leg exceeds walk budget by 2 min.",
+                        "gap_minutes": 2,
+                        "alternatives": [
+                            {"kind": "loop", "duration_min": 90, "drop_end": True,
+                             "poi_id": None, "lat": None, "lng": None},
+                            {"kind": "extend", "duration_min": 95, "drop_end": False,
+                             "poi_id": None, "lat": None, "lng": None},
+                            {"kind": "closer_b", "duration_min": 90, "drop_end": True,
+                             "poi_id": "p1", "lat": 48.8558, "lng": 2.3458},
+                        ],
+                    }}
+                ),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            page.locator("#tourEnd").fill("48.8606,2.3376")
+            with page.expect_response(lambda r: "/trips/preview" in r.url) as ri:
+                page.locator("#tourGenerateBtn").click()
+            assert ri.value.status == 422
+            page.wait_for_timeout(300)
+
+            refusal = page.locator("#tourStops .tour-refusal")
+            assert refusal.count() == 1, "the structured refusal should render in #tourStops"
+            txt = refusal.first.text_content() or ""
+            assert "unreachable" in txt.lower(), "the refusal reason should be shown"
+            assert "Extend to 95 min" in txt, "the extend alternative should be readable"
+            assert "closer destination" in txt.lower(), "the closer_b alternative should be shown"
+            assert "{" not in txt, "must not dump raw JSON to the user"
+            _take_screenshot(page, "ab-infeasible-alternatives")
+        finally:
+            page.unroute("**/trips/preview")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
