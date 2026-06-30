@@ -7,7 +7,7 @@ import math
 import pytest
 
 from src.tour.contract import POI, BeatRef, TourInput
-from src.tour.routing import envelope_radius_m, haversine_m
+from src.tour.routing import envelope_radius_m, haversine_m, pace_corrected_walk_seconds
 from src.tour.selection import (
     AREA_ALIGNMENT_ADJACENT,
     AREA_ALIGNMENT_OTHER,
@@ -1225,3 +1225,120 @@ def test_demotion_merged_via_select_route_end_to_end():
     )
     assert "place-des-vosges" in route.demoted_beats
     assert any(b.id == "hugo-1" for b in route.demoted_beats["place-des-vosges"])
+
+
+# ---------------------------------------------------------------------------
+# Step 2.0d — FROZEN end=None ordered-POI-id identity baseline.
+#
+# This is a byte-for-byte guard for Steps 2.3/2.4 (B-materialization /
+# endpoint handling). It pins the exact ordered POI ids select_route emits
+# for a FIXED synthetic snapshot on BOTH cost paths:
+#   (a) no routing client  → leg_fn=None, pace-corrected haversine divisor;
+#   (b) a deterministic fake RoutingClient → routed divisor that returns
+#       int(haversine_m(...)) and whose isochrone() returns None (forcing the
+#       haversine reach fallback). route()/close() are no-ops/total fallback.
+#
+# Any future change to the selection pipeline that perturbs the end=None
+# ordering for this snapshot must fail here, loudly, before it can reach the
+# Step 2.3/2.4 B-materialization work that depends on this invariance.
+# ---------------------------------------------------------------------------
+
+
+class _DeterministicRoutingClient:
+    """Hermetic fake: routed leg times equal int(pace-corrected haversine).
+
+    - leg_seconds / route use the same deterministic, container-free math the
+      selection greedy would see, so path (b) is fully reproducible offline.
+    - isochrone() returns None → _reach_predicate falls back to the analytic
+      haversine envelope (degraded=True), exactly like a Valhalla outage.
+    - route() returns a None polyline so TransitSegment.source stays honest.
+    - close() is a no-op.
+    """
+
+    def leg_seconds(self, from_lat: float, from_lng: float, to_lat: float, to_lng: float) -> int:
+        return int(pace_corrected_walk_seconds(haversine_m(from_lat, from_lng, to_lat, to_lng)))
+
+    def route(
+        self, from_lat: float, from_lng: float, to_lat: float, to_lng: float
+    ) -> tuple[int, float, None]:
+        d = haversine_m(from_lat, from_lng, to_lat, to_lng)
+        return (int(pace_corrected_walk_seconds(d)), d, None)
+
+    def isochrone(self, lat: float, lng: float, minutes: int) -> None:
+        return None
+
+    def close(self) -> None:
+        return None
+
+
+def _frozen_end_none_snapshot() -> CorpusSnapshot:
+    """A FIXED synthetic snapshot for the end=None ordering baseline.
+
+    Deterministic POIs at hardcoded coords inside the 60-min one-way
+    envelope around PDV: 4 density fillers (to clear the Phase 6 gate)
+    plus two distinct tier-5 anchors — a near one and a medium one.
+    """
+    near = _poi(
+        "baseline-near",
+        tier=5,
+        lat=48.8556,
+        lng=2.3658,
+        areas=("Le Marais",),
+        beat_count=8,
+    )
+    medium = _poi(
+        "baseline-medium",
+        tier=5,
+        lat=48.8580,
+        lng=2.3700,
+        areas=("Le Marais",),
+        beat_count=8,
+    )
+    return _snap(
+        [near, medium, *_density_fillers(PDV)],
+        area_types={"Le Marais": "neighborhood"},
+    )
+
+
+# FROZEN literals — captured from a green run; see the docstring above.
+# These are the byte-for-byte expected ordered POI ids for end=None.
+_FROZEN_END_NONE_ORDER_HAVERSINE: tuple[str, ...] = (
+    "filler-0",
+    "filler-1",
+    "filler-2",
+    "baseline-near",
+    "filler-3",
+    "baseline-medium",
+)
+_FROZEN_END_NONE_ORDER_ROUTED: tuple[str, ...] = (
+    "filler-0",
+    "filler-1",
+    "filler-2",
+    "baseline-near",
+    "filler-3",
+    "baseline-medium",
+)
+
+
+def test_frozen_end_none_ordered_ids_haversine_path():
+    """end=None ordering is frozen on the no-client (haversine) cost path."""
+    snap = _frozen_end_none_snapshot()
+    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    ids = tuple(p.id for p in route.pois)
+    assert ids == _FROZEN_END_NONE_ORDER_HAVERSINE, (
+        f"end=None haversine ordering drifted from the Step 2.0d frozen "
+        f"baseline; expected {_FROZEN_END_NONE_ORDER_HAVERSINE}, got {ids}"
+    )
+
+
+def test_frozen_end_none_ordered_ids_routed_path():
+    """end=None ordering is frozen on the deterministic routed cost path."""
+    snap = _frozen_end_none_snapshot()
+    inp = TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap, routing_client=_DeterministicRoutingClient())
+    ids = tuple(p.id for p in route.pois)
+    assert ids == _FROZEN_END_NONE_ORDER_ROUTED, (
+        f"end=None routed ordering drifted from the Step 2.0d frozen "
+        f"baseline; expected {_FROZEN_END_NONE_ORDER_ROUTED}, got {ids}"
+    )
