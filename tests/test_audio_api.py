@@ -180,3 +180,82 @@ class TestServeAudioFile:
         resp = client.get(f"/api/v1/audio/files/{key}")
         assert resp.status_code == 200
         assert resp.headers["content-type"] == "audio/wav"
+
+
+# ── POST /audio/eval — regenerate-on-degraded resilience ──
+
+
+class TestEvalRegeneratesOnDegradedAudio:
+    """A transient degraded TTS generation (implausibly high WER, e.g. a
+    near-silent 200 response Whisper reads as "you") is retried; the endpoint
+    keeps the best result rather than failing an otherwise-good voice. The mock
+    provider (deterministically silent) is evaluated once, never looped."""
+
+    def test_retries_past_a_degraded_generation(self, client, monkeypatch):
+        from src.api.routes import audio as audio_routes
+        from src.audio.eval import EvalResult
+
+        class _FakeOpenAI:
+            name = "openai"
+
+            def generate(self, text, *, voice_id=None):
+                return b"audio-bytes"
+
+        monkeypatch.setattr(audio_routes, "get_provider", lambda name: _FakeOpenAI())
+        calls = {"n": 0}
+
+        def fake_evaluate(text, audio, *, filename="x"):
+            calls["n"] += 1
+            if calls["n"] == 1:  # first generation is degraded (WER ~1.0)
+                return EvalResult(
+                    original_text=text, transcribed_text="you", similarity_score=0.0,
+                    word_error_rate=0.98, missing_words=["a", "b"], extra_words=[],
+                )
+            return EvalResult(  # regeneration is clean
+                original_text=text, transcribed_text=text, similarity_score=1.0,
+                word_error_rate=0.0, missing_words=[], extra_words=[],
+            )
+
+        monkeypatch.setattr(audio_routes, "evaluate", fake_evaluate)
+
+        resp = client.post(
+            "/api/v1/audio/eval", json={"text": "A grounded line.", "provider": "openai"}
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        assert calls["n"] == 2, "the endpoint must regenerate once past a degraded result"
+        assert data["verdict"] == "PASS"
+        assert data["word_error_rate"] == 0.0
+
+    def test_persistent_degradation_still_surfaces(self, client, monkeypatch):
+        """If EVERY generation is degraded (a real bad voice), the retries
+        exhaust and the FAIL verdict still surfaces — resilience never masks a
+        genuine quality failure."""
+        from src.api.routes import audio as audio_routes
+        from src.audio.eval import EvalResult
+
+        class _FakeOpenAI:
+            name = "openai"
+
+            def generate(self, text, *, voice_id=None):
+                return b"audio-bytes"
+
+        monkeypatch.setattr(audio_routes, "get_provider", lambda name: _FakeOpenAI())
+        calls = {"n": 0}
+
+        def always_degraded(text, audio, *, filename="x"):
+            calls["n"] += 1
+            return EvalResult(
+                original_text=text, transcribed_text="you", similarity_score=0.0,
+                word_error_rate=0.98, missing_words=["a"], extra_words=[],
+            )
+
+        monkeypatch.setattr(audio_routes, "evaluate", always_degraded)
+
+        resp = client.post(
+            "/api/v1/audio/eval", json={"text": "A grounded line.", "provider": "openai"}
+        )
+        assert resp.status_code == 200
+        data = resp.json()
+        assert calls["n"] == 3, "a persistently degraded voice exhausts the bounded retries"
+        assert data["verdict"] == "FAIL", "a genuine quality failure must still surface"
