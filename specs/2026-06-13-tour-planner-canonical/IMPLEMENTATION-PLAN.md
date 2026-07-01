@@ -228,7 +228,16 @@ Then RESUME mobile 1.4d-ii/iii/iv, where the on-device listen is a final smoke t
 
 ---
 
-## Phase 2 — A→B corridor (destination, B optional)
+## Phase 2 — A→B corridor (destination, B optional)  [DONE 2026-06-30]
+
+> **STATUS: COMPLETE.** 2.0a Seine-gate valhalla dep (05515ce) · 2.0d end=None identity baseline
+> (377f488) · 2.1 TourInput.end (98e3d97) · 2.2a feasibility refusal gap+loop+extend (7bf4079) ·
+> 2.2b closer_b wedge (034325f) · 2.3 corridor time-ellipse (1a36cf5) · 2.4 feed-B hybrid
+> snap/sentinel (d742398) · 2.5 open-walk B* proof (4708ee6) · 2.6 API end_lat/lng + structured 422
+> (c768193). Workbench: destination input + route-on-map + structured refusal (de9cdfb, ff00f1b).
+> The Seine "red" was a Valhalla-down/haversine artifact — resolved. Live-proven: a 120-min A→B
+> returns a directional route ending exactly at B; a 90-min A→B returns 422 {gap, loop, extend,
+> closer_b}. Gates: make test 1048; test-workbench 36; tour-grade 4; make lint clean.
 
 > Pure engine + input. Unit- and golden-testable without audio or LLM. Each step keeps existing
 > behavior identical when `end is None` (proven by Jaccard==1.0 against current goldens). NOTE: these
@@ -336,11 +345,18 @@ From the adversarial review — non-blocking for Phase 1–2, resolve at the pha
 > milestone WILL be broken into the same one-change-+-all-tests steps **before any code in it is
 > written**, with your sign-off on the step list. That is a commitment, not a corner cut.
 
-- **Phase 3 — Spotlight model.** Replace the tier gate + lens-miss exclusion with the continuous
-  `gravity × lens × proximity` spotlight (LENS_FLOOR, no gates); emit the vignette band; measure
-  per-corridor lens coverage. **The preview's `lens_coverage_note` and the `band`/`spotlight` contract
-  fields ship here (not Phase 2).** Tests: unit per scoring rule + the matrix cells; golden re-baseline
-  with a reviewed, explained diff.
+- **Phase 3 — Spotlight model.  [DONE 2026-06-30]** Replaced the tier gate + lens-miss exclusion with
+  the continuous `gravity × lens × proximity` spotlight (LENS_FLOOR, no gates); emit the vignette band;
+  measure per-corridor lens coverage. Atomized + shipped: 3.1 pure spotlight scoring (95048e2) · 3.2
+  band classifier (78b0841) · 3.3 band/spotlight/lens_coverage_note contract fields (efa70b7) · 3.4
+  populate them on stops (ba87d83) · 3.5 gate removal + **calibrated golden re-baseline** (6d0a409).
+  **Calibration decision (user-approved "tune"):** the dwell floor `BAND_THRESHOLD_SHORT` sits at
+  tier-3 gravity (3.0) so no-lens tours preserve the tier≥3 anchors the human-ideal goldens were built
+  on — the goldens HELD (Île 53.2%, PdV 66.7%), tour-grade 4/0. Low-tier/off-genre POIs are eligible
+  VIGNETTES, not dwell stops (§3 "allocate scarce dwell-minutes"). Workbench surfaces lens_coverage_note
+  + per-stop spotlight (7112be0). Also fixed a transient live-audio flake with regenerate-on-degraded
+  retry (13bfe3a, complements the earlier 0860da9 network retry). Gates: make test 1048; test-workbench
+  36; test-golden held; tour-grade 4; make lint clean.
 - **Phase 4 — Reflections + LLM compose + two-step API.** `GLUE_REFLECTION` + audio-deficit placement;
   swap the narration source to fire-once Anthropic compose behind VERIFY (Mock stays the test default);
   split `preview` / `compose`; mobile flavour picker. Tests: recompose-once-then-block control flow,
