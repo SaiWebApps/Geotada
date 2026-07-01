@@ -396,15 +396,20 @@ def test_band_full_ladder_via_real_spotlight_scores():
         score = spotlight(p, lenses=frozenset({"history"}), snapshot=s)
         return band_for_spotlight(score, tier=tier)
 
-    # tier-5 direct (5.0) -> headline; tier-4 direct (4.0) -> headline.
+    # Step-3.5 calibrated cuts: headline >=5, full >=4, short >=3 (dwell floor),
+    # vignette >=0.5, else silent (tier>=4 landmark floored at vignette).
+    # tier-5 direct (5.0) -> headline.
     assert band(5, "history") == BAND_HEADLINE
-    assert band(4, "history") == BAND_HEADLINE
-    # tier-5 one-hop (3.0) -> full; tier-2 direct (2.0) -> full.
-    assert band(5, "dark_history") == BAND_FULL
-    assert band(2, "history") == BAND_FULL
-    # tier-1 direct (1.0) -> short; tier-5 miss (1.25) -> short.
-    assert band(1, "history") == BAND_SHORT
-    assert band(5, "street_art") == BAND_SHORT
+    # tier-4 direct (4.0) -> full.
+    assert band(4, "history") == BAND_FULL
+    # tier-5 one-hop (3.0) and tier-3 direct (3.0) -> short: the dwell floor.
+    assert band(5, "dark_history") == BAND_SHORT
+    assert band(3, "history") == BAND_SHORT
+    # Below the dwell floor -> vignette: tier-2 direct (2.0), tier-1 direct (1.0),
+    # and a tier-5 off-genre landmark (1.25) dimmed to a brief mention.
+    assert band(2, "history") == BAND_VIGNETTE
+    assert band(1, "history") == BAND_VIGNETTE
+    assert band(5, "street_art") == BAND_VIGNETTE
     # tier-1 one-hop (0.6) -> vignette; tier-2 miss (0.5) -> vignette.
     assert band(1, "dark_history") == BAND_VIGNETTE
     assert band(2, "street_art") == BAND_VIGNETTE
@@ -416,8 +421,9 @@ def test_silence_invariant_high_gravity_off_genre_is_not_silent():
     """§3 invariant: a high-gravity off-genre landmark clears to at least
     vignette -- lens alone never silences it, and even a huge proximity detour
     that drives its score below the silent cut must NOT make it silent."""
-    # tier-5 off-genre on-path (score 1.25) is already a short stop.
-    assert band_for_spotlight(5.0 * LENS_FLOOR, tier=5) == BAND_SHORT
+    # tier-5 off-genre on-path (score 1.25) is a vignette (a brief mention) --
+    # below the calibrated dwell floor (3.0) but well clear of silence.
+    assert band_for_spotlight(5.0 * LENS_FLOOR, tier=5) == BAND_VIGNETTE
     # Now drive the score arbitrarily low (as a huge detour would) -- the
     # landmark guard floors it at vignette, never silent.
     for landmark_tier in range(BAND_LANDMARK_TIER, 6):

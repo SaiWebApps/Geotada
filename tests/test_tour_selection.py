@@ -162,14 +162,83 @@ def test_envelope_excludes_walk_by_only():
     assert "wb" not in [p.id for p in route.pois]
 
 
-def test_envelope_excludes_tier_1_2_anchors():
-    # Tier 1/2 are walk-by candidates handled in the Phase 3 enrichment pass.
+def test_low_tier_no_lens_eligible_as_vignette_not_dwell():
+    """Phase 3 re-baseline (Step 3.5, calibrated): the hard tier gate is GONE,
+    but spotlight ALLOCATES scarce dwell-minutes (s3), it does not stop
+    everywhere.
+
+    Pre-3.5 a tier-1 POI was hard-EXCLUDED from the anchor pool
+    (ANCHOR_TIERS = {3,4,5}). After the model switch it is ELIGIBLE -- its
+    on-path spotlight gravity(1) x 1.0 x 1.0 = 1.0 is a VIGNETTE (a brief
+    mention), not silent. But 1.0 is below the calibrated dwell floor
+    (BAND_THRESHOLD_SHORT = 3.0 = tier-3 gravity), so it is NOT a dwell stop:
+    the tier-5 anchor keeps the dwell slot and the tier-1 vignette does not
+    crowd it out. This is what stops low-tier POIs from displacing the golden
+    anchors (the pre-calibration bug that dropped the Ile golden 53.2->42.6).
+    """
+    from src.tour.selection import BAND_VIGNETTE, band_for_spotlight, spotlight
+
     t1 = _poi("t1", tier=1, lat=48.8556, lng=2.3658)
     t5 = _poi("t5", tier=5, lat=48.8556, lng=2.3660)
     snap = _snap([t1, t5, *_density_fillers(PDV)])
+    # Eligible, not excluded: the tier-1 no-lens POI is a vignette, not silent.
+    t1_band = band_for_spotlight(spotlight(t1, lenses=None, snapshot=snap), tier=1)
+    assert t1_band == BAND_VIGNETTE, f"tier-1 no-lens should be an eligible vignette, got {t1_band}"
+    # Allocation: the tier-5 anchor is a dwell stop; the tier-1 vignette is NOT
+    # in the dwell route (route.pois are dwell stops).
     route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
-    assert "t1" not in [p.id for p in route.pois]
-    assert "t5" in [p.id for p in route.pois]
+    ids = [p.id for p in route.pois]
+    assert "t5" in ids, f"the tier-5 anchor must be a dwell stop, got {ids}"
+    assert "t1" not in ids, (
+        "a tier-1 no-lens POI is an eligible VIGNETTE, not a dwell stop -- it must "
+        f"not consume a dwell slot from the anchors. Got {ids}"
+    )
+
+
+def test_low_tier_off_genre_goes_silent_only_when_both():
+    """s3 silence invariant: silent ONLY when low-gravity AND off-genre.
+
+    With a lens requested, a tier-1 POI whose beats MISS the lens scores
+    gravity(1) x LENS_FLOOR(0.25) x proximity(1.0) = 0.25 -> below the vignette
+    cut AND tier < BAND_LANDMARK_TIER -> SILENT, so it never enters the dwell
+    pool. A tier-5 POI that MISSES the same lens scores 5 x 0.25 = 1.25 ->
+    vignette-floored landmark, still eligible (lens alone never silences a
+    landmark). A tier-4 POI that HITS the lens is a full dwell stop. So with the
+    lens active, the silent tier-1 miss drops out while the lens-hit themed POI
+    is selected.
+    """
+    from src.tour.selection import (
+        BAND_SILENT,
+        band_for_spotlight,
+        spotlight,
+    )
+
+    lens = frozenset({"hidden_history"})
+    t1_miss = _poi("t1-miss", tier=1, lat=48.8556, lng=2.3661, areas=("Le Marais",))
+    t5_miss = _poi("t5-miss", tier=5, lat=48.8557, lng=2.3662, areas=("Le Marais",))
+    themed = _poi("themed", tier=4, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+    snap = _snap(
+        [t1_miss, t5_miss, themed, *_density_fillers(PDV)],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={"themed": _lensed_beats("themed", ("hidden_history",))},
+        lens_neighbors=_HOP_MAP,
+    )
+    # Unit-level proof of the invariant at the band classifier.
+    assert (
+        band_for_spotlight(spotlight(t1_miss, lenses=lens, snapshot=snap), tier=1) == BAND_SILENT
+    )
+    assert (
+        band_for_spotlight(spotlight(t5_miss, lenses=lens, snapshot=snap), tier=5) != BAND_SILENT
+    ), "a tier-5 landmark that misses the lens is dimmed to vignette, never silenced"
+
+    inp = TourInput(
+        start=PDV, duration_min=60, city_slug="paris", lenses=["hidden_history"], round_trip=True
+    )
+    ids = [p.id for p in select_route(inp, snap).pois]
+    assert "t1-miss" not in ids, (
+        f"low-gravity off-genre POI must be silent (excluded), got {ids}"
+    )
+    assert "themed" in ids, f"the lens-hit POI must be a dwell stop, got {ids}"
 
 
 # ---------------------------------------------------------------------------
@@ -322,31 +391,73 @@ def test_lens_adjacency_ranks_direct_above_one_hop():
     assert s_direct > s_hop > 0
 
 
-def test_lens_adjacency_miss_is_zero_and_excludes_candidate():
-    """§3 (M3): a thematic miss scores 0.0 AND is excluded from the candidate
-    pool — supersedes the old rule-41 'bias not filter' behavior (the spec's
-    multiplicative form with miss=0.0 makes the lens a hard filter; graceful
-    degradation lives in the no-lens uniform-1.0 branch instead)."""
-    themed = _poi("themed", tier=4, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+def test_lens_miss_dims_but_does_not_zero_poi_score():
+    """Phase 3 re-baseline (Step 3.5): the model switch made poi_score's lens
+    factor the POSITIVE-floored lens_relevance (miss -> LENS_FLOOR = 0.25), NOT
+    the legacy hard-filter _lens_adjacency (miss -> 0.0).
+
+    A high-gravity (tier-5) POI that MISSES the requested lens must score a
+    strictly positive, DIMMED value -- exactly LENS_FLOOR of its no-lens score,
+    not zero. This is what lets a lens-miss landmark still earn a dwell stop
+    ("lens promotes, never silences a landmark", s3) rather than vanishing.
+    """
+    from src.tour.selection import LENS_FLOOR
+
     missed = _poi("missed", tier=5, lat=48.8557, lng=2.3659, areas=("Le Marais",))
-    fillers = _density_fillers(PDV)  # unlensed synthetic beats → misses too
     snap = _snap(
-        [*fillers, themed, missed],
+        [missed],
         area_types={"Le Marais": "neighborhood"},
-        beats_by_poi={"themed": _lensed_beats("themed", ("hidden_history",))},
+        beats_by_poi={"missed": _lensed_beats("missed", ("film_tv",))},
         lens_neighbors=_HOP_MAP,
     )
-    assert poi_score(missed, None, frozenset({"hidden_history"}), snap) == 0.0
+    s_miss = poi_score(missed, None, frozenset({"hidden_history"}), snap)
+    s_neutral = poi_score(missed, None, frozenset(), snap)
+    assert s_miss > 0.0, "a lens miss must DIM, not zero, the score (Step 3.5 model switch)"
+    assert math.isclose(s_miss / s_neutral, LENS_FLOOR, rel_tol=1e-9), (
+        f"a lens-miss score must be LENS_FLOOR of the no-lens score; "
+        f"got ratio {s_miss / s_neutral}"
+    )
 
+
+def test_lens_miss_high_gravity_poi_survives_as_vignette():
+    """Step 3.5 (calibrated): the lens-miss HARD exclusion is GONE -- a tier-5
+    off-genre POI is no longer dropped; it is DIMMED to a vignette (5 x
+    LENS_FLOOR = 1.25, below the 3.0 dwell floor; landmark-floored, never
+    silent) -- a brief mention. Dimmed is NOT a dwell stop: the lens-hit
+    anchors take the dwell slots; the off-genre landmark is an eligible
+    vignette. (s3: lens alone never silences a landmark; off-genre dims it.)
+    """
+    from src.tour.selection import BAND_VIGNETTE, band_for_spotlight, spotlight
+
+    missed = _poi("missed", tier=5, lat=48.8557, lng=2.3659, areas=("Le Marais",))
+    # Lens-hit anchors so the dwell route is viable + dense enough to clear the gate.
+    hits = [
+        _poi(f"hit{i}", tier=5, lat=48.8556 + 0.0001 * i, lng=2.3658, areas=("Le Marais",))
+        for i in range(4)
+    ]
+    snap = _snap(
+        [*hits, missed],
+        area_types={"Le Marais": "neighborhood"},
+        beats_by_poi={
+            **{h.id: _lensed_beats(h.id, ("hidden_history",)) for h in hits},
+            "missed": _lensed_beats("missed", ("street_art",)),
+        },
+        lens_neighbors=_HOP_MAP,
+    )
+    lenses = frozenset({"hidden_history"})
+    # Eligible + dimmed, not silenced: the tier-5 off-genre POI is a vignette.
+    b = band_for_spotlight(spotlight(missed, lenses=lenses, snapshot=snap), tier=5)
+    assert b == BAND_VIGNETTE, f"tier-5 off-genre must dim to a vignette, not silent/dwell; got {b}"
+    # And it does NOT take a dwell slot: the lens-hit anchors are the route.
     inp = TourInput(
-        start=PDV,
-        duration_min=60,
-        city_slug="paris",
-        lenses=["hidden_history"],
-        round_trip=True,
+        start=PDV, duration_min=60, city_slug="paris", lenses=["hidden_history"], round_trip=True
     )
     ids = [p.id for p in select_route(inp, snap).pois]
-    assert ids == ["themed"], f"only the themed POI may survive the lens filter, got {ids}"
+    assert any(h.id in ids for h in hits), f"lens-hit dwell stops must be selected, got {ids}"
+    assert "missed" not in ids, (
+        "a tier-5 off-genre POI is an eligible VIGNETTE (a brief mention), not a dwell "
+        f"stop -- it must not take a dwell slot. Got {ids}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -1302,6 +1413,18 @@ def _frozen_end_none_snapshot() -> CorpusSnapshot:
 
 # FROZEN literals — captured from a green run; see the docstring above.
 # These are the byte-for-byte expected ordered POI ids for end=None.
+#
+# Phase 3 re-baseline (Step 3.5): gate removal WIDENS the eligible pool (the
+# hard tier gate, the walk_by_only exclusion, and the lens-miss exclusion are
+# gone). This snapshot was DELIBERATELY re-verified under the model switch and
+# the ordered ids are UNCHANGED -- by construction: every POI here is a tier-5
+# 'stop' with active beats and NO lens is requested, so (a) the removed tier
+# gate excluded nothing (all tier 5), (b) there are no walk_by_only POIs, and
+# (c) with no lenses, lens_relevance == _lens_adjacency == 1.0, so poi_score is
+# byte-identical to its pre-3.5 value. The widened eligibility therefore admits
+# the same six POIs in the same order; the ends are still correct (open walk
+# closes on the far 'baseline-medium' via endpoint-pull) and no crash. The new
+# eligibility is exercised separately by the tier-1 / lens-miss tests above.
 _FROZEN_END_NONE_ORDER_HAVERSINE: tuple[str, ...] = (
     "filler-0",
     "filler-1",

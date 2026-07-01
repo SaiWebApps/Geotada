@@ -122,9 +122,15 @@ PROXIMITY_DECAY_SECONDS: float = 600.0
 #   - tier-3 direct hit      = 3 x 1.0  = 3.0
 #   - tier-5 direct hit      = 5 x 1.0  = 5.0   (canonical HEADLINE case)
 # Thresholds are lower-inclusive cut points on the spotlight score:
-BAND_THRESHOLD_HEADLINE: float = 4.0  # >= 4.0 -> headline (tier-4/5 strong hit)
-BAND_THRESHOLD_FULL: float = 2.0  # >= 2.0 -> full stop
-BAND_THRESHOLD_SHORT: float = 1.0  # >= 1.0 -> short stop
+# Calibrated at the Step 3.5 golden re-baseline: the DWELL floor (short) sits at
+# tier-3 gravity (gravity(t)=float(t)) so a no-lens tour's dwell pool matches the
+# prior ANCHOR_TIERS={3,4,5} anchors (which the human-ideal goldens were built on)
+# -- tier-1/2 no-lens POIs fall to vignette instead of crowding out the golden
+# anchors. Lens dimming still demotes off-genre POIs on lensed tours; the
+# two-track (dwell/vignette) output stands.
+BAND_THRESHOLD_HEADLINE: float = 5.0  # >= 5.0 -> headline (tier-5, or lens-lifted)
+BAND_THRESHOLD_FULL: float = 4.0  # >= 4.0 -> full stop (tier-4+)
+BAND_THRESHOLD_SHORT: float = 3.0  # >= 3.0 -> short stop; the DWELL floor (~ tier-3 anchor)
 BAND_THRESHOLD_VIGNETTE: float = 0.5  # >= 0.5 -> walk-past vignette; below -> silent
 #
 # The §3 silence invariant is structural, NOT a pure score threshold: silence
@@ -646,11 +652,18 @@ def _closer_b_alternative(
 ) -> FeasibilityAlternative | None:
     """Build the Step 2.2b 'closer_b' alternative, or None when none fits.
 
-    Scans the anchor-eligible POIs (the SAME pool select_route's greedy draws
-    from: ``poi_role`` in the eligible roles, ``tier`` in ``ANCHOR_TIERS``, ≥1
-    active beat) and keeps those whose routed A→B' leg fits inside the walk
-    budget — using the very divisor the caller passes (``leg_fn or
-    default_leg_seconds``), never straight-line haversine.
+    Scans the LANDMARK-tier POIs (``poi_role`` in the eligible roles, ``tier``
+    in ``ANCHOR_TIERS``, >=1 active beat) and keeps those whose routed A->B'
+    leg fits inside the walk budget — using the very divisor the caller passes
+    (``leg_fn or default_leg_seconds``), never straight-line haversine.
+
+    NOTE (Step 3.5 model switch): a suggested DESTINATION B' is intentionally
+    still restricted to ``ANCHOR_TIERS`` — "end your walk here" should point at
+    a real landmark, never a tier-1 footnote. So this pool is deliberately
+    NARROWER than select_route's now-gateless corridor candidate pool; the two
+    are no longer identical. The ranking uses ``poi_score``, whose lens factor
+    is now the floored ``lens_relevance``, so a lens-miss landmark ranks below a
+    lens-hit one rather than tying at zero.
 
     Among the in-budget anchors:
     - If any lie inside the ±45° wedge around the A→B bearing, pick the highest
@@ -886,23 +899,54 @@ def select_route(
             t_poi_b = corridor_leg_fn(lat, lng, end_lat, end_lng)
             return t_a_poi + t_poi_b <= corridor_budget
 
+    # Phase 3 re-baseline (Step 3.5): THE MODEL SWITCH. The hard tier gate
+    # (poi.tier not in ANCHOR_TIERS), the walk_by_only exclusion, and the
+    # lens-miss exclusion are GONE. Every corridor POI with active beats is now
+    # ELIGIBLE; the continuous spotlight score + band decide
+    # dwell/vignette/silent. This produces the s3 two-track output:
+    #   - silent  : excluded for this user. The ONLY silence is low-gravity AND
+    #               off-genre -- per band_for_spotlight that fires solely when a
+    #               POI is BOTH below the lens floor (a thematic miss) AND
+    #               low-gravity (tier < BAND_LANDMARK_TIER). Lens alone, gravity
+    #               alone, or a detour alone never silences a landmark.
+    #   - vignette: eligible but not a dwell stop (a tier-low or off-genre POI,
+    #               or any walk_by_only POI -- role multiplier 0.0 zeroes its
+    #               poi_score so it can never out-rank a real stop). Surfaced as
+    #               an on-path one-liner by a downstream step (RouteOptionStop
+    #               band="vignette"), NOT inserted into the dwell route here.
+    #   - dwell   : a real stop (headline/full/short) -- the greedy/endpoint-
+    #               pull/fill draw the ordered route from these.
+    # The band is measured on-path (marginal_detour_seconds=0): a detour is an
+    # ordering cost, not an eligibility test, and band_for_spotlight already
+    # floors any landmark (tier >= BAND_LANDMARK_TIER) at vignette regardless
+    # of detour. ``candidates`` below is the DWELL pool the greedy consumes;
+    # vignette/silent POIs are deliberately kept out of it so dwell-minute
+    # allocation is unchanged in spirit -- gate removal WIDENS which POIs can
+    # earn a dwell stop (every tier, every lens), it does not make the route
+    # stop everywhere.
     reachable_count = 0
     candidates: list[POI] = []
     for poi in snapshot.pois:
         in_reach = reach_contains(poi.lat, poi.lng)
         if in_reach:
             reachable_count += 1
-        if poi.poi_role == "walk_by_only":
-            continue  # walk-bys are handled separately (Phase 3 enrichment)
-        if poi.tier not in ANCHOR_TIERS:
-            continue
         if not in_reach:
             continue
         if not _has_active_beats(poi, snapshot):
-            continue  # Phase 6: zero-beat POIs are excluded as anchors.
-        if interest and _lens_adjacency(poi, interest, snapshot) == LENS_ADJACENCY_MISS:
-            # §3 (M3): a thematic miss is EXCLUDED, not down-weighted — filter
-            # here so the greedy, endpoint-pull, and fill pass all agree.
+            continue  # Phase 6: zero-beat POIs carry no audio -> nothing to say.
+        on_path_band = band_for_spotlight(
+            spotlight(poi, lenses=interest or None, snapshot=snapshot),
+            tier=poi.tier,
+        )
+        if not is_dwell_band(on_path_band):
+            # silent -> excluded entirely; vignette -> eligible but not a dwell
+            # stop. Either way it does not enter the greedy's dwell pool.
+            continue
+        if POI_ROLE_MULTIPLIER.get(poi.poi_role, 0.0) <= 0.0:
+            # walk_by_only (and any zero-weight role): an on-path vignette, never
+            # a dwell anchor. Its poi_score is 0, so admitting it would let the
+            # greedy insert a content-less stop (0 > -inf) -- keep it out of the
+            # dwell pool explicitly.
             continue
         if corridor_admits is not None and not corridor_admits(poi.lat, poi.lng):
             # Step 2.3: fixed-end corridor gate — drop anchors whose A→poi→B
@@ -1705,18 +1749,29 @@ def poi_score(
     *,
     penalty: dict[str, float] | None = None,
 ) -> float:
-    """The §3 per-POI score: importance x richness x lens_adjacency x alignment x role.
+    """The §3 per-POI score: importance x richness x lens_relevance x alignment x role.
 
     M6: ``penalty`` (poi_id → factor) is the k-flavours diversity knob —
     POIs already used by kept flavours score lower on re-runs.
+
+    Phase 3 re-baseline (Step 3.5): the lens factor is now the POSITIVE-floored
+    ``lens_relevance`` (miss -> LENS_FLOOR = 0.25), NOT the legacy hard-filter
+    ``_lens_adjacency`` (miss -> 0.0). This is the second half of the model
+    switch: with the candidate-pool lens gate removed, a lens-miss POI is
+    eligible, so its score must DIM rather than ZERO -- otherwise the greedy
+    would still never pick it and a tier-5 off-genre landmark would silently
+    drop out (violating "lens alone never silences a landmark", s3). The
+    objective stays strictly multiplicative (s9.5); only the lens factor's
+    miss value changed from 0.0 to a positive floor. With no lenses requested
+    both functions return 1.0, so the unlensed objective is byte-identical.
     """
     importance = float(poi.tier)
     richness = math.log1p(max(0, poi.beat_count))
-    adjacency = _lens_adjacency(poi, interest, snapshot)
+    relevance = lens_relevance(poi, lenses=interest or None, snapshot=snapshot)
     alignment = _area_alignment(poi, spine_area, snapshot)
     role_mult = POI_ROLE_MULTIPLIER.get(poi.poi_role, 0.0)
     diversity = penalty.get(poi.id, 1.0) if penalty else 1.0
-    return importance * richness * adjacency * alignment * role_mult * diversity
+    return importance * richness * relevance * alignment * role_mult * diversity
 
 
 def _lens_adjacency(poi: POI, interest: frozenset[str], snapshot: CorpusSnapshot) -> float:
