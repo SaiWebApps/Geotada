@@ -3064,12 +3064,24 @@
     summary.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
     summary.textContent = `${tourStops.length} stops · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
     stopsEl.appendChild(summary);
+    // Phase 3 spotlight: the per-corridor lens coverage note (present only when
+    // the engine surfaces it — off-genre corridors read "only N places speak to …").
+    if (data && data.lens_coverage_note) {
+      const note = document.createElement('div');
+      note.className = 'tour-lens-coverage';
+      note.style.cssText = 'color:var(--muted,#888);font-size:0.8rem;font-style:italic;margin:0 0 8px;';
+      note.textContent = data.lens_coverage_note;
+      stopsEl.appendChild(note);
+    }
     tourStops.forEach((s, i) => {
       const el = document.createElement('div');
       el.className = 'tour-stop db-beat-card';
+      // Phase 3 spotlight score (and band, when not a plain dwell stop).
+      const spot = (typeof s.spotlight === 'number') ? ` · spotlight ${s.spotlight.toFixed(2)}` : '';
+      const bandTag = (s.band && s.band !== 'dwell') ? ` · ${escHtml(s.band)}` : '';
       el.innerHTML = `
         <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}</h4>
-        <div class="meta">~${s.minutes} min here</div>
+        <div class="meta">~${s.minutes} min here${spot}${bandTag}</div>
         <div class="script-preview">${escHtml(s.narration || '')}</div>
         <div class="tts-row">
           <button class="tts-play-btn" data-tour-stop="${i}" title="Generate and play TTS audio">&#9654; Listen</button>

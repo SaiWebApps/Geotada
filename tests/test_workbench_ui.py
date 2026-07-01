@@ -1864,6 +1864,50 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def test_tour_preview_surfaces_spotlight_and_coverage(self, browser_page):
+        """Phase 3: the workbench shows the spotlight model's user-facing outputs —
+        the per-corridor lens_coverage_note and each stop's spotlight score."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "stops": [
+                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
+                             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
+                             "spotlight": 5.0, "band": "dwell"},
+                            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 4,
+                             "lat": 48.8554, "lng": 2.3450, "narration": "Another line.",
+                             "spotlight": 3.6, "band": "dwell"},
+                        ],
+                        "spine_area": "Île de la Cité",
+                        "total_audio_min": 10,
+                        "lens_coverage_note": "Only 2 places on this route speak to film & TV.",
+                    }
+                ),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+            # The per-corridor lens coverage note (Phase 3) is surfaced.
+            note = page.locator("#tourStops .tour-lens-coverage")
+            assert note.count() == 1, "the lens_coverage_note should render"
+            assert "film & TV" in (note.first.text_content() or ""), "coverage note text should show"
+            # Each stop shows its spotlight score.
+            first = page.locator("#tourStops .tour-stop").first
+            assert "spotlight 5.00" in (first.text_content() or ""), "per-stop spotlight should render"
+            _take_screenshot(page, "phase3-spotlight-coverage")
+        finally:
+            page.unroute("**/trips/preview")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page
