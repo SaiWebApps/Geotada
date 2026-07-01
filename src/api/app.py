@@ -64,6 +64,43 @@ def create_app() -> FastAPI:
             raise HTTPException(404, "tour preview page not found")
         return FileResponse(str(_tour_preview_html), media_type="text/html")
 
+    @app.get("/api/v1/healthz")
+    async def healthz():
+        """Report which Neo4j the API is connected to (plus a liveness probe).
+
+        Test fixtures use this to verify they are talking to the *test* instance
+        (port 7688) before seeding data, so a dev API (``make api`` → 7687) that
+        happens to be listening on the same HTTP port can never be reused and
+        seeded with test rows. ``neo4j_port`` is parsed from the configured
+        ``NEO4J_URI`` (what the driver connected to); ``neo4j_connected`` runs a
+        trivial query to confirm the driver is actually live.
+        """
+        from urllib.parse import urlparse
+
+        from src.api.dependencies import get_driver
+        from src.connection import get_database
+
+        uri = os.getenv("NEO4J_URI", "")
+        database = get_database()
+        connected = False
+        try:
+            driver = get_driver()
+            with driver.session(database=database) as session:
+                session.run("RETURN 1 AS ok").single()
+            connected = True
+        except Exception:
+            connected = False
+
+        return JSONResponse(
+            content={
+                "status": "ok" if connected else "degraded",
+                "neo4j_uri": uri,
+                "neo4j_port": urlparse(uri).port,
+                "neo4j_database": database,
+                "neo4j_connected": connected,
+            }
+        )
+
     @app.get("/.well-known/apple-app-site-association")
     async def apple_app_site_association():
         from src.api.auth.config import APPLE_TEAM_ID, BUNDLE_ID

@@ -86,6 +86,12 @@ DUP_INPUT = 'input[data-dup-idx="{}"]'
 # ---------------------------------------------------------------------------
 
 API_BASE = "http://localhost:8000/api/v1"
+# The ONLY Neo4j port this suite may run against. conftest pins the pytest
+# process (and thus any uvicorn we *start*) to this port via .env.test; the
+# api_server fixture additionally probes /healthz to validate any *externally*
+# running server on :8000, so a dev API (make api → 7687) can never be reused
+# and seeded with test rows. Keep in sync with conftest._TEST_PORT_ALLOWLIST.
+TEST_NEO4J_PORT = 7688
 WORKBENCH_URL = (Path(__file__).parent.parent / "frontend" / "review.html").resolve().as_uri()
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "ui_test_fixture.json"
 REPORT_DIR = Path(__file__).parent / "reports"
@@ -391,10 +397,72 @@ def _port_open(host: str, port: int) -> bool:
         return s.connect_ex((host, port)) == 0
 
 
+def _server_neo4j_port(api_base: str, *, retries: int = 1, delay: float = 0.5) -> int | None:
+    """Probe ``{api_base}/healthz`` and return the Neo4j port the API is bound to.
+
+    Returns ``None`` if the server has no ``/healthz`` (a build predating the
+    guard) or the probe fails — both of which the caller treats as "unverifiable".
+    ``retries`` exists so a server we just started has a grace period to finish
+    its FastAPI lifespan startup before we give up.
+    """
+    url = f"{api_base}/healthz"
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, method="GET")
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+            port = data.get("neo4j_port")
+            if port is not None:
+                return int(port)
+        except Exception:
+            pass
+        if attempt < retries - 1:
+            time.sleep(delay)
+    return None
+
+
+def _assert_server_is_test_db(api_base: str, *, source: str, retries: int = 1) -> None:
+    """Fail fast unless the API at ``api_base`` is on the test Neo4j (7688).
+
+    Guards the data-corruption bug where a dev ``make api`` (Neo4j port 7687) is
+    already listening on :8000: the suite would otherwise seed test POIs into —
+    and assert against — the dev graph (observed: dev POI count 371 → 373).
+    ``source`` ('external' / 'managed') is woven into the message so the failure
+    says exactly which server was rejected and how to fix it. Raises
+    ``RuntimeError`` (mirroring conftest._assert_test_port) so the fixture
+    propagates a clear, fatal error.
+    """
+    port = _server_neo4j_port(api_base, retries=retries)
+    if port == TEST_NEO4J_PORT:
+        return
+    if port is None:
+        raise RuntimeError(
+            f"API on :8000 ({source}) did not answer GET {api_base}/healthz with a "
+            f"Neo4j port, so it cannot be confirmed to point at the test database "
+            f"(port {TEST_NEO4J_PORT}). Refusing to seed test data into an unknown "
+            f"graph. Stop whatever is on :8000 and re-run (the suite will start its "
+            f"own server), or start a test-DB API with `make api-test`."
+        )
+    raise RuntimeError(
+        f"API on :8000 ({source}) is connected to Neo4j port {port}, not the test "
+        f"database (port {TEST_NEO4J_PORT}). A dev server (`make api` → 7687) is "
+        f"almost certainly running on :8000; reusing it would seed test POIs into "
+        f"the dev graph. Stop it, then re-run `make test-workbench` (or use "
+        f"`make api-test` for a reusable test-DB server on :8000)."
+    )
+
+
 @pytest.fixture(scope="module")
 def api_server():
-    """Start a uvicorn server on port 8000 for the duration of this module."""
+    """Provide an API server on :8000 that is verified to point at the test DB.
+
+    Reuses an already-running server on :8000 ONLY after /healthz confirms it is
+    connected to the test database (port 7688); otherwise it fails fast rather
+    than seed a dev/prod graph. A server we start ourselves is verified too,
+    proving it inherited the .env.test (7688) config from conftest.
+    """
     if _port_open("127.0.0.1", 8000):
+        _assert_server_is_test_db(API_BASE, source="external", retries=3)
         yield "external"
         return
 
@@ -420,6 +488,15 @@ def api_server():
     else:
         proc.terminate()
         pytest.fail("API server failed to start on port 8000 within 15 seconds")
+
+    try:
+        # The socket opens before lifespan startup finishes, so give /healthz a
+        # grace window. This also proves the managed server connected to 7688.
+        _assert_server_is_test_db(API_BASE, source="managed", retries=20)
+    except BaseException:
+        proc.terminate()
+        proc.wait(timeout=5)
+        raise
 
     yield "managed"
 
@@ -610,6 +687,88 @@ def browser_page(seed_data, reporter):
         report_path = reporter.save_report()
         print(f"\n\nBug report saved to: {report_path}")
         browser.close()
+
+
+# ---------------------------------------------------------------------------
+# Test: api_server DB-isolation guard (regression for dev-graph seeding)
+# ---------------------------------------------------------------------------
+
+
+def _stub_healthz_server(neo4j_port: int | None):
+    """Start a real localhost HTTP server that mimics the API's /healthz.
+
+    If ``neo4j_port`` is None the handler 404s /healthz (a build predating the
+    guard). Returns ``(server, base_url)``; caller must ``server.shutdown()``.
+    """
+    import http.server
+    import threading
+
+    class _Handler(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            if self.path.endswith("/healthz") and neo4j_port is not None:
+                body = json.dumps(
+                    {
+                        "status": "ok",
+                        "neo4j_uri": f"bolt://localhost:{neo4j_port}",
+                        "neo4j_port": neo4j_port,
+                        "neo4j_database": "neo4j",
+                        "neo4j_connected": True,
+                    }
+                ).encode("utf-8")
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+            else:
+                self.send_response(404)
+                self.end_headers()
+
+        def log_message(self, *args: Any) -> None:  # silence request logging
+            pass
+
+    server = http.server.HTTPServer(("127.0.0.1", 0), _Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base_url = f"http://127.0.0.1:{server.server_address[1]}/api/v1"
+    return server, base_url
+
+
+class TestApiServerGuard:
+    """Proves api_server refuses to reuse a non-test server on :8000.
+
+    Regression for the data-corruption bug: a dev `make api` (Neo4j port 7687)
+    already listening on :8000 was reused by this suite, which then seeded test
+    POIs into — and asserted against — the dev graph (observed: 371 → 373).
+    These tests need no Neo4j and no browser, so they run fast and always.
+    """
+
+    def test_guard_rejects_dev_pointed_server(self):
+        server, base = _stub_healthz_server(7687)
+        try:
+            assert _server_neo4j_port(base) == 7687
+            with pytest.raises(RuntimeError, match="7687"):
+                _assert_server_is_test_db(base, source="external")
+        finally:
+            server.shutdown()
+
+    def test_guard_accepts_test_pointed_server(self):
+        server, base = _stub_healthz_server(TEST_NEO4J_PORT)
+        try:
+            assert _server_neo4j_port(base) == TEST_NEO4J_PORT
+            # Must NOT raise — a test-DB server (port 7688) is reusable.
+            _assert_server_is_test_db(base, source="external")
+        finally:
+            server.shutdown()
+
+    def test_guard_rejects_server_without_healthz(self):
+        # A pre-guard build (no /healthz) is unverifiable -> reject, don't reuse.
+        server, base = _stub_healthz_server(None)
+        try:
+            assert _server_neo4j_port(base) is None
+            with pytest.raises(RuntimeError, match="unknown graph"):
+                _assert_server_is_test_db(base, source="external")
+        finally:
+            server.shutdown()
 
 
 # ---------------------------------------------------------------------------
