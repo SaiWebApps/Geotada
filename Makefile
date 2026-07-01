@@ -187,8 +187,8 @@ dashboard: ## Start the web dashboard (port 8080)
 api: ## Start the FastAPI graph API (port 8000)
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
-api-test: ## Start API against test database (port 8000)
-	set -a && . .env.test && set +a && NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
+api-test: ## Start API against test database (port 8001 — coexists with `make api` on 8000; workbench: review.html?apiPort=8001)
+	set -a && . .env.test && set +a && NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8001 --reload
 
 setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 	uv run python scripts/check_audio_setup.py

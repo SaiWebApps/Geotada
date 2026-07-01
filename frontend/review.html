@@ -2836,7 +2836,13 @@
   };
 
   // ── API base URL ──
-  const API_BASE = 'http://localhost:8000/api/v1';
+  // Port-configurable via ?apiPort= (default 8000) so the workbench can point at a
+  // test-DB API (e.g. 8001) without colliding with a dev `make api` on 8000.
+  const API_BASE = (() => {
+    const raw = new URLSearchParams(location.search).get('apiPort');
+    const port = raw && /^\d{2,5}$/.test(raw) ? raw : '8000';
+    return `http://localhost:${port}/api/v1`;
+  })();
 
   // ── TTS state & helpers ──
   const ttsAudioCache = new Map();

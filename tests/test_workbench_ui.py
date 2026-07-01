@@ -85,14 +85,22 @@ DUP_INPUT = 'input[data-dup-idx="{}"]'
 # Configuration
 # ---------------------------------------------------------------------------
 
-API_BASE = "http://localhost:8000/api/v1"
+# The workbench test API runs on 8001 — NOT the dev workbench's 8000 — so a dev
+# `make api` (8000) and `make test-workbench` (8001) coexist: the dev workbench
+# never goes down during a test run and there is no :8000 contention. review.html
+# reads ?apiPort= to point at the matching port.
+WORKBENCH_API_PORT = 8001
+API_BASE = f"http://localhost:{WORKBENCH_API_PORT}/api/v1"
 # The ONLY Neo4j port this suite may run against. conftest pins the pytest
 # process (and thus any uvicorn we *start*) to this port via .env.test; the
 # api_server fixture additionally probes /healthz to validate any *externally*
-# running server on :8000, so a dev API (make api → 7687) can never be reused
-# and seeded with test rows. Keep in sync with conftest._TEST_PORT_ALLOWLIST.
+# running server on the workbench port, so a dev API (make api → 7687) can never
+# be reused and seeded with test rows. Keep in sync with conftest._TEST_PORT_ALLOWLIST.
 TEST_NEO4J_PORT = 7688
-WORKBENCH_URL = (Path(__file__).parent.parent / "frontend" / "review.html").resolve().as_uri()
+WORKBENCH_URL = (
+    f"{(Path(__file__).parent.parent / 'frontend' / 'review.html').resolve().as_uri()}"
+    f"?apiPort={WORKBENCH_API_PORT}"
+)
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "ui_test_fixture.json"
 REPORT_DIR = Path(__file__).parent / "reports"
 SCREENSHOT_DIR = REPORT_DIR / "screenshots"
@@ -437,31 +445,31 @@ def _assert_server_is_test_db(api_base: str, *, source: str, retries: int = 1) -
         return
     if port is None:
         raise RuntimeError(
-            f"API on :8000 ({source}) did not answer GET {api_base}/healthz with a "
-            f"Neo4j port, so it cannot be confirmed to point at the test database "
-            f"(port {TEST_NEO4J_PORT}). Refusing to seed test data into an unknown "
-            f"graph. Stop whatever is on :8000 and re-run (the suite will start its "
+            f"API on :{WORKBENCH_API_PORT} ({source}) did not answer GET {api_base}/healthz "
+            f"with a Neo4j port, so it cannot be confirmed to point at the test database "
+            f"(port {TEST_NEO4J_PORT}). Refusing to seed test data into an unknown graph. "
+            f"Stop whatever is on :{WORKBENCH_API_PORT} and re-run (the suite starts its "
             f"own server), or start a test-DB API with `make api-test`."
         )
     raise RuntimeError(
-        f"API on :8000 ({source}) is connected to Neo4j port {port}, not the test "
-        f"database (port {TEST_NEO4J_PORT}). A dev server (`make api` → 7687) is "
-        f"almost certainly running on :8000; reusing it would seed test POIs into "
-        f"the dev graph. Stop it, then re-run `make test-workbench` (or use "
-        f"`make api-test` for a reusable test-DB server on :8000)."
+        f"API on :{WORKBENCH_API_PORT} ({source}) is connected to Neo4j port {port}, not the "
+        f"test database (port {TEST_NEO4J_PORT}); reusing it would seed test POIs into a "
+        f"non-test graph. Stop whatever is on :{WORKBENCH_API_PORT}, then re-run "
+        f"`make test-workbench` (or use `make api-test` for a reusable test-DB server)."
     )
 
 
 @pytest.fixture(scope="module")
 def api_server():
-    """Provide an API server on :8000 that is verified to point at the test DB.
+    """Provide an API server on the workbench test port that points at the test DB.
 
-    Reuses an already-running server on :8000 ONLY after /healthz confirms it is
-    connected to the test database (port 7688); otherwise it fails fast rather
-    than seed a dev/prod graph. A server we start ourselves is verified too,
-    proving it inherited the .env.test (7688) config from conftest.
+    Runs on :{WORKBENCH_API_PORT} (not the dev workbench's 8000) so `make api` and
+    this suite coexist. Reuses an already-running server on that port ONLY after
+    /healthz confirms it is connected to the test database (port 7688); otherwise
+    it fails fast rather than seed a dev/prod graph. A server we start ourselves is
+    verified too, proving it inherited the .env.test (7688) config from conftest.
     """
-    if _port_open("127.0.0.1", 8000):
+    if _port_open("127.0.0.1", WORKBENCH_API_PORT):
         _assert_server_is_test_db(API_BASE, source="external", retries=3)
         yield "external"
         return
@@ -475,19 +483,19 @@ def api_server():
             "--host",
             "127.0.0.1",
             "--port",
-            "8000",
+            str(WORKBENCH_API_PORT),
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
 
     for _ in range(30):
-        if _port_open("127.0.0.1", 8000):
+        if _port_open("127.0.0.1", WORKBENCH_API_PORT):
             break
         time.sleep(0.5)
     else:
         proc.terminate()
-        pytest.fail("API server failed to start on port 8000 within 15 seconds")
+        pytest.fail(f"API server failed to start on port {WORKBENCH_API_PORT} within 15 seconds")
 
     try:
         # The socket opens before lifespan startup finishes, so give /healthz a
