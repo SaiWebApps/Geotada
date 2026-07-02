@@ -44,6 +44,7 @@ from .density import FeasibilityAlternative, TourabilityRefusedError
 from .density import assess as assess_tourability
 from .ordering import held_karp_open
 from .routing import (
+    EARTH_RADIUS_M,
     ERR_SHORT,
     HAVERSINE_CORRECTION,
     PACE_KMH,
@@ -151,6 +152,15 @@ BAND_SILENT: str = "silent"
 # Output-facing collapse: the dwell bands (a real stop) vs the vignette band
 # (one line as you pass). "silent" is neither -- it is excluded.
 DWELL_BANDS: frozenset[str] = frozenset({BAND_HEADLINE, BAND_FULL, BAND_SHORT})
+
+# Track B (Step B.1) — walk-past vignettes along the legs. A vignette-band POI
+# within this perpendicular distance of a leg's straight segment is close
+# enough to voice as a one-liner without any detour (locked deferred
+# clarification: 50 m).
+VIGNETTE_MAX_DETOUR_M: float = 50.0
+# At most this many vignettes per leg — more one-liners than this on a single
+# walk crowds the transit narration (locked deferred clarification: 2).
+VIGNETTE_MAX_PER_LEG: int = 2
 
 # §2.2 k-flavours (M6): diversity re-runs multiply already-used POIs' scores
 # by DIVERSITY_PENALTY; a candidate flavour whose stop set shares
@@ -1953,6 +1963,110 @@ def is_dwell_band(band: str) -> bool:
     return band in DWELL_BANDS
 
 
+# ---------------------------------------------------------------------------
+# Track B (Step B.1) — walk-past vignette selection along the legs
+# ---------------------------------------------------------------------------
+
+
+def _point_to_segment_m(
+    lat: float, lng: float, a_lat: float, a_lng: float, b_lat: float, b_lng: float
+) -> float:
+    """Perpendicular distance (m) from a point to the A→B straight segment.
+
+    Local equirectangular projection around the segment's mean latitude —
+    accurate to well under a metre at the sub-kilometre scales a walking leg
+    spans, and fully deterministic. Points beyond the segment's endpoints
+    measure to the nearest endpoint (it is a SEGMENT, not an infinite line).
+    """
+    lat0 = math.radians((a_lat + b_lat) / 2.0)
+    kx = math.cos(lat0) * EARTH_RADIUS_M
+    ky = EARTH_RADIUS_M
+
+    ax, ay = math.radians(a_lng) * kx, math.radians(a_lat) * ky
+    bx, by = math.radians(b_lng) * kx, math.radians(b_lat) * ky
+    px, py = math.radians(lng) * kx, math.radians(lat) * ky
+
+    dx, dy = bx - ax, by - ay
+    seg_len_sq = dx * dx + dy * dy
+    if seg_len_sq <= 0.0:
+        return math.hypot(px - ax, py - ay)  # degenerate (co-located) leg
+    t = ((px - ax) * dx + (py - ay) * dy) / seg_len_sq
+    t = max(0.0, min(1.0, t))
+    return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+
+
+def select_vignettes(
+    route: Route,
+    snapshot: CorpusSnapshot,
+    lenses: frozenset[str] | None = None,
+) -> dict[int, tuple[POI, ...]]:
+    """Track B Step B.1 — pure walk-past vignette selection along the legs.
+
+    Returns ``leg_idx → vignette POIs`` where leg ``i`` is the walk INTO stop
+    ``i``, matching ``route.transits`` indexing. Locked rules (Track B,
+    IMPLEMENTATION-PLAN deferred clarifications):
+
+    - eligible iff the POI's on-path band is exactly ``vignette``
+      (``band_for_spotlight(spotlight(...), tier=poi.tier)``); dwell-band
+      POIs are real-stop material, silent POIs stay excluded;
+    - within ``VIGNETTE_MAX_DETOUR_M`` (perpendicular) of the leg's straight
+      segment;
+    - never a dwell stop of this route;
+    - deduped across legs — the first (earliest) leg that EMITS a POI wins; a
+      candidate merely cut by the cap on an earlier leg stays available;
+    - capped at ``VIGNETTE_MAX_PER_LEG`` per leg;
+    - deterministic order: spotlight descending, then id.
+
+    One engine invariant joins the locked rules: a POI with no active beats
+    has nothing to voice (the Phase 6 zero-beat rule that keeps such POIs out
+    of the dwell pool), so it never becomes a vignette either — the band
+    tagging in ``select_route`` only ever fires on active-beat POIs.
+
+    Only legs BETWEEN two route POIs are considered: the Route contract does
+    not carry the start coordinate, so leg 0 (start → first stop) and a round
+    trip's closing leg (last stop → start) have no computable geometry here
+    and never yield vignettes.
+    """
+    pois = route.pois
+    if len(pois) < 2:
+        return {}
+    dwell_ids = {p.id for p in pois}
+
+    scored: list[tuple[float, POI]] = []
+    for poi in snapshot.pois:
+        if poi.id in dwell_ids:
+            continue
+        if not _has_active_beats(poi, snapshot):
+            continue
+        score = spotlight(poi, lenses=lenses or None, snapshot=snapshot)
+        if band_for_spotlight(score, tier=poi.tier) != BAND_VIGNETTE:
+            continue
+        scored.append((score, poi))
+    if not scored:
+        return {}
+    # Deterministic candidate ranking: spotlight desc, then id.
+    scored.sort(key=lambda pair: (-pair[0], pair[1].id))
+
+    out: dict[int, tuple[POI, ...]] = {}
+    assigned: set[str] = set()
+    for leg_idx in range(1, len(pois)):
+        a, b = pois[leg_idx - 1], pois[leg_idx]
+        picked: list[POI] = []
+        for _score, poi in scored:
+            if len(picked) >= VIGNETTE_MAX_PER_LEG:
+                break
+            if poi.id in assigned:
+                continue
+            dist = _point_to_segment_m(poi.lat, poi.lng, a.lat, a.lng, b.lat, b.lng)
+            if dist > VIGNETTE_MAX_DETOUR_M:
+                continue
+            picked.append(poi)
+        if picked:
+            out[leg_idx] = tuple(picked)
+            assigned.update(p.id for p in picked)
+    return out
+
+
 def _area_alignment(poi: POI, spine_area: str | None, snapshot: CorpusSnapshot) -> float:
     if spine_area is None:
         return AREA_ALIGNMENT_OTHER  # neutral
@@ -1995,6 +2109,8 @@ __all__ = [
     "LENS_FLOOR",
     "PACE_KMH",
     "PROXIMITY_DECAY_SECONDS",
+    "VIGNETTE_MAX_DETOUR_M",
+    "VIGNETTE_MAX_PER_LEG",
     "CorpusSnapshot",
     "bearing",
     "gravity",
@@ -2005,5 +2121,6 @@ __all__ = [
     "poi_score",
     "proximity",
     "select_route",
+    "select_vignettes",
     "spotlight",
 ]
