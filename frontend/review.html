@@ -1260,7 +1260,10 @@
     citySubmitBtn.disabled = true;
     citySubmitBtn.textContent = 'Geocoding…';
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(name)}`;
+      // accept-language pinned: cityName (display_name's first segment) keys the
+      // case-sensitive POI/beat MERGEs, so locale-dependent casing ('Paris' vs
+      // 'paris') would silently fork nodes and empty every beats fetch.
+      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=en&q=${encodeURIComponent(name)}`;
       const res = await fetch(url, { headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' } });
       const data = await res.json();
       if (!data || data.length === 0) {

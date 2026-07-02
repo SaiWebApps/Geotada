@@ -98,9 +98,13 @@ make flutter-test  # Flutter (headless Chrome, foreground only)
 make flutter-ios   # Launch on iOS simulator
 make db-test-up    # Start test Neo4j (port 7688)
 make db-up         # Start dev Neo4j (port 7687)
+make db-workbench-up  # Start workbench Neo4j (port 7689 — test-workbench/api-test only)
+make test-workbench   # Playwright workbench suite (dedicated 7689; NOT in the bar)
 ```
 
-**Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687. Both must be running for full suite.
+**Port mapping:** Test Neo4j = 7688, Dev Neo4j = 7687, Workbench Neo4j = 7689. 7688 + 7687 must be running for the full suite; 7689 only for `make test-workbench` / `make api-test` (its target starts it automatically).
+
+**Isolation invariant (2026-07-02):** the workbench Playwright suite runs ONLY against the dedicated 7689 instance and pre-wipes it each run. It must never point at 7688: the pytest suite full-wipes 7688 per-module, so any suite asserting exact DB state there is broken by residue or by a concurrent `make test`. Concurrent `make test-workbench` runs are unsupported (:8001 must be free; the suite fails fast).
 
 **Common issue:** Tests skip unexpectedly → stale `__pycache__` caches a False result for `_neo4j_available()`. Fix: `make test-local` (clears cache automatically) or manually `find tests src -name __pycache__ -exec rm -rf {} +`.
 

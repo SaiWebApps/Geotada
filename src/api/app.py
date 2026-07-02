@@ -68,12 +68,14 @@ def create_app() -> FastAPI:
     async def healthz():
         """Report which Neo4j the API is connected to (plus a liveness probe).
 
-        Test fixtures use this to verify they are talking to the *test* instance
-        (port 7688) before seeding data, so a dev API (``make api`` → 7687) that
-        happens to be listening on the same HTTP port can never be reused and
-        seeded with test rows. ``neo4j_port`` is parsed from the configured
-        ``NEO4J_URI`` (what the driver connected to); ``neo4j_connected`` runs a
-        trivial query to confirm the driver is actually live.
+        Test fixtures use this to verify they are talking to the intended
+        instance (the workbench suite requires its dedicated 7689 to be live)
+        before seeding data, so an API on another graph (``make api`` → 7687
+        dev, or the shared pytest DB on 7688) that happens to be listening on
+        the same HTTP port can never be reused and seeded with test rows.
+        ``neo4j_port`` is parsed from the configured ``NEO4J_URI`` (what the
+        driver connected to); ``neo4j_connected`` runs a trivial query to
+        confirm the driver is actually live.
         """
         from urllib.parse import urlparse
 

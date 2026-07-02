@@ -1,3 +1,10 @@
+# Pin the compose project name so containers/volumes resolve identically from
+# any checkout (main or a .claude/worktrees/* worktree). Without this, a
+# worktree-run `make db-*-up` creates a parallel project named after the
+# worktree directory, and the *-reset targets silently `rm -f` nonexistent
+# ondoway_* volumes (docker volume rm -f exits 0 on a missing volume).
+name: ondoway
+
 services:
   neo4j:
     image: neo4j:5
@@ -33,6 +40,28 @@ services:
       timeout: 5s
       retries: 30
 
+  # Dedicated instance for the Playwright workbench suite (make test-workbench)
+  # and the manual workbench API (make api-test). NEVER shared with the pytest
+  # suite: `make test`/`make test-local` full-wipe 7688 per-module, so any suite
+  # asserting exact DB state on 7688 is broken by a concurrent run. The
+  # workbench suite pre-wipes this instance in its seed fixture instead.
+  neo4j-workbench:
+    image: neo4j:5
+    container_name: ondoway-neo4j-workbench
+    ports:
+      - "7476:7474"  # HTTP browser (workbench)
+      - "7689:7687"  # Bolt protocol (workbench)
+    environment:
+      NEO4J_AUTH: neo4j/ondoway_workbench_2026
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - neo4j_workbench_data:/data
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "ondoway_workbench_2026", "RETURN 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
   # M1 routing engine. Never started by the db-* targets (they are
   # service-scoped); use `make valhalla-up`. First start builds tiles from
   # any .osm.pbf in ./valhalla/custom_files (`make valhalla-build-tiles`
@@ -57,3 +86,4 @@ services:
 volumes:
   neo4j_data:
   neo4j_test_data:
+  neo4j_workbench_data:

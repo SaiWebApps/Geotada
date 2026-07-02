@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -93,7 +93,9 @@ tour-audio-gate: db-up ## Live "audio says the story" gate (Step 1.5c): voice a 
 tour-compose-gate: db-up ## Live COMPOSE gate (Phase 4 Step 4.5): real Paris tour → fire-once Anthropic compose behind the M7 gate, verified by the REAL Haiku faithfulness checker. Live (Anthropic + dev graph 7687); excluded from `make test`. Needs ANTHROPIC_API_KEY in .env.
 	NO_PROXY=api.anthropic.com,anthropic.com no_proxy=api.anthropic.com,anthropic.com uv run pytest tests/test_tour_compose_live.py -m live -v -s
 
-test-workbench: db-up db-test-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API against the test DB (7688).
+test-workbench: db-up db-workbench-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API on :8001 against the DEDICATED workbench Neo4j (7689) — never the shared 7688, which concurrent `make test` runs full-wipe per-module. Concurrent test-workbench runs are unsupported (:8001 must be free; the suite fails fast if not).
+	@cp .env.test.example .env.test
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
 
 test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
@@ -151,6 +153,26 @@ db-test-reset: ## Stop test Neo4j and wipe test data
 	docker volume rm -f ondoway_neo4j_test_data
 	@echo "✓ Test Neo4j stopped and data wiped."
 
+db-workbench-up: ## Start workbench Neo4j (port 7689) — dedicated to test-workbench/api-test, never touched by the pytest suite's 7688 wipes
+	@if docker ps --format '{{.Names}}' | grep -q '^ondoway-neo4j-workbench$$'; then \
+		echo "✓ Workbench Neo4j already running at bolt://localhost:7689"; \
+	else \
+		docker compose up -d neo4j-workbench; \
+		echo "Waiting for workbench Neo4j to be healthy..."; \
+		docker compose exec neo4j-workbench bash -c 'until cypher-shell -u neo4j -p ondoway_workbench_2026 "RETURN 1" 2>/dev/null; do sleep 2; done' 2>/dev/null; \
+		echo "✓ Workbench Neo4j is ready at bolt://localhost:7689"; \
+		echo "  Browser: http://localhost:7476"; \
+	fi
+
+db-workbench-down: ## Stop workbench Neo4j (data preserved)
+	docker compose stop neo4j-workbench
+
+db-workbench-reset: ## Stop workbench Neo4j and wipe its data
+	docker compose stop neo4j-workbench
+	docker compose rm -f neo4j-workbench
+	docker volume rm -f ondoway_neo4j_workbench_data
+	@echo "✓ Workbench Neo4j stopped and data wiped."
+
 valhalla-up: ## Start the Valhalla routing engine (first start builds tiles from valhalla/custom_files)
 	docker compose up -d valhalla
 	@echo "Valhalla starting on http://localhost:8002 — first start with a new"
@@ -194,8 +216,8 @@ dashboard: ## Start the web dashboard (port 8080)
 api: ## Start the FastAPI graph API (port 8000)
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
-api-test: ## Start API against test database (port 8001 — coexists with `make api` on 8000; workbench: review.html?apiPort=8001)
-	set -a && . .env.test && set +a && NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8001 --reload
+api-test: db-workbench-up ## Start API against the WORKBENCH database (port 8001 → Neo4j 7689; coexists with `make api` on 8000; workbench: review.html?apiPort=8001). `make test-workbench` needs :8001 free — stop this first.
+	set -a && . .env.test && set +a && NEO4J_URI=bolt://localhost:7689 NEO4J_PASSWORD=ondoway_workbench_2026 NEO4J_DATABASE=neo4j NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8001 --reload
 
 setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 	uv run python scripts/check_audio_setup.py

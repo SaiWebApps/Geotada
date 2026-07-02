@@ -2,17 +2,19 @@
 
 Systematically exercises the workbench through its complete workflow and
 produces a markdown bug report with screenshots. Auto-starts a FastAPI
-server on localhost:8000 for the duration of the module.
+server on localhost:8001 pinned to the DEDICATED workbench Neo4j (7689)
+for the duration of the module.
 
 Usage:
-    pytest tests/test_workbench_ui.py -v --tb=short
+    make test-workbench   # starts the workbench Neo4j container automatically
 
-Requires: playwright, pytest, Neo4j running
+Requires: playwright, pytest, workbench Neo4j (`make db-workbench-up`)
 """
 
 from __future__ import annotations
 
 import json
+import os
 import re
 import socket
 import subprocess
@@ -26,6 +28,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from neo4j import GraphDatabase
 from playwright.sync_api import Page, sync_playwright
 
 # ---------------------------------------------------------------------------
@@ -92,12 +95,23 @@ DUP_INPUT = 'input[data-dup-idx="{}"]'
 # reads ?apiPort= to point at the matching port.
 WORKBENCH_API_PORT = 8001
 API_BASE = f"http://localhost:{WORKBENCH_API_PORT}/api/v1"
-# The ONLY Neo4j port this suite may run against. conftest pins the pytest
-# process (and thus any uvicorn we *start*) to this port via .env.test; the
-# api_server fixture additionally probes /healthz to validate any *externally*
-# running server on the workbench port, so a dev API (make api → 7687) can never
-# be reused and seeded with test rows. Keep in sync with conftest._TEST_PORT_ALLOWLIST.
-TEST_NEO4J_PORT = 7688
+# The ONLY Neo4j this suite may touch: the DEDICATED workbench instance
+# (docker service neo4j-workbench, `make db-workbench-up`). Deliberately NOT
+# the shared test DB (7688): the pytest suite full-wipes 7688 per-module
+# (conftest._wipe, test_seed/test_traversals autouse fixtures), so a concurrent
+# `make test` deletes any seeds this suite plants there mid-run — no naming
+# convention or teardown discipline survives that. Conversely, this suite's
+# pre-seed wipe (see _wipe_workbench_db) would destroy a concurrent pytest
+# session's data if it pointed at 7688. The api_server fixture starts uvicorn
+# with NEO4J_URI pinned to the literal below and /healthz-verifies the running
+# server; the guard and the wipe both derive from this ONE literal, never from
+# os.environ (conftest pins the pytest process env to 7688 via .env.test, so an
+# env-derived guard would misfire).
+WORKBENCH_NEO4J_PORT = 7689
+WORKBENCH_NEO4J_URI = f"bolt://localhost:{WORKBENCH_NEO4J_PORT}"
+# Committed docker-compose literals (neo4j-workbench service) — not secrets.
+WORKBENCH_NEO4J_AUTH = ("neo4j", "ondoway_workbench_2026")
+WORKBENCH_NEO4J_DATABASE = "neo4j"
 WORKBENCH_URL = (
     f"{(Path(__file__).parent.parent / 'frontend' / 'review.html').resolve().as_uri()}"
     f"?apiPort={WORKBENCH_API_PORT}"
@@ -406,8 +420,8 @@ def _port_open(host: str, port: int) -> bool:
         return s.connect_ex((host, port)) == 0
 
 
-def _server_neo4j_port(api_base: str, *, retries: int = 1, delay: float = 0.5) -> int | None:
-    """Probe ``{api_base}/healthz`` and return the Neo4j port the API is bound to.
+def _server_healthz(api_base: str, *, retries: int = 1, delay: float = 0.5) -> dict | None:
+    """Probe ``{api_base}/healthz`` and return the parsed payload.
 
     Returns ``None`` if the server has no ``/healthz`` (a build predating the
     guard) or the probe fails — both of which the caller treats as "unverifiable".
@@ -420,9 +434,8 @@ def _server_neo4j_port(api_base: str, *, retries: int = 1, delay: float = 0.5) -
             req = urllib.request.Request(url, method="GET")
             with urllib.request.urlopen(req, timeout=5) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
-            port = data.get("neo4j_port")
-            if port is not None:
-                return int(port)
+            if data.get("neo4j_port") is not None:
+                return data
         except Exception:
             pass
         if attempt < retries - 1:
@@ -430,50 +443,75 @@ def _server_neo4j_port(api_base: str, *, retries: int = 1, delay: float = 0.5) -
     return None
 
 
-def _assert_server_is_test_db(api_base: str, *, source: str, retries: int = 1) -> None:
-    """Fail fast unless the API at ``api_base`` is on the test Neo4j (7688).
+def _server_neo4j_port(api_base: str, *, retries: int = 1, delay: float = 0.5) -> int | None:
+    """The Neo4j port the API at ``api_base`` is bound to (None if unverifiable)."""
+    data = _server_healthz(api_base, retries=retries, delay=delay)
+    return int(data["neo4j_port"]) if data else None
 
-    Guards the data-corruption bug where a dev ``make api`` (Neo4j port 7687) is
-    already listening on :8000: the suite would otherwise seed test POIs into —
-    and assert against — the dev graph (observed: dev POI count 371 → 373).
-    ``source`` ('external' / 'managed') is woven into the message so the failure
-    says exactly which server was rejected and how to fix it. Raises
-    ``RuntimeError`` (mirroring conftest._assert_test_port) so the fixture
-    propagates a clear, fatal error.
+
+def _assert_server_is_workbench_db(api_base: str, *, source: str, retries: int = 1) -> None:
+    """Fail fast unless the API at ``api_base`` is LIVE on the workbench Neo4j (7689).
+
+    Guards the data-corruption bug where some other API is already listening on
+    :8001 — a dev ``make api``-style server (7687) or a shared-test-DB server
+    (7688): the suite would otherwise seed POIs into — and assert against — the
+    wrong graph (observed historically: dev POI count 371 → 373; and 7688
+    residue/wipes from concurrent `make test` runs breaking exact-count
+    assertions). Also requires ``neo4j_connected: true`` so a server whose
+    workbench container is down fails here with a clear message instead of
+    surfacing as generic seeding errors. ``source`` ('external' / 'managed') is
+    woven into the message so the failure says exactly which server was rejected
+    and how to fix it. Raises ``RuntimeError`` (mirroring
+    conftest._assert_test_port) so the fixture propagates a clear, fatal error.
     """
-    port = _server_neo4j_port(api_base, retries=retries)
-    if port == TEST_NEO4J_PORT:
-        return
-    if port is None:
+    data = _server_healthz(api_base, retries=retries)
+    if data is None:
         raise RuntimeError(
             f"API on :{WORKBENCH_API_PORT} ({source}) did not answer GET {api_base}/healthz "
-            f"with a Neo4j port, so it cannot be confirmed to point at the test database "
-            f"(port {TEST_NEO4J_PORT}). Refusing to seed test data into an unknown graph. "
-            f"Stop whatever is on :{WORKBENCH_API_PORT} and re-run (the suite starts its "
-            f"own server), or start a test-DB API with `make api-test`."
+            f"with a Neo4j port, so it cannot be confirmed to point at the workbench "
+            f"database (port {WORKBENCH_NEO4J_PORT}). Refusing to seed test data into an "
+            f"unknown graph. Stop whatever is on :{WORKBENCH_API_PORT} and re-run — the "
+            f"suite starts its own server."
         )
-    raise RuntimeError(
-        f"API on :{WORKBENCH_API_PORT} ({source}) is connected to Neo4j port {port}, not the "
-        f"test database (port {TEST_NEO4J_PORT}); reusing it would seed test POIs into a "
-        f"non-test graph. Stop whatever is on :{WORKBENCH_API_PORT}, then re-run "
-        f"`make test-workbench` (or use `make api-test` for a reusable test-DB server)."
-    )
+    port = int(data["neo4j_port"])
+    if port != WORKBENCH_NEO4J_PORT:
+        raise RuntimeError(
+            f"API on :{WORKBENCH_API_PORT} ({source}) is connected to Neo4j port {port}, not "
+            f"the dedicated workbench database (port {WORKBENCH_NEO4J_PORT}); reusing it "
+            f"would seed POIs into the wrong graph (7687 = dev, 7688 = the shared pytest DB "
+            f"that concurrent `make test` runs full-wipe). Stop whatever is on "
+            f":{WORKBENCH_API_PORT}, then re-run `make test-workbench`."
+        )
+    if data.get("neo4j_connected") is not True:
+        raise RuntimeError(
+            f"API on :{WORKBENCH_API_PORT} ({source}) points at the workbench port "
+            f"{WORKBENCH_NEO4J_PORT} but reports neo4j_connected="
+            f"{data.get('neo4j_connected')!r} — the workbench Neo4j is not answering. "
+            f"Start it with `make db-workbench-up`, then re-run `make test-workbench`."
+        )
 
 
 @pytest.fixture(scope="module")
 def api_server():
-    """Provide an API server on the workbench test port that points at the test DB.
+    """Start (and own) the API server on :{WORKBENCH_API_PORT} → workbench Neo4j (7689).
 
     Runs on :{WORKBENCH_API_PORT} (not the dev workbench's 8000) so `make api` and
-    this suite coexist. Reuses an already-running server on that port ONLY after
-    /healthz confirms it is connected to the test database (port 7688); otherwise
-    it fails fast rather than seed a dev/prod graph. A server we start ourselves is
-    verified too, proving it inherited the .env.test (7688) config from conftest.
+    this suite coexist. A busy port is a hard failure — the suite deliberately
+    does NOT reuse an external server: reuse plus this suite's pre-seed wipe
+    would let two concurrent test-workbench runs DETACH-DELETE each other's
+    seeds mid-run (the exact cross-run interference class this suite's dedicated
+    DB exists to kill). The uvicorn subprocess gets NEO4J_* pinned explicitly to
+    the workbench literals (src.connection's plain load_dotenv() never overrides
+    a set env var, so the pin survives the subprocess's import-time dotenv), and
+    /healthz must then prove it is live on 7689 before any seeding.
     """
     if _port_open("127.0.0.1", WORKBENCH_API_PORT):
-        _assert_server_is_test_db(API_BASE, source="external", retries=3)
-        yield "external"
-        return
+        raise RuntimeError(
+            f"Port {WORKBENCH_API_PORT} is already in use. The workbench suite starts its "
+            f"own API and does not reuse external servers (concurrent runs would wipe each "
+            f"other's seed data). Stop whatever is on :{WORKBENCH_API_PORT} — e.g. a "
+            f"`make api-test` server or another `make test-workbench` run — and re-run."
+        )
 
     proc = subprocess.Popen(
         [
@@ -488,6 +526,13 @@ def api_server():
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env={
+            **os.environ,
+            "NEO4J_URI": WORKBENCH_NEO4J_URI,
+            "NEO4J_USER": WORKBENCH_NEO4J_AUTH[0],
+            "NEO4J_PASSWORD": WORKBENCH_NEO4J_AUTH[1],
+            "NEO4J_DATABASE": WORKBENCH_NEO4J_DATABASE,
+        },
     )
 
     for _ in range(30):
@@ -500,8 +545,8 @@ def api_server():
 
     try:
         # The socket opens before lifespan startup finishes, so give /healthz a
-        # grace window. This also proves the managed server connected to 7688.
-        _assert_server_is_test_db(API_BASE, source="managed", retries=20)
+        # grace window. This proves the managed server is LIVE on 7689.
+        _assert_server_is_workbench_db(API_BASE, source="managed", retries=20)
     except BaseException:
         proc.terminate()
         proc.wait(timeout=5)
@@ -519,9 +564,42 @@ def reporter():
     return BugReporter()
 
 
+def _wipe_workbench_db() -> None:
+    """DETACH DELETE every node on the dedicated workbench Neo4j — and ONLY there.
+
+    Runs before seeding so residue from any prior run (a SIGKILLed suite, an
+    orphaned NarrativeBeat left by the prefix-based teardown, a node minted by a
+    Same-Place upload under an unexpected Nominatim city casing) can never leak
+    into this run's exact-count or proximity assertions. The connection and the
+    guard both derive from the WORKBENCH_NEO4J_URI literal — never os.environ
+    and never src.connection.create_driver(), because conftest pins the pytest
+    process env to the SHARED test DB (7688) via .env.test, and wiping that
+    instance would destroy a concurrent `make test` session's data.
+    """
+    port = urllib.parse.urlparse(WORKBENCH_NEO4J_URI).port
+    if port != WORKBENCH_NEO4J_PORT:  # single-literal invariant, checked at call time
+        raise RuntimeError(
+            f"Refusing to wipe: WORKBENCH_NEO4J_URI={WORKBENCH_NEO4J_URI!r} does not point "
+            f"at the dedicated workbench port {WORKBENCH_NEO4J_PORT}."
+        )
+    driver = GraphDatabase.driver(WORKBENCH_NEO4J_URI, auth=WORKBENCH_NEO4J_AUTH)
+    try:
+        with driver.session(database=WORKBENCH_NEO4J_DATABASE) as session:
+            session.run("MATCH (n) DETACH DELETE n")
+    finally:
+        driver.close()
+
+
 @pytest.fixture(scope="module")
 def seed_data(api_server):
-    """Seed test data into Neo4j via the API server and clean up after all tests."""
+    """Seed test data into Neo4j via the API server and clean up after all tests.
+
+    The pre-seed wipe makes every run start from an empty workbench graph, so
+    the suite's exact-count assertions (e.g. exactly 13 worklist rows) stay
+    byte-identical AND deterministic.
+    """
+    _wipe_workbench_db()
+
     resp = _api_get("/nodes/Lens?limit=1")
     if resp is None:
         pytest.fail(f"API not reachable at {API_BASE} despite server being {api_server}")
@@ -703,11 +781,13 @@ def browser_page(seed_data, reporter):
 # ---------------------------------------------------------------------------
 
 
-def _stub_healthz_server(neo4j_port: int | None):
+def _stub_healthz_server(neo4j_port: int | None, *, connected: bool = True):
     """Start a real localhost HTTP server that mimics the API's /healthz.
 
     If ``neo4j_port`` is None the handler 404s /healthz (a build predating the
-    guard). Returns ``(server, base_url)``; caller must ``server.shutdown()``.
+    guard). ``connected=False`` mimics a server whose Neo4j container is down
+    (status degraded). Returns ``(server, base_url)``; caller must
+    ``server.shutdown()``.
     """
     import http.server
     import threading
@@ -717,11 +797,11 @@ def _stub_healthz_server(neo4j_port: int | None):
             if self.path.endswith("/healthz") and neo4j_port is not None:
                 body = json.dumps(
                     {
-                        "status": "ok",
+                        "status": "ok" if connected else "degraded",
                         "neo4j_uri": f"bolt://localhost:{neo4j_port}",
                         "neo4j_port": neo4j_port,
                         "neo4j_database": "neo4j",
-                        "neo4j_connected": True,
+                        "neo4j_connected": connected,
                     }
                 ).encode("utf-8")
                 self.send_response(200)
@@ -743,12 +823,16 @@ def _stub_healthz_server(neo4j_port: int | None):
 
 
 class TestApiServerGuard:
-    """Proves api_server refuses to reuse a non-test server on :8000.
+    """Proves the healthz guard only accepts a server LIVE on the workbench DB.
 
-    Regression for the data-corruption bug: a dev `make api` (Neo4j port 7687)
-    already listening on :8000 was reused by this suite, which then seeded test
-    POIs into — and asserted against — the dev graph (observed: 371 → 373).
-    These tests need no Neo4j and no browser, so they run fast and always.
+    Regression for two data-corruption bugs: (1) a dev `make api` (Neo4j 7687)
+    listening on the suite's HTTP port was reused, seeding test POIs into the
+    dev graph (observed: 371 → 373); (2) the suite ran against the SHARED test
+    DB (7688), where concurrent `make test` sessions full-wipe per-module and
+    other suites leave residue (toy 'Eiffel Tower' at the exact conflict-seed
+    coords) — breaking exact-count and proximity assertions. 7688 must now be
+    rejected exactly like 7687. These tests need no Neo4j and no browser, so
+    they run fast and always.
     """
 
     def test_guard_rejects_dev_pointed_server(self):
@@ -756,16 +840,37 @@ class TestApiServerGuard:
         try:
             assert _server_neo4j_port(base) == 7687
             with pytest.raises(RuntimeError, match="7687"):
-                _assert_server_is_test_db(base, source="external")
+                _assert_server_is_workbench_db(base, source="external")
         finally:
             server.shutdown()
 
-    def test_guard_accepts_test_pointed_server(self):
-        server, base = _stub_healthz_server(TEST_NEO4J_PORT)
+    def test_guard_rejects_shared_test_db_server(self):
+        # The shared pytest DB (7688) is NOT the workbench DB: concurrent
+        # `make test` runs wipe it and other suites' residue lives there.
+        server, base = _stub_healthz_server(7688)
         try:
-            assert _server_neo4j_port(base) == TEST_NEO4J_PORT
-            # Must NOT raise — a test-DB server (port 7688) is reusable.
-            _assert_server_is_test_db(base, source="external")
+            assert _server_neo4j_port(base) == 7688
+            with pytest.raises(RuntimeError, match="7688"):
+                _assert_server_is_workbench_db(base, source="external")
+        finally:
+            server.shutdown()
+
+    def test_guard_accepts_workbench_pointed_server(self):
+        server, base = _stub_healthz_server(WORKBENCH_NEO4J_PORT)
+        try:
+            assert _server_neo4j_port(base) == WORKBENCH_NEO4J_PORT
+            # Must NOT raise — a live workbench-DB server (port 7689) is valid.
+            _assert_server_is_workbench_db(base, source="managed")
+        finally:
+            server.shutdown()
+
+    def test_guard_rejects_workbench_server_with_db_down(self):
+        # Right port but neo4j_connected=false (container down) -> reject with
+        # a message that names the fix, instead of generic seeding errors.
+        server, base = _stub_healthz_server(WORKBENCH_NEO4J_PORT, connected=False)
+        try:
+            with pytest.raises(RuntimeError, match="db-workbench-up"):
+                _assert_server_is_workbench_db(base, source="managed")
         finally:
             server.shutdown()
 
@@ -775,7 +880,7 @@ class TestApiServerGuard:
         try:
             assert _server_neo4j_port(base) is None
             with pytest.raises(RuntimeError, match="unknown graph"):
-                _assert_server_is_test_db(base, source="external")
+                _assert_server_is_workbench_db(base, source="external")
         finally:
             server.shutdown()
 
