@@ -208,14 +208,22 @@ class TestTripGenerateEngine:
         assert any(s["script_body"] for s in data["stops"])
 
     def test_options_surface_k_flavours(self, ile_response):
-        """M6: the response carries 1-3 RouteOptions; options[0] mirrors the
-        persisted trip; pairwise Jaccard over stop sets stays under 0.60."""
+        """M6: the response carries 1-3 RouteOptions; options[0]'s DWELL stops
+        mirror the persisted trip; pairwise Jaccard over dwell sets < 0.60.
+
+        Track B (B.3) interleaves band="vignette" walk-past stops into
+        RouteOption.stops — additive annotations, not itinerary stops — so
+        the mirror and diversity assertions are dwell-scoped (the persisted
+        trip and the selection-time diversity filter are both dwell-only).
+        """
         options = ile_response["options"]
         assert 1 <= len(options) <= 3
-        assert [s["poi_id"] for s in options[0]["stops"]] == [
-            s["poi_id"] for s in ile_response["stops"]
-        ]
-        id_sets = [{s["poi_id"] for s in o["stops"]} for o in options]
+
+        def dwell_ids(option):
+            return [s["poi_id"] for s in option["stops"] if s["band"] == "dwell"]
+
+        assert dwell_ids(options[0]) == [s["poi_id"] for s in ile_response["stops"]]
+        id_sets = [set(dwell_ids(o)) for o in options]
         for i in range(len(id_sets)):
             for j in range(i + 1, len(id_sets)):
                 overlap = len(id_sets[i] & id_sets[j]) / len(id_sets[i] | id_sets[j])
@@ -224,6 +232,8 @@ class TestTripGenerateEngine:
             assert option["route_id"].startswith(ile_response["trip_id"])
             assert option["eta_seconds"] > 0
             assert option["stops"], "an option without stops is not an option"
+            for stop in option["stops"]:
+                assert stop["band"] in ("dwell", "vignette")
 
     def test_stop_order_matches_select_route(self, ile_response, ile_engine_route):
         expected = [p.id for p in ile_engine_route.pois]
