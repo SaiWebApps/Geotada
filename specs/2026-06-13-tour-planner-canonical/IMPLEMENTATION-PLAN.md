@@ -532,6 +532,18 @@ Step 4.11 — Functional close: dev-server end-to-end + full bar.
 
 ## Track B — atomized (Phase 3+ enrichment: vignettes, eval loop, golden gap)
 
+> **STATUS 2026-07-02:** built by parallel worktree agents, verified + cherry-picked to main.
+> B.1 select_vignettes (33e33c5→…) · B.2 Route.vignettes, identity proven — goldens EXACTLY
+> Île 53.2% / PdV 66.7% after merge · B.3 engine interleave + API surfacing (d5b7b43; the M6
+> options-mirror test became dwell-scoped, 0866e01) · B.4 vignette_beats voicing seam · B.5–B.7
+> workbench (vignette cards/pins, map click-to-set start/end + Clear, 👍/👎+note → /feedback with
+> tour_context → GitHub issue) — test-workbench 43 passed · B.8 GOLDEN-GAP-DIAGNOSTIC.md + `make
+> golden-diff`: the gap is NOT corpus/reach — 26/28 missed beats are beat_select single-winner
+> emission policy (the one "no-spatial-key closer" slot alone costs Île 16 beats). Closing it is
+> a calibration change against tour-grade + audio budgets — deliberately NOT smuggled in here.
+> Mobile 4.9/4.10 merged (202 Flutter tests): options parsing + flavour picker bottom sheet →
+> composeTrip → stop-list rebuild → per-stop audio on the NEW stop ids; 422 keeps the sheet open.
+
 ```
 Step B.1 — Pure vignette selection along the legs.
   Change:   selection.py (or new vignettes.py): select_vignettes(route, snapshot, lenses) ->
