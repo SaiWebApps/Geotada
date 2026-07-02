@@ -523,11 +523,20 @@ Step 4.10 — Mobile flavour picker + composeTrip service call.
             user offered remaining flavours; no options -> no sheet, legacy flow intact.
   Proof:    make flutter-test
 
-Step 4.11 — Functional close: dev-server end-to-end + full bar.
+Step 4.11 — Functional close: dev-server end-to-end + full bar.  [DONE 2026-07-02]
   Change:   none (verification step).
-  Tests:    funct: dev server — generate -> compose(mock) -> generate-trip-stops -> every stop has
-            audio of the COMPOSED narration; tour-audio-gate green on composed text.
-  Proof:    make test + make test-workbench + make test-golden + make tour-grade pasted
+  RESULT:   dev server (make api, 8000/7687): generate 201 (7 stops, 3 options, 5 vignette stops)
+            -> compose opt1 200 (attempts=1, composed narration re-persisted, audio nulled) ->
+            re-compose 409 already_composed -> /audio/generate-trip-stops 200 (7 generated, 0
+            failed) -> stop-status has_audio true (177.6s mp3 of the COMPOSED narration).
+            Bars: make test EXIT 0 (Python local full + Flutter 202); make test-workbench 43
+            passed; make test-golden overlap EXACTLY unchanged (Île 53.2% / PdV 66.7%); make
+            tour-grade 4 passed (incl. never-swim-the-Seine + broken-golden detection).
+            LIVE gate note: make tour-compose-gate is built and its mechanism proven with the
+            REAL Opus compose + REAL Haiku checker (it correctly REFUSED unfaithful reflections
+            across runs 2-3; run 4 was stopped by Anthropic credit exhaustion). The final
+            end-to-end PASS run awaits an API credit top-up; the reflection prompt now pins the
+            gate's exact rule (2378880).
 ```
 
 ## Track B — atomized (Phase 3+ enrichment: vignettes, eval loop, golden gap)
