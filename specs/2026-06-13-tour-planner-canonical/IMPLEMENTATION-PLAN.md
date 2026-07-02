@@ -371,6 +371,15 @@ From the adversarial review — non-blocking for Phase 1–2, resolve at the pha
 
 ## Phase 4 — atomized (Track A: LLM compose + reflections)  [atomized 2026-07-01]
 
+> **STATUS 2026-07-02:** 4.0 (e578acb, dev graph backfilled 1122/1544) · 4.1 (0fa4db7) · 4.2 (c7d61a0)
+> · 4.3 (ae9997b) · 4.4 (0236682) · 4.5 (33211cb + d643d0f streaming/64K truncation fix) · 4.6
+> (53737db) · 4.7 (b76105d + 29ee847 provenance-no-op fix its integ tests exposed) · 4.8 (abc2ce4)
+> DONE on main. Live-gate calibration from the first real Opus+Haiku runs: 4b3656c — corpus is
+> canonical in faithfulness (verbatim beat sentences skip entailment; rewrites entail against
+> key_claims + script_body; reflections stay claims-only fail-closed). 4.9/4.10 (mobile) built by a
+> parallel worktree agent; 4.11 functional close runs at merge. ANTHROPIC_API_KEY retrieved from
+> Render via CLI device-flow (in .env now); COMPOSE_PROVIDER=mock on Render until flipped.
+
 > Session 2026-07-01 resumption (handoff recovered from the 2026-06-30 transcript; restored to
 > `/var/folders/.../T/ondoway-tour-algorithm-handoff.md`). Narrator voice is LOCKED single-narrator —
 > `specs/2026-06-14-compose-narrator/00-narrator-voice-decision.md` (recovered + committed e2799de).
