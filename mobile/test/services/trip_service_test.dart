@@ -383,5 +383,137 @@ void main() {
         throwsA(isA<TripServiceException>()),
       );
     });
+
+    test('composeTrip POSTs route_id to the compose endpoint and parses stops',
+        () async {
+      Map<String, dynamic>? capturedBody;
+
+      final client = MockClient((request) async {
+        expect(request.method, 'POST');
+        expect(request.url.path, contains('/trips/trip-123/compose'));
+        expect(request.headers['Content-Type'], 'application/json');
+        expect(request.headers['Authorization'], 'Bearer test-token');
+        capturedBody = jsonDecode(request.body) as Map<String, dynamic>;
+        return http.Response(
+          jsonEncode({
+            'trip_id': 'trip-123',
+            'route_id': 'trip-123-opt2',
+            'attempts': 1,
+            'stops': [
+              {
+                'sort_order': 1,
+                // FRESH stop_id — stops are re-persisted by /compose.
+                'stop_id': 'item-new-1',
+                'poi_id': 'poi-1',
+                'poi_name': 'Eiffel Tower',
+                'lat': 48.8584,
+                'lng': 2.2945,
+                'beat_id': 'beat-1',
+                'beat_ids': ['beat-1'],
+                'lens_name': 'dark_history',
+                'lens_display': 'Dark History',
+                'duration_min': 5,
+                'importance_tier': 5,
+                'start_time': '09:00',
+                'narration': 'Composed narration.',
+                'audio_url': null,
+                'audio_duration_sec': null,
+                'dwell_seconds': 300,
+                'transit_polyline': null,
+              },
+            ],
+          }),
+          200,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+      final stops = await service.composeTrip(
+        'trip-123',
+        'trip-123-opt2',
+        'test-token',
+      );
+
+      expect(capturedBody, {'route_id': 'trip-123-opt2'});
+      expect(stops.length, 1);
+      expect(stops[0].stopId, 'item-new-1');
+      expect(stops[0].poiName, 'Eiffel Tower');
+      // Audio is generated AFTER compose by the per-stop flow.
+      expect(stops[0].audioUrl, isNull);
+    });
+
+    test(
+        'composeTrip throws ComposeVerificationException on 422 '
+        'compose_verification_failed', () async {
+      final client = MockClient((request) async {
+        return http.Response(
+          jsonEncode({
+            'detail': {
+              'reason': 'compose_verification_failed',
+              'attempts': 2,
+            },
+          }),
+          422,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+
+      expect(
+        () => service.composeTrip('trip-123', 'trip-123-opt1', 'token'),
+        throwsA(
+          isA<ComposeVerificationException>()
+              .having((e) => e.reason, 'reason', 'compose_verification_failed')
+              .having((e) => e.attempts, 'attempts', 2),
+        ),
+      );
+    });
+
+    test('composeTrip throws plain TripServiceException on 404', () async {
+      final client = MockClient((request) async {
+        return http.Response(
+          jsonEncode({'detail': 'Trip not found'}),
+          404,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+
+      await expectLater(
+        () => service.composeTrip('bad-id', 'bad-id-opt1', 'token'),
+        throwsA(
+          isA<TripServiceException>().having(
+            (e) => e is ComposeVerificationException,
+            'is not a verification refusal',
+            isFalse,
+          ),
+        ),
+      );
+    });
+
+    test('composeTrip throws plain TripServiceException on 409 '
+        'already_composed', () async {
+      final client = MockClient((request) async {
+        return http.Response(
+          jsonEncode({
+            'detail': {'reason': 'already_composed', 'route_id': 'r1'},
+          }),
+          409,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+
+      await expectLater(
+        () => service.composeTrip('trip-123', 'trip-123-opt1', 'token'),
+        throwsA(
+          isA<TripServiceException>().having(
+            (e) => e is ComposeVerificationException,
+            'is not a verification refusal',
+            isFalse,
+          ),
+        ),
+      );
+    });
   });
 }

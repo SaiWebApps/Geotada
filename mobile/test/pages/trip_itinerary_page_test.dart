@@ -408,6 +408,438 @@ void main() {
       expect(find.text('Trip not found'), findsOneWidget);
     });
 
+    group('flavour picker (Phase 4 Step 4.10)', () {
+      // Generate response carrying 2 RouteOptions; options[0] is the
+      // backend-persisted default. Stops carry the ORIGINAL stop_id.
+      Map<String, dynamic> generateResponseWithOptions() => {
+            'trip_id': 'trip-gen',
+            'trip_name': 'Generated',
+            'profile_id': 'p1',
+            'total_stops': 1,
+            'total_duration_min': 30,
+            'anchor_count': 0,
+            'flavour_count': 1,
+            'stops': [
+              {
+                'sort_order': 1,
+                'stop_id': 'stop-old-1',
+                'poi_id': 'poi-1',
+                'poi_name': 'Old POI',
+                'lat': 48.85,
+                'lng': 2.34,
+                'beat_id': 'b1',
+                'lens_name': 'a',
+                'lens_display': 'A',
+                'duration_min': 5,
+                'importance_tier': 3,
+                'start_time': '09:00',
+              },
+            ],
+            'options': [
+              {
+                'route_id': 'trip-gen-opt1',
+                'stops': [
+                  {'name': 'Old POI', 'band': 'dwell', 'minutes': 10},
+                  {'name': 'Walk-past', 'band': 'vignette', 'minutes': 2},
+                ],
+                'eta_seconds': 3600,
+              },
+              {
+                'route_id': 'trip-gen-opt2',
+                'stops': [
+                  {'name': 'B1', 'band': 'dwell', 'minutes': 10},
+                  {'name': 'B2', 'band': 'dwell', 'minutes': 5},
+                ],
+                'eta_seconds': 5400,
+                'lens_coverage_note': 'Dark History runs thin',
+              },
+            ],
+          };
+
+      // /compose re-persists the stops: FRESH stop_id, composed narration,
+      // audio nulled (voiced afterwards by the per-stop flow).
+      Map<String, dynamic> composeResponse() => {
+            'trip_id': 'trip-gen',
+            'route_id': 'trip-gen-opt2',
+            'attempts': 1,
+            'stops': [
+              {
+                'sort_order': 1,
+                'stop_id': 'stop-new-1',
+                'poi_id': 'poi-9',
+                'poi_name': 'Composed POI',
+                'lat': 48.86,
+                'lng': 2.35,
+                'beat_id': 'b9',
+                'lens_name': 'a',
+                'lens_display': 'A',
+                'duration_min': 5,
+                'importance_tier': 3,
+                'start_time': '09:00',
+                'narration': 'Composed narration.',
+                'audio_url': null,
+                'audio_duration_sec': null,
+                'transit_polyline': null,
+              },
+            ],
+          };
+
+      Future<AuthService> authedAuthService() async {
+        final authClient = MockClient((request) async {
+          if (request.url.path.contains('verify')) {
+            return http.Response(
+              jsonEncode({
+                'access_token': 'tok',
+                'refresh_token': 'ref',
+                'token_type': 'bearer',
+              }),
+              200,
+            );
+          }
+          return http.Response(
+            jsonEncode({'id': 'user-1', 'email': 'test@example.com'}),
+            200,
+          );
+        });
+        final auth =
+            AuthService(storage: _FakeSecureStorage(), httpClient: authClient);
+        await auth.verifyMagicLink('tok');
+        return auth;
+      }
+
+      Future<void> pumpTripPage(
+        WidgetTester tester, {
+        required TripService tripService,
+        required AudioService audioService,
+        required AuthService authService,
+        required String tripId,
+      }) async {
+        await tester.pumpWidget(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider<TripService>.value(value: tripService),
+              ChangeNotifierProvider<AudioService>.value(value: audioService),
+              ChangeNotifierProvider<AuthService>.value(value: authService),
+            ],
+            child: MaterialApp.router(
+              routerConfig: GoRouter(
+                initialLocation: '/trip/$tripId',
+                routes: [
+                  GoRoute(
+                    path: '/trip/:tripId',
+                    builder: (context, state) => TripItineraryPage(
+                      tripId: state.pathParameters['tripId']!,
+                    ),
+                  ),
+                  GoRoute(
+                    path: '/saved-trips',
+                    builder: (context, state) => const Scaffold(
+                      body: Center(child: Text('Saved Trips')),
+                    ),
+                  ),
+                ],
+              ),
+              theme: ThemeData(
+                colorSchemeSeed: const Color(0xFF3D5AFE),
+                useMaterial3: true,
+                brightness: Brightness.dark,
+              ),
+            ),
+          ),
+        );
+        await tester.pump();
+        await tester.pump();
+      }
+
+      testWidgets(
+          'sheet renders k options with dwell counts BEFORE the prepare flow',
+          (tester) async {
+        var perStopTriggered = false;
+        final mockClient = MockClient((request) async {
+          if (request.url.path.contains('/trips/generate')) {
+            return http.Response(
+                jsonEncode(generateResponseWithOptions()), 201);
+          }
+          if (request.url.path.contains('/audio/generate-trip-stops/')) {
+            perStopTriggered = true;
+            return http.Response(
+              jsonEncode({
+                'trip_id': 'trip-gen',
+                'generated': 1,
+                'skipped': 0,
+                'failed': 0,
+                'results': [],
+              }),
+              200,
+            );
+          }
+          return http.Response('', 200);
+        });
+
+        final service = TripService(httpClient: mockClient);
+        final audio = AudioService(httpClient: mockClient);
+        await service.generateTrip(
+          profileId: 'p1',
+          centerLat: 48.85,
+          centerLng: 2.34,
+          startDate: '2026-07-02',
+          endDate: '2026-07-02',
+          accessToken: 'tok',
+        );
+        final auth = await authedAuthService();
+
+        await pumpTripPage(
+          tester,
+          tripService: service,
+          audioService: audio,
+          authService: auth,
+          tripId: 'trip-gen',
+        );
+
+        await tester.tap(find.text('Confirm & Prepare'));
+        await tester.pumpAndSettle();
+
+        // k = 2 flavour rows, dwell-only counts, eta minutes, coverage note.
+        expect(find.text('Choose your tour flavour'), findsOneWidget);
+        expect(find.text('Flavour 1'), findsOneWidget);
+        expect(find.text('Flavour 2'), findsOneWidget);
+        expect(find.textContaining('1 dwell stops · 60 min'), findsOneWidget);
+        expect(find.textContaining('2 dwell stops · 90 min'), findsOneWidget);
+        expect(find.textContaining('Dark History runs thin'), findsOneWidget);
+        // The existing confirm flow is gated BEHIND the picker.
+        expect(perStopTriggered, isFalse,
+            reason: 'prepare flow must not run while the picker is open');
+
+        await tester.pumpWidget(const SizedBox());
+      });
+
+      testWidgets(
+          'tap composes exactly once, rebuilds stops, audio flow hits the '
+          'NEW stop ids', (tester) async {
+        var composeCalls = 0;
+        String? composedRouteId;
+        var perStopTriggered = false;
+        final polledStopIds = <String>[];
+
+        final mockClient = MockClient((request) async {
+          if (request.url.path.contains('/trips/generate')) {
+            return http.Response(
+                jsonEncode(generateResponseWithOptions()), 201);
+          }
+          if (request.url.path.contains('/trips/trip-gen/compose')) {
+            composeCalls++;
+            composedRouteId =
+                (jsonDecode(request.body) as Map<String, dynamic>)['route_id']
+                    as String?;
+            return http.Response(jsonEncode(composeResponse()), 200);
+          }
+          if (request.url.path.contains('/audio/generate-trip-stops/')) {
+            perStopTriggered = true;
+            return http.Response(
+              jsonEncode({
+                'trip_id': 'trip-gen',
+                'generated': 1,
+                'skipped': 0,
+                'failed': 0,
+                'results': [],
+              }),
+              200,
+            );
+          }
+          if (request.url.path.contains('/audio/stop-status/')) {
+            polledStopIds.add(request.url.pathSegments.last);
+            return http.Response(
+              jsonEncode({
+                'stop_id': request.url.pathSegments.last,
+                'has_audio': true,
+                'audio_url': 'https://cdn.example.com/stop.mp3',
+                'duration_sec': 120,
+              }),
+              200,
+            );
+          }
+          return http.Response('', 200);
+        });
+
+        final service = TripService(httpClient: mockClient);
+        final audio = AudioService(httpClient: mockClient);
+        await service.generateTrip(
+          profileId: 'p1',
+          centerLat: 48.85,
+          centerLng: 2.34,
+          startDate: '2026-07-02',
+          endDate: '2026-07-02',
+          accessToken: 'tok',
+        );
+        final auth = await authedAuthService();
+
+        await pumpTripPage(
+          tester,
+          tripService: service,
+          audioService: audio,
+          authService: auth,
+          tripId: 'trip-gen',
+        );
+        expect(find.text('Old POI'), findsOneWidget);
+
+        await tester.tap(find.text('Confirm & Prepare'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Flavour 2'));
+        // Discrete pumps, NOT pumpAndSettle: once the prepare flow starts,
+        // the FAB shows an indeterminate spinner that never settles.
+        await tester.pump(); // compose request + sheet pop
+        await tester.pump(const Duration(milliseconds: 400)); // exit anim
+        await tester.pump(); // post-setState frame
+
+        // composeTrip called exactly once, with the picked flavour.
+        expect(composeCalls, 1);
+        expect(composedRouteId, 'trip-gen-opt2');
+        // The page rebuilt its stop list from the compose response.
+        expect(find.text('Composed POI'), findsOneWidget);
+        expect(find.text('Old POI'), findsNothing);
+        // Only then does the existing per-stop flow run…
+        expect(perStopTriggered, isTrue);
+
+        // …and its poll hits the FRESH stop_id, never the stale one.
+        await tester.pump(const Duration(seconds: 3));
+        await tester.pump();
+        expect(polledStopIds, contains('stop-new-1'));
+        expect(polledStopIds, isNot(contains('stop-old-1')));
+
+        // Cancel the page's poll timer via State.dispose().
+        await tester.pumpWidget(const SizedBox());
+      });
+
+      testWidgets('422 refusal keeps the sheet open with remaining flavours',
+          (tester) async {
+        var composeCalls = 0;
+        var perStopTriggered = false;
+
+        final mockClient = MockClient((request) async {
+          if (request.url.path.contains('/trips/generate')) {
+            return http.Response(
+                jsonEncode(generateResponseWithOptions()), 201);
+          }
+          if (request.url.path.contains('/trips/trip-gen/compose')) {
+            composeCalls++;
+            return http.Response(
+              jsonEncode({
+                'detail': {
+                  'reason': 'compose_verification_failed',
+                  'attempts': 2,
+                },
+              }),
+              422,
+            );
+          }
+          if (request.url.path.contains('/audio/generate-trip-stops/')) {
+            perStopTriggered = true;
+            return http.Response('', 200);
+          }
+          return http.Response('', 200);
+        });
+
+        final service = TripService(httpClient: mockClient);
+        final audio = AudioService(httpClient: mockClient);
+        await service.generateTrip(
+          profileId: 'p1',
+          centerLat: 48.85,
+          centerLng: 2.34,
+          startDate: '2026-07-02',
+          endDate: '2026-07-02',
+          accessToken: 'tok',
+        );
+        final auth = await authedAuthService();
+
+        await pumpTripPage(
+          tester,
+          tripService: service,
+          audioService: audio,
+          authService: auth,
+          tripId: 'trip-gen',
+        );
+
+        await tester.tap(find.text('Confirm & Prepare'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Flavour 1'));
+        await tester.pumpAndSettle();
+
+        // Refused: SnackBar + sheet stays open with the REMAINING flavour.
+        expect(composeCalls, 1);
+        expect(
+            find.text('This flavour failed verification'), findsOneWidget);
+        expect(find.text('Choose your tour flavour'), findsOneWidget);
+        expect(find.text('Flavour 1'), findsNothing);
+        expect(find.text('Flavour 2'), findsOneWidget);
+        // The prepare flow never ran — the user still gets to pick.
+        expect(perStopTriggered, isFalse);
+
+        // Let the SnackBar's auto-dismiss timer elapse before teardown.
+        await tester.pump(const Duration(seconds: 5));
+        await tester.pumpAndSettle();
+        await tester.pumpWidget(const SizedBox());
+      });
+
+      testWidgets('no options renders no sheet — legacy flow untouched',
+          (tester) async {
+        var perStopTriggered = false;
+        final mockClient = MockClient((request) async {
+          if (request.url.path.contains('/audio/generate-trip-stops/')) {
+            perStopTriggered = true;
+            return http.Response(
+              jsonEncode({
+                'trip_id': 'trip-1',
+                'generated': 2,
+                'skipped': 0,
+                'failed': 0,
+                'results': [],
+              }),
+              200,
+            );
+          }
+          if (request.url.path.contains('/audio/status/')) {
+            return http.Response(
+              jsonEncode({
+                'beat_id': request.url.pathSegments.last,
+                'has_audio': true,
+                'audio_url': 'https://cdn.example.com/beat.mp3',
+              }),
+              200,
+            );
+          }
+          return http.Response('', 200);
+        });
+
+        final service = TripService(httpClient: mockClient);
+        final audio = AudioService(httpClient: mockClient);
+        // Saved-trip path (e.g. after restart): options are ABSENT -> [].
+        service.saveTrip(_sampleTrip());
+        final auth = await authedAuthService();
+
+        await pumpTripPage(
+          tester,
+          tripService: service,
+          audioService: audio,
+          authService: auth,
+          tripId: 'trip-1',
+        );
+
+        await tester.tap(find.text('Confirm & Prepare'));
+        // Discrete pumps, NOT pumpAndSettle: the prepare flow's FAB spinner
+        // is indeterminate and never settles.
+        await tester.pump();
+        await tester.pump();
+
+        // No sheet — straight into the existing confirm flow.
+        expect(find.text('Choose your tour flavour'), findsNothing);
+        expect(perStopTriggered, isTrue);
+
+        await tester.pump(const Duration(seconds: 3));
+        await tester.pump();
+        await tester.pumpWidget(const SizedBox());
+      });
+    });
+
     testWidgets('shows error card when audio preparation fails',
         (tester) async {
       // When accessToken is null, the null assertion throws.

@@ -191,6 +191,52 @@ class TripService extends ChangeNotifier {
     }
   }
 
+  /// POST /trips/{tripId}/compose — compose the picked flavour (Phase 4
+  /// Step 4.10). Body: {"route_id": routeId}. Returns the re-persisted stops
+  /// with FRESH stop_ids (narration is the composed text, audio_url is null —
+  /// audio is generated afterwards by the existing per-stop flow).
+  ///
+  /// Throws [ComposeVerificationException] when the backend REFUSES the
+  /// flavour (422 compose_verification_failed) so the caller can offer the
+  /// remaining flavours.
+  Future<List<ItineraryStop>> composeTrip(
+    String tripId,
+    String routeId,
+    String accessToken,
+  ) async {
+    final response = await _httpClient.post(
+      Uri.parse('$baseUrl/trips/$tripId/compose'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      },
+      body: jsonEncode({'route_id': routeId}),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      return (data['stops'] as List<dynamic>)
+          .map((s) => ItineraryStop.fromJson(s as Map<String, dynamic>))
+          .toList();
+    } else if (response.statusCode == 404) {
+      throw TripServiceException('Trip or route not found');
+    } else if (response.statusCode == 409) {
+      throw TripServiceException('Trip already composed');
+    } else if (response.statusCode == 422) {
+      final detail = _detailMap(response.body);
+      if (detail?['reason'] == 'compose_verification_failed') {
+        throw ComposeVerificationException(
+          attempts: (detail?['attempts'] as num?)?.toInt(),
+        );
+      }
+      throw TripServiceException('Compose failed (422): ${response.body}');
+    } else {
+      throw TripServiceException(
+        'Compose failed (${response.statusCode}): ${response.body}',
+      );
+    }
+  }
+
   /// Clear all local state.
   void reset() {
     _savedTrips = [];
@@ -208,6 +254,18 @@ class TripService extends ChangeNotifier {
       return body;
     }
   }
+
+  /// Structured error detail ({"detail": {...}}) or null when detail is a
+  /// plain string / body is not JSON.
+  Map<String, dynamic>? _detailMap(String body) {
+    try {
+      final data = jsonDecode(body) as Map<String, dynamic>;
+      final detail = data['detail'];
+      return detail is Map<String, dynamic> ? detail : null;
+    } catch (_) {
+      return null;
+    }
+  }
 }
 
 class TripServiceException implements Exception {
@@ -216,4 +274,16 @@ class TripServiceException implements Exception {
 
   @override
   String toString() => message;
+}
+
+/// The backend REFUSED a flavour: /compose returned 422 with
+/// detail.reason == "compose_verification_failed" (VERIFY failed after the
+/// recompose attempt). The user should pick another flavour.
+class ComposeVerificationException extends TripServiceException {
+  final String reason;
+  final int? attempts;
+
+  ComposeVerificationException({this.attempts})
+      : reason = 'compose_verification_failed',
+        super('This flavour failed verification');
 }
