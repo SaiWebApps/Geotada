@@ -60,11 +60,25 @@ GLUE_STAGING: str = "GLUE_STAGING"
 GLUE_PACING: str = "GLUE_PACING"
 GLUE_CALLBACK: str = "GLUE_CALLBACK"
 GLUE_CLOSING: str = "GLUE_CLOSING"
+# Phase 4 (spec §6): a reflection synthesizes what has ALREADY been visited,
+# spoken on a long leg. Placement is deterministic (reflection.py); the text is
+# LLM-composed at COMPOSE time and gated fail-closed by VERIFY — the stitcher
+# itself never writes one (a template cannot).
+GLUE_REFLECTION: str = "GLUE_REFLECTION"
 ARITH: str = "ARITH"
 SYNTHESIZED_OPENER: str = "SYNTHESIZED_OPENER"
 
 GLUE_LABELS: frozenset[str] = frozenset(
-    {GLUE_NAV, GLUE_STAGING, GLUE_PACING, GLUE_CALLBACK, GLUE_CLOSING, ARITH, SYNTHESIZED_OPENER}
+    {
+        GLUE_NAV,
+        GLUE_STAGING,
+        GLUE_PACING,
+        GLUE_CALLBACK,
+        GLUE_CLOSING,
+        GLUE_REFLECTION,
+        ARITH,
+        SYNTHESIZED_OPENER,
+    }
 )
 
 # Phrases generation must never emit (rule 32 + feedback_tour_tone_default).
@@ -802,6 +816,7 @@ __all__ = [
     "GLUE_LABELS",
     "GLUE_NAV",
     "GLUE_PACING",
+    "GLUE_REFLECTION",
     "GLUE_STAGING",
     "SYNTHESIZED_OPENER",
     "generate",
