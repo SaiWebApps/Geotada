@@ -32,12 +32,12 @@ from src.api.models.trips import (
     TripPreviewResponse,
     TripPreviewStop,
 )
-from src.tour.beat_select import select_poi_beats
+from src.tour.beat_select import select_poi_beats, select_vignette_beats
 from src.tour.compose import ComposeClient, ComposeRequest, compose_script
 from src.tour.compose_gate import ComposeVerificationError
-from src.tour.contract import BeatSequence, Sentence, TourInput, ValidationReport
+from src.tour.contract import BeatSequence, Route, Sentence, TourInput, ValidationReport
 from src.tour.density import TourabilityRefusedError
-from src.tour.generation import generate
+from src.tour.generation import generate, split_sentences
 from src.tour.options import build_route_option
 from src.tour.render_md import stop_narration_text
 from src.tour.routing import summarise_route
@@ -47,6 +47,7 @@ from src.tour.selection import (
     pick_spine_area,
     select_k_routes,
     select_route,
+    select_vignettes,
 )
 from src.tour.verify import FaithfulnessChecker
 
@@ -214,7 +215,9 @@ def generate_trip(
 
     # Per flavour: beat plan (merging beats demoted into a host POI — same
     # sequence as scripts/tour_build.py) and Script. scripts[0] drives the
-    # persisted trip; every flavour becomes a RouteOption.
+    # persisted trip; every flavour becomes a RouteOption. Track B: each
+    # flavour's walk-past vignettes get ONE voiceable beat and the stitcher
+    # voices the one-liner inside the leg narration.
     scripts = []
     for flavour in flavours:
         plans = []
@@ -222,7 +225,16 @@ def generate_trip(
             beats = list(snapshot.beats_for(poi.id))
             beats.extend(flavour.demoted_beats.get(poi.id, ()))
             plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
-        scripts.append(generate(BeatSequence(poi_beats=tuple(plans)), flavour, tour_input))
+        vignette_beats = select_vignette_beats(
+            flavour.vignettes, snapshot.beats_by_poi, lenses=lenses
+        )
+        scripts.append(
+            generate(
+                BeatSequence(poi_beats=tuple(plans), vignette_beats=vignette_beats),
+                flavour,
+                tour_input,
+            )
+        )
     script = scripts[0]
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
@@ -393,11 +405,20 @@ def compose_trip(
             routing_client=routing_client,
         )
 
+    # Track B: re-tag walk-past vignettes on the rebuilt route (pure fn over
+    # the same stop set) so the composed narration voices the one-liners too.
+    interest = frozenset(s.lower() for s in (tour_input.lenses or []))
+    route = route.model_copy(
+        update={"vignettes": select_vignettes(route, snapshot, interest or None)}
+    )
     plans = [
         select_poi_beats(poi, list(snapshot.beats_for(poi.id)), interest_lenses=tour_input.lenses)
         for poi in picked
     ]
-    seq = BeatSequence(poi_beats=tuple(plans))
+    vignette_beats = select_vignette_beats(
+        route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
+    )
+    seq = BeatSequence(poi_beats=tuple(plans), vignette_beats=vignette_beats)
     stitched = generate(seq, route, tour_input)
 
     counting = _CountingComposeClient(compose_client)
@@ -454,6 +475,58 @@ def compose_trip(
     )
 
 
+def _preview_stops(script, route: Route, vignette_beats, snapshot) -> list[TripPreviewStop]:
+    """Interleave walk-past vignette stops into the preview stop list.
+
+    The vignette on leg ``i`` (the walk INTO dwell stop ``i``) sits right
+    BEFORE that dwell stop, mirroring build_route_option's interleave. Its
+    card carries the same one-liner the leg narration voices (first sentence
+    of its chosen beat) with minutes=0; the dwell stop's narration already
+    contains that line inside its leg text.
+    """
+    from src.tour.selection import spotlight
+
+    lenses_fs = frozenset(script.inputs.lenses or ())
+    per_stop = stop_narration_text(script)
+    one_liner_by_poi: dict[str, str] = {}
+    for beats in vignette_beats.values():
+        for beat in beats:
+            sentences = split_sentences(beat.script_body or "")
+            if sentences:
+                one_liner_by_poi[beat.poi_id] = sentences[0]
+
+    out: list[TripPreviewStop] = []
+    for i, sp in enumerate(script.selected_pois):
+        for poi in route.vignettes.get(i, ()):
+            if poi.id not in one_liner_by_poi:
+                continue  # no voiceable beat -> not voiced, not shown
+            out.append(
+                TripPreviewStop(
+                    sort_order=len(out) + 1,
+                    poi_name=poi.name,
+                    lat=poi.lat,
+                    lng=poi.lng,
+                    narration=one_liner_by_poi[poi.id],
+                    minutes=0,
+                    band="vignette",
+                    spotlight=spotlight(poi, lenses=lenses_fs or None, snapshot=snapshot),
+                )
+            )
+        out.append(
+            TripPreviewStop(
+                sort_order=len(out) + 1,
+                poi_name=sp.name,
+                lat=sp.lat,
+                lng=sp.lng,
+                narration=per_stop.get(i, ""),
+                minutes=round(sp.dwell_seconds / 60),
+                band="dwell",
+                spotlight=0.0,
+            )
+        )
+    return out
+
+
 @router.post("/trips/preview", response_model=TripPreviewResponse)
 def preview_trip(
     body: TripPreviewRequest,
@@ -492,24 +565,16 @@ def preview_trip(
         beats = list(snapshot.beats_for(poi.id))
         beats.extend(route.demoted_beats.get(poi.id, ()))
         plans.append(select_poi_beats(poi, beats, interest_lenses=tour_input.lenses))
-    script = generate(BeatSequence(poi_beats=tuple(plans)), route, tour_input)
-    per_stop = stop_narration_text(script)
+    vignette_beats = select_vignette_beats(
+        route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
+    )
+    script = generate(
+        BeatSequence(poi_beats=tuple(plans), vignette_beats=vignette_beats),
+        route,
+        tour_input,
+    )
 
-    stops = [
-        TripPreviewStop(
-            sort_order=i + 1,
-            poi_name=sp.name,
-            lat=sp.lat,
-            lng=sp.lng,
-            narration=per_stop.get(i, ""),
-            minutes=round(sp.dwell_seconds / 60),
-            # Phase 3 spotlight model (spec s7). Default band/spotlight until
-            # Step 3.5 wires the spotlight effect into selection.
-            band="dwell",
-            spotlight=0.0,
-        )
-        for i, sp in enumerate(script.selected_pois)
-    ]
+    stops = _preview_stops(script, route, vignette_beats, snapshot)
     return TripPreviewResponse(
         spine_area=route.spine_area,
         total_audio_min=round(script.total_audio_seconds / 60),
