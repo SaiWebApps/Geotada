@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from collections.abc import Generator
 from typing import TYPE_CHECKING
 
@@ -47,18 +48,36 @@ def get_driver() -> Driver:
     return _driver
 
 
-def get_compose_client() -> ComposeClient:
-    """The narration composer for POST /trips/{id}/compose (Phase 4 Step 4.7).
+def _compose_provider() -> str:
+    provider = os.getenv("COMPOSE_PROVIDER", "mock").strip().lower()
+    if provider not in ("mock", "anthropic"):
+        raise RuntimeError(
+            f"Unknown COMPOSE_PROVIDER {provider!r} — use 'mock' or 'anthropic'"
+        )
+    return provider
 
-    Offline Mock by default — `make test` never sees an LLM. Step 4.8 selects
-    the real AnthropicComposeClient via COMPOSE_PROVIDER; tests override this
-    dependency to inject deterministic or failing composers.
+
+def get_compose_client() -> ComposeClient:
+    """The narration composer for POST /trips/{id}/compose (Phase 4 Step 4.8).
+
+    COMPOSE_PROVIDER selects it: 'mock' (default — `make test` never sees an
+    LLM) or 'anthropic' (the real fire-once client; Render sets this). Tests
+    override this dependency to inject deterministic or failing composers.
     """
+    if _compose_provider() == "anthropic":
+        from src.tour.compose import AnthropicComposeClient
+
+        return AnthropicComposeClient()
     return MockComposeClient()
 
 
 def get_faithfulness_checker() -> FaithfulnessChecker | None:
-    """VERIFY's entailment checker for /compose. None -> the offline Mock
-    inside build_full_verifier (trusts the corpus). Step 4.8/prod wires the
-    real Haiku checker; tests override to inject rejecting checkers."""
+    """VERIFY's entailment checker for /compose, PAIRED with the provider:
+    the real compose is never gated by the trusting Mock (M-7). None -> the
+    offline Mock inside build_full_verifier; 'anthropic' -> the real Haiku
+    entailment. Tests override to inject rejecting checkers."""
+    if _compose_provider() == "anthropic":
+        from src.tour.verify import HaikuFaithfulnessChecker
+
+        return HaikuFaithfulnessChecker()
     return None

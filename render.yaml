@@ -5,6 +5,12 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile
     envVars:
+      # Narration composer for POST /trips/{id}/compose (Phase 4 Step 4.8):
+      # 'mock' = deterministic stitcher passthrough; 'anthropic' = the real
+      # fire-once Opus compose gated by the real Haiku faithfulness checker
+      # (needs ANTHROPIC_API_KEY). Flip to 'anthropic' to go live.
+      - key: COMPOSE_PROVIDER
+        value: mock
       - key: NEO4J_URI
         sync: false
       - key: NEO4J_USER
