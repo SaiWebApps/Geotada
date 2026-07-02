@@ -230,3 +230,63 @@ def test_validation_report_passed_gates_on_new_teeth():
     assert not ValidationReport(provenance_failures=(("b1", 12.0),)).passed
     s = Sentence(text="x", source_id="b1", source_type="beat", stop_idx=0)
     assert not ValidationReport(faithfulness_failures=((s, "unfaithful:b1"),)).passed
+
+
+# ---------------------------------------------------------------------------
+# Corpus-is-canonical faithfulness (live-gate calibration, 2026-07-02)
+# ---------------------------------------------------------------------------
+
+
+def test_verbatim_corpus_sentence_skips_entailment():
+    """A beat sentence appearing verbatim in its beat's script_body is
+    trivially faithful — no checker call (the corpus is canonical)."""
+    beat = _beat(
+        "b1",
+        script_body="Henri IV built the square. It opened in 1612 to great crowds.",
+        key_claims=("Henri IV built it",),
+    )
+    checker = MockFaithfulnessChecker()
+    s = Sentence(
+        text="It opened in 1612 to great crowds.",
+        source_id="b1",
+        source_type="beat",
+        stop_idx=0,
+    )
+    fails = verify_faithfulness(_script([s]), {"b1": beat}, checker)
+    assert fails == []
+    assert checker.calls == []
+
+
+def test_rewritten_sentence_entails_against_claims_plus_body():
+    """An LLM-rewritten beat sentence is checked against key_claims AND the
+    beat's script_body — the claims alone are a summary subset."""
+    beat = _beat(
+        "b1",
+        script_body="Henri IV built the square. It opened in 1612 to great crowds.",
+        key_claims=("Henri IV built it",),
+    )
+    checker = MockFaithfulnessChecker()
+    rewritten = Sentence(
+        text="Crowds poured in when the square opened in 1612.",
+        source_id="b1",
+        source_type="beat",
+        stop_idx=0,
+    )
+    fails = verify_faithfulness(_script([rewritten]), {"b1": beat}, checker)
+    assert fails == []
+    (support, _text) = checker.calls[0]
+    assert "Henri IV built it" in support
+    assert any("opened in 1612" in c for c in support)  # the body rides along
+
+
+def test_invented_fact_still_fails():
+    beat = _beat(
+        "b1",
+        script_body="Henri IV built the square.",
+        key_claims=("Henri IV built it",),
+    )
+    bad = Sentence(
+        text="Aliens landed here in 1613.", source_id="b1", source_type="beat", stop_idx=0
+    )
+    fails = verify_faithfulness(_script([bad]), {"b1": beat}, _RejectingChecker("Aliens"))
+    assert fails == [(bad, "unfaithful:b1")]

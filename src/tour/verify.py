@@ -157,20 +157,35 @@ def _visited_claims(
     return tuple(out)
 
 
+def _normalize_for_verbatim(text: str) -> str:
+    """Whitespace/case-fold so 'appears verbatim in the source' is robust to
+    line wrapping and trivial spacing differences."""
+    return " ".join(text.split()).casefold()
+
+
 def verify_faithfulness(
     script: Script,
     beats_by_id: dict[str, BeatRef],
     checker: FaithfulnessChecker,
 ) -> list[tuple[Sentence, str]]:
     """(sentence, reason) for each beat-cited sentence not entailed by its
-    beat's ``key_claims``. Sentences whose beat has no ``key_claims`` are
-    skipped (nothing to entail against yet).
+    beat. Sentences whose beat has no ``key_claims`` are skipped (nothing to
+    entail against yet).
+
+    The corpus is CANONICAL (same principle as validation.py's glue-only
+    scan): a beat-cited sentence found verbatim in its beat's script_body is
+    trivially faithful — no entailment call. Only LLM-REWRITTEN sentences are
+    checked, and against the beat's key_claims PLUS its script_body — the
+    claims are a summary subset, and the first live gate run (2026-07-02)
+    showed claims-only entailment flags the corpus's own detail sentences as
+    unfaithful. Invented facts still fail: they are in neither.
 
     Phase 4 (Step 4.2) — reflections are FAIL-CLOSED, unlike other glue: a
     ``GLUE_REFLECTION`` sentence must entail from the union of key_claims of
     beats cited STRICTLY BEFORE its stop (what the walker has already heard);
     an empty union is itself a failure — an unverifiable reflection never
-    ships."""
+    ships. Reflections stay claims-only: they are synthesis, not retelling.
+    """
     failures: list[tuple[Sentence, str]] = []
     for sentence in script.script:
         if sentence.source_type == "glue" and sentence.source_id == GLUE_REFLECTION:
@@ -186,6 +201,10 @@ def verify_faithfulness(
         beat = beats_by_id.get(sentence.source_id)
         if beat is None or not beat.key_claims:
             continue
-        if not checker.entails(beat.key_claims, sentence.text):
+        body = beat.script_body or ""
+        if body and _normalize_for_verbatim(sentence.text) in _normalize_for_verbatim(body):
+            continue  # canonical corpus text, unchanged — trivially faithful
+        support = (*beat.key_claims, *((body,) if body else ()))
+        if not checker.entails(support, sentence.text):
             failures.append((sentence, f"unfaithful:{sentence.source_id}"))
     return failures
