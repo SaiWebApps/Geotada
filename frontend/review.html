@@ -194,6 +194,15 @@
   }
   .tour-stop--vignette { border-left: 3px dashed #3b82f6; }
   .tour-stop--vignette .meta { font-style: italic; }
+  /* Click-to-set start/destination pins (Step B.6): A = start (green), B = destination (red). */
+  .tour-point-pin span {
+    display: flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; color: #fff; border-radius: 50%;
+    font-size: 11px; font-weight: 700; border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  .tour-point-pin--start span { background: #16a34a; }
+  .tour-point-pin--end span { background: #dc2626; }
   .merge-banner {
     position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
     background: var(--purple); color: #fff; padding: 8px 16px; border-radius: 6px;
@@ -1108,8 +1117,13 @@
   // Generate button and per-stop Listen buttons. Keyed on data-tour-stop, disjoint from the
   // incoming beat-TTS handler's data-beat-tts, so they never cross-fire.
   let tourStops = [];
+  // Step B.6 click-to-set state: 0 -> next map click sets the start, 1 -> sets the
+  // destination, 2 -> both set (further clicks ignored until Clear points).
+  let tourClickStage = 0;
+  let tourPointLayer = null;   // A/B pins dropped by map clicks (dies with the map on re-init)
   detailBody.addEventListener('click', (e) => {
     if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
+    if (e.target.closest('#tourClearBtn')) { clearTourPoints(); return; }
     const play = e.target.closest('.tts-play-btn[data-tour-stop]');
     if (play) { ttsPlayTourStop(parseInt(play.dataset.tourStop, 10)); return; }
   });
@@ -2006,9 +2020,16 @@
           <div class="field-group"><label>Destination B (lat,lng, optional)</label>
             <input type="text" id="tourEnd" placeholder="48.8606,2.3376 — blank = open walk" /></div>
           <div class="field-group"><label><input type="checkbox" id="tourRoundTrip" /> Round-trip (mutually exclusive with a destination)</label></div>
+          <div class="field-group" style="color:var(--text-muted);font-size:0.8rem;">
+            Tip: click the map — 1st click sets the start, 2nd the destination.</div>
           <button class="btn btn-primary" id="tourGenerateBtn">Generate preview</button>
+          <button class="btn btn-outline" id="tourClearBtn" title="Reset start/destination to an open walk">Clear points</button>
           <div id="tourStops" class="tour-stops"></div>
         </div>`;
+      // Step B.6: (re)entering the tour view resets the click-to-set state — the inputs
+      // above rendered fresh, so any previously dropped A/B pins are stale.
+      tourClickStage = 0;
+      clearTourPointPins();
       // Step 4 wires #tourGenerateBtn -> POST /trips/preview and renders #tourStops.
       return;
     }
@@ -3043,6 +3064,45 @@
       box.appendChild(ul);
     }
     stopsEl.appendChild(box);
+  }
+
+  // ── Tour view map click-to-set (Step B.6) ──
+  // While the Tour Preview view is open, the 1st persistent-map click sets #tourStart
+  // (5-decimal lat,lng) + drops a start pin, the 2nd sets #tourEnd + a destination pin.
+  // Guarded on the active view so it never interferes with the marker/merge click
+  // handlers of the normal workbench views. "Clear points" resets to an open walk.
+  function handleTourMapClick(e) {
+    if (!activeSelection || activeSelection.source !== 'tour') return;
+    if (tourClickStage >= 2) return;  // both points set — Clear points to re-pick
+    const startEl = document.getElementById('tourStart');
+    const endEl = document.getElementById('tourEnd');
+    if (!startEl || !endEl || !persistentMap) return;
+    const lat = e.latlng.lat, lng = e.latlng.lng;
+    const kind = tourClickStage === 0 ? 'start' : 'end';
+    (kind === 'start' ? startEl : endEl).value = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+    if (!tourPointLayer) { tourPointLayer = L.layerGroup().addTo(persistentMap); }
+    L.marker([lat, lng], {
+      icon: L.divIcon({
+        className: `tour-point-pin tour-point-pin--${kind}`,
+        html: `<span>${kind === 'start' ? 'A' : 'B'}</span>`,
+        iconSize: [22, 22],
+      }),
+    }).addTo(tourPointLayer);
+    tourClickStage += 1;
+  }
+
+  function clearTourPointPins() {
+    if (tourPointLayer && persistentMap) { persistentMap.removeLayer(tourPointLayer); }
+    tourPointLayer = null;
+  }
+
+  function clearTourPoints() {
+    clearTourPointPins();
+    tourClickStage = 0;
+    const startEl = document.getElementById('tourStart');
+    const endEl = document.getElementById('tourEnd');
+    if (startEl) { startEl.value = cityCentre ? `${cityCentre.lat.toFixed(6)},${cityCentre.lng.toFixed(6)}` : ''; }
+    if (endEl) { endEl.value = ''; }
   }
 
   // Plot the A→B route on the persistent map: numbered pins in walking order +
@@ -4339,9 +4399,15 @@
     if (persistentMap) { persistentMap.remove(); persistentMap = null; }
     persistentMarkers = new Map();
     incomingMarkers = new Map();
+    // Step B.6: any click-set A/B pins died with the removed map instance.
+    tourPointLayer = null;
+    tourClickStage = 0;
 
     const centre = cityCentre ? [cityCentre.lat, cityCentre.lng] : [42.36, -71.06]; // Boston default
     persistentMap = L.map('persistent-map', { zoomControl: true, preferCanvas: true }).setView(centre, 12);
+
+    // Step B.6: click-to-set start/destination — the handler self-guards on the tour view.
+    persistentMap.on('click', handleTourMapClick);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors', maxZoom: 19

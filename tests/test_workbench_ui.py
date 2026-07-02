@@ -13,6 +13,7 @@ Requires: playwright, pytest, Neo4j running
 from __future__ import annotations
 
 import json
+import re
 import socket
 import subprocess
 import sys
@@ -2139,6 +2140,130 @@ class TestDetailViewAndEditing:
             _take_screenshot(page, "b5-vignette-tag-and-hollow-pin")
         finally:
             page.unroute("**/trips/preview")
+
+    _COORD_5DEC = r"-?\d+\.\d{5},-?\d+\.\d{5}"
+
+    def _clear_tour_route_pins(self, page):
+        """Generate an empty mocked preview to clear any leftover tour-route L.Markers
+        (they swallow map clicks; circleMarkers bubble). Leaves the tour view open."""
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps({"stops": [], "spine_area": "-", "total_audio_min": 0}),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(200)
+        finally:
+            page.unroute("**/trips/preview")
+        assert page.locator(".tour-route-pin").count() == 0, "route pins should be cleared"
+
+    def test_tour_map_click_sets_start_end_and_clear_resets(self, browser_page):
+        """Track B Step B.6: with the Tour Preview view open, the 1st persistent-map click
+        fills #tourStart (5-decimal lat,lng) + drops a start pin, the 2nd fills #tourEnd +
+        a destination pin; 'Clear points' resets both inputs and pins (open walk). Clicks
+        outside the tour view never drop tour pins (guard on the active view)."""
+        page, _seed_data, _reporter = browser_page
+        self._clear_tour_route_pins(page)
+        default_start = page.locator("#tourStart").input_value()
+        assert default_start, "the tour form should prefill the start with the city centre"
+
+        map_el = page.locator("#persistent-map")
+        box = map_el.bounding_box()
+        assert box and box["width"] > 100 and box["height"] > 100, f"map not laid out: {box}"
+
+        def _click_map(fx: float, fy: float):
+            map_el.click(position={"x": box["width"] * fx, "y": box["height"] * fy})
+            page.wait_for_timeout(300)
+
+        # 1st click -> start input (5-decimal lat,lng) + a start pin; destination untouched.
+        _click_map(0.30, 0.45)
+        start_val = page.locator("#tourStart").input_value()
+        assert re.fullmatch(self._COORD_5DEC, start_val), f"start not 5-dec lat,lng: {start_val!r}"
+        lat, lng = (float(p) for p in start_val.split(","))
+        assert 40 < lat < 55 and -5 < lng < 10, f"implausible clicked start: {start_val}"
+        assert page.locator(".tour-point-pin--start").count() == 1, "1st click should drop a start pin"
+        assert page.locator("#tourEnd").input_value() == "", "1st click must not touch the destination"
+
+        # 2nd click -> destination input + pin; start unchanged.
+        _click_map(0.70, 0.55)
+        end_val = page.locator("#tourEnd").input_value()
+        assert re.fullmatch(self._COORD_5DEC, end_val), f"end not 5-dec lat,lng: {end_val!r}"
+        elat, elng = (float(p) for p in end_val.split(","))
+        assert 40 < elat < 55 and -5 < elng < 10, f"implausible clicked end: {end_val}"
+        assert end_val != start_val, "the two clicks should set two different points"
+        assert page.locator("#tourStart").input_value() == start_val, "2nd click must not move the start"
+        assert page.locator(".tour-point-pin--end").count() == 1, "2nd click should drop a destination pin"
+        _take_screenshot(page, "b6-map-click-set-points")
+
+        # Clear points -> both inputs reset (open walk) + pins removed.
+        page.locator("#tourClearBtn").click()
+        page.wait_for_timeout(200)
+        assert page.locator("#tourStart").input_value() == default_start, "clear should restore the default start"
+        assert page.locator("#tourEnd").input_value() == "", "clear should empty the destination (open walk)"
+        assert page.locator(".tour-point-pin").count() == 0, "clear should remove both pins"
+
+        # Guard: outside the tour view a map click must not drop tour pins or error.
+        page.locator(WORKLIST_ROW).first.click()
+        page.wait_for_timeout(400)
+        _click_map(0.50, 0.50)
+        assert page.locator(".tour-point-pin").count() == 0, "map click outside the tour view dropped a pin"
+        _take_screenshot(page, "b6-map-click-cleared")
+
+    def test_tour_generate_sends_clicked_coords(self, browser_page):
+        """Track B Step B.6: after click-setting start + destination, Generate POSTs exactly
+        the clicked coordinates (center_lat/lng from the 1st click, end_lat/lng from the 2nd)."""
+        page, _seed_data, _reporter = browser_page
+        self._clear_tour_route_pins(page)
+
+        map_el = page.locator("#persistent-map")
+        box = map_el.bounding_box()
+        assert box and box["width"] > 100 and box["height"] > 100, f"map not laid out: {box}"
+        map_el.click(position={"x": box["width"] * 0.35, "y": box["height"] * 0.40})
+        page.wait_for_timeout(300)
+        map_el.click(position={"x": box["width"] * 0.65, "y": box["height"] * 0.60})
+        page.wait_for_timeout(300)
+
+        start_val = page.locator("#tourStart").input_value()
+        end_val = page.locator("#tourEnd").input_value()
+        assert re.fullmatch(self._COORD_5DEC, start_val), f"start not click-set: {start_val!r}"
+        assert re.fullmatch(self._COORD_5DEC, end_val), f"end not click-set: {end_val!r}"
+
+        captured = {}
+
+        def _handler(route):
+            captured["body"] = route.request.post_data
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps({"stops": [], "spine_area": "-", "total_audio_min": 0}),
+            )
+
+        page.route("**/trips/preview", _handler)
+        try:
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(200)
+        finally:
+            page.unroute("**/trips/preview")
+
+        assert captured.get("body"), "no /trips/preview request body captured"
+        sent = json.loads(captured["body"])
+        slat, slng = (float(p) for p in start_val.split(","))
+        elat, elng = (float(p) for p in end_val.split(","))
+        assert sent.get("center_lat") == slat and sent.get("center_lng") == slng, (
+            f"generate did not use the clicked start: sent {sent}, clicked {start_val}"
+        )
+        assert sent.get("end_lat") == elat and sent.get("end_lng") == elng, (
+            f"generate did not use the clicked destination: sent {sent}, clicked {end_val}"
+        )
+        _take_screenshot(page, "b6-generate-uses-clicked-coords")
 
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
