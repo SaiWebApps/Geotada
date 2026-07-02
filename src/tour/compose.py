@@ -192,9 +192,13 @@ GROUNDING (violations are rejected by an automated verifier):
   nouns or years that no cited beat carries.
 - Never use the words "imagine", "picture this", "envision", "visualize".
 - Reflections: at each given slot, add sentences with source_id
-  GLUE_REFLECTION and that slot's stop_idx, synthesizing ONLY the listed
-  visited claims — place them right after the slot's transit opening. Slots
-  not listed get NO reflection.
+  GLUE_REFLECTION and that slot's stop_idx, placed right after the slot's
+  transit opening. Slots not listed get NO reflection. HARD CONSTRAINT (an
+  automated entailment gate checks each reflection sentence against that
+  slot's visited_claims list ALONE): every factual assertion in a reflection
+  — every number, date, name, and event — must appear in that slot's
+  visited_claims. Details from the script or beats sections DO NOT COUNT,
+  even when true. Recombine the listed claims; add nothing.
 - Keep every sentence's stop_idx (reflections use their slot's stop_idx).
 - Keep the stop ORDER and overall structure; improve flow, transitions, and
   storytelling within it."""
@@ -252,7 +256,9 @@ def _compose_user_prompt(
         f"LENSES (register dial): {request.stitched.inputs.lenses or 'none — neutral register'}",
         f"STITCHED SCRIPT:\n{json.dumps(stitched, ensure_ascii=False)}",
         f"BEATS (id -> key_claims + corpus text):\n{json.dumps(beats, ensure_ascii=False)}",
-        f"REFLECTION SLOTS:\n{json.dumps(slots, ensure_ascii=False)}",
+        "REFLECTION SLOTS (each reflection must be fully supported by its own "
+        f"visited_claims list ALONE — nothing from elsewhere in this prompt):\n"
+        f"{json.dumps(slots, ensure_ascii=False)}",
     ]
     if attempt > 1 and prev_report is not None:
         failures = {
