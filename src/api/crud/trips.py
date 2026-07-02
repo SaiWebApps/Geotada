@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import uuid
 from typing import TYPE_CHECKING, Any
 
@@ -77,6 +78,8 @@ def create_trip_with_stops(
     start_date: str,
     end_date: str,
     stops: list[dict[str, Any]],
+    tour_input_json: str | None = None,
+    options_json: str | None = None,
 ) -> dict[str, Any]:
     """Create Trip node and ItineraryItem nodes in a single transaction.
 
@@ -90,6 +93,13 @@ def create_trip_with_stops(
       and the stitched per-stop `narration` (Phase 1, Step 1.2; nullable — a
       null/absent value is simply not stored). See
       specs/2026-06-12-tour-algorithm-decision/M0b-DESIGN.md.
+
+    Phase 4 (Step 4.6): ``tour_input_json`` (the RESOLVED engine input incl.
+    lenses + start_time) and ``options_json`` (per flavour, the ORDERED poi id
+    list; index+1 = the option number in ``route_id``) persist on the Trip so
+    POST /trips/{id}/compose can rebuild the user's PICK without re-running
+    selection — corpus/routing drift between generate and compose must never
+    swap the picked route. Nulls are simply not stored.
     """
     trip_id = str(uuid.uuid4())
 
@@ -102,6 +112,8 @@ def create_trip_with_stops(
             start_date: $start_date,
             end_date: $end_date,
             status: 'planning',
+            tour_input_json: $tour_input_json,
+            options_json: $options_json,
             created_at: datetime()
         })
         MERGE (profile)-[:IS_CAPTAIN_OF]->(trip)
@@ -114,6 +126,8 @@ def create_trip_with_stops(
         profile_id=profile_id,
         start_date=start_date,
         end_date=end_date,
+        tour_input_json=tour_input_json,
+        options_json=options_json,
     )
 
     # Create each itinerary item with one PLAYS_BEAT edge per beat.
@@ -168,6 +182,29 @@ def create_trip_with_stops(
             )
 
     return {"trip_id": trip_id, "trip_name": trip_name}
+
+
+def get_trip_compose_inputs(session: Session, trip_id: str) -> dict[str, Any] | None:
+    """The persisted Phase-4 compose inputs for a trip; None if no such trip.
+
+    Returns ``{"tour_input": dict | None, "options": list[list[str]] | None,
+    "composed_route_id": str | None}`` parsed from the JSON properties Step
+    4.6 writes at generate time. Pre-Phase-4 trips read as None fields —
+    /compose refuses those rather than re-running selection.
+    """
+    record = session.run(
+        "MATCH (t:Trip {id: $tid}) "
+        "RETURN t.tour_input_json AS ti, t.options_json AS oj, "
+        "       t.composed_route_id AS composed",
+        tid=trip_id,
+    ).single()
+    if record is None:
+        return None
+    return {
+        "tour_input": json.loads(record["ti"]) if record["ti"] else None,
+        "options": json.loads(record["oj"]) if record["oj"] else None,
+        "composed_route_id": record["composed"],
+    }
 
 
 def list_trips_for_profile(

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from neo4j import Driver, Session
 
@@ -206,6 +208,22 @@ def generate_trip(
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
     stops = route_script_to_stops(script.selected_pois, beats_by_id, body.start_time, script=script)
 
+    # Step 4.6: persist the RESOLVED engine input + every flavour's ordered
+    # poi ids so /compose rebuilds the user's PICK without re-running
+    # selection (corpus/routing drift must never swap the picked route).
+    tour_input_json = json.dumps(
+        {
+            "start": list(tour_input.start),
+            "end": list(tour_input.end) if tour_input.end else None,
+            "duration_min": tour_input.duration_min,
+            "city_slug": tour_input.city_slug,
+            "lenses": tour_input.lenses,
+            "round_trip": tour_input.round_trip,
+            "start_time": body.start_time,
+        }
+    )
+    options_json = json.dumps([[p.id for p in flavour.pois] for flavour in flavours])
+
     trip_name = body.trip_name or f"Trip ({body.start_date})"
     result = create_trip_with_stops(
         session,
@@ -214,6 +232,8 @@ def generate_trip(
         start_date=body.start_date,
         end_date=body.end_date,
         stops=stops,
+        tour_input_json=tour_input_json,
+        options_json=options_json,
     )
 
     display_map = _lens_display_map(session, {s["lens_name"] for s in stops if s["lens_name"]})
