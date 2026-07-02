@@ -118,6 +118,101 @@ void main() {
     });
   });
 
+  group('RouteOptionStop', () {
+    test('fromJson parses the picker subset', () {
+      final stop = RouteOptionStop.fromJson({
+        'poi_id': 'poi-1',
+        'name': 'Eiffel Tower',
+        'lat': 48.8584,
+        'lng': 2.2945,
+        'lens': 'dark_history',
+        'visit_or_walk_past': 'visit',
+        'minutes': 12,
+        'band': 'vignette',
+        'spotlight': 3.5,
+      });
+
+      expect(stop.name, 'Eiffel Tower');
+      expect(stop.band, 'vignette');
+      expect(stop.minutes, 12);
+      expect(stop.spotlight, 3.5);
+    });
+
+    test('fromJson defaults band/minutes/spotlight (backend contract defaults)',
+        () {
+      final stop = RouteOptionStop.fromJson({'name': 'Louvre'});
+
+      expect(stop.band, 'dwell');
+      expect(stop.minutes, 0);
+      expect(stop.spotlight, 0.0);
+    });
+
+    test('toJson round-trips', () {
+      const original = RouteOptionStop(
+        name: 'Notre-Dame',
+        band: 'vignette',
+        minutes: 4,
+        spotlight: 1.25,
+      );
+
+      final rebuilt = RouteOptionStop.fromJson(original.toJson());
+
+      expect(rebuilt.name, original.name);
+      expect(rebuilt.band, original.band);
+      expect(rebuilt.minutes, original.minutes);
+      expect(rebuilt.spotlight, original.spotlight);
+    });
+  });
+
+  group('RouteOption', () {
+    Map<String, dynamic> sampleOptionJson() => {
+          'route_id': 'trip-1-opt2',
+          'stops': [
+            {'name': 'Eiffel Tower', 'band': 'dwell', 'minutes': 10},
+            {'name': 'Champ de Mars', 'band': 'vignette', 'minutes': 2},
+          ],
+          // Fields the picker ignores but the API sends (§2.8):
+          'stop_audio': <String, dynamic>{},
+          'route_polyline': 'abc123',
+          'eta_seconds': 5400,
+          'lens_summary': {'dark_history': 2},
+          'flow_score': 0.9,
+          'backtrack_ratio': 0.1,
+          'degraded': false,
+          'profiles': <String>[],
+          'offline_package': null,
+          'lens_coverage_note': 'Dark History runs thin after stop 3',
+        };
+
+    test('fromJson parses route_id, stops, eta, lens_coverage_note', () {
+      final option = RouteOption.fromJson(sampleOptionJson());
+
+      expect(option.routeId, 'trip-1-opt2');
+      expect(option.stops.length, 2);
+      expect(option.stops[0].name, 'Eiffel Tower');
+      expect(option.stops[0].band, 'dwell');
+      expect(option.stops[1].band, 'vignette');
+      expect(option.etaSeconds, 5400);
+      expect(option.lensCoverageNote, 'Dark History runs thin after stop 3');
+    });
+
+    test('fromJson defaults lens_coverage_note to null when absent', () {
+      final json = sampleOptionJson()..remove('lens_coverage_note');
+      expect(RouteOption.fromJson(json).lensCoverageNote, isNull);
+    });
+
+    test('toJson round-trips', () {
+      final original = RouteOption.fromJson(sampleOptionJson());
+      final rebuilt = RouteOption.fromJson(original.toJson());
+
+      expect(rebuilt.routeId, original.routeId);
+      expect(rebuilt.stops.length, original.stops.length);
+      expect(rebuilt.stops[1].band, 'vignette');
+      expect(rebuilt.etaSeconds, original.etaSeconds);
+      expect(rebuilt.lensCoverageNote, original.lensCoverageNote);
+    });
+  });
+
   group('GeneratedTrip', () {
     test('fromJson parses full response with stops', () {
       final json = {
@@ -170,6 +265,58 @@ void main() {
       expect(trip.stops.length, 2);
       expect(trip.stops[0].poiName, 'Eiffel Tower');
       expect(trip.stops[1].poiName, 'Louvre');
+    });
+
+    test('fromJson parses k RouteOptions from generate response', () {
+      final json = {
+        'trip_id': 'trip-opt',
+        'trip_name': 'Options Trip',
+        'profile_id': 'profile-1',
+        'total_stops': 0,
+        'total_duration_min': 0,
+        'anchor_count': 0,
+        'flavour_count': 0,
+        'stops': <dynamic>[],
+        'options': [
+          {
+            'route_id': 'trip-opt-opt1',
+            'stops': [
+              {'name': 'A', 'band': 'dwell', 'minutes': 5},
+            ],
+            'eta_seconds': 3600,
+          },
+          {
+            'route_id': 'trip-opt-opt2',
+            'stops': <dynamic>[],
+            'eta_seconds': 4200,
+            'lens_coverage_note': 'note',
+          },
+        ],
+      };
+
+      final trip = GeneratedTrip.fromJson(json);
+
+      expect(trip.options.length, 2);
+      expect(trip.options[0].routeId, 'trip-opt-opt1');
+      expect(trip.options[0].stops.single.name, 'A');
+      expect(trip.options[1].etaSeconds, 4200);
+      expect(trip.options[1].lensCoverageNote, 'note');
+    });
+
+    test('fromJson defaults options to empty list when absent (GET /trips)',
+        () {
+      final json = {
+        'trip_id': 'trip-saved',
+        'trip_name': 'Saved Trip',
+        'profile_id': 'profile-1',
+        'total_stops': 0,
+        'total_duration_min': 0,
+        'anchor_count': 0,
+        'flavour_count': 0,
+        'stops': <dynamic>[],
+      };
+
+      expect(GeneratedTrip.fromJson(json).options, isEmpty);
     });
 
     test('fromJson handles empty stops list', () {
