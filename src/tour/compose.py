@@ -20,10 +20,11 @@ from typing import Protocol
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from .compose_gate import build_full_verifier, compose_and_verify
 from .contract import BeatRef, BeatSequence, Route, Script, Sentence, ValidationReport
-from .generation import GLUE_NAV, GLUE_REFLECTION
+from .generation import GLUE_NAV, GLUE_REFLECTION, _sum_audio
 from .reflection import reflection_slots
-from .verify import _visited_claims
+from .verify import FaithfulnessChecker, _visited_claims
 
 # narrative_function values that mark a beat as transit-class — mirrors
 # generation._TRANSIT_NARRATIVE_FUNCTIONS (the transit stage is the only
@@ -154,9 +155,48 @@ class MockComposeClient:
         return tuple(out)
 
 
+def compose_script(
+    stitched: Script,
+    beat_sequence: BeatSequence,
+    route: Route,
+    *,
+    client: ComposeClient,
+    faithfulness_checker: FaithfulnessChecker | None = None,
+    chunk_text_by_slug: dict[str, str] | None = None,
+) -> Script:
+    """Fire-once compose behind the M7 gate (Step 4.4).
+
+    One compose; on a failing merged VERIFY report, EXACTLY one bounded
+    recompose steered by that report; still failing → the flavour is refused
+    (``ComposeVerificationError`` propagates). The returned Script carries the
+    PASSING report and a ``total_audio_seconds`` recomputed for the composed
+    sentence stream. Checker/chunks default to the offline no-ops so the
+    caller decides where the real teeth are wired (live gate / prod)."""
+    request = build_compose_request(stitched, beat_sequence, route)
+    verify = build_full_verifier(
+        beat_sequence,
+        request.beats_by_id,
+        chunk_text_by_slug=chunk_text_by_slug,
+        faithfulness_checker=faithfulness_checker,
+    )
+
+    def compose(attempt: int, prev: ValidationReport | None) -> Script:
+        sentences = client.compose(request, attempt, prev)
+        return stitched.model_copy(
+            update={
+                "script": tuple(sentences),
+                "total_audio_seconds": _sum_audio(sentences, beat_sequence),
+                "validation": ValidationReport(),
+            }
+        )
+
+    return compose_and_verify(compose, verify)
+
+
 __all__ = [
     "ComposeClient",
     "ComposeRequest",
     "MockComposeClient",
     "build_compose_request",
+    "compose_script",
 ]

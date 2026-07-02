@@ -7,14 +7,17 @@ transits, corpus transit beats, anchor blocks.
 
 from __future__ import annotations
 
-from src.tour.compose import MockComposeClient, build_compose_request
-from src.tour.compose_gate import build_full_verifier
+import pytest
+
+from src.tour.compose import MockComposeClient, build_compose_request, compose_script
+from src.tour.compose_gate import ComposeVerificationError, build_full_verifier
 from src.tour.contract import (
     POI,
     BeatRef,
     BeatSequence,
     POIBeats,
     Route,
+    Sentence,
     TourInput,
     TransitSegment,
 )
@@ -223,3 +226,64 @@ def test_mock_records_attempt_and_prev_report():
     marker = stitched.validation
     client.compose(request, 2, marker)
     assert client.calls == [(1, None), (2, marker)]
+
+
+# ---------------------------------------------------------------------------
+# compose_script (Step 4.4) — fire-once behind the M7 gate
+# ---------------------------------------------------------------------------
+
+
+class _FailNTimesClient:
+    """Emits a fabricated (untraceable) sentence for the first ``n`` attempts,
+    then delegates to the honest mock."""
+
+    def __init__(self, n: int):
+        self.n = n
+        self.mock = MockComposeClient()
+        self.calls: list[tuple[int, object]] = []
+
+    def compose(self, request, attempt, prev_report):
+        self.calls.append((attempt, prev_report))
+        if attempt <= self.n:
+            fabricated = Sentence(
+                text="A fact from nowhere.",
+                source_id="not-a-real-beat",
+                source_type="beat",
+                stop_idx=0,
+            )
+            return (*request.stitched.script, fabricated)
+        return self.mock.compose(request, attempt, prev_report)
+
+
+def test_compose_script_fires_exactly_once_when_clean():
+    seq, route, stitched = _five_stop_setup()
+    client = MockComposeClient()
+    composed = compose_script(stitched, seq, route, client=client)
+    assert len(client.calls) == 1
+    assert composed.validation.passed
+    reflections = [s for s in composed.script if s.source_id == GLUE_REFLECTION]
+    assert len(reflections) == 2
+    # Audio total re-estimated for the composed stream: +4s per glue reflection.
+    assert composed.total_audio_seconds == stitched.total_audio_seconds + 4 * len(reflections)
+
+
+def test_compose_script_recomposes_once_steered_by_the_failing_report():
+    seq, route, stitched = _five_stop_setup()
+    client = _FailNTimesClient(1)
+    composed = compose_script(stitched, seq, route, client=client)
+    assert [a for a, _ in client.calls] == [1, 2]
+    first_prev, second_prev = client.calls[0][1], client.calls[1][1]
+    assert first_prev is None
+    # The recompose sees WHY attempt 1 failed: the fabricated sentence.
+    assert second_prev is not None
+    assert any(s.source_id == "not-a-real-beat" for s in second_prev.untraceable_sentences)
+    assert composed.validation.passed
+
+
+def test_compose_script_blocks_after_the_bounded_recompose():
+    seq, route, stitched = _five_stop_setup()
+    client = _FailNTimesClient(2)
+    with pytest.raises(ComposeVerificationError) as exc:
+        compose_script(stitched, seq, route, client=client)
+    assert exc.value.attempts == 2
+    assert len(client.calls) == 2  # never a third attempt
