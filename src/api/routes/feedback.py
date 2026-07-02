@@ -10,7 +10,7 @@ import anthropic
 import httpx
 from fastapi import APIRouter, HTTPException
 
-from src.api.models.feedback import FeedbackRequest, FeedbackResponse
+from src.api.models.feedback import FeedbackRequest, FeedbackResponse, TourContext
 
 router = APIRouter(tags=["feedback"])
 
@@ -49,6 +49,30 @@ def _structure_feedback(transcript: str) -> dict:
     if fence:
         text = fence.group(1).strip()
     return json.loads(text)
+
+
+def _tour_context_section(ctx: TourContext) -> str:
+    """Render the workbench tour-eval context as a '## Tour Context' markdown section.
+
+    Human-mediated loop (Track B Step B.7): the context is rendered for a human
+    reader on the GitHub issue — nothing here feeds back into the engine.
+    """
+    verdict_label = "👍 up" if ctx.verdict == "up" else "👎 down"
+    end_label = f"{ctx.end[0]:.5f}, {ctx.end[1]:.5f}" if ctx.end else "open walk"
+    lines = [
+        "## Tour Context",
+        f"**Verdict:** {verdict_label}",
+        f"**Start:** {ctx.start[0]:.5f}, {ctx.start[1]:.5f}",
+        f"**End:** {end_label}",
+        f"**Duration:** {ctx.duration_min} min",
+        f"**Lenses:** {', '.join(ctx.lenses) if ctx.lenses else '—'}",
+    ]
+    if ctx.stops:
+        lines.append("**Stops:**")
+        lines.extend(f"{i}. {s.name} ({s.band})" for i, s in enumerate(ctx.stops, 1))
+    if ctx.note:
+        lines.append(f"**Note:** {ctx.note}")
+    return "\n".join(lines)
 
 
 def _create_github_issue(title: str, body: str, labels: list[str]) -> dict:
@@ -95,6 +119,10 @@ def submit_feedback(body: FeedbackRequest):
     issue_body = structured.get("body", body.transcript)
     if metadata_section:
         issue_body = f"{issue_body}\n\n---\n{metadata_section}"
+
+    # Track B Step B.7: append the tour eval context when present (absent -> unchanged).
+    if body.tour_context is not None:
+        issue_body = f"{issue_body}\n\n{_tour_context_section(body.tour_context)}"
 
     labels = structured.get("labels", ["beta-feedback"])
     if "beta-feedback" not in labels:

@@ -2265,6 +2265,98 @@ class TestDetailViewAndEditing:
         )
         _take_screenshot(page, "b6-generate-uses-clicked-coords")
 
+    def test_tour_feedback_thumbs_send_context_and_toast(self, browser_page):
+        """Track B Step B.7: after a tour renders, 👍/👎 + an optional note render;
+        thumbs-down with a note POSTs /feedback with transcript = the note and a
+        tour_context built from the live form inputs + rendered stops; the mocked 201
+        surfaces a success toast with the issue number. Human-mediated loop — the click
+        only files a GitHub issue."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "stops": [
+                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
+                             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
+                             "spotlight": 5.0, "band": "dwell"},
+                            {"sort_order": 2, "poi_name": "Fontaine du Palmier", "minutes": 0,
+                             "lat": 48.8576, "lng": 2.3470, "narration": "On your right.",
+                             "spotlight": 1.2, "band": "vignette"},
+                        ],
+                        "spine_area": "Île de la Cité",
+                        "total_audio_min": 6,
+                    }
+                ),
+            ),
+        )
+        captured = {}
+
+        def _feedback_handler(route):
+            captured["body"] = route.request.post_data
+            route.fulfill(
+                status=201,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "issue_url": "https://github.com/SaiWebApps/Ondoway/issues/321",
+                        "issue_number": 321,
+                        "title": "[UX] Tour feedback",
+                    }
+                ),
+            )
+
+        page.route("**/feedback", _feedback_handler)
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            page.locator("#tourEnd").fill("")
+            page.locator("#tourLenses").fill("dark_history, medieval")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+
+            # The eval bar renders only after a tour: 👍, 👎 and the note input.
+            assert page.locator("#tourFeedbackUp").count() == 1, "👍 should render after generate"
+            assert page.locator("#tourFeedbackDown").count() == 1, "👎 should render after generate"
+            assert page.locator("#tourFeedbackNote").count() == 1, "note input should render after generate"
+
+            page.locator("#tourFeedbackNote").fill("Too much walking between stops.")
+            with page.expect_response(lambda r: "/feedback" in r.url) as fr:
+                page.locator("#tourFeedbackDown").click()
+            assert fr.value.status == 201
+            page.wait_for_timeout(300)
+
+            assert captured.get("body"), "no /feedback request body captured"
+            sent = json.loads(captured["body"])
+            # transcript = the note text (falls back to a sensible default when empty).
+            assert sent["transcript"] == "Too much walking between stops."
+            ctx = sent.get("tour_context")
+            assert ctx, f"tour_context missing from the feedback POST: {sent}"
+            assert ctx["verdict"] == "down"
+            assert ctx["note"] == "Too much walking between stops."
+            assert ctx["start"] == [48.8566, 2.3522], f"start not from the form: {ctx['start']}"
+            assert ctx["end"] is None, "an empty destination should send end=null (open walk)"
+            assert ctx["duration_min"] == 60
+            assert ctx["lenses"] == ["dark_history", "medieval"]
+            assert ctx["stops"] == [
+                {"name": "Notre-Dame", "band": "dwell"},
+                {"name": "Fontaine du Palmier", "band": "vignette"},
+            ], f"stops context should mirror the rendered stops: {ctx['stops']}"
+
+            # Success toast surfaces the created issue number.
+            toast = page.locator(SUCCESS_TOAST)
+            assert toast.is_visible(), "a success toast should appear on the mocked 201"
+            assert "321" in (toast.text_content() or ""), "the toast should carry the issue number"
+            _take_screenshot(page, "b7-tour-feedback-loop")
+        finally:
+            page.unroute("**/feedback")
+            page.unroute("**/trips/preview")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page

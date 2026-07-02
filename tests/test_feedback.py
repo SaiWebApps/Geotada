@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
 from unittest.mock import patch
 
 import pytest
@@ -154,3 +155,147 @@ class TestFeedbackEndpoint:
             json={"transcript": "I can't log in the app just spins"},
         )
         assert resp.status_code == 201
+
+
+class TestTourContext:
+    """Track B Step B.7: the optional tour_context renders a '## Tour Context' section
+    into the GitHub issue body (human-mediated eval loop — never auto-tuning)."""
+
+    _GITHUB_RESULT: ClassVar[dict] = {
+        "issue_url": "https://github.com/SaiWebApps/Ondoway/issues/321",
+        "issue_number": 321,
+        "title": "[UX] Tour feedback",
+    }
+    _STRUCTURED: ClassVar[dict] = {
+        "title": "[UX] Tour feedback",
+        "body": "**What happened**\nToo much walking between stops.",
+        "labels": ["ux", "tour"],
+    }
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_tour_context_rendered_into_issue_body(self, mock_structure, mock_github, client):
+        mock_structure.return_value = self._STRUCTURED
+        mock_github.return_value = self._GITHUB_RESULT
+
+        resp = client.post(
+            "/api/v1/feedback",
+            json={
+                "transcript": "Too much walking between stops.",
+                "tour_context": {
+                    "start": [48.8566, 2.3522],
+                    "end": None,
+                    "duration_min": 60,
+                    "lenses": ["dark_history"],
+                    "stops": [
+                        {"name": "Notre-Dame", "band": "dwell"},
+                        {"name": "Fontaine du Palmier", "band": "vignette"},
+                    ],
+                    "verdict": "down",
+                    "note": "Too much walking between stops.",
+                },
+            },
+        )
+        assert resp.status_code == 201
+
+        issue_body = mock_github.call_args.kwargs["body"]
+        # The structured body is preserved; the Tour Context section is appended.
+        assert issue_body.startswith("**What happened**")
+        assert "## Tour Context" in issue_body
+        assert "**Verdict:** 👎 down" in issue_body
+        assert "**Start:** 48.85660, 2.35220" in issue_body
+        assert "**End:** open walk" in issue_body
+        assert "**Duration:** 60 min" in issue_body
+        assert "**Lenses:** dark_history" in issue_body
+        assert "1. Notre-Dame (dwell)" in issue_body
+        assert "2. Fontaine du Palmier (vignette)" in issue_body
+        assert "**Note:** Too much walking between stops." in issue_body
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_tour_context_end_verdict_up_and_empty_lenses(
+        self, mock_structure, mock_github, client
+    ):
+        mock_structure.return_value = self._STRUCTURED
+        mock_github.return_value = self._GITHUB_RESULT
+
+        resp = client.post(
+            "/api/v1/feedback",
+            json={
+                "transcript": "Tour feedback (up) from workbench",
+                "tour_context": {
+                    "start": [48.8566, 2.3522],
+                    "end": [48.8606, 2.3376],
+                    "duration_min": 90,
+                    "lenses": [],
+                    "stops": [{"name": "Notre-Dame", "band": "dwell"}],
+                    "verdict": "up",
+                    "note": None,
+                },
+            },
+        )
+        assert resp.status_code == 201
+
+        issue_body = mock_github.call_args.kwargs["body"]
+        assert "**Verdict:** 👍 up" in issue_body
+        assert "**End:** 48.86060, 2.33760" in issue_body
+        assert "**Lenses:** —" in issue_body
+        assert "**Note:**" not in issue_body
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_absent_tour_context_leaves_body_unchanged(
+        self, mock_structure, mock_github, client
+    ):
+        """No tour_context -> the issue body is EXACTLY the structured body (no metadata
+        fields sent either) — proves the appended section is strictly opt-in."""
+        mock_structure.return_value = self._STRUCTURED
+        mock_github.return_value = self._GITHUB_RESULT
+
+        resp = client.post(
+            "/api/v1/feedback",
+            json={"transcript": "plain feedback, no tour attached"},
+        )
+        assert resp.status_code == 201
+
+        issue_body = mock_github.call_args.kwargs["body"]
+        assert issue_body == self._STRUCTURED["body"]
+        assert "Tour Context" not in issue_body
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_bad_verdict_rejected_422(self, mock_structure, mock_github, client):
+        """Validation rejects a verdict outside 'up'/'down' before any LLM/GitHub call."""
+        resp = client.post(
+            "/api/v1/feedback",
+            json={
+                "transcript": "x",
+                "tour_context": {
+                    "start": [48.8566, 2.3522],
+                    "duration_min": 60,
+                    "verdict": "sideways",
+                },
+            },
+        )
+        assert resp.status_code == 422
+        mock_structure.assert_not_called()
+        mock_github.assert_not_called()
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_bad_start_rejected_422(self, mock_structure, mock_github, client):
+        """start must be exactly [lat, lng]."""
+        resp = client.post(
+            "/api/v1/feedback",
+            json={
+                "transcript": "x",
+                "tour_context": {
+                    "start": [48.8566, 2.3522, 12.0],
+                    "duration_min": 60,
+                    "verdict": "up",
+                },
+            },
+        )
+        assert resp.status_code == 422
+        mock_structure.assert_not_called()
+        mock_github.assert_not_called()

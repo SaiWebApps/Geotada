@@ -1124,6 +1124,8 @@
   detailBody.addEventListener('click', (e) => {
     if (e.target.closest('#tourGenerateBtn')) { generateTourPreview(); return; }
     if (e.target.closest('#tourClearBtn')) { clearTourPoints(); return; }
+    if (e.target.closest('#tourFeedbackUp')) { submitTourFeedback('up'); return; }
+    if (e.target.closest('#tourFeedbackDown')) { submitTourFeedback('down'); return; }
     const play = e.target.closest('.tts-play-btn[data-tour-stop]');
     if (play) { ttsPlayTourStop(parseInt(play.dataset.tourStop, 10)); return; }
   });
@@ -3175,6 +3177,68 @@
         </div>`;
       stopsEl.appendChild(el);
     });
+    // Step B.7 eval loop (human-mediated): after a tour renders, offer 👍/👎 + an optional
+    // note — clicking files the verdict + tour context through the existing /feedback
+    // pipeline (GitHub issue). Nothing here tunes the engine automatically.
+    if (tourStops.length > 0) {
+      const fb = document.createElement('div');
+      fb.className = 'tour-feedback db-beat-card';
+      fb.innerHTML = `
+        <div class="meta" style="margin-bottom:6px;">How was this tour?</div>
+        <div class="tts-row">
+          <button class="btn btn-outline" id="tourFeedbackUp" title="Good tour — file 👍 feedback">👍</button>
+          <button class="btn btn-outline" id="tourFeedbackDown" title="Bad tour — file 👎 feedback">👎</button>
+          <input type="text" id="tourFeedbackNote" style="flex:1;"
+                 placeholder="Optional note — what worked / what didn't" />
+        </div>`;
+      stopsEl.appendChild(fb);
+    }
+  }
+
+  // Step B.7: POST the verdict + note + tour context (current form inputs + rendered
+  // stops) to the existing /feedback pipeline; toast the created issue number.
+  async function submitTourFeedback(verdict) {
+    const parseCoords = (el) => {
+      if (!el || !el.value.trim()) return null;
+      const p = el.value.split(',').map(s => parseFloat(s.trim()));
+      return (p.length === 2 && !p.some(isNaN)) ? p : null;
+    };
+    const start = parseCoords(document.getElementById('tourStart'));
+    if (!start || tourStops.length === 0) { showError('Generate a tour before rating it.'); return; }
+    const noteEl = document.getElementById('tourFeedbackNote');
+    const note = noteEl ? noteEl.value.trim() : '';
+    const duration = parseInt(document.getElementById('tourDuration').value, 10) || 60;
+    const lenses = document.getElementById('tourLenses').value.split(',').map(s => s.trim()).filter(Boolean);
+    const upBtn = document.getElementById('tourFeedbackUp');
+    const downBtn = document.getElementById('tourFeedbackDown');
+    if (upBtn) upBtn.disabled = true;
+    if (downBtn) downBtn.disabled = true;
+    try {
+      const resp = await fetch(`${API_BASE}/feedback`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transcript: note || `Tour feedback (${verdict}) from workbench`,
+          current_route: 'workbench/tour-preview',
+          tour_context: {
+            start,
+            end: parseCoords(document.getElementById('tourEnd')),
+            duration_min: duration,
+            lenses,
+            stops: tourStops.map(s => ({ name: s.poi_name || '', band: s.band || 'dwell' })),
+            verdict,
+            note: note || null,
+          },
+        }),
+      });
+      if (!resp.ok) { throw new Error(`(${resp.status})`); }
+      const data = await resp.json();
+      showSuccess(`Feedback filed as issue #${data.issue_number}`);
+    } catch (err) {
+      showError('Feedback failed: ' + err.message);
+    } finally {
+      if (upBtn) upBtn.disabled = false;
+      if (downBtn) downBtn.disabled = false;
+    }
   }
 
   async function ttsPlayTourStop(i) {
