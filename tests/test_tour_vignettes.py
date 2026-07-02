@@ -292,3 +292,110 @@ def test_round_trip_closing_leg_never_yields():
 
 def test_max_detour_constant_locked():
     assert VIGNETTE_MAX_DETOUR_M == 50.0
+
+
+# ---------------------------------------------------------------------------
+# Step B.2 — Route carries vignettes (additive contract field)
+# ---------------------------------------------------------------------------
+
+
+def test_route_contract_vignettes_defaults_empty():
+    """The contract field is additive: a plain summarised Route carries {}."""
+    assert _route(_stops_ab()).vignettes == {}
+
+
+def _corpus_poi(
+    pid: str,
+    *,
+    tier: int = 5,
+    lat: float,
+    lng: float,
+    beat_count: int = 8,
+) -> POI:
+    return POI(
+        id=pid,
+        name=pid,
+        tier=tier,
+        poi_role="stop",
+        lat=lat,
+        lng=lng,
+        areas=("Le Marais",),
+        beat_count=beat_count,
+    )
+
+
+def _corpus_snap(pois: list[POI]) -> CorpusSnapshot:
+    """Auto-inject rich active beats per POI (test_tour_selection pattern) so
+    the Phase 6 density gate clears and every POI has something to say."""
+    beats = {
+        p.id: tuple(
+            BeatRef(
+                id=f"{p.id}-b{i}",
+                poi_id=p.id,
+                est_spoken_seconds=240,
+                active_status="active",
+                script_body="A line worth hearing as you pass. And one more.",
+            )
+            for i in range(max(0, p.beat_count))
+        )
+        for p in pois
+    }
+    return CorpusSnapshot(
+        pois=tuple(pois),
+        beats_by_poi=beats,
+        area_types={"Paris": "city", "Le Marais": "neighborhood"},
+        adjacent_areas={},
+    )
+
+
+_PDV = (48.8555, 2.3656)
+
+
+def _select_route_fixture() -> tuple[list[POI], POI]:
+    """Dwell anchors (density fillers + two east anchors) and a tier-2
+    vignette POI 20 m off the anchor-to-anchor leg."""
+    fillers = [
+        _corpus_poi(f"filler-{i}", lat=_PDV[0] + 0.00005 * i, lng=_PDV[1] + 0.00005 * i)
+        for i in range(4)
+    ]
+    a1 = _corpus_poi("anchor-1", lat=48.8555, lng=2.3690)
+    a2 = _corpus_poi("anchor-2", lat=48.8555, lng=2.3730)
+    leg_mid_lng = (2.3690 + 2.3730) / 2.0
+    v = _corpus_poi("v-walkpast", tier=2, lat=48.8555 + 20 * _DEG_PER_M_LAT, lng=leg_mid_lng)
+    return [*fillers, a1, a2], v
+
+
+def test_select_route_populates_vignettes_after_ordering():
+    from src.tour.contract import TourInput
+    from src.tour.selection import select_route
+
+    dwell_pool, v = _select_route_fixture()
+    snap = _corpus_snap([*dwell_pool, v])
+    inp = TourInput(start=_PDV, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+
+    assert "v-walkpast" not in [p.id for p in route.pois]  # never a dwell stop
+    assert route.vignettes, "vignette POI on a leg must be surfaced"
+    hits = [(leg, p.id) for leg, pois in route.vignettes.items() for p in pois]
+    assert len(hits) == 1 and hits[0][1] == "v-walkpast"  # exactly once, one leg
+    leg_idx = hits[0][0]
+    # The leg carrying it is the anchor-1 → anchor-2 walk (its 50 m corridor).
+    assert {route.pois[leg_idx - 1].id, route.pois[leg_idx].id} == {"anchor-1", "anchor-2"}
+
+
+def test_select_route_identity_vignettes_are_additive_metadata():
+    """IDENTITY: adding a vignette-band POI to the corpus changes NOTHING
+    about the dwell route — pois, order, and transits are byte-identical;
+    the vignette arrives as additive metadata only."""
+    from src.tour.contract import TourInput
+    from src.tour.selection import select_route
+
+    dwell_pool, v = _select_route_fixture()
+    inp = TourInput(start=_PDV, duration_min=60, city_slug="paris", round_trip=False)
+    route_without = select_route(inp, _corpus_snap(dwell_pool))
+    route_with = select_route(inp, _corpus_snap([*dwell_pool, v]))
+
+    assert route_with.pois == route_without.pois
+    assert route_with.transits == route_without.transits
+    assert route_without.vignettes == {}
+    assert route_with.vignettes != {}

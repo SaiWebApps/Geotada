@@ -214,6 +214,12 @@ class Route(BaseModel):
     selection demotes the smaller-tier POI and merges its beats into
     the larger POI's pool. The mapping ``host_poi_id -> tuple[BeatRef]``
     lets the harness pull the demoted beats without re-querying.
+
+    Track B (Step B.2) added ``vignettes``: walk-past vignette POIs along
+    the legs — ``leg_idx -> POIs``, where leg ``i`` is the walk INTO stop
+    ``i`` (matching ``transits`` indexing). ADDITIVE metadata only:
+    selection populates it AFTER ordering, and ``pois``/``transits`` are
+    byte-identical to a pre-vignette Route.
     """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
@@ -228,6 +234,8 @@ class Route(BaseModel):
     err_short_total_seconds: int = 0
     tourability: TourabilityAssessment | None = None
     demoted_beats: dict[str, tuple[BeatRef, ...]] = Field(default_factory=dict)
+    # Track B (Step B.2): leg_idx -> walk-past vignette POIs on that leg.
+    vignettes: dict[int, tuple[POI, ...]] = Field(default_factory=dict)
     # M2 routed-metadata slots. ``routed`` is True iff every transit leg came
     # from Valhalla. ``route_polyline`` (stitched whole-route shape) and
     # ``backtrack_ratio``/``flow_score`` keep their defaults until the

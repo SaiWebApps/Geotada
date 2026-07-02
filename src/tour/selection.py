@@ -1166,6 +1166,12 @@ def select_route(
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})
     route = route.model_copy(update={"reach": reach})
+    # Track B (Step B.2): attach walk-past vignettes AFTER ordering — the leg
+    # geometry is final only now. Additive metadata: ``pois``/``transits`` are
+    # untouched (the identity baseline holds bit-for-bit).
+    vignettes = select_vignettes(route, snapshot, lenses=interest or None)
+    if vignettes:
+        route = route.model_copy(update={"vignettes": vignettes})
     return _attach_tourability_if_yellow(route, assessment)
 
 
