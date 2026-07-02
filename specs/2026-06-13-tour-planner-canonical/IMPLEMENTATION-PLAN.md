@@ -362,9 +362,234 @@ From the adversarial review — non-blocking for Phase 1–2, resolve at the pha
   split `preview` / `compose`; mobile flavour picker. Tests: recompose-once-then-block control flow,
   fabricated-sentence caught, compose called exactly once on the pick, audio fires only after VERIFY
   passes, manual listen for reflections on long legs.
+  **→ Atomized 2026-07-01 — see "Phase 4 — atomized (Track A)" below.**
 - **Phase 5 — Grading honesty (optional, off critical path).** Keep the regression gate; optionally add
   an LLM-judge satisfaction rubric on a held-out set. Tests: gate fails on a deliberately-broken
   golden, passes on the corpus.
+
+---
+
+## Phase 4 — atomized (Track A: LLM compose + reflections)  [atomized 2026-07-01]
+
+> Session 2026-07-01 resumption (handoff recovered from the 2026-06-30 transcript; restored to
+> `/var/folders/.../T/ondoway-tour-algorithm-handoff.md`). Narrator voice is LOCKED single-narrator —
+> `specs/2026-06-14-compose-narrator/00-narrator-voice-decision.md` (recovered + committed e2799de).
+> Tracks A and B run as interleaved atomic steps on `main` by a single orchestrator (equivalent
+> outcome to the handoff's two-worktree suggestion, lower merge risk; every step is one commit,
+> individually revertable).
+>
+> Verified starting facts (2026-07-01): `compose_gate.py` (compose_and_verify / serve_or_block /
+> build_full_verifier) is built + unwired; VERIFY teeth exist (`verify.py`: provenance rapidfuzz,
+> faithfulness Mock/Haiku); `validate_script` scans glue-only for forbidden phrases + proper-noun/year
+> leakage; `/trips/generate` already returns k `RouteOption`s (options[0] persisted); `/trips/preview`
+> is stateless single-route; per-stop TTS plumbing (`/audio/generate-trip-stops`, `stop-status`) is
+> live; mobile parses NO options today.
+
+> **Adversarial review 2026-07-01 (persistent critic, pre-code):** 2 blockers + 5 majors found and
+> folded in below. B-1: `key_claims`/`source_passage` exist in `beats.json` (1,145/1,562 beats) but
+> the uploader never writes them → live graph has ZERO → reflections/faithfulness would be
+> structurally void (→ new Step 4.0 + fail-closed lock). B-2: positional `route_id` + full
+> recompute at compose time can silently compose a route the user never picked under corpus/routing
+> drift (→ 4.6 persists per-option ordered poi_ids; compose rebuilds from the STORED pick, never
+> re-selects). M-3 stale audio (→ 4.7 nulls audio on narration change). M-4 glue noun-scan would
+> reject key_claims-derived reflections (→ 4.2 adds cited beats' key_claims to canonical context).
+> M-5/M-6 replace-stops mechanism + tour_input completeness (→ 4.6/4.7/4.10). M-7 live gate must
+> wire the REAL faithfulness checker. Minors: reflections entail strictly < slot stop_idx; mock
+> pins reflection position; injection seam lands in 4.7; B.4 seam locked as an additive
+> BeatSequence field; /compose idempotency guard; picker hidden when options absent.
+
+```
+Step 4.0 — Uploader writes key_claims / source_passage / source_chunk_slug (enabler; B-1).
+  Change:   scripts/upload_paris.py beat SET clause gains the three fields from beats.json; backfill
+            the dev graph via the canonical upload path. Additive, schemaless.
+  Tests:    unit/integ: upload a fixture beat carrying the fields -> read-back equals input; a beat
+            without them -> properties absent (not null-written).
+  Proof:    make test-local + pasted dev-graph count of beats with key_claims after backfill.
+
+Step 4.1 — GLUE_REFLECTION token + pure audio-deficit placement.
+  Change:   generation.py: add GLUE_REFLECTION to GLUE_LABELS. New pure fn reflection_slots(route,
+            beat_sequence) -> tuple[int, ...] (stop_idx whose INCOMING leg gets a reflection).
+            Rule (spec §6 + deferred-clarification lock): leg eligible iff
+            walk_seconds - leg_beat_audio >= 90s; prefer longest legs; never two consecutive legs;
+            cap = max(1, len(stops) // 2); slot 0 never fires (nothing visited yet); deterministic.
+  Tests:    unit: eligibility threshold, longest-first, no-consecutive, cap, slot-0 excluded,
+            empty/1-stop -> (). Whitelist: a GLUE_REFLECTION sentence passes validate_script.
+  Proof:    make test-unit
+
+Step 4.2 — VERIFY + validation learn reflections (fail-closed).
+  Change:   verify.verify_faithfulness: sentence.source_id == GLUE_REFLECTION -> entails(union of
+            key_claims of beats cited at stop_idx STRICTLY < the sentence's, text); an EMPTY union
+            -> faithfulness FAILURE (fail-closed — an unverifiable reflection never ships).
+            validation._cited_beat_corpus_text: cited beats' key_claims join the canonical
+            proper-noun/year context (corpus-derived facts, same class as cues/pronunciation).
+  Tests:    unit: entailed reflection passes; stub False -> failure; strictly-< visited window
+            (claims at the slot's own stop NOT visible); empty union -> failure recorded;
+            key_claims proper noun in a reflection no longer flagged; unvisited noun still flagged.
+  Proof:    make test-unit
+
+Step 4.3 — Compose contract + MockComposeClient (deterministic test default).
+  Change:   new src/tour/compose.py: ComposeRequest (stitched Script, beats-by-id view w/ key_claims,
+            reflection slots + per-slot visited-claims union, lenses/voice constraints), ComposeClient
+            protocol compose(request, attempt, prev_report) -> tuple[Sentence, ...], and
+            MockComposeClient: returns the stitched sentences + one verbatim-from-key_claims
+            reflection Sentence (GLUE_REFLECTION) per slot with a NON-EMPTY union (fail-closed:
+            empty-union slots compose no reflection), inserted immediately after the slot's transit
+            glue and before its anchor beats. Pure, offline.
+  Tests:    unit: every stitched sentence preserved; exactly one reflection per non-empty slot; NONE
+            for an empty-union slot; POSITION pinned (after transit glue, before anchor beats);
+            attempt/prev_report recorded for recompose tests.
+  Proof:    make test-unit
+
+Step 4.4 — compose_script(): wire compose_gate + build_full_verifier around a ComposeClient.
+  Change:   src/tour/compose.py: compose_script(stitched, beat_sequence, route, tour_input, *,
+            client, faithfulness_checker=None, chunk_text_by_slug=None) -> Script. Uses
+            compose_and_verify (fire-once, recompose-once-or-raise).
+  Tests:    unit: pass-first-time -> client called exactly once; fail-then-pass -> exactly twice with
+            the failing report passed in; fail-fail -> ComposeVerificationError; the returned Script
+            carries the passing report; a fabricated sentence (unknown source_id) is caught.
+  Proof:    make test-unit
+
+Step 4.5 — AnthropicComposeClient (real fire-once tool-use compose; NOT in make test).
+  Change:   src/tour/compose.py: AnthropicComposeClient — single messages.create, forced tool call
+            returning the full sentence list (source-attributed); narrator voice per the LOCKED spec
+            (single warm second-person narrator, curiosity-as-structure, lens = register dial);
+            deferred anthropic import (HaikuGlueClient pattern). Read the claude-api skill first.
+  Tests:    unit: injected fake SDK client — prompt carries key_claims + voice constraints + slots;
+            forced tool schema; output parsed to Sentences; SDK never imported at module load.
+            live: make tour-compose-gate (new target) — real Paris trip, live compose, wired with
+            the REAL HaikuFaithfulnessChecker (never the Mock; requires 4.0's backfilled claims),
+            VERIFY report printed, narration rendered; opt-in like tour-audio-gate.
+  Proof:    make test-unit + one pasted live tour-compose-gate run
+
+Step 4.6 — Persist the compose inputs on the Trip node (enabler for /compose; B-2 fix).
+  Change:   create_trip_with_stops stores on Trip: tour_input JSON (start, end, duration_min,
+            city_slug, RESOLVED lenses, round_trip, start_time) AND options JSON
+            [{route_id, ordered poi_ids}] for every flavour returned. Compose will rebuild from the
+            STORED pick — never re-select (corpus/Valhalla drift between generate and compose must
+            not be able to swap the user's route).
+  Tests:    integ: create -> read back both; old trips (no fields) read as None.
+  Proof:    make test-local
+
+Step 4.7 — POST /trips/{trip_id}/compose (route_id) — the second step of the split.
+  Change:   new endpoint: load Trip.tour_input + stored options -> the pick's ordered poi_ids ->
+            rebuild POIs/legs/beat plans from the CURRENT corpus for exactly those stops (no
+            re-selection) -> stitched script -> compose_script via injectable dependencies
+            get_compose_client/get_faithfulness_checker (Mock defaults; FastAPI overrides = the test
+            seam) -> replace_trip_stops CRUD when pick != options[0] (same trip_id, new items) ->
+            persist per-stop narration + NULL item.audio_url/audio_duration_sec on every changed
+            stop (M-3) + set Trip.composed_route_id -> return updated stops (fresh stop_ids) +
+            verification summary. Second compose on the same trip -> 409 already_composed.
+            ComposeVerificationError -> 422 {reason: "compose_verification_failed", attempts,
+            counts} (flavour refused; client offers another). NO TTS here — audio stays in
+            /audio/generate-trip-stops, which now voices composed narration only after the gate.
+  Tests:    integ: 200 -> narration persisted == the injected mock's composed output (deterministic
+            marker; not slot-dependent) AND audio fields nulled; pick opt2 -> stops re-persisted to
+            the STORED opt2 poi list; unknown route_id -> 404; second compose -> 409; injected
+            always-fail checker -> 422 structured body AND stored narration unchanged.
+  Proof:    make test-local
+
+Step 4.8 — Compose provider selection by env (mock default) + docs.
+  Change:   COMPOSE_PROVIDER env (mock|anthropic) resolved in the 4.7 dependency (TTS-provider
+            pattern); Render env documented. make test never sees the real client.
+  Tests:    integ: default -> Mock; env=anthropic -> Anthropic class chosen (construction faked);
+            unknown -> clear 500 error.
+  Proof:    make test-local
+
+Step 4.9 — Mobile parses RouteOptions (flavours) from /trips/generate.
+  Change:   trip.dart: RouteOption/RouteOptionStop models + GeneratedTrip.options; parse `options`.
+  Tests:    flutter: fromJson round-trip incl. band/spotlight/lens_coverage_note/eta; absent options
+            -> empty list (back-compat).
+  Proof:    make flutter-test
+
+Step 4.10 — Mobile flavour picker + composeTrip service call.
+  Change:   TripService.composeTrip(tripId, routeId) -> POST /trips/{id}/compose. Flavour picker UI
+            (bottom sheet on TripItineraryPage before Confirm & Prepare; options from the generate
+            response; hidden when options are absent, e.g. after restart — existing flow untouched).
+            Picker counts show DWELL stops only (band=="dwell"). After compose, the page REBUILDS
+            its stop list from the compose response (stop_ids change when stops are re-persisted);
+            only then does the existing confirm/poll/prefetch flow run.
+  Tests:    flutter: service POSTs correct body/path + throws on 422 (refused flavour surfaces);
+            page: sheet renders k options, tap picks + calls composeTrip exactly once, stop list
+            rebuilt from response, then the per-stop audio flow fires on the NEW stop_ids; 422 ->
+            user offered remaining flavours; no options -> no sheet, legacy flow intact.
+  Proof:    make flutter-test
+
+Step 4.11 — Functional close: dev-server end-to-end + full bar.
+  Change:   none (verification step).
+  Tests:    funct: dev server — generate -> compose(mock) -> generate-trip-stops -> every stop has
+            audio of the COMPOSED narration; tour-audio-gate green on composed text.
+  Proof:    make test + make test-workbench + make test-golden + make tour-grade pasted
+```
+
+## Track B — atomized (Phase 3+ enrichment: vignettes, eval loop, golden gap)
+
+```
+Step B.1 — Pure vignette selection along the legs.
+  Change:   selection.py (or new vignettes.py): select_vignettes(route, snapshot, lenses) ->
+            per-leg tuple of vignette POIs. Locks the deferred clarifications: eligible iff
+            band_for_spotlight(...) == "vignette", within VIGNETTE_MAX_DETOUR_M = 50 of the leg
+            segment, not a dwell stop, dedup across legs; cap 2/leg; deterministic order.
+  Tests:    unit: on-leg vignette admitted; far one rejected; dwell POI never a vignette; dedup;
+            cap; no-lens + lens cases.
+  Proof:    make test-unit
+
+Step B.2 — Route carries vignettes (additive contract field).
+  Change:   Route.vignettes: dict[int, tuple[POI, ...]] = {} (leg_idx -> POIs); select_route
+            populates it AFTER ordering (needs final leg geometry). end=None identity: dwell
+            stops/pois unchanged (goldens must hold bit-for-bit on Route.pois).
+  Tests:    unit: populated on a fixture; pois/order unchanged vs before.
+            golden: make test-golden unchanged.
+  Proof:    make test-local + make test-golden
+
+Step B.3 — Vignettes reach the output contract: RouteOption + preview.
+  Change:   build_route_option interleaves band="vignette" RouteOptionStops (minutes=0, walk_past)
+            after their leg-origin stop; preview_trip surfaces them in TripPreviewResponse.stops
+            (band field already exists).
+  Tests:    unit: interleave order correct; dwell stops unchanged.
+            integ: preview response carries vignette stops with band="vignette".
+  Proof:    make test-local
+
+Step B.4 — The stitcher VOICES vignettes inside the leg (grounded one-liner).
+  Change:   SEAM LOCKED (per adversarial review m-11): BeatSequence gains an ADDITIVE field
+            vignette_beats: dict[int, tuple[BeatRef, ...]] = {} (leg_idx -> chosen beats), built by
+            the callers from Route.vignettes + snapshot. validate_script's known-id set derives from
+            poi_beats + vignette_beats INTERNALLY — its signature (and build_full_verifier's, and
+            compose_script's) does NOT change, so Track A steps are untouched. generate() emits, in
+            the transit stage of a leg with vignettes, one beat-cited sentence per vignette (first
+            sentence of its best beat — corpus text, not glue: no proper-noun-invention issue).
+            _build_anchor_block never sees vignette beats (they are not POIBeats entries).
+  Tests:    unit: leg narration contains the vignette one-liner, source_type="beat", validation
+            passes; the vignette beat is NOT emitted as an anchor block; stop narration
+            (stop_narration_text) places it in the leg's stop block.
+  Proof:    make test-local
+
+Step B.5 — Workbench surfaces vignettes distinctly.
+  Change:   review.html: vignette stops render with a "vignette" tag + hollow/smaller map pin.
+  Tests:    playwright (make test-workbench): mocked preview with a vignette stop -> tag + pin class.
+  Proof:    make test-workbench
+
+Step B.6 — Workbench map click-to-set start/destination.
+  Change:   review.html tour view: 1st map click -> #tourStart + start pin; 2nd -> #tourEnd + pin;
+            clear button resets to open walk. Matches the app UX; kills coord-typing.
+  Tests:    playwright: click map twice -> inputs filled with clicked lat,lng; clear resets; generate
+            uses the clicked coords.
+  Proof:    make test-workbench
+
+Step B.7 — 👍/👎 + note on a generated tour -> the EXISTING /feedback pipeline (GitHub issue).
+  Change:   FeedbackRequest gains optional tour_context {start, end, duration_min, lenses, stops,
+            verdict, note}; issue body appends a Tour Context section; review.html tour view gets
+            👍/👎 + optional note wired to POST /feedback. Human-mediated loop, never auto-tuning.
+  Tests:    integ: POST with tour_context -> issue body contains it (GH client faked); without ->
+            unchanged. playwright: buttons render; 👎 + note -> request body carries verdict+context.
+  Proof:    make test-local + make test-workbench
+
+Step B.8 — Golden-gap diagnostic (analysis first; improvements only if gates hold).
+  Change:   run the goldens, diff engine vs human-ideal per tour, categorize every miss (corridor?
+            walk_by_only? tier? lens? beat coverage?); write the findings into this spec folder;
+            implement only mechanically-safe selection wins surfaced by the diagnostic (all gates
+            green, NEVER re-baseline). Corpus-investment items are listed, not smuggled in.
+  Proof:    the written diagnostic + any win's green gates pasted.
+```
 
 ---
 
