@@ -263,11 +263,21 @@ class POIBeats(BaseModel):
 
 
 class BeatSequence(BaseModel):
-    """The ordered beat plan for a Route — Phase 3 turns this into a Script."""
+    """The ordered beat plan for a Route — Phase 3 turns this into a Script.
+
+    Track B (Step B.4, seam locked by the plan's adversarial review m-11)
+    added the ADDITIVE ``vignette_beats``: ``leg_idx -> chosen walk-past
+    beats`` (leg ``i`` = the walk INTO stop ``i``), ONE best beat per
+    vignette POI, built by callers from ``Route.vignettes`` + the snapshot
+    (see ``beat_select.select_vignette_beats``). The stitcher voices each as
+    a single beat-cited one-liner in that leg's transit stage. They are NOT
+    ``POIBeats`` entries — anchor blocks never see them.
+    """
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 
     poi_beats: tuple[POIBeats, ...]
+    vignette_beats: dict[int, tuple[BeatRef, ...]] = Field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,284 @@
+"""Track B Step B.4 — the stitcher VOICES walk-past vignettes inside the leg.
+
+Seam locked by the plan (adversarial review m-11): BeatSequence gains the
+ADDITIVE ``vignette_beats`` field (leg_idx -> chosen beats); ``generate()``
+emits, in the transit stage of a leg with vignettes, one beat-cited sentence
+per vignette (the FIRST sentence of its beat — corpus text). validate_script
+derives its known-id set from poi_beats + vignette_beats INTERNALLY (its
+signature does not change). ``_build_anchor_block`` never sees vignette
+beats — they are not POIBeats entries.
+
+Pure — no Neo4j, MockGlueClient only.
+"""
+
+from __future__ import annotations
+
+import datetime as dt
+
+from src.tour.beat_select import select_vignette_beats
+from src.tour.contract import (
+    POI,
+    BeatRef,
+    BeatSequence,
+    POIBeats,
+    Route,
+    Script,
+    Sentence,
+    TourInput,
+    TransitSegment,
+    ValidationReport,
+)
+from src.tour.generation import GLUE_NAV, generate
+from src.tour.glue_client import MockGlueClient
+from src.tour.reflection import reflection_slots
+from src.tour.render_md import stop_narration_text
+from src.tour.validation import validate_script
+
+_NOW = dt.datetime(2026, 7, 2, tzinfo=dt.UTC)
+
+# ---------------------------------------------------------------------------
+# Fixture: two dwell stops + one vignette beat on leg 1 (the p1 → p2 walk)
+# ---------------------------------------------------------------------------
+
+_VIGNETTE_BODY = "The Médicis fountain dates from 1685. It still trickles today."
+_VIGNETTE_ONE_LINER = "The Médicis fountain dates from 1685."
+
+
+def _poi(pid: str, name: str) -> POI:
+    return POI(
+        id=pid, name=name, tier=5, poi_role="stop", lat=48.8555, lng=2.3656,
+        areas=("Le Marais",),
+    )
+
+
+def _beat(bid: str, poi_id: str, body: str, **kw) -> BeatRef:
+    return BeatRef(
+        id=bid, poi_id=poi_id, script_body=body, active_status="active",
+        word_count=len(body.split()), **kw,
+    )
+
+
+def _vignette_beat(**kw) -> BeatRef:
+    # est_spoken_seconds deliberately large: only the FIRST sentence is
+    # voiced, so audio must count the flat per-sentence estimate, not 100s.
+    return _beat("vb-fountain", "v-fountain", _VIGNETTE_BODY, est_spoken_seconds=100, **kw)
+
+
+def _seq(vignette_beats: dict[int, tuple[BeatRef, ...]] | None = None) -> BeatSequence:
+    p1_plan = POIBeats(
+        poi_id="p1", poi_name="Place des Vosges", ordering_strategy="narrative_function",
+        beats=(_beat("b1", "p1", "Henri IV built the square. It opened to crowds."),),
+    )
+    p2_plan = POIBeats(
+        poi_id="p2", poi_name="Hotel de Sully", ordering_strategy="narrative_function",
+        beats=(_beat("b2", "p2", "The mansion hides a quiet garden. Sully lived here."),),
+    )
+    kwargs = {"vignette_beats": vignette_beats} if vignette_beats is not None else {}
+    return BeatSequence(poi_beats=(p1_plan, p2_plan), **kwargs)
+
+
+def _route(walk_seconds: int = 60) -> Route:
+    pois = (_poi("p1", "Place des Vosges"), _poi("p2", "Hotel de Sully"))
+    transits = tuple(
+        TransitSegment(
+            from_poi_id=None if i == 0 else pois[i - 1].id,
+            to_poi_id=p.id,
+            distance_m=100.0,
+            walk_seconds=walk_seconds,
+        )
+        for i, p in enumerate(pois)
+    )
+    return Route(
+        pois=pois, transits=transits, total_walk_distance_m=200.0,
+        total_walk_seconds=walk_seconds * 2, audio_budget_seconds=3000,
+        spine_area="Le Marais",
+    )
+
+
+_INPUT = TourInput(start=(48.8555, 2.3656), duration_min=60, city_slug="paris")
+
+
+def _generate(seq: BeatSequence) -> Script:
+    return generate(seq, _route(), _INPUT, glue_client=MockGlueClient(), now=_NOW)
+
+
+# ---------------------------------------------------------------------------
+# The one-liner: emitted in the leg's transit stage, beat-cited, validated
+# ---------------------------------------------------------------------------
+
+
+def test_leg_narration_contains_beat_cited_vignette_one_liner():
+    script = _generate(_seq({1: (_vignette_beat(),)}))
+
+    v_sents = [s for s in script.script if s.source_id == "vb-fountain"]
+    assert len(v_sents) == 1, "exactly one one-liner, never the full beat"
+    v = v_sents[0]
+    assert v.text == _VIGNETTE_ONE_LINER  # FIRST sentence only
+    assert v.source_type == "beat"
+    assert v.stop_idx == 1  # the leg INTO stop 1
+
+
+def test_vignette_sits_after_transit_glue_before_anchor_beats():
+    script = _generate(_seq({1: (_vignette_beat(),)}))
+    ids = [s.source_id for s in script.script]
+    v_pos = ids.index("vb-fountain")
+    assert ids[v_pos - 1] == GLUE_NAV, "one-liner lands right after the leg's nav glue"
+    assert "b2" in ids[v_pos + 1 :], "stop 1's anchor beats follow the one-liner"
+
+
+def test_vignette_validation_passes():
+    script = _generate(_seq({1: (_vignette_beat(),)}))
+    assert script.validation.passed, (
+        f"untraceable={[s.text for s in script.validation.untraceable_sentences]} "
+        f"forbidden={script.validation.forbidden_phrase_hits}"
+    )
+
+
+def test_vignette_beat_never_appears_as_anchor_block():
+    """The vignette beat is not a POIBeats entry: its SECOND sentence (an
+    anchor block would stream the whole body) must never surface."""
+    script = _generate(_seq({1: (_vignette_beat(),)}))
+    all_text = " ".join(s.text for s in script.script)
+    assert _VIGNETTE_ONE_LINER in all_text
+    assert "It still trickles today." not in all_text
+
+
+def test_two_vignettes_on_one_leg_voiced_in_order():
+    vb2 = _beat("vb-gate", "v-gate", "An iron gate guards the passage. Few notice it.")
+    script = _generate(_seq({1: (_vignette_beat(), vb2)}))
+    ids = [s.source_id for s in script.script]
+    assert ids.index("vb-fountain") < ids.index("vb-gate")
+    assert [s.text for s in script.script if s.source_id == "vb-gate"] == [
+        "An iron gate guards the passage."
+    ]
+    assert script.validation.passed
+
+
+def test_stop_narration_text_places_one_liner_in_the_legs_stop_block():
+    script = _generate(_seq({1: (_vignette_beat(),)}))
+    narration = stop_narration_text(script)
+    assert _VIGNETTE_ONE_LINER in narration[1]
+    assert _VIGNETTE_ONE_LINER not in narration[0]
+
+
+def test_empty_vignette_beats_is_todays_script():
+    """Additive seam: the default ({}) and an explicit empty mapping produce a
+    Script byte-identical to the pre-B.4 stitcher output shape."""
+    plain = _generate(_seq())
+    explicit_empty = _generate(_seq({}))
+    assert plain == explicit_empty
+    assert all(s.source_id != "vb-fountain" for s in plain.script)
+
+
+def test_vignette_line_counts_flat_glue_estimate_in_total_audio():
+    """The one-liner voices ONE sentence — audio grows by the flat 4s glue
+    estimate, never the beat's whole est_spoken_seconds (100 here)."""
+    plain = _generate(_seq())
+    with_v = _generate(_seq({1: (_vignette_beat(),)}))
+    assert with_v.total_audio_seconds == plain.total_audio_seconds + 4
+
+
+# ---------------------------------------------------------------------------
+# validate_script derives known ids from poi_beats + vignette_beats
+# ---------------------------------------------------------------------------
+
+
+def _mini_script(sentences: tuple[Sentence, ...]) -> Script:
+    return Script(
+        city_slug="paris", generated_at=_NOW.isoformat(), inputs=_INPUT,
+        total_audio_seconds=0, total_walking_seconds=0, total_walk_distance_m=0,
+        total_planned_seconds=0, selected_pois=(), lens_coverage={},
+        script=sentences, validation=ValidationReport(),
+    )
+
+
+def test_validate_script_knows_vignette_beat_ids_internally():
+    one_liner = Sentence(
+        text=_VIGNETTE_ONE_LINER, source_id="vb-fountain", source_type="beat", stop_idx=1
+    )
+    script = _mini_script((one_liner,))
+
+    with_field = validate_script(script, _seq({1: (_vignette_beat(),)}))
+    assert with_field.untraceable_sentences == ()
+
+    without_field = validate_script(script, _seq())
+    assert one_liner in without_field.untraceable_sentences
+
+
+def test_cited_vignette_body_joins_canonical_context_for_glue_scan():
+    """A glue sentence naming a proper noun that only the cited vignette beat
+    voices ("Médicis") passes the leakage scan — cited corpus is canonical."""
+    one_liner = Sentence(
+        text=_VIGNETTE_ONE_LINER, source_id="vb-fountain", source_type="beat", stop_idx=1
+    )
+    glue = Sentence(
+        text="Walk past the Médicis fountain now.",
+        source_id=GLUE_NAV, source_type="glue", stop_idx=1,
+    )
+    script = _mini_script((one_liner, glue))
+
+    report = validate_script(script, _seq({1: (_vignette_beat(),)}))
+    assert report.forbidden_phrase_hits == ()
+
+    # Without the vignette beat on the sequence, the noun is runtime invention.
+    bare = validate_script(_mini_script((glue,)), _seq())
+    assert any("Médicis" in reason for _s, reason in bare.forbidden_phrase_hits)
+
+
+# ---------------------------------------------------------------------------
+# Reflection placement is untouched by vignette audio
+# ---------------------------------------------------------------------------
+
+
+def test_reflection_slots_unchanged_by_vignette_beats():
+    """reflection_slots reads poi_beats + the leg's transit-beat audio only;
+    vignette one-liners neither create nor destroy a slot."""
+    route = _route(walk_seconds=300)  # deficit 300 - 4 = 296 >= 90 -> slot 1
+    assert reflection_slots(route, _seq()) == (1,)
+    assert reflection_slots(route, _seq({1: (_vignette_beat(),)})) == (1,)
+
+
+# ---------------------------------------------------------------------------
+# select_vignette_beats — the caller-side helper (one best beat per POI)
+# ---------------------------------------------------------------------------
+
+
+def _v_poi(pid: str) -> POI:
+    return POI(id=pid, name=pid, tier=2, poi_role="stop", lat=48.85, lng=2.35)
+
+
+def test_select_vignette_beats_first_active_with_body():
+    bodyless = BeatRef(id="nb", poi_id="v1", active_status="active")
+    retired = _beat("rb", "v1", "Old text.", ).model_copy(update={"active_status": "retired"})
+    good = _beat("gb", "v1", "A fine line. And more.")
+    later = _beat("lb", "v1", "A later line.")
+    beats = {"v1": (bodyless, retired, good, later)}
+    out = select_vignette_beats({1: (_v_poi("v1"),)}, beats)
+    assert out == {1: (good,)}
+
+
+def test_select_vignette_beats_prefers_requested_lens():
+    plain = _beat("pb", "v1", "A plain line.")
+    lensed = _beat("lb", "v1", "A lensed line.", lenses=("hidden_history",))
+    beats = {"v1": (plain, lensed)}
+    assert select_vignette_beats({1: (_v_poi("v1"),)}, beats) == {1: (plain,)}
+    assert select_vignette_beats(
+        {1: (_v_poi("v1"),)}, beats, lenses=frozenset({"hidden_history"})
+    ) == {1: (lensed,)}
+
+
+def test_select_vignette_beats_skips_unvoiceable_and_drops_empty_legs():
+    voiced = _beat("gb", "v1", "A fine line.")
+    beats = {"v1": (voiced,), "v2": (BeatRef(id="nb", poi_id="v2"),)}
+    out = select_vignette_beats(
+        {1: (_v_poi("v1"), _v_poi("v2")), 2: (_v_poi("v2"),)}, beats
+    )
+    assert out == {1: (voiced,)}  # v2 has no voiceable beat; leg 2 dropped
+
+
+def test_select_vignette_beats_one_beat_per_poi_in_poi_order():
+    b1 = _beat("b-v1", "v1", "Line one.")
+    b2 = _beat("b-v2", "v2", "Line two.")
+    beats = {"v1": (b1,), "v2": (b2,)}
+    out = select_vignette_beats({3: (_v_poi("v2"), _v_poi("v1"))}, beats)
+    assert out == {3: (b2, b1)}  # follows the vignette POI order

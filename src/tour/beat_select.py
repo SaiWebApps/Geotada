@@ -381,6 +381,44 @@ geofence trigger radius, which is the natural notion of "same place".
 """
 
 
+def select_vignette_beats(
+    vignettes: dict[int, tuple[POI, ...]],
+    beats_by_poi_id: dict[str, tuple[BeatRef, ...]],
+    *,
+    lenses: Iterable[str] | None = None,
+) -> dict[int, tuple[BeatRef, ...]]:
+    """Track B (Step B.4): ONE best voiceable beat per walk-past vignette POI.
+
+    Builds ``BeatSequence.vignette_beats`` from ``Route.vignettes`` (Step B.2)
+    + the corpus snapshot's ``beats_by_poi`` mapping. Per vignette POI: the
+    first ACTIVE beat with a ``script_body``, preferring — when lenses are
+    requested — one that carries a requested lens (the one-liner should speak
+    to the user's genre when the corpus allows). A POI with no voiceable beat
+    contributes nothing; a leg whose POIs all lack one is dropped. Beat order
+    follows the vignette POI order (spotlight desc, then id — Step B.1).
+    """
+    interest = frozenset(s.lower() for s in (lenses or []))
+    out: dict[int, tuple[BeatRef, ...]] = {}
+    for leg_idx, pois in vignettes.items():
+        chosen: list[BeatRef] = []
+        for poi in pois:
+            voiceable = [
+                b
+                for b in beats_by_poi_id.get(poi.id, ())
+                if (b.active_status or "active") == "active" and b.script_body
+            ]
+            if not voiceable:
+                continue
+            lensed = next(
+                (b for b in voiceable if any(ln.lower() in interest for ln in b.lenses)),
+                None,
+            )
+            chosen.append(lensed if lensed is not None else voiceable[0])
+        if chosen:
+            out[leg_idx] = tuple(chosen)
+    return out
+
+
 def find_area_orientation_beat(
     beat_sequence: BeatSequence,
     route: Route,

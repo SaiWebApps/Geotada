@@ -109,7 +109,11 @@ def validate_script(script: Script, beat_sequence: BeatSequence) -> ValidationRe
 
 
 def _untraceable_sentences(script: Script, beat_sequence: BeatSequence) -> list[Sentence]:
+    # Track B (B.4): the known-id set derives from poi_beats + vignette_beats
+    # INTERNALLY — a walk-past one-liner is beat-cited against a vignette
+    # beat, which is not a POIBeats entry. The signature does not change.
     known_beat_ids = {b.id for plan in beat_sequence.poi_beats for b in plan.beats}
+    known_beat_ids |= {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
     out: list[Sentence] = []
     for sentence in script.script:
         if sentence.source_type == "beat":
@@ -180,6 +184,16 @@ def _cited_beat_corpus_text(script: Script, beat_sequence: BeatSequence) -> str:
                     chunks.append(cue.cue)
             if beat.pronunciation:
                 chunks.append(beat.pronunciation)
+    # Track B (B.4): cited vignette beats are corpus text too — their
+    # script_body/key_claims join the canonical context exactly like
+    # anchor-beat text (the walk-past one-liner is beat-cited, and glue may
+    # legitimately reference facts the corpus already voiced).
+    for beats in beat_sequence.vignette_beats.values():
+        for beat in beats:
+            if beat.id in cited_ids:
+                if beat.script_body:
+                    chunks.append(beat.script_body)
+                chunks.extend(beat.key_claims)
     # Phase 7.5: Area names that surface in the synthesized opener
     # ("the Marais", "the Île de la Cité") are canonical context too.
     for poi in script.selected_pois:

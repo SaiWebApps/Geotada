@@ -179,6 +179,7 @@ def generate(
                 client,
                 stop_idx=stop_idx,
                 consumed_beat_ids=consumed_beat_ids,
+                vignette_beats=beat_sequence.vignette_beats.get(stop_idx, ()),
             )
             sentences.extend(transit_sents)
             for s in transit_sents:
@@ -528,6 +529,7 @@ def _build_transit(
     *,
     stop_idx: int,
     consumed_beat_ids: set[str] | None = None,
+    vignette_beats: tuple[BeatRef, ...] = (),
 ) -> list[Sentence]:
     """Insert a corpus transit beat when present; otherwise a single glue nav.
 
@@ -553,6 +555,12 @@ def _build_transit(
     emitted earlier in the script (e.g. by `current`'s prior anchor
     block, or by a previous transit) isn't picked again. Without this,
     multi-anchor tours emitted the same transit beat 2-3 times.
+
+    Track B (Step B.4): ``vignette_beats`` — the chosen walk-past beats for
+    this leg (``BeatSequence.vignette_beats[stop_idx]``) — are voiced AFTER
+    the transit beat/glue, one beat-cited one-liner each (the FIRST sentence
+    of the beat's ``script_body``; corpus text, so no invention issue).
+    Vignette beats are not POIBeats entries, so anchor blocks never see them.
     """
     consumed = consumed_beat_ids or set()
     # Prefer a transit beat at `current` whose origin matches `previous`
@@ -568,25 +576,55 @@ def _build_transit(
             previous, dest_name=current.poi_name, consumed=consumed
         )
     if transit_beat is not None and transit_beat.script_body:
-        return _beat_to_sentences(transit_beat, stop_idx)
-
-    distance_m = _segment_distance_m(route, stop_idx)
-    distance_clause = f", distance approx {round(distance_m)}m" if distance_m else ""
-    request = (
-        f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
-        f"Use only navigation language — no facts, no names, no dates."
-    )
-    context = _format_glue_context(previous, current)
-    out = client.stitch(GLUE_NAV, context, request)
-    text = _coerce_glue_output(out, default=f"Walk on toward {current.poi_name}.")
-    return [
-        Sentence(
-            text=text,
-            source_id=GLUE_NAV,
-            source_type="glue",
-            stop_idx=stop_idx,
+        out_sentences = _beat_to_sentences(transit_beat, stop_idx)
+    else:
+        distance_m = _segment_distance_m(route, stop_idx)
+        distance_clause = f", distance approx {round(distance_m)}m" if distance_m else ""
+        request = (
+            f"From {previous.poi_name}, walk to {current.poi_name}{distance_clause}. "
+            f"Use only navigation language — no facts, no names, no dates."
         )
-    ]
+        context = _format_glue_context(previous, current)
+        out = client.stitch(GLUE_NAV, context, request)
+        text = _coerce_glue_output(out, default=f"Walk on toward {current.poi_name}.")
+        out_sentences = [
+            Sentence(
+                text=text,
+                source_id=GLUE_NAV,
+                source_type="glue",
+                stop_idx=stop_idx,
+            )
+        ]
+    out_sentences.extend(_vignette_one_liners(vignette_beats, stop_idx))
+    return out_sentences
+
+
+def _vignette_one_liners(
+    vignette_beats: tuple[BeatRef, ...], stop_idx: int
+) -> list[Sentence]:
+    """One beat-cited sentence per walk-past vignette beat (Track B B.4).
+
+    The FIRST sentence of the beat's ``script_body`` — verbatim corpus text
+    attributed to the beat's own id, at the leg's ``stop_idx``. Beats with no
+    body (callers should have filtered them — ``select_vignette_beats`` only
+    picks voiceable beats) contribute nothing.
+    """
+    out: list[Sentence] = []
+    for beat in vignette_beats:
+        if not beat.script_body:
+            continue
+        sents = split_sentences(beat.script_body)
+        if not sents:
+            continue
+        out.append(
+            Sentence(
+                text=sents[0],
+                source_id=beat.id,
+                source_type="beat",
+                stop_idx=stop_idx,
+            )
+        )
+    return out
 
 
 def _segment_distance_m(route: Route, stop_idx: int) -> float:
@@ -786,11 +824,16 @@ def _lens_coverage(beat_sequence: BeatSequence) -> dict[str, int]:
 def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> int:
     """Sum est_spoken_seconds across cited beats (deduped by beat_id),
     and add a flat 4 seconds per glue sentence (≈10 spoken words).
+
+    Track B (B.4): a vignette voices only the FIRST sentence of its beat, so
+    counting the whole beat's est_spoken_seconds would overcount — each
+    vignette one-liner gets the same flat per-sentence estimate as glue.
     """
+    vignette_ids = {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
     cited_ids: set[str] = set()
     glue_count = 0
     for s in sentences:
-        if s.source_type == "beat":
+        if s.source_type == "beat" and s.source_id not in vignette_ids:
             cited_ids.add(s.source_id)
         else:
             glue_count += 1
