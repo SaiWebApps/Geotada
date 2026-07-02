@@ -130,8 +130,21 @@ def create_trip_with_stops(
         options_json=options_json,
     )
 
-    # Create each itinerary item with one PLAYS_BEAT edge per beat.
-    # A null $lens_name is simply not stored (Cypher drops null map entries).
+    _create_itinerary_items(session, trip_id, profile_id, stops)
+
+    return {"trip_id": trip_id, "trip_name": trip_name}
+
+
+def _create_itinerary_items(
+    session: Session,
+    trip_id: str,
+    profile_id: str,
+    stops: list[dict[str, Any]],
+) -> list[str]:
+    """Create one ItineraryItem (+ edges) per stop; item ids in stop order.
+
+    A null $lens_name is simply not stored (Cypher drops null map entries).
+    """
     item_query = """
         MATCH (trip:Trip {id: $trip_id})
         MATCH (poi:POI {id: $poi_id})
@@ -156,13 +169,15 @@ def create_trip_with_stops(
         CREATE (item)-[:PLAYS_BEAT]->(beat)
         RETURN count(beat) AS edges
     """
+    item_ids: list[str] = []
     for stop in stops:
+        item_id = str(uuid.uuid4())
         record = session.run(
             item_query,
             trip_id=trip_id,
             poi_id=stop["poi_id"],
             profile_id=profile_id,
-            item_id=str(uuid.uuid4()),
+            item_id=item_id,
             sort_order=stop["sort_order"],
             duration_min=stop["duration_min"],
             start_time=stop["start_time"],
@@ -180,8 +195,41 @@ def create_trip_with_stops(
                 f"Stop {stop['poi_id']!r}: created {edges} PLAYS_BEAT edges "
                 f"for {len(stop['beat_ids'])} beat_ids — beats missing from graph"
             )
+        item_ids.append(item_id)
+    return item_ids
 
-    return {"trip_id": trip_id, "trip_name": trip_name}
+
+def replace_trip_stops(
+    session: Session, trip_id: str, stops: list[dict[str, Any]]
+) -> list[str]:
+    """Delete a trip's ItineraryItems and recreate them from ``stops``.
+
+    /compose persists the picked flavour through this: item ids are FRESH
+    (clients rebuild their stop lists from the response) and the new items
+    carry no audio fields, so stale per-stop audio of the pre-compose
+    narration can never be served as composed. Returns the new item ids in
+    stop order.
+    """
+    record = session.run(
+        "MATCH (p:Profile)-[:IS_CAPTAIN_OF]->(t:Trip {id: $tid}) RETURN p.id AS pid",
+        tid=trip_id,
+    ).single()
+    if record is None:
+        raise ValueError(f"Trip {trip_id!r} not found (or has no captain profile)")
+    session.run(
+        "MATCH (:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) DETACH DELETE i",
+        tid=trip_id,
+    )
+    return _create_itinerary_items(session, trip_id, record["pid"], stops)
+
+
+def mark_trip_composed(session: Session, trip_id: str, route_id: str) -> None:
+    """Record the composed pick — a second /compose on the trip is a 409."""
+    session.run(
+        "MATCH (t:Trip {id: $tid}) SET t.composed_route_id = $rid",
+        tid=trip_id,
+        rid=route_id,
+    )
 
 
 def get_trip_compose_inputs(session: Session, trip_id: str) -> dict[str, Any] | None:

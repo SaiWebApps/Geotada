@@ -478,3 +478,158 @@ class TestPreviewTrip:
             json={"center_lat": -33.8688, "center_lng": 151.2093, "duration_min": 90},
         )
         assert resp.status_code == 422
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 Step 4.7 — POST /trips/{trip_id}/compose
+# ---------------------------------------------------------------------------
+
+COMPOSE_MARKER = "COMPOSED-MARKER: the story, retold for you."
+
+
+class _MarkerComposeClient:
+    """Deterministic composer: prepends a recognizable glue sentence —
+    route-independent proof that the COMPOSED output was persisted."""
+
+    def compose(self, request, attempt, prev_report):
+        from src.tour.contract import Sentence
+        from src.tour.generation import GLUE_PACING
+
+        marker = Sentence(
+            text=COMPOSE_MARKER, source_id=GLUE_PACING, source_type="glue", stop_idx=0
+        )
+        return (marker, *request.stitched.script)
+
+
+class _RejectAllChecker:
+    """Fails every entailment — forces the gate to refuse the flavour."""
+
+    def entails(self, key_claims, sentence_text):
+        return False
+
+
+@needs_neo4j
+class TestComposeTripEndpoint:
+    @pytest.fixture()
+    def fresh_trip(self, client):
+        resp = client.post("/api/v1/trips/generate", json=_body(NOLENS_PROFILE_ID))
+        assert resp.status_code == 201, resp.text
+        return resp.json()
+
+    def _override(self, client, dep, value):
+        from src.api import dependencies
+
+        target = getattr(dependencies, dep)
+        client.app.dependency_overrides[target] = lambda: value
+        return target
+
+    def _clear(self, client, target):
+        client.app.dependency_overrides.pop(target, None)
+
+    def test_compose_persists_marker_narration_with_fresh_stop_ids(
+        self, client, live_neo4j, fresh_trip
+    ):
+        trip_id = fresh_trip["trip_id"]
+        target = self._override(client, "get_compose_client", _MarkerComposeClient())
+        try:
+            resp = client.post(
+                f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+            )
+        finally:
+            self._clear(client, target)
+        assert resp.status_code == 200, resp.text
+        data = resp.json()
+        assert data["trip_id"] == trip_id
+        assert data["route_id"] == f"{trip_id}-opt1"
+        assert data["attempts"] == 1
+        assert len(data["stops"]) == len(fresh_trip["stops"])
+        # The composed marker landed in the persisted stop-0 narration...
+        assert data["stops"][0]["narration"].startswith(COMPOSE_MARKER)
+        # ...and the DB agrees: fresh items, marker narration, NO audio fields.
+        with live_neo4j.session() as s:
+            rows = s.run(
+                "MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) "
+                "RETURN i.id AS id, i.narration AS narration, i.audio_url AS audio "
+                "ORDER BY i.sort_order",
+                tid=trip_id,
+            ).data()
+            composed_route = s.run(
+                "MATCH (t:Trip {id: $tid}) RETURN t.composed_route_id AS rid", tid=trip_id
+            ).single()["rid"]
+        assert [r["id"] for r in rows] == [st["stop_id"] for st in data["stops"]]
+        assert rows[0]["narration"].startswith(COMPOSE_MARKER)
+        assert all(r["audio"] is None for r in rows)
+        assert composed_route == f"{trip_id}-opt1"
+
+    def test_second_compose_is_conflict(self, client, fresh_trip):
+        trip_id = fresh_trip["trip_id"]
+        first = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+        assert first.status_code == 200, first.text
+        second = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+        assert second.status_code == 409
+        assert second.json()["detail"]["reason"] == "already_composed"
+
+    def test_unknown_route_id_and_trip_are_404(self, client, fresh_trip):
+        trip_id = fresh_trip["trip_id"]
+        bad_opt = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt99"}
+        )
+        assert bad_opt.status_code == 404
+        no_trip = client.post(
+            "/api/v1/trips/no-such-trip/compose", json={"route_id": "no-such-trip-opt1"}
+        )
+        assert no_trip.status_code == 404
+
+    def test_refused_flavour_is_422_and_leaves_trip_untouched(
+        self, client, live_neo4j, fresh_trip
+    ):
+        trip_id = fresh_trip["trip_id"]
+
+        def narrations():
+            with live_neo4j.session() as s:
+                return s.run(
+                    "MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(i:ItineraryItem) "
+                    "RETURN i.id AS id, i.narration AS narration ORDER BY i.sort_order",
+                    tid=trip_id,
+                ).data()
+
+        before = narrations()
+        target = self._override(client, "get_faithfulness_checker", _RejectAllChecker())
+        try:
+            resp = client.post(
+                f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+            )
+        finally:
+            self._clear(client, target)
+        assert resp.status_code == 422, resp.text
+        detail = resp.json()["detail"]
+        assert detail["reason"] == "compose_verification_failed"
+        assert detail["attempts"] == 2
+        assert detail["faithfulness"] > 0
+        # The refusal left the trip exactly as generated — same items, same
+        # narration, and no composed_route_id (another flavour can be tried).
+        assert narrations() == before
+        with live_neo4j.session() as s:
+            rid = s.run(
+                "MATCH (t:Trip {id: $tid}) RETURN t.composed_route_id AS rid", tid=trip_id
+            ).single()["rid"]
+        assert rid is None
+
+    def test_second_option_composes_its_stored_pick(self, client, live_neo4j, fresh_trip):
+        trip_id = fresh_trip["trip_id"]
+        with live_neo4j.session() as s:
+            from src.api.crud.trips import get_trip_compose_inputs
+
+            stored = get_trip_compose_inputs(s, trip_id)
+        options = stored["options"]
+        if len(options) < 2:
+            pytest.skip("this generation produced a single flavour — nothing to pick")
+        resp = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt2"}
+        )
+        assert resp.status_code == 200, resp.text
+        assert [st["poi_id"] for st in resp.json()["stops"]] == options[1]

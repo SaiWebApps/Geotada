@@ -3,18 +3,29 @@
 from __future__ import annotations
 
 import json
+import re
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from neo4j import Driver, Session
 
 from src.api.crud.trips import (
     create_trip_with_stops,
+    get_trip_compose_inputs,
     list_trips_for_profile,
+    mark_trip_composed,
+    replace_trip_stops,
     route_script_to_stops,
 )
-from src.api.dependencies import get_driver, get_session
+from src.api.dependencies import (
+    get_compose_client,
+    get_driver,
+    get_faithfulness_checker,
+    get_session,
+)
 from src.api.models.trips import (
     GeneratedStop,
+    TripComposeRequest,
+    TripComposeResponse,
     TripGenerateRequest,
     TripGenerateResponse,
     TripPreviewRequest,
@@ -22,13 +33,22 @@ from src.api.models.trips import (
     TripPreviewStop,
 )
 from src.tour.beat_select import select_poi_beats
-from src.tour.contract import BeatSequence, TourInput
+from src.tour.compose import ComposeClient, ComposeRequest, compose_script
+from src.tour.compose_gate import ComposeVerificationError
+from src.tour.contract import BeatSequence, Sentence, TourInput, ValidationReport
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
 from src.tour.options import build_route_option
 from src.tour.render_md import stop_narration_text
+from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_k_routes, select_route
+from src.tour.selection import (
+    load_paris_corpus,
+    pick_spine_area,
+    select_k_routes,
+    select_route,
+)
+from src.tour.verify import FaithfulnessChecker
 
 router = APIRouter(tags=["trips"])
 
@@ -286,6 +306,151 @@ def generate_trip(
         lens_coverage=script.lens_coverage,
         stops=stops_out,
         options=options,
+    )
+
+
+class _CountingComposeClient:
+    """Records the attempts consumed so the response can report them —
+    the gate's fire-once/recompose-once flow stays inside compose_script."""
+
+    def __init__(self, inner: ComposeClient):
+        self.inner = inner
+        self.attempts = 0
+
+    def compose(
+        self, request: ComposeRequest, attempt: int, prev_report: ValidationReport | None
+    ) -> tuple[Sentence, ...]:
+        self.attempts = attempt
+        return self.inner.compose(request, attempt, prev_report)
+
+
+@router.post("/trips/{trip_id}/compose", response_model=TripComposeResponse)
+def compose_trip(
+    trip_id: str,
+    body: TripComposeRequest,
+    session: Session = Depends(get_session),
+    driver: Driver = Depends(get_driver),
+    compose_client: ComposeClient = Depends(get_compose_client),
+    faithfulness_checker: FaithfulnessChecker | None = Depends(get_faithfulness_checker),
+):
+    """Second step of the preview/compose split (Phase 4 Step 4.7, spec §5).
+
+    Rebuilds the user's PICK from the poi ids persisted at generate time —
+    NEVER re-running selection, so corpus/routing drift cannot swap the
+    route — then runs the fire-once compose behind the M7 VERIFY gate and
+    re-persists the trip's stops with the composed narration (fresh item
+    ids, no audio fields). NO TTS here: /audio/generate-trip-stops voices
+    the narration afterwards, which by then has passed the gate. A refused
+    flavour is a structured 422; the trip is left untouched so the client
+    can offer another flavour.
+    """
+    inputs = get_trip_compose_inputs(session, trip_id)
+    if inputs is None:
+        raise HTTPException(404, f"Trip '{trip_id}' not found")
+    if inputs["composed_route_id"]:
+        raise HTTPException(
+            409,
+            {"reason": "already_composed", "composed_route_id": inputs["composed_route_id"]},
+        )
+    tour_input_dict, options = inputs["tour_input"], inputs["options"]
+    if not tour_input_dict or not options:
+        raise HTTPException(
+            409,
+            {"reason": "missing_compose_inputs", "detail": "trip predates the compose split"},
+        )
+
+    match = re.fullmatch(re.escape(trip_id) + r"-opt(\d+)", body.route_id)
+    option_n = int(match.group(1)) if match else 0
+    if not (1 <= option_n <= len(options)):
+        raise HTTPException(404, f"Unknown route_id '{body.route_id}' for trip '{trip_id}'")
+    poi_ids = options[option_n - 1]
+
+    tour_input = TourInput(
+        start=tuple(tour_input_dict["start"]),
+        duration_min=tour_input_dict["duration_min"],
+        city_slug=tour_input_dict["city_slug"],
+        lenses=tour_input_dict["lenses"],
+        round_trip=tour_input_dict["round_trip"],
+        end=tuple(tour_input_dict["end"]) if tour_input_dict.get("end") else None,
+    )
+
+    snapshot = load_paris_corpus(driver, city_slug=tour_input.city_slug)
+    pois_by_id = {p.id: p for p in snapshot.pois}
+    missing = [pid for pid in poi_ids if pid not in pois_by_id]
+    if missing:
+        raise HTTPException(409, {"reason": "corpus_changed", "missing_poi_ids": missing})
+    picked = [pois_by_id[pid] for pid in poi_ids]
+
+    spine = pick_spine_area(tour_input.start[0], tour_input.start[1], picked, snapshot)
+    with RoutingClient() as routing_client:
+        route = summarise_route(
+            picked,
+            start_lat=tour_input.start[0],
+            start_lng=tour_input.start[1],
+            round_trip=tour_input.round_trip,
+            duration_min=tour_input.duration_min,
+            spine_area=spine,
+            routing_client=routing_client,
+        )
+
+    plans = [
+        select_poi_beats(poi, list(snapshot.beats_for(poi.id)), interest_lenses=tour_input.lenses)
+        for poi in picked
+    ]
+    seq = BeatSequence(poi_beats=tuple(plans))
+    stitched = generate(seq, route, tour_input)
+
+    counting = _CountingComposeClient(compose_client)
+    try:
+        composed = compose_script(
+            stitched, seq, route, client=counting, faithfulness_checker=faithfulness_checker
+        )
+    except ComposeVerificationError as exc:
+        raise HTTPException(
+            422,
+            {
+                "reason": "compose_verification_failed",
+                "attempts": exc.attempts,
+                "untraceable": len(exc.report.untraceable_sentences),
+                "forbidden": len(exc.report.forbidden_phrase_hits),
+                "provenance": len(exc.report.provenance_failures),
+                "faithfulness": len(exc.report.faithfulness_failures),
+            },
+        ) from exc
+
+    beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
+    stops = route_script_to_stops(
+        composed.selected_pois, beats_by_id, tour_input_dict.get("start_time"), script=composed
+    )
+    item_ids = replace_trip_stops(session, trip_id, stops)
+    mark_trip_composed(session, trip_id, body.route_id)
+
+    display_map = _lens_display_map(session, {s["lens_name"] for s in stops if s["lens_name"]})
+    stops_out = [
+        GeneratedStop(
+            sort_order=s["sort_order"],
+            stop_id=item_ids[i],
+            poi_id=s["poi_id"],
+            poi_name=s["poi_name"],
+            lat=s["lat"],
+            lng=s["lng"],
+            beat_id=s["primary_beat_id"],
+            beat_ids=s["beat_ids"],
+            lens_name=s["lens_name"],
+            lens_display=display_map.get(s["lens_name"]) if s["lens_name"] else None,
+            duration_min=s["duration_min"],
+            importance_tier=s["importance_tier"],
+            start_time=s["start_time"],
+            narration=s.get("narration"),
+            dwell_seconds=s["dwell_seconds"],
+        )
+        for i, s in enumerate(stops)
+    ]
+    return TripComposeResponse(
+        trip_id=trip_id,
+        route_id=body.route_id,
+        attempts=counting.attempts,
+        stops=stops_out,
     )
 
 

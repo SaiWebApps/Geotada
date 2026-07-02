@@ -136,6 +136,29 @@ class TripGenerateResponse(BaseModel):
     )
 
 
+class TripComposeRequest(BaseModel):
+    """Input for POST /trips/{trip_id}/compose (Phase 4 Step 4.7)."""
+
+    route_id: str = Field(
+        description="The picked flavour: '<trip_id>-optN' from the generate response options"
+    )
+
+
+class TripComposeResponse(BaseModel):
+    """Output for POST /trips/{trip_id}/compose: the re-persisted, composed stops.
+
+    stop_id values are FRESH (the pick replaces the trip's items) and audio
+    fields are null — per-stop audio is generated afterwards by the existing
+    /audio/generate-trip-stops flow, which only ever voices narration that
+    passed the compose VERIFY gate.
+    """
+
+    trip_id: str
+    route_id: str
+    attempts: int = Field(description="Compose attempts consumed (1 clean, 2 after recompose)")
+    stops: list[GeneratedStop]
+
+
 class TripPreviewRequest(BaseModel):
     """Web-first preview (Phase 1.5): generate a tour's per-stop narration WITHOUT
     a profile and WITHOUT persisting anything."""
