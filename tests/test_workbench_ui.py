@@ -2075,6 +2075,71 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def test_tour_preview_vignette_renders_tag_and_hollow_pin(self, browser_page):
+        """Track B Step B.5: a band=="vignette" stop renders its card with a visible
+        'vignette' tag + 0-minute (walk past) styling, and its map pin uses the distinct
+        hollow style (tour-route-pin--vignette). Dwell stops are unchanged."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "stops": [
+                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 6,
+                             "lat": 48.8530, "lng": 2.3499, "narration": "A grounded line.",
+                             "spotlight": 5.0, "band": "dwell"},
+                            {"sort_order": 2, "poi_name": "Fontaine du Palmier", "minutes": 0,
+                             "lat": 48.8576, "lng": 2.3470,
+                             "narration": "On your right, the Palmier fountain.",
+                             "spotlight": 1.2, "band": "vignette"},
+                            {"sort_order": 3, "poi_name": "Sainte-Chapelle", "minutes": 4,
+                             "lat": 48.8554, "lng": 2.3450, "narration": "Another line.",
+                             "spotlight": 3.6, "band": "dwell"},
+                        ],
+                        "spine_area": "Île de la Cité",
+                        "total_audio_min": 10,
+                    }
+                ),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+
+            stops = page.locator("#tourStops .tour-stop")
+            assert stops.count() == 3, f"expected 3 rendered stops, got {stops.count()}"
+
+            # The vignette stop card: visible tag + walk-past (0-minute) styling.
+            vignette_card = page.locator("#tourStops .tour-stop--vignette")
+            assert vignette_card.count() == 1, "the vignette stop should carry the vignette card class"
+            tag = vignette_card.locator(".tour-vignette-tag")
+            assert tag.count() == 1, "the vignette card should show a visible band tag"
+            assert (tag.first.text_content() or "").strip() == "vignette"
+            card_text = vignette_card.first.text_content() or ""
+            assert "walk past" in card_text, "the vignette card should read walk past (0-minute styling)"
+            assert "0 min" in card_text, "the vignette card should show 0 min"
+
+            # Dwell stops unchanged: no tag, dwell minutes still shown.
+            first = stops.first
+            assert first.locator(".tour-vignette-tag").count() == 0, "dwell stops must not carry the tag"
+            assert "~6 min here" in (first.text_content() or ""), "dwell minutes must render unchanged"
+
+            # Map pins: 3 total, exactly the vignette one hollow.
+            assert page.locator(".tour-route-pin").count() == 3, "all 3 stops should pin on the map"
+            assert page.locator(".tour-route-pin--vignette").count() == 1, (
+                "the vignette stop's pin should use the hollow tour-route-pin--vignette style"
+            )
+            _take_screenshot(page, "b5-vignette-tag-and-hollow-pin")
+        finally:
+            page.unroute("**/trips/preview")
+
     def test_empty_beat_stripped_on_load(self, browser_page):
         """Edge case: Empty script_body beats are stripped during JSON load."""
         page, _seed_data, reporter = browser_page

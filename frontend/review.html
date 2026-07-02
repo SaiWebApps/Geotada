@@ -181,6 +181,19 @@
     border-radius: 50%; font-size: 12px; font-weight: 700; border: 2px solid #fff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
+  /* Walk-past vignette pins (Step B.5): hollow + smaller — visually distinct from dwell pins. */
+  .tour-route-pin--vignette span {
+    width: 16px; height: 16px; background: rgba(255,255,255,0.9); color: #3b82f6;
+    border: 2px dashed #3b82f6; font-size: 9px;
+  }
+  /* Vignette stop cards (Step B.5): visible tag + 0-minute (walk past) styling. */
+  .tour-vignette-tag {
+    display: inline-block; margin-left: 6px; padding: 0 6px; border: 1px dashed #3b82f6;
+    border-radius: 9px; color: #3b82f6; font-size: 0.68rem; font-weight: 600;
+    vertical-align: middle; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .tour-stop--vignette { border-left: 3px dashed #3b82f6; }
+  .tour-stop--vignette .meta { font-style: italic; }
   .merge-banner {
     position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
     background: var(--purple); color: #fff; padding: 8px 16px; border-radius: 6px;
@@ -3047,11 +3060,13 @@
       L.polyline(pts, { color: '#3b82f6', weight: 3, opacity: 0.85 }).addTo(tourRouteLayer);
     }
     located.forEach((s, i) => {
+      // Step B.5: walk-past vignettes get a distinct hollow, smaller pin.
+      const isVignette = s.band === 'vignette';
       L.marker([s.lat, s.lng], {
         icon: L.divIcon({
-          className: 'tour-route-pin',
+          className: isVignette ? 'tour-route-pin tour-route-pin--vignette' : 'tour-route-pin',
           html: `<span>${s.sort_order != null ? s.sort_order : i + 1}</span>`,
-          iconSize: [22, 22],
+          iconSize: isVignette ? [16, 16] : [22, 22],
         }),
       }).bindPopup(escHtml(s.poi_name || '')).addTo(tourRouteLayer);
     });
@@ -3081,13 +3096,18 @@
     }
     tourStops.forEach((s, i) => {
       const el = document.createElement('div');
-      el.className = 'tour-stop db-beat-card';
+      // Step B.5: vignette stops render distinctly — a visible band tag on the title and
+      // 0-minute (walk past) styling; dwell stops are unchanged.
+      const isVignette = s.band === 'vignette';
+      el.className = 'tour-stop db-beat-card' + (isVignette ? ' tour-stop--vignette' : '');
       // Phase 3 spotlight score (and band, when not a plain dwell stop).
       const spot = (typeof s.spotlight === 'number') ? ` · spotlight ${s.spotlight.toFixed(2)}` : '';
-      const bandTag = (s.band && s.band !== 'dwell') ? ` · ${escHtml(s.band)}` : '';
+      const bandTag = (s.band && s.band !== 'dwell')
+        ? ` <span class="tour-vignette-tag">${escHtml(s.band)}</span>` : '';
+      const dwellText = isVignette ? 'walk past · 0 min' : `~${s.minutes} min here`;
       el.innerHTML = `
-        <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}</h4>
-        <div class="meta">~${s.minutes} min here${spot}${bandTag}</div>
+        <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}${bandTag}</h4>
+        <div class="meta">${dwellText}${spot}</div>
         <div class="script-preview">${escHtml(s.narration || '')}</div>
         <div class="tts-row">
           <button class="tts-play-btn" data-tour-stop="${i}" title="Generate and play TTS audio">&#9654; Listen</button>
