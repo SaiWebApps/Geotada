@@ -69,11 +69,19 @@ def build_route_option(
     ``script.inputs.lenses`` is the requested genre. Selected stops are
     on-corridor, so proximity is the on-path default (detour 0 -> 1.0) and
     spotlight == gravity x lens_relevance, which is strictly positive.
+
+    Track B (Step B.3): ``route.vignettes`` (leg_idx -> walk-past POIs, leg i
+    = the walk INTO stop i) are interleaved as ``band="vignette"`` stops right
+    after their leg-origin stop — the vignette on leg i sits between stop i-1
+    and stop i (a leg-0 vignette would precede stop 0; a round trip's closing
+    leg, index len(stops), would follow the last stop). Dwell stops, their
+    order, and eta_seconds are unchanged: a vignette is a walk-past one-liner
+    (minutes=0), not a stop with dwell time.
     """
     roles = {p.id: p.poi_role for p in route.pois}
     pois_by_id: dict[str, POI] = {p.id: p for p in route.pois}
     lenses_fs = frozenset(script.inputs.lenses or ())
-    stops = tuple(
+    dwell_stops = [
         _build_stop(
             sp,
             poi=pois_by_id.get(sp.id),
@@ -83,7 +91,19 @@ def build_route_option(
             snapshot=snapshot,
         )
         for sp in script.selected_pois
+    ]
+    interleaved: list[RouteOptionStop] = []
+    for i, stop in enumerate(dwell_stops):
+        interleaved.extend(
+            _vignette_stop(vp, lenses=lenses_fs, snapshot=snapshot)
+            for vp in route.vignettes.get(i, ())
+        )
+        interleaved.append(stop)
+    interleaved.extend(
+        _vignette_stop(vp, lenses=lenses_fs, snapshot=snapshot)
+        for vp in route.vignettes.get(len(dwell_stops), ())
     )
+    stops = tuple(interleaved)
     eta_seconds = sum(
         (t.leg_seconds if t.leg_seconds is not None else t.walk_seconds) for t in route.transits
     ) + sum(sp.dwell_seconds for sp in script.selected_pois)
@@ -136,6 +156,33 @@ def _build_stop(
         minutes=round(sp.dwell_seconds / 60),
         band=band,
         spotlight=score,
+    )
+
+
+def _vignette_stop(
+    poi: POI,
+    *,
+    lenses: frozenset[str],
+    snapshot: CorpusSnapshot,
+) -> RouteOptionStop:
+    """One walk-past vignette as a RouteOptionStop (Track B Step B.3).
+
+    ``band="vignette"``, ``visit_or_walk_past="walk_past"``, ``minutes=0`` —
+    a one-liner as you pass, never dwell time. ``spotlight`` is the POI's
+    on-path score (the same call select_vignettes banded it with) and
+    ``lens`` the dominant lens of its own beats from the snapshot.
+    """
+    beats = {b.id: b for b in snapshot.beats_for(poi.id)}
+    return RouteOptionStop(
+        poi_id=poi.id,
+        name=poi.name,
+        lat=poi.lat,
+        lng=poi.lng,
+        lens=dominant_lens(tuple(beats), beats),
+        visit_or_walk_past="walk_past",
+        minutes=0,
+        band="vignette",
+        spotlight=spotlight(poi, lenses=lenses, snapshot=snapshot),
     )
 
 

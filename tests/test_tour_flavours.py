@@ -336,6 +336,98 @@ def test_route_option_lens_coverage_note_reflects_corridor_density():
     assert opt.lens_coverage_note == "1 of 2 places on this route speak to the chosen lens(es)."
 
 
+# ---------------------------------------------------------------------------
+# Track B Step B.3 — vignettes interleaved into RouteOption.stops
+# ---------------------------------------------------------------------------
+
+
+def _route_script_with_vignette():
+    """The hand-built fixture plus one walk-past vignette POI on leg 1
+    (the p1 → p2 walk): stops must interleave as [p1, v1, p2]."""
+    route, script, beats_by_id, _ = _hand_built_route_and_script()
+    v = POI(id="v1", name="Fountain", tier=2, poi_role="stop", lat=48.855, lng=2.355)
+    vbeat = BeatRef(
+        id="vb1",
+        poi_id="v1",
+        lenses=("hidden_history",),
+        active_status="active",
+        script_body="A quiet fountain from another century. It still runs.",
+    )
+    route = route.model_copy(update={"vignettes": {1: (v,)}})
+    snapshot = _snap(
+        [*route.pois, v],
+        beats_by_poi={
+            "p1": [beats_by_id["b1"], beats_by_id["b2"]],
+            "p2": [beats_by_id["b3"]],
+            "v1": [vbeat],
+        },
+    )
+    return route, script, beats_by_id, snapshot
+
+
+def test_route_option_interleaves_vignette_after_leg_origin():
+    """The vignette on leg 1 (the walk INTO stop 1) sits between stop 0 and
+    stop 1, as a minutes=0 walk_past band="vignette" stop with its score."""
+    route, script, beats_by_id, snapshot = _route_script_with_vignette()
+    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+
+    assert [s.poi_id for s in opt.stops] == ["p1", "v1", "p2"]
+    v_stop = opt.stops[1]
+    assert v_stop.band == "vignette"
+    assert v_stop.visit_or_walk_past == "walk_past"
+    assert v_stop.minutes == 0
+    assert v_stop.spotlight == pytest.approx(2.0)  # tier-2, no lens -> gravity
+    assert v_stop.lens == "hidden_history"  # dominant lens of its own beats
+    assert (v_stop.name, v_stop.lat, v_stop.lng) == ("Fountain", 48.855, 2.355)
+
+
+def test_route_option_dwell_stops_and_eta_unchanged_by_vignettes():
+    """Vignettes are additive: the dwell stops (and eta, which counts routed
+    legs + dwell only) are byte-identical with and without them."""
+    route_v, script, beats_by_id, snapshot = _route_script_with_vignette()
+    route_plain = route_v.model_copy(update={"vignettes": {}})
+
+    opt_v = build_route_option(route_v, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    opt_plain = build_route_option(
+        route_plain, script, beats_by_id, route_id="rt", snapshot=snapshot
+    )
+
+    dwell_only = tuple(s for s in opt_v.stops if s.poi_id != "v1")
+    assert dwell_only == opt_plain.stops
+    assert opt_v.eta_seconds == opt_plain.eta_seconds
+    assert opt_v.lens_summary == opt_plain.lens_summary
+
+
+def test_route_option_empty_vignettes_is_todays_output():
+    """route.vignettes == {} -> exactly today's stop list (no vignette rows)."""
+    route, script, beats_by_id, snapshot = _hand_built_route_and_script()
+    assert route.vignettes == {}
+    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    assert [s.poi_id for s in opt.stops] == ["p1", "p2"]
+    assert all(s.band == "dwell" for s in opt.stops)
+
+
+def test_route_option_leg0_and_closing_leg_vignette_positions():
+    """Contract-general placement: a leg-0 vignette precedes stop 0; a
+    closing-leg (index len(stops)) vignette follows the last stop."""
+    route, script, beats_by_id, _ = _hand_built_route_and_script()
+    v0 = POI(id="v0", name="Gate", tier=2, poi_role="stop", lat=48.849, lng=2.349)
+    v_end = POI(id="v9", name="Bridge", tier=2, poi_role="stop", lat=48.861, lng=2.361)
+    route = route.model_copy(update={"vignettes": {0: (v0,), 2: (v_end,)}})
+    snapshot = _snap(
+        [*route.pois, v0, v_end],
+        beats_by_poi={
+            "p1": [beats_by_id["b1"], beats_by_id["b2"]],
+            "p2": [beats_by_id["b3"]],
+            "v0": [BeatRef(id="vb0", poi_id="v0", script_body="An old gate.")],
+            "v9": [BeatRef(id="vb9", poi_id="v9", script_body="An old bridge.")],
+        },
+    )
+    opt = build_route_option(route, script, beats_by_id, route_id="rt", snapshot=snapshot)
+    assert [s.poi_id for s in opt.stops] == ["v0", "p1", "p2", "v9"]
+    assert opt.stops[0].band == "vignette" and opt.stops[-1].band == "vignette"
+
+
 def test_route_option_round_trips_with_explicit_spotlight_fields():
     """The new fields survive a full model_dump -> model_validate round-trip when
     set to non-default values, so the contract actually carries them."""
