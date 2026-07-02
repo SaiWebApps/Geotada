@@ -164,8 +164,13 @@ def _cited_beat_corpus_text(script: Script, beat_sequence: BeatSequence) -> str:
     for plan in beat_sequence.poi_beats:
         chunks.append(plan.poi_name)  # the POI's own name is canonical context
         for beat in plan.beats:
-            if beat.id in cited_ids and beat.script_body:
-                chunks.append(beat.script_body)
+            if beat.id in cited_ids:
+                if beat.script_body:
+                    chunks.append(beat.script_body)
+                # Phase 4 (Step 4.2): key_claims are corpus-derived facts a
+                # reflection legitimately quotes; their proper nouns/years are
+                # canonical context, same class as cues/pronunciation.
+                chunks.extend(beat.key_claims)
             # Phase 7.5: physical_cues + pronunciation are corpus-derived
             # facts that can surface in the synthesized cold-open. Include
             # them in canonical context so glue-validation doesn't flag

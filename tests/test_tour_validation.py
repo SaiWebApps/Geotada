@@ -268,3 +268,57 @@ def test_synthesized_opener_pointing_at_poi_name_is_traceable():
     codes = [c for _, c in report.forbidden_phrase_hits]
     assert not any("new_proper_noun" in c for c in codes)
     assert syn not in report.untraceable_sentences
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 Step 4.2 — cited beats' key_claims join the canonical context
+# ---------------------------------------------------------------------------
+
+
+def _claims_beat(bid: str, *, body: str, key_claims: tuple[str, ...]) -> BeatRef:
+    return BeatRef(
+        id=bid,
+        poi_id="p1",
+        word_count=len(body.split()),
+        script_body=body,
+        key_claims=key_claims,
+    )
+
+
+def test_reflection_may_quote_proper_nouns_from_cited_key_claims():
+    """A reflection naming a proper noun/year that appears only in a CITED
+    beat's key_claims (not its script_body) is canonical, not invention."""
+    beat = _claims_beat(
+        "b1",
+        body="The king finished the square.",  # no name, no year
+        key_claims=("Henri IV completed the square in 1612",),
+    )
+    seq = _seq([beat])
+    sentences = [
+        Sentence(text="The king finished the square.", source_id="b1",
+                 source_type="beat", stop_idx=0),
+        Sentence(text="So it was Henri IV who gave you this view, back in 1612.",
+                 source_id="GLUE_REFLECTION", source_type="glue", stop_idx=0),
+    ]
+    report = validate_script(_script(sentences), seq)
+    codes = [c for _, c in report.forbidden_phrase_hits]
+    assert not any("new_proper_noun" in c or "new_year" in c for c in codes)
+
+
+def test_uncited_beat_claims_do_not_join_canonical_context():
+    """key_claims of a beat that is NOT cited in the script stay invisible —
+    a glue sentence quoting them is still flagged as invention."""
+    cited = _claims_beat("b1", body="A plain fact.", key_claims=())
+    uncited = _claims_beat(
+        "b2", body="Unused.", key_claims=("Napoleon was crowned in 1804",)
+    )
+    seq = _seq([cited, uncited])
+    sentences = [
+        Sentence(text="A plain fact.", source_id="b1", source_type="beat", stop_idx=0),
+        Sentence(text="Think of Napoleon, crowned in 1804.",
+                 source_id="GLUE_REFLECTION", source_type="glue", stop_idx=0),
+    ]
+    report = validate_script(_script(sentences), seq)
+    codes = [c for _, c in report.forbidden_phrase_hits]
+    assert any("new_proper_noun:Napoleon" in c for c in codes)
+    assert any("new_year:1804" in c for c in codes)

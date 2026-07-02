@@ -28,6 +28,7 @@ from typing import Protocol
 from rapidfuzz import fuzz
 
 from .contract import BeatRef, BeatSequence, Script, Sentence
+from .generation import GLUE_REFLECTION
 
 # A verbatim passage present in its chunk scores ~100 (partial_ratio is
 # substring-tolerant); 88 leaves headroom for whitespace/punctuation drift
@@ -129,6 +130,33 @@ class HaikuFaithfulnessChecker:
         return text.startswith("YES")
 
 
+def _visited_claims(
+    script: Script,
+    beats_by_id: dict[str, BeatRef],
+    before_stop_idx: int,
+) -> tuple[str, ...]:
+    """Order-preserving, deduped union of key_claims of beats cited at
+    stop_idx STRICTLY below ``before_stop_idx`` — what the walker has already
+    heard when a reflection on the leg into that stop is spoken."""
+    seen_claims: set[str] = set()
+    seen_beats: set[str] = set()
+    out: list[str] = []
+    for s in script.script:
+        if s.source_type != "beat" or s.stop_idx >= before_stop_idx:
+            continue
+        if s.source_id in seen_beats:
+            continue
+        seen_beats.add(s.source_id)
+        beat = beats_by_id.get(s.source_id)
+        if beat is None:
+            continue
+        for claim in beat.key_claims:
+            if claim not in seen_claims:
+                seen_claims.add(claim)
+                out.append(claim)
+    return tuple(out)
+
+
 def verify_faithfulness(
     script: Script,
     beats_by_id: dict[str, BeatRef],
@@ -136,9 +164,23 @@ def verify_faithfulness(
 ) -> list[tuple[Sentence, str]]:
     """(sentence, reason) for each beat-cited sentence not entailed by its
     beat's ``key_claims``. Sentences whose beat has no ``key_claims`` are
-    skipped (nothing to entail against yet)."""
+    skipped (nothing to entail against yet).
+
+    Phase 4 (Step 4.2) — reflections are FAIL-CLOSED, unlike other glue: a
+    ``GLUE_REFLECTION`` sentence must entail from the union of key_claims of
+    beats cited STRICTLY BEFORE its stop (what the walker has already heard);
+    an empty union is itself a failure — an unverifiable reflection never
+    ships."""
     failures: list[tuple[Sentence, str]] = []
     for sentence in script.script:
+        if sentence.source_type == "glue" and sentence.source_id == GLUE_REFLECTION:
+            claims = _visited_claims(script, beats_by_id, sentence.stop_idx)
+            if not claims:
+                failures.append((sentence, "unverifiable_reflection:no_visited_claims"))
+                continue
+            if not checker.entails(claims, sentence.text):
+                failures.append((sentence, "unfaithful_reflection"))
+            continue
         if sentence.source_type != "beat":
             continue
         beat = beats_by_id.get(sentence.source_id)

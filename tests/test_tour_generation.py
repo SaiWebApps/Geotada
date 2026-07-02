@@ -501,12 +501,15 @@ def test_closing_oneway_no_thematic_summary():
 
 
 def test_glue_label_set_matches_design_doc():
+    # GLUE_REFLECTION joined the whitelist in Phase 4 Step 4.1 (canonical
+    # spec §6: "a new whitelisted glue token GLUE_REFLECTION").
     expected = {
         "GLUE_NAV",
         "GLUE_STAGING",
         "GLUE_PACING",
         "GLUE_CALLBACK",
         "GLUE_CLOSING",
+        "GLUE_REFLECTION",
         "ARITH",
         "SYNTHESIZED_OPENER",
     }

@@ -155,6 +155,75 @@ def test_glue_sentences_and_claimless_beats_skip_entailment():
     assert checker.calls == []  # glue skipped, claimless beat skipped
 
 
+# ---------------------------------------------------------------------------
+# Reflections (Phase 4 Step 4.2) — fail-closed against VISITED key_claims
+# ---------------------------------------------------------------------------
+
+
+def _reflection(text: str, stop_idx: int) -> Sentence:
+    return Sentence(text=text, source_id="GLUE_REFLECTION", source_type="glue", stop_idx=stop_idx)
+
+
+def _beat_sentence(bid: str, stop_idx: int, text: str = "A beat sentence.") -> Sentence:
+    return Sentence(text=text, source_id=bid, source_type="beat", stop_idx=stop_idx)
+
+
+def test_reflection_entails_against_union_of_visited_claims():
+    b1 = _beat("b1", key_claims=("Henri IV built it", "completed 1612"))
+    b2 = _beat("b2", key_claims=("Hugo lived at number 6",))
+    checker = MockFaithfulnessChecker()
+    sentences = [
+        _beat_sentence("b1", 0),
+        _beat_sentence("b2", 1),
+        _reflection("Kings built it; a writer made it famous.", 2),
+    ]
+    fails = verify_faithfulness(_script(sentences), {"b1": b1, "b2": b2}, checker)
+    assert fails == []
+    # The reflection's entailment call received the ORDERED union of claims
+    # from BOTH visited stops (plus one call per beat sentence).
+    reflection_call = checker.calls[-1]
+    assert reflection_call[0] == (
+        "Henri IV built it",
+        "completed 1612",
+        "Hugo lived at number 6",
+    )
+
+
+def test_unfaithful_reflection_is_flagged():
+    b1 = _beat("b1", key_claims=("Henri IV built it",))
+    bad = _reflection("Aliens built everything you have seen.", 1)
+    fails = verify_faithfulness(
+        _script([_beat_sentence("b1", 0), bad]), {"b1": b1}, _RejectingChecker("Aliens")
+    )
+    assert fails == [(bad, "unfaithful_reflection")]
+
+
+def test_reflection_window_is_strictly_before_its_stop():
+    """Claims at the reflection's OWN stop are not yet heard — a reflection
+    on the leg into stop 1 whose only claims live at stop 1 is unverifiable."""
+    b1 = _beat("b1", key_claims=("only claim, at the same stop",))
+    checker = MockFaithfulnessChecker()
+    reflection = _reflection("Consider what you have seen.", 1)
+    fails = verify_faithfulness(
+        _script([reflection, _beat_sentence("b1", 1)]), {"b1": b1}, checker
+    )
+    assert fails == [(reflection, "unverifiable_reflection:no_visited_claims")]
+    # Fail-closed BEFORE the checker: the reflection never reached entailment
+    # (the only call is the beat sentence's own).
+    assert all("Consider" not in text for _claims, text in checker.calls)
+
+
+def test_reflection_with_no_claims_anywhere_fails_closed():
+    b1 = _beat("b1")  # visited, but claimless
+    checker = MockFaithfulnessChecker()
+    reflection = _reflection("A synthesis of nothing.", 1)
+    fails = verify_faithfulness(
+        _script([_beat_sentence("b1", 0), reflection]), {"b1": b1}, checker
+    )
+    assert fails == [(reflection, "unverifiable_reflection:no_visited_claims")]
+    assert checker.calls == []  # claimless beat skipped; reflection failed pre-checker
+
+
 def test_validation_report_passed_gates_on_new_teeth():
     base = ValidationReport()
     assert base.passed
