@@ -196,6 +196,9 @@ setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 upload-paris: ## Upload full Paris dataset to active Neo4j instance
 	uv run python -m scripts.upload_paris
 
+backfill-provenance: ## Backfill ONLY source_passage/source_chunk_slug/key_claims onto existing beats (safe on live graphs)
+	uv run python -m scripts.upload_paris --provenance-only
+
 wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
 	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)
 

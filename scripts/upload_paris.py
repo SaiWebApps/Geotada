@@ -153,6 +153,53 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
     return {"created": created, "skipped": skipped, "out_of_bounds": out_of_bounds}
 
 
+def _provenance_fields(beat: dict) -> dict:
+    """The three VERIFY provenance/faithfulness fields (M7 / Phase 4 Step 4.0).
+
+    Normalized so absence stays absent: `SET x = null` in Neo4j REMOVES the
+    property, so a beat without provenance never gains a null-valued key.
+    """
+    passage = (beat.get("source_passage") or "").strip() or None
+    chunk_slug = (beat.get("source_chunk_slug") or "").strip() or None
+    claims = [s.strip() for s in (beat.get("key_claims") or []) if isinstance(s, str) and s.strip()]
+    return {
+        "source_passage": passage,
+        "source_chunk_slug": chunk_slug,
+        "key_claims": claims or None,
+    }
+
+
+def _backfill_provenance(session, beats: list[dict]) -> dict[str, int]:
+    """Set ONLY the three provenance fields on existing beats (match by beat_id).
+
+    The full upload path plain-SETs fields like ``beat.audio_url = ''``, so
+    re-running it against a live graph is destructive. Backfilling provenance
+    onto an already-uploaded graph must therefore never go through it.
+    """
+    params = []
+    for beat in beats:
+        beat_id = beat.get("beat_id", "")
+        if not beat_id:
+            continue
+        fields = _provenance_fields(beat)
+        if not any(fields.values()):
+            continue
+        params.append({"beat_id": beat_id, **fields})
+    result = session.run(
+        """
+        UNWIND $beats AS b
+        MATCH (beat:NarrativeBeat {beat_id: b.beat_id})
+        SET beat.source_passage    = b.source_passage,
+            beat.source_chunk_slug = b.source_chunk_slug,
+            beat.key_claims        = b.key_claims
+        RETURN count(beat) AS updated
+        """,
+        beats=params,
+    )
+    updated = result.single()["updated"]
+    return {"updated": updated, "candidates": len(params)}
+
+
 def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
     """Upload NarrativeBeat nodes and link to POIs + Lenses via batched UNWIND."""
     params = []
@@ -209,6 +256,7 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
             "subject_tag": beat.get("subject_tag"),
             "physical_cues": physical_cues,
             "pronunciation": beat.get("pronunciation"),
+            **_provenance_fields(beat),
         })
 
     result = session.run(
@@ -236,7 +284,10 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
             beat.entities           = b.entities,
             beat.subject_tag        = b.subject_tag,
             beat.physical_cues      = b.physical_cues,
-            beat.pronunciation      = b.pronunciation
+            beat.pronunciation      = b.pronunciation,
+            beat.source_passage     = b.source_passage,
+            beat.source_chunk_slug  = b.source_chunk_slug,
+            beat.key_claims         = b.key_claims
         MERGE (p)-[:HAS_BEAT]->(beat)
         RETURN count(beat) AS linked
         """,
@@ -268,8 +319,10 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
 def main() -> None:
     db = get_database()
     db_label = f"cloud ({db})" if db else "local"
+    provenance_only = "--provenance-only" in sys.argv
+    mode = "PROVENANCE BACKFILL" if provenance_only else "PARIS DATA UPLOAD"
     print(f"\n{'='*60}")
-    print(f"  PARIS DATA UPLOAD → Neo4j [{db_label}]")
+    print(f"  {mode} → Neo4j [{db_label}]")
     print(f"{'='*60}\n")
 
     # AC-9: every integrity gate (grounding, verification-freshness, uniqueness,
@@ -277,6 +330,30 @@ def main() -> None:
     print("  [0/5] Validating beats (validate_beats gate)...")
     _assert_beats_valid(BEATS_FILE)
     print("         OK")
+
+    if provenance_only:
+        # Step 4.0 backfill: ONLY the three provenance fields, matched by
+        # beat_id. Never the full upload path (it plain-SETs audio_url='').
+        beats = _load_json(BEATS_FILE)
+        driver = create_driver()
+        try:
+            with driver.session(database=db) as session:
+                print(f"  Backfilling provenance onto {len(beats)} source beats...")
+                stats = _backfill_provenance(session, beats)
+                kc = session.run(
+                    "MATCH (b:NarrativeBeat) WHERE b.key_claims IS NOT NULL "
+                    "RETURN count(b) AS c"
+                ).single()["c"]
+                total = session.run(
+                    "MATCH (b:NarrativeBeat) RETURN count(b) AS c"
+                ).single()["c"]
+            print(
+                f"  {stats['updated']} updated of {stats['candidates']} candidates; "
+                f"{kc}/{total} beats in the graph now carry key_claims"
+            )
+        finally:
+            driver.close()
+        return
 
     pois = _load_json(POI_FILE)
     beats = _load_json(BEATS_FILE)
