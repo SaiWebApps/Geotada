@@ -143,3 +143,31 @@ def test_gate_recovers_from_a_provenance_failure_on_recompose():
     result = compose_and_verify(compose, verify_switch)
     assert composes == [1, 2]
     assert result.validation.passed
+
+
+def test_full_verifier_without_chunks_skips_provenance_for_backfilled_beats():
+    """Step 4.0 backfilled source_passage onto live beats; with NO chunk
+    library loaded the provenance check must be a no-op (as documented),
+    not a 0.0 failure for every provenanced beat."""
+    beat = BeatRef(
+        id="b1",
+        poi_id="p1",
+        script_body="A fact.",
+        source_passage="A fact from the book.",
+        source_chunk_slug="book-chunk-01",
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id="p1", poi_name="P1", ordering_strategy="sub_location", beats=(beat,)
+            ),
+        )
+    )
+    script = _script([Sentence(text="A fact.", source_id="b1", source_type="beat", stop_idx=0)])
+
+    no_chunks = build_full_verifier(seq, {"b1": beat})
+    assert no_chunks(script).provenance_failures == ()
+
+    # With a chunk library loaded, a slug it cannot confirm still fails.
+    wrong_chunks = build_full_verifier(seq, {"b1": beat}, chunk_text_by_slug={"other": "text"})
+    assert wrong_chunks(script).provenance_failures == (("b1", 0.0),)
