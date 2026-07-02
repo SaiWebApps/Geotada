@@ -90,6 +90,9 @@ test-live: ## Run live external-service tests (needs real creds, e.g. RESEND_API
 tour-audio-gate: db-up ## Live "audio says the story" gate (Step 1.5c): voice a real Paris tour's stitched per-stop narration (OpenAI TTS) + Whisper-eval each vs its narration → WER < 0.15. Live (OpenAI + dev graph 7687); excluded from `make test`. Needs OPENAI_API_KEY in .env.
 	uv run pytest tests/test_audio_says_story.py -m live -v -s
 
+tour-compose-gate: db-up ## Live COMPOSE gate (Phase 4 Step 4.5): real Paris tour → fire-once Anthropic compose behind the M7 gate, verified by the REAL Haiku faithfulness checker. Live (Anthropic + dev graph 7687); excluded from `make test`. Needs ANTHROPIC_API_KEY in .env.
+	NO_PROXY=api.anthropic.com,anthropic.com no_proxy=api.anthropic.com,anthropic.com uv run pytest tests/test_tour_compose_live.py -m live -v -s
+
 test-workbench: db-up db-test-up ## Real-browser Playwright UI suite for the workbench (review.html). Excluded from `make test` via the pyproject --ignore; this target clears addopts to run it. Auto-starts the API against the test DB (7688).
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
 

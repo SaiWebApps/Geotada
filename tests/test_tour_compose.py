@@ -287,3 +287,102 @@ def test_compose_script_blocks_after_the_bounded_recompose():
         compose_script(stitched, seq, route, client=client)
     assert exc.value.attempts == 2
     assert len(client.calls) == 2  # never a third attempt
+
+
+# ---------------------------------------------------------------------------
+# AnthropicComposeClient (Step 4.5) — offline, fake SDK client injected
+# ---------------------------------------------------------------------------
+
+
+class _FakeBlock:
+    def __init__(self, type_: str, text: str = ""):
+        self.type = type_
+        self.text = text
+
+
+class _FakeResponse:
+    def __init__(self, payload: str):
+        self.content = [_FakeBlock("thinking"), _FakeBlock("text", payload)]
+        self.usage = type("U", (), {"input_tokens": 120, "output_tokens": 45})()
+
+
+class _FakeMessages:
+    def __init__(self, payload: str):
+        self.payload = payload
+        self.calls: list[dict] = []
+
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
+        return _FakeResponse(self.payload)
+
+
+class _FakeSDKClient:
+    def __init__(self, payload: str):
+        self.messages = _FakeMessages(payload)
+
+
+def _anthropic_client_setup():
+    import json
+
+    seq, route, stitched = _five_stop_setup()
+    request = build_compose_request(stitched, seq, route)
+    payload = json.dumps(
+        {
+            "sentences": [
+                {"text": "A fact.", "source_id": "b0", "source_type": "beat", "stop_idx": 0},
+            ]
+        }
+    )
+    fake = _FakeSDKClient(payload)
+    from src.tour.compose import AnthropicComposeClient
+
+    return request, fake, AnthropicComposeClient(client=fake)
+
+
+def test_anthropic_client_request_shape_and_parsing():
+    request, fake, client = _anthropic_client_setup()
+    sentences = client.compose(request, 1, None)
+
+    assert sentences == (
+        Sentence(text="A fact.", source_id="b0", source_type="beat", stop_idx=0),
+    )
+    assert client.input_tokens == 120 and client.output_tokens == 45
+
+    (call,) = fake.messages.calls
+    assert call["model"] == "claude-opus-4-8"
+    assert call["thinking"] == {"type": "adaptive"}
+    # Structured output: guaranteed-valid JSON against a strict schema.
+    schema = call["output_config"]["format"]["schema"]
+    assert call["output_config"]["format"]["type"] == "json_schema"
+    assert schema["additionalProperties"] is False
+    assert schema["properties"]["sentences"]["items"]["additionalProperties"] is False
+    # No sampling params on Opus 4.7+ (they 400).
+    assert "temperature" not in call and "top_p" not in call and "top_k" not in call
+    # The LOCKED single-narrator voice + grounding rules ride the system prompt.
+    assert "ONE warm, second-person narrator" in call["system"]
+    assert "GLUE_REFLECTION" in call["system"]
+    # The user prompt carries the stitched script, key claims, and slots.
+    user = call["messages"][0]["content"]
+    assert CLAIM_A in user and CLAIM_B in user
+    assert "REFLECTION SLOTS" in user and '"stop_idx": 3' in user
+
+
+def test_anthropic_client_recompose_prompt_carries_the_failure():
+    request, fake, client = _anthropic_client_setup()
+    fabricated = Sentence(
+        text="A fact from nowhere.", source_id="ghost", source_type="beat", stop_idx=0
+    )
+    prev = request.stitched.validation.model_copy(
+        update={"untraceable_sentences": (fabricated,)}
+    )
+    client.compose(request, 2, prev)
+    user = fake.messages.calls[-1]["messages"][0]["content"]
+    assert "PREVIOUS ATTEMPT FAILED" in user
+    assert "A fact from nowhere." in user
+
+
+def test_anthropic_client_injected_client_needs_no_sdk_construction():
+    """With an injected client the constructor performs no anthropic import
+    (the deferred-import branch is only for the real path)."""
+    _, fake, client = _anthropic_client_setup()
+    assert client._client is fake

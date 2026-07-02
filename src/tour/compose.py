@@ -155,6 +155,169 @@ class MockComposeClient:
         return tuple(out)
 
 
+# ---------------------------------------------------------------------------
+# Real fire-once Anthropic compose (Step 4.5) — NOT exercised by `make test`.
+# ---------------------------------------------------------------------------
+
+COMPOSE_MODEL = "claude-opus-4-8"
+COMPOSE_MAX_OUTPUT_TOKENS = 16000
+
+# The LOCKED narrator voice (specs/2026-06-14-compose-narrator/): ONE warm,
+# second-person narrator; the newcomer's curiosity captured as STRUCTURE;
+# lens = a register/diction dial on the one voice. Grounding is enforced by
+# VERIFY, but the prompt states the rules so attempt 1 usually passes.
+_COMPOSE_SYSTEM = """\
+You are the narrator of a GPS-triggered walking audio tour. Rewrite the given
+stitched script into one continuous story a walker hears through earphones.
+
+VOICE (locked — do not deviate):
+- ONE warm, second-person narrator — a knowing friend walking with the
+  listener. Never a host pair, never an interviewer, never a second voice.
+- Capture the newcomer's curiosity as STRUCTURE: raise the question a
+  first-timer would ask, then answer it from the beats.
+- The requested lenses set your register and diction (a dial on the one
+  voice), never a reason to invent content.
+
+GROUNDING (violations are rejected by an automated verifier):
+- Output the FULL sentence list. Every sentence carries source attribution.
+- A sentence with source_type "beat" keeps its source_id and may only restate
+  what that beat's key claims support — never add names, dates, or facts.
+- Glue sentences (source_type "glue") use ONLY these source_id labels:
+  GLUE_NAV, GLUE_STAGING, GLUE_PACING, GLUE_CALLBACK, GLUE_CLOSING,
+  GLUE_REFLECTION, ARITH, SYNTHESIZED_OPENER. Glue may not introduce proper
+  nouns or years that no cited beat carries.
+- Never use the words "imagine", "picture this", "envision", "visualize".
+- Reflections: at each given slot, add sentences with source_id
+  GLUE_REFLECTION and that slot's stop_idx, synthesizing ONLY the listed
+  visited claims — place them right after the slot's transit opening. Slots
+  not listed get NO reflection.
+- Keep every sentence's stop_idx (reflections use their slot's stop_idx).
+- Keep the stop ORDER and overall structure; improve flow, transitions, and
+  storytelling within it."""
+
+_COMPOSE_OUTPUT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "sentences": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "text": {"type": "string"},
+                    "source_id": {"type": "string"},
+                    "source_type": {"type": "string", "enum": ["beat", "glue"]},
+                    "stop_idx": {"type": "integer"},
+                },
+                "required": ["text", "source_id", "source_type", "stop_idx"],
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["sentences"],
+    "additionalProperties": False,
+}
+
+
+def _compose_user_prompt(
+    request: ComposeRequest, attempt: int, prev_report: ValidationReport | None
+) -> str:
+    """Render one compose attempt's user message (deterministic, testable)."""
+    import json
+
+    stitched = [
+        {
+            "text": s.text,
+            "source_id": s.source_id,
+            "source_type": s.source_type,
+            "stop_idx": s.stop_idx,
+        }
+        for s in request.stitched.script
+    ]
+    beats = {
+        bid: {
+            "key_claims": list(b.key_claims),
+            "script_body": b.script_body or "",
+        }
+        for bid, b in request.beats_by_id.items()
+    }
+    slots = [
+        {"stop_idx": slot, "visited_claims": list(request.visited_claims_by_slot[slot])}
+        for slot in request.slots
+    ]
+    parts = [
+        f"LENSES (register dial): {request.stitched.inputs.lenses or 'none — neutral register'}",
+        f"STITCHED SCRIPT:\n{json.dumps(stitched, ensure_ascii=False)}",
+        f"BEATS (id -> key_claims + corpus text):\n{json.dumps(beats, ensure_ascii=False)}",
+        f"REFLECTION SLOTS:\n{json.dumps(slots, ensure_ascii=False)}",
+    ]
+    if attempt > 1 and prev_report is not None:
+        failures = {
+            "untraceable": [s.text for s in prev_report.untraceable_sentences],
+            "forbidden_or_invented": [
+                [s.text, code] for s, code in prev_report.forbidden_phrase_hits
+            ],
+            "unfaithful": [[s.text, code] for s, code in prev_report.faithfulness_failures],
+        }
+        parts.append(
+            "PREVIOUS ATTEMPT FAILED VERIFICATION — fix exactly these problems "
+            f"(this is the single allowed recompose):\n{json.dumps(failures, ensure_ascii=False)}"
+        )
+    return "\n\n".join(parts)
+
+
+class AnthropicComposeClient:
+    """Fire-once real compose: ONE messages.create per attempt, structured
+    output via output_config.format (guaranteed-valid JSON), adaptive
+    thinking. The anthropic import is deferred (HaikuGlueClient pattern) so
+    unit tests never need the SDK; ``make test`` never constructs this."""
+
+    def __init__(self, model: str = COMPOSE_MODEL, *, client: object | None = None):
+        self.model = model
+        self.input_tokens = 0
+        self.output_tokens = 0
+        if client is None:
+            import anthropic
+
+            client = anthropic.Anthropic()
+        self._client = client
+
+    def compose(
+        self,
+        request: ComposeRequest,
+        attempt: int,
+        prev_report: ValidationReport | None,
+    ) -> tuple[Sentence, ...]:
+        import json
+
+        response = self._client.messages.create(  # type: ignore[attr-defined]
+            model=self.model,
+            max_tokens=COMPOSE_MAX_OUTPUT_TOKENS,
+            thinking={"type": "adaptive"},
+            system=_COMPOSE_SYSTEM,
+            output_config={"format": {"type": "json_schema", "schema": _COMPOSE_OUTPUT_SCHEMA}},
+            messages=[
+                {"role": "user", "content": _compose_user_prompt(request, attempt, prev_report)}
+            ],
+        )
+        usage = getattr(response, "usage", None)
+        if usage is not None:
+            self.input_tokens += int(getattr(usage, "input_tokens", 0) or 0)
+            self.output_tokens += int(getattr(usage, "output_tokens", 0) or 0)
+        text = next(
+            b.text for b in (getattr(response, "content", []) or []) if b.type == "text"
+        )
+        data = json.loads(text)
+        return tuple(
+            Sentence(
+                text=s["text"],
+                source_id=s["source_id"],
+                source_type=s["source_type"],
+                stop_idx=s["stop_idx"],
+            )
+            for s in data["sentences"]
+        )
+
+
 def compose_script(
     stitched: Script,
     beat_sequence: BeatSequence,
@@ -194,6 +357,8 @@ def compose_script(
 
 
 __all__ = [
+    "COMPOSE_MODEL",
+    "AnthropicComposeClient",
     "ComposeClient",
     "ComposeRequest",
     "MockComposeClient",
