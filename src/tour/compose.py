@@ -160,7 +160,11 @@ class MockComposeClient:
 # ---------------------------------------------------------------------------
 
 COMPOSE_MODEL = "claude-opus-4-8"
-COMPOSE_MAX_OUTPUT_TOKENS = 16000
+# Streaming ceiling: adaptive-thinking tokens count against max_tokens, and a
+# full tour's rewritten sentence list is large — 16K truncated a real 45-min
+# Paris compose mid-JSON (live gate, 2026-07-02). Stream + 64K per the SDK
+# guidance; a max_tokens stop is raised as a hard error, never parsed.
+COMPOSE_MAX_OUTPUT_TOKENS = 64000
 
 # The LOCKED narrator voice (specs/2026-06-14-compose-narrator/): ONE warm,
 # second-person narrator; the newcomer's curiosity captured as STRUCTURE;
@@ -289,7 +293,7 @@ class AnthropicComposeClient:
     ) -> tuple[Sentence, ...]:
         import json
 
-        response = self._client.messages.create(  # type: ignore[attr-defined]
+        with self._client.messages.stream(  # type: ignore[attr-defined]
             model=self.model,
             max_tokens=COMPOSE_MAX_OUTPUT_TOKENS,
             thinking={"type": "adaptive"},
@@ -298,7 +302,13 @@ class AnthropicComposeClient:
             messages=[
                 {"role": "user", "content": _compose_user_prompt(request, attempt, prev_report)}
             ],
-        )
+        ) as stream:
+            response = stream.get_final_message()
+        if getattr(response, "stop_reason", None) == "max_tokens":
+            raise ValueError(
+                "compose output truncated at max_tokens="
+                f"{COMPOSE_MAX_OUTPUT_TOKENS} — the sentence list is incomplete"
+            )
         usage = getattr(response, "usage", None)
         if usage is not None:
             self.input_tokens += int(getattr(usage, "input_tokens", 0) or 0)

@@ -301,24 +301,43 @@ class _FakeBlock:
 
 
 class _FakeResponse:
-    def __init__(self, payload: str):
+    def __init__(self, payload: str, stop_reason: str = "end_turn"):
         self.content = [_FakeBlock("thinking"), _FakeBlock("text", payload)]
         self.usage = type("U", (), {"input_tokens": 120, "output_tokens": 45})()
+        self.stop_reason = stop_reason
+
+
+class _FakeStream:
+    """Mimics client.messages.stream(...) — a context manager whose
+    get_final_message() returns the accumulated response."""
+
+    def __init__(self, response: _FakeResponse):
+        self._response = response
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def get_final_message(self):
+        return self._response
 
 
 class _FakeMessages:
-    def __init__(self, payload: str):
+    def __init__(self, payload: str, stop_reason: str = "end_turn"):
         self.payload = payload
+        self.stop_reason = stop_reason
         self.calls: list[dict] = []
 
-    def create(self, **kwargs):
+    def stream(self, **kwargs):
         self.calls.append(kwargs)
-        return _FakeResponse(self.payload)
+        return _FakeStream(_FakeResponse(self.payload, self.stop_reason))
 
 
 class _FakeSDKClient:
-    def __init__(self, payload: str):
-        self.messages = _FakeMessages(payload)
+    def __init__(self, payload: str, stop_reason: str = "end_turn"):
+        self.messages = _FakeMessages(payload, stop_reason)
 
 
 def _anthropic_client_setup():
@@ -386,3 +405,16 @@ def test_anthropic_client_injected_client_needs_no_sdk_construction():
     (the deferred-import branch is only for the real path)."""
     _, fake, client = _anthropic_client_setup()
     assert client._client is fake
+
+
+def test_anthropic_client_raises_on_max_tokens_truncation():
+    """A max_tokens stop means the sentence list is incomplete — hard error,
+    never fed to json.loads (a real 45-min tour hit this at 16K, live gate)."""
+    seq, route, stitched = _five_stop_setup()
+    request = build_compose_request(stitched, seq, route)
+    fake = _FakeSDKClient('{"sentences":[{"text":"cut off mid', stop_reason="max_tokens")
+    from src.tour.compose import AnthropicComposeClient
+
+    client = AnthropicComposeClient(client=fake)
+    with pytest.raises(ValueError, match="truncated at max_tokens"):
+        client.compose(request, 1, None)
