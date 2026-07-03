@@ -781,6 +781,64 @@ def test_endpoint_pull_respects_walk_budget():
     assert "too-far" not in [p.id for p in route.pois]
 
 
+def test_endpoint_pull_never_evicts_entire_route():
+    """A far beat-mountain anchor must not evict every greedy incumbent.
+
+    Regression for the 2026-07-02 Rue Cler collapse: a 60-min one-way
+    preview near Invalides returned a ONE-stop tour. The greedy had seated
+    a sane 2-stop near cluster, then the endpoint-pull ranked far-envelope
+    candidates by raw poi_score — a tier-5 POI with an outlier beat count
+    (39, inflated by a book-extraction campaign) won despite its leg eating
+    ~90% of the walk budget — and dropped BOTH incumbents (exactly
+    ENDPOINT_PULL_MAX_DROPS) because only the far anchor alone fit. A tour
+    must never collapse to just the pulled endpoint: the pull abandons
+    instead and the greedy cluster survives.
+
+    Geometry (60-min one-way: walk budget 1195s, greedy budget 896s,
+    envelope 738m, far floor 369m, 3km/h x1.35 pace => ~1.62 s/m): two
+    cheap tier-5 anchors west (250m, 400m — the greedy seats both for
+    ~650s and can afford nothing more), a 39-beat tier-5 anchor 600m east
+    (solo leg ~970s <= 1195s: the collapse candidate; any trial keeping an
+    incumbent busts the budget), and three tier-3 decoys 500-600m out in
+    other directions so the density gate's rich-pool clause (fill >= 1.5,
+    anchors >= 6) clears without adding anything the greedy can afford.
+    """
+    start = (48.8568, 2.3414)
+    area = ("Île de la Cité",)
+    near1 = _poi(
+        "near-1", tier=5, lat=start[0], lng=start[1] - 0.003415, areas=area, beat_count=6
+    )  # 250m W
+    near2 = _poi(
+        "near-2", tier=5, lat=start[0], lng=start[1] - 0.005464, areas=area, beat_count=6
+    )  # 400m W
+    far = _poi(
+        "far-mountain", tier=5, lat=start[0], lng=start[1] + 0.008197, areas=area, beat_count=39
+    )  # 600m E
+    decoys = [
+        _poi("decoy-n", tier=3, lat=start[0] + 0.004950, lng=start[1], areas=area, beat_count=3),
+        _poi("decoy-s", tier=3, lat=start[0] - 0.005400, lng=start[1], areas=area, beat_count=3),
+        _poi(
+            "decoy-ne",
+            tier=3,
+            lat=start[0] + 0.003150,
+            lng=start[1] + 0.004781,
+            areas=area,
+            beat_count=3,
+        ),
+    ]
+    snap = _snap([near1, near2, far, *decoys], area_types={"Île de la Cité": "island"})
+
+    inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False)
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+
+    # Pre-fix this came back as exactly ["far-mountain"] — one stop.
+    assert ids != ["far-mountain"], "endpoint-pull evicted the entire greedy route"
+    assert len(ids) >= 2, f"one-stop tour emitted: {ids}"
+    # The greedy's near cluster must survive the pull.
+    assert "near-1" in ids and "near-2" in ids
+
+
 # ---------------------------------------------------------------------------
 # Phase 2 calibration (Q3) — spine tie-break
 # ---------------------------------------------------------------------------

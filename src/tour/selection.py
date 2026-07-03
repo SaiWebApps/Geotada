@@ -1551,6 +1551,13 @@ def _full_route_walk_seconds(
 # the far-envelope endpoint. Larger values can collapse the route to one
 # anchor (the endpoint alone); two preserves the spine-anchor cluster
 # while still letting one weak incumbent give way for an east-tip pick.
+# NOTE: the drop count alone does NOT preserve the cluster when the
+# greedy could only seat <= MAX_DROPS incumbents (structural for 60-min
+# one-way tours, whose greedy sees only 75% of the walk budget) — that
+# is the 2026-07-02 Rue Cler collapse, where a 39-beat far anchor
+# evicted the entire route. _apply_endpoint_pull therefore also refuses
+# to drop the last incumbent: a route consisting solely of the pulled
+# endpoint is not a tour.
 ENDPOINT_PULL_MAX_DROPS: int = 2
 
 
@@ -1604,8 +1611,13 @@ def _apply_endpoint_pull(
         )
         if walk <= walk_budget:
             return candidate_route
-        if not incumbents or drops_used >= ENDPOINT_PULL_MAX_DROPS:
-            return list(selected)  # bounded drops exhausted; abandon pull
+        if len(incumbents) <= 1 or drops_used >= ENDPOINT_PULL_MAX_DROPS:
+            # Bounded drops exhausted — or the next drop would evict the
+            # LAST incumbent, leaving [endpoint] alone. A one-stop route
+            # of just the pulled endpoint is a collapse, not a tour
+            # (2026-07-02 Rue Cler regression): abandon the pull and let
+            # the greedy result stand.
+            return list(selected)
         incumbents = _drop_weakest(incumbents, spine, interest, snapshot, score_penalty)
         drops_used += 1
 

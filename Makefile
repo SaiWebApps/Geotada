@@ -173,21 +173,30 @@ db-workbench-reset: ## Stop workbench Neo4j and wipe its data
 	docker volume rm -f ondoway_neo4j_workbench_data
 	@echo "✓ Workbench Neo4j stopped and data wiped."
 
-valhalla-up: ## Start the Valhalla routing engine (first start builds tiles from valhalla/custom_files)
-	docker compose up -d valhalla
+# Valhalla's tiles live in a BIND MOUNT relative to the compose file, so its
+# compose operations must always run against the MAIN checkout: run from a
+# .claude/worktrees/* worktree, a plain `docker compose up -d valhalla`
+# re-anchors the mount to the worktree's EMPTY valhalla/custom_files and
+# recreates the container tile-less (observed 2026-07-02: exited(1), grade
+# gate red). `git rev-parse --git-common-dir` resolves the main checkout
+# from anywhere.
+VALHALLA_ROOT = $(shell dirname "$$(git rev-parse --git-common-dir)")
+
+valhalla-up: ## Start the Valhalla routing engine (always anchored to the main checkout's tiles; first start builds tiles from valhalla/custom_files)
+	docker compose -f "$(VALHALLA_ROOT)/docker-compose.yml" --project-directory "$(VALHALLA_ROOT)" up -d valhalla
 	@echo "Valhalla starting on http://localhost:8002 — first start with a new"
 	@echo "PBF builds tiles (minutes). Check readiness: make valhalla-status"
 
 valhalla-down: ## Stop Valhalla (tiles preserved in valhalla/custom_files)
-	docker compose stop valhalla
+	docker compose -f "$(VALHALLA_ROOT)/docker-compose.yml" --project-directory "$(VALHALLA_ROOT)" stop valhalla
 
 valhalla-status: ## Host-side health check against Valhalla's /status endpoint
 	@curl -fs --max-time 3 http://localhost:8002/status && echo " ← Valhalla OK" \
 		|| echo "Valhalla not responding on :8002 (engine falls back to haversine)"
 
-valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for tile building on next start
-	mkdir -p valhalla/custom_files
-	curl -L -o valhalla/custom_files/ile-de-france-latest.osm.pbf \
+valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for tile building on next start (into the MAIN checkout's mount)
+	mkdir -p "$(VALHALLA_ROOT)/valhalla/custom_files"
+	curl -L -o "$(VALHALLA_ROOT)/valhalla/custom_files/ile-de-france-latest.osm.pbf" \
 		https://download.geofabrik.de/europe/france/ile-de-france-latest.osm.pbf
 	@echo "✓ PBF downloaded. Run 'make valhalla-up' (restart if already running) to build tiles."
 

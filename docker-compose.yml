@@ -54,6 +54,12 @@ services:
     environment:
       NEO4J_AUTH: neo4j/ondoway_workbench_2026
       NEO4J_PLUGINS: '["apoc"]'
+      # Tiny corpus (~50 nodes/run): cap the JVM so a third Neo4j doesn't
+      # push the Colima VM (8GiB, shared with dev+test Neo4j and Valhalla's
+      # tile load) into OOM — observed 2026-07-02: dockerd died mid-gate.
+      NEO4J_server_memory_heap_initial__size: 256m
+      NEO4J_server_memory_heap_max__size: 512m
+      NEO4J_server_memory_pagecache_size: 128m
     volumes:
       - neo4j_workbench_data:/data
     healthcheck:
