@@ -27,7 +27,15 @@ from __future__ import annotations
 
 import httpx
 
-from .routing import haversine_m, pace_corrected_walk_seconds
+from .routing import PACE_KMH, haversine_m, pace_corrected_walk_seconds
+
+# Pace pin (2026-07-02, hostile-panel finding): Valhalla defaults pedestrians
+# to ~5.1 km/h; the engine's whole budget model (envelopes, walk budgets, the
+# haversine fallback) is spec'd at PACE_KMH = 3.0 (§3.2 rule ledger 20-25).
+# Without this, routed leg times assume a walker ~70% faster than the product
+# designs for, and the isochrone reach (~1.7km at 20min) diverges ~2.2x from
+# the analytic envelope (738m) — the root of the density-gate/REACH mismatch.
+_PEDESTRIAN_COSTING_OPTIONS = {"pedestrian": {"walking_speed": PACE_KMH}}
 
 DEFAULT_BASE_URL = "http://localhost:8002"
 DEFAULT_TIMEOUT_S = 2.0
@@ -92,6 +100,7 @@ class RoutingClient:
                         {"lat": to_lat, "lon": to_lng},
                     ],
                     "costing": "pedestrian",
+                    "costing_options": _PEDESTRIAN_COSTING_OPTIONS,
                     "units": "kilometers",
                 },
             )
@@ -129,6 +138,7 @@ class RoutingClient:
                 json={
                     "locations": [{"lat": lat, "lon": lng}],
                     "costing": "pedestrian",
+                    "costing_options": _PEDESTRIAN_COSTING_OPTIONS,
                     "contours": [{"time": float(minutes)}],
                     "polygons": True,
                 },

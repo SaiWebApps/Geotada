@@ -452,3 +452,62 @@ def test_routed_divisor_lets_cheaper_network_fit_more():
     assert any(
         seg.leg_seconds != seg.walk_seconds for seg in routed.transits
     ), "at least one leg must be visibly routed"
+
+
+def test_requests_pin_pedestrian_walking_speed_to_pace_kmh():
+    """Pace pin (hostile-panel finding 2026-07-02): Valhalla defaults pedestrians
+    to ~5.1 km/h while the entire budget model is spec'd at PACE_KMH = 3.0
+    (routing.py, §3.2 rule ledger 20-25). Without costing_options every routed
+    leg time assumes a walker ~70% faster than the product designs for, and the
+    20-min isochrone reaches ~1.7km where the analytic envelope says 738m —
+    the divergence behind the density-gate/REACH mismatch. Both request bodies
+    must pin walking_speed to the spec'd pace."""
+    from src.tour.routing import PACE_KMH
+
+    captured: dict[str, dict] = {}
+
+    def _capturing_handler(request: httpx.Request) -> httpx.Response:
+        captured[request.url.path] = json.loads(request.content)
+        return _valhalla_handler(request)
+
+    with _client(_capturing_handler) as rc:
+        rc.route(*POINTS[0], *POINTS[1])
+        rc.isochrone(*POINTS[0], minutes=20)
+
+    for path in ("/route", "/isochrone"):
+        body = captured.get(path)
+        assert body is not None, f"{path} request never sent"
+        speed = body.get("costing_options", {}).get("pedestrian", {}).get("walking_speed")
+        assert speed == PACE_KMH, (
+            f"{path} must pin costing_options.pedestrian.walking_speed to "
+            f"PACE_KMH ({PACE_KMH}); got {speed!r} — Valhalla's ~5.1 km/h "
+            f"default silently times legs for a much faster walker"
+        )
+
+
+def test_reach_predicate_falls_back_on_shapely_geos_errors(monkeypatch):
+    """Fallback-totality hole (density-critic finding, 2026-07-02): Valhalla's
+    isochrone generalization can emit degenerate/self-intersecting rings, and
+    shapely then raises GEOSException — which derives ShapelyError, NOT any of
+    the (KeyError, TypeError, ValueError) the predicate caught. Pre-fix that
+    exception propagated as a 500 instead of degrading to the analytic
+    envelope like every other isochrone failure mode."""
+    import shapely.errors
+
+    from src.tour import selection as sel
+
+    def _boom(_geom):
+        raise shapely.errors.GEOSException("TopologyException: side location conflict")
+
+    monkeypatch.setattr(sel, "_shapely_prep", _boom)
+
+    with _client(_valhalla_handler) as rc:
+        contains, degraded = sel._reach_predicate(
+            POINTS[0], radius_m=738.0, iso_minutes=20, routing_client=rc
+        )
+
+    assert degraded is True, "GEOS failure must degrade to the analytic envelope"
+    # The analytic fallback still answers membership sanely: the start itself
+    # is inside; a point ~10km away is not.
+    assert contains(*POINTS[0]) is True
+    assert contains(48.95, 2.5) is False

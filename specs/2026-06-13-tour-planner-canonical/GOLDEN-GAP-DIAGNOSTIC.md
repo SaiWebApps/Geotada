@@ -203,3 +203,29 @@ only if the route shape also changed.
   reviewed steps.
 - The 0.90 number itself is sound as an aspiration: nothing in these fixtures is
   structurally unreachable except what the fixtures already document and exclude.
+
+---
+
+## UPDATE 2026-07-02 — pace pin moved the headline numbers (attribution, not re-baselining)
+
+The Valhalla pace pin (`costing_options.pedestrian.walking_speed = PACE_KMH = 3.0`,
+this branch) removed a silent inconsistency: routed legs were previously timed at
+Valhalla's ~5.1 km/h default while every budget/envelope in the engine assumes
+3.0 km/h (§3.2 rule ledger 20-25; live-measured: the same 3.87 km leg times at
+2.98 km/h pinned vs 5.04 km/h default). Honest leg costs fit fewer stops per
+duration, so the CURRENT overlap numbers move — the fixtures themselves are
+unchanged and remain the target:
+
+| fixture | pre-pin (5.1 km/h legs) | post-pin (3.0 km/h legs) | target |
+|---|---|---|---|
+| `ile_oneway_90min` | 25/47 = 53.2% (9 POIs) | **16/47 = 34.0% (7 POIs)** | 0.90 |
+| `pdv_round_trip_60min` | 12/18 = 66.7% (4 POIs) | **10/18 = 55.6% (2 POIs)** | 0.90 |
+
+GRADE stays green (4/4 ≥ baseline). Interpretation: the pre-pin overlaps were
+partly INFLATED by under-priced legs — the engine could afford stops a 3 km/h
+walker cannot. Two coherent readings for a future calibration pass: (a) the
+empirical golden walks imply the human moved faster than 3 km/h effective, so
+PACE_KMH itself deserves an evidence-based revisit (the fixtures ARE pace
+data); or (b) 3.0 km/h stands and the gap closes via R1 (beat emission),
+which this doc already identifies as worth +31.9 points on Île independent of
+stop count. Do NOT re-baseline the fixtures to post-pin output.
