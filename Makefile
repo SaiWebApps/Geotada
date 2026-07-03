@@ -206,6 +206,9 @@ backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. D
 tour-build: db-up ## Build one real audio tour from the live Paris graph and render it to markdown. ARGS="--start '48.8566,2.3522' --duration 60 [--lenses historic_arch,...] [--round-trip]".
 	uv run python scripts/tour_build.py $(ARGS)
 
+measure-planned-audio: db-up ## Per-POI planned voiced audio vs tier-dwell proxy (dwell/audio spec pre-measurement). ARGS='--pois "Pont Neuf,..." --duration-min 90'
+	uv run python scripts/measure_planned_audio.py $(ARGS)
+
 # ──────────────────────────────────────────────────────────
 # APPLICATION
 # ──────────────────────────────────────────────────────────

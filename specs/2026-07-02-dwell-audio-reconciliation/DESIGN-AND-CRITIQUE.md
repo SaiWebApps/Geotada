@@ -125,3 +125,62 @@ minutes and no engine warning rendered). The ENGINE-side fix — reconciling
 realized fill with the request, or a post-selection fill audit that attaches
 the warning server-side — is exactly this spec's scope and inherits the
 critique's binding corrections above.
+
+---
+
+## ADDENDUM 2026-07-03 — the critique's mandated pre-measurement (work BEGUN)
+
+Tooling landed: `scripts/measure_planned_audio.py` + `make measure-planned-audio`
+(dev Neo4j; mirrors generation's per-beat seconds rule — est_spoken_seconds
+override, else word_count@150wpm — applied to the exact plan select_poi_beats
+emits; glue/vignette seconds excluded because selection never sees them).
+All numbers below measured live 2026-07-03 against the post-demotion corpus
+(370 POIs; both manual-review batches and the pace pin already applied).
+
+**1. Ile golden direction question — critique CONFIRMED numerically.** The 8
+fixture anchors (lenses=None): planned 1,841s, dwell proxy 1,950s, honest
+max() 2,256s. The 90-min budget is 2,689s and the fill floor 2,151s. Today the
+proxy under-floors (1,950 < 2,151) so the fill pass keeps adding stops → the
+8-stop route. Honest accounting crosses the floor (+306s, all at Conciergerie
++101 / Notre-Dame +96 / Île de la Cité +63 / Vert-Galant +46) → fill halts
+earlier → stops drop → overlap drops. Step 3 as designed trips its own abort
+criterion on Ile; no implementation may proceed on the original Step-3 plan.
+
+**2. Corpus-wide, the proxy OVERSTATES: the mismatch is a fat-head/long-tail
+shape.** Across all 224 seatable POIs (roles stop+setting — note "setting" is
+seatable at 0.7 and holds the two worst offenders, missed by any stop-only
+sweep): planned 22,669s vs dwell 39,840s (proxy ≈ 1.76× planned in aggregate).
+Only 36/224 POIs have planned > dwell. Head: Place des Vosges 1,248s planned
+vs 300s booked (26-beat trigger_address plan — bigger than the design's ~914s
+estimate, which counted only the 18 unique fixture beats), Rue Cler 848s vs
+150s (tier now 3 post-demotion → ratio 5.7×), Louvre 502/300, Père Lachaise
+426/300, Conciergerie 401/300, Notre-Dame 396/300, Sorbonne 374/300, Les
+Halles 369/300. Every extreme offender is a trigger_address or sub_location
+strategy POI; the narrative_function fallback's caps keep the tail bounded.
+
+**3. Consequence for the design: the max() FLOOR is what inverts the
+direction.** Floor-less honest accounting (consumed := planned) would free
+~17,000s of phantom dwell corpus-wide — route-GROWING at beat-thin corridors
+(the golden aspiration's direction) while still containing the 36 fat-head
+POIs. The critique's option (c) "soften the floor" is therefore not a
+compromise but the only variant whose corpus-wide direction matches the golden
+aspiration; options now sharpened for the human decisions:
+  (a) keep max() floor → provably shrinks Ile (measured, item 1) — dead unless
+      goldens are re-baselined (owner call, Makefile:101 forbids);
+  (b) land R1 emission relaxation + Step-3 accounting + Step-5 share allowance
+      together — internally consistent but the largest atomic change;
+  (c) floor-less planned-audio accounting, tier dwell retained ONLY as the
+      reported stop-minutes floor (Step 2 surface), not as selection currency —
+      grows thin corridors, prices the fat head honestly; needs the greedy-break
+      no-collapse guard (critique finding 2) BEFORE it lands, because a
+      beat-rich first anchor (PdV 1,248s > 896s 30-min budget) then breaks the
+      greedy at 1 stop.
+Decision 3 (domination policy) remains blocking for ANY variant: PdV at 1,248s
+exceeds even the 60-min round-trip budget (1,793s×0.8 floor = 1,434s > 1,248s —
+fill continues; but a 30-min request breaks at 1 stop by arithmetic).
+
+**4. Measurement caveats.** Lenses=None throughout (fixture-faithful for Ile;
+the golden harness passes no lenses). Per-candidate plans cannot see
+apply_co_located_demotion's merged pools (documented approximation in the
+design). PdV's fixture-vs-live delta (26 planned vs 22 expected beats) is the
+fixture-hygiene issue already flagged in GOLDEN-GAP-DIAGNOSTIC, not drift.
