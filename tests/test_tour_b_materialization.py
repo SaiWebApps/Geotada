@@ -278,3 +278,211 @@ def test_round_trip_still_returns_to_start():
     assert not any(p.id.startswith("__end_b__") for p in route.pois)  # no sentinel
     # round_trip closes the loop: the final transit goes back to start (to_poi None).
     assert route.transits[-1].to_poi_id is None
+
+
+# ---------------------------------------------------------------------------
+# 2026-07-03 — single-stop regression class guards on the fixed-end (A→B) path.
+#
+# The end != None pipeline composes the corridor gate, the endpoint pull
+# (which still runs BEFORE B-materialization supersedes its fixed_end), the
+# fill pass and _materialize_fixed_end_b in an order nothing else tests.
+# Universal invariant for every fixture below: a delivered route has >= 2
+# beat-bearing stops OR carries a non-None tourability disclosure.
+# ---------------------------------------------------------------------------
+
+
+def test_fixed_end_corridor_rich_route_keeps_multiple_beat_bearing_stops():
+    """A rich on-corridor A→B pool must deliver multiple beat-bearing stops.
+
+    The corridor gate (t(A,poi) + t(poi,B) <= walk_budget) is the newest
+    pool-shrinking filter; an over-tight gate (comparing against the greedy
+    walk budget instead of the full budget, or a haversine/routed mixup)
+    empties the pool down to one anchor and delivers a 1-story A→B tour with
+    NO warning (the fixture is GREEN). Engine walk-through at HEAD: the
+    greedy (one-way budget 1344s of 1793s) seats all 7 candidates (~736s
+    chain) and ends by POOL EXHAUSTION at 2100s dwell-audio — the audio
+    break (target 2689s) never fires; the fill pass DOES run (2100 < 0.8 x
+    2689 = 2151) but no-ops on the empty pool; the endpoint pull finds no
+    far candidate (far floor ~553m > east-3's ~439m); B then SNAPs onto
+    east-3 (~15m away).
+    """
+    from src.tour.routing import envelope_radius_m
+
+    east1 = _anchor("east-1", 0.0, 0.0020, tier=5, beats=8)  # ~146m east
+    east2 = _anchor("east-2", 0.0, 0.0040, tier=5, beats=8)  # ~293m east
+    east3 = _anchor("east-3", 0.0, 0.0060, tier=5, beats=8)  # ~439m east
+    snap = _snap([east1, east2, east3, *_density_fillers(PDV)])
+    end = (PDV[0], PDV[1] + 0.0062)  # ~15m past east-3 — inside the snap radius
+
+    inp = TourInput(start=PDV, end=end, duration_min=DURATION, city_slug="paris")
+
+    # Preconditions, derived live (module house style).
+    assert _ab_in_budget(end)  # no Step-2.2a refusal
+    assert haversine_m(*end, east3.lat, east3.lng) <= B_SNAP_PROXIMITY_M  # SNAP branch
+    budget = walk_budget_seconds(DURATION)
+    for poi in (east1, east2, east3, *_density_fillers(PDV)):
+        detour = default_leg_seconds(PDV[0], PDV[1], poi.lat, poi.lng) + default_leg_seconds(
+            poi.lat, poi.lng, *end
+        )
+        assert detour <= budget, f"corridor must admit {poi.id}: {detour}s > {budget}s"
+    # No far candidate for the pull: everything sits inside the far floor.
+    far_floor = 0.5 * envelope_radius_m(DURATION, round_trip=False)
+    assert haversine_m(PDV[0], PDV[1], east3.lat, east3.lng) < far_floor
+    _assert_not_red(inp, snap)
+
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+
+    assert ids[-1] == east3.id, f"route must literally end at B's snap; got {ids}"
+    beatful = [p for p in route.pois if snap.beats_for(p.id)]
+    assert len(beatful) >= 2, f"1-story A→B delivery: beat-bearing stops = {ids}"
+    assert not any(p.id.startswith("__end_b__") for p in route.pois)
+    # GREEN fixture: a thin delivery here would be SILENT — exactly the
+    # guarded class.
+    assert route.tourability is None
+    assert len(beatful) >= 2 or route.tourability is not None
+
+
+def test_fixed_end_far_mountain_does_not_evict_greedy_cluster():
+    """The pull's no-collapse guard, exercised under end != None for the first time.
+
+    The pull still runs before B-materialization supersedes its fixed_end
+    (selection.py: pull, then the end-is-not-None branch reassigns
+    ``fixed_end``). Opposite-side eviction geometry is corridor-impossible
+    under a fixed end (the ellipse rejects it), so eviction pressure needs
+    OFF-AXIS incumbents: two north anchors the greedy seats, one on-axis
+    39-beat far mountain the pull tries. Every trial order busts the walk
+    budget by a few seconds, the drops run down to the LAST incumbent, and
+    the guard (len(incumbents) <= 1 -> abandon) is the only thing standing
+    between the user and a [far-mountain, sentinel] 1-story GREEN tour.
+
+    A refactor that moves B-materialization BEFORE the pull, raises
+    ENDPOINT_PULL_MAX_DROPS, or exempts fixed-end routes from the
+    last-incumbent guard delivers exactly that collapse and fails here.
+    The eviction geometry is margin-sensitive (~1502s trial vs 1494s
+    budget), so EVERY premise is asserted live below — drift becomes a loud
+    precondition failure, never a vacuous pass.
+    """
+    from src.tour.density import assess as assess_tourability
+    from src.tour.routing import envelope_radius_m
+    from src.tour.selection import ENDPOINT_PULL_FAR_FRACTION
+
+    duration = 75  # walk budget 1494s, greedy 1120s, envelope ~922m, far floor ~461m
+    n1 = _anchor("n-1", 0.0018, 0.0, tier=5, beats=6)  # ~200m north
+    n2 = _anchor("n-2", 0.0027, 0.0, tier=5, beats=6)  # ~300m north
+    mountain = _anchor("far-mountain", 0.0, 0.00753, tier=5, beats=39)  # ~551m east
+    decoys = [
+        _anchor("decoy-w", 0.0, -0.0082, tier=3, beats=3),  # ~600m west
+        _anchor("decoy-nw", 0.0038, -0.0058, tier=3, beats=3),
+        _anchor("decoy-sw", -0.0038, -0.0058, tier=3, beats=3),
+    ]
+    snap = _snap([n1, n2, mountain, *decoys])
+    end = (PDV[0], PDV[1] + 0.00685)  # ~500m due east
+    budget = walk_budget_seconds(duration)
+
+    def leg(a, b) -> int:
+        return default_leg_seconds(a[0], a[1], b[0], b[1])
+
+    a = PDV
+    p_n1, p_n2, p_mtn = (n1.lat, n1.lng), (n2.lat, n2.lng), (mountain.lat, mountain.lng)
+
+    # (a) A→B fits the budget — no Step-2.2a refusal.
+    assert _ab_in_budget(end, duration)
+    # (b) The corridor admits n-1 / n-2 / mountain and REJECTS all three
+    # decoys — the decoys pad the density gate (6 anchors) without ever
+    # entering the greedy pool. They are dwell-band material (gravity(3) =
+    # 3.0 == the SHORT floor), so the corridor gate genuinely is what
+    # excludes them.
+    for poi in (n1, n2, mountain):
+        detour = leg(a, (poi.lat, poi.lng)) + leg((poi.lat, poi.lng), end)
+        assert detour <= budget, f"corridor must admit {poi.id}: {detour}s"
+    for poi in decoys:
+        detour = leg(a, (poi.lat, poi.lng)) + leg((poi.lat, poi.lng), end)
+        assert detour > budget, f"corridor must reject {poi.id}: {detour}s"
+        # ... while the envelope still counts them for density.
+        assert haversine_m(*a, poi.lat, poi.lng) <= envelope_radius_m(
+            duration, round_trip=False
+        )
+    # (c) Eviction pressure is real at every drop level the pull explores:
+    # both full-incumbent trial orders bust the budget, and so does the
+    # post-drop trial (the weakest-drop tie-break removes n-1 first, so the
+    # surviving trial is A→n-2→mountain).
+    assert leg(a, p_n1) + leg(p_n1, p_n2) + leg(p_n2, p_mtn) > budget
+    assert leg(a, p_n2) + leg(p_n2, p_n1) + leg(p_n1, p_mtn) > budget
+    assert leg(a, p_n2) + leg(p_n2, p_mtn) > budget
+    # (d) The solo collapse WOULD fit — the guard is the only prevention.
+    assert leg(a, p_mtn) <= budget
+    # (e) The mountain is the pull candidate (past the far floor); the
+    # fixture is GREEN so a collapse would be silent.
+    far_floor = envelope_radius_m(duration, round_trip=False) * ENDPOINT_PULL_FAR_FRACTION
+    assert haversine_m(*a, mountain.lat, mountain.lng) >= far_floor
+    inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
+    assert assess_tourability(inp, snap.pois, snap.beats_by_poi).status == "GREEN"
+    # (f) B snaps onto NOTHING (both survivors > 150m away) -> sentinel.
+    assert haversine_m(*end, n1.lat, n1.lng) > B_SNAP_PROXIMITY_M
+    assert haversine_m(*end, n2.lat, n2.lng) > B_SNAP_PROXIMITY_M
+
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+
+    assert "n-1" in ids and "n-2" in ids, f"greedy cluster must survive the pull; got {ids}"
+    assert "far-mountain" not in ids, f"pull must abandon, not evict; got {ids}"
+    assert ids[-1].startswith("__end_b__"), f"route must end at the B sentinel; got {ids}"
+    beatful = [p for p in route.pois if snap.beats_for(p.id)]
+    assert len(beatful) >= 2
+    assert route.tourability is None
+    assert len(beatful) >= 2 or route.tourability is not None
+
+
+def test_sentinel_is_never_the_only_companion_of_a_silent_route():
+    """A beatless B sentinel must not masquerade as a second story; the honest
+    [one-real-POI, sentinel] delivery must carry the YELLOW disclosure.
+
+    The sentinel (_materialize_fixed_end_b) carries NO beats, so preview
+    narration for it is empty — any downstream "route has 2 POIs so it is
+    fine" check that counts the sentinel as a companion story reproduces the
+    thin single-beat-feeling delivery the user reported. This test makes the
+    sentinel's beatlessness load-bearing AND pins that the lone-anchor
+    YELLOW contract (test_tour_selection.py's isolated-anchor test) EXTENDS
+    to the fixed-end path: the tourability attach happens AFTER
+    _materialize_fixed_end_b rebuilds the model, an ordering a refactor of
+    the end != None branch could easily break (silently stripping the
+    warning from exactly the routes that need it most).
+    """
+    from src.tour.density import assess as assess_tourability
+
+    duration = 60  # budget 1195s, envelope ~738m, far floor ~369m
+    lone = _anchor("lone", 0.0, 0.00205, tier=4, beats=5)  # ~150m east
+    snap = _snap([lone])
+    end = (PDV[0], PDV[1] + 0.0055)  # ~400m east
+
+    inp = TourInput(start=PDV, end=end, duration_min=duration, city_slug="paris")
+
+    # Preconditions, derived live.
+    assert _ab_in_budget(end, duration)  # no 2.2a refusal
+    assert haversine_m(*end, lone.lat, lone.lng) > B_SNAP_PROXIMITY_M  # SYNTHESIZE branch
+    corridor = default_leg_seconds(PDV[0], PDV[1], lone.lat, lone.lng) + default_leg_seconds(
+        lone.lat, lone.lng, *end
+    )
+    assert corridor <= walk_budget_seconds(duration)  # lone is admitted
+    # YELLOW-by-fill: 5 x 240s = 1200s vs target 1793s -> fill ~0.67, one
+    # anchor candidate — same arithmetic as the pinned lone-anchor contract.
+    assert assess_tourability(inp, snap.pois, snap.beats_by_poi).status == "YELLOW"
+
+    route = select_route(inp, snap)
+
+    # (1) The honest delivery shape: ONE story plus the beatless Destination.
+    beatful = [p for p in route.pois if snap.beats_for(p.id)]
+    assert len(beatful) == 1 and beatful[0].id == "lone"
+    assert route.pois[-1].id.startswith("__end_b__")
+    assert not snap.beats_for(route.pois[-1].id), "the B sentinel must carry no beats"
+    # (2) The YELLOW disclosure survives B-materialization on the wire model.
+    assert route.tourability is not None, (
+        "a 1-story fixed-end tour must carry the YELLOW tourability assessment — "
+        "without it the sentinel makes a silent thin delivery look multi-stop"
+    )
+    assert route.tourability.status == "YELLOW"
+    assert route.tourability.anchor_candidate_count == 1
+    # (3) The general invariant, spelled out for future fixtures: count
+    # BEAT-BEARING stops, never raw POIs (the sentinel is not a story).
+    assert len(beatful) >= 2 or route.tourability is not None

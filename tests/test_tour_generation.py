@@ -7,6 +7,8 @@ fragments are glue sentences whose category is asserted via mock calls.
 
 from __future__ import annotations
 
+import pytest
+
 from src.tour.contract import (
     POI,
     BeatRef,
@@ -799,3 +801,206 @@ def test_synthesized_opener_view_cue_uses_look_up_verb():
     assert any("Look up at the gilded statue" in t for t in cold_open_texts)
     # View cues also unlock the "Take a moment to take it in." invitation.
     assert any("Take a moment" in t for t in cold_open_texts)
+
+
+# ---------------------------------------------------------------------------
+# 2026-07-03 — per-stop emission guards (the "thin single-beat-feeling
+# narration" half of the 2026-07-02 regression).
+#
+# validate_script checks only traceability + forbidden phrases, and
+# ScriptPOI.beat_ids reflects the PLAN, not emissions — so a stop can ship
+# glue-only narration while every existing check stays green. The first test
+# below is the per-stop emitted-beat floor for healthy pools; the two
+# "current_contract_pin" tests make BOTH known zero-emission holes executable
+# and version-controlled. The per-stop floor/disclosure for those holes is
+# deferred design owned by specs/2026-07-02-dwell-audio-reconciliation/ —
+# when it lands, flip the pinned assertions DELIBERATELY, don't delete them.
+# ---------------------------------------------------------------------------
+
+
+def _poi_beats(poi: POI, beats: tuple[BeatRef, ...]) -> POIBeats:
+    return POIBeats(
+        poi_id=poi.id,
+        poi_name=poi.name,
+        ordering_strategy="narrative_function",
+        beats=beats,
+    )
+
+
+@pytest.mark.parametrize("n_stops", (2, 3, 4, 5))
+def test_every_stop_with_dwellworthy_pool_emits_own_beat_sentence(n_stops: int):
+    """Every stop whose plan holds real (non-transit) beats emits >= 1 of them.
+
+    Fails if (a) the anchor block's transit-class filter broadens to swallow
+    establishing beats, (b) consumed_beat_ids leaks so an earlier stop
+    consumes a later stop's pool, (c) reorder_final_stop_for_closing or
+    _beat_to_sentences starts dropping bodies, or (d) a future dedupe pass
+    empties a stop's emissions while ScriptPOI.beat_ids stays populated —
+    every one of which reproduces glue-only stop narration that passes ALL
+    existing generation checks.
+
+    Fixture notes: stop 0 carries its OWN stop_orientation beat, so the cold
+    open is satisfied locally and never raids a sibling stop's pool (the
+    Area hoist fires only when stop 0 lacks one). Later stops carry
+    'establishing' beats — outside the transit-class set — with no
+    trigger_address, so the transit stage's direction check never adopts
+    them. POIs get real multi-word names so the direction check's substring
+    premise never hinges on short-name luck.
+    """
+    from src.tour.render_md import stop_narration_text
+
+    pois = tuple(_poi(f"p{k}", f"Waypoint Number {k}") for k in range(n_stops))
+    plans = [
+        _poi_beats(
+            pois[0],
+            (
+                _beat("p0-orient", "p0", body="Find the corner bench.", nf="stop_orientation"),
+                _beat(
+                    "p0-body-a",
+                    "p0",
+                    body="Story A at stop 0. It happened here.",
+                    nf="establishing",
+                ),
+                _beat("p0-body-b", "p0", body="Story B at stop 0.", nf="establishing"),
+            ),
+        )
+    ]
+    bodies_by_stop: dict[int, list[str]] = {
+        0: ["Find the corner bench.", "Story A at stop 0.", "Story B at stop 0."]
+    }
+    for k in range(1, n_stops):
+        beats = (
+            _beat(f"p{k}-est-a", f"p{k}", body=f"First tale at waypoint {k}.", nf="establishing"),
+            _beat(f"p{k}-est-b", f"p{k}", body=f"Second tale at waypoint {k}.", nf="establishing"),
+        )
+        plans.append(_poi_beats(pois[k], beats))
+        bodies_by_stop[k] = [f"First tale at waypoint {k}.", f"Second tale at waypoint {k}."]
+
+    seq = BeatSequence(poi_beats=tuple(plans))
+    script = generate(seq, _route(pois), _input(), glue_client=MockGlueClient())
+    per_stop = stop_narration_text(script)
+
+    for k in range(n_stops):
+        plan_ids = set(script.selected_pois[k].beat_ids)
+        assert plan_ids, f"stop {k}: plan lost its beats"
+        assert any(
+            s.source_type == "beat" and s.stop_idx == k and s.source_id in plan_ids
+            for s in script.script
+        ), f"stop {k} emitted ZERO of its own beats — glue-only narration"
+        # The same floor at the render level the preview wire serves.
+        narration = per_stop.get(k, "")
+        assert narration, f"stop {k}: empty narration"
+        assert any(body in narration for body in bodies_by_stop[k]), (
+            f"stop {k}: narration carries none of its beat bodies"
+        )
+
+
+def test_transit_only_stop_emits_zero_beat_sentences_current_contract_pin():
+    """CURRENT-CONTRACT PIN: a stop whose whole pool is transit-class ships
+    glue-only narration, invisibly.
+
+    The per-stop emitted-beat floor is owned by
+    specs/2026-07-02-dwell-audio-reconciliation/; when a floor/disclosure
+    lands, flip assertions (2)-(4) DELIBERATELY. This test exists so the
+    known hole is DETECTED and version-controlled rather than latent: it is
+    the reproducible seed of the "thin single-beat-feeling narration"
+    complaint — a dwell stop whose only beat is transit-class AND
+    directionally rejected emits zero beat sentences while its
+    ScriptPOI.beat_ids stays non-empty and validate_script passes. It also
+    guards the inverse regression: if the anchor block's transit-class
+    filter is ever DROPPED, assertion (2) fails, preventing out-of-place
+    navigation sentences from leaking back into anchor blocks (the original
+    Phase 7 bug the filter exists for).
+    """
+    p1 = _poi("p1", "Place des Vosges")
+    p2 = _poi("p2", "Saint-Pierre")
+    p1_orient = _beat("p1-orient", "p1", body="Find the corner bench.", nf="stop_orientation")
+    p1_body = _beat("p1-body", "p1", body="Henri IV built the square in 1612.", nf="establishing")
+    # Transit-class AND directionally rejected: neither the trigger_address
+    # nor the body mentions p1's name, so _build_transit's Phase-7 direction
+    # check refuses it and falls through to GLUE_NAV without consuming it;
+    # the anchor block then filters it as transit-class -> zero emission.
+    p2_transit = _beat(
+        "p2-transit",
+        "p2",
+        body="Leave the Old Mill and cross toward the gate.",
+        nf="transition",
+        addr="Rue Imaginaire 12",
+    )
+    # Precondition: the rejection premise is explicit, not accidental — a
+    # helper-default or body edit that lets p1's name slip in would flip the
+    # beat into an ACCEPTED transit beat and fail this loudly.
+    haystack = f"{p2_transit.trigger_address or ''} {p2_transit.script_body or ''}".lower()
+    assert p1.name.lower() not in haystack, "fixture drifted: transit beat now matches p1"
+
+    seq = BeatSequence(poi_beats=(_poi_beats(p1, (p1_orient, p1_body)),
+                                  _poi_beats(p2, (p2_transit,))))
+    script = generate(seq, _route((p1, p2)), _input(), glue_client=MockGlueClient())
+
+    # (1) The PLAN still carries the beat (beat_ids reflect the plan, not
+    # emissions).
+    assert script.selected_pois[1].beat_ids == ("p2-transit",)
+    # (2) The zero-emission condition, detected.
+    assert not any(s.source_type == "beat" and s.stop_idx == 1 for s in script.script), (
+        "stop 1 emitted a beat sentence — the transit-class filter changed; "
+        "update this pin consciously (specs/2026-07-02-dwell-audio-reconciliation/)"
+    )
+    # (3) Stop 1's narration is non-empty but consists ONLY of glue — exactly
+    # what the preview renders as a story-less stop.
+    stop1 = [s for s in script.script if s.stop_idx == 1]
+    assert stop1, "stop 1 must still get glue narration"
+    assert all(s.source_type in ("glue", "arith") for s in stop1)
+    # (4) validate_script does NOT catch this today.
+    assert script.validation.passed is True
+
+
+def test_cold_open_area_hoist_strips_donor_stop_current_contract_pin():
+    """CURRENT-CONTRACT PIN: the cold open's Area hoist can strip its donor
+    stop down to zero beat emissions.
+
+    The Area-level fallback hoists a sibling stop's stop_orientation beat
+    into the opener (emitted with stop_idx=0) and adds it to
+    consumed_beat_ids so it never fires at its own stop; when it was the
+    donor's ONLY beat, the donor emits zero beat sentences while its
+    ScriptPOI.beat_ids stays non-empty — the second known glue-only-stop
+    path. The per-stop floor is owned by
+    specs/2026-07-02-dwell-audio-reconciliation/; flip assertion (2)
+    DELIBERATELY when it lands. Assertion (3) simultaneously guards the
+    CROSS-stop double-fire regression (the same-stop case is covered by
+    test_orientation_beat_not_emitted_twice above).
+    """
+    # Both _poi() POIs share the helper's default area ('Le Marais') and the
+    # same coordinates, so the hoist's Area-match and proximity gates pass;
+    # the beat carries no physical_cues, so the honesty gate passes too.
+    p1 = _poi("p1", "Hotel de Sully")
+    p2 = _poi("p2", "Place des Vosges")
+    p1_est_a = _beat("p1-est-a", "p1", body="The facade dates to 1624.", nf="establishing")
+    p1_est_b = _beat("p1-est-b", "p1", body="Sully bought it in 1634.", nf="establishing")
+    # p1 has NO stop_orientation beat — forces the Area-fallback search.
+    p2_orient = _beat(
+        "p2-orient", "p2", body="Stand where the two lanes meet.", nf="stop_orientation"
+    )
+
+    seq = BeatSequence(poi_beats=(_poi_beats(p1, (p1_est_a, p1_est_b)),
+                                  _poi_beats(p2, (p2_orient,))))
+    script = generate(seq, _route((p1, p2)), _input(), glue_client=MockGlueClient())
+
+    # Precondition: the hoist actually happened. If the fallback ever stops
+    # hoisting, this test's premise is gone — fail HERE, loudly, instead of
+    # passing vacuously.
+    hoisted = [
+        s for s in script.script if s.source_type == "beat" and s.source_id == "p2-orient"
+    ]
+    assert any(s.stop_idx == 0 for s in hoisted), (
+        "the Area hoist no longer fires — this pin's premise is gone; rewrite it"
+    )
+    # (1) The donor's plan is unchanged.
+    assert script.selected_pois[1].beat_ids == ("p2-orient",)
+    # (2) The donor stop is stripped to zero beat emissions (the pinned hole).
+    assert not any(s.source_type == "beat" and s.stop_idx == 1 for s in script.script), (
+        "donor stop emitted a beat — the hoist/consumed contract changed; "
+        "update this pin consciously (specs/2026-07-02-dwell-audio-reconciliation/)"
+    )
+    # (3) No double emission: the consumed-set contract that motivated
+    # consumed_beat_ids — the orientation beat is spoken exactly ONCE.
+    assert len(hoisted) == 1

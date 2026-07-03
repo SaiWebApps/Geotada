@@ -1697,3 +1697,224 @@ def test_open_walk_bstar_equals_endpoint_pull():
     assert default_leg_seconds(*start, far_anchor.lat, far_anchor.lng) <= walk_budget_seconds(
         duration_min
     )
+
+
+# ---------------------------------------------------------------------------
+# 2026-07-03 — single-stop regression class guards.
+#
+# The 2026-07-02 regression: previews silently collapsing to a single
+# location (endpoint-pull eviction near Rue Cler) plus thin single-beat-
+# feeling narration. The point fixes are pinned above
+# (test_endpoint_pull_never_evicts_entire_route,
+# test_isolated_single_anchor_yields_one_stop_with_yellow_warning); the
+# tests below guard the CLASS: every code path that can shrink a rich
+# pool down to one stop must either keep >= 2 stops or carry the YELLOW
+# tourability disclosure. Universal invariant, spelled out once:
+#
+#     len(route.pois) >= 2  OR  route.tourability is not None
+#
+# These pin CURRENT contracts (tier-dwell audio proxy, YELLOW-only
+# tourability attach). The delivered-audio invariant is deferred design —
+# specs/2026-07-02-dwell-audio-reconciliation/ owns it; do not import it here.
+# ---------------------------------------------------------------------------
+
+
+def _sweep_snap() -> CorpusSnapshot:
+    """12 tier-5 anchors compact around PdV (20-55m), 5 x 240s lensed beats each.
+
+    Rich-pool GREEN at every duration in the sweep: total beat audio is
+    12 x 5 x 240 = 14400s, so even the largest target (d=120 -> 3586s) gives
+    fill 4.0 >= 1.5 with 12 anchors >= 6 — the density gate can never be the
+    reason a cell degrades. The cluster (<= ~55m) sits inside the tightest
+    envelope in the sweep (30-min round trip: ~184m). Explicit lensed beats
+    make the lensed arm a direct hit (lens_relevance 1.0, spotlight 5.0 ->
+    headline dwell band), so the legacy hard lens filter can never empty the
+    dwell pool if it were ever reintroduced.
+    """
+    directions = ((1.0, 0.0), (0.0, 1.0), (-1.0, 0.0), (0.0, -1.0))
+    pois = []
+    for i in range(12):
+        dlat, dlng = directions[i % 4]
+        magnitude = 0.0002 + 0.000025 * i  # 0.0002 .. 0.000475 deg (~20-55m)
+        pois.append(
+            _poi(
+                f"sweep-{i}",
+                tier=5,
+                lat=PDV[0] + dlat * magnitude,
+                lng=PDV[1] + dlng * magnitude,
+                areas=("Le Marais",),
+                beat_count=5,
+            )
+        )
+    beats = {p.id: _lensed_beats(p.id, ("hidden_history",)) for p in pois}
+    return _snap(pois, area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats)
+
+
+@pytest.mark.parametrize("lenses", (None, ["hidden_history"]), ids=("nolens", "lensed"))
+@pytest.mark.parametrize("round_trip", (False, True), ids=("oneway", "roundtrip"))
+@pytest.mark.parametrize("duration_min", (30, 45, 60, 75, 90, 105, 120))
+def test_rich_corpus_duration_sweep_never_collapses_to_single_stop(
+    duration_min: int, round_trip: bool, lenses: list[str] | None
+):
+    """Property sweep: a rich compact corpus never yields a 1-stop tour at ANY duration.
+
+    Every prior collapse test is a fixed 60- or 90-min case; a budget or
+    arithmetic change that collapses only at, say, 40 or 110 minutes (an
+    off-by-one in walk_budget_seconds, an ENDPOINT_PULL_RESERVED_BUDGET_FRACTION
+    change starving short durations, an audio-break unit error making the 300s
+    dwell proxy >= target at small d, an ANCHOR_CAP_DIVISOR change) would ship
+    unseen. This fails in at least one of the 28 cells. The round-trip arm
+    covers the pull-free path; the one-way arm covers greedy + pull + fill
+    jointly; the lensed arm catches any reintroduction of the legacy hard lens
+    filter (LENS_ADJACENCY_MISS = 0.0) into the dwell pool.
+    """
+    from src.tour.routing import walk_budget_seconds
+
+    snap = _sweep_snap()
+    inp = TourInput(
+        start=PDV,
+        duration_min=duration_min,
+        city_slug="paris",
+        round_trip=round_trip,
+        lenses=lenses,
+    )
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+
+    # Defensible floor: max_anchors = d // 10 (>= 3 for every d >= 30), the
+    # compact cluster makes every insertion nearly free, and the tier-dwell
+    # audio break (300s/anchor vs target 896s at d=30) cannot fire before 3.
+    floor = min(3, duration_min // 10)
+    assert len(ids) >= floor, f"d={duration_min} rt={round_trip} lens={lenses}: got {ids}"
+    assert route.total_walk_seconds <= walk_budget_seconds(duration_min) + 5  # rounding cushion
+    # The fixture is GREEN by construction, so a 1-stop regression here would
+    # be exactly the SILENT class (no warning shown to the user).
+    assert route.tourability is None, (
+        f"rich fixture must be GREEN (tourability None); got {route.tourability}"
+    )
+    # The universal invariant this whole section guards.
+    assert len(route.pois) >= 2 or route.tourability is not None
+
+
+def test_round_trip_far_first_pick_cannot_starve_multi_anchor_pool():
+    """Greedy-break collapse path — geometrically distinct from pull-eviction.
+
+    round_trip=True, so the endpoint-pull never runs (selection.py's
+    ``if not input.round_trip`` gate) and NOTHING downstream prevents a
+    1-stop result: the greedy's value ranking is the only defence. The trap:
+    a 39-beat tier-5 'mountain' 340m east (inside the 369m round-trip
+    envelope, INDIVIDUALLY affordable: 2 x ~551s = ~1102s <= 1195s budget)
+    versus six modest tier-4 anchors 60-110m west. The greedy value
+    ``score / max(1, extra + 1)`` (selection.py) makes the cheap nears win
+    (~7.17/195 = 0.037 vs 18.44/1103 = 0.017); after even one near pick the
+    mountain's insertion busts the budget forever.
+
+    If the greedy ranking ever regresses to score-first (exactly what the
+    fill pass legitimately does — a plausible copy-paste unification), the
+    mountain is picked FIRST, consuming ~1102s; every near insertion then
+    costs ~220s more and busts 1195s; the fill pass cannot rescue (per-
+    candidate extras push past the 0.95-budget cap). Result: a GREEN 1-stop
+    route with tourability None — the exact 2026-07-02 user experience via a
+    path no other test covers (test_endpoint_pull_never_evicts_entire_route
+    is one-way pull geometry; this is the round-trip greedy break).
+    """
+    from src.tour.routing import walk_budget_seconds
+
+    start = (48.8568, 2.3414)
+    area = ("Île de la Cité",)
+    nears = [
+        _poi(
+            f"near-{i}",
+            tier=4,
+            lat=start[0],
+            lng=start[1] - (0.00082 + 0.000136 * i),  # 60-110m west
+            areas=area,
+            beat_count=5,
+        )
+        for i in range(6)
+    ]
+    mountain = _poi(
+        "far-mountain",
+        tier=5,
+        lat=start[0],
+        lng=start[1] + 0.004645,  # ~340m east — inside the 369m RT envelope
+        areas=area,
+        beat_count=39,
+    )
+    snap = _snap([*nears, mountain], area_types={"Île de la Cité": "island"})
+    budget = walk_budget_seconds(60)
+
+    # Preconditions derived live — the fixture self-proves the trap exists.
+    # (a) The mountain is solo-affordable on a round trip: the tempting pick.
+    mountain_rt = 2 * pace_corrected_walk_seconds(haversine_m(*start, mountain.lat, mountain.lng))
+    assert mountain_rt <= budget, f"fixture drifted: mountain RT {mountain_rt}s > {budget}s"
+    # (b) Every near anchor's round-trip leg fits too (pairwise affordable).
+    for near in nears:
+        near_rt = 2 * pace_corrected_walk_seconds(haversine_m(*start, near.lat, near.lng))
+        assert near_rt <= budget, f"fixture drifted: {near.id} RT {near_rt}s > {budget}s"
+    # (c) Mountain is inside the round-trip envelope (it IS a candidate).
+    assert haversine_m(*start, mountain.lat, mountain.lng) <= envelope_radius_m(
+        60, round_trip=True
+    )
+
+    inp = TourInput(start=start, duration_min=60, city_slug="paris", round_trip=True)
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+
+    assert ids != ["far-mountain"], "greedy collapsed to the solo far mountain"
+    assert len(ids) >= 2, f"one-stop tour emitted: {ids}"
+    assert sum(1 for i in ids if i.startswith("near-")) >= 2, (
+        f"the near cluster must survive; got {ids}"
+    )
+    # GREEN fixture (rich pool: fill 9.2, 7 anchors) — a 1-stop here would be
+    # the silent class.
+    assert route.tourability is None
+    assert len(route.pois) >= 2 or route.tourability is not None
+
+
+def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
+    """Pins the CURRENT tier-dwell audio proxy against 1-stop greedy breaks.
+
+    CURRENT-CONTRACT PIN. The greedy's audio break (``consumed_audio >=
+    audio_budget``) counts DWELL_SECONDS_BY_TIER dwell, NOT real beat audio.
+    The delivered-audio reconciliation is deferred design owned by
+    specs/2026-07-02-dwell-audio-reconciliation/ — when it lands, the
+    plausible bad implementation is ``consumed_audio += sum(beat seconds)``,
+    under which one anchor's 1200s of real beat audio exceeds the 896s target
+    at 30 min and the greedy breaks after ONE pick, emitting a GREEN 1-stop
+    tour (tourability None -> silent). Rewrite this test consciously with
+    that spec; do not delete it.
+    """
+    from src.tour.routing import DWELL_SECONDS_BY_TIER, target_audio_seconds
+
+    # Part 1 — constant pin (pure arithmetic): at every supported duration,
+    # a single anchor's dwell proxy can NEVER satisfy the audio break.
+    for d in range(30, 121, 10):
+        assert max(DWELL_SECONDS_BY_TIER.values()) < target_audio_seconds(d), (
+            f"a single stop's dwell proxy satisfies the audio target at d={d} — "
+            "the greedy can now break after ONE anchor (single-stop class)"
+        )
+
+    # Part 2 — behavioral: the tightest supported duration (30 min) with 4
+    # compact tier-5 anchors. max_anchors = 30 // 10 = 3 and the audio break
+    # fires at exactly the 3rd insert (900 >= 896), never earlier. Plain
+    # canonical GREEN: 4 anchors, fill 4800/896 = 5.36, compactness ~0.
+    cluster = [
+        _poi(
+            f"c-{i}",
+            tier=5,
+            lat=PDV[0] + 0.0002 * (i % 2),
+            lng=PDV[1] + 0.0002 * (i // 2),
+            areas=("Le Marais",),
+            beat_count=5,
+        )
+        for i in range(4)
+    ]
+    snap = _snap(cluster, area_types={"Le Marais": "neighborhood"})
+    route = select_route(
+        TourInput(start=PDV, duration_min=30, city_slug="paris", round_trip=True), snap
+    )
+    # Sharp pin (== 3) plus the class invariant (>= 2).
+    assert len(route.pois) == 3, f"expected exactly 3 stops at 30 min; got {len(route.pois)}"
+    assert len(route.pois) >= 2
+    assert route.tourability is None

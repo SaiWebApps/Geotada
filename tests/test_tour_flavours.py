@@ -174,6 +174,65 @@ def test_flavours_are_deterministic():
     assert [[p.id for p in f.pois] for f in first] == [[p.id for p in f.pois] for f in second]
 
 
+@pytest.mark.parametrize("duration_min", (30, 60, 90, 120))
+def test_all_flavours_multi_stop_when_primary_is_multi_stop(duration_min: int):
+    """2026-07-03 single-stop class guard: NO flavour may collapse to one stop.
+
+    DIVERSITY_PENALTY (0.3) multiplies used-POI scores on re-runs and feeds
+    THREE ranking sites — the greedy value, the endpoint-pull far ranking and
+    the fill-pass ranking. A re-run can therefore pick a pathological far
+    first anchor (the penalty flips the near/far value ordering), lose the
+    endpoint-pull that saved flavour 1, or starve the fill pass — collapsing
+    flavour 2/3 to one stop while flavour 1 stays healthy. Today that ships
+    as a 1-stop RouteOption card in /trips/generate options[] with zero test
+    coverage; the existing tests here check distinctness/validation/
+    determinism but never a stop count on the penalized re-runs.
+
+    The duration sweep matters because the penalty interacts with the
+    per-duration budgets: at d=30 the budgets are tightest (flavours reach
+    2-3 stops only via the pull/fill rescue); at d=120 flavour 1 uses most of
+    the grid so the re-run is near-uniformly penalized (an implementation
+    that divides by the penalty, or floors it at 0, collapses there first).
+    """
+    from src.tour.routing import walk_budget_seconds
+
+    snap = _dense_snap()
+    inp = TourInput(start=PDV, duration_min=duration_min, city_slug="paris", round_trip=False)
+    with _client() as rc:
+        flavours = select_k_routes(inp, snap, 3, routing_client=rc)
+
+    # Precondition: the dense fixture must yield a multi-stop primary. If
+    # THIS fails, the fixture broke (recalibrate it) — not the invariant.
+    assert len(flavours[0].pois) >= 2, (
+        f"fixture drifted: primary flavour is {[p.id for p in flavours[0].pois]}"
+    )
+    # At d=120 a near-uniformly penalized re-run may legitimately reproduce
+    # flavour 1's stop set (Jaccard >= 0.60 ends the search), so the flavour
+    # COUNT is only pinned on the cells verified multi-flavour at HEAD.
+    if duration_min in (30, 60, 90):
+        assert len(flavours) >= 2, f"d={duration_min}: expected >=2 flavours"
+
+    budget = walk_budget_seconds(duration_min)
+    for i, flavour in enumerate(flavours):
+        # The single-stop floor — the actual class guard.
+        assert len(flavour.pois) >= 2, (
+            f"d={duration_min} flavour {i} collapsed to "
+            f"{[p.id for p in flavour.pois]} — a 1-stop RouteOption card"
+        )
+        # Budget sanity on the divisor the engine actually enforces: with a
+        # routing client, greedy/pull/fill budget checks run on ROUTED leg
+        # seconds (the mock's 1.3 s/m), while Route.total_walk_seconds stays
+        # the pace-corrected haversine metadata (1.62 s/m, deliberately NOT
+        # budget-bounded under a faster routed divisor — see routing.py M2).
+        routed_walk = sum(
+            t.leg_seconds if t.leg_seconds is not None else t.walk_seconds
+            for t in flavour.transits
+        )
+        assert routed_walk <= budget + 5, (
+            f"d={duration_min} flavour {i}: routed walk {routed_walk}s > budget {budget}s"
+        )
+
+
 def test_red_density_raises_through_k_routes():
     lone = _poi("lone", lat=PDV[0], lng=PDV[1])
     snap = _snap([lone], beats_by_poi={"lone": []})
