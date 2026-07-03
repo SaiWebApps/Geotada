@@ -49,7 +49,7 @@ from .contract import (
     ValidationReport,
 )
 from .glue_client import NO_GLUE_SENTINEL, GlueClient, MockGlueClient
-from .routing import beat_spoken_seconds, compute_dwell_seconds
+from .routing import beat_spoken_seconds, compute_dwell_seconds, planned_audio_seconds
 
 # ---------------------------------------------------------------------------
 # Whitelisted glue labels — §3.5 of phase-1-design
@@ -805,7 +805,13 @@ def _flatten_pois(beat_sequence: BeatSequence, route: Route) -> tuple[ScriptPOI,
                 area=route.spine_area
                 if route.spine_area in poi.areas
                 else (poi.areas[0] if poi.areas else None),
-                dwell_seconds=compute_dwell_seconds(poi.tier),
+                # C8: honest REPORTED minutes — tier dwell is a display floor
+                # only; a beat-rich stop reports its real voiced length. Zero
+                # route change (selection still books tier dwell until C9).
+                dwell_seconds=max(
+                    compute_dwell_seconds(poi.tier),
+                    planned_audio_seconds(plan.beats) if plan else 0,
+                ),
                 beat_ids=beat_ids,
             )
         )

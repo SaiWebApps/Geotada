@@ -1004,3 +1004,56 @@ def test_cold_open_area_hoist_strips_donor_stop_current_contract_pin():
     # (3) No double emission: the consumed-set contract that motivated
     # consumed_beat_ids — the orientation beat is spoken exactly ONCE.
     assert len(hoisted) == 1
+
+
+# ---------------------------------------------------------------------------
+# C8 — honest REPORTED per-stop minutes (dwell_seconds = max(tier floor,
+# planned voiced audio)). Reporting surface only; routes are unchanged.
+# The hermetic fixtures elsewhere carry no word_count, so max() == the tier
+# floor there; these two tests exercise the honest path that C8 changes.
+# ---------------------------------------------------------------------------
+
+
+def test_reported_dwell_is_planned_audio_when_a_stop_is_beat_rich():
+    # Two 500-word beats @150wpm = 200s + 200s = 400s of voiced narration at a
+    # tier-5 stop whose tier floor is only 300s -> the stop card must report the
+    # REAL 400s, not the fictional 300s (the pool-vs-delivered honesty fix).
+    poi = _poi("rich", "Place des Vosges", tier=5)
+    beats = (
+        _beat("b1", poi.id, body="Henri IV built the square.", word_count=500),
+        _beat("b2", poi.id, body="The arcades run all around.", word_count=500),
+    )
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=beats,
+            ),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+    sp = next(s for s in script.selected_pois if s.id == poi.id)
+    assert sp.dwell_seconds == 400  # planned voiced audio, NOT the 300s tier floor
+
+
+def test_reported_dwell_floors_at_tier_when_a_stop_is_beat_thin():
+    # A 100-word beat @150wpm = 40s of narration at a tier-5 stop -> the card
+    # still reports the 300s tier floor (a stop takes look-around time even when
+    # the audio is short). max(tier_floor, planned) keeps the floor.
+    poi = _poi("thin", "Small Chapel", tier=5)
+    beats = (_beat("b1", poi.id, body="A brief note here.", word_count=100),)
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=beats,
+            ),
+        )
+    )
+    script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+    sp = next(s for s in script.selected_pois if s.id == poi.id)
+    assert sp.dwell_seconds == 300  # tier-5 floor wins over the 40s planned audio
