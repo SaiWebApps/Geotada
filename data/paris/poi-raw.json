@@ -6404,7 +6404,7 @@
   },
   {
     "name": "Hotel Le Meurice",
-    "short_description": "Legendary 1835 palace hotel on rue de Rivoli where Orwell worked as a dishwasher and the German garrison had its WWII headquarters",
+    "short_description": "Legendary 1835 palace hotel on rue de Rivoli where the German military governor of Paris had his WWII headquarters",
     "name_variations": [
       "Le Meurice",
       "Hôtel Le Meurice",
@@ -6438,6 +6438,12 @@
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
         "scored_at": "2026-05-01T15:45:48.181108+00:00",
         "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only T4 evidence is the 71.0 clone (75.0 mismatch, zerogap_backfill, dual proxies, nulls — attraction hard signals structurally unattainable for a private hotel); EN pageviews 27,276 (live) within 10% of clean-scored T3 palace-hotel peer Hôtel de Crillon (24,984 / 54.9); Wikivoyage Sleep→Splurge only, never See; L'Hôtel precedent (80e0d7f) matches on every element; role says Tier 3; 4 facade-voiced beats unaffected."
+      },
+      "status_check": {
+        "status": "open",
+        "checked_at": "2026-07-03T05:21:55Z",
+        "notes": "Operating luxury hotel (Dorchester Collection). short_description corrected: removed the Orwell-dishwasher attribution (Hotel X of Down and Out is identified by biographers as the Lotti or Crillon, not the Meurice; no Orwell in EN/FR Wikipedia patron lists). 1835 move to 228 rue de Rivoli and WWII HQ confirmed.",
+        "source": "https://fr.wikipedia.org/wiki/H%C3%B4tel_Meurice"
       }
     },
     "_meta": {

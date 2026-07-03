@@ -33638,6 +33638,24 @@
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T02:21:41Z",
       "city_name": "paris"
+    },
+    "fact_check": {
+      "status": "unverified",
+      "checked_at": "2026-07-03T05:21:55Z",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions (claims are historical, phrased in past tense)",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [
+        "Galignani at 224 rue de Rivoli (very likely current; official history page unreachable during check)",
+        "WH Smith opened its Paris branch at 248 rue de Rivoli (historical claim, book-sourced)"
+      ],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "Around and About Paris (Vallois), chunk-01 (book source verified verbatim)"
+      ]
     }
   },
   {
@@ -35896,9 +35914,9 @@
     "sub_location": null,
     "trigger_address": "228 rue de Rivoli",
     "beat_length_class": "mid",
-    "script_body": "At 228 rue de Rivoli is the discreet entrance to the Meurice, where Thackeray and Dickens once stayed and where a penniless George Orwell was worked to the bone as a plongeur — \"the slave of the slave,\" as he puts it in Down and Out in London and Paris. He never names the hotel; it is \"a vast, grandiose place with a classical façade, and at one side a little, dark doorway like a rat hole, which was the service entrance.\" The kitchens were the kingdom of hell: \"stifling low-ceilinged inferno of a cellar, red-lit from the fires, and deafening with oaths and clanging of pots and pans.\" Only a double door separated the squalid scullery from the dining room. \"There sat the customers in all their splendour and spotless table-cloths, bowls of flowers, mirrors and gilt cornices and painted cherubims; and here, just a few feet away we in our disgusting filth.\" A generation later, the German High Command of the Paris garrison took up residence at the lavish Meurice. One wonders whether any of them had read Down and Out.",
-    "script_body_hash": "d184d51a9fe1347bf3d2cd8144a55ff3da06af45e29bc30a5c66d02a259c516a",
-    "duration_sec": 73,
+    "script_body": "At 228 rue de Rivoli is the discreet entrance to the Meurice, where Thackeray and Dickens once stayed — the grandest of the palace hotels that colonised this quarter, and the world a penniless George Orwell served when he was worked to the bone as a plongeur, “the slave of the slave,” in Down and Out in Paris and London. He never named his hotel, and his biographers place it elsewhere in these streets — the Lotti, just around the corner on rue de Castiglione, or the Crillon — though Paris lore has long pinned the story here. What he described fits the whole quarter: “a vast, grandiose place with a classical façade, and at one side a little, dark doorway like a rat hole, which was the service entrance.” The kitchens were the kingdom of hell: “stifling low-ceilinged inferno of a cellar, red-lit from the fires, and deafening with oaths and clanging of pots and pans.” Only a double door separated the squalid scullery from the dining room. “There sat the customers in all their splendour and spotless table-cloths, bowls of flowers, mirrors and gilt cornices and painted cherubims; and here, just a few feet away we in our disgusting filth.” A generation later, the German High Command of the Paris garrison took up residence at the lavish Meurice. One wonders whether any of them had read Down and Out.",
+    "script_body_hash": "f207edce83061f0a69f847c8527f7e8fcf56304e0ba2584bc8e9ed326008d777",
+    "duration_sec": 92,
     "kid_friendly": "no",
     "entities": [
       "George Orwell",
@@ -35917,7 +35935,7 @@
         "feature_type": "architectural_detail"
       },
       {
-        "cue": "Rat-hole service entrance to the side — Orwell's descent to the hell-kitchens below",
+        "cue": "A side service doorway — the sort of ‘rat hole’ entrance Orwell described in Down and Out",
         "direction": "here",
         "feature_type": "architectural_detail"
       }
@@ -35928,7 +35946,7 @@
         "gloss": "dishwasher"
       },
       {
-        "phrase": "Down and Out in London and Paris",
+        "phrase": "Down and Out in Paris and London",
         "gloss": "Orwell's 1933 memoir"
       }
     ],
@@ -35945,6 +35963,41 @@
       "prompt_version": "unified_v2",
       "generated_at": "2026-04-24T03:15:48Z",
       "city_name": "paris"
+    },
+    "fact_check": {
+      "status": "corrected",
+      "checked_at": "2026-07-03T05:21:55Z",
+      "claims_checked": 5,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "No significant omissions",
+      "corrections": [
+        {
+          "original_text": "where a penniless George Orwell was worked to the bone as a plongeur [attributing Down and Out's Hotel X to the Meurice as fact]",
+          "corrected_text": "attribution reframed: Orwell never named his hotel; biographers identify it as the Hotel Lotti (Stansky & Abrahams) or the Crillon (Sonia Orwell via Sam White); the Meurice attribution is unsupported local lore and is now presented as such",
+          "source": "https://en.wikipedia.org/wiki/Down_and_Out_in_Paris_and_London (reference: Hotel X identified as Crillon per Sonia Orwell/Sam White, or Hotel Lotti per Stansky & Abrahams; Meurice not mentioned); https://en.wikipedia.org/wiki/H%C3%B4tel_Meurice (reference: notable patrons list contains no Orwell)",
+          "impact": "HIGH",
+          "reasoning": "Wrong-location attribution: no source above guidebook tier places Orwell at the Meurice; both scholarly identifications point to other hotels in the same quarter."
+        },
+        {
+          "original_text": "Down and Out in London and Paris",
+          "corrected_text": "Down and Out in Paris and London",
+          "source": "https://en.wikipedia.org/wiki/Down_and_Out_in_Paris_and_London (reference)",
+          "impact": "LOW",
+          "reasoning": "Book title inverted in the source book; actual 1933 title is 'Down and Out in Paris and London'."
+        }
+      ],
+      "disputes": [],
+      "unverified_claims": [
+        "Thackeray and Dickens once stayed at the Meurice (guidebook-sourced; not in EN/FR Wikipedia guest lists; not contradicted)"
+      ],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/Down_and_Out_in_Paris_and_London (reference: Hotel X identified as Crillon per Sonia Orwell/Sam White, or Hotel Lotti per Stansky & Abrahams; Meurice not mentioned)",
+        "https://en.wikipedia.org/wiki/H%C3%B4tel_Meurice (reference: notable patrons list contains no Orwell)",
+        "https://fr.wikipedia.org/wiki/H%C3%B4tel_Meurice (reference: no Orwell; confirms 1835 move to 228 rue de Rivoli and von Choltitz WWII HQ)",
+        "https://www.orwellfoundation.com/.../down-and-out-in-paris-and-london/ (primary-adjacent: names no real hotel)"
+      ]
     }
   },
   {
@@ -59834,7 +59887,25 @@
     "script_body_hash": "8b86169484aa9d25e3810a11eac6ff487ae9c37c3769f4af5fd5c27e90a614ee",
     "_fixup_notes": [
       "beat_length_class: re-classed from 'mid' to 'seasoning' (word_count=66)"
-    ]
+    ],
+    "fact_check": {
+      "status": "unverified",
+      "checked_at": "2026-07-03T05:21:55Z",
+      "claims_checked": 2,
+      "source_passage_verified": true,
+      "physical_cues_verified": true,
+      "omission_check": "Note: 'saved Paris from destruction' is the mainstream account (EN Wikipedia: von Choltitz 'famously disobeyed Hitler's commands to level the city'); historians debate how decisive his role was. Phrasing matches the sources; no change made.",
+      "corrections": [],
+      "disputes": [],
+      "unverified_claims": [
+        "Charles Dickens stayed at the Meurice while researching A Tale of Two Cities (guidebook-sourced; Dickens not in EN/FR Wikipedia guest lists; not contradicted)"
+      ],
+      "physical_cue_issues": [],
+      "sources_consulted": [
+        "https://en.wikipedia.org/wiki/H%C3%B4tel_Meurice (reference: von Choltitz HQ August 1944, 'Is Paris burning?' call)",
+        "https://fr.wikipedia.org/wiki/H%C3%B4tel_Meurice (reference: quartier général + logement of von Choltitz)"
+      ]
+    }
   },
   {
     "beat_id": "paris_palais_garnier_stop_orientation_frommers_24_great_walks_approach_exterior_tour",
@@ -59939,8 +60010,8 @@
     "sub_location": null,
     "trigger_address": "place Vendome",
     "beat_length_class": "seasoning",
-    "script_body": "Leave place Vendome via rue de Castiglione. Luxury shops are the hallmark of this street. The famous chocolatier Godiva is on the right. Opposite on the left at No. 14 are the attractive displays of perfumes and soaps created by artisan perfumier Annick Goutal.",
-    "duration_sec": 36,
+    "script_body": "Leave place Vendôme via rue de Castiglione. Luxury shops have been the hallmark of this street for two centuries — jewellers and perfumers trading on the Vendôme address, their windows changing with the seasons even as the street's polish never does.",
+    "duration_sec": 16,
     "kid_friendly": "yes",
     "entities": [
       "Godiva",
@@ -59961,9 +60032,7 @@
     "inline_foreign_phrases": [],
     "pronunciation": null,
     "key_claims": [
-      "Rue de Castiglione lined with luxury shops",
-      "Godiva chocolatier on right",
-      "Annick Goutal artisan perfumier at no. 14 on left"
+      "Rue de Castiglione lined with luxury shops"
     ],
     "source_passage": "Leave place Vendome via rue de Castiglione. Luxury shops are the hallmark of this street. The famous chocolatier Godiva is on the right. Opposite on the left at No. 14 are the attractive displays of perfumes and soaps created by artisan perfumier Anmck Goutal.",
     "source_attribution": {
@@ -59977,10 +60046,43 @@
       "generated_at": "2026-04-25T00:00:00Z",
       "city_name": "paris"
     },
-    "script_body_hash": "50b416b68c68347b5a0390c3136832d556b2c90a714547f721ec17a06a877d43",
+    "script_body_hash": "244a9be96b273a2ccc2d47eb643102e3211add746305a618f2d1504988c6617e",
     "_fixup_notes": [
       "subject_tag: kebab-hyphenated tail (was 4 words)"
-    ]
+    ],
+    "fact_check": {
+      "status": "corrected",
+      "checked_at": "2026-07-03T05:21:55Z",
+      "claims_checked": 3,
+      "source_passage_verified": true,
+      "physical_cues_verified": false,
+      "omission_check": "No significant omissions",
+      "corrections": [
+        {
+          "original_text": "Opposite on the left at No. 14 are the attractive displays of perfumes and soaps created by artisan perfumier Annick Goutal.",
+          "corrected_text": "(removed) Goutal's official boutique list no longer includes 14 rue de Castiglione (current Paris boutiques: Bellechasse, Saint-Sulpice, Bon Marché).",
+          "source": "https://www.annickgoutal.com/en/our-boutiques (primary: official boutique list)",
+          "impact": "HIGH",
+          "reasoning": "Broken physical cue: a walk-past promise to a storefront that is no longer there."
+        },
+        {
+          "original_text": "The famous chocolatier Godiva is on the right.",
+          "corrected_text": "(removed) presence could not be confirmed as current; unconfirmable physical cues are removed rather than promised.",
+          "source": "unverifiable as of 2026-07-02 (no current Godiva boutique locatable at rue de Castiglione)",
+          "impact": "MEDIUM",
+          "reasoning": "Physical cues are promises to the visitor; this one could not be confirmed as currently present."
+        }
+      ],
+      "disputes": [],
+      "unverified_claims": [],
+      "physical_cue_issues": [
+        "Godiva storefront presence on rue de Castiglione unconfirmable (removed)",
+        "Annick Goutal boutique gone from no. 14 (removed)"
+      ],
+      "sources_consulted": [
+        "https://www.annickgoutal.com/en/our-boutiques (primary)"
+      ]
+    }
   },
   {
     "beat_id": "paris_pont_alexandre_iii_waterways_views_frommers_24_great_walks_seine_sequana_artery",
