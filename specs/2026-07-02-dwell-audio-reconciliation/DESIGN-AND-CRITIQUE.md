@@ -105,3 +105,23 @@ Positive verification: every numbered inventory claim I checked holds — DWELL_
 
 Decision 6 ('confirm steps 1-3 land BEFORE R1') presumes Step 3 is golden-neutral-or-positive; per finding 1 it is golden-NEGATIVE in stop count while R1 is golden-positive in per-stop beats — they pull the Ile fixture in opposite directions and the diagnostic attributes 22 of 28 misses to emission (category e), i.e., the golden gap closes via R1, not via Step 3. The ordering question is therefore not a rubber-stamp: landing Step 3 first likely FAILS the design's own 'overlap must not drop below 53.2%/66.7%' gate, and landing R1 first inflates planned audio so Step 3 shrinks routes even harder. The realistic options the design never presents: (a) land Step 3 with an explicitly re-baselined golden expectation (violates Makefile:101's do-not-re-baseline rule — needs the owner), (b) land R1 + Step 3 together with the Step-5 audio-share allowance (the design's own §5-compliant vehicle) so emission and accounting move in lockstep, or (c) soften Step 3's floor to keep today's stop counts (e.g. cap consumed at budget-fraction per stop) — a different design. Similarly, decision 3 (domination policy) is listed as shaping Step 5, but finding 2 shows Step 3 alone makes single-stop domination reachable on short tours, so decision 3 blocks Step 3, not Step 5. Decisions 1, 2, 4, 5 are correctly framed; NORTHSTAR silence on dwell was confirmed (no dwell/0.83 hits in specs/NORTHSTAR.md is consistent with my grep of the ledger reference at Docs/tour-builder/phase-1-design.md).
 
+
+
+---
+
+## ADDENDUM 2026-07-02 (merge-gate skeptic evidence — raises this work's priority)
+
+The pre-merge hostile panel reproduced the user-facing symptom of this gap LIVE
+on the branch tip: the density gate rates the reachable POOL, so a rich area is
+honestly GREEN (no tourability field) while the DELIVERED route is far below
+the request. Confirmed cases (dev corpus, pinned pace): 30-min request near the
+Louvre (pool fill 2.75, 7 anchor candidates) delivered 1 stop / 2 min of audio
+with no warning; 90-min request at (48.858890, 2.320041) delivered 2 stops /
+7 min (realized fill ~0.16 vs pool 1.53); 60-min round-trip at (48.8529,
+2.3499) delivered 10 min vs ~30-min target. Interim mitigation shipped in the
+same branch: the workbench discloses thin delivery client-side
+(.tour-thin-delivery-note fires when delivered audio < ~25% of requested
+minutes and no engine warning rendered). The ENGINE-side fix — reconciling
+realized fill with the request, or a post-selection fill audit that attaches
+the warning server-side — is exactly this spec's scope and inherits the
+critique's binding corrections above.

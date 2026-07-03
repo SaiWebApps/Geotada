@@ -2314,6 +2314,67 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def test_tour_preview_thin_delivery_renders_disclosure_note(self, browser_page):
+        """Thin-delivery disclosure (merge-gate skeptic finding 2026-07-02): the
+        density gate rates the reachable POOL, so a rich area can be GREEN (no
+        tourability field) while the DELIVERED route is far shorter than the
+        request (observed live: 30-min Louvre request -> 1 stop / 2 min audio,
+        silent). Until the engine-side dwell/audio reconciliation lands, the
+        workbench must disclose it: delivered audio under ~25% of the requested
+        minutes with no engine warning renders a note; a healthy ratio must not."""
+        page, _seed_data, _reporter = browser_page
+
+        def _payload(total_audio_min):
+            return {
+                "stops": [
+                    {"sort_order": 1, "poi_name": "Louvre Museum", "minutes": 2,
+                     "lat": 48.8606, "lng": 2.3376, "narration": "A grounded line.",
+                     "spotlight": 0.0, "band": "dwell"},
+                ],
+                "spine_area": "1st Arrondissement",
+                "total_audio_min": total_audio_min,
+            }
+
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200, content_type="application/json", body=json.dumps(_payload(2))
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8606,2.3376")
+            page.locator("#tourDuration").fill("30")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+
+            note = page.locator("#tourStops .tour-thin-delivery-note")
+            assert note.count() == 1, "2 min delivered for a 30-min request must disclose"
+            text = note.first.text_content() or ""
+            assert "Short tour" in text and "~2 min of audio" in text and "30-min request" in text
+            _take_screenshot(page, "thin-delivery-note")
+        finally:
+            page.unroute("**/trips/preview")
+
+        # Control: healthy delivery (26 min for 30 requested) renders no note.
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200, content_type="application/json", body=json.dumps(_payload(26))
+            ),
+        )
+        try:
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+            assert page.locator("#tourStops .tour-thin-delivery-note").count() == 0, (
+                "healthy delivered/requested ratio must not render the disclosure"
+            )
+        finally:
+            page.unroute("**/trips/preview")
+
     _COORD_5DEC = r"-?\d+\.\d{5},-?\d+\.\d{5}"
 
     def _clear_tour_route_pins(self, page):

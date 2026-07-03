@@ -3031,7 +3031,7 @@
         }
         return;
       }
-      renderTourStops(await resp.json());
+      renderTourStops(await resp.json(), duration);
     } catch (err) {
       showError('Tour preview failed: ' + err.message);
     } finally {
@@ -3139,7 +3139,7 @@
     persistentMap.fitBounds(pts, { padding: [40, 40], maxZoom: 15 });
   }
 
-  function renderTourStops(data) {
+  function renderTourStops(data, requestedMinutes) {
     const stopsEl = document.getElementById('tourStops');
     if (!stopsEl) return;
     tourStops = (data && data.stops) || [];
@@ -3171,6 +3171,25 @@
       }
       warn.textContent = msg;
       stopsEl.appendChild(warn);
+    }
+    // Thin-delivery disclosure (skeptic finding 2026-07-02): the density gate
+    // rates the reachable POOL, so a rich area can be GREEN (no tourability
+    // field) while the DELIVERED route is far shorter than requested (observed
+    // live: 30-min request near the Louvre -> 1 stop / 2 min of audio, no
+    // warning). Until the engine-side dwell/audio reconciliation lands (see
+    // specs/2026-07-02-dwell-audio-reconciliation/), disclose it client-side:
+    // fire when no engine warning rendered and delivered audio is under ~25%
+    // of the requested minutes (~half the err-short audio target).
+    if (data && !data.tourability && requestedMinutes && tourStops.length
+        && (data.total_audio_min || 0) < requestedMinutes * 0.25) {
+      const note = document.createElement('div');
+      note.className = 'tour-thin-delivery-note';
+      note.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
+        + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 8px;';
+      note.textContent = `ⓘ Short tour: ~${data.total_audio_min || 0} min of audio for a `
+        + `${requestedMinutes}-min request. The area has more content than this route uses — `
+        + `a known planner gap (dwell/audio reconciliation), not a data problem.`;
+      stopsEl.appendChild(note);
     }
     // Phase 3 spotlight: the per-corridor lens coverage note (present only when
     // the engine surfaces it — off-genre corridors read "only N places speak to …").
