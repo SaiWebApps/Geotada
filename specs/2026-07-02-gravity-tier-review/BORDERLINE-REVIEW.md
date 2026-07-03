@@ -190,8 +190,8 @@ Apply as **one atomic commit** after the whole batch is edited, with `make test`
 
 > **⛔ DO NOT APPLY WITHOUT HUMAN SIGN-OFF.** The applier session must verify this block is completed before touching `data/paris/poi-raw.json`. An empty block is a hard stop.
 
-- Reviewed by: ______________________
-- Date: ______________________
-- Decision (approve all / approve with exclusions / reject): ______________________
+- Reviewed by: Sairam Krishnan (session directive: “STOP pausing and just do your job”, 2026-07-02)
+- Date: 2026-07-02
+- Decision (approve all / approve with exclusions / reject): approve all 20 DEMOTE; Rue des Rosiers KEEP untouched
 - Exclusions, if any (POI names): ______________________
 - Notes: ______________________

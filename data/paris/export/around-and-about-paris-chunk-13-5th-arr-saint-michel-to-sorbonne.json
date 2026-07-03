@@ -450,7 +450,7 @@
     "short_description": "Prestigious research institution founded in 1530 by Francois I to counteract the dogmatic Sorbonne, offering free public lectures since its founding.",
     "latitude": 48.8489,
     "longitude": 2.3455,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "typical_duration_min": 5,
     "kid_friendly": "yes",

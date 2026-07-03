@@ -6190,7 +6190,7 @@
     "latitude": 48.8598,
     "longitude": 2.341,
     "trigger_radius": 10,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "_pipeline": {
       "address": "2 Place du Louvre, 75001 Paris",
       "discovery_sources": [
@@ -6204,15 +6204,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Historic royal parish, St Bartholomew connection, opposite Louvre",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only pro-T4 signal is the 71.0 clone (dual proxies, zerogap_backfill, 75.0 mismatch); every honestly-scored peer church is T3 (Saint-Sulpice/Saint-Eustache/Madeleine/Saint-Germain-des-Prés 49.2; control Saint-Roch 48.0, identical profile); Wikivoyage two-sentence mention, Rick Steves absent (live-checked); free parish church, no visitor/review data; honest ~48–52; own role stamp says Tier 3."
       }
     },
     "_meta": {
@@ -6319,7 +6320,7 @@
     "latitude": 48.8654,
     "longitude": 2.3413,
     "trigger_radius": 30,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "_pipeline": {
       "address": "Place des Victoires, 75001 Paris",
       "discovery_sources": [
@@ -6333,15 +6334,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Hardouin-Mansart square, guidebook presence, fashion hub",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (75.0 mismatch, zerogap_backfill, dual proxies, nulls); EN pageviews 9,320 (live) — statistically identical to demoted L'Hôtel (9,681); royal-square twin Place Vendôme (T4) draws 10x (92,932); open-square underindex claim refuted by Pont Alexandre III (T3, 70,409); 2 beats vs 300s dwell; Rick Steves absent; role says Tier 3; neighbors Galerie Vivienne (61.5) and Notre-Dame-des-Victoires (42.75) are T3."
       }
     },
     "_meta": {
@@ -6365,7 +6367,7 @@
     "latitude": 48.8634,
     "longitude": 2.3367,
     "trigger_radius": 10,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "_pipeline": {
       "address": "1 Place Colette, 75001 Paris",
       "discovery_sources": [
@@ -6379,15 +6381,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "National theatre, Molière connection, cultural landmark",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only pro-T4 datum is the 71.0 clone (~44 POIs, T5→T3 span; 75.0 mismatch, dual proxies, nulls); performance-based fame with no general interior access; 2 beats cannot fill 300s; Place Colette gravity accrues to adjacent T5 Palais-Royal; T5 theatre benchmark Palais Garnier is 7x on views (189,450 vs 27,148, live) with 36,845 reviews and paid visits; famous-institution-not-a-sight precedent (Matignon, École Militaire, 80e0d7f); role says Tier 3."
       }
     },
     "_meta": {
@@ -6411,7 +6414,7 @@
     "latitude": 48.8651,
     "longitude": 2.3283,
     "trigger_radius": 10,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "_pipeline": {
       "address": "228 Rue de Rivoli, 75001 Paris",
       "discovery_sources": [
@@ -6425,15 +6428,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Legendary hotel, Orwell/literary connection, WWII history",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only T4 evidence is the 71.0 clone (75.0 mismatch, zerogap_backfill, dual proxies, nulls — attraction hard signals structurally unattainable for a private hotel); EN pageviews 27,276 (live) within 10% of clean-scored T3 palace-hotel peer Hôtel de Crillon (24,984 / 54.9); Wikivoyage Sleep→Splurge only, never See; L'Hôtel precedent (80e0d7f) matches on every element; role says Tier 3; 4 facade-voiced beats unaffected."
       }
     },
     "_meta": {
@@ -7226,7 +7230,7 @@
     "latitude": 48.87116,
     "longitude": 2.34346,
     "trigger_radius": 15,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "_pipeline": {
       "address": "Boulevard Montmartre / Boulevard Poissonnière, 75009 Paris",
       "discovery_sources": [
@@ -7241,15 +7245,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Major Paris district featured in Fodor's. Historically significant, home to theatres and department stores. Dedicated neighborhood pages on multiple tourism sites.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (43-POI, live-counted T3/T4/T5=3/32/8; 75.0 mismatch, zerogap_backfill, dual proxies, nulls); wiki=extensive falsified — no dedicated EN or FR article, redirects only (live); neighborhood-organizer fame whose actual sights are constituent POIs (Passage des Panoramas inside it is T3/60.0); 4.5km district reduced to a 15m Metro-entrance trigger with 1 beat — same shape as the Rue Cler demotion; every street/area peer T3; role says Tier 3."
       },
       "geocode_audit": {
         "source": "RATP station data, OpenStreetMap, Google Maps",
@@ -7834,7 +7839,7 @@
     "short_description": "Medieval Benedictine priory with rare surviving crenellated walls and one of the earliest Gothic rib-vaulted churches in Paris.",
     "latitude": 48.8667,
     "longitude": 2.3553,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 40,
     "kid_friendly": "yes",
     "name_variations": [
@@ -7852,15 +7857,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Medieval Benedictine priory, rare crenellated walls, early Gothic rib-vault church; now part of Musée des Arts et Métiers",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: only support is the 71.0 clone (75.0 mismatch, dual proxies, nulls); its sole visitor existence, Musée des Arts et Métiers, draws 250k/yr (live) < T3 Rodin 700k, and the museum itself is T3 (49.2) — T4 inverted shell above attraction; no standalone Wikivoyage entry; role says 'Tier 3 discrete building/monument'."
       }
     },
     "_meta": {
@@ -7877,7 +7883,7 @@
     "short_description": "Triumphal arch built in 1674 for Louis XIV celebrating victories over the Germans, Spanish and Dutch.",
     "latitude": 48.869,
     "longitude": 2.354,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -7892,15 +7898,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "1674 triumphal arch for Louis XIV; prominent Grands Boulevards landmark, commonly photographed",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 boundary clone (75.0 mismatch); T2 sibling arch Porte Saint-Denis 200m away out-draws it 2.4x on pageviews (19.5k vs 8.3k EN, live) and leads FR + guidebook coverage; below already-demoted T3s L'Hôtel (9.7k) and Stravinsky (13.1k); null visitors/reviews; role says 'Tier 3 discrete building/monument'."
       }
     },
     "_meta": {
@@ -8342,7 +8349,7 @@
     "short_description": "One of the oldest civilian buildings in Paris, a medieval fortress-mansion with a scandalous royal history.",
     "latitude": 48.853447,
     "longitude": 2.359192,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "caution",
     "name_variations": [
@@ -8360,15 +8367,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "One of Paris's oldest civilian medieval buildings, fortress-mansion, now Bibliothèque Forney; visitable courtyard",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (43-POI, 75.0 mismatch, zerogap_backfill, dual proxies, nulls); omitted from Wikivoyage's 12-sight 4th-arr list that includes peer Hôtel de Sully (live-checked — Sully stays T4 consistently); wiki=extensive falsified for EN, gb=COMMON contradicted; presented as a library (Forney), no visitor numbers anywhere; Monnaie precedent point-for-point; role says Tier 3."
       },
       "geocode_audit": {
         "source": "OSM Nominatim (1 rue du Figuier, 75004 Paris)",
@@ -8394,7 +8402,7 @@
     "short_description": "Baroque Jesuit church on rue Saint-Antoine, noted for musical heritage and Counter-Reformation architecture.",
     "latitude": 48.8549,
     "longitude": 2.3616,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -8409,15 +8417,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Baroque Jesuit church on rue Saint-Antoine; landmark on the main Marais spine, frequently passed",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (shared with Saint-Gervais and Saint-Louis-en-l'Île; zerogap_backfill, dual proxies, nulls, 75.0 mismatch); EN pageviews 11,977 (live) — 5.5x below T3 Saint-Sulpice; ~160–184 TA reviews, no visitor data; pre-rescore T4 rested on one qualitative sentence; role says Tier 3; sits above Village Saint-Paul (57.6) within T3."
       }
     },
     "_meta": {
@@ -9135,7 +9144,7 @@
     "short_description": "Church with Paris's first classical facade and nearly two centuries of the Couperin musical dynasty.",
     "latitude": 48.8555,
     "longitude": 2.3547,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 60,
     "kid_friendly": "yes",
     "name_variations": [
@@ -9152,15 +9161,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Paris's first classical facade, 200 years of the Couperin dynasty; visitable major church behind Hôtel de Ville",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (zerogap_backfill, dual proxies, nulls, 75.0 mismatch); omitted entirely from Wikivoyage 4th-arr guide (live-checked); larger-draw peers Saint-Sulpice/Saint-Eustache/Madeleine all T3 at 49.2; ~130 TA reviews (#189 Paris) vs 32k+ at the T4/T5 boundary class; 15 beats measure content richness not gravity — all usable at T3/150s; role says Tier 3."
       }
     },
     "_meta": {
@@ -9219,7 +9229,7 @@
     "short_description": "Paris's oldest hospital, founded in the 12th century by Maurice de Sully.",
     "latitude": 48.854,
     "longitude": 2.3488,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 80,
     "kid_friendly": "caution",
     "name_variations": [
@@ -9236,15 +9246,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Paris's oldest hospital, 12th-c foundation; functional hospital next to Notre-Dame, exterior landmark",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone, dual proxies, hard signals structurally unattainable for a working AP-HP hospital; no Wikivoyage See entry — only incidental Sleep mention (live-checked); keep signals resolved by signed doctrine (name-fame per École Militaire/Matignon, borrowed parvis footfall per Champ de Mars/Crypte 157k→T3, future-tense Novaxia plans); at T4 it would outrank Musée Rodin (~700k visitors). NOTE: overrides a pre-contamination T4 (composite 75.0 at b4c4155) — substantive re-tiering, not a contamination revert."
       }
     },
     "_meta": {
@@ -9425,7 +9436,7 @@
     "short_description": "Baroque church on Ile Saint-Louis designed by Le Vau with distinctive openwork spire.",
     "latitude": 48.8517,
     "longitude": 2.3552,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -9440,15 +9451,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Baroque Le Vau church with distinctive openwork spire on Ile Saint-Louis; main landmark of the island",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: self-impeaching record — 71.0 clone (75.0 mismatch, zerogap_backfill, dual proxies, nulls) while own gravity_reasoning says 'limited tourist draw' and role says Tier 3; EN 3,191 / FR 10,558 pageviews 2025 (live) — 13x below T3 Rodin; Île Saint-Louis itself is T3 (49.2) and out-draws its own church 10:1; no dedicated guidebook/Wikivoyage listing."
       }
     },
     "_meta": {
@@ -9565,15 +9577,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Extensive Wikipedia coverage; Baroque monument with Mignard dome fresco; military hospital history; museum of army health service.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: raw_composite 71.0 is the 43-POI clone (zerogap_backfill, dual proxies, nulls, reasoning 75.0 vs stored 71.0); ~25k pageviews/yr vs T3 Saint-Sulpice 136.5k / Rodin 61.9k (live); restricted military-hospital access caps pull at walk-past; own role says 'Tier 2 walk_by_only'; 12 beats reflect Vallois depth, not gravity."
       },
       "geocode_audit": {
         "source": "Wikipedia / Wikidata",
@@ -9588,7 +9601,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.839,
     "longitude": 2.344,
     "trigger_radius": 40,
@@ -9620,15 +9633,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Wikipedia and Britannica entries; major French cultural institution; host to Nobel laureates; landmark in Latin Quarter.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (43-POI, 75.0 mismatch, dual proxies, nulls); EN pageviews 36,592 below T3 Rodin 42,931 and Palais Bourbon 49,805, ~8–10x below T4 Invalides/Panthéon (live); absent from entire Wikivoyage 5th-arr page (gb=COMMON falsified); pre-booked professional tours only, no tourist access; 1 beat cannot fill 300s dwell."
       },
       "geocode_audit": {
         "source": "web search",
@@ -9643,7 +9657,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8489,
     "longitude": 2.3455,
     "trigger_radius": 30,
@@ -9996,15 +10010,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Major cultural institution; Aga Khan Award winner; rooftop restaurant with Seine views.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone carries zero information (zerogap_backfill, dual proxies, nulls, 75.0 mismatch); verified FR-Wikipedia frequentation 240k–550k/yr trending low slots between T3 Musée de Montmartre (180k) and T3 Rodin (~700k); honest composite mid-50s–low-60s, below the 64.2 T4 floor; Nouvel-icon walk-by priced by Pont Alexandre III precedent (61.92/T3). Separate flag: poi_role=walk_by_only likely wrong for a ticketed museum — role pass, not this apply."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10019,7 +10034,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8427,
     "longitude": 2.3538,
     "trigger_radius": 30,
@@ -10049,15 +10064,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "World-famous restaurant; extensive Wikipedia article; historic cultural significance.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone (identical to Grands Boulevards/Collège de France, same scored_at; 75.0 mismatch, dual proxies, nulls); Wikivoyage Eat→Splurge one-liner, not a sight (live-checked); FR Wikipedia frames it as dining 'rather than a tourist site'; restaurant renown is not attraction gravity; 1 beat — 300s over-provisioned even on content; role says Tier 3."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10072,7 +10088,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8503,
     "longitude": 2.3541,
     "trigger_radius": 15,
@@ -10262,15 +10278,16 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 81.2,
-        "assigned_gravity": 5,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Major Paris landmark; Wikipedia article; prominent in all guidebooks.",
         "reasoning": "Composite 81.6: trends=high; wiki=moderate; gb=UBIQUITOUS",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 5→3, manual review 2026-07-02b: composite 81.2 rests on gb=UBIQUITOUS (unaudited discovery note, contradicted by live guidebook checks) + trends=high (Saint-Michel metro-name confounded); 7,460 pageviews/yr (live) — 30x below weakest T5, lowest of the T3 fountain class (Stravinsky 12,009, Médicis 22,479); ~550 TA reviews; zerogap_backfill, dual proxies, null hard signals, reasoning 81.6 vs stored 81.2; own role says 'Tier 2 walk_by_only'."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10285,7 +10302,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 3,
     "latitude": 48.8532,
     "longitude": 2.344,
     "trigger_radius": 15,
@@ -10316,15 +10333,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Major national theatre; Wikipedia article; significant architectural and cultural landmark.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: 71.0 clone at T4/T5 boundary (reasoning 75.0 mismatch, dual proxies); wiki=extensive falsified — EN article 6,027 bytes (live); ~34.3k pageviews < demoted Montorgueil 35.3k; attendees are theatregoers not tourist visitors; no visit product, no review base, no Wikivoyage sight entry; role says 'Tier 2 walk_by_only'."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10339,7 +10357,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8494,
     "longitude": 2.3387,
     "trigger_radius": 20,
@@ -10369,15 +10387,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 88.0,
-        "assigned_gravity": 5,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Major landmark; houses Academie Francaise; iconic dome visible from across the Seine.",
         "reasoning": "Composite 90.9: trends=high; wiki=extensive; gb=UBIQUITOUS",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 5→3, manual review 2026-07-02b: raw_composite 88.0 clone (cohort peers Palais du Luxembourg / Le Bon Marché already demoted in 80e0d7f); zerogap_backfill, dual proxies, null hard signals, reasoning 'Composite 90.9' vs stored 88.0; Saturdays-only public access (official site, live-checked); absent from Rick Steves sights; ~90 reviews; dome fame is walk_by_only scenery value; twins Assemblée Nationale (48.0) and Palais du Luxembourg (55.0) are T3."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10392,7 +10411,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 3,
     "latitude": 48.8568,
     "longitude": 2.3365,
     "trigger_radius": 20,
@@ -10915,15 +10934,16 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02b",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Major cultural institution; dedicated Wikipedia article; large campus.",
         "reasoning": "Composite 75.0: trends=moderate; wiki=extensive; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02b: sole T4 evidence is the 71.0 clone (75.0 mismatch, zerogap_backfill, dual proxies, nulls); pageviews EN 17,144 / FR 36,093 (live) — 2.5x below T3 Rodin, 4–17x below T4 exemplars; working school, no regular public entry, no visitor stats; role says 'Tier 2 walk_by_only'."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10938,7 +10958,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8567,
     "longitude": 2.337,
     "trigger_radius": 25,

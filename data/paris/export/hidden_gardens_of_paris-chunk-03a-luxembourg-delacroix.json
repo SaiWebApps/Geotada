@@ -1207,7 +1207,7 @@
     "short_description": "France's preeminent fine arts school at 14 rue Bonaparte, occupying the former convent of the Petits-Augustins built on Queen Margot's estate in 1608.",
     "latitude": 48.8567,
     "longitude": 2.337,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 25,
     "typical_duration_min": null,
     "kid_friendly": "yes",

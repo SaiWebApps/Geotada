@@ -1104,7 +1104,7 @@
     "short_description": "Paris's oldest hospital, founded in the 12th century by Maurice de Sully.",
     "latitude": 48.854,
     "longitude": 2.3488,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 80,
     "typical_duration_min": null,
     "kid_friendly": "caution",
