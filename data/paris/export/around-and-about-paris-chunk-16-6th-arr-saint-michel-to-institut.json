@@ -908,7 +908,7 @@
     "short_description": "Neoclassical 18th-century Paris Mint on quai de Conti, now housing a coin museum.",
     "latitude": 48.8569,
     "longitude": 2.3392,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 15,
     "typical_duration_min": 5,
     "kid_friendly": "yes",

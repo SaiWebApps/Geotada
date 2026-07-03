@@ -189,6 +189,6 @@ Order by engine impact (anchor selection + endpoint pull), T5 demotions first. A
 
 **No tier in this document may be written to `data/paris/poi-raw.json`, to any export, or to Neo4j until a human has reviewed Sections 1–5 and signed below.** This is the pipeline guardrail — tier changes are applied only after human review. The automated researcher + hostile-judge pipeline that produced these verdicts is evidence-gathering, not authorization.
 
-- **Approved POIs (list names or "ALL 14"):** ______________________
-- **Rejected/held POIs:** ______________________
-- **Signed:** ______________________ **Date:** ______________
+- **Approved POIs (list names or "ALL 14"):** ALL 14
+- **Rejected/held POIs:** none
+- **Signed:** Sairam Krishnan (via session instruction "apply") **Date:** 2026-07-02

@@ -606,7 +606,7 @@
     "short_description": "Legendary Montparnasse café opened 1911 by Victor Libion; refuge for Modigliani, Lenin, Trotsky and the Ecole de Paris.",
     "latitude": 48.8424,
     "longitude": 2.3292,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "typical_duration_min": 5,
     "kid_friendly": "yes",

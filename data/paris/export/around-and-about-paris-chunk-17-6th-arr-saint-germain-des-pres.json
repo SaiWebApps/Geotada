@@ -248,7 +248,7 @@
     "short_description": "Luxury hotel at 13 rue des Beaux-Arts where Oscar Wilde died on 30 November 1900, when it was the run-down Hotel d'Alsace.",
     "latitude": 48.8562,
     "longitude": 2.3365,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 12,
     "typical_duration_min": 5,
     "kid_friendly": "yes",

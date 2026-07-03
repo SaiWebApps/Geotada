@@ -921,7 +921,7 @@
     "short_description": "Underground archaeological museum beneath the parvis of Notre-Dame, revealing ancient Lutetia.",
     "latitude": 48.8534,
     "longitude": 2.3488,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "typical_duration_min": 20,
     "kid_friendly": "yes",

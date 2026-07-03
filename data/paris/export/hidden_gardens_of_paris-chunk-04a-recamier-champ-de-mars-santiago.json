@@ -664,7 +664,7 @@
     "short_description": "Large public greenspace flanking the Eiffel Tower, formerly the parade ground of the Ecole Militaire and site of successive Expositions Universelles.",
     "latitude": 48.8556,
     "longitude": 2.2986,
-    "importance_tier": 5,
+    "importance_tier": 3,
     "trigger_radius": 150,
     "typical_duration_min": null,
     "kid_friendly": "yes",

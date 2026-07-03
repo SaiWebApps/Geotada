@@ -7484,7 +7484,7 @@
     "latitude": 48.86358,
     "longitude": 2.34715,
     "trigger_radius": 15,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "_pipeline": {
       "address": "Rue Montorgueil, 75002 Paris",
       "discovery_sources": [
@@ -7499,15 +7499,16 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "~778 TripAdvisor reviews, ranked #40 of 4,238 Paris things to do. Home to Stohrer (oldest patisserie). Featured in Rick Steves, Lonely Planet, Fodor's.",
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 64.2 clone (35-POI cohort, zerogap_backfill); zero hard signals; pageviews 35,285 < T3 peer Mouffetard 49,506 (live-verified); role reasoning still 'Tier 3 named street'; profile byte-identical to T3 streets Lappe/Saint-Antoine."
       },
       "geocode_audit": {
         "source": "OpenStreetMap street centerline, Google Maps",
@@ -8766,7 +8767,7 @@
     "short_description": "Playful pop-art fountain with kinetic sculptures by Tinguely and Niki de Saint Phalle.",
     "latitude": 48.8595,
     "longitude": 2.3515,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 30,
     "kid_friendly": "yes",
     "name_variations": [
@@ -8783,15 +8784,16 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Tinguely & Niki de Saint Phalle pop-art fountain next to Pompidou; heavily photographed landmark",
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 64.2 clone; zero hard signals; omitted from EN Wikivoyage 4th-arr guide (live-checked); walk-past fame, free 5-min dwell; own prior_reasoning describes a T3 landmark."
       }
     },
     "_meta": {
@@ -9503,7 +9505,7 @@
     "short_description": "Underground archaeological museum beneath the parvis of Notre-Dame, revealing ancient Lutetia.",
     "latitude": 48.8534,
     "longitude": 2.3488,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 50,
     "kid_friendly": "yes",
     "name_variations": [],
@@ -9512,21 +9514,22 @@
       "chunk": "chunk-12-4th-arr-the-islands",
       "extracted_at": "2026-04-05T12:00:00Z",
       "gravity_audit": {
-        "official_visitors": null,
+        "official_visitors": 157120,
         "google_review_count": null,
         "google_trends": "moderate",
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Underground archaeology museum beneath Notre-Dame parvis; paid official attraction",
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 64.2 boundary-clone (zerogap_backfill); real attendance 157,120 (Paris Musées 2023, corroborated by FR Wikipedia 2001–2017 table) is below weakest hard-data T4 (Victor Hugo 260k); attendance is Notre-Dame spillover. official_visitors backfilled 157120 (source: Paris Musées 2023 frequentation communiqué)."
       }
     },
     "_meta": {
@@ -10421,15 +10424,16 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Wikipedia article; active museum and exhibition venue.",
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 64.2 clone vs reasoning 'Composite 65.7'; zero hard signals; FR Wikipedia visiteurs field empty (live-checked); museum closed 2010–17, no mainstream guidebook footprint; role reasoning says Tier 3."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10444,7 +10448,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8569,
     "longitude": 2.3392,
     "trigger_radius": 15,
@@ -10696,15 +10700,16 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "COMMON",
         "raw_composite": 64.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "zerogap_backfill",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Famous literary site; Oscar Wilde shrine; dedicated Wikipedia article.",
         "reasoning": "Composite 65.7: trends=moderate; wiki=moderate; gb=COMMON",
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 64.2 clone vs reasoning 'Composite 65.7' (zerogap_backfill); hard signals structurally unattainable for a 20-room private hotel; EN pageviews 9,681/2025 (live-verified), ~5x below T3 exemplars; Wilde fame is beat content; role reasoning says Tier 3."
       },
       "geocode_audit": {
         "source": "web search",
@@ -10719,7 +10724,7 @@
       "generated_at": "2026-04-06T00:00:00Z",
       "city": "Paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8562,
     "longitude": 2.3365,
     "trigger_radius": 12,
@@ -11292,10 +11297,10 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 88.0,
-        "assigned_gravity": 5,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "17th-c palace by de Brosse for Marie de Medici; seat of French Senate; famous building, limited interior access; a major landmark of Left Bank Paris",
@@ -11303,7 +11308,8 @@
         "evidence": [
           "English Wikipedia 'Luxembourg Palace' is extensive; Senate seat; limited public access (one Saturday/month); Lonely Planet listed; no published annual visitor count for palace interior."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 5→3, manual review 2026-07-02: raw_composite 88.0 clone (shared by 9 POIs) over 'Composite 55.0'; zero hard signals; senat.fr confirms Heritage-Days-only access (23,709 for entire 2024 event); garden fame already on separate T5 Jardin du Luxembourg POI."
       }
     },
     "_meta": {
@@ -11311,7 +11317,7 @@
       "source_chunk": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 3,
     "latitude": 48.8483,
     "longitude": 2.3373,
     "trigger_radius": 80,
@@ -11506,10 +11512,10 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 69.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Romantic grotto fountain in Luxembourg Gardens; heavily photographed feature inside a Gravity-5 park",
@@ -11517,7 +11523,8 @@
         "evidence": [
           "English Wikipedia 'Medici Fountain' exists with moderate detail; TripAdvisor listing; restored 2020-21; covered in Rick Steves/Frommer's as part of Jardin du Luxembourg; no standalone visitor count."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 69.2 clone over 'Composite 55.0'; zero hard signals; guidebook coverage is one clause in Jardin du Luxembourg listings (live-checked); fame accrues to T5 parent garden; sibling fountains with identical reasoning are all T3."
       }
     },
     "_meta": {
@@ -11525,7 +11532,7 @@
       "source_chunk": "chunk-18-6th-arr-saint-sulpice-and-luxembourg",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8479,
     "longitude": 2.3387,
     "trigger_radius": 30,
@@ -12094,10 +12101,10 @@
         "wikipedia_depth": "moderate",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 69.2,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Legendary 1911 Montparnasse café, Modigliani, Lenin, Trotsky; still operating, guidebook-standard cafe stop",
@@ -12105,7 +12112,8 @@
         "evidence": [
           "English Wikipedia 'Café de la Rotonde' exists; 105 Blvd du Montparnasse; founded 1911; TripAdvisor and Yelp listings with 200+ reviews; Rick Steves/guidebook staple."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 69.2 clone over 'Composite 55.0'; 4,640 Google reviews (live-verified) — least-reviewed of the historic-café class whose stronger members (Deux Magots, Procope) sit T3; audit gb=UBIQUITOUS contradicts signals gb=PRESENT."
       }
     },
     "_meta": {
@@ -12113,7 +12121,7 @@
       "source_chunk": "chunk-19-6th-arr-around-montparnasse",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8424,
     "longitude": 2.3292,
     "trigger_radius": 50,
@@ -12310,10 +12318,10 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 88.0,
-        "assigned_gravity": 5,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "World's first modern department store (1838); inspiration for Zola's Au Bonheur des Dames; major Paris retail landmark",
@@ -12321,7 +12329,8 @@
         "evidence": [
           "English Wikipedia 'Le Bon Marché' is extensive; world's first modern department store; Yelp 180+ reviews; TripAdvisor listed; LVMH-owned; no annual visitor count published."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 5→3, manual review 2026-07-02: raw_composite 88.0 clone over 'Composite 55.0'; zero hard signals; no published store attendance (3M is Grande Épicerie only, live-checked); not a classified MH; T5 store peer Samaritaine has 5M published visitors."
       }
     },
     "_meta": {
@@ -12329,7 +12338,7 @@
       "source_chunk": "chunk-20-7th-arr-faubourg-east",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 3,
     "latitude": 48.8511,
     "longitude": 2.3244,
     "trigger_radius": 25,
@@ -12419,10 +12428,10 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "French PM residence since 1935; not open to public, iconic only by name",
@@ -12430,7 +12439,8 @@
         "evidence": [
           "English Wikipedia 'Hôtel Matignon' is extensive; PM residence since 1935; limited garden access (1x/month + Heritage Days); Lonely Planet listed; no annual visitor count."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 71.0 clone over 'Composite 55.0'; zero hard signals; garden openings annulled under Vigipirate, ~2 events/yr (live-checked); name fame already priced into walk_by_only role."
       }
     },
     "_meta": {
@@ -12438,7 +12448,7 @@
       "source_chunk": "chunk-21-7th-arr-faubourg-west",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8527,
     "longitude": 2.3192,
     "trigger_radius": 80,
@@ -12746,10 +12756,10 @@
         "wikipedia_depth": "stub",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 74.6,
-        "assigned_gravity": 5,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Pedestrianized market street in 7th arr; famous Rick-Steves-style village atmosphere; guidebook standard",
@@ -12757,7 +12767,8 @@
         "evidence": [
           "Rick Steves' 'favourite street in Paris'; TripAdvisor listed; multiple guidebook features; no English Wikipedia article found; no visitor stats."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 5→3, manual review 2026-07-02: raw_composite 74.6 was a 10e63e5 cohort-clone over reasoning 'Composite 55.0'; zero hard signals (visitors/reviews null, s1+s2 proxy); no EN Wikipedia (live-checked); T3 beside market-street peers Mouffetard/Buci. Caused the one-stop-tour bug."
       }
     },
     "_meta": {
@@ -12765,7 +12776,7 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 3,
     "latitude": 48.8565,
     "longitude": 2.3028,
     "trigger_radius": 60,
@@ -12800,10 +12811,10 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "18th-c military academy, Louis XV commission, massive facade anchoring the Champ de Mars axis; visible landmark, limited public access",
@@ -12811,7 +12822,8 @@
         "evidence": [
           "English Wikipedia 'École Militaire' is extensive; Napoleon attended 1784; open Heritage Days (September); TripAdvisor listed; no annual visitor count."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 71.0 clone (shared with UNESCO HQ, Matignon) with zero hard signals; no Wikivoyage See entry (live-checked); closed military campus; access twin of T3 Assemblée Nationale."
       }
     },
     "_meta": {
@@ -12819,7 +12831,7 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8537,
     "longitude": 2.3063,
     "trigger_radius": 100,
@@ -12855,10 +12867,10 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "COMMON",
         "raw_composite": 71.0,
-        "assigned_gravity": 4,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "1958 Y-shaped Modernist building by Breuer/Nervi/Zehrfuss; architectural landmark, limited visitor access",
@@ -12866,7 +12878,8 @@
         "evidence": [
           "English Wikipedia 'UNESCO Headquarters' extensive; 1958 Breuer/Nervi/Zehrfuss building; guided tours require reservation; open for Museum Night (May) and Heritage Days (Sept); TripAdvisor listed; no visitor stats."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 4→3, manual review 2026-07-02: raw_composite 71.0 clone (~35-POI cohort); zero hard signals; pre-booked tours only, no walk-ins, no published attendance (unesco.org live-checked); own role says walk_by_only."
       }
     },
     "_meta": {
@@ -12874,7 +12887,7 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 4,
+    "importance_tier": 3,
     "latitude": 48.8512,
     "longitude": 2.3076,
     "trigger_radius": 60,
@@ -12909,10 +12922,10 @@
         "wikipedia_depth": "extensive",
         "guidebook_presence": "UBIQUITOUS",
         "raw_composite": 100.0,
-        "assigned_gravity": 5,
+        "assigned_gravity": 3,
         "signal_source": "cached_audit",
         "rescored_at": "2026-04-26T13:59:22.482596+00:00",
-        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch",
+        "formula_version": "poi_gravity_v2_smart_resume_2026_05_01_hidden_gardens_batch_manual_review_2026_07_02",
         "s1_used_proxy": true,
         "s2_used_proxy": true,
         "prior_reasoning": "Massive public greenspace directly beneath the Eiffel Tower; iconic image of Paris; millions of visitors annually as the Eiffel Tower's front lawn; currently scored T2 which is clearly wrong",
@@ -12920,7 +12933,8 @@
         "evidence": [
           "English Wikipedia 'Champ de Mars' extensive; 25 hectares flanking Eiffel Tower; TripAdvisor top-ranked; ubiquitous in all guidebooks; no separate annual visitor count (part of Eiffel Tower district)."
         ],
-        "scored_at": "2026-05-01T15:45:48.181108+00:00"
+        "scored_at": "2026-05-01T15:45:48.181108+00:00",
+        "manual_review_note": "Demoted 5→3, manual review 2026-07-02: raw_composite 100.0 clone over 'Composite 55.0'; zero hard signals; TA #125/4,258 with 1,428 reviews (live-verified); footfall is adjacent Eiffel/Trocadéro gravity; T4/T5 parks all have 22k–122k reviews."
       }
     },
     "_meta": {
@@ -12928,7 +12942,7 @@
       "source_chunk": "chunk-22-7th-arr-invalides-to-eiffel",
       "source_book": "around-and-about-paris"
     },
-    "importance_tier": 5,
+    "importance_tier": 3,
     "latitude": 48.8556,
     "longitude": 2.2986,
     "trigger_radius": 150,

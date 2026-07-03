@@ -369,7 +369,7 @@
     "short_description": "Picturesque pedestrian market street that served as the fish and oyster section of Les Halles for centuries",
     "latitude": 48.86358,
     "longitude": 2.34715,
-    "importance_tier": 4,
+    "importance_tier": 3,
     "trigger_radius": 15,
     "typical_duration_min": 15,
     "kid_friendly": "no",
