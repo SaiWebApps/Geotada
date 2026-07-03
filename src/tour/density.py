@@ -345,7 +345,15 @@ def _status(
         and cluster_compactness <= YELLOW_CLUSTER_COMPACTNESS_MAX
         and fill_ratio >= YELLOW_FILL_RATIO_MIN
     )
-    if yellow_by_fill or yellow_by_anchors:
+    # Monotonicity in fill (2026-07-02, density-critic finding): a pool with
+    # MORE than enough audio (fill >= 1.0) that misses GREEN on anchors or
+    # compactness previously fell through every clause to RED — refusing as
+    # "insufficient corpus" while holding a surplus, and (worse) adding audio
+    # capacity could flip an accept into a refusal (fill 0.9 -> YELLOW but
+    # fill 1.2 with 2 anchors -> RED). Surplus fill is always at least
+    # YELLOW: generate, but warn about the spread/thin-anchor shape.
+    yellow_by_surplus_fill = fill_ratio >= GREEN_FILL_RATIO_MIN
+    if yellow_by_fill or yellow_by_anchors or yellow_by_surplus_fill:
         return "YELLOW"
 
     return "RED"

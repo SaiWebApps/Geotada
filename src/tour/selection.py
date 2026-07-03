@@ -27,6 +27,7 @@ from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from typing import TYPE_CHECKING
 
+from shapely.errors import ShapelyError as _ShapelyError
 from shapely.geometry import Point as _ShapelyPoint
 from shapely.geometry import shape as _shapely_shape
 from shapely.prepared import prep as _shapely_prep
@@ -1465,8 +1466,12 @@ def _reach_predicate(
                         lambda lat, lng: bool(prepared.covers(_ShapelyPoint(lng, lat))),
                         False,
                     )
-            except (KeyError, TypeError, ValueError):
-                pass  # malformed GeoJSON → analytic fallback below
+            except (KeyError, TypeError, ValueError, _ShapelyError):
+                # Malformed GeoJSON, or shapely GEOS errors on degenerate/
+                # self-intersecting isochrone rings (GEOSException derives
+                # ShapelyError, not ValueError — pre-2026-07-02 it escaped
+                # as a 500) → analytic fallback below.
+                pass
 
     start_lat, start_lng = start
     return (

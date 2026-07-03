@@ -440,3 +440,35 @@ def test_refused_carries_assessment():
     exc = TourabilityRefusedError(a)
     assert exc.assessment is a
     assert "RED" in str(exc)
+
+
+def test_surplus_fill_with_spread_anchors_is_yellow_not_red():
+    """Status-table hole (density-critic finding, 2026-07-02): fill >= 1.0 with
+    anchors 3-5 but compactness > 0.7 fell through EVERY clause to RED —
+    yellow_by_fill requires fill < 1.0, yellow_by_anchors requires comp <= 0.7,
+    GREEN requires anchors >= 4 AND comp <= 0.6. A pool with MORE than enough
+    audio (observed live: the Champ-de-Mars-lawn start — fill 1.43, anchors 4,
+    comp 0.75) was refused as 'insufficient corpus', which is self-
+    contradictory. Surplus fill that isn't GREEN must be at least YELLOW
+    (generate but warn)."""
+    from src.tour.density import _status
+
+    assert _status(fill_ratio=1.43, anchor_candidate_count=4, cluster_compactness=0.75) == "YELLOW"
+
+
+def test_status_is_monotone_in_fill_ratio():
+    """Adding audio capacity must never flip accept -> refuse. Pre-fix:
+    fill 0.9 / anchors 2 -> YELLOW (yellow_by_fill has no anchor floor) but
+    fill 1.2 / anchors 2 -> RED (falls out of the [0.5, 1.0) window with no
+    other clause to catch it) — strictly more content produced a refusal."""
+    from src.tour.density import _status
+
+    rank = {"RED": 0, "YELLOW": 1, "GREEN": 2}
+    below = _status(fill_ratio=0.9, anchor_candidate_count=2, cluster_compactness=0.0)
+    above = _status(fill_ratio=1.2, anchor_candidate_count=2, cluster_compactness=0.0)
+    assert rank[above] >= rank[below], (
+        f"fill 1.2 -> {above} ranks below fill 0.9 -> {below}: refusal is not "
+        f"monotone in audio capacity"
+    )
+    # And the floor is untouched: catastrophically thin stays RED.
+    assert _status(fill_ratio=0.4, anchor_candidate_count=5, cluster_compactness=0.2) == "RED"
