@@ -184,3 +184,47 @@ the golden harness passes no lenses). Per-candidate plans cannot see
 apply_co_located_demotion's merged pools (documented approximation in the
 design). PdV's fixture-vs-live delta (26 planned vs 22 expected beats) is the
 fixture-hygiene issue already flagged in GOLDEN-GAP-DIAGNOSTIC, not drift.
+
+---
+
+## HUMAN SIGN-OFF — dwell/audio product decisions (2026-07-03)
+
+**Provenance:** ratified in session by the product owner (Sairam Krishnan) on
+2026-07-03, after Claude explained each decision with worked Paris examples and
+he answered the domination follow-up; recorded verbatim here by Claude from the
+session transcript. This is the C6 gate that unblocks the C8+ engine work. (Git
+author of this commit is Claude — this block records a human decision, it is not
+a Claude-authored verdict.)
+
+The six "HUMAN DECISIONS REQUIRED" items above are resolved as follows:
+
+1. **Duration-promise currency — RATIFIED.** Keep the locked 60/40 audio/walk
+   split + 0.83 err-short EXACTLY; change ONLY the audio bucket's currency from
+   tier-dwell constants to planned voiced seconds. (Changing the split would
+   reopen a validated ledger + every envelope/isochrone.)
+2. **Dwell-floor semantics — RATIFIED.** Reported per-stop minutes =
+   max(tier_dwell, planned_audio). Tier dwell survives ONLY as a display floor;
+   NO extra look-around pause is added on top of narration. (Lands in C8.)
+3. **Domination policy — RATIFIED.** A single POI may consume a dominant share
+   of the tour's audio budget ONLY when it is the start-anchor or the
+   fixed/pulled endpoint B. An incidental mid-route POI is share-capped so it
+   cannot hijack a multi-stop tour. This feeds C9's greedy-break no-collapse
+   guard (a 1-stop tour is legitimate ONLY for start/end domination).
+4. **est_spoken_seconds — RATIFIED (deprecate).** word_count @ 150 wpm is the
+   primary currency; est_spoken_seconds is an optional override only (live
+   corpus is ~all zeros). The shared clock already landed in C7
+   (routing.beat_spoken_seconds).
+5. **Route.audio_budget_seconds — RATIFIED (delete).** The produced-but-unconsumed
+   field is deleted in C10.
+6. **Golden interplay ordering — RATIFIED.** Honest accounting (C8/C9) lands
+   BEFORE the R1 emission relaxation (C12), so every extra emitted beat is
+   priced by selection the moment it exists.
+
+**NEW SCOPE (added 2026-07-03) — "Keep exploring here":** the domination cap
+(#3) is a PLANNING cap only; it must NOT delete a POI's fuller content. An
+explicit in-tour "keep exploring" control surfaces a dwell stop's remaining
+(capped-out) narration ON DEMAND, off the promised time budget. EXPLICIT tap
+only — NO auto-inference from GPS/dwell (a future enhancement may use lingering
+to OFFER more, but must NEVER auto-play). This is a genuine scope addition, not
+part of the original reconciliation; it is being planned as its own atomic
+checklist via the agentic-loop workflow.
