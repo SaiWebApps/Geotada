@@ -1,13 +1,47 @@
 # Ondoway — GPS-triggered audio tour platform
 
-## Agent Perspectives
+## Judge Protocol (mandatory — installed 2026-07-02)
 
-This project benefits from all agent perspectives. Use them:
-- `/agent-chat architect` — before designing new features or data model changes
-- `/agent-chat reviewer` — before presenting ANY result (mandatory self-verification)
-- `/agent-chat implementer` — when setting up builds, running tests, or debugging infra
+Claude has repeatedly rushed ahead and caused expensive damage: killed the
+live Valhalla container via an unexamined worktree compose invocation, OOMed
+dockerd by adding an uncapped third database, pruned a sibling session's live
+worktree, and claimed fixes without functional proof. The user does not
+extend trust; it is re-earned per checkpoint. Three mechanisms enforce this:
 
-The reviewer's self-verification checklist is **mandatory** before presenting results.
+1. **The guard hook** (`.claude/hooks/guard.sh`, wired in
+   `.claude/settings.json`) mechanically BLOCKS high-consequence commands
+   (container/volume/worktree/branch destruction, force-push, hard reset,
+   `rm -rf`, DB wipes) until re-run with an inline `: JUSTIFY: <reason +
+   evidence>;` prefix, which is logged to `.claude/hooks/guard-log.txt` for
+   human audit. Never work around the guard; a justification you cannot fit
+   in one line means the diagnosis is not done.
+2. **The judge agent** (`.claude/agents/judge.md`, runs on opus) MUST be
+   consulted before: any state-changing infra action, every commit, every
+   "fixed/done" claim to the user, and every phase transition. It rules
+   PROCEED / PROVE-FIRST / STOP. Paste its ruling into the conversation.
+3. **Skeptic panels** (`.claude/agents/skeptic.md`) — for milestone claims,
+   spawn 2-4 hostile skeptics (different models via the Agent tool's model
+   parameter) whose only success condition is refuting the claim. A claim is
+   "proven" only after an adversarial panel failed to break it.
+
+**Visibility contract:** never operate silently for long stretches. Post a
+one-line user-visible status at least every 2-3 tool calls (existing rule)
+AND a substantive checkpoint (what was proven, what is next, current risk)
+at every phase transition. Any user-facing behavior claim ("the workbench
+now does X") requires functional proof the user can SEE: an automated
+real-browser run with screenshots, or a live reproduction transcript —
+code reading and unit tests alone are not sufficient.
+
+**Automated review before human review:** anything queued for human sign-off
+(data corrections, tier changes, spec decisions) first passes an automated
+review suite — independent researcher + hostile judge per item — so the
+human reviews verdicts with evidence, never raw candidates.
+
+### Agent Perspectives (superseded by the Judge Protocol above)
+
+Prior guidance referenced `/agent-chat architect|reviewer|implementer`; that
+skill does not exist in this harness. Use the real mechanisms instead:
+`.claude/agents/judge.md` and `.claude/agents/skeptic.md` via the Agent tool.
 
 ---
 

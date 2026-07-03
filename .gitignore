@@ -248,10 +248,15 @@ temp/
 # Project Specific
 # ====================
 
-# Claude Code working state (keep shared commands and learnings, ignore the rest)
+# Claude Code working state (keep shared commands, learnings, and the Judge
+# Protocol infrastructure — agents, guard hook, hook wiring; ignore the rest)
 .claude/*
 !.claude/commands/
 !.claude/LEARNINGS.md
+!.claude/agents/
+!.claude/hooks/
+!.claude/settings.json
+.claude/hooks/guard-log.txt
 
 # Keep .env.example and .env.test.example but ignore .env and .env.test
 !.env.example
@@ -284,3 +289,4 @@ data/paris_test/
 
 # Valhalla OSM extracts + built tiles (multi-GB, machine-local; make valhalla-build-tiles)
 valhalla/custom_files/
+.claude/hooks/guard-log.txt
