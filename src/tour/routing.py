@@ -25,7 +25,7 @@ import math
 from collections.abc import Callable, Iterable
 from typing import TYPE_CHECKING
 
-from .contract import POI, Route, TransitSegment
+from .contract import POI, BeatRef, Route, TransitSegment
 
 if TYPE_CHECKING:
     # routing_client imports from this module; type-only import avoids the cycle.
@@ -124,6 +124,31 @@ def smallest_duration_min_for_walk_seconds(target_seconds: int) -> int:
 
 def compute_dwell_seconds(tier: int) -> int:
     return DWELL_SECONDS_BY_TIER.get(tier, 0)
+
+
+def beat_spoken_seconds(beat: BeatRef) -> int:
+    """Voiced seconds for one beat — the single source of truth for the tour's
+    audio clock.
+
+    ``est_spoken_seconds`` when populated (> 0), else ``word_count`` at 150 wpm.
+    Generation, reflection, and density all defer here so selection's dwell/audio
+    accounting and the density gate speak in the same units. A non-positive
+    ``est_spoken_seconds`` falls through to ``word_count`` (the live corpus has
+    none; the ``> 0`` guard matches density's historical rule). The 150 wpm
+    fallback is exactly density's ``word_count / 2.5`` (both are ``2·wc/5``).
+    """
+    if beat.est_spoken_seconds and beat.est_spoken_seconds > 0:
+        return int(beat.est_spoken_seconds)
+    if beat.word_count and beat.word_count > 0:
+        return round(beat.word_count / 150 * 60)
+    return 0
+
+
+def planned_audio_seconds(beats: Iterable[BeatRef]) -> int:
+    """Total voiced seconds a beat plan would speak (glue/vignette one-liners
+    excluded — selection never sees those). Sums :func:`beat_spoken_seconds`.
+    """
+    return sum(beat_spoken_seconds(b) for b in beats)
 
 
 def default_leg_seconds(lat1: float, lng1: float, lat2: float, lng2: float) -> int:

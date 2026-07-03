@@ -36,6 +36,7 @@ from .contract import POI, BeatRef, TourabilityAssessment, TourInput
 from .routing import (
     AUDIO_FRACTION,
     ERR_SHORT,
+    beat_spoken_seconds,
     envelope_radius_m,
     haversine_m,
 )
@@ -73,11 +74,6 @@ ANCHOR_CANDIDATE_BEAT_COUNT_MIN: int = 3
 
 # Eligible POI roles for density (mirrors selection.py's filter).
 ELIGIBLE_POI_ROLES: frozenset[str] = frozenset({"stop", "setting"})
-
-# Word-count → spoken-seconds fallback when est_spoken_seconds is 0.
-# Matches the 150 wpm assumption baked into the rest of the pipeline:
-# 150 words/minute → 2.5 words/second.
-WORDS_PER_SECOND: float = 2.5
 
 # YELLOW alternative-search bounds. When a round-trip falls YELLOW or
 # RED, we look for a denser one-way destination within the equivalent
@@ -271,12 +267,8 @@ def _target_audio_seconds(duration_min: int) -> int:
 
 
 def _beat_spoken_seconds(beat: BeatRef) -> int:
-    """Prefer est_spoken_seconds when populated; fall back to word_count / 2.5."""
-    if beat.est_spoken_seconds and beat.est_spoken_seconds > 0:
-        return int(beat.est_spoken_seconds)
-    if beat.word_count and beat.word_count > 0:
-        return round(beat.word_count / WORDS_PER_SECOND)
-    return 0
+    """Voiced seconds for one beat (delegates to the shared routing clock)."""
+    return beat_spoken_seconds(beat)
 
 
 def _compactness(anchors: list[POI], walk_radius_m: float) -> float:

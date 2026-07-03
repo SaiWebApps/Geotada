@@ -49,7 +49,7 @@ from .contract import (
     ValidationReport,
 )
 from .glue_client import NO_GLUE_SENTINEL, GlueClient, MockGlueClient
-from .routing import compute_dwell_seconds
+from .routing import beat_spoken_seconds, compute_dwell_seconds
 
 # ---------------------------------------------------------------------------
 # Whitelisted glue labels — §3.5 of phase-1-design
@@ -843,10 +843,7 @@ def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> in
         beat = by_id.get(beat_id)
         if beat is None:
             continue
-        if beat.est_spoken_seconds:
-            total += beat.est_spoken_seconds
-        elif beat.word_count:
-            total += round(beat.word_count / 150 * 60)  # 150 wpm
+        total += beat_spoken_seconds(beat)
     total += glue_count * 4
     return total
 

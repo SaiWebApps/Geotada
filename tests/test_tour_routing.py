@@ -4,19 +4,23 @@ from __future__ import annotations
 
 import math
 
-from src.tour.contract import POI
+import pytest
+
+from src.tour.contract import POI, BeatRef
 from src.tour.routing import (
     AUDIO_FRACTION,
     ERR_SHORT,
     HAVERSINE_CORRECTION,
     PACE_KMH,
     WALK_FRACTION,
+    beat_spoken_seconds,
     compute_dwell_seconds,
     envelope_radius_m,
     err_short_total_seconds,
     haversine_m,
     insertion_cost_seconds,
     pace_corrected_walk_seconds,
+    planned_audio_seconds,
     summarise_route,
     target_audio_seconds,
     walk_budget_seconds,
@@ -214,3 +218,54 @@ def test_insertion_cost_empty_route_inserts_at_zero():
     )
     assert idx == 0
     assert extra > 0
+
+
+# ---------------------------------------------------------------------------
+# beat_spoken_seconds / planned_audio_seconds — the shared audio clock (C7)
+# The single source of truth generation, reflection, and density now defer to.
+# ---------------------------------------------------------------------------
+
+
+def _beat(est: int = 0, wc: int = 0) -> BeatRef:
+    return BeatRef(id="b", poi_id="p", est_spoken_seconds=est, word_count=wc)
+
+
+def test_beat_spoken_seconds_prefers_positive_est_override():
+    # est_spoken_seconds wins when > 0, even against a large word_count.
+    assert beat_spoken_seconds(_beat(est=300, wc=100000)) == 300
+
+
+def test_beat_spoken_seconds_word_count_fallback_150wpm():
+    # est == 0 -> word_count at 150 wpm: 150 words = 60s; 375 words = 150s.
+    assert beat_spoken_seconds(_beat(est=0, wc=150)) == 60
+    assert beat_spoken_seconds(_beat(est=0, wc=375)) == 150
+
+
+def test_beat_spoken_seconds_nonpositive_est_falls_through_to_word_count():
+    # A non-positive est must NOT be used (density's historical > 0 guard, now
+    # shared): it falls through to word_count. The live corpus has no negatives;
+    # this pins the guard so a future negative never ships as spoken seconds.
+    assert beat_spoken_seconds(_beat(est=-5, wc=150)) == 60
+    assert beat_spoken_seconds(_beat(est=0, wc=150)) == 60
+
+
+def test_beat_spoken_seconds_zero_when_both_empty():
+    assert beat_spoken_seconds(_beat(est=0, wc=0)) == 0
+    assert beat_spoken_seconds(_beat(est=-9, wc=0)) == 0
+
+
+@pytest.mark.parametrize(
+    "wc", [0, 1, 2, 3, 5, 7, 10, 37, 149, 150, 151, 999, 2042, 2286, 3154, 5000]
+)
+def test_beat_spoken_seconds_word_count_form_matches_density_2point5(wc: int):
+    # BYTE-IDENTITY GUARD: the shared 150 wpm fallback (round(wc/150*60)) must
+    # equal density's historical round(wc/2.5) for every word_count, or the
+    # density gate (audio_capacity_s) would shift and reshape routes. Both are
+    # 2*wc/5, which is never a rounding tie for integer wc.
+    assert beat_spoken_seconds(_beat(est=0, wc=wc)) == round(wc / 2.5)
+
+
+def test_planned_audio_seconds_sums_the_plan():
+    beats = [_beat(est=300, wc=0), _beat(est=0, wc=150), _beat(est=0, wc=0)]
+    assert planned_audio_seconds(beats) == 360  # 300 + 60 + 0
+    assert planned_audio_seconds([]) == 0

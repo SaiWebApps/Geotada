@@ -21,15 +21,13 @@ from __future__ import annotations
 
 from .contract import BeatSequence, Route
 from .generation import _find_directional_transit_beat
+from .routing import beat_spoken_seconds
 
 # A leg qualifies for a reflection when walking exceeds its audio by this much.
 REFLECTION_MIN_DEFICIT_SECONDS: int = 90
 
 # Flat per-glue-sentence estimate — matches generation._sum_audio.
 GLUE_SENTENCE_SECONDS: int = 4
-
-# Spoken-word rate used when a beat has word_count but no est_spoken_seconds.
-_WORDS_PER_MINUTE: int = 150
 
 
 def _leg_walk_seconds(route: Route, stop_idx: int) -> int:
@@ -54,11 +52,8 @@ def _leg_audio_seconds(beat_sequence: BeatSequence, stop_idx: int) -> int:
         beat = _find_directional_transit_beat(previous, dest_name=current.poi_name)
     if beat is None:
         return GLUE_SENTENCE_SECONDS
-    if beat.est_spoken_seconds:
-        return int(beat.est_spoken_seconds)
-    if beat.word_count:
-        return round(beat.word_count / _WORDS_PER_MINUTE * 60)
-    return GLUE_SENTENCE_SECONDS
+    seconds = beat_spoken_seconds(beat)
+    return seconds if seconds > 0 else GLUE_SENTENCE_SECONDS
 
 
 def reflection_slots(route: Route, beat_sequence: BeatSequence) -> tuple[int, ...]:
