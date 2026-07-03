@@ -188,6 +188,24 @@ class TripPreviewStop(BaseModel):
     spotlight: float = 0.0
 
 
+class TripPreviewTourability(BaseModel):
+    """YELLOW density warning shipped alongside a generated preview.
+
+    Phase 6 contract: YELLOW = "generate but WARN". The engine has always
+    attached the assessment to the Route (selection._attach_tourability_if_yellow);
+    this API silently dropped it, so a thin-area tour (e.g. one isolated
+    mega-anchor like Père Lachaise → a legitimate single-stop tour, the same
+    pattern the PdV golden blesses) looked like a silent bug to the user
+    (hostile-panel finding, 2026-07-02)."""
+
+    status: Literal["YELLOW"]
+    fill_ratio: float
+    anchor_candidates: int
+    reachable_poi_count: int
+    max_supportable_duration_min: int | None = None
+    one_way_alternative_destination: str | None = None
+
+
 class TripPreviewResponse(BaseModel):
     """Per-stop narration for a generated tour — no audio, no persistence. The
     client fetches audio per stop via POST /audio/preview on the narration text."""
@@ -198,3 +216,5 @@ class TripPreviewResponse(BaseModel):
     # Phase 3 spotlight model (spec s7): per-corridor lens density surfaced to
     # the user. None until REACH measures and fills it (later in Phase 3).
     lens_coverage_note: str | None = None
+    # None = GREEN (no warning needed). RED never reaches a 200 response.
+    tourability: TripPreviewTourability | None = None

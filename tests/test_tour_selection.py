@@ -839,6 +839,45 @@ def test_endpoint_pull_never_evicts_entire_route():
     assert "near-1" in ids and "near-2" in ids
 
 
+def test_isolated_single_anchor_yields_one_stop_with_yellow_warning():
+    """Greedy-seats-1 path (Père Lachaise pattern; hostile-panel finding 2026-07-02).
+
+    When exactly ONE dwellable anchor is in reach, a single-stop route is the
+    honest maximum — canon: the PdV golden is a human-blessed one-stop tour —
+    and is NOT the endpoint-pull collapse (which the pull guard kills; that
+    collapse abandoned a richer greedy route). The contract this test pins:
+    such a route must carry the YELLOW tourability assessment (Phase 6:
+    "generate but WARN") so surfaces can show the user WHY the tour has one
+    stop instead of looking like a silent bug.
+
+    Density arithmetic for the fixture (60-min one-way, target audio 1793s):
+    one tier-4 anchor, 5 beats x 240s = 1200s -> fill 0.67 (YELLOW-by-fill,
+    0.5 <= fill < 1.0); 1 anchor candidate (< 4, so not GREEN)."""
+    start = (48.8568, 2.3414)
+    lone = _poi(
+        "lone-anchor",
+        tier=4,
+        lat=start[0],
+        lng=start[1] + 0.002,
+        areas=("Île de la Cité",),
+        beat_count=5,
+    )
+    snap = _snap([lone], area_types={"Île de la Cité": "island"})
+
+    route = select_route(
+        TourInput(start=start, duration_min=60, city_slug="paris", round_trip=False),
+        snap,
+    )
+
+    assert [p.id for p in route.pois] == ["lone-anchor"]
+    assert route.tourability is not None, (
+        "a one-stop tour must carry the YELLOW tourability assessment — "
+        "without it, thin-area tours are indistinguishable from collapse bugs"
+    )
+    assert route.tourability.status == "YELLOW"
+    assert route.tourability.anchor_candidate_count == 1
+
+
 # ---------------------------------------------------------------------------
 # Phase 2 calibration (Q3) — spine tie-break
 # ---------------------------------------------------------------------------

@@ -31,11 +31,19 @@ from src.api.models.trips import (
     TripPreviewRequest,
     TripPreviewResponse,
     TripPreviewStop,
+    TripPreviewTourability,
 )
 from src.tour.beat_select import select_poi_beats, select_vignette_beats
 from src.tour.compose import ComposeClient, ComposeRequest, compose_script
 from src.tour.compose_gate import ComposeVerificationError
-from src.tour.contract import BeatSequence, Route, Sentence, TourInput, ValidationReport
+from src.tour.contract import (
+    BeatSequence,
+    Route,
+    Sentence,
+    TourabilityAssessment,
+    TourInput,
+    ValidationReport,
+)
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate, split_sentences
 from src.tour.options import build_route_option
@@ -527,6 +535,27 @@ def _preview_stops(script, route: Route, vignette_beats, snapshot) -> list[TripP
     return out
 
 
+def _tourability_payload(
+    assessment: TourabilityAssessment | None,
+) -> TripPreviewTourability | None:
+    """Map the engine's YELLOW assessment onto the preview wire model.
+
+    The engine attaches the assessment only for YELLOW (GREEN carries None,
+    RED raised long before a 200). Dropping it here is what made thin-area
+    single-stop tours look like silent bugs (hostile-panel finding,
+    2026-07-02) — the Phase 6 contract is "generate but WARN"."""
+    if assessment is None:
+        return None
+    return TripPreviewTourability(
+        status="YELLOW",
+        fill_ratio=round(assessment.fill_ratio, 2),
+        anchor_candidates=assessment.anchor_candidate_count,
+        reachable_poi_count=assessment.reachable_poi_count,
+        max_supportable_duration_min=assessment.max_supportable_duration_min,
+        one_way_alternative_destination=assessment.one_way_alternative_destination,
+    )
+
+
 @router.post("/trips/preview", response_model=TripPreviewResponse)
 def preview_trip(
     body: TripPreviewRequest,
@@ -581,6 +610,7 @@ def preview_trip(
         stops=stops,
         # Per-corridor lens coverage note ships later in Phase 3 (REACH).
         lens_coverage_note=None,
+        tourability=_tourability_payload(route.tourability),
     )
 
 

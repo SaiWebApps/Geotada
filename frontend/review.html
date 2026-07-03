@@ -3150,6 +3150,28 @@
     summary.style.cssText = 'color:var(--muted,#888);font-size:0.85rem;margin:8px 0;';
     summary.textContent = `${tourStops.length} stops · spine: ${(data && data.spine_area) || '—'} · ~${(data && data.total_audio_min) || 0} min of audio`;
     stopsEl.appendChild(summary);
+    // Phase 6 contract: YELLOW = generate but WARN. Present only for thin areas
+    // (e.g. one isolated mega-anchor -> a legitimate single-stop tour); without
+    // this banner such tours read as silent bugs.
+    if (data && data.tourability) {
+      const t = data.tourability;
+      const warn = document.createElement('div');
+      warn.className = 'tour-tourability-warn';
+      warn.style.cssText = 'background:rgba(255,193,7,0.12);border:1px solid rgba(255,193,7,0.5);'
+        + 'color:#e0a800;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 8px;';
+      const fillPct = Math.round((t.fill_ratio || 0) * 100);
+      const anchors = t.anchor_candidates ?? 0;
+      let msg = `⚠ Thin area (${t.status}): audio fill ${fillPct}% of target, `
+        + `${anchors} anchor candidate${anchors === 1 ? '' : 's'} in reach.`;
+      if (t.max_supportable_duration_min) {
+        msg += ` A ~${t.max_supportable_duration_min}-min tour fits this area better.`;
+      }
+      if (t.one_way_alternative_destination) {
+        msg += ` Or go one-way toward ${t.one_way_alternative_destination}.`;
+      }
+      warn.textContent = msg;
+      stopsEl.appendChild(warn);
+    }
     // Phase 3 spotlight: the per-corridor lens coverage note (present only when
     // the engine surfaces it — off-genre corridors read "only N places speak to …").
     if (data && data.lens_coverage_note) {

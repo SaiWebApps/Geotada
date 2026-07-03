@@ -2246,6 +2246,74 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def test_tour_preview_yellow_tourability_renders_warning_banner(self, browser_page):
+        """Phase 6 contract surfaced (hostile-panel finding 2026-07-02): a preview
+        whose payload carries a YELLOW tourability assessment renders a visible
+        warning banner explaining WHY the tour is thin (e.g. one isolated
+        mega-anchor -> a legitimate single-stop tour); without the banner such
+        tours read as silent bugs. A payload without the field renders none."""
+        page, _seed_data, _reporter = browser_page
+        yellow_payload = {
+            "stops": [
+                {"sort_order": 1, "poi_name": "Pere Lachaise Cemetery", "minutes": 5,
+                 "lat": 48.8608, "lng": 2.3936, "narration": "A grounded line.",
+                 "spotlight": 0.0, "band": "dwell"},
+            ],
+            "spine_area": "20th Arrondissement",
+            "total_audio_min": 7,
+            "tourability": {
+                "status": "YELLOW",
+                "fill_ratio": 0.73,
+                "anchor_candidates": 1,
+                "reachable_poi_count": 1,
+                "max_supportable_duration_min": 44,
+                "one_way_alternative_destination": None,
+            },
+        }
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200, content_type="application/json", body=json.dumps(yellow_payload)
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8608,2.3936")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+
+            banner = page.locator("#tourStops .tour-tourability-warn")
+            assert banner.count() == 1, "YELLOW payload must render exactly one warning banner"
+            text = banner.first.text_content() or ""
+            assert "Thin area (YELLOW)" in text
+            assert "audio fill 73%" in text
+            assert "1 anchor candidate" in text
+            assert "~44-min tour" in text
+            _take_screenshot(page, "yellow-tourability-banner")
+        finally:
+            page.unroute("**/trips/preview")
+
+        # Control: a payload WITHOUT tourability renders no banner.
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps({k: v for k, v in yellow_payload.items() if k != "tourability"}),
+            ),
+        )
+        try:
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+            assert page.locator("#tourStops .tour-tourability-warn").count() == 0, (
+                "GREEN (no tourability field) must not render a warning banner"
+            )
+        finally:
+            page.unroute("**/trips/preview")
+
     _COORD_5DEC = r"-?\d+\.\d{5},-?\d+\.\d{5}"
 
     def _clear_tour_route_pins(self, page):

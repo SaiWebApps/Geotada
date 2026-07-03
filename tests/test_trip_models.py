@@ -14,6 +14,7 @@ from src.api.models.trips import (
     TripGenerateResponse,
     TripPreviewResponse,
     TripPreviewStop,
+    TripPreviewTourability,
 )
 
 
@@ -421,3 +422,59 @@ class TestTripPreviewSpotlightFields:
         assert rebuilt.stops[0].band == "vignette"
         assert rebuilt.stops[0].spotlight == 0.5
         assert rebuilt.lens_coverage_note == "only 2 places on this route speak to film and TV"
+
+    def test_preview_tourability_defaults_none_and_round_trips(self):
+        """tourability defaults None (GREEN) — the additive field keeps old
+        payload shapes valid — and a YELLOW payload survives the round-trip."""
+        assert TripPreviewResponse(total_audio_min=5, stops=[]).tourability is None
+        resp = TripPreviewResponse(
+            total_audio_min=7,
+            stops=[],
+            tourability=TripPreviewTourability(
+                status="YELLOW",
+                fill_ratio=0.73,
+                anchor_candidates=1,
+                reachable_poi_count=1,
+                max_supportable_duration_min=44,
+            ),
+        )
+        rebuilt = TripPreviewResponse.model_validate(resp.model_dump())
+        assert rebuilt.tourability is not None
+        assert rebuilt.tourability.status == "YELLOW"
+        assert rebuilt.tourability.anchor_candidates == 1
+        assert rebuilt.tourability.max_supportable_duration_min == 44
+
+    def test_preview_tourability_payload_maps_engine_assessment(self):
+        """The route handler glue (_tourability_payload) maps the engine's
+        TourabilityAssessment onto the wire model — and passes None (GREEN)
+        through untouched. This is the exact line that was missing when
+        thin-area single-stop tours shipped with no warning (hostile-panel
+        finding, 2026-07-02)."""
+        from src.api.routes.trips import _tourability_payload
+        from src.tour.contract import TourabilityAssessment
+
+        assert _tourability_payload(None) is None
+
+        assessment = TourabilityAssessment(
+            status="YELLOW",
+            walk_radius_m=738.0,
+            fill_ratio=0.7315,
+            audio_capacity_seconds=1312,
+            target_audio_seconds=1793,
+            reachable_poi_count=1,
+            reachable_beat_count=32,
+            anchor_candidate_count=1,
+            cluster_compactness=0.0,
+            duration_min=60,
+            round_trip=False,
+            max_supportable_duration_min=44,
+            one_way_alternative_destination=None,
+        )
+        payload = _tourability_payload(assessment)
+        assert payload is not None
+        assert payload.status == "YELLOW"
+        assert payload.fill_ratio == 0.73  # rounded for the wire
+        assert payload.anchor_candidates == 1
+        assert payload.reachable_poi_count == 1
+        assert payload.max_supportable_duration_min == 44
+        assert payload.one_way_alternative_destination is None
