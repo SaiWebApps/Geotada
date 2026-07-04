@@ -158,3 +158,34 @@ class TestErrorCases:
         detail = resp.json()["detail"]
         assert "User" in detail
         assert "does-not-exist" in detail
+
+
+# ── Cities endpoint (workbench city picker) ──
+
+
+@needs_neo4j
+class TestCitiesEndpoint:
+    """GET /cities powers the workbench city picker (replaces free-text typing).
+
+    The seed (src/seed/locations.py) creates exactly 3 Paris POIs, all
+    city_name='paris' (lowercase — the EXACT stored key the workbench must use;
+    the whole point of the picker is to stop users typing a mismatched casing)
+    with location points centred on Paris.
+    """
+
+    def test_returns_200_with_cities_list(self, client):
+        resp = client.get("/api/v1/cities")
+        assert resp.status_code == 200
+        assert "cities" in resp.json()
+
+    def test_lists_seeded_paris_with_exact_city_name(self, client):
+        cities = client.get("/api/v1/cities").json()["cities"]
+        # Seed is Paris-only; the key must be the exact lowercase stored value.
+        assert [c["city_name"] for c in cities] == ["paris"]
+
+    def test_paris_carries_poi_count_and_centroid(self, client):
+        paris = client.get("/api/v1/cities").json()["cities"][0]
+        assert paris["poi_count"] == 3  # exactly the 3 seeded Paris POIs
+        # Centroid of the 3 seeded POIs sits inside central Paris.
+        assert 48.8 < paris["centre_lat"] < 48.9, paris
+        assert 2.2 < paris["centre_lng"] < 2.4, paris

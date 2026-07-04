@@ -76,7 +76,8 @@
   }
   .overlay-card h2 { margin-bottom: 1rem; font-size: 1.2rem; }
   .overlay-card p { color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem; }
-  .overlay-card input[type="text"] {
+  .overlay-card input[type="text"],
+  .overlay-card select {
     width: 100%;
     padding: 0.6rem 0.8rem;
     background: var(--surface-2);
@@ -87,7 +88,8 @@
     font-family: inherit;
     margin-bottom: 0.75rem;
   }
-  .overlay-card input[type="text"]:focus { outline: none; border-color: var(--accent); }
+  .overlay-card input[type="text"]:focus,
+  .overlay-card select:focus { outline: none; border-color: var(--accent); }
 
   /* ── Duplicate resolver ── */
   .dup-overlay { overflow-y: auto; }
@@ -973,8 +975,11 @@
 <div id="cityOverlay" class="overlay">
   <div class="overlay-card">
     <h2>Editorial Review Session</h2>
-    <p>Which city is this review session for? The city centre will be geocoded and used to create a 50 km geofence for coordinate validation.</p>
-    <input type="text" id="cityInput" placeholder="e.g. Paris, Tokyo, New York" autofocus />
+    <p>Which city is this review session for? Pick a city that already has data in the graph, or choose “Other” to add a new one. The centre creates a 50 km geofence for coordinate validation.</p>
+    <select id="citySelect" aria-label="City">
+      <option value="" disabled selected>Loading cities…</option>
+    </select>
+    <input type="text" id="cityInput" placeholder="e.g. Paris, Tokyo, New York" style="display:none;" />
     <div id="cityError" style="color:var(--red);font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
     <button class="btn btn-primary" id="citySubmitBtn" style="width:100%;">Set City</button>
   </div>
@@ -1084,9 +1089,11 @@
   // ── DOM refs ──
   const cityOverlay = document.getElementById('cityOverlay');
   const cityInput = document.getElementById('cityInput');
+  const citySelect = document.getElementById('citySelect');
   const citySubmitBtn = document.getElementById('citySubmitBtn');
   const cityError = document.getElementById('cityError');
   const cityLabel = document.getElementById('cityLabel');
+  const CITY_OTHER = '__other__';  // picker sentinel: reveal free-text + geocode
   const dupOverlay = document.getElementById('dupOverlay');
   const dupSets = document.getElementById('dupSets');
   const dupError = document.getElementById('dupError');
@@ -1249,52 +1256,126 @@
     outerLayout.classList.toggle('has-banner', allDone);
   }
 
-  // ── City geocoding ──
+  // ── City picker ──
+
+  // The picker is sourced from the graph (GET /cities -> distinct POI.city_name):
+  // one click beats typing, and it hands back the EXACT stored city_name so a
+  // casing fork ('Paris' vs 'paris') can't silently empty every beat fetch. If
+  // /cities is unreachable (offline) or empty (bootstrapping the first city), it
+  // falls back to the free-text + Nominatim path under the "Other" option.
+  let cityCatalogue = [];  // [{ city_name, poi_count, centre_lat, centre_lng }]
+
+  async function loadCityPicker() {
+    try {
+      const resp = await fetch(`${API_BASE}/cities`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      cityCatalogue = (await resp.json()).cities || [];
+    } catch (err) {
+      cityCatalogue = [];  // graceful fallback to the manual path
+    }
+    citySelect.innerHTML = '';
+    if (cityCatalogue.length) {
+      const hint = document.createElement('option');
+      hint.value = ''; hint.disabled = true; hint.selected = true;
+      hint.textContent = 'Select a city…';
+      citySelect.appendChild(hint);
+      cityCatalogue.forEach((c, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);  // index into cityCatalogue
+        const n = c.poi_count === 1 ? '1 POI' : `${c.poi_count} POIs`;
+        opt.textContent = `${c.city_name} — ${n}`;
+        citySelect.appendChild(opt);
+      });
+    }
+    const other = document.createElement('option');
+    other.value = CITY_OTHER;
+    other.textContent = cityCatalogue.length ? 'Other / add a new city…' : 'Add a city (type its name)…';
+    citySelect.appendChild(other);
+    // No graph cities yet -> jump straight to the free-text bootstrap path.
+    if (!cityCatalogue.length) { citySelect.value = CITY_OTHER; toggleCityOther(); }
+  }
+
+  function toggleCityOther() {
+    const isOther = citySelect.value === CITY_OTHER;
+    cityInput.style.display = isOther ? '' : 'none';
+    if (isOther) cityInput.focus();
+  }
+  citySelect.addEventListener('change', toggleCityOther);
+
+  // Shared post-selection activation: set the geofence label, close the overlay,
+  // and pull lenses + POIs for the chosen (exact) city_name.
+  async function activateCity(name, centre) {
+    cityCentre = centre;
+    cityName = name;
+    cityLabel.textContent = `${cityName} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
+    cityOverlay.classList.add('hidden');
+    try {
+      citySubmitBtn.textContent = 'Connecting to database…';
+      await fetchLensesAndPoiList();
+      initPersistentMap();
+      renderWorklist();
+      loadTtsProviders();  // non-blocking — populates provider dropdown
+      loadJsonBtn.disabled = false;
+      tourPreviewBtn.disabled = false;
+    } catch (lensErr) {
+      loadJsonBtn.disabled = true;
+      showError('Cannot connect to database — workbench requires a live connection.');
+      cityLabel.textContent += ' | ⚠ DB connection failed';
+    }
+  }
+
+  // ── City geocoding (the "Other / new city" free-text path) ──
 
   cityInput.addEventListener('keydown', e => { if (e.key === 'Enter') citySubmitBtn.click(); });
 
-  citySubmitBtn.addEventListener('click', async () => {
-    const name = cityInput.value.trim();
-    if (!name) { cityError.textContent = 'Please enter a city name.'; cityError.style.display = 'block'; return; }
-    cityError.style.display = 'none';
-    citySubmitBtn.disabled = true;
+  async function geocodeAndActivate(name) {
     citySubmitBtn.textContent = 'Geocoding…';
-    try {
-      // accept-language pinned: cityName (display_name's first segment) keys the
-      // case-sensitive POI/beat MERGEs, so locale-dependent casing ('Paris' vs
-      // 'paris') would silently fork nodes and empty every beats fetch.
-      const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=en&q=${encodeURIComponent(name)}`;
-      const res = await fetch(url, { headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' } });
-      const data = await res.json();
-      if (!data || data.length === 0) {
-        cityError.textContent = 'City not found. Try a different name.';
-        cityError.style.display = 'block';
-        citySubmitBtn.disabled = false;
-        citySubmitBtn.textContent = 'Set City';
-        return;
-      }
-      cityCentre = { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-      cityName = data[0].display_name.split(',')[0].trim() || name;
-      cityLabel.textContent = `${cityName} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
-      cityOverlay.classList.add('hidden');
+    // accept-language pinned: cityName (display_name's first segment) keys the
+    // case-sensitive POI/beat MERGEs, so locale-dependent casing ('Paris' vs
+    // 'paris') would silently fork nodes and empty every beats fetch.
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=en&q=${encodeURIComponent(name)}`;
+    const res = await fetch(url, { headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' } });
+    const data = await res.json();
+    if (!data || data.length === 0) {
+      cityError.textContent = 'City not found. Try a different name.';
+      cityError.style.display = 'block';
+      citySubmitBtn.disabled = false;
+      citySubmitBtn.textContent = 'Set City';
+      return;
+    }
+    await activateCity(
+      data[0].display_name.split(',')[0].trim() || name,
+      { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }
+    );
+  }
 
-      // Fetch lenses and POI list from database
-      try {
-        citySubmitBtn.textContent = 'Connecting to database…';
-        await fetchLensesAndPoiList();
-        initPersistentMap();
-        renderWorklist();
-        loadTtsProviders();  // non-blocking — populates provider dropdown
-        loadJsonBtn.disabled = false;
-        tourPreviewBtn.disabled = false;
-      } catch (lensErr) {
-        loadJsonBtn.disabled = true;
-        showError('Cannot connect to database — workbench requires a live connection.');
-        cityLabel.textContent += ' | ⚠ DB connection failed';
-        return;
+  citySubmitBtn.addEventListener('click', async () => {
+    cityError.style.display = 'none';
+    const sel = citySelect.value;
+    const usingPicker = sel !== '' && sel !== CITY_OTHER;
+    let freeText = '';
+    if (!usingPicker) {
+      if (sel === '') { cityError.textContent = 'Please choose a city.'; cityError.style.display = 'block'; return; }
+      freeText = cityInput.value.trim();
+      if (!freeText) { cityError.textContent = 'Please enter a city name.'; cityError.style.display = 'block'; return; }
+    }
+    citySubmitBtn.disabled = true;
+    try {
+      if (usingPicker) {
+        // Data-driven: exact stored city_name + POI centroid, no geocode round-trip.
+        const c = cityCatalogue[parseInt(sel, 10)];
+        const hasCentre = typeof c.centre_lat === 'number' && typeof c.centre_lng === 'number';
+        if (hasCentre) {
+          await activateCity(c.city_name, { lat: c.centre_lat, lng: c.centre_lng });
+        } else {
+          // City exists but no POI has coordinates yet — geocode its name.
+          await geocodeAndActivate(c.city_name);
+        }
+      } else {
+        await geocodeAndActivate(freeText);
       }
     } catch (err) {
-      cityError.textContent = 'Geocoding failed: ' + err.message;
+      cityError.textContent = 'Failed: ' + err.message;
       cityError.style.display = 'block';
       citySubmitBtn.disabled = false;
       citySubmitBtn.textContent = 'Set City';
@@ -2882,6 +2963,10 @@
     const port = raw && /^\d{2,5}$/.test(raw) ? raw : '8000';
     return `http://localhost:${port}/api/v1`;
   })();
+
+  // Populate the city picker now that API_BASE is initialised (the modal is
+  // shown on load; loadCityPicker is hoisted from the city-picker section above).
+  loadCityPicker();
 
   // ── TTS state & helpers ──
   const ttsAudioCache = new Map();

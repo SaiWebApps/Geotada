@@ -38,6 +38,8 @@ from playwright.sync_api import Page, sync_playwright
 # IDs
 CITY_OVERLAY = "#cityOverlay"
 CITY_INPUT = "#cityInput"
+CITY_SELECT = "#citySelect"
+CITY_OTHER = "__other__"  # picker sentinel: reveal the free-text geocode path
 CITY_SUBMIT = "#citySubmitBtn"
 CITY_LABEL = "#cityLabel"
 LOAD_JSON_BTN = "#loadJsonBtn"
@@ -917,8 +919,48 @@ class TestWorkbenchLoadFlow:
             "ac1-city-overlay-missing",
         )
 
-        # Type "Paris" and submit
-        page.locator(CITY_INPUT).fill("Paris")
+        # The city picker loads real cities from GET /cities (distinct
+        # POI.city_name). Wait for the seeded 'Paris' option to populate.
+        page.wait_for_function(
+            "() => { const s = document.querySelector('#citySelect'); "
+            "return s && [...s.options].some(o => o.textContent.includes('Paris')); }",
+            timeout=15000,
+        )
+        # The picker lists the seeded city sourced from the graph, not free text.
+        option_texts = page.locator(f"{CITY_SELECT} option").all_text_contents()
+        assert any("Paris" in t and "POI" in t for t in option_texts), option_texts
+        _take_screenshot(page, "city-picker-populated")
+        # "Other" reveals the manual geocode input (the new-city bootstrap path
+        # is preserved, not removed).
+        page.locator(CITY_SELECT).select_option(CITY_OTHER)
+        _safe_assert(
+            reporter,
+            page.locator(CITY_INPUT).is_visible(),
+            "Major",
+            "Selecting 'Other' did not reveal the free-text city input",
+            "City Prompt",
+            ["Select 'Other / add a new city…' in #citySelect"],
+            "#cityInput becomes visible",
+            f"cityInput visible: {page.locator(CITY_INPUT).is_visible()}",
+            page,
+            "ac1-city-other-toggle",
+        )
+        _take_screenshot(page, "city-picker-other-freetext")
+        # Pick the seeded city from the list instead — one click, exact key,
+        # no typing (index 0 is the disabled 'Select a city…' hint).
+        page.locator(CITY_SELECT).select_option(index=1)
+        _safe_assert(
+            reporter,
+            not page.locator(CITY_INPUT).is_visible(),
+            "Minor",
+            "Picking a real city did not hide the free-text input",
+            "City Prompt",
+            ["Select the seeded city in #citySelect"],
+            "#cityInput hidden",
+            f"cityInput visible: {page.locator(CITY_INPUT).is_visible()}",
+            page,
+            "ac1-city-picker-hides-input",
+        )
         page.locator(CITY_SUBMIT).click()
 
         # Wait for overlay to close (10s timeout for Nominatim — Risk R2)

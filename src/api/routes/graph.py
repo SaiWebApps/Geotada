@@ -57,6 +57,42 @@ def get_full_graph(session: Session = Depends(get_session)):
     return {"nodes": nodes, "edges": edges}
 
 
+@router.get("/cities")
+def list_cities(session: Session = Depends(get_session)):
+    """Distinct cities present in the graph, for the workbench city picker.
+
+    Sourced from ``POI.city_name`` — the EXACT, case-sensitive key the workbench
+    uses to fetch beats (``/graph/poi/{name}/beats?city_name=...``). Typing the
+    name by hand risks a casing fork ('Paris' vs 'paris') that silently empties
+    every beat fetch; a picker sourced from the graph removes that hazard.
+
+    Each city carries a POI count and the POI-coordinate centroid (POIs store
+    coordinates in a ``location`` point) so the 50 km review geofence needs no
+    external geocode for a known city. ``centre_lat``/``centre_lng`` are null
+    when no POI in that city has coordinates yet (the caller falls back to a
+    manual geocode).
+    """
+    result = session.run(
+        "MATCH (p:POI) "
+        "WHERE p.city_name IS NOT NULL "
+        "WITH p.city_name AS city_name, count(p) AS poi_count, "
+        "     avg(p.location.latitude) AS centre_lat, "
+        "     avg(p.location.longitude) AS centre_lng "
+        "RETURN city_name, poi_count, centre_lat, centre_lng "
+        "ORDER BY poi_count DESC, city_name"
+    )
+    cities = [
+        {
+            "city_name": r["city_name"],
+            "poi_count": r["poi_count"],
+            "centre_lat": r["centre_lat"],
+            "centre_lng": r["centre_lng"],
+        }
+        for r in result
+    ]
+    return {"cities": cities}
+
+
 @router.get("/graph/poi/{poi_name}/beats")
 def get_poi_beats(
     poi_name: str,
