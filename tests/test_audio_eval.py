@@ -182,3 +182,37 @@ class TestEvaluate:
 
         assert "beautiful" in result.extra_words
         assert "amazing" in result.extra_words
+
+    def test_re_transcribes_on_degenerate_output_and_keeps_best(self, monkeypatch):
+        """A degenerate Whisper result (near-empty 'you' for a paragraph) triggers
+        a bounded re-transcribe; the good attempt wins. Guards the live-audio-bar
+        flake root cause (WER 1.0 'you' on Shakespeare & Company)."""
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        ref = "Sylvia Beach opened the original shop in nineteen nineteen and published Ulysses"
+        # First call degenerates to 'you'; the retry returns the true text.
+        with patch("src.audio.eval.transcribe", side_effect=["you", ref]) as m:
+            result = evaluate(ref, b"fake audio")
+        assert m.call_count == 2, "must re-transcribe once past the degenerate result"
+        assert result.word_error_rate == 0.0, "keeps the good retry, not the 'you' garbage"
+        assert result.transcribed_text == ref
+
+    def test_no_retry_on_complete_transcription(self, monkeypatch):
+        """A complete-but-imperfect transcription (word count near the reference)
+        is accepted immediately — no wasted re-transcribe on ordinary accent miss."""
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        ref = "hello world this is a longer reference sentence for the count check"
+        hyp = "hello world this is a longer reference sentence for the count chek"  # 1 typo
+        with patch("src.audio.eval.transcribe", side_effect=[hyp, ref]) as m:
+            result = evaluate(ref, b"fake audio")
+        assert m.call_count == 1, "a near-complete transcription must not re-transcribe"
+        assert 0.0 < result.word_error_rate < 0.15
+
+    def test_degenerate_retries_bounded_and_returns_best(self, monkeypatch):
+        """If every attempt degenerates, the loop is bounded (3) and still returns
+        the least-bad result — never an infinite retry."""
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        ref = "one two three four five six seven eight nine ten eleven twelve"
+        with patch("src.audio.eval.transcribe", side_effect=["you", "you", "you", ref]) as m:
+            result = evaluate(ref, b"fake audio")
+        assert m.call_count == 3, "bounded at _MAX_TRANSCRIBE_ATTEMPTS"
+        assert result.word_error_rate == 1.0  # all attempts were 'you'

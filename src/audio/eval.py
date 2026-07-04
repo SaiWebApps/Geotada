@@ -6,6 +6,7 @@ score between the original script and the transcription.
 
 from __future__ import annotations
 
+import math
 import os
 import re
 import unicodedata
@@ -122,18 +123,44 @@ def transcribe(audio_bytes: bytes, *, filename: str = "audio.mp3") -> str:
     return resp.json().get("text", "")
 
 
+# Whisper occasionally returns a DEGENERATE transcription — a near-empty
+# hallucination like "you" / "Thank you." for a full paragraph (a 200 with
+# garbage, so post_with_retry can't catch it). That is a transient decode
+# failure, not an accent/threshold miss, and it spikes WER to ~1.0. When the
+# transcription collapses below this fraction of the reference word count we
+# re-transcribe (bounded) and keep the BEST attempt — resilience at the root,
+# never a loosened WER threshold. A complete-but-imperfect transcription (word
+# count near the reference) is accepted immediately.
+_DEGENERATE_TRANSCRIPT_LEN_FRAC: float = 0.6
+_MAX_TRANSCRIBE_ATTEMPTS: int = 3
+
+
 def evaluate(original_text: str, audio_bytes: bytes, *, filename: str = "audio.mp3") -> EvalResult:
     """Full eval pipeline: transcribe audio, then compare against original.
 
     Returns an EvalResult with similarity score, WER, and word diffs.
     """
-    transcribed = transcribe(audio_bytes, filename=filename)
-
     ref_norm = _normalize(original_text)
-    hyp_norm = _normalize(transcribed)
-
     ref_words = ref_norm.split()
-    hyp_words = hyp_norm.split()
+
+    # Re-transcribe only on a DEGENERATE (near-empty) result; keep the best WER.
+    best_transcribed = ""
+    best_hyp_words: list[str] = []
+    best_wer = math.inf
+    for _ in range(_MAX_TRANSCRIBE_ATTEMPTS):
+        transcribed = transcribe(audio_bytes, filename=filename)
+        hyp_words = _normalize(transcribed).split()
+        wer = _word_error_rate(ref_words, hyp_words)
+        if wer < best_wer:
+            best_wer, best_transcribed, best_hyp_words = wer, transcribed, hyp_words
+        degenerate = bool(ref_words) and (
+            len(hyp_words) < _DEGENERATE_TRANSCRIPT_LEN_FRAC * len(ref_words)
+        )
+        if not degenerate:
+            break
+
+    transcribed = best_transcribed
+    hyp_words = best_hyp_words
 
     wer = _word_error_rate(ref_words, hyp_words)
     similarity = _set_similarity(ref_words, hyp_words)
