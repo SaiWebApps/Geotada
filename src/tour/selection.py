@@ -809,6 +809,23 @@ def build_poi_beat_plans(
     return tuple(plans)
 
 
+def build_poi_beat_plans_capped(
+    route: Route, snapshot: CorpusSnapshot, *, lenses: Iterable[str] | None
+) -> tuple[tuple[POIBeats, tuple[str, ...]], ...]:
+    """C9f shared EMISSION choke point: ``(plan, overflow_beat_ids)`` per POI, in
+    route order. All six build sites (generate, compose, preview, tour_build, the
+    two golden harnesses) go through here so the per-stop audio cap can be enabled
+    in ONE place.
+
+    C9f-i: the cap is NOT applied yet — each plan is the full merged plan and
+    overflow is empty. Destructured to its ``POIBeats`` this is byte-identical to
+    :func:`build_poi_beat_plans`; it exists so C9f-ii can flip on the
+    allowance cap (exempting ``route.start_anchor_poi_id`` / ``fixed_end_poi_id``,
+    scoped to end=None) without touching a single call site.
+    """
+    return tuple((plan, ()) for plan in build_poi_beat_plans(route, snapshot, lenses=lenses))
+
+
 def planned_capped_audio_seconds(
     poi: POI,
     snapshot: CorpusSnapshot,
@@ -1254,6 +1271,18 @@ def select_route(
     if demoted_beats:
         route = route.model_copy(update={"demoted_beats": demoted_beats})
     route = route.model_copy(update={"reach": reach})
+    # C9 governor exempt identity — record which POIs are EXEMPT from the per-stop
+    # audio cap so compose and the golden harnesses (which lack the greedy locals,
+    # and where pois[0] is NOT the start-anchor after Held-Karp) read the SAME
+    # exempt set the greedy used. Additive metadata only; pois/transits/beats are
+    # untouched (identity baseline holds bit-for-bit). None on A→B / empty routes.
+    anchor_update: dict[str, str | None] = {}
+    if exempt_anchor_id is not None:
+        anchor_update["start_anchor_poi_id"] = exempt_anchor_id
+    if fixed_end is not None:
+        anchor_update["fixed_end_poi_id"] = fixed_end.id
+    if anchor_update:
+        route = route.model_copy(update=anchor_update)
     # Track B (Step B.2): attach walk-past vignettes AFTER ordering — the leg
     # geometry is final only now. Additive metadata: ``pois``/``transits`` are
     # untouched (the identity baseline holds bit-for-bit).

@@ -629,6 +629,27 @@ class TestComposeTripEndpoint:
             ).single()["rid"]
         assert rid is None
 
+    def test_generate_persists_per_flavour_anchor_identity(self, live_neo4j, fresh_trip):
+        """C9f-i: options_json entries are per-flavour dicts carrying the C9
+        exempt-anchor identity ({poi_ids, start_anchor_poi_id, fixed_end_poi_id}),
+        so /compose restores the SAME exempt set the greedy used (pois[0] is not
+        the start-anchor after Held-Karp). fresh_trip is an open walk, so at least
+        one flavour records a positional start-anchor."""
+        trip_id = fresh_trip["trip_id"]
+        with live_neo4j.session() as s:
+            from src.api.crud.trips import get_trip_compose_inputs
+
+            options = get_trip_compose_inputs(s, trip_id)["options"]
+        assert options and all(isinstance(e, dict) for e in options)
+        for e in options:
+            assert set(e) >= {"poi_ids", "start_anchor_poi_id", "fixed_end_poi_id"}
+            if e["start_anchor_poi_id"] is not None:
+                assert e["start_anchor_poi_id"] in e["poi_ids"]
+            if e["fixed_end_poi_id"] is not None:
+                assert e["fixed_end_poi_id"] in e["poi_ids"]
+        # Not vacuously all-None: an open walk seats a positional start-anchor.
+        assert any(e["start_anchor_poi_id"] is not None for e in options)
+
     def test_second_option_composes_its_stored_pick(self, client, live_neo4j, fresh_trip):
         trip_id = fresh_trip["trip_id"]
         with live_neo4j.session() as s:
@@ -642,4 +663,5 @@ class TestComposeTripEndpoint:
             f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt2"}
         )
         assert resp.status_code == 200, resp.text
-        assert [st["poi_id"] for st in resp.json()["stops"]] == options[1]
+        # C9f-i: options entries are per-flavour {poi_ids, anchor ids} dicts.
+        assert [st["poi_id"] for st in resp.json()["stops"]] == options[1]["poi_ids"]

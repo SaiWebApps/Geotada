@@ -254,6 +254,12 @@ class Route(BaseModel):
     # C9 governor: the fixed-end-B / pulled-endpoint POI id — EXEMPT from the
     # per-stop audio-share cap (it may dominate). None for round trips / open walks.
     fixed_end_poi_id: str | None = None
+    # C9 governor: the POSITIONAL start-anchor — the first-seated POI in the greedy
+    # (decision 3, "may dominate") — EXEMPT from the cap. Persisted here because
+    # Held-Karp reorders ``pois`` after greedy, so ``pois[0]`` is NOT the anchor,
+    # and compose/golden harnesses have no access to the greedy locals. None on
+    # A→B (no positional start-anchor is seated) and for empty routes.
+    start_anchor_poi_id: str | None = None
 
 
 OrderingStrategy = Literal["sub_location", "trigger_address", "narrative_function"]

@@ -171,6 +171,24 @@ def test_fixed_end_snaps_to_nearby_selected_poi():
     assert end not in {(p.lat, p.lng) for p in route.pois}  # exact B coord NOT added
 
 
+def test_fixed_end_records_exempt_identity_and_no_start_anchor():
+    """C9f-i: an A→B route records fixed_end_poi_id (the snapped B, exempt) and
+    leaves start_anchor_poi_id None — A→B seats no positional start-anchor
+    (exempt_anchor_id is guarded by ``input.end is None``), so nothing on the
+    corridor is start-anchor-exempt. Additive metadata; ordering is unchanged."""
+    east = _anchor("east-real", 0.0, 0.0040, tier=5, beats=12)  # ~290m east of PdV
+    snap = _snap([east, *_density_fillers(PDV)])
+    end = (east.lat, east.lng + 0.0004)  # ~30m east of east-real -> within snap
+    inp = TourInput(start=PDV, end=end, duration_min=DURATION, city_slug="paris")
+    assert _ab_in_budget(end)
+    _assert_not_red(inp, snap)
+
+    route = select_route(inp, snap)
+    assert route.fixed_end_poi_id == east.id, "B snapped to the real east anchor"
+    assert route.fixed_end_poi_id == route.pois[-1].id, "fixed_end is the last stop"
+    assert route.start_anchor_poi_id is None, "A→B seats no positional start-anchor"
+
+
 def test_fixed_end_snaps_to_nearest_of_two_in_range_pois():
     """When two selected POIs are within ~150m of B, the route ends at the
     geometrically NEAREST one (derived live from haversine_m)."""

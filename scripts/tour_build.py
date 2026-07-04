@@ -36,7 +36,7 @@ from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import build_poi_beat_plans, load_paris_corpus, select_route
+from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
 
 HAIKU_INPUT_USD_PER_MTOK = 1.00  # 2026 Haiku 4.5 list (per 1M tokens)
 HAIKU_OUTPUT_USD_PER_MTOK = 5.00
@@ -112,7 +112,9 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
 
 
 def _build_beat_sequence(route, snapshot, lenses) -> BeatSequence:
-    return BeatSequence(poi_beats=build_poi_beat_plans(route, snapshot, lenses=lenses))
+    return BeatSequence(
+        poi_beats=tuple(pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=lenses))
+    )
 
 
 def _generated_id(start_label: str, duration_min: int) -> str:

@@ -33,7 +33,7 @@ from src.api.models.trips import (
     TripPreviewStop,
     TripPreviewTourability,
 )
-from src.tour.beat_select import select_poi_beats, select_vignette_beats
+from src.tour.beat_select import select_vignette_beats
 from src.tour.compose import ComposeClient, ComposeRequest, compose_script
 from src.tour.compose_gate import ComposeVerificationError
 from src.tour.contract import (
@@ -51,7 +51,7 @@ from src.tour.render_md import stop_narration_text
 from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
-    build_poi_beat_plans,
+    build_poi_beat_plans_capped,
     load_paris_corpus,
     pick_spine_area,
     select_k_routes,
@@ -229,7 +229,9 @@ def generate_trip(
     # voices the one-liner inside the leg narration.
     scripts = []
     for flavour in flavours:
-        plans = build_poi_beat_plans(flavour, snapshot, lenses=lenses)
+        # C9f-i: through the shared capped seam (no cap yet; overflow discarded
+        # until C9g). Destructure to the POIBeats half -> byte-identical today.
+        plans = tuple(pb for pb, _ in build_poi_beat_plans_capped(flavour, snapshot, lenses=lenses))
         vignette_beats = select_vignette_beats(
             flavour.vignettes, snapshot.beats_by_poi, lenses=lenses
         )
@@ -259,7 +261,20 @@ def generate_trip(
             "start_time": body.start_time,
         }
     )
-    options_json = json.dumps([[p.id for p in flavour.pois] for flavour in flavours])
+    # Per-flavour ordered poi ids PLUS the C9 exempt-anchor identity, so /compose
+    # restores the SAME exempt set the greedy used (Held-Karp reorders pois, and
+    # the compose-rebuilt route has no greedy locals). Legacy trips stored a bare
+    # id list; the compose reader treats those as fail-open (uncapped).
+    options_json = json.dumps(
+        [
+            {
+                "poi_ids": [p.id for p in flavour.pois],
+                "start_anchor_poi_id": flavour.start_anchor_poi_id,
+                "fixed_end_poi_id": flavour.fixed_end_poi_id,
+            }
+            for flavour in flavours
+        ]
+    )
 
     trip_name = body.trip_name or f"Trip ({body.start_date})"
     result = create_trip_with_stops(
@@ -380,7 +395,17 @@ def compose_trip(
     option_n = int(match.group(1)) if match else 0
     if not (1 <= option_n <= len(options)):
         raise HTTPException(404, f"Unknown route_id '{body.route_id}' for trip '{trip_id}'")
-    poi_ids = options[option_n - 1]
+    entry = options[option_n - 1]
+    if isinstance(entry, dict):  # C9f-i per-flavour format: {poi_ids, anchor ids}
+        poi_ids = entry["poi_ids"]
+        anchor_restore = {
+            k: entry[k]
+            for k in ("start_anchor_poi_id", "fixed_end_poi_id")
+            if entry.get(k) is not None
+        }
+    else:  # legacy bare id list (trips generated pre-C9f): fail open (uncapped).
+        poi_ids = entry
+        anchor_restore = {}
 
     tour_input = TourInput(
         start=tuple(tour_input_dict["start"]),
@@ -416,10 +441,19 @@ def compose_trip(
     route = route.model_copy(
         update={"vignettes": select_vignettes(route, snapshot, interest or None)}
     )
-    plans = [
-        select_poi_beats(poi, list(snapshot.beats_for(poi.id)), interest_lenses=tour_input.lenses)
-        for poi in picked
-    ]
+    # C9f-i: restore the exempt-anchor identity persisted at generate time onto the
+    # summarise_route-rebuilt route, so C9f-ii's cap exempts the SAME start-anchor /
+    # fixed-end here as it did at generate. Empty for legacy trips -> fail open.
+    if anchor_restore:
+        route = route.model_copy(update=anchor_restore)
+    # C9f-i: compose goes through the SAME shared seam as generate/preview. Was a
+    # hand-rolled loop over `picked` that skipped the demoted_beats merge — a no-op
+    # here (summarise_route rebuilds with empty demoted_beats, so byte-identical),
+    # but it unifies the choke point and pairs with the anchor-id restore above so
+    # C9f-ii's cap will exempt the start-anchor at compose too, not just generate.
+    plans = tuple(
+        pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=tour_input.lenses)
+    )
     vignette_beats = select_vignette_beats(
         route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
     )
@@ -587,7 +621,9 @@ def preview_trip(
             "No tourable POIs reachable from this start for the requested duration.",
         )
 
-    plans = build_poi_beat_plans(route, snapshot, lenses=tour_input.lenses)
+    plans = tuple(
+        pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=tour_input.lenses)
+    )
     vignette_beats = select_vignette_beats(
         route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
     )

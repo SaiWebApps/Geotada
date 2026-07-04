@@ -14,6 +14,8 @@ from src.tour.selection import (
     AREA_ALIGNMENT_SPINE,
     HARD_ANCHOR_CAP,
     CorpusSnapshot,
+    build_poi_beat_plans,
+    build_poi_beat_plans_capped,
     pick_spine_area,
     poi_score,
     select_route,
@@ -1576,6 +1578,48 @@ def test_frozen_end_none_ordered_ids_routed_path():
         f"end=None routed ordering drifted from the Step 2.0d frozen "
         f"baseline; expected {_FROZEN_END_NONE_ORDER_ROUTED}, got {ids}"
     )
+
+
+def test_end_none_route_records_exempt_anchor_identity():
+    """C9f-i: an end=None route persists the exempt-anchor ids the greedy used, so
+    compose + the golden harnesses read the SAME exempt set (pois[0] is NOT the
+    start-anchor after Held-Karp). Byte-identical to emission — additive metadata.
+    """
+    snap = _frozen_end_none_snapshot()
+    # Open walk: the positional start-anchor AND the pulled endpoint are recorded.
+    ow = select_route(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False), snap
+    )
+    ow_ids = {p.id for p in ow.pois}
+    assert ow.start_anchor_poi_id is not None
+    assert ow.start_anchor_poi_id in ow_ids, "start-anchor must be a seated POI"
+    # This open walk closes on the far 'baseline-medium' via endpoint-pull, so that
+    # pulled endpoint is the exempt fixed_end.
+    assert ow.fixed_end_poi_id == "baseline-medium"
+    assert ow.pois[-1].id == "baseline-medium"  # Held-Karp ends at the fixed_end
+    # Round trip: a positional start-anchor is recorded, but round trips run no
+    # endpoint-pull (one-way only), so fixed_end_poi_id stays None.
+    rt = select_route(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=True), snap
+    )
+    assert rt.start_anchor_poi_id is not None
+    assert rt.start_anchor_poi_id in {p.id for p in rt.pois}
+    assert rt.fixed_end_poi_id is None
+
+
+def test_build_poi_beat_plans_capped_is_uncapped_identity_in_c9f_i():
+    """C9f-i: the shared capped seam returns the FULL plan + EMPTY overflow —
+    destructured, byte-identical to build_poi_beat_plans. Pins the no-cap
+    invariant so a stray truncation can't sneak in before C9f-ii deliberately
+    enables the allowance cap here."""
+    snap = _frozen_end_none_snapshot()
+    route = select_route(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False), snap
+    )
+    plain = build_poi_beat_plans(route, snap, lenses=None)
+    capped = build_poi_beat_plans_capped(route, snap, lenses=None)
+    assert tuple(pb for pb, _ in capped) == plain
+    assert all(overflow == () for _, overflow in capped), "no overflow until the cap lands"
 
 
 # ---------------------------------------------------------------------------
