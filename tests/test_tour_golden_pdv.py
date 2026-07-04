@@ -18,11 +18,10 @@ import pytest
 from neo4j import GraphDatabase
 from neo4j.exceptions import AuthError, ServiceUnavailable
 
-from src.tour.beat_select import select_poi_beats
 from src.tour.contract import BeatSequence, TourInput
 from src.tour.generation import generate
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_route
+from src.tour.selection import build_poi_beat_plans, load_paris_corpus, select_route
 
 # Quality-comparison gate against a human-curated ideal tour; excluded from the
 # default `make test` bar (run via `make test-golden`). See pyproject markers.
@@ -115,11 +114,9 @@ def _generated_beat_ids(snapshot, fixture):
     # identical to the haversine path when it isn't (total fallback).
     with RoutingClient() as routing_client:
         route = select_route(tour_input, snapshot, routing_client=routing_client)
-    poi_beats_list = []
-    for poi in route.pois:
-        plan = select_poi_beats(poi, snapshot.beats_for(poi.id))
-        poi_beats_list.append(plan)
-    seq = BeatSequence(poi_beats=tuple(poi_beats_list))
+    # C9b golden-harness fidelity: route through the shipped build path so the
+    # goldens merge co-located demoted_beats like production (diagnostic R2).
+    seq = BeatSequence(poi_beats=build_poi_beat_plans(route, snapshot, lenses=None))
     script = generate(seq, route, tour_input)
     return script, route, seq
 

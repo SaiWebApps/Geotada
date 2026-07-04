@@ -32,10 +32,12 @@ from shapely.geometry import Point as _ShapelyPoint
 from shapely.geometry import shape as _shapely_shape
 from shapely.prepared import prep as _shapely_prep
 
+from .beat_select import select_poi_beats
 from .contract import (
     POI,
     BeatRef,
     PhysicalCue,
+    POIBeats,
     ReachVerdict,
     Route,
     TourabilityAssessment,
@@ -779,6 +781,25 @@ def _materialize_fixed_end_b(
 # ---------------------------------------------------------------------------
 # Selection (pure)
 # ---------------------------------------------------------------------------
+
+
+def build_poi_beat_plans(
+    route: Route, snapshot: CorpusSnapshot, *, lenses: Iterable[str] | None
+) -> tuple[POIBeats, ...]:
+    """Ordered per-POI beat plans for a route, with each co-located demoted
+    sibling's beats merged into its host (the single source shared by
+    ``/trips/generate``, ``/trips/{id}/compose``, ``scripts/tour_build.py`` and
+    the golden harnesses). Vignette handling + ``BeatSequence`` construction stay
+    at the call sites (they differ per surface). C9b: an identity refactor of the
+    three production loops that already merged ``demoted_beats``; the golden
+    harnesses are routed through it too so they measure the shipped pipeline.
+    """
+    plans: list[POIBeats] = []
+    for poi in route.pois:
+        beats = list(snapshot.beats_for(poi.id))
+        beats.extend(route.demoted_beats.get(poi.id, ()))
+        plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
+    return tuple(plans)
 
 
 def select_route(

@@ -25,7 +25,6 @@ import uuid
 from pathlib import Path
 
 from src.connection import create_driver
-from src.tour.beat_select import select_poi_beats
 from src.tour.compose_gate import (
     ComposeVerificationError,
     build_full_verifier,
@@ -37,7 +36,7 @@ from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_route
+from src.tour.selection import build_poi_beat_plans, load_paris_corpus, select_route
 
 HAIKU_INPUT_USD_PER_MTOK = 1.00  # 2026 Haiku 4.5 list (per 1M tokens)
 HAIKU_OUTPUT_USD_PER_MTOK = 5.00
@@ -113,18 +112,7 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
 
 
 def _build_beat_sequence(route, snapshot, lenses) -> BeatSequence:
-    plans = []
-    for poi in route.pois:
-        beats = list(snapshot.beats_for(poi.id))
-        # Phase 7.5 Fix 3: when a sibling POI has been demoted into this
-        # one, append its beats so select_poi_beats orders them in the
-        # host's spatial bucket (existing trigger_address keeps them at
-        # the right address; sub_location collisions handled by the
-        # ordering strategy).
-        beats.extend(route.demoted_beats.get(poi.id, ()))
-        plan = select_poi_beats(poi, beats, interest_lenses=lenses)
-        plans.append(plan)
-    return BeatSequence(poi_beats=tuple(plans))
+    return BeatSequence(poi_beats=build_poi_beat_plans(route, snapshot, lenses=lenses))
 
 
 def _generated_id(start_label: str, duration_min: int) -> str:

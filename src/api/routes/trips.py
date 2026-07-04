@@ -51,6 +51,7 @@ from src.tour.render_md import stop_narration_text
 from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
+    build_poi_beat_plans,
     load_paris_corpus,
     pick_spine_area,
     select_k_routes,
@@ -228,11 +229,7 @@ def generate_trip(
     # voices the one-liner inside the leg narration.
     scripts = []
     for flavour in flavours:
-        plans = []
-        for poi in flavour.pois:
-            beats = list(snapshot.beats_for(poi.id))
-            beats.extend(flavour.demoted_beats.get(poi.id, ()))
-            plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
+        plans = build_poi_beat_plans(flavour, snapshot, lenses=lenses)
         vignette_beats = select_vignette_beats(
             flavour.vignettes, snapshot.beats_by_poi, lenses=lenses
         )
@@ -589,11 +586,7 @@ def preview_trip(
             "No tourable POIs reachable from this start for the requested duration.",
         )
 
-    plans = []
-    for poi in route.pois:
-        beats = list(snapshot.beats_for(poi.id))
-        beats.extend(route.demoted_beats.get(poi.id, ()))
-        plans.append(select_poi_beats(poi, beats, interest_lenses=tour_input.lenses))
+    plans = build_poi_beat_plans(route, snapshot, lenses=tour_input.lenses)
     vignette_beats = select_vignette_beats(
         route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
     )
