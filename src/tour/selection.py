@@ -309,6 +309,20 @@ FILL_PASS_WALK_BUDGET_FRAC: float = 0.95
 # delivered gap (e.g. a 90-min request delivering ~7 min) while leaving genuinely
 # rich tours (Ile ~0.68 of target) unflagged.
 GREEN_THIN_DELIVERY_FRAC: float = 0.5
+# C9 governor v4 (domination-gated share-of-DELIVERED, 2026-07-04). The cap acts
+# ONLY on a genuine DOMINATING OUTLIER — a non-exempt stop whose emitted audio
+# both exceeds GOVERNOR_SHARE_OF_DELIVERED of the tour's total delivered audio AND
+# exceeds GOVERNOR_DOMINATION_FACTOR x the MEAN of the OTHER non-exempt stops (so
+# it is drowning its peers, e.g. the UC5 'Ile de la Cite' encyclopedia-dump; the
+# mean-of-others gate means two co-dominators can't shield each other). Balanced
+# tours (every stop near its fair share) are NEVER capped — the panel proved an
+# always-on share cap over-trims them. EXEMPT (may dominate): the marquee (the
+# highest-tier delivered stop, ties -> highest-audio) and the fixed destination /
+# pulled endpoint. Importance-based exemption fixes the v3 bug where the greedy's
+# nearest proximity-seed (often a thin courtyard) held the exemption while the
+# real star was capped. See C9F-GOVERNOR-V3-SHARE.md + the panel refutation.
+GOVERNOR_SHARE_OF_DELIVERED: float = 1.0 / 3.0
+GOVERNOR_DOMINATION_FACTOR: float = 1.5
 
 
 # Endpoint-pull (Q1, one-way only): after greedy completes, force-include
@@ -809,21 +823,92 @@ def build_poi_beat_plans(
     return tuple(plans)
 
 
-def build_poi_beat_plans_capped(
-    route: Route, snapshot: CorpusSnapshot, *, lenses: Iterable[str] | None
-) -> tuple[tuple[POIBeats, tuple[str, ...]], ...]:
-    """C9f shared EMISSION choke point: ``(plan, overflow_beat_ids)`` per POI, in
-    route order. All six build sites (generate, compose, preview, tour_build, the
-    two golden harnesses) go through here so the per-stop audio cap can be enabled
-    in ONE place.
+def _domination_caps(is_exempt: list[bool], audio: list[int]) -> list[int | None]:
+    """Per-stop second-caps for the v4 domination-gated governor.
 
-    C9f-i: the cap is NOT applied yet — each plan is the full merged plan and
-    overflow is empty. Destructured to its ``POIBeats`` this is byte-identical to
-    :func:`build_poi_beat_plans`; it exists so C9f-ii can flip on the
-    allowance cap (exempting ``route.start_anchor_poi_id`` / ``fixed_end_poi_id``,
-    scoped to end=None) without touching a single call site.
+    Exempt stops → ``None`` (uncapped). A non-exempt stop is capped ONLY when it is
+    a genuine DOMINATING OUTLIER: it exceeds ``GOVERNOR_SHARE_OF_DELIVERED`` of the
+    total delivered audio AND exceeds ``GOVERNOR_DOMINATION_FACTOR`` x the MEAN of
+    the OTHER non-exempt stops (it is drowning its peers). Comparing to the mean of
+    the others — not the next-largest — closes the pairwise-shielding gap where two
+    co-dominators would each hide behind the other. A dominator is capped to the
+    share ceiling; capping lowers the total, so we re-check to a fixed point. A
+    balanced tour, where no stop dwarfs the mean of its peers, is NEVER capped —
+    the whole point of the v4 redesign. A cluster of 3+ NEAR-EQUAL rich stops
+    converges to a balanced delivery (only the single largest, if any, trims)
+    rather than each being cut. Needs ≥2 non-exempt stops for "domination" to mean
+    anything.
     """
-    return tuple((plan, ()) for plan in build_poi_beat_plans(route, snapshot, lenses=lenses))
+    n = len(audio)
+    caps: list[int | None] = [None if is_exempt[i] else audio[i] for i in range(n)]
+    non_exempt = [i for i in range(n) if caps[i] is not None]
+    if len(non_exempt) < 2:
+        return caps  # need a dominator + at least one drowned peer
+    # Cap the largest current dominator to the ceiling, then re-evaluate. A
+    # "dominator" is over the ⅓ ceiling AND exceeds the factor x the MEAN of the
+    # OTHER non-exempt stops — compared to the peers it is drowning, not to the
+    # next-largest (so two co-dominators can't shield each other, the panel gap).
+    # Terminates: each cap strictly lowers the (integer) delivered total, which is
+    # bounded below by 0, so the loop runs a finite number of passes.
+    while True:
+        total = sum(audio[i] if caps[i] is None else caps[i] for i in range(n))
+        ceiling = int(GOVERNOR_SHARE_OF_DELIVERED * total)
+        target: int | None = None
+        for i in non_exempt:
+            if caps[i] <= ceiling:
+                continue
+            others = [caps[j] for j in non_exempt if j != i]
+            mean_others = sum(others) / len(others)
+            if caps[i] <= GOVERNOR_DOMINATION_FACTOR * max(1.0, mean_others):
+                continue  # balanced — not a drowning outlier
+            if target is None or caps[i] > caps[target]:
+                target = i
+        if target is None:
+            break
+        caps[target] = ceiling
+    return caps
+
+
+def build_poi_beat_plans_capped(
+    route: Route,
+    snapshot: CorpusSnapshot,
+    *,
+    lenses: Iterable[str] | None,
+    end_is_none: bool = False,
+) -> tuple[tuple[POIBeats, tuple[str, ...]], ...]:
+    """C9 governor v4 — the shared EMISSION choke point: ``(kept, overflow_ids)``
+    per POI, in route order. All six build sites (generate, compose, preview,
+    tour_build, the two golden harnesses) go through here so the cap lives in ONE
+    place.
+
+    Caps ONLY a genuine dominating outlier (:func:`_domination_caps`); overflow
+    beats are returned for C9g / keep-exploring (never silently dropped). EXEMPT
+    (may dominate): the MARQUEE — the highest-tier delivered stop, ties broken by
+    highest audio — and ``route.fixed_end_poi_id`` (the fixed destination / pulled
+    endpoint). Marquee-by-importance replaces the v3 proximity-seed exemption that
+    a hostile panel gutted (a thin courtyard held the exemption while the tier-5
+    star was capped, and a demoted seed left the exemption dangling).
+
+    Scope: the cap runs only when ``end_is_none`` (round-trip / open-walk). A→B
+    (``end_is_none`` False) stays byte-identical tier-dwell emission. On end=None a
+    marquee always exists, so there is no empty-exempt inversion.
+    """
+    plans = build_poi_beat_plans(route, snapshot, lenses=lenses)
+    if not end_is_none or not plans:
+        return tuple((plan, ()) for plan in plans)
+    audio = [planned_audio_seconds(plan.beats) for plan in plans]
+    exempt_ids: set[str] = set()
+    if route.fixed_end_poi_id is not None:
+        exempt_ids.add(route.fixed_end_poi_id)
+    # The marquee: highest-tier stop, ties -> highest audio. Always a real POI in
+    # the delivered route (never a dangling / demoted id).
+    marquee = max(range(len(plans)), key=lambda i: (route.pois[i].tier, audio[i]))
+    exempt_ids.add(route.pois[marquee].id)
+    is_exempt = [poi.id in exempt_ids for poi in route.pois]
+    caps = _domination_caps(is_exempt, audio)
+    return tuple(
+        govern_poi_beats(plan, cap) for plan, cap in zip(plans, caps, strict=True)
+    )
 
 
 def planned_capped_audio_seconds(
@@ -1295,6 +1380,12 @@ def select_route(
     # instead of silently reading fully-GREEN. (The engine-side answer to the
     # 2026-07-02 pool-vs-delivered gap; replaces the client-side thin heuristic.)
     if assessment.status == "GREEN":
+        # v4: measure the UNCAPPED available content, NOT the governor-capped
+        # emission. The governor only moves a dominating stop's overflow into
+        # keep-exploring extras (still available to the walker on demand), so a
+        # capped tour is not "thin" — its content is all there. Measuring capped
+        # audio would flip a healthy tour to a spurious thin banner when the
+        # governor fires (the panel's bug-5). This is the original C11a currency.
         delivered_audio = sum(
             planned_capped_audio_seconds(p, snapshot, interest or None, None)
             for p in route.pois

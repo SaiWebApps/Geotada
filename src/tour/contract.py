@@ -292,6 +292,12 @@ class BeatSequence(BaseModel):
 
     poi_beats: tuple[POIBeats, ...]
     vignette_beats: dict[int, tuple[BeatRef, ...]] = Field(default_factory=dict)
+    # C9g: per-POI overflow beat ids — the beats the governor trimmed off a
+    # dominating stop. Carried here so _flatten_pois can surface them on
+    # ScriptPOI.overflow_beat_ids (keep-exploring extras) instead of silently
+    # dropping them. ``poi_id -> ordered overflow beat ids``; empty when the
+    # governor did not fire (the common case).
+    overflow_by_poi: dict[str, tuple[str, ...]] = Field(default_factory=dict)
 
 
 # ---------------------------------------------------------------------------

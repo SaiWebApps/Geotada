@@ -112,8 +112,10 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
 
 
 def _build_beat_sequence(route, snapshot, lenses) -> BeatSequence:
+    capped = build_poi_beat_plans_capped(route, snapshot, lenses=lenses, end_is_none=True)
     return BeatSequence(
-        poi_beats=tuple(pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=lenses))
+        poi_beats=tuple(pb for pb, _ in capped),
+        overflow_by_poi={pb.poi_id: ov for pb, ov in capped if ov},
     )
 
 

@@ -141,6 +141,29 @@ def test_split_sentences_empty():
 # ---------------------------------------------------------------------------
 
 
+def test_c9g_overflow_surfaces_on_scriptpoi():
+    """C9g: BeatSequence.overflow_by_poi flows onto ScriptPOI.overflow_beat_ids so
+    the governor's trimmed beats are SURFACED (keep-exploring extras), never
+    silently dropped — the panel's blocking bug 3."""
+    poi = _poi("p1", "Place des Vosges")
+    kept = _beat("kept-1", poi.id, body="Henri IV built the square.", nf="establishing")
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(
+                poi_id=poi.id,
+                poi_name=poi.name,
+                ordering_strategy="narrative_function",
+                beats=(kept,),
+            ),
+        ),
+        overflow_by_poi={poi.id: ("trimmed-a", "trimmed-b")},
+    )
+    script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
+    sp = {p.id: p for p in script.selected_pois}[poi.id]
+    assert sp.overflow_beat_ids == ("trimmed-a", "trimmed-b"), "overflow surfaced, not dropped"
+    assert sp.beat_ids == ("kept-1",), "kept beats unchanged"
+
+
 def test_cold_open_uses_stop_orientation_when_present():
     poi = _poi("p1", "Place des Vosges")
     orient = _beat(

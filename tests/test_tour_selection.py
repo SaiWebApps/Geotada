@@ -1607,19 +1607,93 @@ def test_end_none_route_records_exempt_anchor_identity():
     assert rt.fixed_end_poi_id is None
 
 
-def test_build_poi_beat_plans_capped_is_uncapped_identity_in_c9f_i():
-    """C9f-i: the shared capped seam returns the FULL plan + EMPTY overflow —
-    destructured, byte-identical to build_poi_beat_plans. Pins the no-cap
-    invariant so a stray truncation can't sneak in before C9f-ii deliberately
-    enables the allowance cap here."""
-    snap = _frozen_end_none_snapshot()
-    route = select_route(
-        TourInput(start=PDV, duration_min=60, city_slug="paris", round_trip=False), snap
+def test_domination_caps():
+    """Governor v4 core: caps a DOMINATING OUTLIER to ~1/3 of delivered, but leaves
+    a BALANCED tour untouched (the v3 always-on cap over-trimmed balanced tours —
+    the panel's bug 4)."""
+    from src.tour.selection import _domination_caps
+
+    # UC5 (exempt marquee 396; Ile 363 dominates its 74/56/42 peers).
+    caps = _domination_caps([True, False, False, False, False], [396, 56, 74, 363, 42])
+    assert caps[0] is None, "exempt marquee uncapped"
+    total = 396 + caps[1] + caps[2] + caps[3] + caps[4]
+    assert caps[3] < 363 and caps[3] <= total // 3 + 1, "the dominator capped to ~1/3"
+    assert caps[1] == 56 and caps[2] == 74 and caps[4] == 42, "peers untouched"
+
+    # BALANCED: two near-equal non-exempt (193 vs 162, within the 1.5x factor) →
+    # NOT a drowning outlier → NOT capped.
+    assert _domination_caps([True, False, False], [196, 193, 162]) == [None, 193, 162]
+
+    # A single non-exempt stop cannot 'dominate' (no peer to drown) → no cap.
+    assert _domination_caps([True, False], [400, 900]) == [None, 900]
+
+    # CO-DOMINATORS: two near-equal huge stops drowning three small peers must
+    # BOTH cap. Comparing to the next-largest would let them shield each other
+    # (the panel gap) — comparing to the MEAN of the others catches both.
+    co = _domination_caps([False, False, False, False, False], [1000, 950, 100, 80, 60])
+    t = sum(co)
+    assert co[0] <= t // 3 + 1 and co[1] <= t // 3 + 1, "both co-dominators capped, not shielded"
+    assert (co[2], co[3], co[4]) == (100, 80, 60), "the drowned small peers are untouched"
+
+
+def test_governor_v4_marquee_exempt_domination_gated():
+    """Governor v4 wrapper: exempts the MARQUEE (highest-tier stop, not a proximity
+    seed), caps only a dominating outlier (overflow returned, kept+overflow==full),
+    leaves a balanced tour whole, and A→B stays uncapped. Explicit beats (select_
+    poi_beats caps tier-3 to 3 beats, so we use tier-4/5 with controlled audio)."""
+    from src.tour.routing import planned_audio_seconds, summarise_route
+
+    def _b(pid, n, secs):
+        return [
+            BeatRef(id=f"{pid}-b{i}", poi_id=pid, est_spoken_seconds=secs, active_status="active")
+            for i in range(n)
+        ]
+
+    def _route(pois):
+        return summarise_route(
+            pois, start_lat=48.8556, start_lng=2.3658, round_trip=True,
+            duration_min=60, spine_area="Le Marais", routing_client=None,
+        )
+
+    # tier-5 marquee (exempt by TIER even though the tier-4 dump has more audio) +
+    # a dominating tier-4 dump + a thin tier-4 peer.
+    marquee = _poi("marquee", tier=5, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+    dump = _poi("dump", tier=4, lat=48.8560, lng=2.3665, areas=("Le Marais",))
+    peer = _poi("peer", tier=4, lat=48.8564, lng=2.3670, areas=("Le Marais",))
+    beats = {
+        "marquee": _b("marquee", 3, 200),
+        "dump": _b("dump", 6, 300),
+        "peer": _b("peer", 2, 150),
+    }
+    snap = _snap(
+        [marquee, dump, peer], area_types={"Le Marais": "neighborhood"}, beats_by_poi=beats
     )
-    plain = build_poi_beat_plans(route, snap, lenses=None)
-    capped = build_poi_beat_plans_capped(route, snap, lenses=None)
-    assert tuple(pb for pb, _ in capped) == plain
-    assert all(overflow == () for _, overflow in capped), "no overflow until the cap lands"
+    route = _route([marquee, dump, peer])
+
+    capped = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=True)
+    by_id = {kept.poi_id: (kept, ov) for kept, ov in capped}
+    delivered = sum(planned_audio_seconds(k.beats) for k, _ in capped)
+    m_kept, m_ov = by_id["marquee"]
+    assert len(m_kept.beats) == 3 and m_ov == (), "the tier-5 marquee is exempt (not the seed)"
+    d_kept, d_ov = by_id["dump"]
+    assert len(d_ov) > 0, "the lower-tier dominating dump overflows"
+    assert planned_audio_seconds(d_kept.beats) <= delivered // 3 + 300, "dump within 1/3 (+1 beat)"
+    assert len(by_id["peer"][0].beats) == 2, "thin peer untouched"
+    plain = {p.poi_id: p for p in build_poi_beat_plans(route, snap, lenses=None)}
+    assert {b.id for b in d_kept.beats} | set(d_ov) == {b.id for b in plain["dump"].beats}
+
+    # BALANCED tour (3 near-equal stops) → NOTHING capped (the panel's bug-4 fix).
+    bal = {"m": _b("m", 3, 200), "p1": _b("p1", 3, 190), "p2": _b("p2", 3, 180)}
+    bp = [_poi(x, tier=4, lat=48.8556 + i * 0.0006, lng=2.3658, areas=("Le Marais",))
+          for i, x in enumerate(("m", "p1", "p2"))]
+    bsnap = _snap(bp, area_types={"Le Marais": "neighborhood"}, beats_by_poi=bal)
+    bcap = build_poi_beat_plans_capped(_route(bp), bsnap, lenses=None, end_is_none=True)
+    assert all(ov == () for _, ov in bcap), "a balanced tour is never capped"
+
+    # A→B (end_is_none False) → byte-identical uncapped.
+    ab = build_poi_beat_plans_capped(route, snap, lenses=None, end_is_none=False)
+    assert tuple(pb for pb, _ in ab) == tuple(build_poi_beat_plans(route, snap, lenses=None))
+    assert all(ov == () for _, ov in ab)
 
 
 # ---------------------------------------------------------------------------

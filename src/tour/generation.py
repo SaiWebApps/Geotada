@@ -813,6 +813,10 @@ def _flatten_pois(beat_sequence: BeatSequence, route: Route) -> tuple[ScriptPOI,
                     planned_audio_seconds(plan.beats) if plan else 0,
                 ),
                 beat_ids=beat_ids,
+                # C9g: the governor's trimmed-off beats, surfaced for
+                # keep-exploring (never silently dropped). Empty unless the cap
+                # fired on this stop.
+                overflow_beat_ids=beat_sequence.overflow_by_poi.get(poi.id, ()),
             )
         )
     return tuple(out)

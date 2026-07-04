@@ -112,7 +112,12 @@ def _generated_beat_ids(snapshot, fixture):
     # C9b golden-harness fidelity: route through the shipped build path so the
     # goldens merge co-located demoted_beats like production (diagnostic R2).
     seq = BeatSequence(
-        poi_beats=tuple(pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=None))
+        poi_beats=tuple(
+            pb
+            for pb, _ in build_poi_beat_plans_capped(
+                route, snapshot, lenses=None, end_is_none=True
+            )
+        )
     )
     script = generate(seq, route, tour_input)
     return script, route, seq

@@ -209,6 +209,9 @@ tour-build: db-up ## Build one real audio tour from the live Paris graph and ren
 measure-planned-audio: db-up ## Per-POI planned voiced audio vs tier-dwell proxy (dwell/audio spec pre-measurement). ARGS='--pois "Pont Neuf,..." --duration-min 90'
 	uv run python scripts/measure_planned_audio.py $(ARGS)
 
+measure-governor: db-up ## Per-stop uncapped vs v3-capped emitted audio for a live tour (C9 governor before/after proof). ARGS="--start '48.8530,2.3499' --duration 60 --round-trip"
+	uv run python scripts/measure_governor.py $(ARGS)
+
 # ──────────────────────────────────────────────────────────
 # APPLICATION
 # ──────────────────────────────────────────────────────────

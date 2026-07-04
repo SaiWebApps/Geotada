@@ -229,15 +229,22 @@ def generate_trip(
     # voices the one-liner inside the leg narration.
     scripts = []
     for flavour in flavours:
-        # C9f-i: through the shared capped seam (no cap yet; overflow discarded
-        # until C9g). Destructure to the POIBeats half -> byte-identical today.
-        plans = tuple(pb for pb, _ in build_poi_beat_plans_capped(flavour, snapshot, lenses=lenses))
+        # C9 governor v4 seam: caps a dominating stop, overflow -> keep-exploring.
+        capped = build_poi_beat_plans_capped(
+            flavour, snapshot, lenses=lenses, end_is_none=tour_input.end is None
+        )
+        plans = tuple(pb for pb, _ in capped)
+        overflow_by_poi = {pb.poi_id: ov for pb, ov in capped if ov}
         vignette_beats = select_vignette_beats(
             flavour.vignettes, snapshot.beats_by_poi, lenses=lenses
         )
         scripts.append(
             generate(
-                BeatSequence(poi_beats=tuple(plans), vignette_beats=vignette_beats),
+                BeatSequence(
+                    poi_beats=tuple(plans),
+                    vignette_beats=vignette_beats,
+                    overflow_by_poi=overflow_by_poi,
+                ),
                 flavour,
                 tour_input,
             )
@@ -446,18 +453,21 @@ def compose_trip(
     # fixed-end here as it did at generate. Empty for legacy trips -> fail open.
     if anchor_restore:
         route = route.model_copy(update=anchor_restore)
-    # C9f-i: compose goes through the SAME shared seam as generate/preview. Was a
-    # hand-rolled loop over `picked` that skipped the demoted_beats merge — a no-op
-    # here (summarise_route rebuilds with empty demoted_beats, so byte-identical),
-    # but it unifies the choke point and pairs with the anchor-id restore above so
-    # C9f-ii's cap will exempt the start-anchor at compose too, not just generate.
-    plans = tuple(
-        pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=tour_input.lenses)
+    # C9f-i: compose goes through the SAME shared governor seam as
+    # generate/preview (unifies the choke point; the anchor-id restore above lets
+    # the cap exempt the marquee at compose too). v4 caps a dominating stop and
+    # surfaces its overflow.
+    capped = build_poi_beat_plans_capped(
+        route, snapshot, lenses=tour_input.lenses, end_is_none=tour_input.end is None
     )
+    plans = tuple(pb for pb, _ in capped)
+    overflow_by_poi = {pb.poi_id: ov for pb, ov in capped if ov}
     vignette_beats = select_vignette_beats(
         route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
     )
-    seq = BeatSequence(poi_beats=tuple(plans), vignette_beats=vignette_beats)
+    seq = BeatSequence(
+        poi_beats=tuple(plans), vignette_beats=vignette_beats, overflow_by_poi=overflow_by_poi
+    )
     stitched = generate(seq, route, tour_input)
 
     counting = _CountingComposeClient(compose_client)
@@ -621,14 +631,20 @@ def preview_trip(
             "No tourable POIs reachable from this start for the requested duration.",
         )
 
-    plans = tuple(
-        pb for pb, _ in build_poi_beat_plans_capped(route, snapshot, lenses=tour_input.lenses)
+    capped = build_poi_beat_plans_capped(
+        route, snapshot, lenses=tour_input.lenses, end_is_none=tour_input.end is None
     )
+    plans = tuple(pb for pb, _ in capped)
+    overflow_by_poi = {pb.poi_id: ov for pb, ov in capped if ov}
     vignette_beats = select_vignette_beats(
         route.vignettes, snapshot.beats_by_poi, lenses=tour_input.lenses
     )
     script = generate(
-        BeatSequence(poi_beats=tuple(plans), vignette_beats=vignette_beats),
+        BeatSequence(
+            poi_beats=tuple(plans),
+            vignette_beats=vignette_beats,
+            overflow_by_poi=overflow_by_poi,
+        ),
         route,
         tour_input,
     )
