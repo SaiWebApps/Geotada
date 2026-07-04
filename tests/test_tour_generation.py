@@ -131,6 +131,49 @@ def test_split_sentences_handles_quoted_material():
     assert "Brice argued his case." in out
 
 
+def test_split_sentences_keeps_name_initials():
+    """Personal-name initials (J.-B., J. M. W.) are not sentence boundaries — the
+    splitter must not read "…a portrait by J.-B." as a stuttered sentence (TTS
+    artifact, User-agent finding)."""
+    assert split_sentences("A portrait by J.-B. Vanloo hangs here.") == [
+        "A portrait by J.-B. Vanloo hangs here."
+    ]
+    assert split_sentences("Boileau, Racine, and J.-B. Lully rehearsed here.") == [
+        "Boileau, Racine, and J.-B. Lully rehearsed here."
+    ]
+    assert split_sentences("She met J. M. W. Turner in London.") == [
+        "She met J. M. W. Turner in London."
+    ]
+    # A real boundary AFTER an initials phrase still splits.
+    assert split_sentences("A work by J.-B. Vanloo. It hangs upstairs.") == [
+        "A work by J.-B. Vanloo.",
+        "It hangs upstairs.",
+    ]
+
+
+def test_split_sentences_terminal_abbreviations_still_split():
+    """Dotted-caps abbreviations that legitimately END a sentence (U.S., A.D.,
+    P.M.) must NOT be re-glued to the next sentence — the mirror of the initials
+    bug. They share the shape of name-initials, so an over-broad re-glue would
+    fuse two real sentences (TTS runs them together with no pause)."""
+    assert split_sentences("He is from the U.S. The trip was long.") == [
+        "He is from the U.S.",
+        "The trip was long.",
+    ]
+    assert split_sentences("We saw the U.K. It was raining.") == [
+        "We saw the U.K.",
+        "It was raining.",
+    ]
+    assert split_sentences("It happened in 1914 A.D. The war began.") == [
+        "It happened in 1914 A.D.",
+        "The war began.",
+    ]
+    assert split_sentences("The exhibit runs A.M. to P.M. Come early.") == [
+        "The exhibit runs A.M. to P.M.",
+        "Come early.",
+    ]
+
+
 def test_split_sentences_empty():
     assert split_sentences("") == []
     assert split_sentences("   ") == []

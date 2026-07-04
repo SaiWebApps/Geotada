@@ -95,6 +95,18 @@ _ABBREVIATIONS: frozenset[str] = frozenset(
     {"mr", "mrs", "ms", "dr", "st", "no", "vs", "etc", "e.g", "i.e", "mme", "mlle"}
 )
 _SPLIT_RE = re.compile(r"(?<=[.!?])\s+(?=[A-ZÀ-ÖØ-Þ«„(\"'])")
+# Personal-name initials — a single capital letter + period, optionally chained
+# with '-' or more initials: "J.", "J.-B.", "J.B.". These end in a period but are
+# NEVER a sentence boundary, so the splitter must re-glue them (else TTS reads
+# "…a portrait by J.-B." as its own stuttered sentence — the User-agent finding).
+_INITIALS_RE = re.compile(r"^[A-ZÀ-ÖØ-Þ]\.(-?[A-ZÀ-ÖØ-Þ]\.)*$")
+# ...but these dotted-caps tokens have the SAME shape as name-initials yet DO
+# legitimately end a sentence ("the U.S.", "1914 A.D.", "by 5 P.M."). They must
+# NOT be re-glued, or two real sentences fuse (the mirror of the stutter bug).
+# Keyed by lowercased, trailing-period-stripped form.
+_TERMINAL_ABBREVS: frozenset[str] = frozenset(
+    {"u.s", "u.k", "u.s.a", "u.n", "e.u", "a.d", "b.c", "a.m", "p.m", "d.c"}
+)
 
 
 def split_sentences(text: str) -> list[str]:
@@ -121,10 +133,16 @@ def split_sentences(text: str) -> list[str]:
 
 
 def _last_word_is_abbrev(s: str) -> bool:
-    tail = s.rstrip(".!?\"'»)").rstrip().split()
-    if not tail:
+    words = s.split()
+    if not words:
         return False
-    return tail[-1].lower().rstrip(".") in _ABBREVIATIONS
+    last = words[-1].rstrip("\"'»)")  # keep the periods; drop a trailing quote/paren
+    norm = last.lower().rstrip(".")
+    # A personal-name initial (J., J.-B.) is never a sentence end — but a dotted-
+    # caps abbreviation that CAN end a sentence (U.S., A.D., P.M.) is excluded.
+    if _INITIALS_RE.match(last) and norm not in _TERMINAL_ABBREVS:
+        return True
+    return norm in _ABBREVIATIONS
 
 
 # ---------------------------------------------------------------------------
