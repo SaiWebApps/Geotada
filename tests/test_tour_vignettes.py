@@ -170,13 +170,31 @@ def test_silent_band_excluded():
 
 
 def test_dwell_band_poi_not_a_vignette_no_lens():
-    """A tier-3 no-lens POI (spotlight 3.0, short = dwell band) is not vignette
-    material — it belongs to the dwell pool, not the walk-past track."""
+    """A RICH tier-3 no-lens POI (dwell band, >= MIN_DWELL_AUDIO_SECONDS of audio)
+    belongs to the dwell pool, not the walk-past track."""
     mid = _mid(_A, _B)
     v = _poi("v-dwell-band", tier=3, lat=mid[0] + 20 * _DEG_PER_M_LAT, lng=mid[1])
+    rich = [
+        BeatRef(id=f"v-dwell-band-b{i}", poi_id="v-dwell-band", active_status="active",
+                est_spoken_seconds=60)
+        for i in range(3)  # 180s >= 90s -> stays a dwell stop, not a vignette
+    ]
     stops = _stops_ab()
-    snap = _snap([*stops, v], {"v-dwell-band": _beats("v-dwell-band")})
+    snap = _snap([*stops, v], {"v-dwell-band": rich})
     assert select_vignettes(_route(stops), snap) == {}
+
+
+def test_thin_dwell_band_poi_demoted_to_vignette():
+    """Filler-stub (2026-07-04): a THIN tier-3 dwell-band POI (under
+    MIN_DWELL_AUDIO_SECONDS) is demoted to a walk-by vignette rather than left as a
+    dedicated "walked here for one sentence" stop."""
+    mid = _mid(_A, _B)
+    v = _poi("v-thin", tier=3, lat=mid[0] + 20 * _DEG_PER_M_LAT, lng=mid[1])
+    thin = [BeatRef(id="v-thin-b0", poi_id="v-thin", active_status="active", est_spoken_seconds=40)]
+    stops = _stops_ab()
+    snap = _snap([*stops, v], {"v-thin": thin})
+    vigs = select_vignettes(_route(stops), snap)
+    assert any(p.id == "v-thin" for leg in vigs.values() for p in leg), "thin stop -> vignette"
 
 
 def test_lens_dims_off_genre_landmark_into_vignette():

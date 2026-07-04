@@ -147,6 +147,19 @@ BAND_THRESHOLD_VIGNETTE: float = 0.5  # >= 0.5 -> walk-past vignette; below -> s
 # proximity detour would otherwise push its score below the silent cut.
 BAND_LANDMARK_TIER: int = 4
 
+# Filler-stub demotion (2026-07-04, user-agent ratified). The dwell/vignette band
+# decision (band_for_spotlight) is score-driven (gravity x lens x proximity) and
+# NEVER looks at how much a stop will actually SPEAK. So a low-tier POI with one
+# 56s beat still becomes a full DWELL stop — a "walked here for one sentence"
+# anticlimax the tourists flagged (Crypte 56s, Hotel de la Monnaie 44s). A DWELL
+# stop that would emit fewer than this many voiced seconds is demoted to a
+# walk-by vignette instead — EXCEPT a landmark (tier >= BAND_LANDMARK_TIER), which
+# never vanishes to a one-liner (a thin landmark discloses, per the density gate).
+# Measured on FULL emitted audio (select_poi_beats keeps every beat; the lens only
+# re-orders), so a stop thin FOR a lens but rich overall (e.g. the Pantheon, ~40s
+# on-lens but ~275s total) is correctly KEPT.
+MIN_DWELL_AUDIO_SECONDS: int = 90
+
 # The five band labels, ordered loudest -> quietest. "silent" means excluded.
 BAND_HEADLINE: str = "headline"
 BAND_FULL: str = "full"
@@ -869,6 +882,26 @@ def _domination_caps(is_exempt: list[bool], audio: list[int]) -> list[int | None
     return caps
 
 
+def _is_filler_stub(poi: POI, snapshot: CorpusSnapshot, lenses: Iterable[str] | None) -> bool:
+    """A dwell-eligible POI too THIN to justify a dedicated stop — demote it to a
+    walk-by vignette (the "walked here for one sentence" anticlimax).
+
+    True iff the POI would be a DWELL stop (on-path dwell band) that is NOT a
+    landmark (tier < BAND_LANDMARK_TIER) AND whose full emitted audio is under
+    ``MIN_DWELL_AUDIO_SECONDS``. The dwell-band guard matters: a silent or already-
+    vignette POI is NOT a filler-stub (it was never going to be a dedicated stop),
+    so this must not re-promote a silent POI into a walk-by. Shared by the dwell-
+    pool filter (keeps it out of the greedy) and :func:`select_vignettes` (routes
+    it to a walk-by), so /trips/generate and /trips/compose agree by construction.
+    """
+    if poi.tier >= BAND_LANDMARK_TIER:
+        return False
+    score = spotlight(poi, lenses=lenses or None, snapshot=snapshot)
+    if not is_dwell_band(band_for_spotlight(score, tier=poi.tier)):
+        return False  # vignette/silent already — not a would-be dwell stop
+    return planned_capped_audio_seconds(poi, snapshot, lenses, None) < MIN_DWELL_AUDIO_SECONDS
+
+
 def build_poi_beat_plans_capped(
     route: Route,
     snapshot: CorpusSnapshot,
@@ -1084,6 +1117,7 @@ def select_route(
     # stop everywhere.
     reachable_count = 0
     candidates: list[POI] = []
+    filler_stubs: list[tuple[int, POI]] = []  # (audio, poi) for the never-empty guard
     for poi in snapshot.pois:
         in_reach = reach_contains(poi.lat, poi.lng)
         if in_reach:
@@ -1110,7 +1144,22 @@ def select_route(
             # Step 2.3: fixed-end corridor gate — drop anchors whose A→poi→B
             # detour overruns the walk budget. Skipped when end is None.
             continue
+        if _is_filler_stub(poi, snapshot, interest or None):
+            # Too thin for a dedicated stop — keep it OUT of the greedy's dwell
+            # pool so it surfaces as a walk-by vignette (select_vignettes applies
+            # the SAME predicate). Held for the never-empty guard below.
+            filler_stubs.append(
+                (planned_capped_audio_seconds(poi, snapshot, interest or None, None), poi)
+            )
+            continue
         candidates.append(poi)
+
+    # Never empty the tour: if EVERY dwell-eligible POI was a thin filler-stub,
+    # keep the richest one as a real stop (a one-stop tour beats a zero-stop tour;
+    # the density gate already surfaces thinness). Landmarks are never filler, so
+    # this only fires in genuinely thin low-tier areas.
+    if not candidates and filler_stubs:
+        candidates.append(max(filler_stubs, key=lambda pair: pair[0])[1])
 
     reach = ReachVerdict(
         mode=(
@@ -1361,10 +1410,17 @@ def select_route(
     # and where pois[0] is NOT the start-anchor after Held-Karp) read the SAME
     # exempt set the greedy used. Additive metadata only; pois/transits/beats are
     # untouched (identity baseline holds bit-for-bit). None on A→B / empty routes.
+    # Only persist an anchor id that is ACTUALLY in the final route: the greedy's
+    # first-seated exempt_anchor_id can be dropped afterward by co-located demotion
+    # (folded into its host), which would otherwise leave start_anchor_poi_id
+    # dangling on a POI the route no longer contains. (v4's governor exempts the
+    # marquee, computed in-wrapper, so this field is advisory — but keep it
+    # consistent for the persisted options_json contract.)
+    route_poi_ids = {p.id for p in route.pois}
     anchor_update: dict[str, str | None] = {}
-    if exempt_anchor_id is not None:
+    if exempt_anchor_id is not None and exempt_anchor_id in route_poi_ids:
         anchor_update["start_anchor_poi_id"] = exempt_anchor_id
-    if fixed_end is not None:
+    if fixed_end is not None and fixed_end.id in route_poi_ids:
         anchor_update["fixed_end_poi_id"] = fixed_end.id
     if anchor_update:
         route = route.model_copy(update=anchor_update)
@@ -2288,7 +2344,12 @@ def select_vignettes(
         if not _has_active_beats(poi, snapshot):
             continue
         score = spotlight(poi, lenses=lenses or None, snapshot=snapshot)
-        if band_for_spotlight(score, tier=poi.tier) != BAND_VIGNETTE:
+        # Vignette-band POIs are walk-bys by score; ALSO route a demoted
+        # filler-stub here (a dwell-band POI too thin for a dedicated stop — the
+        # same predicate the dwell-pool filter used, so generate/compose agree).
+        if band_for_spotlight(score, tier=poi.tier) != BAND_VIGNETTE and not _is_filler_stub(
+            poi, snapshot, lenses
+        ):
             continue
         scored.append((score, poi))
     if not scored:

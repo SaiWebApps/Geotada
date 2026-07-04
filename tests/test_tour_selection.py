@@ -1213,11 +1213,20 @@ def test_phase7_fill_pass_concorde_smoke_real_corpus():
 
     inp = TourInput(start=(48.8656, 2.3210), duration_min=180, city_slug="paris", round_trip=False)
     route = live_select_route(inp, snapshot)
-    # Phase 6 rerun had 5 anchors; Phase 7 fill pass must add at least one.
-    assert len(route.pois) >= 6, (
-        f"Phase 7 fill pass should add ≥1 anchor on Concorde 180min "
-        f"(baseline was 5). Got {len(route.pois)}: {[p.name for p in route.pois]}"
+    # Phase 7 fill pass builds a substantial multi-anchor tour. The 2026-07-04
+    # filler-stub demotion moved the thin bridge stops (Pont de la Concorde, Pont
+    # Alexandre III) to walk-by vignettes, so the roster is now ~5 SUBSTANTIAL
+    # anchors (Concorde, Petit/Grand Palais, Champs-Elysees, Arc de Triomphe)
+    # rather than 6 padded with thin bridges — a better tour, not a worse one.
+    from src.tour.selection import _is_filler_stub
+
+    assert len(route.pois) >= 5, (
+        f"Phase 7 fill pass should build a substantial multi-anchor tour on "
+        f"Concorde 180min. Got {len(route.pois)}: {[p.name for p in route.pois]}"
     )
+    # Every SEATED dwell stop is substantial — no filler-stub survived into the route.
+    fillers = [p.name for p in route.pois if _is_filler_stub(p, snapshot, None)]
+    assert not fillers, f"seated dwell stops must not be filler-stubs; got {fillers}"
 
 
 # ---------------------------------------------------------------------------

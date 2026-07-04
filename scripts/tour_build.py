@@ -30,6 +30,7 @@ from src.tour.compose_gate import (
     build_full_verifier,
     compose_and_verify,
 )
+from src.tour.beat_select import select_vignette_beats
 from src.tour.contract import BeatSequence, Script, TourInput
 from src.tour.density import TourabilityRefusedError
 from src.tour.generation import generate
@@ -113,8 +114,15 @@ def _resolve_start(driver, start_arg: str, city_slug: str) -> tuple[tuple[float,
 
 def _build_beat_sequence(route, snapshot, lenses) -> BeatSequence:
     capped = build_poi_beat_plans_capped(route, snapshot, lenses=lenses, end_is_none=True)
+    # Render the walk-past vignettes too (Track B + filler-stub demotions):
+    # select_route already populated route.vignettes; without this the CLI
+    # markdown silently drops every walk-by one-liner, including a thin stop that
+    # the governor demoted from a dedicated stop to a vignette. Mirrors the
+    # /trips API build sites so the CLI tour matches what the app voices.
+    vignette_beats = select_vignette_beats(route.vignettes, snapshot.beats_by_poi, lenses=lenses)
     return BeatSequence(
         poi_beats=tuple(pb for pb, _ in capped),
+        vignette_beats=vignette_beats,
         overflow_by_poi={pb.poi_id: ov for pb, ov in capped if ov},
     )
 
