@@ -36,6 +36,7 @@ from collections.abc import Iterable
 
 from .contract import POI, BeatRef, BeatSequence, OrderingStrategy, POIBeats, Route
 from .fixtures import sub_location_order_for
+from .routing import beat_spoken_seconds
 
 NARRATIVE_FUNCTION_ORDER: tuple[str, ...] = (
     "hook",
@@ -164,6 +165,37 @@ def select_poi_beats(
         ordering_strategy=strategy,
         beats=tuple(ordered),
     )
+
+
+def govern_poi_beats(
+    plan: POIBeats, allowance_seconds: int | None
+) -> tuple[POIBeats, tuple[str, ...]]:
+    """Cap a POI's emitted plan to a per-stop audio allowance (C9 governor).
+
+    ``allowance_seconds is None`` marks an EXEMPT stop (the start-anchor or the
+    fixed-end-B / pulled endpoint): the plan passes through untouched with no
+    overflow. Otherwise keep a PREFIX of the ordered beats whose cumulative
+    voiced seconds (``routing.beat_spoken_seconds``) stay within the allowance;
+    the FIRST beat is always kept (a stop must speak at least once, even if
+    ``beats[0]`` alone exceeds the allowance — the ratified bounded one-beat
+    overshoot). The remaining ordered beats are the keep-exploring overflow.
+    Pure; does not re-order (preserves the cold-open -> body -> closer arc up to
+    the cut).
+    """
+    if allowance_seconds is None or not plan.beats:
+        return plan, ()
+    cut = len(plan.beats)
+    consumed = 0
+    for i, beat in enumerate(plan.beats):
+        secs = beat_spoken_seconds(beat)
+        if i > 0 and consumed + secs > allowance_seconds:
+            cut = i
+            break
+        consumed += secs
+    if cut >= len(plan.beats):
+        return plan, ()
+    capped = plan.model_copy(update={"beats": plan.beats[:cut]})
+    return capped, tuple(b.id for b in plan.beats[cut:])
 
 
 # --- ordering strategies ----------------------------------------------------

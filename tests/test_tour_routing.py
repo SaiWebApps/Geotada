@@ -17,6 +17,7 @@ from src.tour.routing import (
     compute_dwell_seconds,
     envelope_radius_m,
     err_short_total_seconds,
+    governor_allowance_seconds,
     haversine_m,
     insertion_cost_seconds,
     pace_corrected_walk_seconds,
@@ -269,3 +270,30 @@ def test_planned_audio_seconds_sums_the_plan():
     beats = [_beat(est=300, wc=0), _beat(est=0, wc=150), _beat(est=0, wc=0)]
     assert planned_audio_seconds(beats) == 360  # 300 + 60 + 0
     assert planned_audio_seconds([]) == 0
+
+
+# ---------------------------------------------------------------------------
+# governor_allowance_seconds — the C9 per-stop share-governor allowance
+# (ratified 2026-07-03: budget / min(3, d//10) = budget/3 for d>=30).
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("d", [30, 45, 60, 90, 120])
+def test_governor_allowance_is_budget_over_three_for_normal_durations(d: int):
+    # d>=30 -> min(3, d//10)=3 -> allowance = target_audio_seconds(d)//3.
+    assert governor_allowance_seconds(d) == target_audio_seconds(d) // 3
+
+
+def test_governor_allowance_concrete_values():
+    # 30-min budget 896 -> 298s (~5 min); 90-min budget 2689 -> 896s (~15 min).
+    assert governor_allowance_seconds(30) == 298
+    assert governor_allowance_seconds(90) == 896
+
+
+def test_governor_allowance_divisor_floors_for_short_durations():
+    # d<20 -> d//10 in {0,1} -> divisor floored at 1 -> allowance == full budget
+    # (very short tours seat ~1 stop; no incidental cap needed). No ZeroDivision.
+    assert governor_allowance_seconds(15) == target_audio_seconds(15)
+    assert governor_allowance_seconds(5) == target_audio_seconds(5)
+    # d in [20,29] -> d//10=2 -> budget/2.
+    assert governor_allowance_seconds(25) == target_audio_seconds(25) // 2

@@ -11,10 +11,11 @@ from src.tour.beat_select import (
     NARRATIVE_FUNCTION_ORDER,
     choose_ordering_strategy,
     find_area_orientation_beat,
+    govern_poi_beats,
     reorder_final_stop_for_closing,
     select_poi_beats,
 )
-from src.tour.contract import POI, BeatRef, BeatSequence, PhysicalCue, POIBeats, Route
+from src.tour.contract import POI, BeatRef, BeatSequence, PhysicalCue, POIBeats, Route, ScriptPOI
 from src.tour.fixtures import NOTRE_DAME_SUB_LOCATION_ORDER
 
 
@@ -1197,3 +1198,62 @@ def test_hoist_accepted_when_sibling_within_proximity():
 def test_hoist_rejected_when_beat_describes_distant_features_constant_check():
     """Pin the proximity constant so threshold drift fails loudly."""
     assert HOIST_PROXIMITY_M == 100.0
+
+
+# ---------------------------------------------------------------------------
+# C9 governor — govern_poi_beats truncation + additive contract fields.
+# _beat's word_count=250 -> beat_spoken_seconds round(250/150*60)=100s;
+# word_count=750 -> 300s.
+# ---------------------------------------------------------------------------
+
+
+def _plan(*beats: BeatRef) -> POIBeats:
+    return POIBeats(
+        poi_id="p", poi_name="P", ordering_strategy="narrative_function", beats=beats
+    )
+
+
+def test_govern_exempt_when_allowance_none_passes_plan_through():
+    plan = _plan(_beat("a", word_count=750), _beat("b", word_count=750))
+    capped, overflow = govern_poi_beats(plan, None)
+    assert capped is plan
+    assert overflow == ()
+
+
+def test_govern_all_fit_no_overflow():
+    plan = _plan(_beat("a", word_count=250), _beat("b", word_count=250))  # 100 + 100
+    capped, overflow = govern_poi_beats(plan, 300)  # allowance 300 >= 200
+    assert capped is plan
+    assert overflow == ()
+
+
+def test_govern_prefix_cut_overflow_is_ordered_remainder():
+    # 100 + 100 + 100; allowance 250 -> keep a,b (200); c overflows.
+    plan = _plan(
+        _beat("a", word_count=250), _beat("b", word_count=250), _beat("c", word_count=250)
+    )
+    capped, overflow = govern_poi_beats(plan, 250)
+    assert tuple(b.id for b in capped.beats) == ("a", "b")
+    assert overflow == ("c",)
+
+
+def test_govern_always_keeps_first_beat_even_when_it_alone_exceeds_allowance():
+    # beat[0] alone (300s) > 100s allowance -> still kept (bounded overshoot); rest overflow.
+    plan = _plan(_beat("a", word_count=750), _beat("b", word_count=250))
+    capped, overflow = govern_poi_beats(plan, 100)
+    assert tuple(b.id for b in capped.beats) == ("a",)
+    assert overflow == ("b",)
+
+
+def test_govern_empty_plan_is_noop():
+    plan = _plan()
+    capped, overflow = govern_poi_beats(plan, 100)
+    assert capped is plan
+    assert overflow == ()
+
+
+def test_c9c_additive_contract_field_defaults():
+    sp = ScriptPOI(id="x", name="X", tier=5, lat=48.0, lng=2.0)
+    assert sp.overflow_beat_ids == ()
+    route = _route_for([_poi("A")])
+    assert route.fixed_end_poi_id is None

@@ -99,6 +99,21 @@ def target_audio_seconds(duration_min: int) -> int:
     return round(duration_min * ERR_SHORT * AUDIO_FRACTION * 60)
 
 
+def governor_allowance_seconds(duration_min: int) -> int:
+    """Per-stop audio allowance for the C9 share-governor (ratified 2026-07-03).
+
+    An INCIDENTAL stop's emitted narration is capped to this many voiced
+    seconds; the ordered overflow beats become the keep-exploring extras. The
+    start-anchor and the fixed-end-B / pulled endpoint are EXEMPT (no cap).
+
+    = ``target_audio_seconds(d) // min(3, d // 10)`` — i.e. budget ÷ 3 for
+    d>=30 (~5 min @30min, ~15 min @90min): an incidental may speak up to ~1/3
+    of the tour audio. The divisor floors at 1 so very short tours (which seat
+    ~1 stop) impose no cap.
+    """
+    return target_audio_seconds(duration_min) // max(1, min(3, duration_min // 10))
+
+
 def walk_budget_seconds(duration_min: int) -> int:
     return round(duration_min * ERR_SHORT * WALK_FRACTION * 60)
 

@@ -246,6 +246,9 @@ class Route(BaseModel):
     flow_score: float = Field(default=0.0, ge=0)
     # M5: the REACH verdict for the request that produced this route.
     reach: ReachVerdict | None = None
+    # C9 governor: the fixed-end-B / pulled-endpoint POI id — EXEMPT from the
+    # per-stop audio-share cap (it may dominate). None for round trips / open walks.
+    fixed_end_poi_id: str | None = None
 
 
 OrderingStrategy = Literal["sub_location", "trigger_address", "narrative_function"]
@@ -316,6 +319,9 @@ class ScriptPOI(BaseModel):
     area: str | None = None
     dwell_seconds: int = 0
     beat_ids: tuple[str, ...] = ()
+    # C9 governor: ordered overflow beats capped OUT of this stop's plan — the
+    # "keep exploring here" extras. Empty for exempt anchors and thin stops.
+    overflow_beat_ids: tuple[str, ...] = ()
 
 
 class RouteOptionStop(BaseModel):
