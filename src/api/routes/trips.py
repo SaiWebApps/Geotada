@@ -544,7 +544,8 @@ def _tourability_payload(
     if assessment is None:
         return None
     return TripPreviewTourability(
-        status="YELLOW",
+        status=assessment.status,  # GREEN (delivered_thin) or YELLOW; RED raised earlier
+        delivered_thin=assessment.delivered_thin,
         fill_ratio=round(assessment.fill_ratio, 2),
         anchor_candidates=assessment.anchor_candidate_count,
         reachable_poi_count=assessment.reachable_poi_count,

@@ -304,6 +304,11 @@ _NAME_TOKEN_MIN_LEN: int = 4
 # matters more than route efficiency at that point.
 FILL_PASS_AUDIO_FLOOR_FRAC: float = 0.8
 FILL_PASS_WALK_BUDGET_FRAC: float = 0.95
+# C11a: a GREEN-density route whose DELIVERED audio is below this fraction of the
+# audio target is disclosed as thin (delivered_thin). ~0.5 flags the pool-vs-
+# delivered gap (e.g. a 90-min request delivering ~7 min) while leaving genuinely
+# rich tours (Ile ~0.68 of target) unflagged.
+GREEN_THIN_DELIVERY_FRAC: float = 0.5
 
 
 # Endpoint-pull (Q1, one-way only): after greedy completes, force-include
@@ -1255,6 +1260,21 @@ def select_route(
     vignettes = select_vignettes(route, snapshot, lenses=interest or None)
     if vignettes:
         route = route.model_copy(update={"vignettes": vignettes})
+    # C11a: a GREEN-density pool can still DELIVER thin — audio far under the
+    # request (few reachable/affordable dwell POIs, or beat-thin ones) or a
+    # single dominating stop. Flag it so the surface discloses "honest but thin"
+    # instead of silently reading fully-GREEN. (The engine-side answer to the
+    # 2026-07-02 pool-vs-delivered gap; replaces the client-side thin heuristic.)
+    if assessment.status == "GREEN":
+        delivered_audio = sum(
+            planned_capped_audio_seconds(p, snapshot, interest or None, None)
+            for p in route.pois
+        )
+        if (
+            delivered_audio < GREEN_THIN_DELIVERY_FRAC * assessment.target_audio_seconds
+            or len(route.pois) < 2
+        ):
+            assessment = assessment.model_copy(update={"delivered_thin": True})
     return _attach_tourability_if_yellow(route, assessment)
 
 
@@ -2200,14 +2220,13 @@ def _has_active_beats(poi: POI, snapshot: CorpusSnapshot) -> bool:
 
 
 def _attach_tourability_if_yellow(route: Route, assessment: TourabilityAssessment) -> Route:
-    """Attach the YELLOW assessment to the Route for skill-side surfacing.
+    """Attach the assessment to the Route for surface-side disclosure.
 
-    GREEN tours don't need to carry the assessment — the absence of a
-    ``tourability`` field on the Route signals "fully GREEN, no
-    warning needed". RED tours never reach this code path (we raised
-    earlier).
+    Attached when YELLOW, OR (C11a) when GREEN-but-delivered-thin. A fully-GREEN
+    route that delivers richly carries NO tourability field — its absence signals
+    "no warning needed". RED tours never reach this code path (raised earlier).
     """
-    if assessment.status == "YELLOW":
+    if assessment.status == "YELLOW" or assessment.delivered_thin:
         return route.model_copy(update={"tourability": assessment})
     return route
 

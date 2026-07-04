@@ -189,16 +189,15 @@ class TripPreviewStop(BaseModel):
 
 
 class TripPreviewTourability(BaseModel):
-    """YELLOW density warning shipped alongside a generated preview.
+    """Density / delivery disclosure shipped alongside a generated preview.
 
-    Phase 6 contract: YELLOW = "generate but WARN". The engine has always
-    attached the assessment to the Route (selection._attach_tourability_if_yellow);
-    this API silently dropped it, so a thin-area tour (e.g. one isolated
-    mega-anchor like Père Lachaise → a legitimate single-stop tour, the same
-    pattern the PdV golden blesses) looked like a silent bug to the user
-    (hostile-panel finding, 2026-07-02)."""
+    Phase 6: YELLOW = "generate but WARN". C11a adds GREEN-but-``delivered_thin``:
+    a GREEN-density pool that still delivers thin (audio far under the request or
+    a single dominating stop) — the engine-side answer to the 2026-07-02
+    pool-vs-delivered gap. A fully-GREEN rich tour still ships tourability=null."""
 
-    status: Literal["YELLOW"]
+    status: Literal["GREEN", "YELLOW"]
+    delivered_thin: bool = False
     fill_ratio: float
     anchor_candidates: int
     reachable_poi_count: int

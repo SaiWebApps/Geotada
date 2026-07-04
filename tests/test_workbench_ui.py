@@ -2315,16 +2315,18 @@ class TestDetailViewAndEditing:
             page.unroute("**/trips/preview")
 
     def test_tour_preview_thin_delivery_renders_disclosure_note(self, browser_page):
-        """Thin-delivery disclosure (merge-gate skeptic finding 2026-07-02): the
-        density gate rates the reachable POOL, so a rich area can be GREEN (no
-        tourability field) while the DELIVERED route is far shorter than the
-        request (observed live: 30-min Louvre request -> 1 stop / 2 min audio,
-        silent). Until the engine-side dwell/audio reconciliation lands, the
-        workbench must disclose it: delivered audio under ~25% of the requested
-        minutes with no engine warning renders a note; a healthy ratio must not."""
+        """Thin-delivery disclosure, now ENGINE-DRIVEN (C11a, 2026-07-03). The
+        density gate rates the reachable POOL, so a rich area reads GREEN even when
+        the DELIVERED route is far shorter than the request (observed live: 30-min
+        Louvre request -> 1 stop / 2 min audio, silent). C11a makes selection flag
+        GREEN-but-delivered_thin and ship the assessment with status GREEN; the
+        workbench renders the blue note off ``tourability.delivered_thin`` and
+        NOT the amber YELLOW density banner (mutual exclusion). This REPLACES the
+        prior client-side ``total_audio_min < 25%`` heuristic. Control: a GREEN
+        route with delivered_thin=false renders neither note nor banner."""
         page, _seed_data, _reporter = browser_page
 
-        def _payload(total_audio_min):
+        def _payload(total_audio_min, *, delivered_thin):
             return {
                 "stops": [
                     {"sort_order": 1, "poi_name": "Louvre Museum", "minutes": 2,
@@ -2333,12 +2335,23 @@ class TestDetailViewAndEditing:
                 ],
                 "spine_area": "1st Arrondissement",
                 "total_audio_min": total_audio_min,
+                "tourability": {
+                    "status": "GREEN",
+                    "delivered_thin": delivered_thin,
+                    "fill_ratio": 2.41,
+                    "anchor_candidates": 6,
+                    "reachable_poi_count": 6,
+                    "max_supportable_duration_min": None,
+                    "one_way_alternative_destination": None,
+                },
             }
 
         page.route(
             "**/trips/preview",
             lambda route: route.fulfill(
-                status=200, content_type="application/json", body=json.dumps(_payload(2))
+                status=200,
+                content_type="application/json",
+                body=json.dumps(_payload(2, delivered_thin=True)),
             ),
         )
         try:
@@ -2351,18 +2364,25 @@ class TestDetailViewAndEditing:
             page.wait_for_timeout(300)
 
             note = page.locator("#tourStops .tour-thin-delivery-note")
-            assert note.count() == 1, "2 min delivered for a 30-min request must disclose"
+            assert note.count() == 1, "GREEN delivered_thin must render the disclosure note"
             text = note.first.text_content() or ""
             assert "Short tour" in text and "~2 min of audio" in text and "30-min request" in text
+            # Mutual exclusion: GREEN-thin is a note, NOT the amber density banner.
+            assert page.locator("#tourStops .tour-tourability-warn").count() == 0, (
+                "GREEN delivered_thin must NOT render the amber YELLOW density banner"
+            )
             _take_screenshot(page, "thin-delivery-note")
         finally:
             page.unroute("**/trips/preview")
 
-        # Control: healthy delivery (26 min for 30 requested) renders no note.
+        # Control: a GREEN route delivering richly (delivered_thin false) renders
+        # neither the note nor the banner.
         page.route(
             "**/trips/preview",
             lambda route: route.fulfill(
-                status=200, content_type="application/json", body=json.dumps(_payload(26))
+                status=200,
+                content_type="application/json",
+                body=json.dumps(_payload(26, delivered_thin=False)),
             ),
         )
         try:
@@ -2370,7 +2390,10 @@ class TestDetailViewAndEditing:
                 page.locator("#tourGenerateBtn").click()
             page.wait_for_timeout(300)
             assert page.locator("#tourStops .tour-thin-delivery-note").count() == 0, (
-                "healthy delivered/requested ratio must not render the disclosure"
+                "GREEN delivered_thin=false must not render the disclosure note"
+            )
+            assert page.locator("#tourStops .tour-tourability-warn").count() == 0, (
+                "GREEN (rich) must not render the amber density banner"
             )
         finally:
             page.unroute("**/trips/preview")

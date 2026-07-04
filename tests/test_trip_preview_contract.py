@@ -269,18 +269,20 @@ def test_preview_single_stop_carries_yellow_tourability_on_the_wire(make_client)
 def test_preview_green_multi_stop_has_null_tourability_and_multiple_stops(make_client):
     """Control arm: a GREEN multi-stop preview ships tourability == null.
 
-    Pins TODAY'S GREEN contract (the engine attaches tourability ONLY on
-    YELLOW — selection._attach_tourability_if_yellow), so the YELLOW test
-    cannot be satisfied by an "always attach" shortcut, which would put a
-    spurious warning banner on every healthy tour. Also gives the multi-stop
-    engine path hermetic API-level coverage (TestPreviewTrip's live-DB
+    Pins the RICH contract: a GREEN pool that also DELIVERS richly (multi-stop,
+    audio at/over target) ships tourability == null — no spurious banner on a
+    healthy tour. This is the control arm for the C11a GREEN-thin test below:
+    the engine attaches tourability on YELLOW OR ``delivered_thin``, so both
+    "always attach" (banner on every tour) and "never attach on GREEN" (the
+    2026-07-02 silent pool-vs-delivered collapse) are pinned out. Also gives the
+    multi-stop engine path hermetic API-level coverage (TestPreviewTrip's live-DB
     narration test skips silently on CI without 7687).
 
-    IMPORTANT: do NOT extend this to assert tourability non-null for
-    GREEN-but-thin deliveries — the workbench thin-delivery note is the
-    disclosure mechanism for GREEN-thin until
-    specs/2026-07-02-dwell-audio-reconciliation/ lands; asserting otherwise
-    here would encode the deferred design early.
+    The fixture is deliberately BOTH rich pool AND rich delivery: 6 compact
+    anchors the greedy seats several of, ~4.0x target audio. Contrast
+    test_preview_green_but_thin_delivery_carries_tourability, where the pool is
+    GREEN (6 rich anchors, rich-pool escape) but the delivery collapses to one
+    stop — that one MUST carry tourability with delivered_thin=True.
     """
     offsets = [
         (0.0004, 0.0),
@@ -342,3 +344,91 @@ def test_preview_green_multi_stop_has_null_tourability_and_multiple_stops(make_c
     )
     for stop in dwell:
         assert stop["narration"], f"dwell stop {stop['poi_name']} has empty narration"
+
+
+def test_preview_green_but_thin_delivery_carries_tourability(make_client):
+    """C11a: a GREEN-density pool that DELIVERS thin ships tourability != null.
+
+    This is the engine-side answer to the 2026-07-02 pool-vs-delivered gap: the
+    density gate rates the reachable POOL, so a rich area reads GREEN even when
+    the DELIVERED route collapses to one stop. Fixture: 6 rich anchors (tier 4,
+    3 x 240s beats each = 4.3x target audio) spread on a ~330m circle around the
+    origin. That pool clears the rich-pool escape (fill 1.5+, anchors 6+, so the
+    compactness ceiling is bypassed) -> GREEN. But for a 60-min ROUND TRIP the
+    walk budget (1195s) only affords the out-and-back to ONE edge anchor
+    (~1070s); every second anchor is a 60-degrees-away detour that overruns the
+    budget, so the greedy seats exactly one stop.
+
+    GREEN pool + one delivered stop => selection flags ``delivered_thin`` and
+    attaches the assessment (selection.py, C11a). The wire MUST carry it with
+    status GREEN, so the workbench can disclose "honest but thin" instead of
+    silently reading fully-GREEN. Sibling control:
+    test_preview_green_multi_stop_has_null_tourability_and_multiple_stops (rich
+    pool that ALSO delivers richly -> null).
+    """
+    # 6 bearings, 60 degrees apart, each ~330m from the origin. dlat uses
+    # 111_320 m/deg; dlng divides by cos(lat) (~0.6583 at 48.857) => 73_281 m/deg.
+    ring_m = 330.0
+    bearings_m = [
+        (0.0, ring_m),  # E
+        (285.79, 165.0),  # NE
+        (285.79, -165.0),  # NW
+        (0.0, -ring_m),  # W
+        (-285.79, -165.0),  # SW
+        (-285.79, 165.0),  # SE
+    ]
+    pois = [
+        _poi_record(
+            f"ring-{i}",
+            name=f"Ring Anchor {i}",
+            tier=4,
+            lat=START[0] + north_m / 111_320.0,
+            lng=START[1] + east_m / 73_281.0,
+            areas=["Île de la Cité"],
+        )
+        for i, (north_m, east_m) in enumerate(bearings_m)
+    ]
+    beats = [
+        _beat_record(
+            f"ring-{i}-b{j}",
+            f"ring-{i}",
+            body=f"Ring anchor {i} carries story {j}. It runs a good while longer.",
+        )
+        for i in range(len(bearings_m))
+        for j in range(3)
+    ]
+    records = {
+        "pois": pois,
+        "beats": beats,
+        "areas": _AREA_RECORDS,
+        "adjacency": [],
+        "lenses": [],
+    }
+    client = make_client(records)
+
+    r = client.post(
+        "/api/v1/trips/preview",
+        json={
+            "center_lat": START[0],
+            "center_lng": START[1],
+            "duration_min": 60,
+            "round_trip": True,
+        },
+    )
+    assert r.status_code == 200, r.text
+    body = r.json()
+
+    dwell = [s for s in body["stops"] if s["band"] == "dwell"]
+    # The delivery collapsed: the walk budget affords one edge anchor round-trip.
+    assert len(dwell) == 1, f"expected a thin one-stop delivery, got {body['stops']}"
+    # THE C11a wire pin: GREEN-but-thin is DISCLOSED, not silently GREEN.
+    tourability = body["tourability"]
+    assert tourability is not None, (
+        "GREEN-but-thin delivery shipped WITHOUT tourability — the exact "
+        "pool-vs-delivered silent collapse C11a exists to disclose"
+    )
+    assert tourability["status"] == "GREEN"
+    assert tourability["delivered_thin"] is True
+    # Density saw the rich pool: 6 anchor candidates cleared the rich-pool gate.
+    assert tourability["anchor_candidates"] >= 6
+    assert tourability["fill_ratio"] >= 1.5

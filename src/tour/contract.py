@@ -181,6 +181,11 @@ class TourabilityAssessment(BaseModel):
     round_trip: bool
     max_supportable_duration_min: int | None = None
     one_way_alternative_destination: str | None = None
+    # C11a: a GREEN-density pool can still DELIVER a thin route (the pool is rich
+    # but the reachable/walk-affordable dwell POIs are few or beat-thin). When
+    # True the route carries this assessment with status GREEN so the surface can
+    # disclose "honest but thin" instead of silently reading fully-GREEN.
+    delivered_thin: bool = False
 
 
 class ReachVerdict(BaseModel):

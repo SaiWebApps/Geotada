@@ -3152,8 +3152,12 @@
     stopsEl.appendChild(summary);
     // Phase 6 contract: YELLOW = generate but WARN. Present only for thin areas
     // (e.g. one isolated mega-anchor -> a legitimate single-stop tour); without
-    // this banner such tours read as silent bugs.
-    if (data && data.tourability) {
+    // this banner such tours read as silent bugs. C11a: the engine also attaches
+    // tourability for GREEN-but-delivered_thin routes, but those are an
+    // informational note (below), NOT this amber density warning -- so gate the
+    // banner on YELLOW explicitly. (delivered_thin is only ever set on GREEN, so
+    // YELLOW <=> amber banner and GREEN-thin <=> blue note stay mutually exclusive.)
+    if (data && data.tourability && data.tourability.status === 'YELLOW') {
       const t = data.tourability;
       const warn = document.createElement('div');
       warn.className = 'tour-tourability-warn';
@@ -3172,23 +3176,24 @@
       warn.textContent = msg;
       stopsEl.appendChild(warn);
     }
-    // Thin-delivery disclosure (skeptic finding 2026-07-02): the density gate
-    // rates the reachable POOL, so a rich area can be GREEN (no tourability
-    // field) while the DELIVERED route is far shorter than requested (observed
-    // live: 30-min request near the Louvre -> 1 stop / 2 min of audio, no
-    // warning). Until the engine-side dwell/audio reconciliation lands (see
-    // specs/2026-07-02-dwell-audio-reconciliation/), disclose it client-side:
-    // fire when no engine warning rendered and delivered audio is under ~25%
-    // of the requested minutes (~half the err-short audio target).
-    if (data && !data.tourability && requestedMinutes && tourStops.length
-        && (data.total_audio_min || 0) < requestedMinutes * 0.25) {
+    // Thin-delivery disclosure. The density gate rates the reachable POOL, so a
+    // rich area reads GREEN even when the DELIVERED route is far shorter than
+    // requested (observed live: 30-min Louvre request -> 1 stop / 2 min of audio,
+    // silent). C11a made this engine-authoritative: selection now flags
+    // GREEN-but-delivered_thin (delivered audio < half the target, or a single
+    // dominating stop) and attaches the assessment with status GREEN. This note
+    // is now driven by that signal -- it REPLACES the prior client-side
+    // total_audio_min < 25% heuristic (which double-counted glue and could not
+    // see the real per-stop audio the engine measures).
+    if (data && data.tourability && data.tourability.delivered_thin) {
       const note = document.createElement('div');
       note.className = 'tour-thin-delivery-note';
       note.style.cssText = 'background:rgba(120,160,255,0.10);border:1px solid rgba(120,160,255,0.45);'
         + 'color:#7fa3ff;font-size:0.85rem;padding:8px 10px;border-radius:6px;margin:0 0 8px;';
-      note.textContent = `ⓘ Short tour: ~${data.total_audio_min || 0} min of audio for a `
-        + `${requestedMinutes}-min request. The area has more content than this route uses — `
-        + `a known planner gap (dwell/audio reconciliation), not a data problem.`;
+      note.textContent = `ⓘ Short tour: ~${data.total_audio_min || 0} min of audio`
+        + (requestedMinutes ? ` for a ${requestedMinutes}-min request` : '')
+        + `. This area is rich, but this route delivers fewer stops than it could — `
+        + `an honest thin tour, not a data problem.`;
       stopsEl.appendChild(note);
     }
     // Phase 3 spotlight: the per-corridor lens coverage note (present only when
