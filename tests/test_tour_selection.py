@@ -188,7 +188,14 @@ def test_low_tier_no_lens_eligible_as_vignette_not_dwell():
     # in the dwell route (route.pois are dwell stops).
     route = select_route(TourInput(start=PDV, duration_min=60, city_slug="paris"), snap)
     ids = [p.id for p in route.pois]
-    assert "t5" in ids, f"the tier-5 anchor must be a dwell stop, got {ids}"
+    # C9 governor (budget/3 floor): 5 tier-5 anchors compete (t5 + 4 density
+    # fillers) for ~3 dwell slots, so a specific tier-5 (t5) may drop to the
+    # closer fillers. The invariant that MUST survive: every dwell stop is a
+    # tier-5 anchor — the tier-1 no-lens POI never displaces one into a slot.
+    assert route.pois, f"anchors must still fill dwell slots, got {ids}"
+    assert all(p.tier == 5 for p in route.pois), (
+        f"every dwell stop must be a tier-5 anchor (no tier-1 crowd-in); got {ids}"
+    )
     assert "t1" not in ids, (
         "a tier-1 no-lens POI is an eligible VIGNETTE, not a dwell stop -- it must "
         f"not consume a dwell slot from the anchors. Got {ids}"
@@ -1386,15 +1393,20 @@ def test_demotion_merged_via_select_route_end_to_end():
         lat=PDV[0],
         lng=PDV[1],
         areas=("Le Marais",),
-        beat_count=8,
+        beat_count=20,
     )
     hugo = _poi(
+        # C9 governor: tier-5 + 12 beats so Hugo out-spotlights the 8-beat density
+        # fillers and wins a greedy slot under the budget/3 stop floor (a low-value
+        # sibling would be dropped before it could demote). Demotion still fires
+        # via the beat_count host tiebreak — pdv (20 beats) hosts, hugo (12)
+        # demotes — so this still exercises the merge end-to-end.
         "musee-victor-hugo",
-        tier=4,
+        tier=5,
         lat=PDV[0] + 0.00003,
         lng=PDV[1] + 0.00003,  # ~4m offset
         areas=("Le Marais",),
-        beat_count=2,
+        beat_count=12,
     )
     pdv_beat = BeatRef(
         id="pdv-no6",
@@ -1522,20 +1534,22 @@ def _frozen_end_none_snapshot() -> CorpusSnapshot:
 # the same six POIs in the same order; the ends are still correct (open walk
 # closes on the far 'baseline-medium' via endpoint-pull) and no crash. The new
 # eligibility is exercised separately by the tier-1 / lens-miss tests above.
+# C9 governor (end=None, budget/3 floor): the Step-2.0d Phase-2 byte-identity is
+# DELIBERATELY superseded (DESIGN-AND-CRITIQUE ADDENDUM — the goldens are the new
+# gate). Re-captured 2026-07-03 from the green C9 run: this beat-rich synthetic
+# corpus caps at the ~3-stop floor (the exempt anchor's audio clears the fill
+# floor, so no fill-added 4th-6th stop). The real end=None gate (Ile golden) is
+# BYTE-IDENTICAL to pre-C9 (16/47), so this re-baseline moves only the fixture.
 _FROZEN_END_NONE_ORDER_HAVERSINE: tuple[str, ...] = (
     "filler-0",
     "filler-1",
     "filler-2",
-    "baseline-near",
-    "filler-3",
     "baseline-medium",
 )
 _FROZEN_END_NONE_ORDER_ROUTED: tuple[str, ...] = (
     "filler-0",
     "filler-1",
     "filler-2",
-    "baseline-near",
-    "filler-3",
     "baseline-medium",
 )
 

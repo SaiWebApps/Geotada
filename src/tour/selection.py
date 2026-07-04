@@ -22,7 +22,7 @@ import json
 import math
 import re
 from collections import Counter
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 from dataclasses import field as dataclass_field
 from typing import TYPE_CHECKING
@@ -32,7 +32,7 @@ from shapely.geometry import Point as _ShapelyPoint
 from shapely.geometry import shape as _shapely_shape
 from shapely.prepared import prep as _shapely_prep
 
-from .beat_select import select_poi_beats
+from .beat_select import govern_poi_beats, select_poi_beats
 from .contract import (
     POI,
     BeatRef,
@@ -56,8 +56,10 @@ from .routing import (
     compute_dwell_seconds,
     default_leg_seconds,
     envelope_radius_m,
+    governor_allowance_seconds,
     haversine_m,
     insertion_cost_seconds,
+    planned_audio_seconds,
     smallest_duration_min_for_walk_seconds,
     summarise_route,
     target_audio_seconds,
@@ -802,6 +804,23 @@ def build_poi_beat_plans(
     return tuple(plans)
 
 
+def planned_capped_audio_seconds(
+    poi: POI,
+    snapshot: CorpusSnapshot,
+    lenses: Iterable[str] | None,
+    allowance: int | None,
+) -> int:
+    """Voiced seconds a POI's plan CONSUMES under the C9 governor: the capped
+    (allowance-truncated) beats for an incidental stop, or the full uncapped plan
+    for an exempt anchor (``allowance is None``). This is selection's FLOOR-LESS
+    audio currency — no tier floor; tier dwell survives only as C8's reported
+    minute floor. Pure per (poi, lenses, allowance); memoize at the call site.
+    """
+    plan = select_poi_beats(poi, snapshot.beats_for(poi.id), interest_lenses=lenses)
+    kept, _overflow = govern_poi_beats(plan, allowance)
+    return planned_audio_seconds(kept.beats)
+
+
 def select_route(
     input: TourInput,
     snapshot: CorpusSnapshot,
@@ -1035,6 +1054,34 @@ def select_route(
 
     remaining = list(candidates)
 
+    # C9 governor (SCOPED to round-trip / open-walk, end is None; A->B keeps the
+    # Phase-2 currency + corridor discipline — see _capped_audio): floor-less
+    # capped-audio currency. The first-seated POI is the START-ANCHOR
+    # (positional, decision 3) and is exempt (allowance None => full accounting);
+    # every other stop is capped to the per-stop allowance. The audio break is
+    # SUPPRESSED until the route reaches the min(3, d//10) stop floor, so a
+    # beat-rich anchor can never collapse the tour to one stop (the abandoned
+    # >=2 hard-ceiling refutation).
+    allowance = governor_allowance_seconds(input.duration_min)
+    count_floor = min(3, input.duration_min // 10)
+    exempt_anchor_id: str | None = None
+    _capped_memo: dict[tuple[str, bool], int] = {}
+
+    def _capped_audio(cand: POI, *, exempt: bool) -> int:
+        # A->B (end set) keeps the Phase-2 tier-dwell currency: the budget/3
+        # floor clusters stops near A and starves the destination corridor there
+        # (A->B governance deferred). The governor applies to end=None only.
+        if input.end is not None:
+            return compute_dwell_seconds(cand.tier)
+        key = (cand.id, exempt)
+        cached = _capped_memo.get(key)
+        if cached is None:
+            cached = planned_capped_audio_seconds(
+                cand, snapshot, interest, None if exempt else allowance
+            )
+            _capped_memo[key] = cached
+        return cached
+
     while remaining and len(selected) < max_anchors:
         best_candidate: POI | None = None
         best_extra: int = 0
@@ -1077,10 +1124,22 @@ def select_route(
         # Insert at the best position.
         selected.insert(best_idx, best_candidate)
         consumed_walk += best_extra
-        consumed_audio += compute_dwell_seconds(best_candidate.tier)
+        # Start-anchor exemption applies ONLY to round-trip / open-walk (end is
+        # None): there the first-seated POI is genuinely the start-anchor and may
+        # dominate (decision 3). For A->B the first-seated is an INCIDENTAL
+        # corridor POI — exempting it would starve the real destination B (which
+        # is materialized post-greedy and exempt at EMISSION), so A->B caps every
+        # corridor stop.
+        if input.end is None and exempt_anchor_id is None:
+            exempt_anchor_id = best_candidate.id
+        consumed_audio += _capped_audio(
+            best_candidate, exempt=best_candidate.id == exempt_anchor_id
+        )
         remaining.remove(best_candidate)
 
-        if consumed_audio >= audio_budget:
+        if consumed_audio >= audio_budget and (
+            input.end is not None or len(selected) >= count_floor
+        ):
             break
 
     # Step 4: endpoint-pull (one-way only). Force-include a far-envelope POI
@@ -1143,6 +1202,8 @@ def select_route(
         walk_budget=walk_budget,
         audio_budget=audio_budget,
         hard_anchor_cap=HARD_ANCHOR_CAP,
+        capped_audio_fn=_capped_audio,
+        exempt_anchor_id=exempt_anchor_id,
     )
 
     # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
@@ -1364,6 +1425,8 @@ def _apply_fill_pass(
     walk_budget: int,
     audio_budget: int,
     hard_anchor_cap: int,
+    capped_audio_fn: Callable[..., int],
+    exempt_anchor_id: str | None,
     leg_seconds_fn: LegSecondsFn | None = None,
     score_penalty: dict[str, float] | None = None,
 ) -> list[POI]:
@@ -1389,7 +1452,9 @@ def _apply_fill_pass(
     floor_audio = audio_budget * FILL_PASS_AUDIO_FLOOR_FRAC
     walk_cap = int(walk_budget * FILL_PASS_WALK_BUDGET_FRAC)
 
-    consumed_audio = sum(compute_dwell_seconds(p.tier) for p in selected)
+    consumed_audio = sum(
+        capped_audio_fn(p, exempt=p.id == exempt_anchor_id) for p in selected
+    )
     if consumed_audio >= floor_audio:
         return selected  # already met; no fill needed
 
@@ -1441,7 +1506,7 @@ def _apply_fill_pass(
             continue
         selected = [*selected[:idx], cand, *selected[idx:]]
         consumed_walk += extra
-        consumed_audio += compute_dwell_seconds(cand.tier)
+        consumed_audio += capped_audio_fn(cand, exempt=False)
 
     return selected
 

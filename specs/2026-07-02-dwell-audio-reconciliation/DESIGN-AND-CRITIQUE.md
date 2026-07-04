@@ -228,3 +228,126 @@ only — NO auto-inference from GPS/dwell (a future enhancement may use lingerin
 to OFFER more, but must NEVER auto-play). This is a genuine scope addition, not
 part of the original reconciliation; it is being planned as its own atomic
 checklist via the agentic-loop workflow.
+
+---
+
+## ADDENDUM 2026-07-03 — C9 DESIGN REFUTED by skeptic panel; variant (c) is insufficient
+
+A 3-model skeptic panel (opus/sonnet/fable), each IMPLEMENTING the patch to
+test it, UNANIMOUSLY refuted the planned C9 (floor-less currency swap + a
+`GREEDY_MIN_STOPS>=2` break guard). Three source-verified flaws:
+
+1. **The `>=2` guard is a hard CEILING, not a floor.** Under floor-less
+   accounting a POI's real planned audio (150–1200+s) routinely exceeds the
+   budget's marginal headroom, so the greedy breaks at EXACTLY 2 stops the
+   moment any two candidates clear the budget — even with rich walk-affordable
+   candidates left. This FAILS the committed C4 regression suite
+   (`test_rich_corpus_duration_sweep...` floor is `min(3, d//10)`=3 → 16/28
+   cells fail; `test_tier_dwell_audio_break_cannot_fire_after_single_anchor`
+   asserts `len==3`; `test_round_trip_far_first_pick...` silently shrinks
+   ~6→2). Reproduced live.
+2. **The guard runs BEFORE `apply_co_located_demotion` (selection.py:1130), so
+   it is defeated on real data.** 30-min round trip from Place des Vosges → the
+   guard forces a 2nd stop (Musée Victor Hugo, 86 m, co-located), which
+   demotion then DELETES and merges into PdV → route collapses back to 1 stop /
+   21 min / tourability None — strictly WORSE than today and a silent violation
+   of the C4 universal invariant. No synthetic fixture covers the cross-POI
+   address-overlap demotion path.
+3. **FLOOR-LESS ACCOUNTING DOES NOT CAP EMISSION — decision 3's "share-cap" is
+   not delivered.** `select_poi_beats`'s trigger_address / sub_location
+   strategies have NO numeric cap (one beat per bucket; PdV emits ~25 beats =
+   ~21 min). Floor-less changes only BUDGETING, so an incidental PdV still
+   SPEAKS its full share; honest accounting merely stops seating OTHER stops,
+   INCREASING the incidental POI's share. The keep-exploring "capped-out
+   extras" therefore do not exist for the dominating (trigger_address) class.
+   Secondaries: demotion double-counts a co-located sibling's audio; the
+   one-way endpoint-pull is audio-blind; for duration 10–19 the guard is dead
+   code (`max_anchors`=1).
+
+SURVIVING (verified sound): floor-less genuinely INVERTS the Île shrink (1,841s
+< 2,689s budget, < 2,151s fill floor → fill adds MORE); the seated SEQUENCE is
+unchanged (value fn is audio-free); `select_poi_beats` is pure (memoization
+sound); no import cycle.
+
+### Corrected direction — C9 IS the deferred Step 5 (per-stop audio-share governor)
+
+Decision 3's "incidental POIs share-capped" REQUIRES a real per-stop audio
+allowance that CAPS an incidental (non start-anchor / non fixed-end-B) POI's
+EMITTED beats to its share of the budget; the overflow beats are exactly the
+keep-exploring "extras". So the mechanism unifies C9 (the cap) with the
+keep-exploring feature (surface the extras). The governor must:
+- size a per-stop allowance so a rich corridor fits >= `min(3, d//10)` DWELL
+  stops (satisfying the C4 sweep) — i.e. drive stop COUNT by the allowance, not
+  by summing uncapped mega-POI audio;
+- EXEMPT the start-anchor and fixed-end-B (they may dominate — decision 3);
+- integrate with `apply_co_located_demotion` so a forced/host stop is not then
+  deleted (flaw 2), and stop double-counting demoted siblings' audio;
+- keep tier dwell only as C8's REPORTED-minute floor (already shipped);
+- produce, per capped stop, the ordered overflow beat-ids for keep-exploring.
+
+This is a mini-phase (touches beat_select emission + selection accounting +
+demotion ordering), not a one-line swap. Re-designed via the agentic loop with
+a skeptic gate BEFORE any code. The `GREEDY_MIN_STOPS` fixed-count guard is
+ABANDONED.
+
+### C9 governor — product decisions RATIFIED 2026-07-03 (session)
+
+Reviewed by: Sairam Krishnan · 2026-07-03 · in session (recorded by Claude from
+the transcript). Chosen design: "allowance-in-beat_select" (Design 1), the only
+survivor delivering all ratified decisions; skeptic-verified. Audit surfaced
+these knobs, now signed off:
+1. **ALLOWANCE = `target_audio_seconds(d) // min(3, d // 10)`** (= budget ÷ 3
+   for d>=30). An INCIDENTAL stop may speak up to ~1/3 of the tour audio (≈5 min
+   @30min, ≈15 min @90min; measured live: PdV 1248s, Rue Cler 848s); the ordered
+   overflow beats become the keep-exploring extras. RATIFIED (budget/3 over the
+   flat budget/max_anchors alternative) — keep-exploring is the depth valve; the
+   1/3 ceiling caps the 45% Rue-Cler domination the owner flagged.
+2. **ROUND-TRIP ORIGIN LANDMARK = EXEMPT** (may dominate), same as a one-way
+   fixed-end-B. Start-anchor is POSITIONAL (route.pois index 0), NOT proximity
+   (proximity would exempt every clustered fixture POI). RATIFIED.
+DEFAULTS (Claude, invitable to override): (a) golden harnesses fixed to merge
+`route.demoted_beats` (match production trips.py; diagnostic R2) as a SEPARATE
+signed step BEFORE the governor — a 0-point baseline move today (merged beats
+still lose the closer slot), so NOT a re-baseline; (b) the always-keep-beat[0]
+one-beat overshoot accepted (bounded, test-pinned).
+
+BUILD-SITE RECON (2026-07-03): 6 beat-plan build sites; 3 MERGE demoted_beats
+(trips.py:234 generate, trips.py:595 compose, tour_build.py:125 which already
+has a `_build_beat_sequence` helper), 3 do NOT (trips.py:423 — a production
+path, latent bug; test_tour_golden_pdv.py:120; test_tour_golden_ile.py:115).
+C9b promotes tour_build's helper to shared; the golden-harness R2 fix routes the
+two goldens through it (merging demoted_beats) as the pre-C9 signed step.
+
+### C9e IMPLEMENTATION NOTES (2026-07-03) — scoping revealed by a second skeptic panel
+
+A second hostile skeptic panel on the *implemented* C9e (the selection half) split
+opus-vs-sonnet; sonnet was right and found A->B destination starvation: applying
+the budget/3 floor + capped currency to A->B clustered stops near A and left the
+destination-corridor POI unseated, so B snapped to a beatless sentinel
+(`test_tour_b_materialization` + `test_tour_feasibility` regressed). The design
+workflow had verified only round-trip / open-walk (the sweep + goldens), never
+A->B. RESOLUTION:
+- **The governor is SCOPED to `end=None` (round-trip / open-walk).** A->B keeps
+  the Phase-2 tier-dwell currency + corridor discipline BYTE-IDENTICAL
+  (`selection._capped_audio` returns `compute_dwell_seconds` when `input.end` is
+  set; the break floor is suppressed only for `end=None`). **A->B governance is a
+  documented DEFERRED follow-up** — the corridor/endpoint-pull structure needs its
+  own spread-aware design before the cap can apply there.
+- **Start-anchor exemption gated on `end=None`**: for A->B the first-seated is an
+  incidental corridor POI, not the destination; exempting it starved B.
+- **Selection is accounting-only**: `govern_poi_beats` runs in
+  `planned_capped_audio_seconds` (the greedy/fill CURRENCY) and discards overflow.
+  EMISSION is still uncapped (`build_poi_beat_plans`) — the per-stop emission cap +
+  overflow surfacing is **C9f/C9g** (the keep-exploring extras). So C9e changes
+  WHICH POIs are seated (honest count) but not yet what each speaks.
+- **Post-demotion floor guard: DEFERRED.** The break-suppression-to-floor already
+  keeps the greedy >= min(3,d//10); demotion may drop the post-demotion count by
+  one, but never below the universal `len>=2 OR tourability` invariant (verified:
+  sweep green, goldens hold). Re-filling to the FULL floor after demotion is a
+  refinement (C9-guard), not a collapse fix.
+- **Verification**: `make golden-diff` Ile 16/47 + PdV 10/18 BYTE-IDENTICAL to
+  pre-C9; C4 sweep + all A->B/feasibility green; 4 end=None synthetic tests updated
+  honestly (2 frozen Phase-2 baselines re-captured — the ADDENDUM abandons end=None
+  byte-identity; `test_low_tier` relaxed `t5 in ids` -> `all tier==5`; the demotion
+  fixture made hugo tier-5/12-beats so it wins a greedy slot and still demotes into
+  the 20-beat pdv via the beat_count host tiebreak).

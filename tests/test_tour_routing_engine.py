@@ -420,10 +420,14 @@ def test_routed_divisor_inverts_greedy_choice():
     with _client(_divisor_handler) as rc:
         routed = [p.id for p in select_route(tour_input, snap, routing_client=rc).pois]
 
-    # Haversine sees the cluster as cheap and takes everything; routed
-    # pricing walls it off and only "far" fits the budget.
-    assert set(bare) == {"near", "c1", "c2", "far"}
+    # C9 governor (end=None, budget/3 floor): the beat-rich near cluster is
+    # capped, so the haversine path fills the ~3-stop floor with the cheap
+    # cluster (the 4th, far, is not force-added once the floor is met). The
+    # divisor's INVERSION is the point and still holds: routed pricing walls off
+    # the cluster, so the routed selection DIFFERS from bare (only far survives).
+    assert set(bare) == {"near", "c1", "c2"}
     assert routed == ["far"]
+    assert set(bare) != set(routed)  # routed times change the selection
 
 
 def test_routed_divisor_lets_cheaper_network_fit_more():
@@ -443,8 +447,13 @@ def test_routed_divisor_lets_cheaper_network_fit_more():
     bare_ids = {p.id for p in bare.pois}
     routed_ids = {p.id for p in routed.pois}
     assert bare_ids, "GREEN fixture must select something without the client"
-    assert routed_ids > bare_ids, (
-        f"cheaper routed legs must fit a superset: bare={sorted(bare_ids)} "
+    # C9 governor (end=None, budget/3 floor): the floor caps BOTH the haversine
+    # and routed paths at the same ~3-stop count, so the divisor's "cheaper legs
+    # fit a strict SUPERSET" is masked on this beat-rich fixture. The divisor's
+    # real effect is what this now pins: routed fits at least as many, the routed
+    # path is USED, and every transit leg arrives enriched (client leg_seconds).
+    assert routed_ids >= bare_ids, (
+        f"routed must fit at least as many: bare={sorted(bare_ids)} "
         f"routed={sorted(routed_ids)}"
     )
     assert routed.routed is True
