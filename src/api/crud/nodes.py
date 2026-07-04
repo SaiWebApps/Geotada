@@ -97,6 +97,18 @@ def create_node(session: Session, label: str, properties: dict[str, Any]) -> dic
     _validate_property_keys(properties)
     params = _encode_complex_props(dict(properties))
 
+    # City-key normalization guard (2026-07-03): POI.city_name is the canonical
+    # city slug — the tour engine matches POIs on it (selection.py) and the
+    # workbench city picker (GET /cities) keys off it. Casing/whitespace variants
+    # ('Paris' vs 'paris') fork the (name, city_name) MERGE key into duplicate
+    # nodes whose beats the picker cannot reach — the exact failure the picker was
+    # built to remove. Normalize POI city_name to a canonical lowercase, stripped
+    # form at this single ingestion choke point so future uploads can never
+    # re-fork it. Scoped to POI: Area.city_name keeps its own ('Paris') convention
+    # (Areas join to POIs by :WITHIN, not by city_name equality).
+    if label == "POI" and isinstance(params.get("city_name"), str):
+        params["city_name"] = params["city_name"].strip().lower()
+
     if label == "POI" and "latitude" in params and "longitude" in params:
         lat = params.pop("latitude")
         lng = params.pop("longitude")

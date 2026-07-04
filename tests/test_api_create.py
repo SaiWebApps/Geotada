@@ -93,6 +93,39 @@ class TestCreatePOI:
         assert props["kid_friendly"] == "yes"
         assert props["importance_tier"] == 1
 
+    def test_poi_city_name_normalized_to_canonical_lowercase(self, client):
+        """Casing-fork guard (2026-07-03): POI.city_name is the canonical city
+        slug the tour engine and the workbench city picker key off. It is
+        normalized (stripped + lowercased) at ingestion so '  Paris ' stores
+        'paris' and cannot fork the (name, city_name) MERGE key."""
+        resp = client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Casing Guard Place",
+                "city_name": "  Paris ",
+                "latitude": 48.8584,
+                "longitude": 2.2945,
+                "importance_tier": 1,
+            },
+        )
+        assert resp.status_code == 201
+        assert resp.json()["properties"]["city_name"] == "paris"
+
+    def test_poi_city_name_casing_variants_merge_to_one_node(self, client):
+        """Two uploads of the same POI name under different city_name casings
+        MERGE to ONE node (no duplicate/fork) because both normalize to 'paris'
+        — the exact silent-empty-beats failure the city picker exists to end."""
+        base = {
+            "name": "Merge Guard Place",
+            "latitude": 48.8600,
+            "longitude": 2.3400,
+            "importance_tier": 1,
+        }
+        r1 = client.post("/api/v1/nodes/POI", json={**base, "city_name": "Paris"})
+        r2 = client.post("/api/v1/nodes/POI", json={**base, "city_name": "paris"})
+        assert r1.status_code == 201 and r2.status_code == 201
+        assert r1.json()["id"] == r2.json()["id"], "casing variants must not fork the key"
+
 
 # ── Create other node types ──
 
