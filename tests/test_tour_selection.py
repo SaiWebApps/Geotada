@@ -250,6 +250,40 @@ def test_low_tier_off_genre_goes_silent_only_when_both():
     assert "themed" in ids, f"the lens-hit POI must be a dwell stop, got {ids}"
 
 
+def test_lens_dimmed_landmark_stays_a_dwell_stop_not_empty():
+    """Landmark dwell-floor: a tier >= BAND_LANDMARK_TIER POI that a LENS dims to
+    VIGNETTE must stay a DWELL stop — it discloses "thin for your interest", it
+    never vanishes. Without this floor, a lensed thin area where every reachable
+    POI is a lens-dimmed landmark (e.g. The Sorbonne under dark_history) empties
+    the whole tour and silently drops a major landmark."""
+    from src.tour.selection import BAND_VIGNETTE, band_for_spotlight, spotlight
+
+    lens = frozenset({"hidden_history"})
+    # Two tier-4 landmarks that MISS the lens; the density fillers (tier-5) also
+    # miss it — so EVERY reachable POI is a lens-dimmed landmark and the ONLY way
+    # to avoid an empty tour is the dwell-floor.
+    lm1 = _poi("landmark-1", tier=4, lat=48.8556, lng=2.3658, areas=("Le Marais",))
+    lm2 = _poi("landmark-2", tier=4, lat=48.8560, lng=2.3663, areas=("Le Marais",))
+    snap = _snap(
+        [lm1, lm2, *_density_fillers(PDV)],
+        area_types={"Le Marais": "neighborhood"},
+        lens_neighbors=_HOP_MAP,
+    )
+    # Precondition: the landmark is dimmed to VIGNETTE by the lens (pre-fix it was
+    # dropped from the dwell pool at the candidate filter).
+    assert band_for_spotlight(spotlight(lm1, lenses=lens, snapshot=snap), tier=4) == BAND_VIGNETTE
+
+    inp = TourInput(
+        start=PDV, duration_min=60, city_slug="paris", lenses=["hidden_history"], round_trip=True
+    )
+    route = select_route(inp, snap)
+    ids = [p.id for p in route.pois]
+    assert route.pois, "a lensed area of dimmed landmarks must NOT empty the tour"
+    assert any(i.startswith("landmark-") or i.startswith("filler-") for i in ids), (
+        f"a lens-dimmed landmark must survive as a dwell stop, got {ids}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # Spine
 # ---------------------------------------------------------------------------

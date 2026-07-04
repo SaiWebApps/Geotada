@@ -51,8 +51,9 @@ Before selection runs, the harness assesses tourability density per `Docs/tour-b
 - **GREEN** — generate as normal. The summary line ends with `tourability: GREEN`.
 - **YELLOW** — generate, but the markdown opens with a thin-tour banner and the summary names the recommended longer-fill duration. Surface the warning in your reply; do not bury it.
 - **RED** — the harness exits 3 with a structured refusal. Do NOT regenerate or pick a different start unprompted; relay the refusal verbatim, including `fill_ratio`, `anchor_candidates`, and the listed alternatives (try shorter duration / try one-way ending at X / try a different starting area). The user picks the next move.
+- **EMPTY** — density passed but no stop survived selection (e.g. a lensed thin area where every reachable POI fell to a walk-by). The harness ALSO exits 3, with the SAME structured `✗ EMPTY TOUR — …` refusal (fill_ratio + the shorter-duration / one-way alternatives). Relay it verbatim like a RED, same as above.
 
-Exit codes: 0 = pass, 1 = validation fail, 2 = input/resolution error, 3 = density RED.
+Exit codes: 0 = pass, 1 = validation fail, 2 = input/resolution error, 3 = density RED **or** empty delivery (both structured refusals).
 
 ## Pipeline guardrails (per CLAUDE.md, non-negotiable)
 

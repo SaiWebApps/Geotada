@@ -32,7 +32,7 @@ from src.tour.compose_gate import (
 )
 from src.tour.beat_select import select_vignette_beats
 from src.tour.contract import BeatSequence, Script, TourInput
-from src.tour.density import TourabilityRefusedError
+from src.tour.density import TourabilityRefusedError, assess
 from src.tour.generation import generate
 from src.tour.glue_client import HaikuGlueClient, MockGlueClient
 from src.tour.render_md import render_markdown
@@ -171,22 +171,22 @@ def _project_cost_upper_bound(
     return proj_in, proj_out_max, usd
 
 
-def _print_red_refusal(
-    exc: TourabilityRefusedError,
+def _print_refusal(
+    a,
     *,
-    start_label: str,
+    header: str,
     duration_min: int,
     round_trip: bool,
 ) -> None:
-    """Structured stdout for a Phase 6 RED refusal.
+    """Structured stdout for a refusal — a Phase 6 RED density refusal OR an empty
+    delivery (density passed but no stop survived selection, e.g. a lensed thin
+    area where every reachable POI fell to a walk-by).
 
     Includes fill_ratio + anchor count, max_supportable_duration, and
     one_way_alternative_destination when applicable. Prints actionable
     next steps so the harness's caller (the skill) can relay them.
     """
-    a = exc.assessment
-    print(f"\u2717 TOURABILITY REFUSED (RED) — {start_label} {duration_min}-min "
-          f"{'round-trip' if round_trip else 'one-way'}")
+    print(header)
     print(f"  fill_ratio:        {a.fill_ratio:.2f} (target ≥ 1.0)")
     print(f"  anchor_candidates: {a.anchor_candidate_count} (target ≥ 4)")
     print(f"  cluster_compactness: {a.cluster_compactness:.2f} (target ≤ 0.6)")
@@ -269,18 +269,40 @@ def main() -> int:
             with RoutingClient() as routing_client:
                 route = select_route(tour_input, snapshot, routing_client=routing_client)
         except TourabilityRefusedError as exc:
-            _print_red_refusal(
-                exc, start_label=start_label, duration_min=args.duration,
-                round_trip=bool(args.round_trip),
+            rt = bool(args.round_trip)
+            _print_refusal(
+                exc.assessment,
+                header=(
+                    f"\u2717 TOURABILITY REFUSED (RED) \u2014 {start_label} "
+                    f"{args.duration}-min {'round-trip' if rt else 'one-way'}"
+                ),
+                duration_min=args.duration,
+                round_trip=rt,
             )
             return 3
         t_select = time.perf_counter() - t_select
 
         if not route.pois:
-            raise SystemExit(
-                f"\u2717 No POIs reachable from {start_label} within "
-                f"{args.duration}-min envelope."
+            # Density passed but no stop survived selection \u2014 e.g. a lensed thin
+            # area where every reachable POI fell to a walk-by. Route through the
+            # SAME structured refusal (actionable alternatives) instead of a bare
+            # "no POIs reachable". Reuse the attached assessment, else recompute.
+            rt = bool(args.round_trip)
+            assessment = route.tourability or assess(
+                tour_input, snapshot.pois, snapshot.beats_by_poi
             )
+            lens_note = " for your interest" if lenses else ""
+            _print_refusal(
+                assessment,
+                header=(
+                    f"\u2717 EMPTY TOUR \u2014 {start_label} {args.duration}-min "
+                    f"{'round-trip' if rt else 'one-way'}: no stop survived "
+                    f"selection (every reachable POI fell to a walk-by{lens_note})."
+                ),
+                duration_min=args.duration,
+                round_trip=rt,
+            )
+            return 3
 
         t_beats = time.perf_counter()
         beat_sequence = _build_beat_sequence(route, snapshot, lenses)

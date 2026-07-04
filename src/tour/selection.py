@@ -1130,9 +1130,17 @@ def select_route(
             spotlight(poi, lenses=interest or None, snapshot=snapshot),
             tier=poi.tier,
         )
-        if not is_dwell_band(on_path_band):
-            # silent -> excluded entirely; vignette -> eligible but not a dwell
-            # stop. Either way it does not enter the greedy's dwell pool.
+        # A LANDMARK (tier >= BAND_LANDMARK_TIER) that a LENS dimmed to vignette
+        # stays a DWELL stop — a landmark thin FOR your interest DISCLOSES (via the
+        # density/tourability gate), it never vanishes. Without this floor, a
+        # lensed thin-area start (e.g. The Sorbonne under dark_history, spotlight
+        # 4.0 -> 1.0) collapses every reachable POI to vignette and empties the
+        # whole tour, silently dropping a major landmark. band_for_spotlight never
+        # takes a landmark below vignette, so this catches exactly the dimmed case.
+        lens_dimmed_landmark = poi.tier >= BAND_LANDMARK_TIER and on_path_band == BAND_VIGNETTE
+        if not is_dwell_band(on_path_band) and not lens_dimmed_landmark:
+            # silent -> excluded entirely; a NON-landmark vignette -> a walk-by, not
+            # a dwell stop. Either way it does not enter the greedy's dwell pool.
             continue
         if POI_ROLE_MULTIPLIER.get(poi.poi_role, 0.0) <= 0.0:
             # walk_by_only (and any zero-weight role): an on-path vignette, never
