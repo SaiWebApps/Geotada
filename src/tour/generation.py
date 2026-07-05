@@ -37,6 +37,7 @@ import re
 from collections import Counter
 from collections.abc import Iterable
 
+from .claim_dedup import suppress_repeated_claims
 from .contract import (
     BeatRef,
     BeatSequence,
@@ -219,6 +220,11 @@ def generate(
                 stop_idx=max(0, len(poi_beats) - 1),
             )
         )
+
+    # #22: drop beat sentences that restate a claim already voiced by an earlier
+    # beat (cross-book / cross-POI repetition). Runs after the full stitch so it
+    # sees the whole route; never empties a beat, so emitted beat-ids are stable.
+    sentences = suppress_repeated_claims(sentences, beat_sequence)
 
     selected_pois = _flatten_pois(beat_sequence, route)
     lens_coverage = _lens_coverage(beat_sequence)
