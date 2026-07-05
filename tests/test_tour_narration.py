@@ -51,3 +51,33 @@ def test_single_stop_single_sentence() -> None:
         [Sentence(text="only", source_id="b1", source_type="beat", stop_idx=0)]
     )
     assert stop_narration_text(script) == {0: "only"}
+
+
+def _yellow_assessment(on_lens_fill_ratio):
+    from src.tour.contract import TourabilityAssessment
+
+    return TourabilityAssessment(
+        status="YELLOW", walk_radius_m=369.0, fill_ratio=0.57,
+        audio_capacity_seconds=1000, target_audio_seconds=1793,
+        reachable_poi_count=3, reachable_beat_count=10, anchor_candidate_count=2,
+        cluster_compactness=0.5, duration_min=60, round_trip=True,
+        on_lens_fill_ratio=on_lens_fill_ratio,
+    )
+
+
+def test_yellow_banner_discloses_lens_specific_fill():
+    from src.tour.render_md import _yellow_banner
+
+    # Same overall 57% fill, but the on-lens fill (20%) is disclosed for the interest.
+    banner = _yellow_banner(_yellow_assessment(0.20), ["dark_history"])
+    assert "57% audio fill" in banner
+    assert "dark_history" in banner
+    assert "20%" in banner
+
+
+def test_yellow_banner_no_lens_line_without_lenses():
+    from src.tour.render_md import _yellow_banner
+
+    banner = _yellow_banner(_yellow_assessment(None), None)
+    assert "57% audio fill" in banner
+    assert "for your interest" not in banner.lower()

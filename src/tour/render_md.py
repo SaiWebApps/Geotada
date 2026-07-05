@@ -39,7 +39,7 @@ def render_markdown(
     )
     if tourability is not None and tourability.status == "YELLOW":
         out.append("")
-        out.append(_yellow_banner(tourability))
+        out.append(_yellow_banner(tourability, script.inputs.lenses))
     out.append("")
     out.append("---")
     out.append("")
@@ -201,7 +201,7 @@ def _build_sub_lookup(
     return out
 
 
-def _yellow_banner(tourability) -> str:
+def _yellow_banner(tourability, lenses: list[str] | None = None) -> str:
     """Top-of-tour warning when density.assess returned YELLOW."""
     fill_pct = round(tourability.fill_ratio * 100)
     lines = [
@@ -209,6 +209,15 @@ def _yellow_banner(tourability) -> str:
         "> This tour ran below the empirical 70-80% audio-fill bar; expect "
         "long stretches of silence between stops.",
     ]
+    # Lens-specific disclosure: two tourists at the same start see the SAME
+    # overall fill, so tell each how much of it matches THEIR interest.
+    if lenses and tourability.on_lens_fill_ratio is not None:
+        on_lens_pct = round(tourability.on_lens_fill_ratio * 100)
+        lens_label = "/".join(lenses)
+        lines.append(
+            f"> For your interest ({lens_label}), only {on_lens_pct}% of the reachable "
+            "audio is on-theme — the rest is other subjects."
+        )
     if tourability.max_supportable_duration_min:
         lines.append(
             f"> Consider {tourability.max_supportable_duration_min}-min instead "

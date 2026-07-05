@@ -591,6 +591,11 @@ def _tourability_payload(
         status=assessment.status,  # GREEN (delivered_thin) or YELLOW; RED raised earlier
         delivered_thin=assessment.delivered_thin,
         fill_ratio=round(assessment.fill_ratio, 2),
+        on_lens_fill_ratio=(
+            round(assessment.on_lens_fill_ratio, 2)
+            if assessment.on_lens_fill_ratio is not None
+            else None
+        ),
         anchor_candidates=assessment.anchor_candidate_count,
         reachable_poi_count=assessment.reachable_poi_count,
         max_supportable_duration_min=assessment.max_supportable_duration_min,

@@ -472,3 +472,62 @@ def test_status_is_monotone_in_fill_ratio():
     )
     # And the floor is untouched: catastrophically thin stays RED.
     assert _status(fill_ratio=0.4, anchor_candidate_count=5, cluster_compactness=0.2) == "RED"
+
+
+# ---------------------------------------------------------------------------
+# Lens-specific fill (thin-for-your-interest disclosure)
+# ---------------------------------------------------------------------------
+
+
+def _lensed_beat(bid: str, poi_id: str, lenses: tuple[str, ...], *, secs: int = 60) -> BeatRef:
+    return BeatRef(id=bid, poi_id=poi_id, est_spoken_seconds=secs, lenses=lenses)
+
+
+def _lens_fixture():
+    poi = _poi("anchor", lat=PDV[0], lng=PDV[1])
+    beats = {
+        "anchor": (
+            _lensed_beat("b1", "anchor", ("dark_history",)),
+            _lensed_beat("b2", "anchor", ("hidden_history",)),
+            _lensed_beat("b3", "anchor", ("hidden_history",)),
+            _lensed_beat("b4", "anchor", ()),  # no lens
+        )
+    }
+    return [poi], beats
+
+
+def test_on_lens_fill_is_none_without_requested_lenses():
+    pois, beats = _lens_fixture()
+    a = assess(_input(PDV, 60), pois, beats)
+    assert a.on_lens_fill_ratio is None
+
+
+def test_on_lens_fill_differs_by_interest_at_same_start():
+    pois, beats = _lens_fixture()
+    dark = assess(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", lenses=["dark_history"]),
+        pois, beats,
+    )
+    hidden = assess(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", lenses=["hidden_history"]),
+        pois, beats,
+    )
+    # Lens-agnostic overall fill is IDENTICAL for both tourists (the bug).
+    assert dark.fill_ratio == hidden.fill_ratio
+    # ...but the on-lens fill distinguishes them by EXACT audio: 1 dark beat (60s)
+    # vs 2 hidden beats (120s). Non-zero, so a "count nothing" mutation is caught.
+    target = dark.target_audio_seconds
+    assert dark.on_lens_fill_ratio == 60 / target > 0
+    assert hidden.on_lens_fill_ratio == 120 / target
+    assert hidden.on_lens_fill_ratio == 2 * dark.on_lens_fill_ratio
+    # On-lens fill never exceeds the overall fill (a subset of the audio).
+    assert dark.on_lens_fill_ratio < dark.fill_ratio
+
+
+def test_on_lens_matching_is_case_insensitive():
+    pois, beats = _lens_fixture()
+    a = assess(
+        TourInput(start=PDV, duration_min=60, city_slug="paris", lenses=["DARK_HISTORY"]),
+        pois, beats,
+    )
+    assert a.on_lens_fill_ratio is not None and a.on_lens_fill_ratio > 0

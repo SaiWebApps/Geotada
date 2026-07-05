@@ -176,8 +176,14 @@ def assess(
     # Reachable POIs: within walk envelope AND eligible role AND at
     # least one active beat (zero-beat POIs are diagnostic noise, not
     # tour content; the Phase 5 Petit Palais bug).
+    # Lens-specific fill: sum audio ONLY from beats matching the requested lenses,
+    # so the surface can disclose "thin for YOUR interest" (dark_history vs
+    # hidden_history) rather than a lens-agnostic pool number identical for both.
+    requested_lenses = {s.lower() for s in (tour_input.lenses or [])}
+
     reachable_pois: list[POI] = []
     audio_capacity_s = 0
+    on_lens_audio_s = 0
     reachable_beat_count = 0
     for poi in pois:
         if poi.poi_role not in ELIGIBLE_POI_ROLES:
@@ -190,11 +196,21 @@ def assess(
             continue
         reachable_pois.append(poi)
         for beat in active:
-            audio_capacity_s += _beat_spoken_seconds(beat)
+            secs = _beat_spoken_seconds(beat)
+            audio_capacity_s += secs
+            if requested_lenses and requested_lenses.intersection(
+                s.lower() for s in beat.lenses
+            ):
+                on_lens_audio_s += secs
         reachable_beat_count += len(active)
 
     target_audio_s = _target_audio_seconds(duration_min)
     fill_ratio = audio_capacity_s / target_audio_s if target_audio_s > 0 else 0.0
+    on_lens_fill_ratio: float | None = (
+        (on_lens_audio_s / target_audio_s if target_audio_s > 0 else 0.0)
+        if requested_lenses
+        else None
+    )
 
     anchor_candidates = [
         p
@@ -250,6 +266,7 @@ def assess(
         round_trip=round_trip,
         max_supportable_duration_min=max_supportable,
         one_way_alternative_destination=one_way_alternative,
+        on_lens_fill_ratio=on_lens_fill_ratio,
     )
 
 

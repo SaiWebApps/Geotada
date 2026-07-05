@@ -186,6 +186,12 @@ class TourabilityAssessment(BaseModel):
     # True the route carries this assessment with status GREEN so the surface can
     # disclose "honest but thin" instead of silently reading fully-GREEN.
     delivered_thin: bool = False
+    # Lens-specific fill: the audio-fill ratio counting ONLY beats matching the
+    # tourist's requested lenses. None when no lenses were requested (the overall
+    # fill_ratio is lens-agnostic, so two tourists with different interests at the
+    # same start would otherwise see identical "thin" banners). Lets the surface
+    # disclose "thin for dark_history" distinctly from "thin for hidden_history".
+    on_lens_fill_ratio: float | None = None
 
 
 class ReachVerdict(BaseModel):

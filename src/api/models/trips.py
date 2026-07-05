@@ -199,6 +199,10 @@ class TripPreviewTourability(BaseModel):
     status: Literal["GREEN", "YELLOW"]
     delivered_thin: bool = False
     fill_ratio: float
+    # Lens-specific fill (audio matching the requested lenses / target). None when
+    # no lenses were requested. Lets the surface disclose "thin FOR your interest"
+    # distinctly from the lens-agnostic overall fill_ratio.
+    on_lens_fill_ratio: float | None = None
     anchor_candidates: int
     reachable_poi_count: int
     max_supportable_duration_min: int | None = None
