@@ -127,8 +127,14 @@ def select_poi_beats(
     beats: Iterable[BeatRef],
     *,
     interest_lenses: Iterable[str] | None = None,
+    apply_cap: bool = True,
 ) -> POIBeats:
-    """Order and trim a POI's beats per §3.3, returning the chosen plan."""
+    """Order and trim a POI's beats per §3.3, returning the chosen plan.
+
+    ``apply_cap=False`` (KE0, via :func:`select_poi_beats_full`) skips the flat
+    per-tier trim so the FULL ordered plan is returned; the ordering is otherwise
+    identical, so the capped plan is a prefix of the full one.
+    """
     active = [b for b in beats if b.active_status == "active"]
     if not active:
         return POIBeats(
@@ -146,7 +152,7 @@ def select_poi_beats(
     elif strategy == "trigger_address":
         ordered = _order_by_trigger_address(active, interest)
     else:
-        ordered = _order_by_narrative_function(poi, active, interest)
+        ordered = _order_by_narrative_function(poi, active, interest, apply_cap=apply_cap)
 
     # Phase 3.5: orientation is a cold-open primitive that competes
     # with anchor-class beats in the no_loc / no_addr slot under the
@@ -165,6 +171,22 @@ def select_poi_beats(
         ordering_strategy=strategy,
         beats=tuple(ordered),
     )
+
+
+def select_poi_beats_full(
+    poi: POI,
+    beats: Iterable[BeatRef],
+    *,
+    interest_lenses: Iterable[str] | None = None,
+) -> POIBeats:
+    """KE0: the UNCAPPED beat plan — every active beat, ordered, no per-tier trim.
+
+    Identical ordering/dedup/tone-variety to :func:`select_poi_beats` but without
+    the flat cap, so ``select_poi_beats(...).beats`` is a PREFIX of this plan's
+    beats. The tail beyond the capped output is a stop's "keep exploring here"
+    extras — the beats the tour budget did not have room to voice.
+    """
+    return select_poi_beats(poi, beats, interest_lenses=interest_lenses, apply_cap=False)
 
 
 def govern_poi_beats(
@@ -257,8 +279,15 @@ def _order_by_narrative_function(
     poi: POI,
     beats: list[BeatRef],
     interest: frozenset[str],
+    *,
+    apply_cap: bool = True,
 ) -> list[BeatRef]:
-    """Flat tier-5/4 fallback or tier-3 pause selection."""
+    """Flat tier-5/4 fallback or tier-3 pause selection.
+
+    ``apply_cap=False`` (KE0) returns EVERY ordered beat with no per-tier trim —
+    the uncapped plan whose tail beyond the capped output is the "keep exploring"
+    extras. Ordering/scoring is identical, so ``capped == full[:cap]``.
+    """
     by_fn: dict[str, list[BeatRef]] = defaultdict(list)
     for b in beats:
         by_fn[(b.narrative_function or "establishing")].append(b)
@@ -276,6 +305,9 @@ def _order_by_narrative_function(
         bucket.sort(key=lambda b: _beat_score(b, interest), reverse=True)
         leftover.extend(bucket)
     out.extend(leftover)
+
+    if not apply_cap:
+        return out  # KE0: uncapped — the full ordered plan
 
     if poi.tier == 3:
         out = out[:PAUSE_BEATS_MAX]

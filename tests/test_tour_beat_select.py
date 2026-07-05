@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from src.tour.beat_select import (
     B8_JACCARD_THRESHOLD,
+    DEFAULT_FLAT_MAX,
     HOIST_PROXIMITY_M,
     NARRATIVE_FUNCTION_ORDER,
     choose_ordering_strategy,
@@ -14,6 +15,7 @@ from src.tour.beat_select import (
     govern_poi_beats,
     reorder_final_stop_for_closing,
     select_poi_beats,
+    select_poi_beats_full,
 )
 from src.tour.contract import POI, BeatRef, BeatSequence, PhysicalCue, POIBeats, Route, ScriptPOI
 from src.tour.fixtures import NOTRE_DAME_SUB_LOCATION_ORDER
@@ -1255,3 +1257,53 @@ def test_c9c_additive_contract_field_defaults():
     assert sp.overflow_beat_ids == ()
     route = _route_for([_poi("A")])
     assert route.fixed_end_poi_id is None
+
+
+# ---------------------------------------------------------------------------
+# KE0 — uncapped beat plan (keep-exploring foundation)
+# ---------------------------------------------------------------------------
+
+
+def _flat_beats(n: int) -> list[BeatRef]:
+    # Distinct word_counts (desc) => deterministic score order; distinct bodies
+    # so B8-lite never dedups them; all 'establishing' => the flat cap path.
+    # No body + a unique entity per beat => B8-lite finds no near-duplicate,
+    # so every beat survives to exercise the cap vs. no-cap difference.
+    return [
+        _beat(
+            f"b{i:02d}",
+            narrative_function="establishing",
+            word_count=300 - i,
+            entities=(f"Entity{i}",),
+        )
+        for i in range(n)
+    ]
+
+
+def test_full_uncaps_beyond_flat_max():
+    poi = _poi("rich", tier=5)  # tier-5 flat cap = DEFAULT_FLAT_MAX (8)
+    beats = _flat_beats(12)
+    capped = select_poi_beats(poi, beats)
+    full = select_poi_beats_full(poi, beats)
+    assert len(capped.beats) == DEFAULT_FLAT_MAX
+    assert len(full.beats) == 12, "full plan keeps every active beat"
+
+
+def test_capped_is_a_prefix_of_full():
+    poi = _poi("rich", tier=5)
+    beats = _flat_beats(12)
+    capped = select_poi_beats(poi, beats)
+    full = select_poi_beats_full(poi, beats)
+    capped_ids = [b.id for b in capped.beats]
+    full_ids = [b.id for b in full.beats]
+    assert full_ids[: len(capped_ids)] == capped_ids, "capped is a prefix of full (same order)"
+    # The keep-exploring extras are exactly the tail beyond the cap.
+    assert full_ids[len(capped_ids):] == full_ids[DEFAULT_FLAT_MAX:]
+
+
+def test_full_equals_capped_when_under_cap():
+    poi = _poi("thin", tier=5)
+    beats = _flat_beats(5)  # under the flat cap
+    capped = select_poi_beats(poi, beats)
+    full = select_poi_beats_full(poi, beats)
+    assert [b.id for b in full.beats] == [b.id for b in capped.beats]
