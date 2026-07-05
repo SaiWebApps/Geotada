@@ -26,6 +26,8 @@ from src.tour.generation import (
     GLUE_NAV,
     GLUE_PACING,
     SYNTHESIZED_OPENER,
+    _area_article,
+    _synth_first_leg_text,
     generate,
     split_sentences,
 )
@@ -837,10 +839,12 @@ def test_synthesized_opener_falls_back_gracefully_with_no_cues():
     )
     cold_open = [s for s in script.script if s.stop_idx == 0]
     texts = [s.text for s in cold_open]
-    # Minimal but readable: pacing + location anchor + duration primer.
+    # Minimal but readable: pacing + location anchor + first-stop walk grounding.
     assert any("Settle in" in t for t in texts)
     assert any("Marais" in t for t in texts)  # spine_area anchor
-    assert any("60 minutes" in t or "about 60" in t for t in texts)
+    # #20: the first stop is named and framed as a walk ahead (honest — en route),
+    # replacing the old generic "we're going to walk for N minutes" primer.
+    assert any("head for Some New Anchor" in t for t in texts)
 
 
 def test_synthesized_opener_view_cue_uses_look_up_verb():
@@ -1123,3 +1127,60 @@ def test_reported_dwell_floors_at_tier_when_a_stop_is_beat_thin():
     script = generate(seq, _route((poi,)), _input(), glue_client=MockGlueClient())
     sp = next(s for s in script.selected_pois if s.id == poi.id)
     assert sp.dwell_seconds == 300  # tier-5 floor wins over the 40s planned audio
+
+
+# ---------------------------------------------------------------------------
+# #20 — grounded, honest cold-open (area article + first-stop walk framing)
+# ---------------------------------------------------------------------------
+
+def test_area_article_covers_english_descriptive_areas():
+    assert _area_article("Latin Quarter") == "the "
+    assert _area_article("Left Bank") == "the "
+    assert _area_article("Île de la Cité") == "the "
+    assert _area_article("4th Arrondissement") == "the "
+    # French place-names take no article.
+    assert _area_article("Montmartre") == ""
+    assert _area_article("Saint-Germain-des-Prés") == ""
+    # "Le Marais" already carries its article.
+    assert _area_article("Le Marais") == ""
+
+
+def _stop(name: str) -> POIBeats:
+    return POIBeats(poi_id="p", poi_name=name, ordering_strategy="narrative_function", beats=())
+
+
+def _route_with_first_leg(secs: int) -> Route:
+    poi = _poi("p", "x")
+    return Route(
+        pois=(poi,),
+        transits=(TransitSegment(from_poi_id=None, to_poi_id="p", distance_m=100.0,
+                                 walk_seconds=secs),),
+        total_walk_distance_m=100.0, total_walk_seconds=secs,
+        audio_budget_seconds=0, spine_area="Le Marais",
+        target_audio_seconds=1800, err_short_total_seconds=2988,
+    )
+
+
+def test_first_leg_text_names_stop_and_walk_minutes():
+    text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(300))  # 5 min
+    assert text == "When you're ready, head for Pantheon — about a 5-minute walk from here."
+
+
+def test_first_leg_text_uses_an_before_vowel_minutes():
+    text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(480))  # 8 min
+    assert "about an 8-minute walk" in text
+
+
+def test_first_leg_text_lowercases_leading_the():
+    text = _synth_first_leg_text(_stop("The Sorbonne"), _route_with_first_leg(300))
+    assert "head for the Sorbonne" in text
+    assert "The Sorbonne" not in text
+
+
+def test_first_leg_text_short_leg_is_just_ahead():
+    text = _synth_first_leg_text(_stop("Pantheon"), _route_with_first_leg(40))  # <1 min
+    assert text == "When you're ready, head for Pantheon — it's just ahead."
+
+
+def test_first_leg_text_none_without_stop_name():
+    assert _synth_first_leg_text(_stop(""), _route_with_first_leg(300)) is None

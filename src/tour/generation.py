@@ -366,6 +366,20 @@ def _build_synthesized_opener(
         )
     )
 
+    # 1b. Ground the walk ahead: name the first stop and how far it is. Honest —
+    # the walker is still EN ROUTE (never "you're standing at {stop}"). Uses the
+    # routed first-leg time, so it also sets pace/anticipation.
+    walk_text = _synth_first_leg_text(first_stop, route)
+    if walk_text:
+        out.append(
+            Sentence(
+                text=walk_text,
+                source_id=SYNTHESIZED_OPENER,
+                source_type="glue",
+                stop_idx=stop_idx,
+            )
+        )
+
     # 2. Pronunciation if present.
     pronunciation_text = _synth_pronunciation(poi_beats, first_stop.poi_name)
     if pronunciation_text:
@@ -399,7 +413,9 @@ def _build_synthesized_opener(
                 )
             )
 
-    # 4. Sensory invitation OR duration primer.
+    # 4. Sensory invitation when there's a view to take in. (The old generic
+    # "we're going to walk for N minutes" primer is dropped — step 1b now grounds
+    # the walk concretely with the first stop and its distance.)
     if has_view_cue:
         out.append(
             Sentence(
@@ -409,17 +425,34 @@ def _build_synthesized_opener(
                 stop_idx=stop_idx,
             )
         )
-    else:
-        out.append(
-            Sentence(
-                text=f"We're going to walk for about {tour_input.duration_min} minutes.",
-                source_id=GLUE_PACING,
-                source_type="glue",
-                stop_idx=stop_idx,
-            )
-        )
 
     return out
+
+
+def _synth_first_leg_text(first_stop: POIBeats, route: Route) -> str | None:
+    """Name the first stop and how far the opening walk is (honest — en route).
+
+    Uses the routed first-leg seconds when available (``route.transits[0]``);
+    a very short leg reads "just ahead", a longer one "about an N-minute walk".
+    Returns None when there is no transit (test fixtures) or no stop name.
+    """
+    name = (first_stop.poi_name or "").strip()
+    if not name:
+        return None
+    # Lowercase a leading "The " so the name reads naturally mid-sentence
+    # ("head for the Sorbonne", not "...for The Sorbonne" — a raw title-case field).
+    if name.startswith("The "):
+        name = "the " + name[4:]
+    if not route.transits:
+        return f"When you're ready, head for {name} — it's just ahead."
+    leg = route.transits[0]
+    secs = leg.leg_seconds or leg.walk_seconds or 0
+    minutes = round(secs / 60)
+    if minutes <= 1:
+        return f"When you're ready, head for {name} — it's just ahead."
+    # "an" before minute counts that read with a leading vowel (8, 11, 18, 80s).
+    article = "an" if minutes in (8, 11, 18) or 80 <= minutes <= 89 else "a"
+    return f"When you're ready, head for {name} — about {article} {minutes}-minute walk from here."
 
 
 def _synth_location_anchor(first_stop: POIBeats, route: Route) -> str:
@@ -449,9 +482,17 @@ def _area_article(spine: str) -> str:
         return "the "
     if s.startswith("le ") or s.startswith("la ") or s.startswith("les "):
         return ""  # already carries the article
-    if s in {"marais"}:
+    # English descriptive areas read natively with "the" ("the Latin Quarter"),
+    # unlike French place-names ("Montmartre", "Saint-Germain-des-Prés").
+    if s in _AREA_TAKES_THE or s.endswith(" quarter") or s.endswith(" bank"):
         return "the "
     return ""
+
+
+# Areas that read natively with a leading "the".
+_AREA_TAKES_THE: frozenset[str] = frozenset(
+    {"marais", "latin quarter", "left bank", "right bank", "grands boulevards", "city"}
+)
 
 
 def _synth_pronunciation(beats: list[BeatRef], poi_name: str) -> str | None:
