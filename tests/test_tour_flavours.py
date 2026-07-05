@@ -264,7 +264,6 @@ def _hand_built_route_and_script():
     )
     route = Route(
         pois=pois, transits=transits, total_walk_distance_m=800, total_walk_seconds=1296,
-        audio_budget_seconds=1000,
     )
     script = Script(
         city_slug="paris", generated_at="2026-06-12T00:00:00Z",

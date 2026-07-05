@@ -70,7 +70,6 @@ def _route_with_legs(walks: list[int]) -> Route:
         transits=transits,
         total_walk_distance_m=100.0 * len(pois),
         total_walk_seconds=sum(walks),
-        audio_budget_seconds=3600,
     )
 
 

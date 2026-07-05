@@ -29,7 +29,6 @@ def _format_route(route, label: str) -> str:
         )
     lines.append(f"  total_walk_distance_m: {route.total_walk_distance_m:.0f}")
     lines.append(f"  total_walk_seconds:   {route.total_walk_seconds}  ({route.total_walk_seconds/60:.1f} min)")
-    lines.append(f"  audio_budget_seconds: {route.audio_budget_seconds}  ({route.audio_budget_seconds/60:.1f} min)")
     lines.append(f"  err_short_total:      {route.err_short_total_seconds}s")
     lines.append(f"  target_audio:         {route.target_audio_seconds}s")
     lines.append(f"  transits:             {len(route.transits)}")

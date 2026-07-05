@@ -239,7 +239,6 @@ def test_route_m2_fields_round_trip_and_default():
         transits=(),
         total_walk_distance_m=0.0,
         total_walk_seconds=0,
-        audio_budget_seconds=0,
         routed=False,
         route_polyline=None,
     )

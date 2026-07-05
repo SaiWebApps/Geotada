@@ -99,7 +99,6 @@ def _route(pois: tuple[POI, ...], duration_min: int = 60) -> Route:
         transits=transits,
         total_walk_distance_m=100.0 * len(pois),
         total_walk_seconds=walk,
-        audio_budget_seconds=max(0, duration_min * 60 - walk),
         spine_area="Le Marais",
         target_audio_seconds=duration_min * 30,
         err_short_total_seconds=int(duration_min * 60 * 0.83),
@@ -1156,7 +1155,7 @@ def _route_with_first_leg(secs: int) -> Route:
         transits=(TransitSegment(from_poi_id=None, to_poi_id="p", distance_m=100.0,
                                  walk_seconds=secs),),
         total_walk_distance_m=100.0, total_walk_seconds=secs,
-        audio_budget_seconds=0, spine_area="Le Marais",
+        spine_area="Le Marais",
         target_audio_seconds=1800, err_short_total_seconds=2988,
     )
 

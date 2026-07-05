@@ -166,7 +166,6 @@ def test_route_holds_segments_and_budgets():
         transits=(seg,),
         total_walk_distance_m=120.0,
         total_walk_seconds=144,
-        audio_budget_seconds=2000,
         spine_area="Le Marais",
         target_audio_seconds=1800,
         err_short_total_seconds=2988,

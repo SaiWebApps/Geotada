@@ -159,7 +159,6 @@ def test_summarise_route_empty():
     assert r.pois == ()
     assert r.transits == ()
     assert r.total_walk_seconds == 0
-    assert r.audio_budget_seconds == err_short_total_seconds(60)
 
 
 def test_summarise_route_single_one_way_has_one_segment():

@@ -287,13 +287,11 @@ def summarise_route(
         total_distance += seg.distance_m
 
     total_walk_seconds = sum(t.walk_seconds for t in transits)
-    audio_budget = max(0, err_short_total_seconds(duration_min) - total_walk_seconds)
     return Route(
         pois=ordered,
         transits=tuple(transits),
         total_walk_distance_m=total_distance,
         total_walk_seconds=total_walk_seconds,
-        audio_budget_seconds=audio_budget,
         spine_area=spine_area,
         target_audio_seconds=target_audio_seconds(duration_min),
         err_short_total_seconds=err_short_total_seconds(duration_min),

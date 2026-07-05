@@ -58,7 +58,7 @@ def _route(vignettes) -> Route:
     )
     return Route(
         pois=pois, transits=transits, total_walk_distance_m=200.0,
-        total_walk_seconds=120, audio_budget_seconds=3600, vignettes=vignettes,
+        total_walk_seconds=120, vignettes=vignettes,
     )
 
 

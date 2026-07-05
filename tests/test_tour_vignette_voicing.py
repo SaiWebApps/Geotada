@@ -90,7 +90,7 @@ def _route(walk_seconds: int = 60) -> Route:
     )
     return Route(
         pois=pois, transits=transits, total_walk_distance_m=200.0,
-        total_walk_seconds=walk_seconds * 2, audio_budget_seconds=3000,
+        total_walk_seconds=walk_seconds * 2,
         spine_area="Le Marais",
     )
 

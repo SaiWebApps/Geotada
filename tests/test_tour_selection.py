@@ -518,7 +518,6 @@ def test_select_route_returns_route_object_shape():
     assert hasattr(route, "transits")
     assert hasattr(route, "total_walk_distance_m")
     assert hasattr(route, "total_walk_seconds")
-    assert hasattr(route, "audio_budget_seconds")
     assert hasattr(route, "spine_area")
 
 

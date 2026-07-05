@@ -239,7 +239,6 @@ class Route(BaseModel):
     transits: tuple[TransitSegment, ...]
     total_walk_distance_m: float = Field(..., ge=0)
     total_walk_seconds: int = Field(..., ge=0)
-    audio_budget_seconds: int
     spine_area: str | None = None
     target_audio_seconds: int = 0
     err_short_total_seconds: int = 0
