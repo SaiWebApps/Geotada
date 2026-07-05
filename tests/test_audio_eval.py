@@ -207,6 +207,31 @@ class TestEvaluate:
         assert m.call_count == 1, "a near-complete transcription must not re-transcribe"
         assert 0.0 < result.word_error_rate < 0.15
 
+    def test_re_transcribes_on_high_wer_complete_and_keeps_best(self, monkeypatch):
+        """A COMPLETE-length transcription that still FAILS the WER bar (a
+        stochastic Whisper flub, not a near-empty degenerate) triggers a bounded
+        re-transcribe; the good attempt wins. Guards the live-audio-bar flake seen
+        on 'Shakespeare and Company' (WER > 0.15 one run, 0.0 on re-run)."""
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        ref = "Sylvia Beach opened the original bookshop in nineteen nineteen"
+        # Complete length (10 words vs 9) but heavily garbled -> WER > 0.15.
+        flub = "Sylvia beach closed a modern cafe by twenty twenty today"
+        with patch("src.audio.eval.transcribe", side_effect=[flub, ref]) as m:
+            result = evaluate(ref, b"fake audio")
+        assert m.call_count == 2, "a complete-but-failing transcription must re-transcribe"
+        assert result.word_error_rate == 0.0, "keeps the good retry, not the flub"
+
+    def test_high_wer_retries_bounded_and_returns_best(self, monkeypatch):
+        """If every attempt fails WER, the loop is bounded and returns the best."""
+        monkeypatch.setenv("OPENAI_API_KEY", "fake")
+        ref = "one two three four five six seven eight nine ten"
+        bad = "alpha bravo charlie delta echo foxtrot golf hotel india juliet"  # complete, WER 1.0
+        better = "one two three four five six seven eight nine zzz"  # 1 word off
+        with patch("src.audio.eval.transcribe", side_effect=[bad, bad, better]) as m:
+            result = evaluate(ref, b"fake audio")
+        assert m.call_count == 3, "bounded at _MAX_TRANSCRIBE_ATTEMPTS"
+        assert result.word_error_rate == 0.1  # keeps the least-bad attempt
+
     def test_degenerate_retries_bounded_and_returns_best(self, monkeypatch):
         """If every attempt degenerates, the loop is bounded (3) and still returns
         the least-bad result — never an infinite retry."""
