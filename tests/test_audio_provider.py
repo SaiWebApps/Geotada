@@ -224,3 +224,51 @@ class TestTTSChunking:
 def test_audio_preview_request_accepts_long_narration():
     # A long stop (6000 chars) was rejected at the old 5000 cap (the 422 bug).
     AudioPreviewRequest(text="x" * 6000, provider="mock")  # must not raise
+
+
+class TestTTSNormalizationWiring:
+    """The real providers must normalize pronunciation BEFORE calling the API
+    (backlog #23): the bytes the listener hears come from the normalized text.
+    """
+
+    def _capture_input(self, monkeypatch) -> list[str]:
+        captured: list[str] = []
+
+        def fake_post(self, *args, **kwargs):
+            payload = kwargs["json"]
+            captured.append(payload.get("input") or payload.get("text"))
+
+            class _R:
+                status_code = 200
+                content = b"\xff\xfbaudio"
+
+            return _R()
+
+        monkeypatch.setattr(httpx.Client, "post", fake_post)
+        return captured
+
+    def test_openai_normalizes_regnal_numerals(self, monkeypatch):
+        monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
+        sent = self._capture_input(monkeypatch)
+
+        OpenAITTSProvider().generate("Louis XIV met J.-B. Colbert under Napoleon III.")
+
+        assert sent == ["Louis the fourteenth met J. B. Colbert under Napoleon the third."]
+
+    def test_elevenlabs_normalizes_regnal_numerals(self, monkeypatch):
+        monkeypatch.setenv("ELEVENLABS_API_KEY", "k")
+        monkeypatch.setenv("ELEVENLABS_VOICE_ID", "v")
+        sent = self._capture_input(monkeypatch)
+
+        ElevenLabsTTSProvider().generate("Charles V and Henri IV.")
+
+        assert sent == ["Charles the fifth and Henri the fourth."]
+
+    def test_non_regnal_text_reaches_api_unchanged(self, monkeypatch):
+        monkeypatch.setenv("OPENAI_API_KEY", "fake-key")
+        sent = self._capture_input(monkeypatch)
+
+        text = "World War II shaped Chapter IV, whom I admire."
+        OpenAITTSProvider().generate(text)
+
+        assert sent == [text]

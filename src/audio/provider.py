@@ -19,6 +19,7 @@ from typing import Protocol, runtime_checkable
 import httpx
 
 from src.audio._http import TRANSIENT_NETWORK_EXC, post_with_retry
+from src.audio.tts_normalize import normalize_for_tts
 
 
 class TTSError(Exception):
@@ -173,7 +174,7 @@ class OpenAITTSProvider:
         voice = voice_id or os.getenv("OPENAI_VOICE", self.DEFAULT_VOICE)
 
         audio = bytearray()
-        for chunk in _split_for_tts(text):
+        for chunk in _split_for_tts(normalize_for_tts(text)):
             resp = _post_with_retry(
                 self.API_URL,
                 headers={"Authorization": f"Bearer {api_key}"},
@@ -220,7 +221,7 @@ class ElevenLabsTTSProvider:
         url = f"{self.API_BASE}/text-to-speech/{vid}"
 
         audio = bytearray()
-        for chunk in _split_for_tts(text):
+        for chunk in _split_for_tts(normalize_for_tts(text)):
             resp = _post_with_retry(
                 url,
                 headers={
