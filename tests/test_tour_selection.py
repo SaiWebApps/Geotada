@@ -1208,6 +1208,67 @@ def test_phase7_fill_pass_respects_walk_budget_cap():
     assert route.total_walk_seconds <= walk_cap
 
 
+def test_phase7_fill_pass_under_floor_rescue_adds_nearby_stop():
+    """#21: a 2nd nearby stop that busts walk_budget but fits total planned time
+    is added while the tour is below the stop floor and the audio floor.
+
+    Mirrors the live Latin Quarter 60-min loop: greedy seats one stop (Pantheon),
+    the second (Sorbonne) round-trip detour busts walk_budget, yet audio is far
+    under target and total time has ample slack. The under-fill rescue admits it.
+    """
+    from src.tour.routing import walk_budget_seconds
+    from src.tour.selection import _apply_fill_pass, target_audio_seconds
+
+    start = (48.8462, 2.3436)
+    a = _poi("A", tier=4, lat=48.8478, lng=2.3436, areas=("Latin Quarter",), beat_count=3)
+    b = _poi("B", tier=4, lat=48.8462, lng=2.3477, areas=("Latin Quarter",), beat_count=3)
+    snap = _snap([a, b], area_types={"Latin Quarter": "neighborhood"})
+
+    def capped(p, *, exempt):  # small audio -> well under the fill floor
+        return 260 if p.id == "A" else 370
+
+    common = dict(
+        candidates=[a, b], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
+        start_lat=start[0], start_lng=start[1], round_trip=True,
+        walk_budget=walk_budget_seconds(60), audio_budget=target_audio_seconds(60),
+        hard_anchor_cap=12, capped_audio_fn=capped, exempt_anchor_id="A",
+    )
+    # rescue_floor=2 -> below floor -> rescue fires: the 2nd nearby stop is added.
+    rescued = _apply_fill_pass([a], rescue_floor=2, **common)
+    assert {p.id for p in rescued} == {"A", "B"}, "rescue must seat the 2nd nearby stop"
+
+    # rescue_floor=0 -> no rescue -> the walk cap holds, 2nd stop stays out.
+    control = _apply_fill_pass([a], rescue_floor=0, **common)
+    assert {p.id for p in control} == {"A"}, "no rescue -> walk cap blocks the 2nd stop"
+
+
+def test_phase7_fill_pass_rescue_rejects_far_walk_slog():
+    """#21 guard (skeptic finding): the rescue must NOT trek to a FAR thin stop.
+
+    A distant candidate whose round-trip detour exceeds RESCUE_WALK_MULTIPLE x
+    walk_budget is a walk-slog (huge walk for tiny audio) — it stays OUT even
+    though the tour is below the stop floor, so the fix can't make a tour worse.
+    """
+    from src.tour.routing import walk_budget_seconds
+    from src.tour.selection import _apply_fill_pass, target_audio_seconds
+
+    start = (48.8462, 2.3436)
+    a = _poi("A", tier=4, lat=48.8478, lng=2.3436, areas=("Latin Quarter",), beat_count=3)
+    far = _poi("FAR", tier=3, lat=48.8462, lng=2.3536, areas=("Latin Quarter",), beat_count=1)
+    snap = _snap([a, far], area_types={"Latin Quarter": "neighborhood"})
+
+    def capped(p, *, exempt):
+        return 260 if p.id == "A" else 120  # far stop is thin
+
+    out = _apply_fill_pass(
+        [a], candidates=[a, far], spine="Latin Quarter", interest=frozenset(), snapshot=snap,
+        start_lat=start[0], start_lng=start[1], round_trip=True,
+        walk_budget=walk_budget_seconds(60), audio_budget=target_audio_seconds(60),
+        hard_anchor_cap=12, capped_audio_fn=capped, exempt_anchor_id="A", rescue_floor=2,
+    )
+    assert {p.id for p in out} == {"A"}, "a far thin stop must not be trekked to"
+
+
 def test_phase7_fill_pass_concorde_smoke_real_corpus():
     """Live-corpus smoke: Concorde 180min one-way improves over phase-6-rerun.
 

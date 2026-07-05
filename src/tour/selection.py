@@ -317,6 +317,22 @@ _NAME_TOKEN_MIN_LEN: int = 4
 # matters more than route efficiency at that point.
 FILL_PASS_AUDIO_FLOOR_FRAC: float = 0.8
 FILL_PASS_WALK_BUDGET_FRAC: float = 0.95
+# #21 under-fill rescue: while below the stop floor, admit a further stop whose
+# MARGINAL walk cost is proportional to the audio it delivers — walk-seconds per
+# audio-second. A rich nearby stop the greedy couldn't fit is worth the detour; a
+# far, thin stop is a walk-slog (25 min walking for 3 min audio) and stays OUT.
+# Tuned on the live routed corpus, which shows a clean gap: rich stops the fix
+# SHOULD add rate 3.2-4.2 (Pantheon 3.47, Louvre Museum 3.2-3.3, Palais-Royal
+# 4.19), thin slogs rate >=5.0 (Pont des Arts 5.0, thin streets 5.7-16). 4.5 sits
+# squarely in the gap. (A marginal ratio is used, not a total-walk cap: the
+# fill-pass insertion cost is a PRE-Held-Karp overestimate, so a total-walk
+# threshold wrongly rejects good stops once the route is re-optimised.)
+RESCUE_MAX_WALK_PER_AUDIO: float = 4.5
+# The rescue lifts a tour to at least this many stops (the reported failure was a
+# 60-min tour seating only ONE). Kept modest so two far-ish rich stops can't
+# accumulate into a walk-heavy route — a 1->2 stop lift is the fix; a rich dense
+# area already seats more via the greedy, and this never fires there.
+RESCUE_STOP_FLOOR: int = 2
 # C11a: a GREEN-density route whose DELIVERED audio is below this fraction of the
 # audio target is disclosed as thin (delivered_thin). ~0.5 flags the pool-vs-
 # delivered gap (e.g. a 90-min request delivering ~7 min) while leaving genuinely
@@ -1368,6 +1384,7 @@ def select_route(
         hard_anchor_cap=HARD_ANCHOR_CAP,
         capped_audio_fn=_capped_audio,
         exempt_anchor_id=exempt_anchor_id,
+        rescue_floor=RESCUE_STOP_FLOOR,
     )
 
     # Phase 7.5 Fix 3: detect co-located POI pairs in the final selection
@@ -1631,6 +1648,7 @@ def _apply_fill_pass(
     hard_anchor_cap: int,
     capped_audio_fn: Callable[..., int],
     exempt_anchor_id: str | None,
+    rescue_floor: int = 0,
     leg_seconds_fn: LegSecondsFn | None = None,
     score_penalty: dict[str, float] | None = None,
 ) -> list[POI]:
@@ -1649,6 +1667,18 @@ def _apply_fill_pass(
     geometrically sane. The post-endpoint-pull last-anchor (one-way
     routes) is preserved by clamping insertion idx to interior positions
     when the route already has ≥2 stops on a one-way path.
+
+    #21 UNDER-FILL RESCUE: in a thin area the greedy can seat only one stop
+    because a second stop's round-trip detour busts ``walk_budget`` — even
+    though the tour massively under-delivers AUDIO (e.g. a 60-min Latin Quarter
+    loop seating only Sorbonne: 6 min audio, 15 min walk). While the route is
+    BELOW ``count_floor`` stops, a further stop is admitted when its MARGINAL
+    walk cost is proportional to the audio it delivers (``extra <=
+    RESCUE_MAX_WALK_PER_AUDIO x cand_audio``): a rich nearby stop is seated, a
+    far/thin walk-slog is not. A tour that ALREADY meets the audio floor returns
+    early (below), so an audio-rich few-stop tour (e.g. the PdV golden, whose
+    beat-heavy stops clear the floor) is never expanded — only the genuine
+    under-fill is; and a multi-stop tour (Île, ≥ rescue_floor) is never touched.
     """
     if not selected or not candidates:
         return selected
@@ -1669,48 +1699,57 @@ def _apply_fill_pass(
         round_trip=round_trip,
         leg_seconds_fn=leg_seconds_fn,
     )
-    if consumed_walk >= walk_cap:
-        return selected  # walk already saturated; no slack to fill
 
     selected_ids = {p.id for p in selected}
     pool = [c for c in candidates if c.id not in selected_ids]
     pool.sort(key=lambda c: (-poi_score(c, spine, interest, snapshot, penalty=score_penalty), c.id))
 
-    # On a one-way path with ≥2 stops, treat the last anchor as the
-    # endpoint (placed by endpoint-pull) and never insert after it.
-    preserve_endpoint = (not round_trip) and len(selected) >= 2
-
-    for cand in pool:
-        if len(selected) >= hard_anchor_cap:
-            break
-        if consumed_audio >= floor_audio:
-            break
+    def _insertion(cand: POI, sel: list[POI]) -> tuple[int, int]:
         extra, idx = insertion_cost_seconds(
-            cand,
-            selected,
-            start_lat=start_lat,
-            start_lng=start_lng,
-            round_trip=round_trip,
-            leg_seconds_fn=leg_seconds_fn,
+            cand, sel, start_lat=start_lat, start_lng=start_lng,
+            round_trip=round_trip, leg_seconds_fn=leg_seconds_fn,
         )
-        if preserve_endpoint and idx >= len(selected):
-            # Best position was after the endpoint; clamp to just before it
-            # and recompute extra for that constrained position.
-            idx = len(selected) - 1
+        # One-way with ≥2 stops: never insert after the endpoint-pulled last anchor.
+        if (not round_trip) and len(sel) >= 2 and idx >= len(sel):
+            idx = len(sel) - 1
             extra = _insertion_extra_at_index(
-                cand,
-                selected,
-                idx,
-                start_lat=start_lat,
-                start_lng=start_lng,
-                round_trip=round_trip,
-                leg_seconds_fn=leg_seconds_fn,
+                cand, sel, idx, start_lat=start_lat, start_lng=start_lng,
+                round_trip=round_trip, leg_seconds_fn=leg_seconds_fn,
             )
-        if consumed_walk + extra > walk_cap:
-            continue
-        selected = [*selected[:idx], cand, *selected[idx:]]
-        consumed_walk += extra
-        consumed_audio += capped_audio_fn(cand, exempt=False)
+        return extra, idx
+
+    # Phase 1 — the original within-walk_cap fill (unchanged): add rich anchors
+    # while there is genuine walk slack. This alone reaches the stop floor for
+    # any area where a nearby second stop fits the budget.
+    if consumed_walk < walk_cap:
+        for cand in pool:
+            if len(selected) >= hard_anchor_cap or consumed_audio >= floor_audio:
+                break
+            extra, idx = _insertion(cand, selected)
+            if consumed_walk + extra > walk_cap:
+                continue
+            selected = [*selected[:idx], cand, *selected[idx:]]
+            consumed_walk += extra
+            consumed_audio += capped_audio_fn(cand, exempt=False)
+
+    # Phase 2 — #21 under-fill rescue: ONLY if Phase 1 could not reach the stop
+    # floor (a thin area where every next stop's detour busts walk_cap). Lift to
+    # RESCUE_STOP_FLOOR by seating a stop whose MARGINAL walk is proportional to
+    # the audio it delivers (rich nearby stop in, far/thin walk-slog out). Runs on
+    # top of Phase 1, so it never displaces a within-budget stop Phase 1 chose.
+    if len(selected) < rescue_floor:
+        seated = {p.id for p in selected}
+        for cand in pool:
+            if cand.id in seated or len(selected) >= rescue_floor:
+                continue
+            extra, idx = _insertion(cand, selected)
+            cand_audio = capped_audio_fn(cand, exempt=False)
+            if extra > RESCUE_MAX_WALK_PER_AUDIO * cand_audio:
+                continue
+            selected = [*selected[:idx], cand, *selected[idx:]]
+            consumed_walk += extra
+            consumed_audio += cand_audio
+            seated.add(cand.id)
 
     return selected
 

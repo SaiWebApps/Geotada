@@ -351,13 +351,16 @@ def test_preview_green_but_thin_delivery_carries_tourability(make_client):
 
     This is the engine-side answer to the 2026-07-02 pool-vs-delivered gap: the
     density gate rates the reachable POOL, so a rich area reads GREEN even when
-    the DELIVERED route collapses to one stop. Fixture: 6 rich anchors (tier 4,
-    3 x 240s beats each = 4.3x target audio) spread on a ~330m circle around the
-    origin. That pool clears the rich-pool escape (fill 1.5+, anchors 6+, so the
-    compactness ceiling is bypassed) -> GREEN. But for a 60-min ROUND TRIP the
-    walk budget (1195s) only affords the out-and-back to ONE edge anchor
-    (~1070s); every second anchor is a 60-degrees-away detour that overruns the
-    budget, so the greedy seats exactly one stop.
+    the DELIVERED route collapses to one stop. Fixture (rescue-proof, post-#21):
+    ONE rich dwell anchor (ring-0, tier 4, a deep beat stack that alone clears the
+    audio floor) + FIVE pool-counted anchor-candidates (tier 4, 3 beats) that are
+    dwell-INELIGIBLE filler-stubs (each < MIN_DWELL_AUDIO_SECONDS). Density counts
+    all six (fill 1.5+, anchors 6+ -> the rich-pool escape bypasses the
+    compactness ceiling -> GREEN), but selection has exactly ONE dwell candidate,
+    so the delivery is a single stop. The #21 under-fill rescue cannot lift it —
+    there is no second dwell stop to seat, and the lone rich anchor already meets
+    the audio floor (the rescue early-returns). This is the pool-vs-delivered gap
+    the rescue genuinely CANNOT fill, which is exactly when the disclosure matters.
 
     GREEN pool + one delivered stop => selection flags ``delivered_thin`` and
     attaches the assessment (selection.py, C11a). The wire MUST carry it with
@@ -388,15 +391,30 @@ def test_preview_green_but_thin_delivery_carries_tourability(make_client):
         )
         for i, (north_m, east_m) in enumerate(bearings_m)
     ]
-    beats = [
+    # ring-0 is the single rich DWELL anchor: 12 x 240s = 2880s uncapped (density
+    # reads the full pool; emission tier-caps it, still clearing the audio floor).
+    rich_beats = [
+        _beat_record(
+            "ring-0-b" + str(j),
+            "ring-0",
+            body=f"Ring anchor 0 carries story {j}. It runs a good while longer.",
+        )
+        for j in range(12)
+    ]
+    # ring-1..5 are pool-counted anchor_candidates (tier 4, 3 beats) but
+    # dwell-INELIGIBLE filler-stubs (3 x 28s = 84s < MIN_DWELL_AUDIO_SECONDS=90):
+    # they inflate the GREEN pool yet give the rescue no second dwell stop.
+    stub_beats = [
         _beat_record(
             f"ring-{i}-b{j}",
             f"ring-{i}",
-            body=f"Ring anchor {i} carries story {j}. It runs a good while longer.",
+            body=f"Ring anchor {i} note {j}.",
+            est_spoken_seconds=28,
         )
-        for i in range(len(bearings_m))
+        for i in range(1, 6)
         for j in range(3)
     ]
+    beats = rich_beats + stub_beats
     records = {
         "pois": pois,
         "beats": beats,
