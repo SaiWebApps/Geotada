@@ -111,6 +111,11 @@ class GeneratedStop(BaseModel):
         description="KE: ordered ids of this stop's beats the tour did NOT voice — the "
         "'keep exploring here' extras (uncapped plan minus voiced), most-important first",
     )
+    extra_narration: str | None = Field(
+        default=None,
+        description="KE: composed 'keep exploring here' narration for this stop's extra beats, "
+        "voiced on demand off the tour's time budget; null until /compose has run.",
+    )
     dwell_seconds: int = Field(default=0, description="Engine-computed time spent at this stop")
     transit_polyline: str | None = Field(
         default=None,

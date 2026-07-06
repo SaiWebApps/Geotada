@@ -282,6 +282,35 @@ class TestTripGenerateEngine:
                 "PLAYS_BEAT edges must cover exactly the stored beat_ids"
             )
 
+    def test_persists_extra_beat_ids_for_keep_exploring(self, ile_response, live_neo4j):
+        """KE1: each ItineraryItem persists its 'keep exploring here' extras
+        (extra_beat_ids) and a null extra_narration (composed later at /compose).
+        On the dense Île walk the per-tier cap (R1) always overflows at least one
+        marquee stop, so the extras are genuinely non-empty."""
+        with live_neo4j.session() as s:
+            items = s.run(
+                """
+                MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(item:ItineraryItem)
+                RETURN item.beat_ids AS beat_ids,
+                       item.extra_beat_ids AS extra_beat_ids,
+                       item.extra_narration AS extra_narration
+                ORDER BY item.sort_order
+                """,
+                tid=ile_response["trip_id"],
+            ).data()
+        assert len(items) == ile_response["total_stops"]
+        for it in items:
+            assert it["extra_beat_ids"] is not None, "extra_beat_ids persisted (possibly empty)"
+            assert it["extra_narration"] is None, "extra_narration is null until /compose"
+            # extras never overlap the voiced beats (they are the un-voiced remainder)
+            assert set(it["extra_beat_ids"]).isdisjoint(it["beat_ids"])
+        assert any(it["extra_beat_ids"] for it in items), (
+            "the dense Île walk must overflow the per-tier cap at ≥1 stop -> non-empty extras"
+        )
+        # and the API GET surfaces the same persisted extras
+        for stop in ile_response["stops"]:
+            assert "extra_beat_ids" in stop and stop.get("extra_narration") is None
+
 
 @needs_neo4j
 class TestTripGenerateLensPrecedence:

@@ -158,9 +158,11 @@ def _create_itinerary_items(
             duration_min: $duration_min,
             start_time: $start_time,
             beat_ids: $beat_ids,
+            extra_beat_ids: $extra_beat_ids,
             primary_beat_id: $primary_beat_id,
             lens_name: $lens_name,
             narration: $narration,
+            extra_narration: $extra_narration,
             created_at: datetime()
         })
         CREATE (trip)-[:HAS_STOP]->(item)
@@ -185,9 +187,11 @@ def _create_itinerary_items(
             duration_min=stop["duration_min"],
             start_time=stop["start_time"],
             beat_ids=stop["beat_ids"],
+            extra_beat_ids=stop.get("extra_beat_ids", []),
             primary_beat_id=stop["primary_beat_id"],
             lens_name=stop["lens_name"],
             narration=stop.get("narration"),
+            extra_narration=stop.get("extra_narration"),
         ).single()
         # The mid-query MATCH silently drops absent beat ids; fail loudly
         # rather than persist an item whose stored beat_ids cite beats it
@@ -319,6 +323,8 @@ def list_trips_for_profile(
                    poi.location.longitude AS lng,
                    primary_id AS beat_id,
                    coalesce(item.beat_ids, [b IN beats | b.id]) AS beat_ids,
+                   coalesce(item.extra_beat_ids, []) AS extra_beat_ids,
+                   item.extra_narration AS extra_narration,
                    lens_name AS lens_name,
                    CASE WHEN lens IS NOT NULL
                         THEN coalesce(lens.display_label, lens.name)
