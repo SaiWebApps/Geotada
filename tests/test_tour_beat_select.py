@@ -1327,3 +1327,130 @@ def test_extra_beat_ids_empty_when_all_voiced():
     beats = _flat_beats(5)  # under the cap -> the tour voiced them all
     voiced = [b.id for b in select_poi_beats(poi, beats).beats]
     assert extra_beat_ids(poi, beats, voiced) == ()
+
+
+def test_spatial_cap_keeps_best_by_score_not_first_in_walk_order():
+    """R1: a dense square is sequenced address-by-address, but the per-tier ceiling
+    keeps the BEST DEFAULT_FLAT_MAX beats by score — NOT the first ones in walk
+    order. An anchor beat at the LAST address must survive the cap; the old prefix
+    truncation seated the low-value early addresses and dropped it (measured: that
+    bug cost PdV 6/18 golden overlap vs 11/18 with best-by-score selection)."""
+    poi = _poi("Place des Vosges")  # tier 5
+    beats = [
+        _beat(
+            f"micro-{i}",
+            trigger_address=f"no. {i}",
+            beat_length_class="micro",
+            word_count=40,
+            narrative_function="establishing",
+        )
+        for i in range(1, 10)  # nine low-value beats at the early addresses
+    ]
+    anchor = _beat(
+        "anchor-late",
+        trigger_address="no. 10",  # sorts LAST in the walk
+        beat_length_class="anchor",  # highest length-class → highest _beat_score
+        word_count=300,
+        narrative_function="establishing",
+    )
+    beats.append(anchor)
+
+    plan = select_poi_beats(poi, beats)
+    ids = [b.id for b in plan.beats]
+
+    assert plan.ordering_strategy == "trigger_address"
+    assert len(plan.beats) <= DEFAULT_FLAT_MAX, "per-tier ceiling — no over-emission"
+    assert "anchor-late" in ids, "best-by-score survives; prefix truncation would drop it"
+    # and the survivors are still in walk order (address-sorted), anchor last
+    kept_addrs = [b.trigger_address for b in plan.beats]
+    assert kept_addrs == sorted(kept_addrs, key=lambda a: int(a.split()[-1]))
+
+
+def test_spatial_capped_is_subset_of_full_even_with_dedup_cluster():
+    """R1 KE-invariant (skeptic-refuted, now fixed): the capped plan must be a
+    SUBSET of the uncapped (KE0) plan even when a paraphrase cluster straddles the
+    cap. The cap runs LAST, over the SAME dedup'd ordering the full plan returns —
+    so keep-exploring extras (full minus voiced) can never omit a voiced beat or
+    surface a paraphrase of one. (The old cap-before-dedup ran two independent
+    dedup passes over different populations and kept different cluster survivors.)"""
+    poi = _poi("Place des Vosges")  # tier 5, trigger_address strategy
+    dup_body = "The great revolution began right here in this very square in 1789."
+    # Eight high-score fillers at addresses 2..9 fill the 8-beat cap.
+    beats = [
+        _beat(
+            f"fill-{i}",
+            trigger_address=f"no. {i}",
+            beat_length_class="anchor",  # highest length-class -> outranks the cluster
+            word_count=200,
+            narrative_function="establishing",
+            script_body=f"Distinct filler fact number {i} about this address, unique wording.",
+        )
+        for i in range(2, 10)  # eight fillers
+    ]
+    # The paraphrase cluster that would break the old cap-before-dedup order:
+    #  - dup-lo sits at the FIRST address (index 0, head-protected by the spatial
+    #    cap) but scores lowest, so the OLD cap kept it while its higher-score
+    #    sibling was capped out -> the capped-side dedup then kept dup-lo.
+    #  - dup-hi (the sibling) outscores dup-lo but is outranked by the 8 fillers,
+    #    so it's capped out; the FULL-side dedup keeps dup-hi and drops dup-lo.
+    # => under the old order dup-lo was VOICED yet absent from `full`. Cap-last
+    #    (single shared dedup) makes that impossible.
+    beats.append(
+        _beat("dup-lo-head", trigger_address="no. 1", beat_length_class="micro",
+              word_count=20, narrative_function="establishing", script_body=dup_body)
+    )
+    beats.append(
+        _beat("dup-hi", trigger_address="no. 30", beat_length_class="seasoning",
+              word_count=60, narrative_function="establishing",
+              script_body=dup_body + " It truly changed everything forever.")
+    )
+
+    voiced = {b.id for b in select_poi_beats(poi, beats).beats}
+    full = {b.id for b in select_poi_beats_full(poi, beats).beats}
+    assert voiced <= full, f"capped must be a subset of full; leaked {voiced - full}"
+    # keep-exploring extras never re-offer a voiced beat
+    extras = set(extra_beat_ids(poi, beats, voiced))
+    assert extras.isdisjoint(voiced)
+    assert extras == full - voiced
+
+
+def test_spatial_cap_never_drops_the_cold_open_orientation():
+    """R1 skeptic finding (fixed): _enforce_tone_variety runs after the hoist and can
+    swap the orientation beat off index 0 (it's the only non-somber donor). If the
+    per-tier cap then protected index 0 by POSITION and scored the displaced
+    orientation against high-value fillers, the cold-open could be dropped entirely —
+    generation would silently fall through to a synthesized opener. The cap must keep
+    the stop_orientation beat BY TYPE, and run before tone-variety."""
+    poi = _poi("Place des Vosges")  # tier 5 -> DEFAULT_FLAT_MAX = 8
+    orient = BeatRef(
+        id="orient",
+        poi_id="poi",
+        trigger_address=None,
+        beat_type="stop_orientation",
+        narrative_function="establishing",
+        emotional_register="neutral",  # the lone non-somber donor
+        beat_length_class="micro",  # lowest score -> a naive score-cap would drop it
+        word_count=15,
+    )
+    # Ten high-score SOMBER address beats: they trigger tone-variety (3 in a row) and
+    # out-score the orientation, so an unprotected cap would evict it.
+    addrs = [
+        _beat(
+            f"a{i}",
+            trigger_address=f"no. {i} place des Vosges",
+            emotional_register="somber",
+            beat_length_class="anchor",
+            word_count=200,
+            narrative_function="deepen",
+        )
+        for i in range(1, 11)
+    ]
+
+    plan = select_poi_beats(poi, [*addrs, orient])
+    ids = [b.id for b in plan.beats]
+    assert len(plan.beats) <= DEFAULT_FLAT_MAX
+    assert "orient" in ids, "the cold-open orientation must survive the per-tier cap"
+    # and it survives in the FULL plan too, so keep-exploring never re-offers it
+    full_ids = {b.id for b in select_poi_beats_full(poi, [*addrs, orient]).beats}
+    assert "orient" in full_ids
+    assert set(ids) <= full_ids

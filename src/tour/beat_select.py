@@ -14,9 +14,14 @@ the cold-open. Falls through to SYNTHESIZED_OPENER instead.
 - "sub_location": building walk. Use fixtures.SUB_LOCATION_ORDER if
   curated; otherwise fall back to the (alphabetically stable) order of
   distinct sub_locations seen on the beats. Pick at most one beat per
-  sub_location bucket. A trailing "no sub_location" beat may close.
+  sub_location bucket. The trailing "no sub_location" pool then emits
+  best-first (R1) — not a single closer.
 - "trigger_address": square circumnavigation. Stable order by trigger
-  address; one beat per address.
+  address; one beat per address, then the no-address pool best-first (R1).
+
+Every strategy's plan is then trimmed to a per-tier ceiling (DEFAULT_FLAT_MAX
+for dense stops) centrally in select_poi_beats — the golden's human-ideal roster
+never voices more than that at a single stop.
 - "narrative_function": flat fallback. hook → establishing → deepen →
   climax -> callback (and any remaining), 4-6 beats.
 
@@ -48,7 +53,6 @@ NARRATIVE_FUNCTION_ORDER: tuple[str, ...] = (
 
 SUB_LOCATION_THRESHOLD: int = 3  # ≥3 distinct values → building walk
 TRIGGER_ADDRESS_THRESHOLD: int = 5  # ≥5 distinct values → square circumnav
-DEFAULT_FLAT_MIN: int = 4
 # Phase 4 calibration (2026-04-29): bumped from 6 to 8. The empirical Île
 # walk's Sainte-Chapelle (5 beats) + Île de la Cité (4 beats) lost
 # fixture deepens to the 6-beat trim. 8 keeps all empirical anchor-flat
@@ -131,9 +135,11 @@ def select_poi_beats(
 ) -> POIBeats:
     """Order and trim a POI's beats per §3.3, returning the chosen plan.
 
-    ``apply_cap=False`` (KE0, via :func:`select_poi_beats_full`) skips the flat
-    per-tier trim so the FULL ordered plan is returned; the ordering is otherwise
-    identical, so the capped plan is a prefix of the full one.
+    ``apply_cap=False`` (KE0, via :func:`select_poi_beats_full`) skips the per-tier
+    ceiling so the FULL ordered plan is returned. The capped plan is always a
+    SUBSET of the full plan in the same order — a prefix for the flat strategy, a
+    score-selected subset for the spatial strategies (R1, ``_cap_spatial_by_score``)
+    — so keep-exploring extras (full minus voiced) stay well-defined either way.
     """
     active = [b for b in beats if b.active_status == "active"]
     if not active:
@@ -152,7 +158,7 @@ def select_poi_beats(
     elif strategy == "trigger_address":
         ordered = _order_by_trigger_address(active, interest)
     else:
-        ordered = _order_by_narrative_function(poi, active, interest, apply_cap=apply_cap)
+        ordered = _order_by_narrative_function(poi, active, interest)
 
     # Phase 3.5: orientation is a cold-open primitive that competes
     # with anchor-class beats in the no_loc / no_addr slot under the
@@ -161,8 +167,26 @@ def select_poi_beats(
     # it. Generation's consumed_in_cold_open set keeps it from being
     # double-emitted at stop 0.
     ordered = _hoist_orientation(ordered, active, interest)
-
     ordered = _apply_b8_lite_dedup(ordered, interest)
+
+    # Per-tier ceiling (R1), applied AFTER dedup (so the capped plan is a strict
+    # subset of the uncapped KE0 plan — one shared dedup pass, no diverging
+    # paraphrase-survivors) but BEFORE tone-variety. Order matters: _hoist_orientation
+    # puts the cold-open at index 0, and _enforce_tone_variety may swap it off index 0;
+    # capping before tone lets the cap protect the still-at-head orientation, and tone
+    # then only REORDERS the survivors (never drops), so the cold-open can't vanish.
+    # The golden's human-ideal roster never voices more than DEFAULT_FLAT_MAX beats at
+    # a single stop — even a 23-address square (Place des Vosges) is curated to 8 — so
+    # the spatial strategies get the ceiling the flat strategy always had. Spatial
+    # plans keep the BEST cap-many by score then stay in walk order (a plain prefix
+    # would seat low-value early addresses and drop the human's editorial picks: PdV
+    # 6/18 vs best-by-score 11/18); flat keeps its narrative-arc prefix.
+    if apply_cap:
+        if strategy == "narrative_function":
+            ordered = _apply_flat_cap(poi, ordered)
+        else:
+            ordered = _cap_spatial_by_score(poi, ordered, interest)
+
     ordered = _enforce_tone_variety(ordered)
 
     return POIBeats(
@@ -182,9 +206,10 @@ def select_poi_beats_full(
     """KE0: the UNCAPPED beat plan — every active beat, ordered, no per-tier trim.
 
     Identical ordering/dedup/tone-variety to :func:`select_poi_beats` but without
-    the flat cap, so ``select_poi_beats(...).beats`` is a PREFIX of this plan's
-    beats. The tail beyond the capped output is a stop's "keep exploring here"
-    extras — the beats the tour budget did not have room to voice.
+    the per-tier ceiling, so ``select_poi_beats(...).beats`` is a SUBSET of this
+    plan's beats in the same order (a prefix for the flat strategy; a score-selected
+    subset for the spatial strategies, R1). The beats NOT in the capped output are a
+    stop's "keep exploring here" extras — what the tour budget had no room to voice.
     """
     return select_poi_beats(poi, beats, interest_lenses=interest_lenses, apply_cap=False)
 
@@ -200,9 +225,10 @@ def extra_beat_ids(
 
     A stop's "keep exploring here" extras: the uncapped plan
     (:func:`select_poi_beats_full`) minus the beats already voiced in the tour
-    (its ScriptPOI ``beat_ids``), in the SAME priority order — so the first
-    extra is the most-important beat the budget had no room for. Empty when the
-    tour voiced everything the stop had.
+    (its ScriptPOI ``beat_ids``), in the full plan's order — narrative-priority
+    order for the flat strategy, walk order for the spatial strategies. Empty when
+    the tour voiced everything the stop had. (The spatial strategies voice the
+    best-scoring beats, R1, so these extras are the lower-value remainder.)
     """
     voiced = set(voiced_ids)
     full = select_poi_beats_full(poi, beats, interest_lenses=interest_lenses)
@@ -270,9 +296,15 @@ def _order_by_sub_location(
         bucket = by_loc[key]
         out.append(_pick_best(bucket, interest))
 
-    # Trailing "no sub_location" closer (§3.3 step 1, single closing thought).
+    # Trailing "no sub_location" pool. R1: emit the un-keyed pool best-first (not
+    # one closer) — a dense POI like Île de la Cité carries most of its beats with
+    # sub_location=None and the single-closer rule silently dropped ~15 of them.
+    # Best-first keeps the old _pick_best beat at the front. The per-tier ceiling in
+    # select_poi_beats bounds the VOICED plan (the C9 governor exempts the marquee,
+    # so a local ceiling is what stops the marquee becoming an encyclopedia-dump);
+    # the un-voiced tail surfaces as keep-exploring extras.
     if no_loc:
-        out.append(_pick_best(no_loc, interest))
+        out.extend(_top_by_score(no_loc, interest, len(no_loc)))
 
     return out
 
@@ -290,8 +322,10 @@ def _order_by_trigger_address(
     ordered_keys = sorted(by_addr.keys(), key=_address_sort_key)
 
     out: list[BeatRef] = [_pick_best(by_addr[k], interest) for k in ordered_keys]
+    # R1: emit the no-trigger_address pool best-first (see _order_by_sub_location);
+    # the per-tier ceiling in select_poi_beats bounds the voiced plan.
     if no_addr:
-        out.append(_pick_best(no_addr, interest))
+        out.extend(_top_by_score(no_addr, interest, len(no_addr)))
     return out
 
 
@@ -299,15 +333,10 @@ def _order_by_narrative_function(
     poi: POI,
     beats: list[BeatRef],
     interest: frozenset[str],
-    *,
-    apply_cap: bool = True,
 ) -> list[BeatRef]:
-    """Flat tier-5/4 fallback or tier-3 pause selection.
-
-    ``apply_cap=False`` (KE0) returns EVERY ordered beat with no per-tier trim —
-    the uncapped plan whose tail beyond the capped output is the "keep exploring"
-    extras. Ordering/scoring is identical, so ``capped == full[:cap]``.
-    """
+    """Flat tier-5/4 fallback or tier-3 pause: the full hook→…→callback arc,
+    UNCAPPED. The per-tier ceiling is applied centrally in :func:`select_poi_beats`
+    (gated by ``apply_cap``), uniformly with the spatial strategies (R1)."""
     by_fn: dict[str, list[BeatRef]] = defaultdict(list)
     for b in beats:
         by_fn[(b.narrative_function or "establishing")].append(b)
@@ -325,22 +354,48 @@ def _order_by_narrative_function(
         bucket.sort(key=lambda b: _beat_score(b, interest), reverse=True)
         leftover.extend(bucket)
     out.extend(leftover)
-
-    if not apply_cap:
-        return out  # KE0: uncapped — the full ordered plan
-
-    if poi.tier == 3:
-        out = out[:PAUSE_BEATS_MAX]
-    elif poi.tier in (1, 2):
-        # Walk-by: emit a single beat (selection.py decides whether to use it).
-        out = out[:1]
-    else:  # tier-5/4 flat fallback
-        if len(out) > DEFAULT_FLAT_MAX:
-            out = out[:DEFAULT_FLAT_MAX]
-        elif out and len(out) < DEFAULT_FLAT_MIN:
-            pass  # honest length — corpus is thin, deliver what's there
-
     return out
+
+
+def _tier_cap(poi: POI) -> int:
+    """The per-tier beat ceiling: tier-3 pause stops PAUSE_BEATS_MAX; walk-by
+    tier-1/2 a single beat; dense tier-5/4 stops DEFAULT_FLAT_MAX — the ceiling the
+    golden's own human-ideal roster respects at every stop."""
+    if poi.tier == 3:
+        return PAUSE_BEATS_MAX
+    if poi.tier in (1, 2):
+        return 1  # walk-by; selection.py decides whether to use it
+    return DEFAULT_FLAT_MAX
+
+
+def _apply_flat_cap(poi: POI, ordered: list[BeatRef]) -> list[BeatRef]:
+    """Flat-strategy ceiling: keep the narrative-arc PREFIX (a thin corpus is
+    delivered whole — honest length, not padded). The arc order is intentional, so
+    the flat strategy keeps its front, not the globally best-scoring beats."""
+    return ordered[: _tier_cap(poi)]
+
+
+def _cap_spatial_by_score(
+    poi: POI, ordered: list[BeatRef], interest: frozenset[str]
+) -> list[BeatRef]:
+    """Spatial-strategy ceiling (R1): keep the BEST ``_tier_cap`` beats by score,
+    then leave them in walk order. A sub_location / trigger_address plan is
+    sequenced spatially (address by address), so a plain prefix would seat the
+    first cap-many addresses and drop the human's editorial picks later in the
+    walk. Selecting by score first, then preserving the spatial order of the
+    survivors, keeps both the right beats and the walk sequence.
+
+    The head beat (index 0) is always kept: after _hoist_orientation and BEFORE
+    _enforce_tone_variety (which runs after this cap), index 0 is the hoisted
+    cold-open / orientation primitive, which the stop must open on regardless of
+    score. Capping before tone-variety is what makes index-0 protection sufficient:
+    tone-variety could otherwise swap the orientation off the head first, then a
+    positional cap would protect the wrong beat and evict the cold-open."""
+    cap = _tier_cap(poi)
+    if len(ordered) <= cap:
+        return ordered
+    keep = {ordered[0].id} | {b.id for b in _top_by_score(ordered[1:], interest, cap - 1)}
+    return [b for b in ordered if b.id in keep]
 
 
 # --- scoring + helpers ------------------------------------------------------
@@ -348,6 +403,13 @@ def _order_by_narrative_function(
 
 def _pick_best(bucket: list[BeatRef], interest: frozenset[str]) -> BeatRef:
     return max(bucket, key=lambda b: _beat_score(b, interest))
+
+
+def _top_by_score(pool: list[BeatRef], interest: frozenset[str], n: int) -> list[BeatRef]:
+    """The n best-scoring beats, highest first. ``_top_by_score(pool, i, 1)[0]``
+    is exactly ``_pick_best(pool, i)`` — so R1's no-key emission keeps the old
+    single-closer beat at the front and merely adds the runners-up behind it."""
+    return sorted(pool, key=lambda b: _beat_score(b, interest), reverse=True)[:n]
 
 
 def _beat_score(beat: BeatRef, interest: frozenset[str]) -> tuple:
