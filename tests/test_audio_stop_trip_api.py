@@ -19,6 +19,8 @@ from tests.conftest import needs_neo4j
 TRIP_ID = "stop-audio-test-trip"
 N1 = "Settle in. Welcome to the Eiffel Tower."
 N2 = "Now walk on to the Arc de Triomphe."
+# KE3: item1 also carries a "keep exploring here" extra narration; item2 does not.
+KE_EXTRA = "The tower has three visitor levels. The top is 276 metres up."
 
 
 class _Recorder:
@@ -63,7 +65,8 @@ def _seed(driver) -> None:
                             created_at: datetime()})
             CREATE (p1:POI {id: $tid + '-poi1', name: 'Eiffel Tower'})
             CREATE (p2:POI {id: $tid + '-poi2', name: 'Arc de Triomphe'})
-            CREATE (i1:ItineraryItem {id: $tid + '-item1', sort_order: 1, narration: $n1})
+            CREATE (i1:ItineraryItem {id: $tid + '-item1', sort_order: 1, narration: $n1,
+                                      extra_narration: $ke})
             CREATE (i2:ItineraryItem {id: $tid + '-item2', sort_order: 2, narration: $n2})
             CREATE (i3:ItineraryItem {id: $tid + '-item3', sort_order: 3})
             CREATE (t)-[:HAS_STOP]->(i1)
@@ -75,6 +78,7 @@ def _seed(driver) -> None:
             tid=TRIP_ID,
             n1=N1,
             n2=N2,
+            ke=KE_EXTRA,
         )
 
 
@@ -176,3 +180,69 @@ class TestStopAudioStatus:
         resp = client.get("/api/v1/audio/stop-status/no-such-stop")
         assert resp.status_code == 404
         assert "not found" in resp.json()["detail"].lower()
+
+
+@needs_neo4j
+class TestKeepExploringStopAudio:
+    """KE3: POST /audio/stops/{stop_id}/keep-exploring — on-demand extra audio."""
+
+    def test_voices_extra_narration_off_budget(
+        self, client, clean_driver, _temp_audio_storage
+    ):
+        _seed(clean_driver)
+        item1 = f"{TRIP_ID}-item1"
+        recorder = _Recorder()
+        with patch("src.audio.pipeline.get_provider", return_value=recorder):
+            resp = client.post(
+                f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
+            )
+        assert resp.status_code == 200, resp.text
+        data = resp.json()
+        assert data["status"] == "generated"
+        assert data["stop_id"] == item1
+        # The persisted extra_narration was voiced — verbatim, not the tour narration.
+        assert recorder.texts == [KE_EXTRA]
+        assert data["audio_url"] and item1 in data["audio_url"]
+        assert data["duration_sec"] and data["duration_sec"] > 0
+        # Served OFF the tour budget: the item's scheduled tour audio is untouched.
+        assert _item_audio(clean_driver)[item1] is None
+
+    def test_stop_without_extras_is_409(self, client, clean_driver, _temp_audio_storage):
+        _seed(clean_driver)
+        item2 = f"{TRIP_ID}-item2"  # has narration but no extra_narration
+        resp = client.post(
+            f"/api/v1/audio/stops/{item2}/keep-exploring", json={"provider": "mock"}
+        )
+        assert resp.status_code == 409, resp.text
+        assert "keep-exploring" in resp.json()["detail"].lower()
+
+    def test_unknown_stop_is_404(self, client, clean_driver, _temp_audio_storage):
+        _seed(clean_driver)
+        resp = client.post(
+            "/api/v1/audio/stops/no-such-stop/keep-exploring", json={"provider": "mock"}
+        )
+        assert resp.status_code == 404
+        assert "not found" in resp.json()["detail"].lower()
+
+    def test_tts_failure_returns_200_failed(self, client, clean_driver, _temp_audio_storage):
+        """Per audio.py's contract, a TTS failure is a soft 200 status='failed',
+        never a 500 — the client can retry the on-demand deep dive."""
+        _seed(clean_driver)
+        item1 = f"{TRIP_ID}-item1"
+        from src.audio.provider import TTSError
+
+        class _Boom:
+            name = "mock"
+
+            def generate(self, text, *, voice_id=None):
+                raise TTSError("provider exploded")
+
+        with patch("src.audio.pipeline.get_provider", return_value=_Boom()):
+            resp = client.post(
+                f"/api/v1/audio/stops/{item1}/keep-exploring", json={"provider": "mock"}
+            )
+        assert resp.status_code == 200, resp.text
+        data = resp.json()
+        assert data["status"] == "failed"
+        assert data["audio_url"] is None
+        assert data["error"]

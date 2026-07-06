@@ -26,6 +26,7 @@ from src.api.models.audio import (
     EvalResponse,
     GenerateRequest,
     GenerateResponse,
+    KeepExploringAudioResponse,
     ProviderInfo,
     ProviderListResponse,
     StopAudioResultItem,
@@ -597,4 +598,65 @@ def get_stop_audio_status(stop_id: str, session: Session = Depends(get_session))
         has_audio=has_audio,
         audio_url=audio_url if has_audio else None,
         duration_sec=rec["duration_sec"] if has_audio else None,
+    )
+
+
+@router.post(
+    "/audio/stops/{stop_id}/keep-exploring",
+    response_model=KeepExploringAudioResponse,
+)
+def keep_exploring_stop_audio(
+    stop_id: str,
+    body: GenerateRequest | None = None,
+    session: Session = Depends(get_session),
+):
+    """KE3: voice a stop's "keep exploring here" extra narration on demand.
+
+    Reads the ItineraryItem's persisted ``extra_narration`` (the deterministic
+    stitch of the stop's overflow corpus beats, composed at /compose) and voices
+    it via the SAME TTS path the tour audio uses (``generate_stop_audio``). This
+    is an ON-DEMAND deep dive served OFF the tour's time budget, so nothing is
+    auto-advanced and no itinerary time is accounted (that is a mobile concern).
+
+    - 404 if the stop doesn't exist.
+    - 409 if the stop has no extra_narration (nothing more to explore here).
+    - On TTS failure, returns 200 with ``status='failed'`` — mirroring
+      /audio/generate-trip-stops, this never raises a 500 for a flaky provider.
+
+    The audio is NOT persisted on the item's ``audio_url`` (that field holds the
+    scheduled per-stop tour audio); the fresh artifact url is returned for the
+    client to play directly.
+    """
+    rec = session.run(
+        "MATCH (i:ItineraryItem {id: $sid}) "
+        "OPTIONAL MATCH (i)-[:AT_POI]->(poi:POI) "
+        "RETURN i.extra_narration AS extra_narration, poi.name AS poi_name",
+        sid=stop_id,
+    ).single()
+    if rec is None:
+        raise HTTPException(404, f"Stop '{stop_id}' not found")
+
+    narration = rec["extra_narration"]
+    if not narration or not narration.strip():
+        raise HTTPException(409, f"Stop '{stop_id}' has no keep-exploring extras")
+
+    provider_name = body.provider if body else None
+    voice_id = body.voice_id if body else None
+
+    try:
+        gen = generate_stop_audio(
+            narration,
+            stop_key=f"{stop_id}-keep-exploring",
+            poi_name=rec["poi_name"],
+            provider_name=provider_name,
+            voice_id=voice_id,
+        )
+    except PipelineError as e:
+        return KeepExploringAudioResponse(stop_id=stop_id, status="failed", error=str(e))
+
+    return KeepExploringAudioResponse(
+        stop_id=stop_id,
+        status="generated",
+        audio_url=gen.audio_url,
+        duration_sec=gen.duration_sec,
     )

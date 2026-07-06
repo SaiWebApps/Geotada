@@ -600,6 +600,81 @@ class TestComposeTripEndpoint:
         assert all(r["audio"] is None for r in rows)
         assert composed_route == f"{trip_id}-opt1"
 
+    def test_compose_persists_extra_narration_traceable_to_extra_beats(
+        self, client, live_neo4j, fresh_trip, snapshot
+    ):
+        """KE2: /compose stitches each stop's overflow corpus beats into
+        ``extra_narration`` DETERMINISTICALLY (no LLM/VERIFY — the extras are
+        faithful curated beats). The persisted ItineraryItems must carry:
+        non-empty extra_narration exactly for stops WITH extra_beat_ids, None for
+        stops without, and text drawn ONLY from those extra beats' script_body."""
+        trip_id = fresh_trip["trip_id"]
+        from src.tour.generation import split_sentences
+
+        resp = client.post(
+            f"/api/v1/trips/{trip_id}/compose", json={"route_id": f"{trip_id}-opt1"}
+        )
+        assert resp.status_code == 200, resp.text
+
+        with live_neo4j.session() as s:
+            items = s.run(
+                """
+                MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(item:ItineraryItem)
+                RETURN item.beat_ids AS beat_ids,
+                       item.extra_beat_ids AS extra_beat_ids,
+                       item.extra_narration AS extra_narration
+                ORDER BY item.sort_order
+                """,
+                tid=trip_id,
+            ).data()
+
+        beats_by_id = {
+            ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs
+        }
+
+        def _stitch(beat_ids):
+            # Same deterministic stitch the endpoint uses: each extra beat's body
+            # split into sentences and space-joined, in extra_beat_ids order.
+            sents: list[str] = []
+            for bid in beat_ids:
+                ref = beats_by_id.get(bid)
+                if ref and ref.script_body:
+                    sents.extend(split_sentences(ref.script_body))
+            return " ".join(sents)
+
+        saw_extras = False
+        for it in items:
+            extras = it["extra_beat_ids"] or []
+            if extras:
+                saw_extras = True
+                assert it["extra_narration"], (
+                    "a stop WITH extra_beat_ids must carry a non-empty extra_narration"
+                )
+                # extra_narration is EXACTLY the deterministic stitch of THIS stop's
+                # extra beats' script_body — no LLM invention, only corpus text, and
+                # consistent with the persisted extra_beat_ids order.
+                assert it["extra_narration"] == _stitch(extras), (
+                    "extra_narration must be the deterministic stitch of its extra beats"
+                )
+                # Traceability, the human-readable way: each contributing extra beat's
+                # (normalized) body is a substring of the narration.
+                for bid in extras:
+                    ref = beats_by_id.get(bid)
+                    if ref and ref.script_body:
+                        body = " ".join(split_sentences(ref.script_body))
+                        assert body in it["extra_narration"], (
+                            f"extra beat {bid} body not found verbatim in extra_narration"
+                        )
+            else:
+                assert it["extra_narration"] is None, (
+                    "a stop with NO extra_beat_ids must have a null extra_narration"
+                )
+        assert saw_extras, "the dense Île walk must overflow ≥1 stop -> extras to voice"
+        # The compose response surfaces the same extra_narration it persisted.
+        for stop in resp.json()["stops"]:
+            if stop.get("extra_beat_ids"):
+                assert stop.get("extra_narration")
+
     def test_second_compose_is_conflict(self, client, fresh_trip):
         trip_id = fresh_trip["trip_id"]
         first = client.post(

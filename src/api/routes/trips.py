@@ -53,6 +53,7 @@ from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
     build_poi_beat_plans_capped,
     build_poi_extra_beats,
+    build_poi_extra_narration,
     load_paris_corpus,
     pick_spine_area,
     select_k_routes,
@@ -501,9 +502,30 @@ def compose_trip(
         ) from exc
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
-    stops = route_script_to_stops(
-        composed.selected_pois, beats_by_id, tour_input_dict.get("start_time"), script=composed
+    # KE2: recompute the keep-exploring extras HERE (never trust generate-time
+    # values) from the composed script's voiced beats, the SAME way generate does
+    # (build_poi_extra_beats over the rebuilt route), so extra_beat_ids stays
+    # exactly full-minus-voiced. The extras are curated corpus beats — faithful by
+    # construction — so their narration is stitched DETERMINISTICALLY from their
+    # script_bodies (build_poi_extra_narration), NOT re-composed through the LLM
+    # VERIFY gate: there is nothing freely-composed to entail. The stops carry BOTH
+    # extra_beat_ids (via route_script_to_stops) and extra_narration, keyed by poi.
+    extra_by_poi = build_poi_extra_beats(
+        route,
+        snapshot,
+        {sp.id: sp.beat_ids for sp in composed.selected_pois},
+        lenses=tour_input.lenses,
     )
+    extra_narration_by_poi = build_poi_extra_narration(extra_by_poi, snapshot)
+    stops = route_script_to_stops(
+        composed.selected_pois,
+        beats_by_id,
+        tour_input_dict.get("start_time"),
+        script=composed,
+        extra_by_poi=extra_by_poi,
+    )
+    for stop in stops:
+        stop["extra_narration"] = extra_narration_by_poi.get(stop["poi_id"])
     item_ids = replace_trip_stops(session, trip_id, stops)
     mark_trip_composed(session, trip_id, body.route_id)
 
@@ -518,12 +540,14 @@ def compose_trip(
             lng=s["lng"],
             beat_id=s["primary_beat_id"],
             beat_ids=s["beat_ids"],
+            extra_beat_ids=s["extra_beat_ids"],
             lens_name=s["lens_name"],
             lens_display=display_map.get(s["lens_name"]) if s["lens_name"] else None,
             duration_min=s["duration_min"],
             importance_tier=s["importance_tier"],
             start_time=s["start_time"],
             narration=s.get("narration"),
+            extra_narration=s.get("extra_narration"),
             dwell_seconds=s["dwell_seconds"],
         )
         for i, s in enumerate(stops)

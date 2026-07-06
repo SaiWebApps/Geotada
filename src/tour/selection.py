@@ -875,6 +875,42 @@ def build_poi_extra_beats(
     return out
 
 
+def build_poi_extra_narration(
+    extra_by_poi: dict[str, tuple[str, ...]],
+    snapshot: CorpusSnapshot,
+) -> dict[str, str]:
+    """KE2: per-POI "keep exploring here" narration — DETERMINISTIC, no LLM.
+
+    The extras are CURATED CORPUS beats (each carries a real ``script_body``), so
+    they are faithful by construction — unlike the freely-composed main narration
+    they need NO LLM entailment / VERIFY gate. We therefore stitch them the same
+    way the main narration voices its beat portion (``generation._beat_to_sentences``
+    -> ``split_sentences``), joining sentence texts with a single space — the exact
+    join ``stop_narration_text`` uses for the per-stop audio the /audio path voices.
+
+    ``extra_by_poi`` maps poi_id -> ORDERED extra beat ids (the output of
+    :func:`build_poi_extra_beats`); the join preserves that priority order, so
+    extra_beat_ids and extra_narration are consistent by construction. A POI's
+    resolvable extras with empty/absent bodies contribute nothing; a POI whose
+    extras yield no text at all is omitted (no empty-string narration is stored).
+    """
+    from .generation import split_sentences  # local import: avoid a module cycle
+
+    beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
+    out: dict[str, str] = {}
+    for poi_id, beat_ids in extra_by_poi.items():
+        sentences: list[str] = []
+        for bid in beat_ids:
+            ref = beats_by_id.get(bid)
+            if ref is None or not ref.script_body:
+                continue
+            sentences.extend(split_sentences(ref.script_body))
+        narration = " ".join(sentences)
+        if narration:
+            out[poi_id] = narration
+    return out
+
+
 def _domination_caps(is_exempt: list[bool], audio: list[int]) -> list[int | None]:
     """Per-stop second-caps for the v4 domination-gated governor.
 

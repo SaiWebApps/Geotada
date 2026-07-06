@@ -184,3 +184,19 @@ class StopAudioStatusResponse(BaseModel):
     has_audio: bool
     audio_url: str | None = None
     duration_sec: float | None = None
+
+
+class KeepExploringAudioResponse(BaseModel):
+    """KE3: on-demand audio for a stop's "keep exploring here" extra narration.
+
+    Voiced OFF the tour budget (this is an on-demand deep-dive, not a scheduled
+    stop), so it carries no duration_min / itinerary accounting. Mirrors the
+    per-stop trip-audio contract: TTS failure returns 200 with status='failed'
+    (never a 500), so a flaky provider is a soft, retryable result.
+    """
+
+    stop_id: str
+    status: str = Field(description="generated | failed")
+    audio_url: str | None = None
+    duration_sec: float | None = None
+    error: str | None = None
