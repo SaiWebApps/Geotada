@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple requirements lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles render-status dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
+.PHONY: help env use-local use-cloud which-db sync sync-apple requirements lint lint-fix format test test-unit test-file-local test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles render-status dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -72,6 +72,11 @@ test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT
 test-file: ## Run ONE pure (no-Neo4j) test file for atomic-step iteration: make test-file FILE=tests/test_x.py. NOT the bar.
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	uv run pytest $(FILE) -v
+
+test-file-local: db-up db-test-up ## Run ONE Neo4j-backed test file against local test Neo4j (7688) for atomic iteration: make test-file-local FILE=tests/test_x.py. NOT the bar.
+	@cp .env.test.example .env.test && echo "  → Testing $(FILE) against LOCAL Neo4j (test instance, port 7688)"
+	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest $(FILE) -v
 
 test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@cp .env.test.example .env.test && echo "  → Testing against LOCAL Neo4j (test instance, port 7688)"
@@ -247,6 +252,9 @@ api: ## Start the FastAPI graph API (port 8000)
 
 api-test: db-workbench-up ## Start API against the WORKBENCH database (port 8001 → Neo4j 7689; coexists with `make api` on 8000; workbench: review.html?apiPort=8001). `make test-workbench` needs :8001 free — stop this first.
 	set -a && . .env.test && set +a && NEO4J_URI=bolt://localhost:7689 NEO4J_PASSWORD=ondoway_workbench_2026 NEO4J_DATABASE=neo4j NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com,api.anthropic.com,anthropic.com,api.github.com,github.com uv run uvicorn src.api.app:app --host 127.0.0.1 --port 8001 --reload
+
+aura-resume-proof: ## Human/verify-agent proof that Aura auto-resume works: print status → resume() if paused → poll paused→resuming→running (≤5min) → verified create_driver(). Needs live AURA_CLIENT_ID/SECRET + NEO4J_URI (or AURA_INSTANCE_ID); no-op exit 0 if creds unset. NOT for CI.
+	uv run python scripts/aura_resume_proof.py
 
 setup-audio: ## Check audio pipeline prerequisites (API keys, connectivity)
 	uv run python scripts/check_audio_setup.py

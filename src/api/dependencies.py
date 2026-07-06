@@ -31,6 +31,7 @@ def init_driver() -> None:
     global _driver
     try:
         _driver = create_driver(verify=False)
+        _init_aura_resume()
     except Exception as exc:  # never let driver setup crash startup
         import logging
 
@@ -40,6 +41,48 @@ def init_driver() -> None:
             exc,
         )
         _driver = None
+
+
+def _init_aura_resume() -> None:
+    """Build the Aura resume coordinator and, if enabled, fire a wake in the
+    background so a cold deploy against a PAUSED instance starts resuming it
+    immediately — without blocking startup or crashing if Aura is unreachable.
+
+    A NO-OP when AURA creds are unset (local dev + CI): build_coordinator()
+    returns None and nothing runs.
+    """
+    import threading
+
+    from src.aura_resume import get_coordinator, reset_coordinator
+
+    # Re-read env in case this process was redeployed with newly-set creds.
+    reset_coordinator()
+    coordinator = get_coordinator()
+    if coordinator is None:
+        return
+
+    def _wake() -> None:
+        try:
+            coordinator.ensure_resuming()
+        except Exception as exc:  # ensure_resuming never raises, but be defensive
+            import logging
+
+            logging.getLogger("ondoway.aura").warning(
+                "Background Aura wake failed at startup: %s", exc
+            )
+
+    threading.Thread(target=_wake, name="aura-resume-startup", daemon=True).start()
+
+
+def get_resume_coordinator():
+    """Return the process-wide Aura ResumeCoordinator, or None if disabled.
+
+    The app.py ServiceUnavailable handler + degraded healthz call this to nudge a
+    paused instance awake on a failed DB probe.
+    """
+    from src.aura_resume import get_coordinator
+
+    return get_coordinator()
 
 
 def close_driver() -> None:

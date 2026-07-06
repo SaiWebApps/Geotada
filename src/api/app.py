@@ -6,14 +6,28 @@ import os
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
+from neo4j.exceptions import ServiceUnavailable
 
 from src.api.auth.routes import router as auth_router
-from src.api.dependencies import close_driver, init_driver
+from src.api.dependencies import close_driver, get_resume_coordinator, init_driver
 from src.api.routes import audio, edges, feedback, graph, nodes, schema, trips
+
+
+def _workbench_api_enabled() -> bool:
+    """Whether to mount the editorial-workbench graph-CRUD routers (graph, nodes,
+    edges, schema). Default TRUE (local dev + tests). The public Render deployment
+    sets WORKBENCH_API_ENABLED=false so the unauthenticated create/update/delete
+    graph surface is not reachable over the internet."""
+    return os.getenv("WORKBENCH_API_ENABLED", "true").strip().lower() not in (
+        "false",
+        "0",
+        "no",
+        "off",
+    )
 
 
 @asynccontextmanager
@@ -40,6 +54,21 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    @app.exception_handler(ServiceUnavailable)
+    async def _neo4j_unavailable_handler(request: Request, exc: ServiceUnavailable):
+        """A DB call hit an unreachable Neo4j (paused Aura, outage). Nudge the
+        instance awake (async) and return a fast, clean 503 with Retry-After
+        instead of a raw 500. NO-OP nudge when Aura resume is disabled."""
+        aura_status = "disabled"
+        coordinator = get_resume_coordinator()
+        if coordinator is not None:
+            aura_status = coordinator.ensure_resuming()
+        return JSONResponse(
+            status_code=503,
+            content={"detail": "Database is waking up, retry shortly", "aura": aura_status},
+            headers={"Retry-After": "30"},
+        )
 
     _auth_html = Path(__file__).resolve().parents[2] / "frontend" / "auth.html"
 
@@ -93,15 +122,21 @@ def create_app() -> FastAPI:
         except Exception:
             connected = False
 
-        return JSONResponse(
-            content={
-                "status": "ok" if connected else "degraded",
-                "neo4j_uri": uri,
-                "neo4j_port": urlparse(uri).port,
-                "neo4j_database": database,
-                "neo4j_connected": connected,
-            }
-        )
+        body = {
+            "status": "ok" if connected else "degraded",
+            "neo4j_uri": uri,
+            "neo4j_port": urlparse(uri).port,
+            "neo4j_database": database,
+            "neo4j_connected": connected,
+        }
+        # When the probe fails AND Aura resume is enabled, nudge the (possibly
+        # paused) instance awake and surface its status. Disabled/connected =>
+        # body is unchanged (existing test_api_startup contract).
+        if not connected:
+            coordinator = get_resume_coordinator()
+            if coordinator is not None:
+                body["aura"] = coordinator.ensure_resuming()
+        return JSONResponse(content=body)
 
     @app.get("/.well-known/apple-app-site-association")
     async def apple_app_site_association():
@@ -128,13 +163,22 @@ def create_app() -> FastAPI:
         )
 
     app.include_router(auth_router, prefix="/api/v1")
-    app.include_router(graph.router, prefix="/api/v1")
-    app.include_router(nodes.router, prefix="/api/v1")
-    app.include_router(edges.router, prefix="/api/v1")
-    app.include_router(schema.router, prefix="/api/v1")
+    # Mobile-facing routes: always mounted (the app + the web tour-preview call
+    # these; audio/trips carry their own compose/VERIFY gates).
     app.include_router(audio.router, prefix="/api/v1")
     app.include_router(trips.router, prefix="/api/v1")
     app.include_router(feedback.router, prefix="/api/v1")
+    # Editorial-workbench CRUD (create/update/delete graph nodes + edges, read the
+    # schema/city catalogue). These are the LOCAL workbench's surface — an
+    # UNAUTHENTICATED write surface — so they must NOT be exposed on the public
+    # deployment. Gated ON by default for local dev + the test/CI suites; the
+    # public Render service sets WORKBENCH_API_ENABLED=false so anonymous callers
+    # cannot mutate (or crash) the graph over the internet.
+    if _workbench_api_enabled():
+        app.include_router(graph.router, prefix="/api/v1")
+        app.include_router(nodes.router, prefix="/api/v1")
+        app.include_router(edges.router, prefix="/api/v1")
+        app.include_router(schema.router, prefix="/api/v1")
 
     # Serve the graph editor frontend
     editor_dir = os.path.join(
