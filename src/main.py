@@ -7,7 +7,9 @@ Usage:
 
 from __future__ import annotations
 
+import os
 import sys
+from urllib.parse import urlparse
 
 from src.connection import abort_on_connection_error, get_database, get_driver
 from src.schema.constraints import apply_all
@@ -16,10 +18,31 @@ from src.verify.counts import count_nodes_by_label, count_relationships_by_type,
 from src.verify.reporter import print_counts, print_section, print_summary, print_traversals
 from src.verify.traversals import run_all_traversals
 
+_LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
+
+
+def _assert_local_target() -> None:
+    """Refuse any destructive/seed op unless NEO4J_URI targets localhost.
+
+    Fires BEFORE any driver/session is opened, so it protects even when the
+    (production) Aura instance is unreachable or paused. The single persistent
+    store (Aura) is NEVER wiped or seeded from the CLI — only a local Docker
+    Neo4j on localhost may be. Run `make use-local` to switch first.
+    """
+    uri = os.getenv("NEO4J_URI", "")
+    host = urlparse(uri).hostname or ""
+    if host not in _LOCAL_HOSTS:
+        raise SystemExit(
+            f"REFUSING a destructive/seed op against non-local NEO4J_URI={uri!r} "
+            f"(host={host!r}). clean()/setup() may only target localhost; Aura is "
+            f"never wiped or seeded from the CLI. Use `make use-local` first."
+        )
+
 
 @abort_on_connection_error
 def setup() -> None:
     """Full pipeline: constraints → seed → verify."""
+    _assert_local_target()  # refuse to seed a non-local (Aura) target — fires pre-connect
     with get_driver() as driver:
         print_section("APPLYING SCHEMA")
         schema_counts = apply_all(driver)
@@ -60,6 +83,7 @@ def _run_verification(driver) -> None:
 @abort_on_connection_error
 def clean() -> None:
     """Wipe all nodes and relationships (for testing)."""
+    _assert_local_target()  # refuse to wipe a non-local (Aura) target — fires pre-connect
     with get_driver() as driver:
         with driver.session(database=get_database()) as session:
             session.run("MATCH (n) DETACH DELETE n")

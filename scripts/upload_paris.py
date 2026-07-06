@@ -21,14 +21,39 @@ Usage:
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import time
 from pathlib import Path
+from urllib.parse import urlparse
 
 from src.connection import abort_on_connection_error, create_driver, get_database
 from src.schema.constraints import apply_all
 from src.seed.lenses import seed_lenses
+
+_LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
+
+
+def _assert_upload_target_allowed(allow_cloud: bool) -> None:
+    """Refuse an upload against a non-local (Aura) target unless --allow-cloud.
+
+    The upload path plain-SETs live fields (e.g. ``beat.audio_url = ''``), so an
+    accidental run while ``.env`` is in cloud mode overwrites production. This
+    fires BEFORE any driver is created, so it protects even when Aura is
+    unreachable/paused. A deliberate cloud upload is still possible by typing
+    ``--allow-cloud`` explicitly.
+    """
+    if allow_cloud:
+        return
+    uri = os.getenv("NEO4J_URI", "")
+    host = urlparse(uri).hostname or ""
+    if host not in _LOCAL_HOSTS:
+        raise SystemExit(
+            f"REFUSING to upload against non-local NEO4J_URI={uri!r} (host={host!r}). "
+            f"This path overwrites live fields (audio_url='' etc.). Run `make use-local` "
+            f"first, or pass --allow-cloud to deliberately target Aura."
+        )
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "paris"
 POI_FILE = DATA_DIR / "poi-raw.json"
@@ -317,6 +342,11 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
 
 @abort_on_connection_error
 def main() -> None:
+    allow_cloud = "--allow-cloud" in sys.argv
+    # Guard BEFORE any driver/session is opened: an accidental cloud-mode run
+    # must not reach create_driver() (protects even when Aura is paused).
+    _assert_upload_target_allowed(allow_cloud)
+
     db = get_database()
     db_label = f"cloud ({db})" if db else "local"
     provenance_only = "--provenance-only" in sys.argv

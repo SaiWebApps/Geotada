@@ -38,7 +38,22 @@ use-local: ## Switch to local Neo4j (Docker)
 	@cp .env.local .env && echo "✓ Switched to LOCAL Neo4j (bolt://localhost:7687)"
 
 use-cloud: ## Switch to Neo4j Aura (cloud)
-	@cp .env.cloud .env && echo "✓ Switched to CLOUD Neo4j (Aura)"
+	@cp .env.cloud .env
+	@echo ""
+	@echo "############################################################"
+	@echo "##  ⚠  .env NOW TARGETS PRODUCTION NEO4J AURA (CLOUD)  ⚠  ##"
+	@echo "############################################################"
+	@echo "##  Until you run 'make use-local', these commands hit    ##"
+	@echo "##  the LIVE production database:                         ##"
+	@echo "##    • make clean-db     → WIPES production               ##"
+	@echo "##    • make setup        → seeds/overwrites production     ##"
+	@echo "##    • make upload-paris → overwrites live beat fields     ##"
+	@echo "##    • pytest / make test → destructive fixtures on prod   ##"
+	@echo "##  (CLI guards refuse the first three unless the target   ##"
+	@echo "##   is localhost / --allow-cloud is passed — but do NOT   ##"
+	@echo "##   rely on that. Switch back with 'make use-local' ASAP.)##"
+	@echo "############################################################"
+	@echo ""
 
 which-db: ## Show which Neo4j instance is active
 	@grep '^NEO4J_URI=' .env | sed 's/NEO4J_URI=/  /'

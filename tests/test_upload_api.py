@@ -11,7 +11,7 @@ import pytest
 from src.connection import create_driver
 from src.schema.constraints import apply_all
 from src.seed.lenses import seed_lenses
-from tests.conftest import needs_neo4j
+from tests.conftest import _assert_test_port, needs_neo4j
 
 
 @pytest.fixture(scope="module")
@@ -21,6 +21,9 @@ def clean_driver():
     Overrides the conftest clean_driver to also seed lens data,
     which is required by beat traversal tests.
     """
+    # Defense-in-depth: refuse the DETACH DELETE unless NEO4J_URI is the test
+    # port (7688), independent of the suite-wide pytest_configure guard.
+    _assert_test_port()
     d = create_driver()
     with d.session() as s:
         s.run("MATCH (n) DETACH DELETE n")

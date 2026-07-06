@@ -18,7 +18,11 @@ from tests.conftest import needs_neo4j
 def clean_driver():
     """Create a driver with a clean DB + schema constraints."""
     from src.connection import create_driver
+    from tests.conftest import _assert_test_port
 
+    # Defense-in-depth: refuse the DETACH DELETE unless NEO4J_URI is the test
+    # port (7688), independent of the suite-wide pytest_configure guard.
+    _assert_test_port()
     d = create_driver()
     with d.session() as s:
         s.run("MATCH (n) DETACH DELETE n")
