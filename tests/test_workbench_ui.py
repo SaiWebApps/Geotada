@@ -3731,6 +3731,337 @@ class TestProximityMatching:
 
 
 # ---------------------------------------------------------------------------
+# Test: Regressions for six confirmed workbench defects (2026-07-06)
+# ---------------------------------------------------------------------------
+
+
+class TestDefectRegressions:
+    """Real-browser regressions for defects 5, 6, 12, 13, 15, 16.
+
+    These run in the shared module page. The stateful cases (5, 12, 6, 16)
+    reload review.html first so they start from a clean IIFE and never leak
+    ``poiData``/``cachedPoiList`` mutations into other tests; the exposed
+    ``window`` setters let each test stage exactly the state it needs.
+    """
+
+    def _fresh_page(self, page):
+        """Reload the workbench and wait until its internals are exposed."""
+        page.goto(WORKBENCH_URL)
+        page.wait_for_load_state("networkidle")
+        page.wait_for_function("() => typeof window.mergeIncomingIntoDbPois === 'function'")
+
+    def test_defect5_two_incoming_matching_one_db_poi_keeps_all_beats(self, browser_page):
+        """DEFECT 5: two incoming POIs matching one DB POI accumulate — no beat loss.
+
+        Before the fix, ``match.existingPoi._incomingBeats = entry.beats`` was a
+        plain overwrite, so the second matching entry clobbered the first and its
+        beats vanished (both incoming entries were spliced out of poiData). The fix
+        pushes into an array, so every matched entry's beats survive.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        result = page.evaluate(
+            """() => {
+            // One DB POI; two incoming POIs at the SAME coords + name so both
+            // proximity-match AND clear the 0.5 name-similarity bar.
+            const dbPoi = { id: 'db-1', properties: { name: 'Louvre', location: { lat: 48.8606, lng: 2.3376 } } };
+            window.cachedPoiList = [dbPoi];
+            window.poiData = [
+              { poi_name: 'Louvre', latitude: 48.8606, longitude: 2.3376, beats: [{ id: 'a1' }, { id: 'a2' }] },
+              { poi_name: 'Louvre', latitude: 48.8606, longitude: 2.3376, beats: [{ id: 'b1' }] },
+            ];
+            window.mergeIncomingIntoDbPois();
+            const merged = window.cachedPoiList[0];
+            return {
+              incomingBeatIds: (merged._incomingBeats || []).map(b => b.id),
+              incomingPoiDataLen: Array.isArray(merged._incomingPoiData) ? merged._incomingPoiData.length : -1,
+              remainingIncoming: window.poiData.length,
+            };
+        }"""
+        )
+        assert sorted(result["incomingBeatIds"]) == ["a1", "a2", "b1"], (
+            f"all three incoming beats must be retained, got {result['incomingBeatIds']}"
+        )
+        assert result["incomingPoiDataLen"] == 2, (
+            "_incomingPoiData must accumulate both matched entries"
+        )
+        assert result["remainingIncoming"] == 0, "both matched incoming POIs are consumed"
+
+    def test_defect12_case_and_whitespace_forks_trigger_dup_resolver(self, browser_page):
+        """DEFECT 12: 'Louvre' / 'louvre' / 'Louvre ' collapse to one dedup key.
+
+        Before the fix the exact-name check keyed on the RAW poi_name, so casing/
+        whitespace variants were distinct keys and the duplicate resolver never
+        fired — the forks reached the backend MERGE. The fix normalizes the key
+        (trim + collapse whitespace + lowercase), matching the alt-name check.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        # processJson on the dupe path only touches the dup-resolver DOM (no map),
+        # so it is safe to invoke directly with staged JSON.
+        page.evaluate(
+            """() => {
+            window.cachedPoiList = [];
+            window.processJson([
+              { poi_name: 'Louvre',   latitude: 48.8606, longitude: 2.3376, beats: [{ id: 'x' }] },
+              { poi_name: 'louvre',   latitude: 48.9000, longitude: 2.4000, beats: [{ id: 'y' }] },
+              { poi_name: 'Louvre ',  latitude: 48.9500, longitude: 2.4500, beats: [{ id: 'z' }] },
+            ]);
+        }"""
+        )
+        overlay = page.locator(DUP_OVERLAY)
+        assert overlay.is_visible(), (
+            "the duplicate resolver overlay must open for casing/whitespace name forks"
+        )
+        # All three forks land in a single duplicate set.
+        header = page.locator(f"{DUP_OVERLAY} .dup-set h3").first.text_content() or ""
+        assert "3 entries" in header, f"all 3 forks must group into one dup set: {header!r}"
+        # Sanity: distinct names still do NOT trigger the resolver.
+        self._fresh_page(page)
+        page.evaluate(
+            """() => {
+            window.cachedPoiList = [];
+            window.processJson([
+              { poi_name: 'Louvre',    latitude: 48.8606, longitude: 2.3376, beats: [{ id: 'x' }] },
+              { poi_name: 'Pantheon',  latitude: 48.8462, longitude: 2.3464, beats: [{ id: 'y' }] },
+            ]);
+        }"""
+        )
+        assert not page.locator(DUP_OVERLAY).is_visible(), (
+            "distinct names must NOT open the duplicate resolver"
+        )
+
+    def test_defect15_popup_merge_button_has_no_inline_onclick(self, browser_page):
+        """DEFECT 15: the DB popup merge button is wired via addEventListener.
+
+        Before the fix the button interpolated poi.id into a single-quoted inline
+        onclick and escHtml did not escape single quotes — a latent XSS / broken
+        handler for any id containing a quote. The fix builds the button with
+        createElement + addEventListener (no interpolation), so an id containing a
+        quote is inert. We assert (a) no inline onclick attribute, (b) a hostile id
+        does not leak into markup, and (c) the click still starts merge mode.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        result = page.evaluate(
+            """() => {
+            const hostileId = "db'\\"><img src=x onerror=window.__pwned=1>";
+            const poi = { id: hostileId, properties: { name: 'Louvre', location: { lat: 48.86, lng: 2.33 } } };
+            const el = window.buildDbPopupContent(poi, { _beatCount: 2 });
+            const btn = el.querySelector('button.popup-merge-btn');
+            // Wire a spy so we can confirm the closure passes the RAW id through.
+            let clickedWith = null;
+            const orig = window._startMergeMode;
+            window._startMergeMode = (id) => { clickedWith = id; };
+            btn.click();
+            window._startMergeMode = orig;
+            return {
+              hasInlineOnclick: btn.hasAttribute('onclick'),
+              htmlHasScriptFork: el.innerHTML.includes('onerror='),
+              pwned: window.__pwned === 1,
+              clickedWith,
+              expectedId: hostileId,
+            };
+        }"""
+        )
+        assert result["hasInlineOnclick"] is False, "merge button must not use an inline onclick"
+        assert result["htmlHasScriptFork"] is False, "hostile id must not reach the popup markup"
+        assert result["pwned"] is False, "no injected handler may execute"
+        assert result["clickedWith"] == result["expectedId"], (
+            "the click closure must pass the exact (raw) poi.id to _startMergeMode"
+        )
+
+    def test_defect6_merge_write_failure_aborts_before_postmerge(self, browser_page):
+        """DEFECT 6: a 500 on a merge write throws, so postMergeUpdate never runs.
+
+        Before the fix executeMerge ignored response.ok, so a DB 500 mid-merge still
+        spliced the source POI out of the cache/map and showed a green 'Merged'
+        toast — a false success with DB/UI diverged. The mustOk helper now throws on
+        !ok. We stub the HAS_BEAT edge POST to 500 and assert: an error toast (not
+        success), and the source POI is STILL in cachedPoiList (postMergeUpdate did
+        not run).
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        # 500 the target-link HAS_BEAT POST; everything else 200 so the failure is
+        # unambiguously the .ok check, not a missing route.
+        page.route(
+            "**/api/v1/edges/HAS_BEAT",
+            lambda route: (
+                route.fulfill(status=500, content_type="application/json", body='{"detail":"boom"}')
+                if route.request.method == "POST"
+                else route.fulfill(status=200, content_type="application/json", body="{}")
+            ),
+        )
+        page.route(
+            "**/api/v1/nodes/POI/**",
+            lambda route: route.fulfill(status=200, content_type="application/json", body="{}"),
+        )
+        page.route(
+            "**/api/v1/graph/poi/**/beats**",
+            lambda route: route.fulfill(
+                status=200, content_type="application/json", body='{"beats":[]}'
+            ),
+        )
+        try:
+            result = page.evaluate(
+                """async () => {
+                const target = { id: 'tgt', properties: { name: 'Target POI', location: { lat: 48.86, lng: 2.33 } } };
+                const source = { id: 'src', properties: { name: 'Source POI', location: { lat: 48.86, lng: 2.33 } } };
+                window.cachedPoiList = [target, source];
+                const beatItems = [{ sourceBeat: { id: 'beat-1', lens_slug: 'hidden_history' }, resolution: 'keep' }];
+                await window.executeMerge(target, source, beatItems);
+                return {
+                  sourceStillCached: window.cachedPoiList.some(p => p.id === 'src'),
+                };
+            }"""
+            )
+            assert result["sourceStillCached"] is True, (
+                "postMergeUpdate must NOT run on a failed write — source POI stays in the cache"
+            )
+            # Error toast shown, success toast NOT shown.
+            error_toast = page.locator(ERROR_TOAST)
+            success_toast = page.locator(SUCCESS_TOAST)
+            assert error_toast.count() > 0 and error_toast.first.is_visible(), (
+                "a failed merge must surface an error toast"
+            )
+            assert not (success_toast.count() > 0 and success_toast.first.is_visible()), (
+                "a failed merge must NOT show a green 'Merged' success toast"
+            )
+        finally:
+            page.unroute("**/api/v1/edges/HAS_BEAT")
+            page.unroute("**/api/v1/nodes/POI/**")
+            page.unroute("**/api/v1/graph/poi/**/beats**")
+
+    def _set_city_and_load_fixture(self, page):
+        """Full happy-path bring-up: goto, pick Paris, load the fixture worklist."""
+        page.goto(WORKBENCH_URL)
+        page.wait_for_load_state("networkidle")
+        page.wait_for_function(
+            "() => { const s = document.querySelector('#citySelect'); "
+            "return s && [...s.options].some(o => o.textContent.includes('Paris')); }",
+            timeout=15000,
+        )
+        page.locator(CITY_SELECT).select_option(index=1)
+        page.locator(CITY_SUBMIT).click()
+        page.locator(CITY_OVERLAY).wait_for(state="hidden", timeout=15000)
+        load_btn = page.locator(LOAD_JSON_BTN)
+        with contextlib.suppress(Exception):
+            load_btn.wait_for(state="visible", timeout=5000)
+        with page.expect_file_chooser() as fc_info:
+            load_btn.click()
+        fc_info.value.set_files(str(FIXTURE_PATH))
+        # The fixture intentionally contains a duplicate name pair, so the dup
+        # resolver opens on load — rename one entry and resolve to reach the worklist.
+        dup_overlay = page.locator(DUP_OVERLAY)
+        with contextlib.suppress(Exception):
+            dup_overlay.wait_for(state="visible", timeout=5000)
+            dup_inputs = page.locator(f"{DUP_OVERLAY} input[data-dup-idx]")
+            if dup_inputs.count() >= 2:
+                dup_inputs.nth(1).clear()
+                dup_inputs.nth(1).fill("UI Test — Duplicate Seine Promenade (2)")
+            page.locator(DUP_RESOLVE_BTN).click()
+            dup_overlay.wait_for(state="hidden", timeout=5000)
+        page.wait_for_selector(WORKLIST_ROW, timeout=10000)
+
+    def test_defect13_failed_edge_link_surfaces_upload_error(self, browser_page):
+        """DEFECT 13: a 500 on the HAS_BEAT edge POST fails the upload (no orphan).
+
+        Before the fix uploadSinglePoi created the beat with a checked POST but
+        fired the HAS_BEAT / TAGGED_WITH edges WITHOUT checking .ok — a failed edge
+        left an orphaned beat while the upload 'succeeded'. The fix throws on a
+        non-ok edge POST. We upload an auto-new POI (Pantheon Anchor — far from any
+        seed) with the HAS_BEAT edge stubbed to 500 and assert the upload REPORTS
+        FAILURE (error toast, no uploaded badge) instead of a silent success.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._set_city_and_load_fixture(page)
+
+        # Stub only the HAS_BEAT edge POST to 500; the beat-node create stays live
+        # so the failure is unambiguously the (previously unchecked) edge link.
+        page.route(
+            "**/api/v1/edges/HAS_BEAT",
+            lambda route: (
+                route.fulfill(status=500, content_type="application/json", body='{"detail":"edge boom"}')
+                if route.request.method == "POST"
+                else route.continue_()
+            ),
+        )
+        try:
+            rows = page.locator(WORKLIST_ROW)
+            target = None
+            for i in range(rows.count()):
+                if "Pantheon Anchor" in (rows.nth(i).text_content() or ""):
+                    target = i
+                    break
+            assert target is not None, "Pantheon Anchor POI must be in the worklist"
+            rows.nth(target).click()
+            page.wait_for_timeout(1000)
+            page.locator(MARK_COMPLETE_BTN).first.click()
+            page.wait_for_timeout(2500)
+
+            error_toast = page.locator(ERROR_TOAST)
+            assert error_toast.count() > 0 and error_toast.first.is_visible(), (
+                "a failed HAS_BEAT link must surface an upload error toast, not a silent orphan"
+            )
+            # The POI must NOT be marked uploaded.
+            rows = page.locator(WORKLIST_ROW)
+            uploaded_badge_present = False
+            for i in range(rows.count()):
+                if "Pantheon Anchor" in (rows.nth(i).text_content() or ""):
+                    uploaded_badge_present = rows.nth(i).locator(BADGE_UPLOADED).count() > 0
+                    break
+            assert not uploaded_badge_present, (
+                "a POI whose edge link failed must NOT show an uploaded badge"
+            )
+        finally:
+            page.unroute("**/api/v1/edges/HAS_BEAT")
+
+    def test_defect16_city_fetch_failure_keeps_overlay_open_and_button_usable(
+        self, browser_page
+    ):
+        """DEFECT 16: a DB fetch failure leaves the overlay open + Set City usable.
+
+        Before the fix activateCity hid the overlay BEFORE awaiting the fetch and
+        swallowed the error, so a DB failure left the user locked out: overlay gone,
+        button disabled, no retry. The fix hides the overlay only after a successful
+        fetch, re-enables the button, and rethrows. We drive the click handler with
+        /lenses stubbed to 500 and assert the overlay stays visible and Set City is
+        re-enabled.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        # Fail the lens fetch — fetchLensesAndPoiList throws on a non-ok /nodes/Lens,
+        # which is what drives activateCity's failure path.
+        page.route(
+            "**/api/v1/nodes/Lens**",
+            lambda route: route.fulfill(status=500, content_type="application/json", body='{"detail":"down"}'),
+        )
+        try:
+            # Simulate a submitted-but-disabled button, then run the real activation.
+            page.evaluate("() => { document.querySelector('#citySubmitBtn').disabled = true; }")
+            page.evaluate(
+                """async () => {
+                try {
+                  await window.activateCity('paris', { lat: 48.8566, lng: 2.3522 });
+                } catch (e) { /* rethrow is expected; the handler path is what we assert */ }
+            }"""
+            )
+            overlay = page.locator(CITY_OVERLAY)
+            assert overlay.is_visible(), (
+                "on a DB fetch failure the city overlay must STAY open (not hide pre-await)"
+            )
+            submit = page.locator(CITY_SUBMIT)
+            assert submit.is_enabled(), (
+                "Set City must be re-enabled on failure so the user can retry"
+            )
+        finally:
+            page.unroute("**/api/v1/nodes/Lens**")
+            # Leave the page clean for any later test.
+            self._fresh_page(page)
+
+
+# ---------------------------------------------------------------------------
 # Test: Bug Report Generation (Task 8)
 # ---------------------------------------------------------------------------
 

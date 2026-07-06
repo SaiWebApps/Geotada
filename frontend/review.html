@@ -1334,10 +1334,18 @@
     cityName = (name || '').trim().toLowerCase();
     cityDisplay = titleCaseCity(cityName);
     cityLabel.textContent = `${cityDisplay} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
-    cityOverlay.classList.add('hidden');
+    // DEFECT 16: do NOT hide the overlay before the DB fetch succeeds. Previously
+    // the overlay was hidden here (before the await) and a fetch failure was caught
+    // internally WITHOUT rethrowing — so on a DB failure the overlay was already
+    // gone, the Set City button stayed disabled (the click handler's outer catch
+    // never fired because this one swallowed the error), and the user was locked
+    // out with no retry path. Now the overlay is hidden only AFTER a successful
+    // fetch, and the failure path re-enables the button and rethrows so the caller's
+    // handler shows the error with the overlay still open and Set City usable again.
     try {
       citySubmitBtn.textContent = 'Connecting to database…';
       await fetchLensesAndPoiList();
+      cityOverlay.classList.add('hidden');
       initPersistentMap();
       renderWorklist();
       loadTtsProviders();  // non-blocking — populates provider dropdown
@@ -1346,7 +1354,11 @@
     } catch (lensErr) {
       loadJsonBtn.disabled = true;
       showError('Cannot connect to database — workbench requires a live connection.');
-      cityLabel.textContent += ' | ⚠ DB connection failed';
+      cityError.textContent = 'Cannot connect to database — check the connection and try again.';
+      cityError.style.display = 'block';
+      citySubmitBtn.disabled = false;
+      citySubmitBtn.textContent = 'Set City';
+      throw lensErr;
     }
   }
 
@@ -1488,10 +1500,15 @@
       }
     }
 
-    // Check exact-name duplicates
+    // Check exact-name duplicates.
+    // DEFECT 12: normalize the key (trim + collapse inner whitespace + lowercase)
+    // so casing/whitespace forks ('Louvre' / 'louvre' / 'Louvre ') collapse to one
+    // key and the duplicate resolver fires — mirroring the alt-name check below,
+    // which already compares lowercased names. Without this, forks slip past the
+    // resolver and reach the backend MERGE as distinct nodes.
     const nameCount = {};
     data.forEach((p, i) => {
-      const key = p.poi_name;
+      const key = p.poi_name.trim().replace(/\s+/g, ' ').toLowerCase();
       if (!nameCount[key]) nameCount[key] = [];
       nameCount[key].push(i);
     });
@@ -1544,8 +1561,14 @@
       // Find first match with name similarity >= 50%
       const match = matches.find(m => nameSimilarity(entry.poi_name, m.existingPoi.properties.name) >= 0.5);
       if (match) {
-        match.existingPoi._incomingBeats = entry.beats;
-        match.existingPoi._incomingPoiData = entry;
+        // DEFECT 5: ACCUMULATE, don't overwrite. When two incoming POIs both
+        // match the same DB POI, a plain assignment made the second match clobber
+        // the first — silently dropping the first entry's beats (both incoming
+        // entries are spliced out of poiData below, so the loss was invisible).
+        // Push instead so every matched entry's beats are retained. _incomingPoiData
+        // likewise becomes an array so the provenance of each contribution survives.
+        (match.existingPoi._incomingBeats ??= []).push(...(entry.beats || []));
+        (match.existingPoi._incomingPoiData ??= []).push(entry);
         poiData.splice(i, 1);
       }
     }
@@ -3993,17 +4016,21 @@
       if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
       const beatNode = await beatResp.json();
 
-      // HAS_BEAT edge
-      await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+      // HAS_BEAT edge — DEFECT 13: check .ok. An unchecked edge POST could 500
+      // yet the upload still "succeeded", leaving an orphaned beat (a beat node
+      // with no POI link). Throw so a failed link surfaces as an upload error.
+      const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
       });
+      if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
 
-      // TAGGED_WITH edge
-      await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+      // TAGGED_WITH edge — DEFECT 13: check .ok for the same reason.
+      const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
       });
+      if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
     }
   }
 
@@ -4108,17 +4135,20 @@
         if (!beatResp.ok) throw new Error(`Beat create failed: ${beatResp.status}`);
         const beatNode = await beatResp.json();
 
-        // HAS_BEAT edge (link to existing POI)
-        await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+        // HAS_BEAT edge (link to existing POI) — DEFECT 13: check .ok so a failed
+        // link is an upload error, not a silent orphaned beat.
+        const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ source: {label: 'POI', id: dbPoi.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
         });
+        if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
 
-        // TAGGED_WITH edge
-        await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+        // TAGGED_WITH edge — DEFECT 13: check .ok for the same reason.
+        const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
         });
+        if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
       }
 
       // Success: clean up
@@ -4656,15 +4686,44 @@
     setTimeout(() => { if (persistentMap) persistentMap.invalidateSize(); }, 200);
   }
 
+  // DEFECT 15: build the popup as a real DOM element and wire the merge button via
+  // addEventListener with a closure over poi.id — no hand-interpolation of poi.id
+  // into an inline onclick attribute. The previous version put poi.id inside a
+  // single-quoted inline JS string, and escHtml did NOT escape single quotes (or
+  // backslash/backtick), so any id containing a quote was a latent XSS / broken
+  // handler. createElement + textContent + addEventListener sidesteps HTML/JS
+  // string contexts entirely, so no id value can break out. Leaflet's
+  // bindPopup/setPopupContent both accept an HTMLElement.
   function buildDbPopupContent(poi, marker) {
     const loc = poi.properties && poi.properties.location;
     const lat = loc ? parseFloat(loc.lat) : NaN;
     const lng = loc ? parseFloat(loc.lng) : NaN;
     const beatText = marker._beatCount !== undefined ? `${marker._beatCount} beat${marker._beatCount !== 1 ? 's' : ''}` : 'Loading...';
-    return `<div class="popup-name">${escHtml(poi.properties.name)}</div>
-      <div class="popup-coords">${lat.toFixed(4)}, ${lng.toFixed(4)}</div>
-      <div class="popup-beats">${beatText}</div>
-      <button class="popup-merge-btn" onclick="window._startMergeMode('${escHtml(poi.id)}')">Merge into this POI...</button>`;
+
+    const container = document.createElement('div');
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'popup-name';
+    nameEl.textContent = poi.properties.name;
+    container.appendChild(nameEl);
+
+    const coordsEl = document.createElement('div');
+    coordsEl.className = 'popup-coords';
+    coordsEl.textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    container.appendChild(coordsEl);
+
+    const beatsEl = document.createElement('div');
+    beatsEl.className = 'popup-beats';
+    beatsEl.textContent = beatText;
+    container.appendChild(beatsEl);
+
+    const mergeBtn = document.createElement('button');
+    mergeBtn.className = 'popup-merge-btn';
+    mergeBtn.textContent = 'Merge into this POI...';
+    mergeBtn.addEventListener('click', () => window._startMergeMode(poi.id));
+    container.appendChild(mergeBtn);
+
+    return container;
   }
 
   // ── Task 6: Lazy-load beat count ──
@@ -5044,6 +5103,19 @@
   async function executeMerge(targetPoi, sourcePoi, beatItems) {
     console.log(`Merge start: ${sourcePoi.properties.name} → ${targetPoi.properties.name}`);
 
+    // DEFECT 6: await a fetch AND assert its HTTP status in one step. Previously
+    // executeMerge never checked response.ok on its write/delete fetches, so a DB
+    // 500 mid-merge still fell through to postMergeUpdate (which splices the source
+    // POI out of the cache + drops its map marker) and showed a green "Merged"
+    // toast — a false success with the DB and UI diverged. mustOk throws on !ok, so
+    // any failed step lands in the catch below BEFORE postMergeUpdate runs, leaving
+    // state consistent and surfacing an error toast instead.
+    async function mustOk(promise, step) {
+      const resp = await promise;
+      if (!resp.ok) throw new Error(`${step} failed: HTTP ${resp.status}`);
+      return resp;
+    }
+
     try {
       // Get max sort_order from target's beats
       let maxSortOrder = 0;
@@ -5065,10 +5137,10 @@
 
         if (item.resolution === 'replace' && item.collision) {
           // Deprecate target's conflicting beat
-          await fetch(`${API_BASE}/nodes/NarrativeBeat/${item.collision.id}`, {
+          await mustOk(fetch(`${API_BASE}/nodes/NarrativeBeat/${item.collision.id}`, {
             method: 'PUT', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
-          });
+          }), `Deprecate collision beat ${item.collision.id}`);
           console.log(`Deprecated beat ${item.collision.id} on target`);
         }
 
@@ -5076,46 +5148,45 @@
           // Update TAGGED_WITH edge — create new edge with new lens, delete old
           const newLensId = lensSlugToId[item.newLensSlug];
           if (newLensId) {
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            await mustOk(fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beat.id}, target: {label: 'Lens', id: newLensId} }),
-            });
+            }), `Change lens for beat ${beat.id}`);
             console.log(`Changed lens for beat ${beat.id} to ${item.newLensSlug}`);
           }
         }
 
         // Create HAS_BEAT edge from target POI → beat
         maxSortOrder++;
-        await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+        await mustOk(fetch(`${API_BASE}/edges/HAS_BEAT`, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             source: {label: 'POI', id: targetPoi.id},
             target: {label: 'NarrativeBeat', id: beat.id},
             properties: { sort_order: maxSortOrder }
           }),
-        });
+        }), `Transfer beat ${beat.id} to target`);
         console.log(`Transferred beat ${beat.id} to target (sort_order: ${maxSortOrder})`);
 
-        // Delete old HAS_BEAT edge from source POI → beat
-        try {
-          // Fetch edges to find the specific HAS_BEAT edge
-          const edgeResp = await fetch(`${API_BASE}/graph/poi/${encodeURIComponent(sourcePoi.properties.name)}/beats?city_name=${encodeURIComponent(cityName)}`);
-          // The edge deletion depends on API — try delete by source+target pattern
-          await fetch(`${API_BASE}/edges/HAS_BEAT`, {
-            method: 'DELETE', headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              source: {label: 'POI', id: sourcePoi.id},
-              target: {label: 'NarrativeBeat', id: beat.id},
-            }),
-          });
-          console.log(`Deleted old HAS_BEAT edge from source for beat ${beat.id}`);
-        } catch (edgeErr) {
-          console.warn(`Could not delete old HAS_BEAT edge for beat ${beat.id}: ${edgeErr.message}`);
-        }
+        // Delete old HAS_BEAT edge from source POI → beat. DEFECT 6: this delete is
+        // now checked too — an unchecked delete could leave the beat linked to BOTH
+        // POIs while the merge still reported success. A failed delete aborts the
+        // merge (throws to the catch) rather than proceeding to source-POI deletion.
+        await mustOk(fetch(`${API_BASE}/edges/HAS_BEAT`, {
+          method: 'DELETE', headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            source: {label: 'POI', id: sourcePoi.id},
+            target: {label: 'NarrativeBeat', id: beat.id},
+          }),
+        }), `Delete old HAS_BEAT edge for beat ${beat.id}`);
+        console.log(`Deleted old HAS_BEAT edge from source for beat ${beat.id}`);
       }
 
-      // Delete source POI
-      await fetch(`${API_BASE}/nodes/POI/${sourcePoi.id}`, { method: 'DELETE' });
+      // Delete source POI — DEFECT 6: checked so a failed delete does not fall
+      // through to postMergeUpdate (which would drop the still-present source POI
+      // from the cache/map and falsely report a completed merge).
+      await mustOk(fetch(`${API_BASE}/nodes/POI/${sourcePoi.id}`, { method: 'DELETE' }),
+        `Delete source POI ${sourcePoi.properties.name}`);
       console.log(`Deleted source POI ${sourcePoi.properties.name}`);
 
       // Task 11: Post-merge map + cache update
@@ -5206,7 +5277,21 @@
   window.detectConflictsForPoi = detectConflictsForPoi;
   window.nameSimilarity = nameSimilarity;
   window.mapPoiForApi = mapPoiForApi;
-  Object.defineProperty(window, 'cachedPoiList', { get: () => cachedPoiList });
+  window.mergeIncomingIntoDbPois = mergeIncomingIntoDbPois;
+  window.executeMerge = executeMerge;
+  window.buildDbPopupContent = buildDbPopupContent;
+  window.activateCity = activateCity;
+  window.processJson = processJson;
+  // getters/setter so regression tests can stage module state (poiData /
+  // cachedPoiList) for functions that read+mutate it (e.g. mergeIncomingIntoDbPois).
+  Object.defineProperty(window, 'cachedPoiList', {
+    get: () => cachedPoiList,
+    set: (v) => { cachedPoiList = v; },
+  });
+  Object.defineProperty(window, 'poiData', {
+    get: () => poiData,
+    set: (v) => { poiData = v; },
+  });
 
 })();
 </script>
