@@ -237,6 +237,59 @@ class TripService extends ChangeNotifier {
     }
   }
 
+  /// POST /audio/stops/{stopId}/keep-exploring — voice a stop's persisted
+  /// "keep exploring here" extra narration on demand (KE5).
+  ///
+  /// Served OFF the tour's time budget: a deep dive, not a scheduled stop, so
+  /// the caller must play the result as a DEEPER-DIVE source (never auto-advance
+  /// — see [AudioService.play]'s isDeeperDive flag / KE6).
+  ///
+  /// Optional [provider] / [voiceId] mirror the per-beat GenerateRequest and are
+  /// usually omitted (server default provider). TTS failure comes back as HTTP
+  /// 200 with status=='failed'; that is surfaced as a [KeepExploringException]
+  /// so a flaky provider is a caught, retryable error — never a crash.
+  Future<DeeperDiveAudio> generateDeeperDiveAudio(
+    String stopId, {
+    String? provider,
+    String? voiceId,
+  }) async {
+    final body = <String, dynamic>{};
+    if (provider != null) body['provider'] = provider;
+    if (voiceId != null) body['voice_id'] = voiceId;
+
+    final response = await _httpClient.post(
+      Uri.parse('$baseUrl/audio/stops/$stopId/keep-exploring'),
+      headers: {'Content-Type': 'application/json'},
+      body: body.isEmpty ? null : jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      final status = data['status'] as String?;
+      if (status == 'failed') {
+        // Soft TTS failure (never a 500): surface as a caught error the UI can
+        // show, carrying the backend's reason when present.
+        throw KeepExploringException(
+          (data['error'] as String?) ?? 'Audio generation failed',
+        );
+      }
+      return DeeperDiveAudio(
+        stopId: (data['stop_id'] as String?) ?? stopId,
+        status: status ?? 'generated',
+        audioUrl: data['audio_url'] as String?,
+        durationSec: (data['duration_sec'] as num?)?.toDouble(),
+      );
+    } else if (response.statusCode == 404) {
+      throw TripServiceException('Stop not found');
+    } else if (response.statusCode == 409) {
+      throw TripServiceException('Nothing more to explore here');
+    } else {
+      throw TripServiceException(
+        'Keep-exploring audio failed (${response.statusCode}): ${response.body}',
+      );
+    }
+  }
+
   /// Clear all local state.
   void reset() {
     _savedTrips = [];
@@ -274,6 +327,30 @@ class TripServiceException implements Exception {
 
   @override
   String toString() => message;
+}
+
+/// Parsed result of POST /audio/stops/{id}/keep-exploring (KE5): the on-demand
+/// "keep exploring here" deep-dive audio for a stop. A 200 with status=='failed'
+/// never reaches here — it is thrown as a [KeepExploringException] instead.
+class DeeperDiveAudio {
+  final String stopId;
+  final String status;
+  final String? audioUrl;
+  final double? durationSec;
+
+  const DeeperDiveAudio({
+    required this.stopId,
+    required this.status,
+    this.audioUrl,
+    this.durationSec,
+  });
+}
+
+/// The keep-exploring endpoint returned 200 with status=='failed' (soft TTS
+/// failure — a flaky provider, never a 500). Surfaced so the UI can show a
+/// retryable error instead of crashing.
+class KeepExploringException extends TripServiceException {
+  KeepExploringException(super.message);
 }
 
 /// The backend REFUSED a flavour: /compose returned 422 with

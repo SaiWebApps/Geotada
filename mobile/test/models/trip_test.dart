@@ -71,6 +71,73 @@ void main() {
       expect(ItineraryStop.fromJson(json).stopId, isNull);
     });
 
+    test('fromJson parses extra_beat_ids and extra_narration (KE5)', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'poi-123',
+        'poi_name': 'Eiffel Tower',
+        'lat': 48.8584,
+        'lng': 2.2945,
+        'beat_id': 'beat-456',
+        'lens_name': 'dark_history',
+        'lens_display': 'Dark History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '09:00',
+        'extra_beat_ids': ['beat-extra-1', 'beat-extra-2'],
+        'extra_narration': 'There is even more to discover here.',
+      };
+
+      final stop = ItineraryStop.fromJson(json);
+
+      expect(stop.extraBeatIds, ['beat-extra-1', 'beat-extra-2']);
+      expect(stop.extraNarration, 'There is even more to discover here.');
+    });
+
+    test('fromJson defaults extra fields when absent (old trips) (KE5)', () {
+      final json = {
+        'sort_order': 1,
+        'poi_id': 'poi-123',
+        'poi_name': 'Eiffel Tower',
+        'lat': 48.8584,
+        'lng': 2.2945,
+        'beat_id': 'beat-456',
+        'lens_name': 'dark_history',
+        'lens_display': 'Dark History',
+        'duration_min': 5,
+        'importance_tier': 5,
+        'start_time': '09:00',
+      };
+
+      final stop = ItineraryStop.fromJson(json);
+
+      expect(stop.extraBeatIds, isEmpty);
+      expect(stop.extraNarration, isNull);
+    });
+
+    test('extra fields survive toJson round-trip (KE5)', () {
+      const original = ItineraryStop(
+        sortOrder: 1,
+        poiId: 'poi-1',
+        poiName: 'Test POI',
+        lat: 48.8,
+        lng: 2.3,
+        beatId: 'beat-1',
+        lensName: 'scandal',
+        lensDisplay: 'Scandal',
+        durationMin: 4,
+        importanceTier: 3,
+        startTime: '10:00',
+        extraBeatIds: ['x1', 'x2'],
+        extraNarration: 'More here.',
+      );
+
+      final rebuilt = ItineraryStop.fromJson(original.toJson());
+
+      expect(rebuilt.extraBeatIds, ['x1', 'x2']);
+      expect(rebuilt.extraNarration, 'More here.');
+    });
+
     test('fromJson handles integer lat/lng values', () {
       final json = {
         'sort_order': 2,

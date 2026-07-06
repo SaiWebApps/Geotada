@@ -19,6 +19,13 @@ class ItineraryStop {
   // M2: encoded polyline of the walking leg INTO this stop; null when the
   // backend's routing fell back to haversine (Valhalla not running).
   final String? transitPolyline;
+  // KE: ordered ids of this stop's beats the tour did NOT voice — the
+  // "keep exploring here" extras (most-important first). Empty for stops
+  // with no overflow and for old trips whose JSON lacks the key.
+  final List<String> extraBeatIds;
+  // KE: composed "keep exploring here" narration for [extraBeatIds], voiced
+  // on demand off the tour's time budget; null until /compose has run.
+  final String? extraNarration;
 
   const ItineraryStop({
     required this.sortOrder,
@@ -37,6 +44,8 @@ class ItineraryStop {
     this.audioUrl,
     this.audioDurationSec,
     this.transitPolyline,
+    this.extraBeatIds = const [],
+    this.extraNarration,
   });
 
   factory ItineraryStop.fromJson(Map<String, dynamic> json) {
@@ -59,6 +68,11 @@ class ItineraryStop {
       audioUrl: json['audio_url'] as String?,
       audioDurationSec: (json['audio_duration_sec'] as num?)?.toDouble(),
       transitPolyline: json['transit_polyline'] as String?,
+      // KE: tolerate the key being absent (old trips) — default to empty.
+      extraBeatIds: ((json['extra_beat_ids'] as List<dynamic>?) ?? const [])
+          .map((e) => e as String)
+          .toList(),
+      extraNarration: json['extra_narration'] as String?,
     );
   }
 
@@ -79,6 +93,8 @@ class ItineraryStop {
         'audio_url': audioUrl,
         'audio_duration_sec': audioDurationSec,
         'transit_polyline': transitPolyline,
+        'extra_beat_ids': extraBeatIds,
+        'extra_narration': extraNarration,
       };
 
   ItineraryStop copyWith({
@@ -103,6 +119,8 @@ class ItineraryStop {
       audioUrl: audioUrl ?? this.audioUrl,
       audioDurationSec: audioDurationSec ?? this.audioDurationSec,
       transitPolyline: transitPolyline,
+      extraBeatIds: extraBeatIds,
+      extraNarration: extraNarration,
     );
   }
 }

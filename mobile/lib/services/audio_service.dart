@@ -13,6 +13,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   String? _currentBeatId;
   bool _isPlaying = false;
   bool _isBuffering = false;
+  bool _isDeeperDive = false;
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
 
@@ -39,17 +40,27 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   String? get currentBeatId => _currentBeatId;
   @override
   bool get isPlaying => _isPlaying;
+  @override
+  bool get isDeeperDive => _isDeeperDive;
   bool get isBuffering => _isBuffering;
   Duration get position => _position;
   Duration get duration => _duration;
   bool get isActive => _currentBeatId != null;
 
   /// Play audio for a beat. Uses cached file if available, otherwise streams from URL.
+  ///
+  /// Set [isDeeperDive] for on-demand "keep exploring here" audio (KE6); the flag
+  /// is tracked so tour auto-advance can skip completion of a deep-dive clip.
   @override
-  Future<void> play(String beatId, String audioUrl) async {
+  Future<void> play(
+    String beatId,
+    String audioUrl, {
+    bool isDeeperDive = false,
+  }) async {
     if (_currentBeatId == beatId && _isPlaying) return;
 
     _currentBeatId = beatId;
+    _isDeeperDive = isDeeperDive;
     _isBuffering = true;
     notifyListeners();
 
@@ -80,6 +91,7 @@ class AudioService extends ChangeNotifier implements AudioProvider {
   Future<void> stop() async {
     await _player.stop();
     _currentBeatId = null;
+    _isDeeperDive = false;
     _position = Duration.zero;
     _isPlaying = false;
     notifyListeners();

@@ -427,6 +427,126 @@ void main() {
       expect(audioService.playCount, 1);
     });
 
+    test('tour-audio completion auto-advances to the next stop (KE6 control)',
+        () async {
+      // Control for the KE6 guard: a completed SCHEDULED per-stop tour clip
+      // still advances the itinerary index.
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          stopId: 'stop-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/stop-1.mp3',
+        ),
+        _makeStop(
+          sortOrder: 2,
+          beatId: 'beat-2',
+          stopId: 'stop-2',
+          lat: 48.8606,
+          lng: 2.3376,
+          audioUrl: 'https://cdn.ondoway.com/stop-2.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      // Play the current stop's SCHEDULED audio (keyed by the stop key, NOT
+      // deeper-dive), then complete it.
+      service.skipToStop(0);
+      expect(service.currentStopIndex, 0);
+      expect(audioService.isDeeperDive, isFalse);
+
+      audioService.simulateComplete();
+
+      // Scheduled tour audio finished -> advance to the next stop.
+      expect(service.currentStopIndex, 1);
+    });
+
+    test('deeper-dive completion does NOT auto-advance the tour (KE6)',
+        () async {
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          stopId: 'stop-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/stop-1.mp3',
+        ),
+        _makeStop(
+          sortOrder: 2,
+          beatId: 'beat-2',
+          stopId: 'stop-2',
+          lat: 48.8606,
+          lng: 2.3376,
+          audioUrl: 'https://cdn.ondoway.com/stop-2.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      expect(service.currentStopIndex, 0);
+
+      // User taps "Keep exploring here" — a DEEPER-DIVE clip plays off-budget.
+      audioService.play(
+        'stop-1-keep-exploring',
+        'https://cdn.ondoway.com/stop-1-ke.mp3',
+        isDeeperDive: true,
+      );
+      expect(audioService.isDeeperDive, isTrue);
+
+      // Deep-dive clip finishes.
+      audioService.simulateComplete();
+
+      // The tour MUST NOT advance — the index stays on the current stop.
+      expect(service.currentStopIndex, 0);
+      expect(service.state, isNot(TourState.completed));
+    });
+
+    test('deeper-dive completion does not advance even when a stop is pending '
+        '(KE6)', () async {
+      // Guards the FIRST advance branch (approaching + pendingStopIndex): a
+      // deep dive completing mid-approach must not steal the auto-advance.
+      locationService.trackingWillSucceed = true;
+      final stops = [
+        _makeStop(
+          sortOrder: 1,
+          beatId: 'beat-1',
+          lat: 48.8584,
+          lng: 2.2945,
+          audioUrl: 'https://cdn.ondoway.com/beat-1.mp3',
+        ),
+        _makeStop(
+          sortOrder: 2,
+          beatId: 'beat-2',
+          lat: 48.8606,
+          lng: 2.3376,
+          audioUrl: 'https://cdn.ondoway.com/beat-2.mp3',
+        ),
+      ];
+
+      await service.startTour(stops);
+      // Scheduled current-stop audio playing, then user reaches next stop.
+      audioService.play('beat-1', 'https://cdn.ondoway.com/beat-1.mp3');
+      locationService.simulatePosition(48.8606, 2.3376);
+      expect(service.state, TourState.approaching);
+      expect(service.pendingStopIndex, 1);
+
+      // A deep-dive clip takes over and completes.
+      audioService.play(
+        'stop-1-keep-exploring',
+        'https://cdn.ondoway.com/stop-1-ke.mp3',
+        isDeeperDive: true,
+      );
+      audioService.simulateComplete();
+
+      // Still at stop 0; the pending nudge is untouched (no auto-advance).
+      expect(service.currentStopIndex, 0);
+      expect(service.pendingStopIndex, 1);
+    });
+
     test('stop without audioUrl does not trigger play', () async {
       locationService.trackingWillSucceed = true;
       final stops = [

@@ -10,6 +10,13 @@ import 'package:ondoway/services/location_service.dart';
 import 'package:ondoway/services/profile_service.dart';
 import 'package:ondoway/services/trip_service.dart';
 
+/// Builds a single itinerary stop card in isolation — the exact `_StopCard`
+/// the itinerary list renders. Exposed only so golden/screenshot tests can
+/// render one card (with or without "keep exploring here" extras) without
+/// pumping the whole page. Not part of the app's public surface.
+@visibleForTesting
+Widget buildStopCardForTest(ItineraryStop stop) => _StopCard(stop: stop);
+
 class TripItineraryPage extends StatelessWidget {
   final String tripId;
 
@@ -674,82 +681,181 @@ class _SummaryItem extends StatelessWidget {
   }
 }
 
-class _StopCard extends StatelessWidget {
+class _StopCard extends StatefulWidget {
   final ItineraryStop stop;
 
   const _StopCard({required this.stop});
+
+  @override
+  State<_StopCard> createState() => _StopCardState();
+}
+
+class _StopCardState extends State<_StopCard> {
+  bool _generatingDeeperDive = false;
+  String? _deeperDiveError;
+
+  ItineraryStop get stop => widget.stop;
+
+  /// KE7: generate + play the stop's "keep exploring here" deep-dive audio.
+  /// Plays as a DEEPER-DIVE source (KE6) so completion never auto-advances the
+  /// tour. status=='failed' comes back as a caught [KeepExploringException].
+  Future<void> _keepExploring() async {
+    final tripService = context.read<TripService>();
+    final audioService = context.read<AudioService>();
+
+    setState(() {
+      _generatingDeeperDive = true;
+      _deeperDiveError = null;
+    });
+
+    try {
+      final result = await tripService.generateDeeperDiveAudio(
+        stop.stopId ?? stop.beatId,
+      );
+      if (!mounted) return;
+      setState(() => _generatingDeeperDive = false);
+      final url = result.audioUrl;
+      if (url == null) {
+        setState(() => _deeperDiveError = 'No audio was returned');
+        return;
+      }
+      // Key off the stop so this clip is distinct from the scheduled per-stop
+      // tour audio; isDeeperDive keeps auto-advance from firing on completion.
+      await audioService.play(
+        '${stop.stopId ?? stop.beatId}-keep-exploring',
+        url,
+        isDeeperDive: true,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _generatingDeeperDive = false;
+        _deeperDiveError = e is TripServiceException ? e.message : e.toString();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final isAnchor = stop.importanceTier == 5;
+    final hasExtras = stop.extraBeatIds.isNotEmpty;
 
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: isAnchor
-              ? colorScheme.primaryContainer
-              : colorScheme.surfaceContainerHighest,
-          child: Text(
-            '${stop.sortOrder}',
-            style: TextStyle(
-              color: isAnchor
-                  ? colorScheme.onPrimaryContainer
-                  : colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        title: Row(
-          children: [
-            Expanded(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: isAnchor
+                  ? colorScheme.primaryContainer
+                  : colorScheme.surfaceContainerHighest,
               child: Text(
-                stop.poiName,
-                style: textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: colorScheme.onSurface,
+                '${stop.sortOrder}',
+                style: TextStyle(
+                  color: isAnchor
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            if (stop.audioUrl != null)
-              Icon(Icons.volume_up, size: 16, color: colorScheme.primary),
-            if (isAnchor)
-              Icon(Icons.star, size: 16, color: colorScheme.tertiary),
-          ],
-        ),
-        subtitle: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: colorScheme.secondaryContainer,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                stop.lensDisplay,
-                style: textTheme.labelSmall?.copyWith(
-                  color: colorScheme.onSecondaryContainer,
+            title: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    stop.poiName,
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: colorScheme.onSurface,
+                    ),
+                  ),
                 ),
+                if (stop.audioUrl != null)
+                  Icon(Icons.volume_up, size: 16, color: colorScheme.primary),
+                if (isAnchor)
+                  Icon(Icons.star, size: 16, color: colorScheme.tertiary),
+              ],
+            ),
+            subtitle: Row(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: colorScheme.secondaryContainer,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    stop.lensDisplay,
+                    style: textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onSecondaryContainer,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  '${stop.durationMin} min',
+                  style: textTheme.bodySmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+            trailing: Text(
+              stop.startTime,
+              style: textTheme.titleSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.primary,
               ),
             ),
-            const SizedBox(width: 8),
-            Text(
-              '${stop.durationMin} min',
-              style: textTheme.bodySmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-        trailing: Text(
-          stop.startTime,
-          style: textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: colorScheme.primary,
           ),
-        ),
+          // KE7: only stops with un-voiced extras offer a deeper dive.
+          if (hasExtras) _buildKeepExploring(colorScheme, textTheme),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKeepExploring(ColorScheme colorScheme, TextTheme textTheme) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: _generatingDeeperDive ? null : _keepExploring,
+              icon: _generatingDeeperDive
+                  ? SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: colorScheme.primary,
+                      ),
+                    )
+                  : Icon(Icons.explore, size: 18, color: colorScheme.primary),
+              label: Text(
+                _generatingDeeperDive
+                    ? 'Preparing...'
+                    : 'Keep exploring here',
+                style: TextStyle(color: colorScheme.primary),
+              ),
+            ),
+          ),
+          if (_deeperDiveError != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 8, top: 4),
+              child: Text(
+                _deeperDiveError!,
+                style: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -15,6 +15,14 @@ abstract class LocationProvider extends ChangeNotifier {
 abstract class AudioProvider extends ChangeNotifier {
   String? get currentBeatId;
   bool get isPlaying;
-  void play(String beatId, String audioUrl);
+
+  /// True while the currently-playing source is a "keep exploring here"
+  /// deep-dive clip (KE6). The tour auto-advance MUST NOT fire when this is set
+  /// — a deep dive is served off the tour budget and never moves the itinerary.
+  bool get isDeeperDive;
+
+  /// Play [audioUrl] under [beatId]. Set [isDeeperDive] for on-demand
+  /// "keep exploring here" audio so completion does not auto-advance the tour.
+  void play(String beatId, String audioUrl, {bool isDeeperDive = false});
   void stop();
 }

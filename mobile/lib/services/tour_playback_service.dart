@@ -159,6 +159,11 @@ class TourPlaybackService extends ChangeNotifier {
   }
 
   void _onAudioStateChanged() {
+    // KE6: a completed "keep exploring here" deep-dive clip NEVER advances the
+    // tour — it is served off the tour's time budget. Only scheduled per-stop
+    // tour audio drives auto-advance, so bail before either advance path.
+    if (_audioService.isDeeperDive) return;
+
     // When audio finishes playing, auto-advance if there's a pending stop
     if (!_audioService.isPlaying &&
         _audioService.currentBeatId != null &&

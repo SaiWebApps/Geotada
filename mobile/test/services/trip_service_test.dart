@@ -491,6 +491,94 @@ void main() {
       );
     });
 
+    test('generateDeeperDiveAudio POSTs to the keep-exploring endpoint and '
+        'parses the result (KE5)', () async {
+      final client = MockClient((request) async {
+        expect(request.method, 'POST');
+        expect(
+          request.url.path,
+          contains('/audio/stops/stop-77/keep-exploring'),
+        );
+        return http.Response(
+          jsonEncode({
+            'stop_id': 'stop-77',
+            'status': 'generated',
+            'audio_url': 'https://cdn.example.com/stop-77-ke.mp3',
+            'duration_sec': 42.5,
+            'error': null,
+          }),
+          200,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+      final result = await service.generateDeeperDiveAudio('stop-77');
+
+      expect(result.stopId, 'stop-77');
+      expect(result.status, 'generated');
+      expect(result.audioUrl, 'https://cdn.example.com/stop-77-ke.mp3');
+      expect(result.durationSec, 42.5);
+    });
+
+    test('generateDeeperDiveAudio surfaces status==failed as an exception (KE5)',
+        () async {
+      // Soft TTS failure: 200 with status='failed', never a 500.
+      final client = MockClient((request) async {
+        return http.Response(
+          jsonEncode({
+            'stop_id': 'stop-77',
+            'status': 'failed',
+            'audio_url': null,
+            'duration_sec': null,
+            'error': 'provider timeout',
+          }),
+          200,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+
+      await expectLater(
+        () => service.generateDeeperDiveAudio('stop-77'),
+        throwsA(
+          isA<KeepExploringException>()
+              .having((e) => e.message, 'message', contains('provider timeout')),
+        ),
+      );
+    });
+
+    test('generateDeeperDiveAudio throws on 404 (unknown stop) (KE5)', () async {
+      final client = MockClient((request) async {
+        return http.Response(
+          jsonEncode({'detail': "Stop 'bad' not found"}),
+          404,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+
+      await expectLater(
+        () => service.generateDeeperDiveAudio('bad'),
+        throwsA(isA<TripServiceException>()),
+      );
+    });
+
+    test('generateDeeperDiveAudio throws on 409 (no extras) (KE5)', () async {
+      final client = MockClient((request) async {
+        return http.Response(
+          jsonEncode({'detail': 'no keep-exploring extras'}),
+          409,
+        );
+      });
+
+      final service = TripService(httpClient: client);
+
+      await expectLater(
+        () => service.generateDeeperDiveAudio('stop-77'),
+        throwsA(isA<TripServiceException>()),
+      );
+    });
+
     test('composeTrip throws plain TripServiceException on 409 '
         'already_composed', () async {
       final client = MockClient((request) async {

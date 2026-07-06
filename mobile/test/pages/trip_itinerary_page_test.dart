@@ -59,6 +59,27 @@ class _FakeSecureStorage extends FlutterSecureStorage {
   }
 }
 
+/// Records play calls without booting a real just_audio engine (which never
+/// completes on the headless-web runner and hangs finalize). Mirrors the fake
+/// in beat_audio_player_test.dart.
+class _FakeAudioService extends AudioService {
+  _FakeAudioService({required super.httpClient});
+
+  String? lastPlayedBeatId;
+  bool lastPlayedDeeperDive = false;
+
+  @override
+  Future<void> play(
+    String beatId,
+    String audioUrl, {
+    bool isDeeperDive = false,
+  }) async {
+    lastPlayedBeatId = beatId;
+    lastPlayedDeeperDive = isDeeperDive;
+    notifyListeners();
+  }
+}
+
 GeneratedTrip _sampleTrip({
   String id = 'trip-1',
   String name = 'Paris Day Trip',
@@ -837,6 +858,160 @@ void main() {
         await tester.pump(const Duration(seconds: 3));
         await tester.pump();
         await tester.pumpWidget(const SizedBox());
+      });
+    });
+
+    group('keep exploring here (KE7)', () {
+      GeneratedTrip tripWithExtras() => GeneratedTrip(
+            tripId: 'trip-ke',
+            tripName: 'KE Trip',
+            profileId: 'profile-1',
+            totalStops: 2,
+            totalDurationMin: 20,
+            anchorCount: 1,
+            flavourCount: 1,
+            stops: const [
+              // Stop 0 HAS un-voiced extras -> button shown.
+              ItineraryStop(
+                sortOrder: 1,
+                stopId: 'stop-ke-1',
+                poiId: 'poi-1',
+                poiName: 'Eiffel Tower',
+                lat: 48.8584,
+                lng: 2.2945,
+                beatId: 'beat-1',
+                lensName: 'dark_history',
+                lensDisplay: 'Dark History',
+                durationMin: 5,
+                importanceTier: 5,
+                startTime: '09:00',
+                extraBeatIds: ['beat-x1', 'beat-x2'],
+                extraNarration: 'More to discover.',
+              ),
+              // Stop 1 has NO extras -> button hidden.
+              ItineraryStop(
+                sortOrder: 2,
+                stopId: 'stop-ke-2',
+                poiId: 'poi-2',
+                poiName: 'Notre-Dame',
+                lat: 48.8530,
+                lng: 2.3499,
+                beatId: 'beat-2',
+                lensName: 'historic_arch',
+                lensDisplay: 'Historic Architecture',
+                durationMin: 4,
+                importanceTier: 3,
+                startTime: '09:30',
+              ),
+            ],
+          );
+
+      testWidgets('button shows only for stops with non-empty extraBeatIds',
+          (tester) async {
+        tripService.saveTrip(tripWithExtras());
+
+        await tester.pumpWidget(_buildTestWidget(
+          tripService: tripService,
+          audioService: audioService,
+          tripId: 'trip-ke',
+        ));
+        await tester.pump();
+        await tester.pump();
+
+        // Exactly one button — only the stop WITH extras offers a deep dive.
+        expect(find.text('Keep exploring here'), findsOneWidget);
+      });
+
+      testWidgets('no button when no stop has extras', (tester) async {
+        // _sampleTrip's stops carry no extraBeatIds -> button hidden.
+        tripService.saveTrip(_sampleTrip(id: 'trip-noke'));
+
+        await tester.pumpWidget(_buildTestWidget(
+          tripService: tripService,
+          audioService: audioService,
+          tripId: 'trip-noke',
+        ));
+        await tester.pump();
+        await tester.pump();
+
+        expect(find.text('Keep exploring here'), findsNothing);
+      });
+
+      testWidgets('tapping calls the keep-exploring endpoint with the stop id',
+          (tester) async {
+        String? hitPath;
+        final mockClient = MockClient((request) async {
+          hitPath = request.url.path;
+          return http.Response(
+            jsonEncode({
+              'stop_id': 'stop-ke-1',
+              'status': 'generated',
+              'audio_url': 'https://cdn.example.com/stop-ke-1-ke.mp3',
+              'duration_sec': 30,
+            }),
+            200,
+          );
+        });
+        final service = TripService(httpClient: mockClient);
+        // Fake player: a real AudioService.play awaits just_audio loading a URL
+        // that never completes on headless web and hangs the suite.
+        final audio = _FakeAudioService(httpClient: mockClient);
+        service.saveTrip(tripWithExtras());
+
+        await tester.pumpWidget(_buildTestWidget(
+          tripService: service,
+          audioService: audio,
+          tripId: 'trip-ke',
+        ));
+        await tester.pump();
+        await tester.pump();
+
+        await tester.tap(find.text('Keep exploring here'));
+        await tester.pump();
+        await tester.pump();
+
+        expect(hitPath, isNotNull);
+        expect(hitPath, contains('/audio/stops/stop-ke-1/keep-exploring'));
+        // Played as a DEEPER-DIVE source (KE6), so tour auto-advance won't fire.
+        expect(audio.lastPlayedDeeperDive, isTrue);
+        expect(audio.lastPlayedBeatId, 'stop-ke-1-keep-exploring');
+      });
+
+      testWidgets('shows an error when the endpoint returns status==failed',
+          (tester) async {
+        final mockClient = MockClient((request) async {
+          if (request.url.path.contains('keep-exploring')) {
+            return http.Response(
+              jsonEncode({
+                'stop_id': 'stop-ke-1',
+                'status': 'failed',
+                'audio_url': null,
+                'duration_sec': null,
+                'error': 'provider timeout',
+              }),
+              200,
+            );
+          }
+          return http.Response('', 200);
+        });
+        final service = TripService(httpClient: mockClient);
+        final audio = AudioService(httpClient: mockClient);
+        service.saveTrip(tripWithExtras());
+
+        await tester.pumpWidget(_buildTestWidget(
+          tripService: service,
+          audioService: audio,
+          tripId: 'trip-ke',
+        ));
+        await tester.pump();
+        await tester.pump();
+
+        await tester.tap(find.text('Keep exploring here'));
+        await tester.pump();
+        await tester.pump();
+
+        // The soft failure surfaces as an inline error, not a crash.
+        expect(find.textContaining('provider timeout'), findsOneWidget);
       });
     });
 

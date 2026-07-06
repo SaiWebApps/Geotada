@@ -37,7 +37,11 @@ class _FakeAudioService extends AudioService {
   bool get isPlaying => _playing;
 
   @override
-  Future<void> play(String beatId, String audioUrl) async {
+  Future<void> play(
+    String beatId,
+    String audioUrl, {
+    bool isDeeperDive = false,
+  }) async {
     // Record the call without booting a real just_audio engine (which never
     // completes on the headless-web test runner and hangs finalize).
     _activeBeatId = beatId;

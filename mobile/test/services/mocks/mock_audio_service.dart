@@ -5,18 +5,22 @@ import 'package:ondoway/services/providers.dart';
 class MockAudioService extends AudioProvider {
   String? _currentBeatId;
   bool _isPlaying = false;
+  bool _isDeeperDive = false;
   int _playCount = 0;
 
   @override
   String? get currentBeatId => _currentBeatId;
   @override
   bool get isPlaying => _isPlaying;
+  @override
+  bool get isDeeperDive => _isDeeperDive;
   int get playCount => _playCount;
 
   @override
-  void play(String beatId, String audioUrl) {
+  void play(String beatId, String audioUrl, {bool isDeeperDive = false}) {
     if (_currentBeatId == beatId && _isPlaying) return;
     _currentBeatId = beatId;
+    _isDeeperDive = isDeeperDive;
     _isPlaying = true;
     _playCount++;
     notifyListeners();
@@ -38,6 +42,7 @@ class MockAudioService extends AudioProvider {
   void stop() {
     _isPlaying = false;
     _currentBeatId = null;
+    _isDeeperDive = false;
     notifyListeners();
   }
 
