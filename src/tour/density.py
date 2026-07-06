@@ -75,11 +75,6 @@ ANCHOR_CANDIDATE_BEAT_COUNT_MIN: int = 3
 # Eligible POI roles for density (mirrors selection.py's filter).
 ELIGIBLE_POI_ROLES: frozenset[str] = frozenset({"stop", "setting"})
 
-# YELLOW alternative-search bounds. When a round-trip falls YELLOW or
-# RED, we look for a denser one-way destination within the equivalent
-# one-way envelope (≈2x the round-trip envelope) to recommend.
-ALTERNATIVE_DURATION_BUCKETS: tuple[int, ...] = (60, 90, 120, 180)
-
 
 class FeasibilityAlternative(NamedTuple):
     """One actionable way out of a feasibility refusal.

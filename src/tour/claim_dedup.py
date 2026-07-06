@@ -134,6 +134,14 @@ def suppress_repeated_claims(
     ``source_type == "beat"`` sentences.
     """
     beats_by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
+    # Vignette (walk-past) beats are voiced as real beat sentences too, so they must
+    # participate in cross-beat dedup — a walk-past one-liner that merely restates an
+    # earlier stop's claim would otherwise be voiced verbatim (the tourist hears the
+    # fact twice), exactly the repetition #22 exists to suppress.
+    vignette_ids = {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
+    for beats in beat_sequence.vignette_beats.values():
+        for b in beats:
+            beats_by_id.setdefault(b.id, b)
     claim_sigs_by_beat: dict[str, list[frozenset[str]]] = {
         bid: [sig for c in b.key_claims if (sig := _signature(c)) and len(sig) >= MIN_SHARED_TOKENS]
         for bid, b in beats_by_id.items()
@@ -170,14 +178,22 @@ def suppress_repeated_claims(
     if not drop:
         return sentences
 
-    # Never empty a beat: if every one of a beat's sentences was dropped, restore
-    # its first dropped sentence so the emitted beat-id set (and goldens) hold.
+    # Never empty a SEATED beat: if every one of a dwell beat's sentences was
+    # dropped, restore its first dropped sentence so the emitted beat-id set (and
+    # goldens) hold. Vignette walk-past beats are EXEMPT — they are additive
+    # annotations, not seated stops, so a vignette that is entirely a restatement is
+    # dropped whole rather than voiced as a duplicate.
     kept_by_beat: dict[str, int] = defaultdict(int)
     for i, s in enumerate(sentences):
         if s.source_type == "beat" and i not in drop:
             kept_by_beat[s.source_id] += 1
     for i, s in enumerate(sentences):
-        if s.source_type == "beat" and kept_by_beat[s.source_id] == 0 and i in drop:
+        if (
+            s.source_type == "beat"
+            and s.source_id not in vignette_ids
+            and kept_by_beat[s.source_id] == 0
+            and i in drop
+        ):
             drop.discard(i)
             kept_by_beat[s.source_id] = 1  # only the first dropped sentence is restored
 

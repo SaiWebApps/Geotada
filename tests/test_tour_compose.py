@@ -417,3 +417,32 @@ def test_anthropic_client_raises_on_max_tokens_truncation():
     client = AnthropicComposeClient(client=fake)
     with pytest.raises(ValueError, match="truncated at max_tokens"):
         client.compose(request, 1, None)
+
+
+def test_anthropic_client_raises_helpful_error_when_no_text_block():
+    """Audit-found robustness gap: a terminal response with no text block (a
+    refusal / thinking-only turn) must raise a clear ValueError, not a bare
+    StopIteration from an exhausted generator."""
+    import pytest
+
+    request, fake, client = _anthropic_client_setup()
+
+    class _NoTextResponse:
+        def __init__(self):
+            self.content = [_FakeBlock("thinking")]  # no "text" block at all
+            self.usage = type("U", (), {"input_tokens": 10, "output_tokens": 0})()
+            self.stop_reason = "refusal"
+
+    class _NoTextStream:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+        def get_final_message(self):
+            return _NoTextResponse()
+
+    fake.messages.stream = lambda **kw: _NoTextStream()
+    with pytest.raises(ValueError, match="no text block"):
+        client.compose(request, 1, None)

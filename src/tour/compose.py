@@ -320,8 +320,14 @@ class AnthropicComposeClient:
             self.input_tokens += int(getattr(usage, "input_tokens", 0) or 0)
             self.output_tokens += int(getattr(usage, "output_tokens", 0) or 0)
         text = next(
-            b.text for b in (getattr(response, "content", []) or []) if b.type == "text"
+            (b.text for b in (getattr(response, "content", []) or []) if b.type == "text"),
+            None,
         )
+        if text is None:
+            raise ValueError(
+                "compose response carried no text block "
+                f"(stop_reason={getattr(response, 'stop_reason', None)!r}) — nothing to parse"
+            )
         data = json.loads(text)
         return tuple(
             Sentence(

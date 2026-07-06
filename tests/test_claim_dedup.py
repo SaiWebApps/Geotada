@@ -135,3 +135,46 @@ def test_date_canonicalization_unifies_bc_forms() -> None:
     assert "c3bc" in _signature("settled around 300 BC")
     assert "c3bc" in _signature("the 3rd century BC")
     assert "c1bc" in _signature("Romans invaded in 52 BC")  # 52 BC is the 1st century BC
+
+
+def test_vignette_pure_restatement_is_dropped():
+    """Audit-found #22 gap: a walk-past VIGNETTE one-liner that only restates an
+    earlier dwell beat's claim must be dropped (not voiced verbatim). Vignettes are
+    additive annotations, so a pure repeat drops whole — exempt from the
+    never-empty-a-beat guard that (correctly) protects seated dwell beats."""
+    dwell = _beat("dwell1", ("Parisii settled the island in the 3rd century BC",))
+    vig = _beat("vig1", ("Parisii settled the island in the 3rd century BC",))  # same fact
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id="ile", poi_name="Ile", ordering_strategy="narrative_function",
+                     beats=(dwell,)),
+        ),
+        vignette_beats={0: (vig,)},
+    )
+    sentences = [
+        _s("The Parisii, a Celtic tribe, settled the island in the 3rd century BC.", "dwell1"),
+        _s("The Parisii settled the island in the 3rd century BC.", "vig1"),  # pure repeat
+    ]
+    out = suppress_repeated_claims(sentences, seq)
+    ids = [s.source_id for s in out]
+    assert "dwell1" in ids
+    assert "vig1" not in ids, "a pure-restatement vignette must be dropped, not heard twice"
+
+
+def test_vignette_with_novel_fact_survives():
+    """A vignette that carries a NOVEL claim is kept — only pure repeats drop."""
+    dwell = _beat("dwell1", ("Parisii settled the island in the 3rd century BC",))
+    vig = _beat("vig1", ("The bouquinistes have sold books on these quais since the 1600s",))
+    seq = BeatSequence(
+        poi_beats=(
+            POIBeats(poi_id="ile", poi_name="Ile", ordering_strategy="narrative_function",
+                     beats=(dwell,)),
+        ),
+        vignette_beats={0: (vig,)},
+    )
+    sentences = [
+        _s("The Parisii settled the island in the 3rd century BC.", "dwell1"),
+        _s("The bouquinistes have sold books on these quais since the 1600s.", "vig1"),
+    ]
+    out = suppress_repeated_claims(sentences, seq)
+    assert {"dwell1", "vig1"} <= {s.source_id for s in out}
