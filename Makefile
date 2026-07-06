@@ -23,7 +23,7 @@
 	test test-unit test-file test-file-local test-local test-cloud \
 	test-integration test-functional test-live test-auth test-onboarding \
 	test-workbench test-golden golden-probe golden-diff tour-grade \
-	tour-audio-gate tour-compose-gate test-all \
+	tour-audio-gate tour-compose-gate test-all audit \
 	db-up db-down db-status db-reset \
 	db-test-up db-test-down db-test-reset \
 	db-workbench-up db-workbench-down db-workbench-reset \
@@ -169,6 +169,14 @@ test-all: ## Run EVERY suite in sensible order (stops on first failure) — the 
 	@$(MAKE) --no-print-directory test-functional
 	@echo ""
 	@echo "✓ test-all: every suite passed."
+
+audit: ## Deterministic health gate: lint + the bar + workbench UI. For the AGGRESSIVE bug-hunt loop (find→verify→fix→repeat until dry) invoke the 'proactive-audit' workflow (.claude/workflows/proactive-audit.js) via Claude Code.
+	@$(MAKE) --no-print-directory lint
+	@$(MAKE) --no-print-directory test
+	@$(MAKE) --no-print-directory test-workbench
+	@echo ""
+	@echo "✓ audit gate green. Proactive bug-hunting: run the 'proactive-audit' workflow"
+	@echo "  (loops red-team find → adversarial verify → fix + regression test until 2 dry rounds)."
 
 test-unit: ## Run unit tests only (no Neo4j needed) — for quick iteration, NOT the bar
 	uv run pytest tests/test_definitions.py tests/test_api_models.py tests/test_api_edge_models.py tests/test_audio_provider.py tests/test_audio_storage.py tests/test_audio_pipeline.py tests/test_audio_eval.py tests/test_connection.py tests/test_audio_api.py tests/test_audio_models.py tests/test_trip_adapter.py tests/test_trip_lens_resolution.py tests/test_trip_models.py tests/test_feedback.py -v
