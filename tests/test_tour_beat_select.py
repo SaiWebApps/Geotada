@@ -11,6 +11,7 @@ from src.tour.beat_select import (
     HOIST_PROXIMITY_M,
     NARRATIVE_FUNCTION_ORDER,
     choose_ordering_strategy,
+    extra_beat_ids,
     find_area_orientation_beat,
     govern_poi_beats,
     reorder_final_stop_for_closing,
@@ -1307,3 +1308,22 @@ def test_full_equals_capped_when_under_cap():
     capped = select_poi_beats(poi, beats)
     full = select_poi_beats_full(poi, beats)
     assert [b.id for b in full.beats] == [b.id for b in capped.beats]
+
+
+def test_extra_beat_ids_are_full_minus_voiced_in_order():
+    poi = _poi("rich", tier=5)
+    beats = _flat_beats(12)
+    voiced = [b.id for b in select_poi_beats(poi, beats).beats]  # the 8 the tour voiced
+    full = [b.id for b in select_poi_beats_full(poi, beats).beats]
+    extras = extra_beat_ids(poi, beats, voiced)
+    # Exactly the tail beyond the cap, in the full plan's priority order.
+    assert list(extras) == full[len(voiced):]
+    assert len(extras) == 12 - DEFAULT_FLAT_MAX
+    assert set(extras).isdisjoint(voiced), "an extra is never something already voiced"
+
+
+def test_extra_beat_ids_empty_when_all_voiced():
+    poi = _poi("thin", tier=5)
+    beats = _flat_beats(5)  # under the cap -> the tour voiced them all
+    voiced = [b.id for b in select_poi_beats(poi, beats).beats]
+    assert extra_beat_ids(poi, beats, voiced) == ()

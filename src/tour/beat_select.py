@@ -189,6 +189,26 @@ def select_poi_beats_full(
     return select_poi_beats(poi, beats, interest_lenses=interest_lenses, apply_cap=False)
 
 
+def extra_beat_ids(
+    poi: POI,
+    beats: Iterable[BeatRef],
+    voiced_ids: Iterable[str],
+    *,
+    interest_lenses: Iterable[str] | None = None,
+) -> tuple[str, ...]:
+    """KE1: the ordered ids of a stop's beats the tour did NOT voice.
+
+    A stop's "keep exploring here" extras: the uncapped plan
+    (:func:`select_poi_beats_full`) minus the beats already voiced in the tour
+    (its ScriptPOI ``beat_ids``), in the SAME priority order — so the first
+    extra is the most-important beat the budget had no room for. Empty when the
+    tour voiced everything the stop had.
+    """
+    voiced = set(voiced_ids)
+    full = select_poi_beats_full(poi, beats, interest_lenses=interest_lenses)
+    return tuple(b.id for b in full.beats if b.id not in voiced)
+
+
 def govern_poi_beats(
     plan: POIBeats, allowance_seconds: int | None
 ) -> tuple[POIBeats, tuple[str, ...]]:
