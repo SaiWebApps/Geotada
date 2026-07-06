@@ -37,9 +37,8 @@ from playwright.sync_api import Page, sync_playwright
 
 # IDs
 CITY_OVERLAY = "#cityOverlay"
-CITY_INPUT = "#cityInput"
+CITY_INPUT = "#cityInput"  # must NOT exist — the picker is a pure DB dropdown
 CITY_SELECT = "#citySelect"
-CITY_OTHER = "__other__"  # picker sentinel: reveal the free-text geocode path
 CITY_SUBMIT = "#citySubmitBtn"
 CITY_LABEL = "#cityLabel"
 LOAD_JSON_BTN = "#loadJsonBtn"
@@ -926,44 +925,45 @@ class TestWorkbenchLoadFlow:
             "return s && [...s.options].some(o => o.textContent.includes('Paris')); }",
             timeout=15000,
         )
-        # The picker lists the seeded city sourced from the graph, not free text.
+        # The picker is a PURE dropdown of graph-sourced cities. There must be NO
+        # free-text entry and NO "Other / add a new city" option — a city with no
+        # graph data is not reviewable, and typing a name would fork nodes.
         option_texts = page.locator(f"{CITY_SELECT} option").all_text_contents()
         assert any("Paris" in t and "POI" in t for t in option_texts), option_texts
-        _take_screenshot(page, "city-picker-populated")
-        # "Other" reveals the manual geocode input (the new-city bootstrap path
-        # is preserved, not removed).
-        page.locator(CITY_SELECT).select_option(CITY_OTHER)
         _safe_assert(
             reporter,
-            page.locator(CITY_INPUT).is_visible(),
-            "Major",
-            "Selecting 'Other' did not reveal the free-text city input",
+            not any(
+                ("other" in t.lower() or "type its name" in t.lower() or "add a new city" in t.lower())
+                for t in option_texts
+            ),
+            "Critical",
+            "The picker still offers a free-text / 'Other' option — it must be DB-only",
             "City Prompt",
-            ["Select 'Other / add a new city…' in #citySelect"],
-            "#cityInput becomes visible",
-            f"cityInput visible: {page.locator(CITY_INPUT).is_visible()}",
+            ["Read #citySelect option labels"],
+            "No 'Other'/'add a city' option present",
+            f"options: {option_texts}",
             page,
-            "ac1-city-other-toggle",
+            "ac1-no-other-option",
         )
-        _take_screenshot(page, "city-picker-other-freetext")
-        # Pick the seeded city from the list instead — one click, exact key,
-        # no typing (index 0 is the disabled 'Select a city…' hint).
+        _safe_assert(
+            reporter,
+            page.locator(CITY_INPUT).count() == 0,
+            "Critical",
+            "A free-text city <input> still exists — the picker MUST be a pure DB dropdown",
+            "City Prompt",
+            ["Query the DOM for #cityInput"],
+            "#cityInput is absent from the DOM",
+            f"#cityInput count: {page.locator(CITY_INPUT).count()}",
+            page,
+            "ac1-no-freetext-input",
+        )
+        _take_screenshot(page, "city-picker-pure-dropdown")
+        # Pick the seeded city from the list — one click, exact key, no typing
+        # (index 0 is the disabled 'Select a city…' hint).
         page.locator(CITY_SELECT).select_option(index=1)
-        _safe_assert(
-            reporter,
-            not page.locator(CITY_INPUT).is_visible(),
-            "Minor",
-            "Picking a real city did not hide the free-text input",
-            "City Prompt",
-            ["Select the seeded city in #citySelect"],
-            "#cityInput hidden",
-            f"cityInput visible: {page.locator(CITY_INPUT).is_visible()}",
-            page,
-            "ac1-city-picker-hides-input",
-        )
         page.locator(CITY_SUBMIT).click()
 
-        # Wait for overlay to close (10s timeout for Nominatim — Risk R2)
+        # Wait for overlay to close after the DB connect (no geocode round-trip)
         try:
             overlay.wait_for(state="hidden", timeout=15000)
             city_accepted = True
@@ -977,11 +977,11 @@ class TestWorkbenchLoadFlow:
                 "City Prompt",
                 [
                     "Navigate to workbench URL",
-                    "Type 'Paris' into #cityInput",
+                    "Select 'Paris' from #citySelect",
                     "Click #citySubmitBtn",
                 ],
                 "Overlay closes within 10s",
-                "Overlay still visible after 15s (Nominatim may be slow/down)",
+                "Overlay still visible after 15s (DB connect slow/down)",
                 page,
                 "ac1-city-timeout",
             )

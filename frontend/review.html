@@ -984,11 +984,10 @@
 <div id="cityOverlay" class="overlay">
   <div class="overlay-card">
     <h2>Editorial Review Session</h2>
-    <p>Which city is this review session for? Pick a city that already has data in the graph, or choose “Other” to add a new one. The centre creates a 50 km geofence for coordinate validation.</p>
+    <p>Which city is this review session for? Pick a city that already has data in the graph. The centre creates a 50 km geofence for coordinate validation.</p>
     <select id="citySelect" aria-label="City">
       <option value="" disabled selected>Loading cities…</option>
     </select>
-    <input type="text" id="cityInput" placeholder="e.g. Paris, Tokyo, New York" style="display:none;" />
     <div id="cityError" style="color:var(--red);font-size:0.8rem;margin-bottom:0.5rem;display:none;"></div>
     <button class="btn btn-primary" id="citySubmitBtn" style="width:100%;">Set City</button>
   </div>
@@ -1106,12 +1105,10 @@
 
   // ── DOM refs ──
   const cityOverlay = document.getElementById('cityOverlay');
-  const cityInput = document.getElementById('cityInput');
   const citySelect = document.getElementById('citySelect');
   const citySubmitBtn = document.getElementById('citySubmitBtn');
   const cityError = document.getElementById('cityError');
   const cityLabel = document.getElementById('cityLabel');
-  const CITY_OTHER = '__other__';  // picker sentinel: reveal free-text + geocode
   const dupOverlay = document.getElementById('dupOverlay');
   const dupSets = document.getElementById('dupSets');
   const dupError = document.getElementById('dupError');
@@ -1276,20 +1273,24 @@
 
   // ── City picker ──
 
-  // The picker is sourced from the graph (GET /cities -> distinct POI.city_name):
-  // one click beats typing, and it hands back the EXACT stored city_name so a
-  // casing fork ('Paris' vs 'paris') can't silently empty every beat fetch. If
-  // /cities is unreachable (offline) or empty (bootstrapping the first city), it
-  // falls back to the free-text + Nominatim path under the "Other" option.
+  // The picker is a PURE dropdown sourced from the graph (GET /cities -> distinct
+  // POI.city_name). It lists ONLY cities the graph already has data on, and hands
+  // back the EXACT stored city_name (via the catalogue index) so a casing fork
+  // ('Paris' vs 'paris') can't silently empty every beat fetch. There is NO
+  // free-text / geocode entry: a city with no graph data is not reviewable, and
+  // typing a name would just fork nodes. If /cities is unreachable or empty, the
+  // picker shows an honest disabled empty state, not a text box.
   let cityCatalogue = [];  // [{ city_name, poi_count, centre_lat, centre_lng }]
 
   async function loadCityPicker() {
+    let loadFailed = false;
     try {
       const resp = await fetch(`${API_BASE}/cities`);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       cityCatalogue = (await resp.json()).cities || [];
     } catch (err) {
-      cityCatalogue = [];  // graceful fallback to the manual path
+      cityCatalogue = [];
+      loadFailed = true;
     }
     citySelect.innerHTML = '';
     if (cityCatalogue.length) {
@@ -1306,29 +1307,30 @@
         opt.textContent = `${titleCaseCity(c.city_name)} — ${n}`;
         citySelect.appendChild(opt);
       });
+      citySubmitBtn.disabled = false;
+    } else {
+      // No cities to pick — show why, and keep the picker disabled. NO free text.
+      const empty = document.createElement('option');
+      empty.value = ''; empty.disabled = true; empty.selected = true;
+      empty.textContent = loadFailed
+        ? 'Cannot reach the graph — is the API running?'
+        : 'No cities in the graph yet — run the pipeline to add data';
+      citySelect.appendChild(empty);
+      citySelect.disabled = true;
+      citySubmitBtn.disabled = true;
+      cityError.textContent = loadFailed
+        ? 'GET /cities failed. This workbench needs a live, connected graph.'
+        : 'The graph has no POIs. Upload a city via the pipeline before reviewing.';
+      cityError.style.display = 'block';
     }
-    const other = document.createElement('option');
-    other.value = CITY_OTHER;
-    other.textContent = cityCatalogue.length ? 'Other / add a new city…' : 'Add a city (type its name)…';
-    citySelect.appendChild(other);
-    // No graph cities yet -> jump straight to the free-text bootstrap path.
-    if (!cityCatalogue.length) { citySelect.value = CITY_OTHER; toggleCityOther(); }
   }
 
-  function toggleCityOther() {
-    const isOther = citySelect.value === CITY_OTHER;
-    cityInput.style.display = isOther ? '' : 'none';
-    if (isOther) cityInput.focus();
-  }
-  citySelect.addEventListener('change', toggleCityOther);
-
-  // Shared post-selection activation: set the geofence label, close the overlay,
-  // and pull lenses + POIs for the chosen (exact) city_name.
+  // Post-selection activation: set the geofence label, close the overlay, and pull
+  // lenses + POIs for the chosen (exact) city_name.
   async function activateCity(name, centre) {
     cityCentre = centre;
-    // Canonicalize the KEY to match POI.city_name (lowercased at ingestion) so
-    // the picker path AND the free-text/Nominatim path both key beat fetches on
-    // the same value ('paris'). The header shows a Title-Cased display label.
+    // The KEY is the canonical stored city_name (lowercased at ingestion); the
+    // header shows a Title-Cased display label.
     cityName = (name || '').trim().toLowerCase();
     cityDisplay = titleCaseCity(cityName);
     cityLabel.textContent = `${cityDisplay} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
@@ -1348,56 +1350,25 @@
     }
   }
 
-  // ── City geocoding (the "Other / new city" free-text path) ──
-
-  cityInput.addEventListener('keydown', e => { if (e.key === 'Enter') citySubmitBtn.click(); });
-
-  async function geocodeAndActivate(name) {
-    citySubmitBtn.textContent = 'Geocoding…';
-    // accept-language pinned: cityName (display_name's first segment) keys the
-    // case-sensitive POI/beat MERGEs, so locale-dependent casing ('Paris' vs
-    // 'paris') would silently fork nodes and empty every beats fetch.
-    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=en&q=${encodeURIComponent(name)}`;
-    const res = await fetch(url, { headers: { 'User-Agent': 'Ondoway-Workbench/1.0', 'Referer': 'https://ondoway.app' } });
-    const data = await res.json();
-    if (!data || data.length === 0) {
-      cityError.textContent = 'City not found. Try a different name.';
-      cityError.style.display = 'block';
-      citySubmitBtn.disabled = false;
-      citySubmitBtn.textContent = 'Set City';
-      return;
-    }
-    await activateCity(
-      data[0].display_name.split(',')[0].trim() || name,
-      { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }
-    );
-  }
-
   citySubmitBtn.addEventListener('click', async () => {
     cityError.style.display = 'none';
     const sel = citySelect.value;
-    const usingPicker = sel !== '' && sel !== CITY_OTHER;
-    let freeText = '';
-    if (!usingPicker) {
-      if (sel === '') { cityError.textContent = 'Please choose a city.'; cityError.style.display = 'block'; return; }
-      freeText = cityInput.value.trim();
-      if (!freeText) { cityError.textContent = 'Please enter a city name.'; cityError.style.display = 'block'; return; }
+    if (sel === '' || !cityCatalogue.length) {
+      cityError.textContent = 'Please choose a city from the list.';
+      cityError.style.display = 'block';
+      return;
+    }
+    const c = cityCatalogue[parseInt(sel, 10)];
+    if (!c || typeof c.centre_lat !== 'number' || typeof c.centre_lng !== 'number') {
+      // A graphed city always has a POI centroid; guard the impossible rather than
+      // fall back to typing a name.
+      cityError.textContent = 'That city has no valid coordinates in the graph.';
+      cityError.style.display = 'block';
+      return;
     }
     citySubmitBtn.disabled = true;
     try {
-      if (usingPicker) {
-        // Data-driven: exact stored city_name + POI centroid, no geocode round-trip.
-        const c = cityCatalogue[parseInt(sel, 10)];
-        const hasCentre = typeof c.centre_lat === 'number' && typeof c.centre_lng === 'number';
-        if (hasCentre) {
-          await activateCity(c.city_name, { lat: c.centre_lat, lng: c.centre_lng });
-        } else {
-          // City exists but no POI has coordinates yet — geocode its name.
-          await geocodeAndActivate(c.city_name);
-        }
-      } else {
-        await geocodeAndActivate(freeText);
-      }
+      await activateCity(c.city_name, { lat: c.centre_lat, lng: c.centre_lng });
     } catch (err) {
       cityError.textContent = 'Failed: ' + err.message;
       cityError.style.display = 'block';
