@@ -52,6 +52,7 @@ from src.tour.routing import summarise_route
 from src.tour.routing_client import RoutingClient
 from src.tour.selection import (
     build_poi_beat_plans_capped,
+    build_poi_extra_beats,
     load_paris_corpus,
     pick_spine_area,
     select_k_routes,
@@ -252,7 +253,17 @@ def generate_trip(
     script = scripts[0]
 
     beats_by_id = {ref.id: ref for refs in snapshot.beats_by_poi.values() for ref in refs}
-    stops = route_script_to_stops(script.selected_pois, beats_by_id, body.start_time, script=script)
+    # KE1: per-stop "keep exploring" extras (un-voiced beats), computed from the
+    # SAME merged pool the voiced plan used so they are exactly full-minus-voiced.
+    extra_by_poi = build_poi_extra_beats(
+        flavours[0],
+        snapshot,
+        {sp.id: sp.beat_ids for sp in script.selected_pois},
+        lenses=lenses,
+    )
+    stops = route_script_to_stops(
+        script.selected_pois, beats_by_id, body.start_time, script=script, extra_by_poi=extra_by_poi
+    )
 
     # Step 4.6: persist the RESOLVED engine input + every flavour's ordered
     # poi ids so /compose rebuilds the user's PICK without re-running
@@ -309,6 +320,7 @@ def generate_trip(
             lng=s["lng"],
             beat_id=s["primary_beat_id"],
             beat_ids=s["beat_ids"],
+            extra_beat_ids=s["extra_beat_ids"],
             lens_name=s["lens_name"],
             lens_display=display_map.get(s["lens_name"]) if s["lens_name"] else None,
             duration_min=s["duration_min"],

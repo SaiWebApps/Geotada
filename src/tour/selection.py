@@ -32,7 +32,7 @@ from shapely.geometry import Point as _ShapelyPoint
 from shapely.geometry import shape as _shapely_shape
 from shapely.prepared import prep as _shapely_prep
 
-from .beat_select import govern_poi_beats, select_poi_beats
+from .beat_select import extra_beat_ids, govern_poi_beats, select_poi_beats
 from .contract import (
     POI,
     BeatRef,
@@ -850,6 +850,29 @@ def build_poi_beat_plans(
         beats.extend(route.demoted_beats.get(poi.id, ()))
         plans.append(select_poi_beats(poi, beats, interest_lenses=lenses))
     return tuple(plans)
+
+
+def build_poi_extra_beats(
+    route: Route,
+    snapshot: CorpusSnapshot,
+    voiced_by_poi: dict[str, tuple[str, ...]],
+    *,
+    lenses: Iterable[str] | None,
+) -> dict[str, tuple[str, ...]]:
+    """KE1: per-POI "keep exploring here" extras — the un-voiced beats of each stop.
+
+    Uses the SAME merged beat pool (``snapshot.beats_for`` + ``demoted_beats``) as
+    :func:`build_poi_beat_plans`, so the extras are exactly the uncapped plan minus
+    what the tour voiced, in priority order. POIs with no extras are omitted.
+    """
+    out: dict[str, tuple[str, ...]] = {}
+    for poi in route.pois:
+        beats = list(snapshot.beats_for(poi.id))
+        beats.extend(route.demoted_beats.get(poi.id, ()))
+        extras = extra_beat_ids(poi, beats, voiced_by_poi.get(poi.id, ()), interest_lenses=lenses)
+        if extras:
+            out[poi.id] = extras
+    return out
 
 
 def _domination_caps(is_exempt: list[bool], audio: list[int]) -> list[int | None]:

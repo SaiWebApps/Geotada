@@ -129,3 +129,19 @@ def test_narration_empty_when_no_script():
     pois = [_poi("p1", "A", tier=5, beat_ids=("b1",), dwell=600)]
     stops = route_script_to_stops(pois, {}, "09:00")
     assert stops[0]["narration"] == ""
+
+
+def test_stops_carry_extra_beat_ids_when_provided():
+    pois = [
+        _poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1", "b2"), dwell=600),
+        _poi("p2", "Notre-Dame", tier=4, beat_ids=("b3",), dwell=300),
+    ]
+    stops = route_script_to_stops(pois, {}, "09:00", extra_by_poi={"p1": ("x1", "x2"), "p2": ()})
+    assert stops[0]["extra_beat_ids"] == ["x1", "x2"]
+    assert stops[1]["extra_beat_ids"] == []
+
+
+def test_stops_extra_beat_ids_default_empty_without_map():
+    pois = [_poi("p1", "Eiffel Tower", tier=5, beat_ids=("b1",), dwell=600)]
+    stops = route_script_to_stops(pois, {}, "09:00")
+    assert stops[0]["extra_beat_ids"] == []

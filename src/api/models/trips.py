@@ -106,6 +106,11 @@ class GeneratedStop(BaseModel):
         default_factory=list,
         description="All beats narrated at this stop (engine output); beat_id is the primary/first",
     )
+    extra_beat_ids: list[str] = Field(
+        default_factory=list,
+        description="KE: ordered ids of this stop's beats the tour did NOT voice — the "
+        "'keep exploring here' extras (uncapped plan minus voiced), most-important first",
+    )
     dwell_seconds: int = Field(default=0, description="Engine-computed time spent at this stop")
     transit_polyline: str | None = Field(
         default=None,

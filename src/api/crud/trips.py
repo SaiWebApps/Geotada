@@ -21,6 +21,7 @@ def route_script_to_stops(
     start_time: str,
     *,
     script: Script | None = None,
+    extra_by_poi: dict[str, tuple[str, ...]] | None = None,
 ) -> list[dict[str, Any]]:
     """Adapt the engine's ordered ScriptPOIs into the stop dicts create_trip_with_stops expects.
 
@@ -38,6 +39,7 @@ def route_script_to_stops(
     parts = start_time.split(":")
     current_hour, current_minute = int(parts[0]), int(parts[1])
     narration_by_stop = stop_narration_text(script) if script is not None else {}
+    extras = extra_by_poi or {}
 
     stops: list[dict[str, Any]] = []
     for idx, sp in enumerate(selected_pois):
@@ -53,6 +55,7 @@ def route_script_to_stops(
                 "lat": sp.lat,
                 "lng": sp.lng,
                 "beat_ids": beat_ids,
+                "extra_beat_ids": list(extras.get(sp.id, ())),
                 "primary_beat_id": beat_ids[0] if beat_ids else None,
                 "lens_name": dominant_lens(sp.beat_ids, beats_by_id),
                 "duration_min": duration_min,

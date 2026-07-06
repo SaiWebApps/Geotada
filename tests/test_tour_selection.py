@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from src.tour.contract import POI, BeatRef, TourInput
+from src.tour.contract import POI, BeatRef, Route, TourInput
 from src.tour.routing import envelope_radius_m, haversine_m, pace_corrected_walk_seconds
 from src.tour.selection import (
     AREA_ALIGNMENT_ADJACENT,
@@ -16,6 +16,7 @@ from src.tour.selection import (
     CorpusSnapshot,
     build_poi_beat_plans,
     build_poi_beat_plans_capped,
+    build_poi_extra_beats,
     pick_spine_area,
     poi_score,
     select_route,
@@ -2153,3 +2154,36 @@ def test_tier_dwell_audio_break_cannot_fire_after_single_anchor():
     assert len(route.pois) == 3, f"expected exactly 3 stops at 30 min; got {len(route.pois)}"
     assert len(route.pois) >= 2
     assert route.tourability is None
+
+
+def test_build_poi_extra_beats_is_full_minus_voiced():
+    # A tier-5 POI with 12 beats: the tour voices 8 (flat cap), 4 are extras.
+    poi = _poi("rich", tier=5, lat=PDV[0], lng=PDV[1], beat_count=0)
+    beats = [
+        BeatRef(id=f"rich-b{i:02d}", poi_id="rich", narrative_function="establishing",
+                word_count=300 - i, entities=(f"E{i}",), active_status="active")
+        for i in range(12)
+    ]
+    snap = _snap([poi], beats_by_poi={"rich": beats})
+    route = Route(pois=(poi,), transits=(), total_walk_distance_m=0.0, total_walk_seconds=0)
+
+    voiced = build_poi_beat_plans(route, snap, lenses=None)[0]
+    voiced_ids = tuple(b.id for b in voiced.beats)
+    extras = build_poi_extra_beats(route, snap, {"rich": voiced_ids}, lenses=None)
+
+    assert len(voiced_ids) == 8, "flat cap voices 8"
+    assert set(extras["rich"]).isdisjoint(voiced_ids), "extras are never voiced beats"
+    assert len(extras["rich"]) == 4, "the 4 beats beyond the cap are the extras"
+
+
+def test_build_poi_extra_beats_omits_pois_with_no_extras():
+    poi = _poi("thin", tier=5, lat=PDV[0], lng=PDV[1], beat_count=0)
+    beats = [
+        BeatRef(id=f"thin-b{i}", poi_id="thin", narrative_function="establishing",
+                word_count=100 - i, entities=(f"T{i}",), active_status="active")
+        for i in range(3)  # under the cap -> all voiced -> no extras
+    ]
+    snap = _snap([poi], beats_by_poi={"thin": beats})
+    route = Route(pois=(poi,), transits=(), total_walk_distance_m=0.0, total_walk_seconds=0)
+    voiced = tuple(b.id for b in build_poi_beat_plans(route, snap, lenses=None)[0].beats)
+    assert build_poi_extra_beats(route, snap, {"thin": voiced}, lenses=None) == {}
