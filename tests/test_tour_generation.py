@@ -16,6 +16,7 @@ from src.tour.contract import (
     PhysicalCue,
     POIBeats,
     Route,
+    Sentence,
     TourInput,
     TransitSegment,
 )
@@ -27,6 +28,7 @@ from src.tour.generation import (
     GLUE_PACING,
     SYNTHESIZED_OPENER,
     _area_article,
+    _sum_audio,
     _synth_first_leg_text,
     generate,
     split_sentences,
@@ -1183,3 +1185,24 @@ def test_first_leg_text_short_leg_is_just_ahead():
 
 def test_first_leg_text_none_without_stop_name():
     assert _synth_first_leg_text(_stop(""), _route_with_first_leg(300)) is None
+
+
+def test_sum_audio_scales_by_surviving_sentence_fraction():
+    """#8: a claim-dedup-trimmed beat reports only its SURVIVING sentences' share
+    of audio, not the whole beat — an honest tour-minutes total."""
+    beat = _beat("b1", "p", body="First fact here. Second fact here. Third fact here.")
+    beat = beat.model_copy(update={"est_spoken_seconds": 90})
+    seq = BeatSequence(
+        poi_beats=(POIBeats(poi_id="p", poi_name="P", ordering_strategy="narrative_function",
+                            beats=(beat,)),)
+    )
+
+    def _s(text: str) -> Sentence:
+        return Sentence(text=text, source_id="b1", source_type="beat", stop_idx=0)
+
+    all_three = [_s("First fact here."), _s("Second fact here."), _s("Third fact here.")]
+    assert _sum_audio(all_three, seq) == 90  # nothing dropped -> full beat audio
+
+    # dedup dropped the middle sentence: 2 of 3 survive -> 2/3 of the audio.
+    two = [_s("First fact here."), _s("Third fact here.")]
+    assert _sum_audio(two, seq) == round(90 * 2 / 3)  # 60, not 90

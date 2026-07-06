@@ -897,28 +897,40 @@ def _lens_coverage(beat_sequence: BeatSequence) -> dict[str, int]:
 
 
 def _sum_audio(sentences: Iterable[Sentence], beat_sequence: BeatSequence) -> int:
-    """Sum est_spoken_seconds across cited beats (deduped by beat_id),
-    and add a flat 4 seconds per glue sentence (≈10 spoken words).
+    """Sum est_spoken_seconds across cited beats, scaled by the fraction of each
+    beat's sentences that actually SURVIVED to be voiced, plus a flat 4 seconds
+    per glue sentence (≈10 spoken words).
 
     Track B (B.4): a vignette voices only the FIRST sentence of its beat, so
-    counting the whole beat's est_spoken_seconds would overcount — each
-    vignette one-liner gets the same flat per-sentence estimate as glue.
+    counting the whole beat's est_spoken_seconds would overcount — each vignette
+    one-liner gets the same flat per-sentence estimate as glue.
+
+    #8: the #22 claim-dedup drops a beat's repeated sentences while keeping the
+    beat, so counting the whole beat's audio over-reports the tour's minutes.
+    Scale each cited beat by ``surviving_sentences / total_sentences`` — a
+    non-deduped beat keeps all its sentences (fraction 1.0), so this is identical
+    to the old behaviour there, and only the trimmed beats report honestly less.
     """
     vignette_ids = {b.id for beats in beat_sequence.vignette_beats.values() for b in beats}
-    cited_ids: set[str] = set()
+    surviving_by_beat: Counter[str] = Counter()
     glue_count = 0
     for s in sentences:
         if s.source_type == "beat" and s.source_id not in vignette_ids:
-            cited_ids.add(s.source_id)
+            surviving_by_beat[s.source_id] += 1
         else:
             glue_count += 1
     by_id = {b.id: b for plan in beat_sequence.poi_beats for b in plan.beats}
     total = 0
-    for beat_id in cited_ids:
+    for beat_id, surviving in surviving_by_beat.items():
         beat = by_id.get(beat_id)
         if beat is None:
             continue
-        total += beat_spoken_seconds(beat)
+        beat_secs = beat_spoken_seconds(beat)
+        total_sents = len(split_sentences(beat.script_body or ""))
+        if total_sents <= 0:
+            total += beat_secs  # no splittable body — count the whole estimate
+        else:
+            total += round(beat_secs * min(1.0, surviving / total_sents))
     total += glue_count * 4
     return total
 

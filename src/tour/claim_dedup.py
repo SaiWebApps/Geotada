@@ -27,11 +27,15 @@ by an EARLIER, DIFFERENT beat anywhere in the route. It is deliberately surgical
 - It only touches ``source_type == "beat"`` sentences; glue, synthesized openers
   and reflections are never removed.
 
-Known limits (documented, deferred): a dropped sentence does not shrink the
-per-beat ``_sum_audio`` estimate (reported audio is per cited beat, so a trimmed
-multi-sentence beat over-reports by the dropped sentence's share — small, since
-only pure repeats drop), and ``verify._visited_claims`` still keys off the whole
-beat's ``key_claims`` (a pre-existing over-licensing widened marginally here).
+Reported-audio honesty (#8): ``_sum_audio`` now scales each cited beat by its
+SURVIVING-sentence fraction, so a trimmed beat reports only what it voiced (a
+non-deduped beat keeps all sentences -> no change). ``verify._visited_claims``
+keys off the whole beat's ``key_claims``, but that is NOT a dedup leftover: this
+pass always keeps the FIRST occurrence of a claim, so any claim a later
+reflection cites was voiced at least once — the pre-existing key_claims-vs-voiced
+mismatch is independent of dedup. (Residual: ``_flatten_pois`` per-stop
+``dwell_seconds`` still measures the pre-dedup plan — a small per-stop display
+over-report on the rare deduped stop; the tour TOTAL is honest.)
 
 Detection is deterministic (no build-time LLM): each sentence is matched to the
 beat's best key_claim; two claims are "the same fact" when their canonical-token
