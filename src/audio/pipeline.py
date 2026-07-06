@@ -210,8 +210,13 @@ def generate_beat_audio(
     ).single()
     poi_name = poi_result["poi_name"] if poi_result else None
 
-    # Step 3: Generate audio
-    provider = get_provider(provider_name)
+    # Step 3: Generate audio. get_provider() is inside the try so an unknown
+    # provider name (ValueError) becomes a PipelineError — the per-beat/per-stop
+    # handlers turn that into status='failed', never an uncaught 500.
+    try:
+        provider = get_provider(provider_name)
+    except ValueError as e:
+        raise PipelineError(f"TTS failed for beat '{beat_id}': {e}") from e
     try:
         audio_bytes = provider.generate(script_body, voice_id=voice_id)
     except TTSError as e:
@@ -289,7 +294,14 @@ def generate_stop_audio(
     if not narration or not narration.strip():
         raise PipelineError(f"Stop '{stop_key}' has empty narration")
 
-    provider = get_provider(provider_name)
+    # get_provider() is inside the try so an unknown provider name (ValueError)
+    # becomes a PipelineError — callers turn that into a soft per-stop failure
+    # (keep-exploring: 200 status='failed'; trip-stops: per-stop failed), never
+    # an uncaught 500.
+    try:
+        provider = get_provider(provider_name)
+    except ValueError as e:
+        raise PipelineError(f"TTS failed for stop '{stop_key}': {e}") from e
     try:
         audio_bytes = provider.generate(narration, voice_id=voice_id)
     except TTSError as e:

@@ -56,6 +56,27 @@ _COMPARE_DIR.mkdir(exist_ok=True)
 # Maximum age (in seconds) for comparison files before cleanup
 _COMPARE_MAX_AGE_SEC = 3600  # 1 hour
 
+# Max chars of narration handed to TTS for the on-demand keep-exploring deep
+# dive. Mirrors AudioPreviewRequest's cap so a huge extra_narration can't fan
+# out into unbounded TTS chunk requests (Defect 17).
+_KEEP_EXPLORING_MAX_CHARS = 20000
+
+
+def _cap_narration(text: str, max_chars: int = _KEEP_EXPLORING_MAX_CHARS) -> str:
+    """Cap narration to ``max_chars``, preferring a sentence boundary.
+
+    Text at or under the cap is returned unchanged. Over the cap, truncate to
+    the last sentence-ender (``.``/``!``/``?``) within the window so the voiced
+    deep dive still ends cleanly; if none exists, hard-truncate at the cap.
+    """
+    if len(text) <= max_chars:
+        return text
+    window = text[:max_chars]
+    cut = max(window.rfind("."), window.rfind("!"), window.rfind("?"))
+    if cut > 0:
+        return window[: cut + 1]
+    return window
+
 
 def _cleanup_old_comparisons() -> None:
     """Remove comparison files older than _COMPARE_MAX_AGE_SEC."""
@@ -630,7 +651,10 @@ def keep_exploring_stop_audio(
     rec = session.run(
         "MATCH (i:ItineraryItem {id: $sid}) "
         "OPTIONAL MATCH (i)-[:AT_POI]->(poi:POI) "
-        "RETURN i.extra_narration AS extra_narration, poi.name AS poi_name",
+        "RETURN i.extra_narration AS extra_narration, poi.name AS poi_name, "
+        "       i.keep_exploring_audio_url AS ke_url, "
+        "       i.keep_exploring_audio_duration_sec AS ke_dur, "
+        "       i.keep_exploring_audio_hash AS ke_hash",
         sid=stop_id,
     ).single()
     if rec is None:
@@ -640,8 +664,27 @@ def keep_exploring_stop_audio(
     if not narration or not narration.strip():
         raise HTTPException(409, f"Stop '{stop_id}' has no keep-exploring extras")
 
+    # Defect 17: cap the input before TTS so a huge extra_narration can't fan out
+    # into unbounded TTS chunk requests. Mirror AudioPreviewRequest's 20000-char
+    # cap; truncate on a sentence boundary so the deep dive still voices cleanly.
+    narration = _cap_narration(narration)
+
     provider_name = body.provider if body else None
     voice_id = body.voice_id if body else None
+    force = body.force if body else False
+
+    # Defect 11: cache the artifact on the ItineraryItem keyed by a hash of the
+    # (capped) extra_narration. A repeat call with the same narration returns the
+    # cached url WITHOUT re-running paid TTS; force=True or a changed narration
+    # (hash mismatch) regenerates.
+    narration_hash = hashlib.sha256(narration.encode()).hexdigest()
+    if not force and rec["ke_url"] and rec["ke_hash"] == narration_hash:
+        return KeepExploringAudioResponse(
+            stop_id=stop_id,
+            status="generated",
+            audio_url=rec["ke_url"],
+            duration_sec=rec["ke_dur"],
+        )
 
     try:
         gen = generate_stop_audio(
@@ -653,6 +696,20 @@ def keep_exploring_stop_audio(
         )
     except PipelineError as e:
         return KeepExploringAudioResponse(stop_id=stop_id, status="failed", error=str(e))
+
+    # Persist the cache on the item. This is separate from item.audio_url (the
+    # scheduled per-stop tour audio) so the on-demand deep dive never masquerades
+    # as the tour audio.
+    session.run(
+        "MATCH (i:ItineraryItem {id: $sid}) "
+        "SET i.keep_exploring_audio_url = $url, "
+        "    i.keep_exploring_audio_duration_sec = $dur, "
+        "    i.keep_exploring_audio_hash = $hash",
+        sid=stop_id,
+        url=gen.audio_url,
+        dur=gen.duration_sec,
+        hash=narration_hash,
+    )
 
     return KeepExploringAudioResponse(
         stop_id=stop_id,
