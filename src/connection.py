@@ -55,9 +55,22 @@ def get_database() -> str | None:
     return os.getenv("NEO4J_DATABASE") or None
 
 
-def create_driver() -> Driver:
-    """Create and verify a Neo4j driver. Raises Neo4jConnectionError on failure."""
+def create_driver(*, verify: bool = True) -> Driver:
+    """Create a Neo4j driver, optionally verifying connectivity.
+
+    ``verify=True`` (default, for CLI/scripts) eagerly checks the connection and
+    raises Neo4jConnectionError on failure — fail loud, fail fast.
+
+    ``verify=False`` returns the LAZY driver without touching the network. A
+    long-lived web service must start even when the database is briefly
+    unreachable (a paused Aura instance, DNS blip, or transient outage): the
+    neo4j driver connects on first query, so DB errors become a per-request
+    concern (handled/surfaced there) instead of a startup crash that fails the
+    whole deploy. See src/api/dependencies.init_driver.
+    """
     uri, user, password = _read_env()
+    if not verify:
+        return GraphDatabase.driver(uri, auth=(user, password))
     try:
         driver = GraphDatabase.driver(uri, auth=(user, password))
         driver.verify_connectivity()

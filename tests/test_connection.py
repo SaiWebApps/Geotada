@@ -104,6 +104,23 @@ class TestCreateDriver:
         ):
             create_driver()
 
+    def test_verify_false_is_lazy_never_touches_network(self, monkeypatch):
+        """verify=False returns the driver WITHOUT calling verify_connectivity, so a
+        long-lived web service starts even when the DB is unreachable (the Render
+        deploy fix — a paused/gone Aura instance must not crash startup)."""
+        monkeypatch.setenv("NEO4J_URI", "neo4j+s://dead.databases.neo4j.io:7687")
+        monkeypatch.setenv("NEO4J_USER", "neo4j")
+        monkeypatch.setenv("NEO4J_PASSWORD", "secret")
+
+        mock_driver = MagicMock()
+        # If verify were called it would raise — proving verify=False skips it.
+        mock_driver.verify_connectivity.side_effect = AssertionError("must NOT verify")
+        with patch("src.connection.GraphDatabase.driver", return_value=mock_driver):
+            driver = create_driver(verify=False)
+
+        assert driver is mock_driver
+        mock_driver.verify_connectivity.assert_not_called()
+
 
 # ── get_driver ──
 

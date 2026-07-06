@@ -18,9 +18,28 @@ _driver: Driver | None = None
 
 
 def init_driver() -> None:
-    """Called during FastAPI lifespan startup."""
+    """Called during FastAPI lifespan startup.
+
+    Builds the driver LAZILY (no eager connectivity check): the web service must
+    start and open its port even when Neo4j is unreachable, or the Render deploy
+    fails its health check and the whole release is rolled back. DB errors then
+    surface per-request (and /api/v1/healthz reports ``neo4j_connected: false``)
+    instead of crashing startup. If even constructing the driver fails (malformed
+    URI / missing env), we log and leave it None so the app still starts —
+    requests then 500 with the clear "Driver not initialized" assert.
+    """
     global _driver
-    _driver = create_driver()
+    try:
+        _driver = create_driver(verify=False)
+    except Exception as exc:  # never let driver setup crash startup
+        import logging
+
+        logging.getLogger("ondoway.api").warning(
+            "Neo4j driver init failed at startup (%s); starting anyway — DB calls "
+            "will fail per-request until connectivity returns.",
+            exc,
+        )
+        _driver = None
 
 
 def close_driver() -> None:

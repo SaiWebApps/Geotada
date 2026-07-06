@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles render-status dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -197,6 +197,12 @@ valhalla-down: ## Stop Valhalla (tiles preserved in valhalla/custom_files)
 valhalla-status: ## Host-side health check against Valhalla's /status endpoint
 	@curl -fs --max-time 3 http://localhost:8002/status && echo " ← Valhalla OK" \
 		|| echo "Valhalla not responding on :8002 (engine falls back to haversine)"
+
+render-status: ## Latest Render deploy status for ondoway-api. RUN AFTER EVERY PUSH: 'live' = green; a '*_failed' means dig in with `render logs -r srv-d7qnivjbc2fs73fr6tqg --type app --limit 60 -o text --confirm`. Needs `render login`.
+	@render deploys list srv-d7qnivjbc2fs73fr6tqg -o json --confirm 2>/dev/null \
+		| python3 -c "import json,sys; e=json.load(sys.stdin)[0]; d=e.get('deploy',e); c=d.get('commit') or {}; \
+print('ondoway-api latest deploy:', d.get('status'), '|', d.get('id'), '|', (c.get('message') or '').splitlines()[0][:56])" \
+		|| echo "render CLI not authed? try: render login"
 
 valhalla-build-tiles: ## Download the Île-de-France OSM extract (~500MB) for tile building on next start (into the MAIN checkout's mount)
 	mkdir -p "$(VALHALLA_ROOT)/valhalla/custom_files"
