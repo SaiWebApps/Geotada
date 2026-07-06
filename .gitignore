@@ -255,6 +255,7 @@ temp/
 !.claude/LEARNINGS.md
 !.claude/agents/
 !.claude/hooks/
+!.claude/workflows/
 !.claude/settings.json
 .claude/hooks/guard-log.txt
 
