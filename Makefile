@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles render-status dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
+.PHONY: help env use-local use-cloud which-db sync sync-apple requirements lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles render-status dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -17,6 +17,10 @@ help: ## Show this help
 sync: ## Install Python deps from public PyPI (default — works on any machine)
 	uv sync --extra test --extra dev --extra aws
 	@echo "✓ Dependencies installed (public PyPI)."
+
+requirements: ## Regenerate requirements.txt (what the Dockerfile pip-installs) from uv.lock. MUST use --no-emit-project: the project self-line ('.') breaks the Docker build (pyproject isn't copied at the pip step) with "Directory '.' is not installable". Run after any dependency change, then commit requirements.txt.
+	uv export --no-dev --no-editable --no-emit-project -o requirements.txt
+	@grep -q "pypi.apple.com" requirements.txt && { echo "✗ requirements.txt has apple-index refs — re-run off the Apple mirror"; exit 1; } || echo "✓ requirements.txt regenerated (public PyPI, no project self-ref)."
 
 sync-apple: ## Install deps from Apple's internal PyPI mirror — ONLY on Apple VPN when public PyPI is blocked
 	@curl -sI --max-time 5 https://pypi.apple.com/simple/ >/dev/null 2>&1 || \
