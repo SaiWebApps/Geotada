@@ -1,6 +1,6 @@
 -include .env
 
-.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
+.PHONY: help env use-local use-cloud which-db sync sync-apple lint lint-fix format test test-unit test-local test-cloud test-integration test-functional test-live test-golden golden-probe golden-diff tour-grade setup setup-audio upload-paris wiki-fetch gen-within-edges verify clean-db db-up db-down db-status db-test-up db-test-down db-test-reset db-workbench-up db-workbench-down db-workbench-reset valhalla-up valhalla-down valhalla-status valhalla-build-tiles dashboard api api-test flutter-web flutter-ios flutter-ipa testflight flutter-test flutter-clean flutter-pub-get flutter-analyze test-auth tour-audio-gate test-workbench
 
 # ──────────────────────────────────────────────────────────
 # HELP
@@ -100,6 +100,10 @@ test-workbench: db-up db-workbench-up ## Real-browser Playwright UI suite for th
 
 test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
 	uv run pytest -m golden -v
+
+golden-probe: db-up valhalla-up ## Print ONLY the golden perturbation-probe hit counts (Île/PdV). Run before AND after a selection/emission change: unchanged counts = the change didn't perturb which beats seat; a moved count is a REAL signal (the goldens are aspirational RED targets, never a green/red flip). Requires Valhalla — routed legs reshape the route, so a haversine fallback moves the counts (Île 16->21) and gives a FALSE signal; this target guarantees product-parity routing so the numbers are stable.
+	@uv run pytest -m golden -q 2>&1 | grep -oE "(Île|PdV) golden overlap [0-9.]+% .* Hit [0-9]+/[0-9]+" \
+		|| echo "no hit counts — is the dev graph (7687) up? try: make db-up"
 
 golden-diff: db-up ## Per-POI/beat diagnostic diff vs a golden fixture (live dev graph 7687). Usage: make golden-diff FIXTURE=pdv_round_trip_60min (or ile_oneway_90min). Exit 1 = overlap below 0.90 (expected until the golden gap closes). Routing state changes the route: run `make valhalla-up` first for product-parity legs (haversine fallback reshapes the PdV route; see GOLDEN-GAP-DIAGNOSTIC.md).
 	@test -n "$(FIXTURE)" || { echo "Usage: make golden-diff FIXTURE=pdv_round_trip_60min | ile_oneway_90min"; exit 2; }

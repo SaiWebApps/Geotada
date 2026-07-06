@@ -290,3 +290,8 @@ data/paris_test/
 # Valhalla OSM extracts + built tiles (multi-GB, machine-local; make valhalla-build-tiles)
 valhalla/custom_files/
 .claude/hooks/guard-log.txt
+
+# Scratch tour artifacts (make tour-build / measure-governor output) — machine-local
+# reproduction output, never committed. Keeping them ignored removes the recurring
+# "git add -A sweeps the scratch corpus into a commit" trap.
+data/*/tours/
