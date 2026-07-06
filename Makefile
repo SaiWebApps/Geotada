@@ -1,5 +1,13 @@
 -include .env
 
+# The JWT/magic-link signing-secret guard (src/api/auth/config.py) fails CLOSED
+# on the production deploy — a missing secret there is a hard startup error, not
+# a silent downgrade to a forgeable key. Local dev has no real secret, so opt
+# into the deterministic dev placeholder for every make-invoked server (make
+# api / api-test / workbench / flutter-ios, and the Playwright fixture, which
+# inherits this via os.environ). Render never runs make, so prod stays fail-closed.
+export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
+
 # ════════════════════════════════════════════════════════════════════════════
 #  Ondoway — GPS-triggered audio tour platform
 #

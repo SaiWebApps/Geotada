@@ -25,7 +25,11 @@ else
   # Free the port in case a stale uvicorn is lingering (matches make flutter-ios).
   lsof -ti:${PORT} 2>/dev/null | xargs kill 2>/dev/null || true
   cd "$ROOT"
-  NO_PROXY="$NP" no_proxy="$NP" \
+  # The auth signing-secret guard (src/api/auth/config.py) fails closed on an
+  # empty/short secret. A direct `bash scripts/workbench.sh` (not via `make
+  # workbench`, which exports this) has no real secret and no pytest, so opt
+  # into the dev placeholder — a local workbench server is never production.
+  NO_PROXY="$NP" no_proxy="$NP" ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS=1 \
     uv run uvicorn src.api.app:app --host 127.0.0.1 --port ${PORT} >/tmp/ondoway-workbench-api.log 2>&1 &
   API_PID=$!
   echo "    API PID ${API_PID} (log: /tmp/ondoway-workbench-api.log)"

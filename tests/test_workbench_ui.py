@@ -533,6 +533,11 @@ def api_server():
             "NEO4J_USER": WORKBENCH_NEO4J_AUTH[0],
             "NEO4J_PASSWORD": WORKBENCH_NEO4J_AUTH[1],
             "NEO4J_DATABASE": WORKBENCH_NEO4J_DATABASE,
+            # This uvicorn subprocess has no pytest in its sys.modules and no
+            # real JWT secret, so the fail-closed auth guard would refuse to
+            # start (src/api/auth/config.py). Opt into the dev placeholder — a
+            # local test server is never a production deploy.
+            "ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS": "1",
         },
     )
 
@@ -4059,6 +4064,302 @@ class TestDefectRegressions:
             page.unroute("**/api/v1/nodes/Lens**")
             # Leave the page clean for any later test.
             self._fresh_page(page)
+
+    # -- executeMerge / executeUpload edge-orchestration regressions ---------
+    #
+    # These four cases stub the edges/nodes API with page.route and invoke the
+    # exposed window.executeMerge / window.executeUpload directly with staged
+    # state, then assert the SEQUENCE of API calls the function made. They do
+    # not depend on the seeded graph (every relevant endpoint is stubbed), so
+    # the recorded-request log is the ground truth for each defect.
+
+    @staticmethod
+    def _install_request_recorder(page, handlers):
+        """Route ``**/api/v1/**`` through ``handlers`` and record every request.
+
+        ``handlers`` maps ``(METHOD, path_predicate)`` is not used; instead each
+        entry is ``(method, substring, status, body)`` and the first match wins.
+        Returns a list that fills with ``{"method", "url", "body"}`` dicts as the
+        page issues requests. The route is removed by the caller via ``unroute``.
+        """
+        calls: list[dict] = []
+
+        def _handler(route):
+            req = route.request
+            post_data = req.post_data or ""
+            calls.append({"method": req.method, "url": req.url, "body": post_data})
+            for method, substring, status, body in handlers:
+                if req.method == method and substring in req.url:
+                    route.fulfill(
+                        status=status,
+                        content_type="application/json",
+                        body=body,
+                    )
+                    return
+            # Default: succeed with an empty-ish object so unstubbed writes do
+            # not spuriously fail the function under test.
+            route.fulfill(
+                status=200, content_type="application/json", body='{"id":"stub-ok"}'
+            )
+
+        page.route("**/api/v1/**", _handler)
+        return calls
+
+    def test_defect1_merge_deletes_source_has_beat_by_edge_id_not_bodiless(
+        self, browser_page
+    ):
+        """DEFECT 1: executeMerge deletes the source HAS_BEAT edge by id.
+
+        The edges API exposes DELETE only as ``/edges/{rel}/{edge_id}``; there is
+        no bodiless ``DELETE /edges/HAS_BEAT`` route (it is 405). Before the fix
+        executeMerge issued that bodiless DELETE, which 405'd, threw out of the
+        loop AFTER the new target->beat edge was created but BEFORE the old
+        source->beat edge and the source POI were removed — the beat ended up
+        double-linked and the source POI survived. The fix looks the edge id up
+        via ``GET /edges/HAS_BEAT?source_id=...`` and DELETEs by id.
+
+        We stub the bodiless ``DELETE /edges/HAS_BEAT`` to 405 (mirroring the real
+        API) and the lookup+by-id-delete to 200, then assert the merge (a) never
+        issues a bodiless HAS_BEAT DELETE, (b) DELETEs the source edge by its id,
+        and (c) deletes the source POI (reaching the success path).
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        calls = self._install_request_recorder(
+            page,
+            [
+                # Lookup of the source POI's HAS_BEAT edges -> one edge to beat-1.
+                (
+                    "GET",
+                    "/edges/HAS_BEAT?source_id=src-poi",
+                    200,
+                    '{"items":[{"id":"edge-src-beat","type":"HAS_BEAT",'
+                    '"source_id":"src-poi","target_id":"beat-1","properties":{}}],'
+                    '"total":1,"skip":0,"limit":200}',
+                ),
+                # A BODILESS DELETE (the pre-fix route) mirrors the real 405.
+                ("DELETE", "/edges/HAS_BEAT/", 200, '{"deleted":true}'),
+            ],
+        )
+        try:
+            result = page.evaluate(
+                """async () => {
+                window.cachedPoiList = [];
+                const target = { id: 'tgt-poi', properties: { name: 'Target' } };
+                const source = { id: 'src-poi', properties: { name: 'Source' } };
+                const beatItems = [{ resolution: 'keep', sourceBeat: { id: 'beat-1', lens_slug: 'hidden_history' } }];
+                await window.executeMerge(target, source, beatItems);
+                return true;
+            }"""
+            )
+            assert result is True
+            # (a) No bodiless DELETE /edges/HAS_BEAT (path ends at the rel type).
+            bodiless = [
+                c
+                for c in calls
+                if c["method"] == "DELETE" and c["url"].rstrip("/").endswith("/edges/HAS_BEAT")
+            ]
+            assert not bodiless, (
+                f"executeMerge must not issue a bodiless DELETE /edges/HAS_BEAT (405 route); got {bodiless}"
+            )
+            # (b) DELETE by the resolved edge id.
+            by_id = [
+                c
+                for c in calls
+                if c["method"] == "DELETE" and "/edges/HAS_BEAT/edge-src-beat" in c["url"]
+            ]
+            assert by_id, (
+                "executeMerge must DELETE the source HAS_BEAT edge by its resolved id; "
+                f"recorded DELETEs: {[c['url'] for c in calls if c['method'] == 'DELETE']}"
+            )
+            # (c) The source POI is deleted (success path reached, no double-link abort).
+            poi_deletes = [
+                c
+                for c in calls
+                if c["method"] == "DELETE" and "/nodes/POI/src-poi" in c["url"]
+            ]
+            assert poi_deletes, "the source POI must be deleted (merge must reach its success path)"
+        finally:
+            page.unroute("**/api/v1/**")
+
+    def test_defect2_change_lens_deletes_old_tagged_with(self, browser_page):
+        """DEFECT 2: change-lens moves the TAGGED_WITH tag instead of duplicating it.
+
+        Before the fix the change-lens branch POSTed a new TAGGED_WITH edge to the
+        chosen lens but never deleted the beat's existing tag to its original
+        lens, so the beat ended up tagged with BOTH lenses. The fix resolves the
+        old lens id from ``beat.lens_slug`` and DELETEs that TAGGED_WITH edge.
+
+        We stage lensSlugToId so both the old and new lens resolve, stub the
+        source-beat TAGGED_WITH lookup, and assert the old-lens edge is DELETEd by
+        id (in addition to the new-lens POST).
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        calls = self._install_request_recorder(
+            page,
+            [
+                (
+                    "GET",
+                    "/edges/TAGGED_WITH?source_id=beat-9",
+                    200,
+                    '{"items":[{"id":"edge-old-tag","type":"TAGGED_WITH",'
+                    '"source_id":"beat-9","target_id":"lens-old","properties":{}}],'
+                    '"total":1,"skip":0,"limit":200}',
+                ),
+                # HAS_BEAT lookup for the transfer-delete step (unrelated to this assert).
+                (
+                    "GET",
+                    "/edges/HAS_BEAT?source_id=src-poi",
+                    200,
+                    '{"items":[{"id":"edge-hb","type":"HAS_BEAT",'
+                    '"source_id":"src-poi","target_id":"beat-9","properties":{}}],'
+                    '"total":1,"skip":0,"limit":200}',
+                ),
+            ],
+        )
+        try:
+            page.evaluate(
+                """async () => {
+                window.cachedPoiList = [];
+                window.lensSlugToId = { hidden_history: 'lens-old', power_players: 'lens-new' };
+                const target = { id: 'tgt-poi', properties: { name: 'Target' } };
+                const source = { id: 'src-poi', properties: { name: 'Source' } };
+                const beatItems = [{
+                  resolution: 'change-lens',
+                  newLensSlug: 'power_players',
+                  sourceBeat: { id: 'beat-9', lens_slug: 'hidden_history' },
+                }];
+                await window.executeMerge(target, source, beatItems);
+            }"""
+            )
+            # New-lens TAGGED_WITH edge POSTed.
+            new_tag_posts = [
+                c
+                for c in calls
+                if c["method"] == "POST"
+                and "/edges/TAGGED_WITH" in c["url"]
+                and "lens-new" in (c["body"] or "")
+            ]
+            assert new_tag_posts, "change-lens must POST the new-lens TAGGED_WITH edge"
+            # Old-lens TAGGED_WITH edge DELETEd by id (the fix).
+            old_tag_deletes = [
+                c
+                for c in calls
+                if c["method"] == "DELETE" and "/edges/TAGGED_WITH/edge-old-tag" in c["url"]
+            ]
+            assert old_tag_deletes, (
+                "change-lens must DELETE the beat's original TAGGED_WITH edge so the "
+                "tag is MOVED, not duplicated; recorded DELETEs: "
+                f"{[c['url'] for c in calls if c['method'] == 'DELETE']}"
+            )
+        finally:
+            page.unroute("**/api/v1/**")
+
+    def test_defect3_bulk_upload_matched_poi_merge_failure_surfaces_error(
+        self, browser_page
+    ):
+        """DEFECT 3: a failed POI merge in the bulk path is not a silent orphan.
+
+        Before the fix the matched-poi (and conflict) branches of executeUpload
+        did ``const poiNode = await poiResp.json()`` WITHOUT checking poiResp.ok.
+        A 500 returned an error body with no ``id``, so poiNode.id was undefined,
+        the beat was still created, and the HAS_BEAT link was built with an
+        undefined source — an orphaned beat, while stats reported success. The fix
+        throws when poiResp is not ok. We stub ``POST /nodes/POI`` to 500 and
+        assert the run records an error and never creates the (would-be orphaned)
+        beat node.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        calls = self._install_request_recorder(
+            page,
+            [("POST", "/nodes/POI", 500, '{"detail":"poi merge boom"}')],
+        )
+        try:
+            stats = page.evaluate(
+                """async () => {
+                window.lensSlugToId = { hidden_history: 'lens-1' };
+                window.lensSlugSet = new Set(['hidden_history']);
+                const plan = {
+                  newPois: [],
+                  matchedPois: [{
+                    poi: { poi_name: 'Louvre', latitude: 48.86, longitude: 2.33 },
+                    beats: [{ action: 'create', beat: { script_body: 'x', lens: 'hidden_history', gravity: 3 } }],
+                  }],
+                  conflicts: [],
+                  reviewItems: [],
+                  errors: [],
+                };
+                return await window.executeUpload(plan);
+            }"""
+            )
+            assert stats["errors"], (
+                "a failed POI merge must record an error, not report a silent success; "
+                f"stats={stats}"
+            )
+            # The beat node must NOT be created (no orphan).
+            beat_creates = [
+                c
+                for c in calls
+                if c["method"] == "POST" and "/nodes/NarrativeBeat" in c["url"]
+            ]
+            assert not beat_creates, (
+                "no NarrativeBeat may be created after a failed POI merge (would be orphaned); "
+                f"got {len(beat_creates)} beat POST(s)"
+            )
+            assert stats.get("beatsCreated", 0) == 0, (
+                f"beatsCreated must stay 0 when the POI merge failed; stats={stats}"
+            )
+        finally:
+            page.unroute("**/api/v1/**")
+
+    def test_defect4_bulk_upload_failed_edge_link_not_counted_as_linked(
+        self, browser_page
+    ):
+        """DEFECT 4: a failed HAS_BEAT link in the bulk path is not counted.
+
+        Before the fix executeUpload ran ``stats.relsLinked++`` unconditionally
+        after each edge POST, so a failed HAS_BEAT link (an orphaned beat) was
+        still counted as linked and the run reported full success. The fix checks
+        ``.ok`` and throws, which the surrounding catch turns into a stats.errors
+        entry that stops the run. We stub ``POST /edges/HAS_BEAT`` to 500 (POI +
+        beat creates stay stubbed-ok) and assert relsLinked is NOT incremented for
+        the failed link and an error is recorded.
+        """
+        page, _seed_data, _reporter = browser_page
+        self._fresh_page(page)
+        self._install_request_recorder(
+            page,
+            [("POST", "/edges/HAS_BEAT", 500, '{"detail":"edge boom"}')],
+        )
+        try:
+            stats = page.evaluate(
+                """async () => {
+                window.lensSlugToId = { hidden_history: 'lens-1' };
+                window.lensSlugSet = new Set(['hidden_history']);
+                const plan = {
+                  newPois: [{
+                    poi: { poi_name: 'Pantheon', latitude: 48.846, longitude: 2.346 },
+                    beats: [{ beat: { script_body: 'x', lens: 'hidden_history', gravity: 3 } }],
+                  }],
+                  matchedPois: [],
+                  conflicts: [],
+                  reviewItems: [],
+                  errors: [],
+                };
+                return await window.executeUpload(plan);
+            }"""
+            )
+            assert stats["errors"], (
+                "a failed HAS_BEAT link must record an error; " f"stats={stats}"
+            )
+            assert stats.get("relsLinked", 0) == 0, (
+                "relsLinked must NOT count a HAS_BEAT link that returned 500; "
+                f"stats={stats}"
+            )
+        finally:
+            page.unroute("**/api/v1/**")
 
 
 # ---------------------------------------------------------------------------

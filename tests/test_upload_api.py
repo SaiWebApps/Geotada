@@ -207,6 +207,99 @@ class TestBeatTraversal:
         assert resp.status_code == 200
         assert resp.json()["beats"] == []
 
+    def test_lensless_and_multilens_beats_each_appear_once(self, client):
+        """RED-FIRST regression for the silent conflict-detection corruption.
+
+        The old query used a mandatory ``-[:TAGGED_WITH]->(l:Lens)`` join, which
+        (a) DROPPED lens-less active beats entirely — so review.html never saw
+        them and a duplicate upload was not flagged as a conflict — and
+        (b) DUPLICATED a multi-lens beat into N rows, inflating DB-beat counts
+        and producing ambiguous hard-match rows.
+
+        Assert both survive as exactly one row apiece, with a per-beat
+        ``lens_slugs`` list carrying the full membership.
+        """
+        # POI
+        client.post(
+            "/api/v1/nodes/POI",
+            json={
+                "name": "Lens Shape POI",
+                "city_name": "paris",
+                "latitude": 48.859,
+                "longitude": 2.339,
+                "importance_tier": 1,
+            },
+        )
+        poi_list = client.get("/api/v1/nodes/POI?limit=200").json()
+        poi = next(p for p in poi_list["items"] if p["properties"]["name"] == "Lens Shape POI")
+
+        # Beat A: NO lens tags (lens-less active beat)
+        lensless = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "Lens-less active beat body.",
+                "version": 1,
+                "active_status": "active",
+                "duration_sec": 60,
+            },
+        ).json()
+
+        # Beat B: TWO lens tags (multi-lens beat)
+        multilens = client.post(
+            "/api/v1/nodes/NarrativeBeat",
+            json={
+                "script_body": "Multi-lens active beat body.",
+                "version": 1,
+                "active_status": "active",
+                "duration_sec": 90,
+            },
+        ).json()
+
+        for beat_id in (lensless["id"], multilens["id"]):
+            client.post(
+                "/api/v1/edges/HAS_BEAT",
+                json={
+                    "source": {"label": "POI", "id": poi["id"]},
+                    "target": {"label": "NarrativeBeat", "id": beat_id},
+                },
+            )
+
+        lens_list = client.get("/api/v1/nodes/Lens?limit=50").json()
+        hh_lens = next(
+            l for l in lens_list["items"] if l["properties"]["name"] == "hidden_history"
+        )
+        fc_lens = next(
+            l for l in lens_list["items"] if l["properties"]["name"] == "historic_cuisine"
+        )
+        for lens in (hh_lens, fc_lens):
+            client.post(
+                "/api/v1/edges/TAGGED_WITH",
+                json={
+                    "source": {"label": "NarrativeBeat", "id": multilens["id"]},
+                    "target": {"label": "Lens", "id": lens["id"]},
+                },
+            )
+
+        resp = client.get("/api/v1/graph/poi/Lens Shape POI/beats?city_name=paris")
+        assert resp.status_code == 200
+        beats = resp.json()["beats"]
+
+        # Each beat appears exactly once (no drops, no duplicate rows).
+        ids = [b["id"] for b in beats]
+        assert ids.count(lensless["id"]) == 1, "lens-less active beat must appear exactly once"
+        assert ids.count(multilens["id"]) == 1, "multi-lens beat must appear exactly once"
+        assert len(beats) == 2
+
+        by_id = {b["id"]: b for b in beats}
+        # Lens-less beat: empty lens list, scalar lens_slug is None.
+        assert by_id[lensless["id"]]["lens_slugs"] == []
+        assert by_id[lensless["id"]]["lens_slug"] is None
+        # Multi-lens beat: both slugs present in the per-beat list.
+        assert set(by_id[multilens["id"]]["lens_slugs"]) == {
+            "hidden_history",
+            "historic_cuisine",
+        }
+
 
 # ── POI location-first matching: force_create and coordinate validation ──
 

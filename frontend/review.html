@@ -2413,12 +2413,12 @@
       <div class="field-row">
         <div class="field-group">
           <label>Latitude</label>
-          <input type="number" step="any" data-field="latitude" value="${poi.latitude}" />
+          <input type="number" step="any" data-field="latitude" value="${escHtml(String(poi.latitude))}" />
           ${latWarning ? `<div class="field-warning">${latWarning}</div>` : ''}
         </div>
         <div class="field-group">
           <label>Longitude</label>
-          <input type="number" step="any" data-field="longitude" value="${poi.longitude}" />
+          <input type="number" step="any" data-field="longitude" value="${escHtml(String(poi.longitude))}" />
           ${lngWarning ? `<div class="field-warning">${lngWarning}</div>` : ''}
         </div>
       </div>
@@ -3999,10 +3999,15 @@
 
       // Deprecate existing beat if replacing or merging
       if (resolution && (resolution.action === 'replace' || resolution.action === 'merge') && resolution.existingBeat) {
-        await fetch(`${API_BASE}/nodes/NarrativeBeat/${resolution.existingBeat.id}`, {
+        // Check .ok: an unchecked deprecate PUT lets execution proceed even when
+        // the old beat is still active, leaving TWO active beats on the same lens
+        // (the exact collision Replace/Merge exists to resolve) while a green
+        // "uploaded" toast fires. Throw so the outer catch reverts _status.
+        const depResp = await fetch(`${API_BASE}/nodes/NarrativeBeat/${resolution.existingBeat.id}`, {
           method: 'PUT', headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
         });
+        if (!depResp.ok) throw new Error(`Beat deprecate failed: ${depResp.status}`);
         if (resolution.action === 'replace') {
           mapped.version = (resolution.existingBeat.version || 1) + 1;
         }
@@ -4118,10 +4123,13 @@
 
         // Deprecate existing beat if replacing or merging
         if (resolution && (resolution.action === 'replace' || resolution.action === 'merge') && resolution.existingBeat) {
-          await fetch(`${API_BASE}/nodes/NarrativeBeat/${resolution.existingBeat.id}`, {
+          // Check .ok — see uploadSinglePoi: an unchecked deprecate leaves two
+          // active beats on the same lens while the upload reports success.
+          const depResp = await fetch(`${API_BASE}/nodes/NarrativeBeat/${resolution.existingBeat.id}`, {
             method: 'PUT', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
           });
+          if (!depResp.ok) throw new Error(`Beat deprecate failed: ${depResp.status}`);
           if (resolution.action === 'replace') {
             mapped.version = (resolution.existingBeat.version || 1) + 1;
           }
@@ -4275,17 +4283,24 @@
             stats.beatsCreated++;
 
             // HAS_BEAT edge
-            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
             });
+            // DEFECT 4: stats.relsLinked++ previously ran unconditionally, so a
+            // failed HAS_BEAT link (an orphaned beat, invisible in tours) was
+            // still counted as linked and the run reported success. Throw so the
+            // catch surfaces the failure and the count is not overstated.
+            if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
             stats.relsLinked++;
 
             // TAGGED_WITH edge
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
             });
+            // DEFECT 4: same as HAS_BEAT above — do not count a failed tag link.
+            if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
             stats.relsLinked++;
           }
 
@@ -4298,6 +4313,11 @@
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(mapPoiForApi(entry.poi)),
           });
+          // DEFECT 3: without this guard a failed POI merge returned an error
+          // body (no `id`), poiNode.id was undefined, and the following beat +
+          // HAS_BEAT link created an orphaned beat while stats still reported
+          // success. Throw so the run stops and surfaces the error.
+          if (!poiResp.ok) throw new Error(`POI merge failed: ${poiResp.status}`);
           const poiNode = await poiResp.json();
           stats.poisMatched++;
 
@@ -4322,16 +4342,23 @@
             const beatNode = await beatResp.json();
             stats.beatsCreated++;
 
-            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
             });
+            // DEFECT 4: stats.relsLinked++ previously ran unconditionally, so a
+            // failed HAS_BEAT link (an orphaned beat, invisible in tours) was
+            // still counted as linked and the run reported success. Throw so the
+            // catch surfaces the failure and the count is not overstated.
+            if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
             stats.relsLinked++;
 
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
             });
+            // DEFECT 4: same as HAS_BEAT above — do not count a failed tag link.
+            if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
             stats.relsLinked++;
           }
 
@@ -4356,6 +4383,10 @@
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify(mapPoiForApi(conflict.poi)),
             });
+            // DEFECT 3: guard the POI merge — a failed merge returns an error
+            // body with no `id`, so poiNode.id would be undefined and the beat
+            // it links would be orphaned while stats falsely reported success.
+            if (!poiResp.ok) throw new Error(`POI merge failed: ${poiResp.status}`);
             const poiNode = await poiResp.json();
 
             const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
@@ -4366,25 +4397,35 @@
             const beatNode = await beatResp.json();
             stats.beatsCreated++;
 
-            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
             });
+            // DEFECT 4: stats.relsLinked++ previously ran unconditionally, so a
+            // failed HAS_BEAT link (an orphaned beat, invisible in tours) was
+            // still counted as linked and the run reported success. Throw so the
+            // catch surfaces the failure and the count is not overstated.
+            if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
             stats.relsLinked++;
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
             });
+            // DEFECT 4: same as HAS_BEAT above — do not count a failed tag link.
+            if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
             stats.relsLinked++;
             continue;
           }
 
           if (conflict.resolution === 'replace') {
-            // Deprecate existing beat
-            await fetch(`${API_BASE}/nodes/NarrativeBeat/${conflict.existing.id}`, {
+            // Deprecate existing beat — check .ok so a failed deprecate routes
+            // into the try/catch as an error rather than being counted in
+            // stats.beatsReplaced with the old beat still active on the lens.
+            const depResp = await fetch(`${API_BASE}/nodes/NarrativeBeat/${conflict.existing.id}`, {
               method: 'PUT', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
             });
+            if (!depResp.ok) throw new Error(`Beat deprecate failed: ${depResp.status}`);
 
             const mapped = mapBeatForApi(conflict.beat);
             mapped.version = (conflict.existing.version || 1) + 1;
@@ -4396,6 +4437,10 @@
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify(mapPoiForApi(conflict.poi)),
             });
+            // DEFECT 3: guard the POI merge — a failed merge returns an error
+            // body with no `id`, so poiNode.id would be undefined and the beat
+            // it links would be orphaned while stats falsely reported success.
+            if (!poiResp.ok) throw new Error(`POI merge failed: ${poiResp.status}`);
             const poiNode = await poiResp.json();
 
             const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
@@ -4406,25 +4451,35 @@
             const beatNode = await beatResp.json();
             stats.beatsReplaced++;
 
-            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
             });
+            // DEFECT 4: stats.relsLinked++ previously ran unconditionally, so a
+            // failed HAS_BEAT link (an orphaned beat, invisible in tours) was
+            // still counted as linked and the run reported success. Throw so the
+            // catch surfaces the failure and the count is not overstated.
+            if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
             stats.relsLinked++;
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
             });
+            // DEFECT 4: same as HAS_BEAT above — do not count a failed tag link.
+            if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
             stats.relsLinked++;
             continue;
           }
 
           if (conflict.resolution === 'merge') {
-            // Deprecate existing beat
-            await fetch(`${API_BASE}/nodes/NarrativeBeat/${conflict.existing.id}`, {
+            // Deprecate existing beat — check .ok so a failed deprecate routes
+            // into the try/catch as an error rather than being counted in
+            // stats.beatsMerged with the old beat still active on the lens.
+            const depResp = await fetch(`${API_BASE}/nodes/NarrativeBeat/${conflict.existing.id}`, {
               method: 'PUT', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ properties: { active_status: 'deprecated' } }),
             });
+            if (!depResp.ok) throw new Error(`Beat deprecate failed: ${depResp.status}`);
 
             const mergedSlug = resolveLensSlug(conflict.mergedBeat.lens) || resolveLensSlug(conflict.beat.lens);
             if (!mergedSlug) { stats.errors.push(`Merged beat lens unrecognized.`); continue; }
@@ -4443,6 +4498,10 @@
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify(mapPoiForApi(conflict.poi)),
             });
+            // DEFECT 3: guard the POI merge — a failed merge returns an error
+            // body with no `id`, so poiNode.id would be undefined and the beat
+            // it links would be orphaned while stats falsely reported success.
+            if (!poiResp.ok) throw new Error(`POI merge failed: ${poiResp.status}`);
             const poiNode = await poiResp.json();
 
             const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
@@ -4453,15 +4512,22 @@
             const beatNode = await beatResp.json();
             stats.beatsMerged++;
 
-            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
             });
+            // DEFECT 4: stats.relsLinked++ previously ran unconditionally, so a
+            // failed HAS_BEAT link (an orphaned beat, invisible in tours) was
+            // still counted as linked and the run reported success. Throw so the
+            // catch surfaces the failure and the count is not overstated.
+            if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
             stats.relsLinked++;
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
             });
+            // DEFECT 4: same as HAS_BEAT above — do not count a failed tag link.
+            if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
             stats.relsLinked++;
             continue;
           }
@@ -4478,6 +4544,10 @@
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify(mapPoiForApi(conflict.poi)),
             });
+            // DEFECT 3: guard the POI merge — a failed merge returns an error
+            // body with no `id`, so poiNode.id would be undefined and the beat
+            // it links would be orphaned while stats falsely reported success.
+            if (!poiResp.ok) throw new Error(`POI merge failed: ${poiResp.status}`);
             const poiNode = await poiResp.json();
 
             const beatResp = await fetch(`${API_BASE}/nodes/NarrativeBeat`, {
@@ -4488,15 +4558,22 @@
             const beatNode = await beatResp.json();
             stats.beatsCreated++;
 
-            await fetch(`${API_BASE}/edges/HAS_BEAT`, {
+            const hasBeatResp = await fetch(`${API_BASE}/edges/HAS_BEAT`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'POI', id: poiNode.id}, target: {label: 'NarrativeBeat', id: beatNode.id} }),
             });
+            // DEFECT 4: stats.relsLinked++ previously ran unconditionally, so a
+            // failed HAS_BEAT link (an orphaned beat, invisible in tours) was
+            // still counted as linked and the run reported success. Throw so the
+            // catch surfaces the failure and the count is not overstated.
+            if (!hasBeatResp.ok) throw new Error(`HAS_BEAT link failed: ${hasBeatResp.status}`);
             stats.relsLinked++;
-            await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
+            const taggedWithResp = await fetch(`${API_BASE}/edges/TAGGED_WITH`, {
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beatNode.id}, target: {label: 'Lens', id: lensId} }),
             });
+            // DEFECT 4: same as HAS_BEAT above — do not count a failed tag link.
+            if (!taggedWithResp.ok) throw new Error(`TAGGED_WITH link failed: ${taggedWithResp.status}`);
             stats.relsLinked++;
             continue;
           }
@@ -5116,6 +5193,31 @@
       return resp;
     }
 
+    // DEFECT 1: the edges API exposes DELETE only by edge id
+    // (DELETE /edges/{rel_type}/{edge_id}); there is no bodiless
+    // DELETE /edges/{rel_type}. To delete a relationship by its endpoints we
+    // must first resolve its edge id via the source_id-filtered list endpoint
+    // (GET /edges/{rel_type}?source_id=...) and match on target_id.
+    async function findEdgeId(relType, sourceId, targetId, step) {
+      const listResp = await mustOk(
+        fetch(`${API_BASE}/edges/${relType}?source_id=${encodeURIComponent(sourceId)}&limit=200`),
+        `${step} (lookup)`,
+      );
+      const data = await listResp.json();
+      const match = (data.items || []).find((e) => e.target_id === targetId);
+      return match ? match.id : null;
+    }
+
+    async function deleteEdgeByEndpoints(relType, sourceId, targetId, step) {
+      const edgeId = await findEdgeId(relType, sourceId, targetId, step);
+      if (!edgeId) throw new Error(`${step} failed: no ${relType} edge found`);
+      await mustOk(
+        fetch(`${API_BASE}/edges/${relType}/${encodeURIComponent(edgeId)}`, { method: 'DELETE' }),
+        step,
+      );
+      return edgeId;
+    }
+
     try {
       // Get max sort_order from target's beats
       let maxSortOrder = 0;
@@ -5152,6 +5254,18 @@
               method: 'POST', headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({ source: {label: 'NarrativeBeat', id: beat.id}, target: {label: 'Lens', id: newLensId} }),
             }), `Change lens for beat ${beat.id}`);
+            // DEFECT 2: the new TAGGED_WITH edge was created but the beat's
+            // original TAGGED_WITH edge was never removed, so the beat ended up
+            // tagged with BOTH lenses — the collision this branch resolves
+            // silently persisted. Delete the old lens tag so the tag is MOVED,
+            // not duplicated. The old lens id is derivable from beat.lens_slug.
+            const oldLensId = beat.lens_slug ? lensSlugToId[beat.lens_slug] : null;
+            if (oldLensId && oldLensId !== newLensId) {
+              await deleteEdgeByEndpoints(
+                'TAGGED_WITH', beat.id, oldLensId,
+                `Remove old lens tag for beat ${beat.id}`,
+              );
+            }
             console.log(`Changed lens for beat ${beat.id} to ${item.newLensSlug}`);
           }
         }
@@ -5168,17 +5282,18 @@
         }), `Transfer beat ${beat.id} to target`);
         console.log(`Transferred beat ${beat.id} to target (sort_order: ${maxSortOrder})`);
 
-        // Delete old HAS_BEAT edge from source POI → beat. DEFECT 6: this delete is
-        // now checked too — an unchecked delete could leave the beat linked to BOTH
-        // POIs while the merge still reported success. A failed delete aborts the
+        // Delete old HAS_BEAT edge from source POI → beat. DEFECT 1: the edges
+        // API has no bodiless DELETE /edges/HAS_BEAT route (only GET+POST +
+        // DELETE-by-id), so the previous bodiless DELETE returned 405, aborted
+        // executeMerge AFTER the target→beat edge was created but BEFORE the
+        // source→beat edge and source POI were removed — double-linking the beat
+        // and leaving the source POI in place. Resolve the edge id first, then
+        // DELETE by id. DEFECT 6: still checked so a failed delete aborts the
         // merge (throws to the catch) rather than proceeding to source-POI deletion.
-        await mustOk(fetch(`${API_BASE}/edges/HAS_BEAT`, {
-          method: 'DELETE', headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            source: {label: 'POI', id: sourcePoi.id},
-            target: {label: 'NarrativeBeat', id: beat.id},
-          }),
-        }), `Delete old HAS_BEAT edge for beat ${beat.id}`);
+        await deleteEdgeByEndpoints(
+          'HAS_BEAT', sourcePoi.id, beat.id,
+          `Delete old HAS_BEAT edge for beat ${beat.id}`,
+        );
         console.log(`Deleted old HAS_BEAT edge from source for beat ${beat.id}`);
       }
 
@@ -5279,6 +5394,10 @@
   window.mapPoiForApi = mapPoiForApi;
   window.mergeIncomingIntoDbPois = mergeIncomingIntoDbPois;
   window.executeMerge = executeMerge;
+  window.executeUpload = executeUpload;
+  window.uploadSinglePoi = uploadSinglePoi;
+  window.uploadIncomingBeatsForDbPoi = uploadIncomingBeatsForDbPoi;
+  window.selectPoi = selectPoi;
   window.buildDbPopupContent = buildDbPopupContent;
   window.activateCity = activateCity;
   window.processJson = processJson;
@@ -5291,6 +5410,22 @@
   Object.defineProperty(window, 'poiData', {
     get: () => poiData,
     set: (v) => { poiData = v; },
+  });
+  // executeMerge / executeUpload resolve lenses through these three module maps
+  // (id map for TAGGED_WITH targets; the slug set + display map back
+  // resolveLensSlug/mapBeatForApi). Expose setters so regression tests can stage
+  // them without going through the live /nodes/Lens fetch.
+  Object.defineProperty(window, 'lensSlugToId', {
+    get: () => lensSlugToId,
+    set: (v) => { lensSlugToId = v; },
+  });
+  Object.defineProperty(window, 'lensSlugSet', {
+    get: () => lensSlugSet,
+    set: (v) => { lensSlugSet = v; },
+  });
+  Object.defineProperty(window, 'lensDisplayToSlug', {
+    get: () => lensDisplayToSlug,
+    set: (v) => { lensDisplayToSlug = v; },
   });
 
 })();

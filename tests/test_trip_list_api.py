@@ -190,6 +190,75 @@ class TestListTripsEndpoint:
             assert stop["beat_id"], "legacy item must derive beat_id from its edge"
             assert stop["beat_ids"] == [stop["beat_id"]]
 
+    def test_list_trips_returns_stop_with_orphaned_beat(self, seeded_driver):
+        """A stop whose only beat is later deleted (no surviving PLAYS_BEAT edge)
+        must still be returned by list_trips_for_profile — with an empty beats
+        list — and total_stops / total_duration_min must count it, not silently
+        drop it.
+
+        Uses a dedicated profile + a POI whose beat exists nowhere else, so the
+        DETACH DELETE severs exactly one trip's edge and never touches beats other
+        trips in this shared-seed module depend on. Calls the crud read path
+        directly (not the HTTP route) — the defect is that the Cypher REQUIRED a
+        PLAYS_BEAT edge and dropped the row when none survived.
+        """
+        from src.api.crud.nodes import delete_node
+        from src.api.crud.trips import list_trips_for_profile
+
+        with seeded_driver.session(database=get_database()) as s:
+            # Isolated fixture: own profile, own POI, own beat.
+            s.run(
+                """
+                CREATE (p:Profile {id: 'profile-orphan-beat', display_name: 'Orphan User'})
+                CREATE (poi:POI {id: 'poi-orphan-beat', name: 'Orphan Square',
+                                 importance_tier: 3,
+                                 location: point({latitude: 48.85, longitude: 2.35})})
+                CREATE (b:NarrativeBeat {id: 'beat-orphan-only', script_body: 'Once here.',
+                                        duration_sec: 42})
+                CREATE (poi)-[:HAS_BEAT]->(b)
+                """
+            )
+            stop = {
+                "sort_order": 1,
+                "poi_id": "poi-orphan-beat",
+                "poi_name": "Orphan Square",
+                "lat": 48.85,
+                "lng": 2.35,
+                "beat_ids": ["beat-orphan-only"],
+                "primary_beat_id": "beat-orphan-only",
+                "lens_name": None,
+                "duration_min": 30,
+                "importance_tier": 3,
+                "start_time": "09:00",
+            }
+            result = create_trip_with_stops(
+                s,
+                trip_name="Orphaned Beat Trip",
+                profile_id="profile-orphan-beat",
+                start_date="2026-05-01",
+                end_date="2026-05-03",
+                stops=[stop],
+            )
+            trip_id = result["trip_id"]
+
+            # Delete the beat, severing the stop's only PLAYS_BEAT edge.
+            assert delete_node(s, "NarrativeBeat", "beat-orphan-only") is True
+
+            trips = list_trips_for_profile(s, "profile-orphan-beat")
+
+        trip = next((t for t in trips if t["trip_id"] == trip_id), None)
+        assert trip is not None
+        # The orphaned stop must NOT be dropped.
+        assert trip["total_stops"] == 1
+        assert len(trip["stops"]) == 1
+        assert trip["total_duration_min"] == 30
+        orphan = trip["stops"][0]
+        assert orphan["poi_id"] == "poi-orphan-beat"
+        assert orphan["stop_id"]
+        # Stored item properties (not the vanished edge) populate the stop.
+        assert orphan["beat_id"] == "beat-orphan-only"
+        assert orphan["beat_ids"] == ["beat-orphan-only"]
+
     def test_list_trips_requires_valid_profile_id(self, client):
         """A nonexistent profile returns 404."""
         resp = client.get("/api/v1/trips?profile_id=nonexistent-profile-999")

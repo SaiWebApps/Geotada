@@ -11,6 +11,13 @@ services:
       # (needs ANTHROPIC_API_KEY). Flip to 'anthropic' to go live.
       - key: COMPOSE_PROVIDER
         value: mock
+      # Gate OFF the editorial-workbench graph-CRUD routers (graph/nodes/edges/
+      # schema) on the public deploy. These are an UNAUTHENTICATED create/update/
+      # DETACH DELETE surface over the live Neo4j/Aura graph; app.py mounts them
+      # unless this is an explicit off value. Without it, anonymous callers can
+      # mutate or wipe the production corpus. Must stay "false" in prod.
+      - key: WORKBENCH_API_ENABLED
+        value: "false"
       - key: NEO4J_URI
         sync: false
       - key: NEO4J_USER

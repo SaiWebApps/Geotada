@@ -294,7 +294,12 @@ def _order_by_sub_location(
     out: list[BeatRef] = []
     for key in ordered_keys:
         bucket = by_loc[key]
-        out.append(_pick_best(bucket, interest))
+        # Emit the best beat first (the single voiced pick per bucket), then the
+        # remaining bucket members best-first. The per-tier cap in select_poi_beats
+        # (_cap_spatial_by_score) trims the VOICED plan to one-per-bucket-ish; the
+        # UNCAPPED full plan keeps every active beat so bucket-losers surface as
+        # keep-exploring extras (mirrors the no_loc pool below).
+        out.extend(_top_by_score(bucket, interest, len(bucket)))
 
     # Trailing "no sub_location" pool. R1: emit the un-keyed pool best-first (not
     # one closer) — a dense POI like Île de la Cité carries most of its beats with
@@ -321,7 +326,13 @@ def _order_by_trigger_address(
 
     ordered_keys = sorted(by_addr.keys(), key=_address_sort_key)
 
-    out: list[BeatRef] = [_pick_best(by_addr[k], interest) for k in ordered_keys]
+    # Best beat per address first, then that address's remaining beats best-first,
+    # so the UNCAPPED full plan keeps every active beat (bucket-losers surface as
+    # keep-exploring extras); the per-tier cap trims the voiced plan (see
+    # _order_by_sub_location for the rationale, mirrors the no_addr pool below).
+    out: list[BeatRef] = []
+    for k in ordered_keys:
+        out.extend(_top_by_score(by_addr[k], interest, len(by_addr[k])))
     # R1: emit the no-trigger_address pool best-first (see _order_by_sub_location);
     # the per-tier ceiling in select_poi_beats bounds the voiced plan.
     if no_addr:
@@ -902,38 +913,39 @@ def _pick_dedup_loser(a: BeatRef, b: BeatRef, interest: frozenset[str]) -> BeatR
 def _enforce_tone_variety(beats: list[BeatRef]) -> list[BeatRef]:
     """Avoid 3 consecutive somber/reverent beats (rule 19).
 
-    On a violation at position i (i, i-1, i-2 all somber/reverent),
-    swap any non-somber beat from outside the violation window into
-    position i-1 (the middle), which breaks the run regardless of which
-    direction the relief comes from.
+    Constructive interleave: bucket the beats into somber/reverent vs.
+    relief (everything else), preserving each bucket's stable input order.
+    Emit at most two consecutive somber beats before forcing a relief beat
+    whenever any relief remains; only when relief is exhausted do we fall
+    back to the honest (still-somber) tail. This provably contains no run of
+    three consecutive somber/reverent beats whenever relief beats exist to
+    break every run — unlike a local-swap heuristic, it cannot ping-pong
+    between a leading and a trailing run.
     """
     somber_registers = {"somber", "reverent"}
 
     def is_somber(b: BeatRef) -> bool:
         return (b.emotional_register or "").lower() in somber_registers
 
-    out = list(beats)
-    for _ in range(len(out) + 1):  # bounded fixpoint
-        violation = None
-        for i in range(2, len(out)):
-            if is_somber(out[i - 2]) and is_somber(out[i - 1]) and is_somber(out[i]):
-                violation = i
-                break
-        if violation is None:
-            return out
+    somber = [b for b in beats if is_somber(b)]
+    relief = [b for b in beats if not is_somber(b)]
 
-        # Find any non-somber beat outside the violation window.
-        swap_with = next(
-            (
-                j
-                for j, b in enumerate(out)
-                if not is_somber(b) and j not in {violation - 2, violation - 1, violation}
-            ),
-            None,
-        )
-        if swap_with is None:
-            return out  # honest length — no relief available
+    # No violation is possible without at least three somber beats, or when
+    # there is no relief to interleave — return the input order untouched.
+    if len(somber) < 3 or not relief:
+        return list(beats)
 
-        target = violation - 1
-        out[target], out[swap_with] = out[swap_with], out[target]
+    out: list[BeatRef] = []
+    si = ri = 0
+    run = 0  # length of the current trailing somber run in `out`
+    while si < len(somber) or ri < len(relief):
+        force_relief = run >= 2 and ri < len(relief)
+        if force_relief or (si >= len(somber) and ri < len(relief)):
+            out.append(relief[ri])
+            ri += 1
+            run = 0
+        else:
+            out.append(somber[si])
+            si += 1
+            run += 1
     return out

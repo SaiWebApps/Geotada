@@ -99,14 +99,23 @@ def get_poi_beats(
     city_name: str,
     session: Session = Depends(get_session),
 ):
-    """Fetch active beats and their lens tags for a POI by (name, city_name)."""
+    """Fetch active beats and their lens tags for a POI by (name, city_name).
+
+    Beats are matched first and lenses joined via OPTIONAL MATCH, then aggregated
+    into a per-beat ``lens_slugs`` list. This mirrors selection.py so that
+    (a) lens-less active beats are still returned (review.html conflict detection
+    must see them to flag duplicates) and (b) a multi-lens beat produces exactly
+    one row (not N duplicate rows that inflate DB-beat counts / hard-match noise).
+    ``lens_slug`` is retained as the first slug (or None) for backward compat.
+    """
     result = session.run(
-        "MATCH (p:POI {name: $name, city_name: $city_name})-[r:HAS_BEAT]->(b:NarrativeBeat)"
-        "-[:TAGGED_WITH]->(l:Lens) "
+        "MATCH (p:POI {name: $name, city_name: $city_name})-[r:HAS_BEAT]->(b:NarrativeBeat) "
         'WHERE b.active_status = "active" '
+        "OPTIONAL MATCH (b)-[:TAGGED_WITH]->(l:Lens) "
+        "WITH b, r, collect(DISTINCT l.name) AS lens_slugs "
         "RETURN b.id AS id, b.script_body AS script_body, "
         "b.version AS version, b.active_status AS active_status, "
-        "b.duration_sec AS duration_sec, l.name AS lens_slug, "
+        "b.duration_sec AS duration_sec, lens_slugs AS lens_slugs, "
         "r.sort_order AS sort_order "
         "ORDER BY r.sort_order",
         name=poi_name,
@@ -119,7 +128,8 @@ def get_poi_beats(
             "version": r["version"],
             "active_status": r["active_status"],
             "duration_sec": r["duration_sec"],
-            "lens_slug": r["lens_slug"],
+            "lens_slugs": r["lens_slugs"],
+            "lens_slug": r["lens_slugs"][0] if r["lens_slugs"] else None,
             "sort_order": r["sort_order"],
         }
         for r in result
@@ -129,14 +139,20 @@ def get_poi_beats(
 
 @router.get("/graph/area/{area_name}/beats")
 def get_area_beats(area_name: str, session: Session = Depends(get_session)):
-    """Fetch active beats and their lens tags for an Area by name."""
+    """Fetch active beats and their lens tags for an Area by name.
+
+    Mirrors get_poi_beats: OPTIONAL-MATCH the lens and aggregate into a per-beat
+    ``lens_slugs`` list so lens-less active beats survive and multi-lens beats
+    yield exactly one row. ``lens_slug`` is the first slug (or None) for compat.
+    """
     result = session.run(
-        "MATCH (a:Area {name: $name})-[:HAS_BEAT]->(b:NarrativeBeat)"
-        "-[:TAGGED_WITH]->(l:Lens) "
+        "MATCH (a:Area {name: $name})-[:HAS_BEAT]->(b:NarrativeBeat) "
         'WHERE b.active_status = "active" '
+        "OPTIONAL MATCH (b)-[:TAGGED_WITH]->(l:Lens) "
+        "WITH b, collect(DISTINCT l.name) AS lens_slugs "
         "RETURN b.id AS id, b.script_body AS script_body, "
         "b.version AS version, b.active_status AS active_status, "
-        "b.duration_sec AS duration_sec, l.name AS lens_slug",
+        "b.duration_sec AS duration_sec, lens_slugs AS lens_slugs",
         name=area_name,
     )
     beats = [
@@ -146,7 +162,8 @@ def get_area_beats(area_name: str, session: Session = Depends(get_session)):
             "version": r["version"],
             "active_status": r["active_status"],
             "duration_sec": r["duration_sec"],
-            "lens_slug": r["lens_slug"],
+            "lens_slugs": r["lens_slugs"],
+            "lens_slug": r["lens_slugs"][0] if r["lens_slugs"] else None,
         }
         for r in result
     ]

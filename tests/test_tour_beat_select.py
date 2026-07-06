@@ -10,6 +10,7 @@ from src.tour.beat_select import (
     DEFAULT_FLAT_MAX,
     HOIST_PROXIMITY_M,
     NARRATIVE_FUNCTION_ORDER,
+    _enforce_tone_variety,
     choose_ordering_strategy,
     extra_beat_ids,
     find_area_orientation_beat,
@@ -344,6 +345,57 @@ def test_tone_variety_breaks_three_somber_run():
             and registers[i - 1] in {"somber", "reverent"}
             and registers[i] in {"somber", "reverent"}
         )
+
+
+def _has_three_somber_run(registers: list[str | None]) -> bool:
+    somber = {"somber", "reverent"}
+    return any(
+        registers[i - 2] in somber and registers[i - 1] in somber and registers[i] in somber
+        for i in range(2, len(registers))
+    )
+
+
+def test_tone_variety_breaks_long_run_with_single_relief():
+    """A run of length >= 4 with a single relief beat must NOT leave a
+    3-consecutive-somber run: [s,s,s,s,relief] admits [s,s,relief,s,s].
+
+    The old always-swap-into-violation-1 heuristic pushed the relief too far
+    left and left the leading `s,s,s` intact — this is the primary defect."""
+    beats = [
+        _beat("s1", emotional_register="somber"),
+        _beat("s2", emotional_register="somber"),
+        _beat("s3", emotional_register="somber"),
+        _beat("s4", emotional_register="somber"),
+        _beat("relief", emotional_register="playful"),
+    ]
+    out = _enforce_tone_variety(beats)
+    registers = [b.emotional_register for b in out]
+    assert not _has_three_somber_run(registers), registers
+    # relief must actually be present and beats conserved
+    assert {b.id for b in out} == {"s1", "s2", "s3", "s4", "relief"}
+
+
+def test_tone_variety_breaks_run_with_two_reliefs_no_pingpong():
+    """A run of four somber beats followed by two relief beats.
+
+    A valid tone-broken arrangement exists ([s,s,r,s,s,r]), but the old
+    single-swap heuristic swapped one relief into the middle of the first
+    detected window and produced [s,r,s,s,s,r] — the relief landed too far
+    left, re-creating a three-somber run it never revisited. The constructive
+    interleave forces a relief after every two somber beats while relief
+    remains, so no run survives."""
+    beats = [
+        _beat("s1", emotional_register="somber"),
+        _beat("s2", emotional_register="somber"),
+        _beat("s3", emotional_register="somber"),
+        _beat("s4", emotional_register="somber"),
+        _beat("r1", emotional_register="playful"),
+        _beat("r2", emotional_register="upbeat"),
+    ]
+    out = _enforce_tone_variety(beats)
+    registers = [b.emotional_register for b in out]
+    assert not _has_three_somber_run(registers), registers
+    assert {b.id for b in out} == {"s1", "s2", "s3", "s4", "r1", "r2"}
 
 
 # ---------------------------------------------------------------------------
@@ -1412,6 +1464,63 @@ def test_spatial_capped_is_subset_of_full_even_with_dedup_cluster():
     extras = set(extra_beat_ids(poi, beats, voiced))
     assert extras.isdisjoint(voiced)
     assert extras == full - voiced
+
+
+def test_full_keeps_every_active_beat_for_sub_location_multi_beat_bucket():
+    """R1 KE-invariant (regression): select_poi_beats_full's 'every active beat'
+    contract must hold for the sub_location strategy too — NOT just the flat
+    strategy (test_full_uncaps_beyond_flat_max). A multi-beat sub_location bucket
+    used to drop its non-best members from the UNCAPPED plan (only _pick_best was
+    appended), so a bucket-loser was voiced nowhere AND surfaced as no
+    keep-exploring extra (extras = full minus voiced, and it was missing from
+    full). Every active beat must reach `full`, and the bucket-loser must be a
+    keep-exploring extra."""
+    poi = _poi("Conciergerie")  # tier 5, sub_location strategy
+    beats = [
+        _beat("choir", sub_location="choir", beat_length_class="anchor", word_count=200),
+        _beat("nave", sub_location="nave", beat_length_class="anchor", word_count=200),
+        _beat("parvis-A", sub_location="parvis", beat_length_class="anchor", word_count=200),
+        _beat("parvis-B", sub_location="parvis", beat_length_class="mid", word_count=150),
+    ]
+    full = select_poi_beats_full(poi, beats)
+    assert full.ordering_strategy == "sub_location"
+    full_ids = {b.id for b in full.beats}
+    active_ids = {b.id for b in beats}
+    assert full_ids == active_ids, (
+        f"full plan must keep every active beat; lost {active_ids - full_ids}"
+    )
+    # extra_beat_ids = full minus voiced; before the fix the bucket-loser was
+    # missing from `full` entirely, so it could be neither voiced nor a KE extra.
+    voiced = [b.id for b in select_poi_beats(poi, beats).beats]
+    assert set(voiced) | set(extra_beat_ids(poi, beats, voiced)) == active_ids, (
+        "every active beat is either voiced or a keep-exploring extra — none silently lost"
+    )
+
+
+def test_full_keeps_every_active_beat_for_trigger_address_multi_beat_bucket():
+    """R1 KE-invariant (regression): the trigger_address strategy had the same
+    bucket-loser loss as sub_location — a second beat sharing a trigger_address
+    was dropped from the UNCAPPED full plan. Every active beat must reach `full`."""
+    poi = _poi("Place des Vosges")  # tier 5, trigger_address strategy
+    # Five distinct addresses -> trigger_address strategy; one address has 2 beats.
+    beats = [
+        _beat(f"no{i}", trigger_address=f"no. {i}", beat_length_class="anchor", word_count=200)
+        for i in range(1, 6)
+    ]
+    beats.append(
+        _beat("no1-second", trigger_address="no. 1", beat_length_class="mid", word_count=150)
+    )
+    full = select_poi_beats_full(poi, beats)
+    assert full.ordering_strategy == "trigger_address"
+    full_ids = {b.id for b in full.beats}
+    active_ids = {b.id for b in beats}
+    assert full_ids == active_ids, (
+        f"full plan must keep every active beat; lost {active_ids - full_ids}"
+    )
+    voiced = [b.id for b in select_poi_beats(poi, beats).beats]
+    assert set(voiced) | set(extra_beat_ids(poi, beats, voiced)) == active_ids, (
+        "every active beat is either voiced or a keep-exploring extra — none silently lost"
+    )
 
 
 def test_spatial_cap_never_drops_the_cold_open_orientation():

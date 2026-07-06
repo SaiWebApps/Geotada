@@ -5,8 +5,24 @@ from __future__ import annotations
 from typing import ClassVar
 from unittest.mock import patch
 
+import anthropic
 import pytest
 from fastapi.testclient import TestClient
+
+
+@pytest.fixture(autouse=True)
+def _reset_rate_limit():
+    """The per-IP feedback rate limiter (Defect #1) keeps module-level in-process
+    state that would otherwise bleed across tests (all use the same 'testclient'
+    IP). Clear it before every test so counts start fresh."""
+    from src.api.routes import feedback as feedback_mod
+
+    state = getattr(feedback_mod, "_rate_state", None)
+    if state is not None:
+        state.clear()
+    yield
+    if state is not None:
+        state.clear()
 
 
 @pytest.fixture()
@@ -299,3 +315,218 @@ class TestTourContext:
         assert resp.status_code == 422
         mock_structure.assert_not_called()
         mock_github.assert_not_called()
+
+
+class TestRateLimit:
+    """Defect #1: the unauthenticated endpoint must not let one caller loop it
+    to burn Anthropic credits / flood the issue tracker."""
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_excess_requests_are_rate_limited_429(
+        self, mock_structure, mock_github, client, monkeypatch
+    ):
+        monkeypatch.setattr("src.api.routes.feedback._RATE_LIMIT_MAX", 3)
+        mock_structure.return_value = {
+            "title": "[Bug] X",
+            "body": "b",
+            "labels": ["bug"],
+        }
+        mock_github.return_value = {
+            "issue_url": "https://github.com/SaiWebApps/Ondoway/issues/1",
+            "issue_number": 1,
+            "title": "[Bug] X",
+        }
+
+        payload = {"transcript": "loop me"}
+        statuses = [
+            client.post("/api/v1/feedback", json=payload).status_code for _ in range(4)
+        ]
+
+        # First 3 accepted, the 4th within the window is throttled.
+        assert statuses[:3] == [201, 201, 201]
+        assert statuses[3] == 429
+        # And the throttled call never reached the paid LLM / GitHub POST.
+        assert mock_structure.call_count == 3
+        assert mock_github.call_count == 3
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_429_carries_retry_after(
+        self, mock_structure, mock_github, client, monkeypatch
+    ):
+        monkeypatch.setattr("src.api.routes.feedback._RATE_LIMIT_MAX", 1)
+        mock_structure.return_value = {"title": "t", "body": "b", "labels": []}
+        mock_github.return_value = {
+            "issue_url": "u",
+            "issue_number": 2,
+            "title": "t",
+        }
+        client.post("/api/v1/feedback", json={"transcript": "one"})
+        resp = client.post("/api/v1/feedback", json={"transcript": "two"})
+        assert resp.status_code == 429
+        assert "Retry-After" in resp.headers
+
+
+class TestMalformedLLMOutput:
+    """Defects #2 and #4: untrusted LLM output must never surface as a 500."""
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    def test_prose_wrapped_response_still_creates_issue(self, mock_github, client):
+        """Defect #2: the LLM returns prose around an unclosed fence -> the report
+        must still land as a 201 issue (deterministic fallback), not a 500."""
+        mock_github.return_value = {
+            "issue_url": "https://github.com/SaiWebApps/Ondoway/issues/3",
+            "issue_number": 3,
+            "title": "[Feedback] audio cuts out",
+        }
+
+        # A response with an OPENING fence but no closing fence, wrapped in prose.
+        bad_text = "Sure, here you go:\n```json\n{ not valid json at all"
+        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
+            mock_block = mock_anthropic.return_value.messages.create.return_value.content[0]
+            mock_block.text = bad_text
+
+            resp = client.post(
+                "/api/v1/feedback",
+                json={"transcript": "audio cuts out mid tour"},
+            )
+
+        assert resp.status_code == 201
+        # Fallback used the transcript, not a crash.
+        assert mock_github.call_args.kwargs["body"] == "audio cuts out mid tour"
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    def test_embedded_object_in_prose_is_extracted(self, mock_github, client):
+        """The brace-matching scan pulls a bare JSON object out of prose (no fence)."""
+        mock_github.return_value = {
+            "issue_url": "u",
+            "issue_number": 4,
+            "title": "[Bug] parsed",
+        }
+        good = 'Here: {"title": "[Bug] parsed", "body": "it works", "labels": ["bug"]} done'
+        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
+            mock_block = mock_anthropic.return_value.messages.create.return_value.content[0]
+            mock_block.text = good
+            resp = client.post("/api/v1/feedback", json={"transcript": "x"})
+
+        assert resp.status_code == 201
+        assert mock_github.call_args.kwargs["title"] == "[Bug] parsed"
+        assert mock_github.call_args.kwargs["body"] == "it works"
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_labels_non_list_does_not_500(self, mock_structure, mock_github, client):
+        """Defect #4: labels returned as a bare string must not AttributeError -> 500."""
+        mock_structure.return_value = {"title": "t", "body": "b", "labels": "bug"}
+        mock_github.return_value = {"issue_url": "u", "issue_number": 5, "title": "t"}
+
+        resp = client.post("/api/v1/feedback", json={"transcript": "x"})
+        assert resp.status_code == 201
+        # The bare string is dropped; only beta-feedback remains.
+        assert mock_github.call_args.kwargs["labels"] == ["beta-feedback"]
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_labels_list_of_non_strings_are_filtered(
+        self, mock_structure, mock_github, client
+    ):
+        """Defect #4: non-str label items are filtered so they never reach GitHub."""
+        mock_structure.return_value = {
+            "title": "t",
+            "body": "b",
+            "labels": ["bug", 123, {"x": 1}, "ux"],
+        }
+        mock_github.return_value = {"issue_url": "u", "issue_number": 6, "title": "t"}
+
+        resp = client.post("/api/v1/feedback", json={"transcript": "x"})
+        assert resp.status_code == 201
+        labels = mock_github.call_args.kwargs["labels"]
+        assert labels == ["bug", "ux", "beta-feedback"]
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    def test_empty_content_list_falls_back_to_transcript(self, mock_github, client):
+        """Defect #1: an empty LLM content list (content=[]) must not IndexError -> 500.
+        It should degrade to the deterministic transcript fallback (201)."""
+        mock_github.return_value = {
+            "issue_url": "u",
+            "issue_number": 8,
+            "title": "[Feedback] empty content",
+        }
+        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
+            mock_anthropic.return_value.messages.create.return_value.content = []
+
+            resp = client.post(
+                "/api/v1/feedback",
+                json={"transcript": "empty content body"},
+            )
+
+        assert resp.status_code == 201
+        assert mock_github.call_args.kwargs["body"] == "empty content body"
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    def test_non_text_first_block_falls_back_to_transcript(self, mock_github, client):
+        """Defect #1: a first content block with no `.text` attribute (e.g. a
+        tool_use block) must not AttributeError -> 500; it degrades to the
+        deterministic transcript fallback (201)."""
+        mock_github.return_value = {
+            "issue_url": "u",
+            "issue_number": 9,
+            "title": "[Feedback] non-text block",
+        }
+
+        class _NonTextBlock:
+            """A block with no `text` attribute, like a tool_use content block."""
+
+        with patch("src.api.routes.feedback.anthropic.Anthropic") as mock_anthropic:
+            mock_anthropic.return_value.messages.create.return_value.content = [
+                _NonTextBlock()
+            ]
+
+            resp = client.post(
+                "/api/v1/feedback",
+                json={"transcript": "non text block body"},
+            )
+
+        assert resp.status_code == 201
+        assert mock_github.call_args.kwargs["body"] == "non text block body"
+
+    @patch("src.api.routes.feedback._create_github_issue")
+    @patch("src.api.routes.feedback._structure_feedback")
+    def test_top_level_non_dict_does_not_500(self, mock_structure, mock_github, client):
+        """Defect #4: a top-level JSON list (not an object) must not crash the route."""
+        mock_structure.return_value = ["not", "a", "dict"]
+        mock_github.return_value = {"issue_url": "u", "issue_number": 7, "title": "t"}
+
+        resp = client.post("/api/v1/feedback", json={"transcript": "salvage me"})
+        assert resp.status_code == 201
+        kwargs = mock_github.call_args.kwargs
+        assert kwargs["labels"] == ["beta-feedback"]
+        assert kwargs["body"] == "salvage me"  # falls back to transcript
+        assert kwargs["title"] == "[Feedback] salvage me"
+
+
+class TestProviderErrors:
+    """Defect #3: upstream Anthropic failures must return 502/503, not 500."""
+
+    @patch("src.api.routes.feedback.anthropic.Anthropic")
+    def test_connection_error_returns_502(self, mock_anthropic, client):
+        import httpx as _httpx
+
+        mock_anthropic.return_value.messages.create.side_effect = (
+            anthropic.APIConnectionError(request=_httpx.Request("POST", "https://x"))
+        )
+        resp = client.post("/api/v1/feedback", json={"transcript": "provider down"})
+        assert resp.status_code == 502
+
+    @patch("src.api.routes.feedback.anthropic.Anthropic")
+    def test_rate_limit_error_returns_503_with_retry_after(self, mock_anthropic, client):
+        import httpx as _httpx
+
+        response = _httpx.Response(429, request=_httpx.Request("POST", "https://x"))
+        mock_anthropic.return_value.messages.create.side_effect = anthropic.RateLimitError(
+            "rate limited", response=response, body=None
+        )
+        resp = client.post("/api/v1/feedback", json={"transcript": "throttled"})
+        assert resp.status_code == 503
+        assert resp.headers.get("Retry-After") == "30"

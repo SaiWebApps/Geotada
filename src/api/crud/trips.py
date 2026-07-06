@@ -301,13 +301,15 @@ def list_trips_for_profile(
         stops_query = """
             MATCH (t:Trip {id: $tid})-[:HAS_STOP]->(item:ItineraryItem)
             MATCH (item)-[:AT_POI]->(poi:POI)
-            MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)
+            OPTIONAL MATCH (item)-[:PLAYS_BEAT]->(beat:NarrativeBeat)
             OPTIONAL MATCH (beat)-[:TAGGED_WITH]->(bl:Lens)
             WITH item, poi, beat, min(bl.name) AS beat_lens
-            WITH item, poi, collect({id: beat.id, script_body: beat.script_body,
+            WITH item, poi, collect(CASE WHEN beat IS NULL THEN NULL
+                                     ELSE {id: beat.id, script_body: beat.script_body,
                                      audio_url: beat.audio_url,
                                      duration_sec: beat.duration_sec,
-                                     lens: beat_lens}) AS beats
+                                     lens: beat_lens} END) AS beats_raw
+            WITH item, poi, [b IN beats_raw WHERE b IS NOT NULL] AS beats
             WITH item, poi, beats,
                  coalesce(item.primary_beat_id, beats[0].id) AS primary_id
             WITH item, poi, beats, primary_id,
