@@ -6,13 +6,28 @@ import json
 import re
 from typing import TYPE_CHECKING, Any
 
-from src.api.models.nodes import NodeLabel
+from fastapi.exceptions import RequestValidationError
+
+from src.api.models.nodes import NodeLabel, canonical_name_key, protected_node_keys
 from src.api.utils import serialize_neo4j_props
 
 if TYPE_CHECKING:
     from neo4j import Session
 
 _VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
+
+
+def _raise_422(msg: str, loc: tuple[str, ...]) -> None:
+    """Raise a validation error that FastAPI's built-in handler renders as 422.
+
+    The route layer does not (and must not) special-case ValueError from crud,
+    so a plain ValueError would surface as a 500. RequestValidationError is
+    handled globally by FastAPI (RequestValidationError -> 422) with no route
+    change required.
+    """
+    raise RequestValidationError(
+        [{"type": "value_error", "loc": loc, "msg": msg, "input": None}]
+    )
 
 
 def _encode_complex_props(props: dict) -> dict:
@@ -109,6 +124,14 @@ def create_node(session: Session, label: str, properties: dict[str, Any]) -> dic
     if label == "POI" and isinstance(params.get("city_name"), str):
         params["city_name"] = params["city_name"].strip().lower()
 
+    # Name-key normalization guard (2026-07-06, defect 3): the previous guard
+    # normalized city_name but NOT name, so 'Notre-Dame' / 'notre-dame' /
+    # 'Notre-Dame ' forked the MERGE key into duplicate nodes. Derive a
+    # canonical `name_key` (collapse internal whitespace + trim + lower) and
+    # MERGE on (name_key, city_name) while keeping n.name for display casing.
+    if label == "POI" and isinstance(params.get("name"), str):
+        params["name_key"] = canonical_name_key(params["name"])
+
     if label == "POI" and "latitude" in params and "longitude" in params:
         lat = params.pop("latitude")
         lng = params.pop("longitude")
@@ -122,40 +145,65 @@ def create_node(session: Session, label: str, properties: dict[str, Any]) -> dic
             "n.location = point({latitude: $lat, longitude: $lng, srid: 4326})",
         ]
         for key in params:
-            if key not in ("lat", "lng", "name", "city_name"):
+            # name/city_name/name_key are in the MERGE pattern (or set there);
+            # n.name is set explicitly below to preserve display casing.
+            if key not in ("lat", "lng", "name", "city_name", "name_key"):
                 set_parts.append(f"n.{key} = ${key}")
+        # Preserve display casing: the MERGE keys on name_key, but n.name keeps
+        # the last-written display form.
+        set_parts.append("n.name = $name")
 
         if force_create:
-            # CREATE forces a new node even if (name, city_name) matches — used when
-            # editor confirms "different place" for a proximity match with same name.
+            # CREATE forces a new node even if (name_key, city_name) matches — used
+            # when editor confirms "different place" for a proximity match with same
+            # name.
             query = (
-                f"CREATE (n:POI {{name: $name, city_name: $city_name}}) "
+                f"CREATE (n:POI {{name_key: $name_key, city_name: $city_name}}) "
                 f"SET {', '.join(set_parts)} "
                 f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
             )
         else:
-            # MERGE on (name, city_name) for idempotent POI creation (default path).
-            # Multi-city safe — Notre-Dame Paris vs Notre-Dame Reims won't collide.
+            # MERGE on (name_key, city_name) for idempotent POI creation (default
+            # path). Multi-city safe — Notre-Dame Paris vs Notre-Dame Reims won't
+            # collide; casing/whitespace variants of the same name now dedup.
             query = (
-                f"MERGE (n:POI {{name: $name, city_name: $city_name}}) "
+                f"MERGE (n:POI {{name_key: $name_key, city_name: $city_name}}) "
                 f"SET {', '.join(set_parts)} "
                 f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
             )
     elif label == "NarrativeBeat":
-        # MERGE on script_body for idempotent beat creation
+        # Create-by-id (2026-07-06, defect 4): the old MERGE key was a bare,
+        # GLOBAL script_body — two beats with identical narration across
+        # different POIs/cities collided into one shared node, so an upload for
+        # one POI silently overwrote another's beat. Each beat is now an
+        # independent node keyed on its own id. An explicit id (e.g. from a
+        # re-upload of the same beat) is honoured; otherwise one is generated.
+        beat_id = params.pop("id", None)
+        params["_beat_id"] = beat_id  # None -> randomUUID() via coalesce below
         set_parts = [
-            "n.id = coalesce(n.id, randomUUID())",
+            "n.id = coalesce(n.id, $_beat_id, randomUUID())",
             "n.created_at = coalesce(n.created_at, datetime())",
         ]
         for key in params:
-            if key != "script_body":
+            if key != "_beat_id":
                 set_parts.append(f"n.{key} = ${key}")
 
-        query = (
-            f"MERGE (n:NarrativeBeat {{script_body: $script_body}}) "
-            f"SET {', '.join(set_parts)} "
-            f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
-        )
+        # MERGE on id (never null): when $_beat_id is provided this upserts the
+        # same beat idempotently; when null, apoc-free `coalesce` in the pattern
+        # is not possible, so route null ids through CREATE to guarantee a fresh
+        # node, and provided ids through MERGE for idempotent re-upload.
+        if beat_id is None:
+            query = (
+                f"CREATE (n:NarrativeBeat) "
+                f"SET {', '.join(set_parts)} "
+                f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+            )
+        else:
+            query = (
+                f"MERGE (n:NarrativeBeat {{id: $_beat_id}}) "
+                f"SET {', '.join(set_parts)} "
+                f"RETURN n.id AS id, labels(n) AS labels, properties(n) AS props"
+            )
     elif label == "Area":
         # MERGE on compound key (name, area_type, city_name) for idempotent Area creation
         lat = params.pop("centroid_lat")
@@ -204,6 +252,22 @@ def update_node(
         return get_node(session, label, node_id)
 
     _validate_property_keys(properties)
+
+    # Defect 1: never rewrite identity/merge-key properties. A PUT with {"id":X}
+    # would orphan the node from every id-keyed query and edge; {"name"}/
+    # {"city_name"}/{"area_type"} would fork the idempotent MERGE key. Reject
+    # the whole update (422) if it touches any protected key.
+    protected = protected_node_keys(label)
+    offending = sorted(k for k in properties if k in protected)
+    if offending:
+        _raise_422(
+            f"cannot update protected {label} propert"
+            f"{'y' if len(offending) == 1 else 'ies'} "
+            f"{', '.join(repr(k) for k in offending)}: these identify the node "
+            f"or form its merge key and are immutable",
+            loc=("body", "properties", offending[0]),
+        )
+
     properties = _encode_complex_props(
         dict(properties)
     )  # Don't mutate caller's dict + JSON-encode list[dict]
@@ -211,19 +275,38 @@ def update_node(
     params: dict[str, Any] = {"node_id": node_id}
     set_parts: list[str] = []
 
-    # POI: convert latitude/longitude to spatial point
+    # POI: convert latitude/longitude to spatial point.
+    # Defect 9: coordinates must be supplied as a PAIR — a lone latitude (or
+    # longitude) previously produced an empty SET clause -> CypherSyntaxError
+    # (500). Reject partial coordinates with a clean 422.
     if label == "POI" and ("latitude" in properties or "longitude" in properties):
         lat = properties.pop("latitude", None)
         lng = properties.pop("longitude", None)
+        if (lat is None) != (lng is None):
+            _raise_422(
+                "latitude and longitude must be updated together (supply both or "
+                "neither)",
+                loc=("body", "properties", "latitude" if lat is not None else "longitude"),
+            )
         if lat is not None and lng is not None:
             set_parts.append("n.location = point({latitude: $lat, longitude: $lng, srid: 4326})")
             params["lat"] = lat
             params["lng"] = lng
 
-    # Area: convert centroid_lat/centroid_lng to spatial point
+    # Area: convert centroid_lat/centroid_lng to spatial point (same pair rule).
     if label == "Area" and ("centroid_lat" in properties or "centroid_lng" in properties):
         lat = properties.pop("centroid_lat", None)
         lng = properties.pop("centroid_lng", None)
+        if (lat is None) != (lng is None):
+            _raise_422(
+                "centroid_lat and centroid_lng must be updated together (supply both "
+                "or neither)",
+                loc=(
+                    "body",
+                    "properties",
+                    "centroid_lat" if lat is not None else "centroid_lng",
+                ),
+            )
         if lat is not None and lng is not None:
             set_parts.append("n.centroid = point({latitude: $lat, longitude: $lng, srid: 4326})")
             params["lat"] = lat
@@ -232,6 +315,14 @@ def update_node(
     for key, val in properties.items():
         set_parts.append(f"n.{key} = ${key}")
         params[key] = val
+
+    # Defect 9: never emit an empty SET clause (invalid Cypher -> 500). This can
+    # happen if the only supplied properties were popped above (e.g. a payload
+    # of solely {"latitude","longitude"} whose pair became the point SET is
+    # fine, but a payload that reduces to nothing must be a no-op). If nothing
+    # remains to set, return the node unchanged.
+    if not set_parts:
+        return get_node(session, label, node_id)
 
     query = (
         f"MATCH (n:{label} {{id: $node_id}}) "

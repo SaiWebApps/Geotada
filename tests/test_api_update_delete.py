@@ -165,18 +165,29 @@ class TestFullNodeLifecycle:
         assert created["properties"]["name"] == "Lifecycle POI"
         assert abs(created["properties"]["location"]["lat"] - 48.8584) < 0.001
 
-        # Update name + coordinates
+        # `name` is a protected merge-key property (defect 1) — updating it is
+        # rejected (422), keeping the node's identity/merge key stable.
+        rejected = client.put(
+            f"/api/v1/nodes/POI/{poi_id}",
+            json={"properties": {"name": "Renamed POI"}},
+        )
+        assert rejected.status_code == 422
+        assert client.get(f"/api/v1/nodes/POI/{poi_id}").json()["properties"]["name"] == (
+            "Lifecycle POI"
+        )
+
+        # Update a mutable property + coordinates (supplied as a pair).
         updated = client.put(
             f"/api/v1/nodes/POI/{poi_id}",
             json={
                 "properties": {
-                    "name": "Renamed POI",
+                    "short_description": "A relocated lifecycle POI.",
                     "latitude": 51.5074,
                     "longitude": -0.1278,
                 },
             },
         ).json()
-        assert updated["properties"]["name"] == "Renamed POI"
+        assert updated["properties"]["short_description"] == "A relocated lifecycle POI."
         assert abs(updated["properties"]["location"]["lat"] - 51.5074) < 0.001
 
         # Delete

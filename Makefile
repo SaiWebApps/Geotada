@@ -31,6 +31,7 @@
 	api api-test run workbench dashboard \
 	flutter-web flutter-ios flutter-device flutter-pub-get flutter-clean \
 	setup verify clean-db upload-paris backfill-provenance backfill-poi-role \
+	backfill-name-key \
 	wiki-fetch gen-within-edges tour-build measure-planned-audio measure-governor \
 	flutter-ipa testflight render-status \
 	setup-audio aura-resume-proof flutter-test flutter-test-diag clean
@@ -407,6 +408,9 @@ backfill-provenance: ## Backfill ONLY source_passage/source_chunk_slug/key_claim
 
 backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. Dry-run by default; ARGS="--apply" to write; ARGS="--apply --neo4j" to also update the dev graph.
 	uv run python scripts/backfill_poi_role.py $(ARGS)
+
+backfill-name-key: ## Backfill name_key on POIs missing it (dedup key for defect #3). Dry-run by default; ARGS="--apply" to write; ARGS="--apply --allow-cloud" for a deliberate cloud run.
+	uv run python scripts/backfill_name_key.py $(ARGS)
 
 wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
 	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)

@@ -7,11 +7,18 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from neo4j import Driver
 
+from src.api.models.nodes import canonical_name_key
 from src.connection import get_database
 
+# MERGE stays on (name, city_name) to match nodes seeded before name_key existed,
+# but we ALSO SET the canonical name_key (defect 3) so seeded POIs carry the same
+# dedup key as create_node writes — a later create_node/upload MERGEs onto them
+# instead of forking a duplicate. name_key is derived from name via the single
+# source of truth (canonical_name_key), not stored in the row.
 _MERGE_POI = """
 MERGE (p:POI {name: $name, city_name: $city_name})
 SET p.id             = coalesce(p.id, randomUUID()),
+    p.name_key       = $name_key,
     p.short_description = $short_description,
     p.location       = point({latitude: $lat, longitude: $lng, srid: 4326}),
     p.importance_tier = $importance_tier,
@@ -58,7 +65,9 @@ PARIS_POIS: list[dict] = [
 
 
 def _create_poi(tx, poi: dict) -> None:
-    tx.run(_MERGE_POI, **poi)
+    # Derive name_key here (not stored in PARIS_POIS) so it always matches the
+    # canonical form of whatever `name` is seeded.
+    tx.run(_MERGE_POI, name_key=canonical_name_key(poi["name"]), **poi)
 
 
 def seed_pois(driver: Driver) -> int:

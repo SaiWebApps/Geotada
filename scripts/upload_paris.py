@@ -28,6 +28,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlparse
 
+from src.api.models.nodes import canonical_name_key
 from src.connection import abort_on_connection_error, create_driver, get_database
 from src.schema.constraints import apply_all
 from src.seed.lenses import seed_lenses
@@ -147,6 +148,9 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
 
         params.append({
             "name": poi["name"],
+            # Canonical dedup key (defect 3), computed identically to create_node
+            # so a later API create/edit MERGEs onto this node instead of forking.
+            "name_key": canonical_name_key(poi["name"]),
             "city_name": "paris",
             "short_description": poi.get("short_description", ""),
             "lat": float(lat),
@@ -163,7 +167,8 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
         UNWIND $pois AS poi
         MERGE (p:POI {name: poi.name, city_name: poi.city_name})
         ON CREATE SET p.id = randomUUID()
-        SET p.short_description   = poi.short_description,
+        SET p.name_key            = poi.name_key,
+            p.short_description   = poi.short_description,
             p.location            = point({latitude: poi.lat, longitude: poi.lon, srid: 4326}),
             p.importance_tier     = poi.importance_tier,
             p.trigger_radius      = poi.trigger_radius,

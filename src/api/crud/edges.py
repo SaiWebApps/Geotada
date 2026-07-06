@@ -5,14 +5,27 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING, Any
 
+from fastapi.exceptions import RequestValidationError
+
 from src.api.models.edges import RelType
-from src.api.models.nodes import NodeLabel
+from src.api.models.nodes import NodeLabel, protected_edge_keys
 from src.api.utils import serialize_neo4j_props
 
 if TYPE_CHECKING:
     from neo4j import Session
 
 _VALID_PROPERTY_NAME = re.compile(r"^[a-zA-Z_][a-zA-Z0-9_]*$")
+
+
+def _raise_422(msg: str, loc: tuple[str, ...]) -> None:
+    """Raise a validation error FastAPI's built-in handler renders as 422.
+
+    See src/api/crud/nodes.py:_raise_422 for why RequestValidationError (not a
+    plain ValueError, which would surface as a 500) is used here.
+    """
+    raise RequestValidationError(
+        [{"type": "value_error", "loc": loc, "msg": msg, "input": None}]
+    )
 
 
 def _validate_rel_type(rel_type: str) -> None:
@@ -155,6 +168,20 @@ def update_edge(
         return get_edge(session, rel_type, edge_id)
 
     _validate_property_keys(properties)
+
+    # Defect 1: r.id / r.created_at identify the edge and must never be rewritten
+    # by a partial update (overwriting r.id orphans the edge from every id-keyed
+    # lookup). Reject the update (422) if it touches a protected key.
+    protected = protected_edge_keys()
+    offending = sorted(k for k in properties if k in protected)
+    if offending:
+        _raise_422(
+            f"cannot update protected edge propert"
+            f"{'y' if len(offending) == 1 else 'ies'} "
+            f"{', '.join(repr(k) for k in offending)}: these identify the edge and "
+            f"are immutable",
+            loc=("body", "properties", offending[0]),
+        )
 
     params: dict[str, Any] = {"edge_id": edge_id}
     set_parts: list[str] = []

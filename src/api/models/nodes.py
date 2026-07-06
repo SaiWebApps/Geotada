@@ -22,6 +22,47 @@ def _normalized_script_body_hash(script_body: str) -> str:
     return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
 
 
+def canonical_name_key(name: str) -> str:
+    """Derive the canonical dedup key for a POI `name` (defect 3).
+
+    Collapses internal whitespace runs, trims, and lowercases so casing and
+    whitespace variants ('Notre-Dame', 'notre-dame', 'Notre-Dame ') map to a
+    single MERGE key while `n.name` retains its display casing. Mirrors the
+    same normalization applied to `city_name` at the POI ingestion choke point.
+    """
+    return re.sub(r"\s+", " ", name.strip()).lower()
+
+
+# Properties that identify a node/edge or form its MERGE key must never be
+# rewritten by a partial update — doing so orphans the node from every
+# id-keyed query/edge (id/created_at) or forks the idempotent MERGE key
+# (name/name_key/city_name/area_type/script_body). update_node/update_edge
+# reject any update touching these (defect 1).
+_UNIVERSAL_PROTECTED_KEYS: frozenset[str] = frozenset({"id", "created_at"})
+
+_LABEL_MERGE_KEY_FIELDS: dict[str, frozenset[str]] = {
+    # POI MERGE key is (name_key, city_name); `name` is the display source of
+    # name_key so it is protected too (defect 3 canonicalization).
+    "POI": frozenset({"name", "name_key", "city_name"}),
+    # Area MERGE key is (name, area_type, city_name).
+    "Area": frozenset({"name", "area_type", "city_name"}),
+    # NarrativeBeat is created by id (defect 4); id is already universal.
+    "NarrativeBeat": frozenset(),
+}
+
+
+def protected_node_keys(label: str) -> frozenset[str]:
+    """Return the set of property names that update_node must refuse for `label`."""
+    return _UNIVERSAL_PROTECTED_KEYS | _LABEL_MERGE_KEY_FIELDS.get(label, frozenset())
+
+
+# Edge identity: only r.id / r.created_at are protected (MERGE keys for edges
+# are the endpoint nodes, not stored properties).
+def protected_edge_keys() -> frozenset[str]:
+    """Return the set of property names that update_edge must refuse."""
+    return _UNIVERSAL_PROTECTED_KEYS
+
+
 class NodeLabel(StrEnum):
     """Valid node labels from Schema_v3."""
 
