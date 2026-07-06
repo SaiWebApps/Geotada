@@ -2288,6 +2288,72 @@ class TestDetailViewAndEditing:
         finally:
             page.unroute("**/trips/preview")
 
+    def test_tour_preview_deeper_dive_badge_on_extras_stop(self, browser_page):
+        """KE10: a dense Île-de-la-Cité tour (Notre-Dame) whose budget capped out
+        extra beats surfaces a "Keep exploring" badge on the stop that has extras
+        (has_deeper_dive=True) and NOT on the stop without extras. Proves the KE9
+        preview signal drives a visible workbench badge in a real browser.
+
+        /trips/preview is mocked (the has_deeper_dive wiring is unit-tested in
+        tests/test_trip_preview_vignettes.py); this test asserts the render."""
+        page, _seed_data, _reporter = browser_page
+        page.route(
+            "**/trips/preview",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(
+                    {
+                        "stops": [
+                            # Notre-Dame: beat-dense, budget capped extras out.
+                            {"sort_order": 1, "poi_name": "Notre-Dame", "minutes": 8,
+                             "lat": 48.8530, "lng": 2.3499, "narration": "The cathedral rises.",
+                             "spotlight": 5.0, "band": "dwell", "has_deeper_dive": True},
+                            # Sainte-Chapelle: no extras -> no badge.
+                            {"sort_order": 2, "poi_name": "Sainte-Chapelle", "minutes": 5,
+                             "lat": 48.8554, "lng": 2.3450, "narration": "Stained glass glows.",
+                             "spotlight": 3.6, "band": "dwell", "has_deeper_dive": False},
+                        ],
+                        "spine_area": "Île de la Cité",
+                        "total_audio_min": 13,
+                    }
+                ),
+            ),
+        )
+        try:
+            page.locator("#tourPreviewBtn").click()
+            page.wait_for_timeout(300)
+            page.locator("#tourStart").fill("48.8566,2.3522")
+            with page.expect_response(lambda r: "/trips/preview" in r.url):
+                page.locator("#tourGenerateBtn").click()
+            page.wait_for_timeout(300)
+
+            stops = page.locator("#tourStops .tour-stop")
+            assert stops.count() == 2, f"expected 2 rendered stops, got {stops.count()}"
+
+            # Exactly one "Keep exploring" badge, on the extras stop.
+            badges = page.locator("#tourStops .tour-deeper-dive-tag")
+            assert badges.count() == 1, (
+                f"expected exactly 1 deeper-dive badge (Notre-Dame), got {badges.count()}"
+            )
+            assert badges.first.is_visible(), "the deeper-dive badge should be visible"
+            assert "Keep exploring" in (badges.first.text_content() or ""), (
+                "the badge should read 'Keep exploring'"
+            )
+
+            # The extras stop (Notre-Dame) carries the badge; the other does not.
+            notre_dame = stops.nth(0)
+            sainte_chapelle = stops.nth(1)
+            assert notre_dame.locator(".tour-deeper-dive-tag").count() == 1, (
+                "the has_deeper_dive stop should carry the badge"
+            )
+            assert sainte_chapelle.locator(".tour-deeper-dive-tag").count() == 0, (
+                "a stop without extras must not carry the badge"
+            )
+            _take_screenshot(page, "ke10-deeper-dive-badge")
+        finally:
+            page.unroute("**/trips/preview")
+
     def test_tour_preview_yellow_tourability_renders_warning_banner(self, browser_page):
         """Phase 6 contract surfaced (hostile-panel finding 2026-07-02): a preview
         whose payload carries a YELLOW tourability assessment renders a visible
@@ -2943,9 +3009,13 @@ class TestUploadFlow:
             try:
                 poi_name = "UI Test \u2014 Quiet Garden Corner"
                 encoded = urllib.parse.quote(poi_name, safe="")
-                # city_name is a required query param on this endpoint; the workbench
-                # uploads with cityName="Paris" (Nominatim display_name.split(",")[0]).
-                city_q = urllib.parse.quote("Paris", safe="")
+                # city_name is a required query param on this endpoint and is the
+                # EXACT stored key. POI.city_name is canonically lowercased at
+                # ingestion (src/api/crud/nodes.py, 2026-07-03), and the workbench
+                # picker keys off that same lowercase value, so the stored key is
+                # "paris" — query it with the canonical case or the exact-match
+                # beat fetch returns zero beats.
+                city_q = urllib.parse.quote("paris", safe="")
                 api_resp = _api_get(f"/graph/poi/{encoded}/beats?city_name={city_q}")
                 # API returns {"poi_name": "...", "beats": [...]} — extract beats list
                 if isinstance(api_resp, dict) and "beats" in api_resp:

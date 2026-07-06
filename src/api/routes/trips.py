@@ -560,7 +560,9 @@ def compose_trip(
     )
 
 
-def _preview_stops(script, route: Route, vignette_beats, snapshot) -> list[TripPreviewStop]:
+def _preview_stops(
+    script, route: Route, vignette_beats, snapshot, overflow_by_poi
+) -> list[TripPreviewStop]:
     """Interleave walk-past vignette stops into the preview stop list.
 
     The vignette on leg ``i`` (the walk INTO dwell stop ``i``) sits right
@@ -568,6 +570,11 @@ def _preview_stops(script, route: Route, vignette_beats, snapshot) -> list[TripP
     card carries the same one-liner the leg narration voices (first sentence
     of its chosen beat) with minutes=0; the dwell stop's narration already
     contains that line inside its leg text.
+
+    KE9: a DWELL stop gets ``has_deeper_dive=True`` iff its poi_id is a key of
+    ``overflow_by_poi`` with a non-empty overflow — the C9 governor capped some
+    of that stop's beats out into the "keep exploring here" extras. Vignette
+    (walk-past) stops never have deeper-dive. Pure and deterministic.
     """
     from src.tour.selection import spotlight
 
@@ -607,6 +614,7 @@ def _preview_stops(script, route: Route, vignette_beats, snapshot) -> list[TripP
                 minutes=round(sp.dwell_seconds / 60),
                 band="dwell",
                 spotlight=0.0,
+                has_deeper_dive=bool(overflow_by_poi.get(sp.id)),
             )
         )
     return out
@@ -690,7 +698,7 @@ def preview_trip(
         tour_input,
     )
 
-    stops = _preview_stops(script, route, vignette_beats, snapshot)
+    stops = _preview_stops(script, route, vignette_beats, snapshot, overflow_by_poi)
     return TripPreviewResponse(
         spine_area=route.spine_area,
         total_audio_min=round(script.total_audio_seconds / 60),

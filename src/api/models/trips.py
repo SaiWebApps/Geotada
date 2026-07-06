@@ -196,6 +196,13 @@ class TripPreviewStop(BaseModel):
     # spotlight effect into selection.
     band: Literal["dwell", "vignette"] = "dwell"
     spotlight: float = 0.0
+    # KE9: this dwell stop has "keep exploring here" EXTRAS — beats the tour's
+    # time budget capped out (poi_id present in overflow_by_poi with non-empty
+    # overflow). A bool flag, not the extra_beat_ids list: the workbench only
+    # needs to render a badge, and the preview must not leak full beat-id lists.
+    # Always False for vignette (walk-past) stops. Default False is
+    # behavior-preserving.
+    has_deeper_dive: bool = False
 
 
 class TripPreviewTourability(BaseModel):

@@ -77,6 +77,7 @@ def test_vignette_interleaves_before_its_leg_destination():
         _route({1: (vpoi,)}),
         {1: (beat,)},
         _snapshot(vpoi, beat),
+        {},
     )
     assert [s.band for s in stops] == ["dwell", "vignette", "dwell"]
     assert [s.sort_order for s in stops] == [1, 2, 3]
@@ -92,7 +93,7 @@ def test_vignette_interleaves_before_its_leg_destination():
 
 def test_no_vignettes_is_todays_shape():
     stops = _preview_stops(
-        _script_two_stops(), _route({}), {}, _snapshot(_poi("vx"), BeatRef(id="b", poi_id="vx"))
+        _script_two_stops(), _route({}), {}, _snapshot(_poi("vx"), BeatRef(id="b", poi_id="vx")), {}
     )
     assert [s.band for s in stops] == ["dwell", "dwell"]
     assert [s.sort_order for s in stops] == [1, 2]
@@ -104,6 +105,41 @@ def test_unvoiceable_vignette_is_not_shown():
     vpoi = _poi("v1")
     beat = BeatRef(id="vb1", poi_id="v1")  # no script_body
     stops = _preview_stops(
-        _script_two_stops(), _route({1: (vpoi,)}), {}, _snapshot(vpoi, beat)
+        _script_two_stops(), _route({1: (vpoi,)}), {}, _snapshot(vpoi, beat), {}
     )
     assert [s.band for s in stops] == ["dwell", "dwell"]
+
+
+def test_deeper_dive_flag_reflects_overflow_by_poi():
+    """KE9: a dwell stop gets has_deeper_dive=True iff its poi_id has non-empty
+    overflow in overflow_by_poi; other dwell stops are False. Vignette stops are
+    always False (walk-past has no 'keep exploring here' extras)."""
+    vpoi = _poi("v1")
+    beat = BeatRef(id="vb1", poi_id="v1",
+                   script_body="A tiny plaque marks the spot. More detail here.")
+    # d0 capped some beats out (extras exist); d1 did not. The vignette sits on
+    # leg 1, between the two dwell stops.
+    stops = _preview_stops(
+        _script_two_stops(),
+        _route({1: (vpoi,)}),
+        {1: (beat,)},
+        _snapshot(vpoi, beat),
+        {"d0": ("extra-b1", "extra-b2")},
+    )
+    assert [s.band for s in stops] == ["dwell", "vignette", "dwell"]
+    # d0: overflow present -> deeper-dive badge.
+    assert stops[0].has_deeper_dive is True
+    # The interleaved vignette never carries the flag.
+    assert stops[1].has_deeper_dive is False
+    # d1: no overflow -> no badge.
+    assert stops[2].has_deeper_dive is False
+
+
+def test_deeper_dive_flag_false_when_no_overflow():
+    """KE9: with an empty overflow_by_poi every stop stays has_deeper_dive=False —
+    behavior-preserving default."""
+    stops = _preview_stops(
+        _script_two_stops(), _route({}), {}, _snapshot(_poi("vx"), BeatRef(id="b", poi_id="vx")), {}
+    )
+    assert [s.band for s in stops] == ["dwell", "dwell"]
+    assert all(s.has_deeper_dive is False for s in stops)

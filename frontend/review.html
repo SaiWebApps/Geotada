@@ -196,6 +196,15 @@
   }
   .tour-stop--vignette { border-left: 3px dashed #3b82f6; }
   .tour-stop--vignette .meta { font-style: italic; }
+  /* KE9: "keep exploring here" — a dwell stop whose budget capped out extra
+     beats. A small chip on the stop title, matching the vignette-tag idiom but
+     in the accent (amber) token so it reads as an opt-in, not a walk-past. */
+  .tour-deeper-dive-tag {
+    display: inline-block; margin-left: 6px; padding: 0 6px;
+    border: 1px solid var(--accent); border-radius: 9px; color: var(--accent);
+    font-size: 0.68rem; font-weight: 600; vertical-align: middle;
+    text-transform: uppercase; letter-spacing: 0.04em; background: var(--accent-dim);
+  }
   /* Click-to-set start/destination pins (Step B.6): A = start (green), B = destination (red). */
   .tour-point-pin span {
     display: flex; align-items: center; justify-content: center;
@@ -1062,7 +1071,16 @@
   'use strict';
 
   // ── State ──
+  // cityName is the CANONICAL key: lowercased/stripped to match POI.city_name,
+  // which ingestion normalizes the same way (src/api/crud/nodes.py, 2026-07-03).
+  // Every graph query (beat fetch, worklist merge, MERGE payload) keys off it, so
+  // a casing variant ('Paris' vs 'paris') must never leak into it or beat fetches
+  // silently empty. cityDisplay is a cosmetic Title-Cased label for the header —
+  // display only, never a query key.
   let cityName = '';
+  let cityDisplay = '';
+  // Title-Case a canonical city key for human-facing display ('paris' -> 'Paris').
+  const titleCaseCity = (s) => (s || '').replace(/\b\w/g, (ch) => ch.toUpperCase());
   let cityCentre = null;   // { lat, lng }
   const GEOFENCE_KM = 50;
   let poiData = [];         // in-session memory
@@ -1283,7 +1301,9 @@
         const opt = document.createElement('option');
         opt.value = String(i);  // index into cityCatalogue
         const n = c.poi_count === 1 ? '1 POI' : `${c.poi_count} POIs`;
-        opt.textContent = `${c.city_name} — ${n}`;
+        // Display a human-friendly Title-Cased label; the canonical city_name key
+        // (lowercased at ingestion, 2026-07-03) is still looked up via the index.
+        opt.textContent = `${titleCaseCity(c.city_name)} — ${n}`;
         citySelect.appendChild(opt);
       });
     }
@@ -1306,8 +1326,12 @@
   // and pull lenses + POIs for the chosen (exact) city_name.
   async function activateCity(name, centre) {
     cityCentre = centre;
-    cityName = name;
-    cityLabel.textContent = `${cityName} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
+    // Canonicalize the KEY to match POI.city_name (lowercased at ingestion) so
+    // the picker path AND the free-text/Nominatim path both key beat fetches on
+    // the same value ('paris'). The header shows a Title-Cased display label.
+    cityName = (name || '').trim().toLowerCase();
+    cityDisplay = titleCaseCity(cityName);
+    cityLabel.textContent = `${cityDisplay} (${cityCentre.lat.toFixed(4)}, ${cityCentre.lng.toFixed(4)}) — 50 km geofence`;
     cityOverlay.classList.add('hidden');
     try {
       citySubmitBtn.textContent = 'Connecting to database…';
@@ -2404,7 +2428,7 @@
           ${lngWarning ? `<div class="field-warning">${lngWarning}</div>` : ''}
         </div>
       </div>
-      ${outsideGeofence ? `<div class="field-group"><div class="field-warn-yellow">\u26A0 Coordinates are outside the ${escHtml(cityName)} geofence (50 km radius).</div></div>` : ''}
+      ${outsideGeofence ? `<div class="field-group"><div class="field-warn-yellow">\u26A0 Coordinates are outside the ${escHtml(cityDisplay)} geofence (50 km radius).</div></div>` : ''}
       <div class="map-container">
         <div id="map"></div>
         ${!validCoords && (poi.latitude !== undefined && poi.longitude !== undefined) ? '<div class="map-warning">Invalid coordinates — pin removed</div>' : ''}
@@ -2793,7 +2817,7 @@
     if (outside) {
       const geoDiv = document.createElement('div');
       geoDiv.className = 'field-group';
-      geoDiv.innerHTML = `<div class="field-warn-yellow">\u26A0 Coordinates are outside the ${escHtml(cityName)} geofence (50 km radius).</div>`;
+      geoDiv.innerHTML = `<div class="field-warn-yellow">\u26A0 Coordinates are outside the ${escHtml(cityDisplay)} geofence (50 km radius).</div>`;
       detailBody.querySelector('.map-container').insertAdjacentElement('beforebegin', geoDiv);
     }
 
@@ -3300,9 +3324,13 @@
       const spot = (typeof s.spotlight === 'number') ? ` · spotlight ${s.spotlight.toFixed(2)}` : '';
       const bandTag = (s.band && s.band !== 'dwell')
         ? ` <span class="tour-vignette-tag">${escHtml(s.band)}</span>` : '';
+      // KE9: a dwell stop the budget capped out beats on carries "keep exploring
+      // here" extras — flag it with a chip (never on vignette/walk-past stops).
+      const deeperDiveTag = (!isVignette && s.has_deeper_dive)
+        ? ` <span class="tour-deeper-dive-tag" title="This stop has extra beats — keep exploring here">Keep exploring</span>` : '';
       const dwellText = isVignette ? 'walk past · 0 min' : `~${s.minutes} min here`;
       el.innerHTML = `
-        <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}${bandTag}</h4>
+        <h4>Stop ${s.sort_order} · ${escHtml(s.poi_name)}${bandTag}${deeperDiveTag}</h4>
         <div class="meta">${dwellText}${spot}</div>
         <div class="script-preview">${escHtml(s.narration || '')}</div>
         <div class="tts-row">
