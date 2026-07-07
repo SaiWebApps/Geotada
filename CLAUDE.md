@@ -37,11 +37,48 @@ code reading and unit tests alone are not sufficient.
 review suite — independent researcher + hostile judge per item — so the
 human reviews verdicts with evidence, never raw candidates.
 
-### Agent Perspectives (superseded by the Judge Protocol above)
+### Agentic Team & Rigor Tiers (the full separation-of-duties team)
 
-Prior guidance referenced `/agent-chat architect|reviewer|implementer`; that
-skill does not exist in this harness. Use the real mechanisms instead:
-`.claude/agents/judge.md` and `.claude/agents/skeptic.md` via the Agent tool.
+The Judge Protocol above is the BACK half (QA/Skeptic/Judge — stops us shipping
+a broken thing). The full team adds a FRONT half (Product Owner/Planner — stops
+us confidently building the WRONG thing) and sizes rigor to the change so
+quality never means slow. Entry point: `/team <task>` (`.claude/commands/team.md`).
+No one blesses their own work.
+
+Roles (each = a real agent or mechanism):
+- **Product Owner** (`.claude/agents/product-owner.md`) — request → smallest
+  slice + TESTABLE acceptance criteria. Front gate for Tier 2+.
+- **Planner** — the built-in `Plan` agent, or a parallel judge-panel of N
+  approaches scored + synthesized from the winner.
+- **Developer** — general-purpose agent, ONE per file (parallel builders never
+  collide; `isolation:'worktree'` only if they'd otherwise conflict).
+- **QA** (`.claude/agents/qa.md`) — the undo-test (mutation: revert the fix →
+  the test must go RED) + `make lint`/`make test` + golden/tour-grade + real
+  workbench/emulator screenshots. Never accepts a green claim on faith.
+- **Skeptics** (`.claude/agents/skeptic.md`) — 2-4 hostile reviewers on
+  DIFFERENT models; kill a finding if a majority refute.
+- **Judge** (`.claude/agents/judge.md`) — PROCEED / PROVE-FIRST / STOP before
+  every commit / "done" / infra action.
+- **Acceptance/User** (`.claude/agents/acceptance.md`) — build the real tour /
+  open the real screen; is it actually GOOD for the tourist/editor, not just
+  correct?
+- **Manager** — the orchestrator (a Workflow script and/or the human gate);
+  keeps roles in sync, re-delegates on conflict, loops to consensus.
+
+Rigor tiers — run the SMALLEST pipeline that fits; when unsure, go up one:
+- **Tier 0** (docs/mechanical): Developer → Gate.
+- **Tier 1** (bugfix/small change): +Planner(light) +QA(undo-test) +Judge.
+- **Tier 2** (feature / user-facing / tour-engine): +Product Owner +Skeptic
+  panel +Acceptance.
+- **Tier 3** (milestone / infra / prod / data / deploy): full + real-device or
+  -browser proof + human sign-off.
+
+Speed comes from (a) right-sizing the tier and (b) running independent roles in
+PARALLEL (fan out builders / skeptic panels / planner options), never serial.
+For open-ended "find + fix whatever's wrong", use the proactive-audit loop
+(`Skill(proactive-audit)`): it finds → adversarially verifies → fixes with a
+test until 2 dry rounds, and hands you the batch to gate + commit (it never
+commits itself).
 
 ---
 
