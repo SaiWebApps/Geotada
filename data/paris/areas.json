@@ -2,154 +2,154 @@
   {
     "name": "Paris",
     "area_type": "city",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 7444,
     "parent_area": null
   },
   {
     "name": "1st Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 20727,
     "parent_area": "Paris"
   },
   {
     "name": "2nd Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9542,
     "parent_area": "Paris"
   },
   {
     "name": "3rd Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 20742,
     "parent_area": "Paris"
   },
   {
     "name": "4th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9597,
     "parent_area": "Paris"
   },
   {
     "name": "5th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 20873,
     "parent_area": "Paris"
   },
   {
     "name": "6th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9527,
     "parent_area": "Paris"
   },
   {
     "name": "7th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9521,
     "parent_area": "Paris"
   },
   {
     "name": "8th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 20872,
     "parent_area": "Paris"
   },
   {
     "name": "9th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9537,
     "parent_area": "Paris"
   },
   {
     "name": "10th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9528,
     "parent_area": "Paris"
   },
   {
     "name": "11th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9533,
     "parent_area": "Paris"
   },
   {
     "name": "12th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9525,
     "parent_area": "Paris"
   },
   {
     "name": "13th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9530,
     "parent_area": "Paris"
   },
   {
     "name": "14th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9522,
     "parent_area": "Paris"
   },
   {
     "name": "15th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9520,
     "parent_area": "Paris"
   },
   {
     "name": "16th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9517,
     "parent_area": "Paris"
   },
   {
     "name": "17th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9519,
     "parent_area": "Paris"
   },
   {
     "name": "18th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9531,
     "parent_area": "Paris"
   },
   {
     "name": "19th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9552,
     "parent_area": "Paris"
   },
   {
     "name": "20th Arrondissement",
     "area_type": "district",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": 9529,
     "parent_area": "Paris"
   },
   {
     "name": "Île de la Cité",
     "area_type": "island",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -207,7 +207,7 @@
   {
     "name": "Île Saint-Louis",
     "area_type": "island",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -257,7 +257,7 @@
   {
     "name": "Les Halles",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -287,7 +287,7 @@
   {
     "name": "Le Marais",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -337,7 +337,7 @@
   {
     "name": "Latin Quarter",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -375,7 +375,7 @@
   {
     "name": "Saint-Germain-des-Prés",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -405,7 +405,7 @@
   {
     "name": "Champs-Élysées",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -455,7 +455,7 @@
   {
     "name": "Madeleine-Concorde",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -501,7 +501,7 @@
   {
     "name": "Plaine Monceau",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -539,7 +539,7 @@
   {
     "name": "Opéra-Garnier",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -581,7 +581,7 @@
   {
     "name": "Trocadéro-Passy",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -623,7 +623,7 @@
   {
     "name": "Bastille",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
@@ -661,7 +661,7 @@
   {
     "name": "Montmartre",
     "area_type": "neighborhood",
-    "city_name": "Paris",
+    "city_name": "paris",
     "osm_relation_id": null,
     "source": "manual",
     "manual_boundary": [
