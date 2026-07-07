@@ -95,7 +95,11 @@ def _load_signing_secret(
             max_attempts,
             len(value),
         )
-        do_sleep(backoffs[min(attempt - 1, len(backoffs) - 1)])
+        # `backoffs` is an injectable kwarg; guard the empty tuple so a misuse
+        # degrades to zero-delay retries + the normal fail-closed raise, never an
+        # IndexError. The shipped default (non-empty) path is unchanged.
+        delay = backoffs[min(attempt - 1, len(backoffs) - 1)] if backoffs else 0.0
+        do_sleep(delay)
         value = os.getenv(env_var, "")
         if len(value) >= _MIN_SECRET_LEN:
             return value

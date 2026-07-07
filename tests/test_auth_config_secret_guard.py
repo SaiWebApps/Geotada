@@ -187,3 +187,18 @@ class TestSigningSecretStartupRetry:
             assert "JWT_SECRET_KEY" in msg
             assert "attempt" in msg.lower()
             assert config._DEV_PLACEHOLDER_SECRET not in msg
+
+    def test_empty_backoffs_still_fails_closed_not_indexerror(self, monkeypatch):
+        """An empty backoffs tuple must fail closed with the normal RuntimeError,
+        never leak an IndexError. `backoffs` is an injectable kwarg, so an empty
+        tuple is a reachable misuse; it must degrade to zero-delay retries that
+        still abort the boot, not crash with a confusing index error.
+        """
+        monkeypatch.delitem(sys.modules, "pytest", raising=False)
+        monkeypatch.delenv("JWT_SECRET_KEY", raising=False)
+        monkeypatch.delenv("ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS", raising=False)
+
+        with pytest.raises(RuntimeError, match="trivially-forgeable"):
+            config._load_signing_secret(
+                "JWT_SECRET_KEY", backoffs=(), sleep=lambda _: None
+            )
