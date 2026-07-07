@@ -28,7 +28,7 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	help doctor bootstrap all \
 	sync sync-apple requirements env use-local use-cloud which-db \
 	lint format lint-fix flutter-analyze \
-	test test-unit test-file test-file-local test-local test-cloud \
+	test test-unit test-file test-file-local test-local test-cloud db-parity \
 	test-integration test-functional test-live test-auth test-onboarding \
 	test-workbench test-golden golden-probe golden-diff tour-grade \
 	tour-audio-gate tour-compose-gate test-all audit \
@@ -38,7 +38,7 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	valhalla-up valhalla-down valhalla-status valhalla-build-tiles \
 	api api-test run workbench dashboard \
 	flutter-web flutter-ios flutter-device flutter-pub-get flutter-clean \
-	setup verify clean-db upload-paris upload backfill-provenance backfill-poi-role \
+	setup verify clean-db upload-paris upload deploy deploy-cloud backfill-provenance backfill-poi-role \
 	backfill-name-key \
 	survey-area-candidates fix-area-radii upload-areas fetch-boundary geocode-pois \
 	wiki-fetch gen-within-edges tour-build measure-planned-audio measure-governor \
@@ -204,9 +204,12 @@ test-local: db-up db-test-up ## Run tests against local Neo4j (Docker)
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/ -v
 
-test-cloud: ## Read-only connectivity smoke against Aura (counts only). NEVER wipes — Aura is the single persistent store; the destructive suite runs only on local Docker (test-local).
-	@echo "  → Read-only smoke against Aura (no writes, no wipe)"
-	set -a && . .env.cloud && set +a && uv run python -c "from src.connection import create_driver, get_database; d=create_driver(); s=d.session(database=get_database()); n=s.run('MATCH (n) RETURN count(n) AS c').single()['c']; labels=sorted(r['label'] for r in s.run('CALL db.labels() YIELD label RETURN label')); print(f'Aura reachable - {n} nodes; labels: {labels}'); s.close(); d.close()"
+db-parity: ## Check the ACTIVE .env graph against the repo source of truth; non-zero exit on drift. Usage: make db-parity [CITY=new_york]
+	uv run python -m scripts.db_parity $(CITY)
+
+test-cloud: ## Read-only PARITY check of Aura vs the repo source of truth (per city; counts + key sets). NEVER wipes — Aura is the single persistent store; the destructive suite runs only on local Docker (test-local).
+	@echo "  → Read-only parity check against Aura (no writes, no wipe)"
+	set -a && . .env.cloud && set +a && uv run python -m scripts.db_parity
 
 test-integration: ## Run integration tests (needs Neo4j)
 	uv run pytest tests/test_constraints.py tests/test_seed.py tests/test_traversals.py -v
@@ -446,6 +449,12 @@ gen-within-edges: ## Regenerate data/{CITY}/within_edges.json (POI→Area stagin
 
 upload-areas: ## Upload a city's Area nodes + WITHIN edges to active Neo4j (API must be up). Usage: make upload-areas CITY=new_york
 	uv run python scripts/upload_areas.py --slug "$(CITY)"
+
+deploy: ## One-shot: deploy a city (POIs+beats+areas) from the repo to the ACTIVE graph, then verify parity. Supersedes upload+upload-areas. Usage: make deploy CITY=new_york
+	uv run python -m scripts.deploy --slug "$(CITY)"
+
+deploy-cloud: ## One-shot: deploy a city from the repo to AURA (additive, audio-safe), then verify parity. Usage: make deploy-cloud CITY=new_york
+	set -a && . .env.cloud && set +a && uv run python -m scripts.deploy --slug "$(CITY)" --allow-cloud
 
 fetch-boundary: ## Fetch a city/area OSM boundary polygon. Usage: make fetch-boundary SLUG=new_york RELATION=175905 [FORCE=1]
 	uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" --relation "$(RELATION)"$(if $(FORCE), --force,)

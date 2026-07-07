@@ -187,6 +187,31 @@ class TestProvenanceUploadAndBackfill:
         assert b3["source_passage"] == "A fact from the source book."
         assert b3["audio_url"] == "https://example.com/existing.mp3"
 
+    def test_full_upload_preserves_audio_url_on_reupload(self, clean_driver):
+        """A repo->graph re-deploy via the FULL upload path must NOT wipe live
+        audio_url (it is stamped ON CREATE only); every other field re-syncs.
+        This makes `make deploy-cloud` / re-`upload` safe to run repeatedly."""
+        self._seed_poi(clean_driver)
+        beat = _provenance_beat("prov-audio", self.POI_NAME, with_fields=True)
+        with clean_driver.session(database=get_database()) as s:
+            _upload_beats(s, [beat])
+        assert self._beat_props(clean_driver, "prov-audio")["audio_url"] == ""
+        # Simulate generated TTS audio + a stale body landing on the live beat.
+        with clean_driver.session(database=get_database()) as s:
+            s.run(
+                "MATCH (b:NarrativeBeat {beat_id: 'prov-audio'}) SET "
+                "b.audio_url = 'https://example.com/generated.mp3', b.script_body = 'STALE'"
+            )
+        # Re-deploy the same beat with an edited body.
+        beat["script_body"] = "RESYNCED BODY"
+        with clean_driver.session(database=get_database()) as s:
+            _upload_beats(s, [beat])
+        props = self._beat_props(clean_driver, "prov-audio")
+        assert props["audio_url"] == "https://example.com/generated.mp3", (
+            "re-deploy WIPED live audio_url — audio_url must be ON CREATE only"
+        )
+        assert props["script_body"] == "RESYNCED BODY", "re-deploy must re-sync other fields"
+
 
 # ---------------------------------------------------------------------------
 # Defect: _upload_beats MERGEs NarrativeBeat on unconstrained beat_id. Two

@@ -315,7 +315,9 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
         OPTIONAL MATCH (p:POI {name: b.poi_name})
         WITH b, p WHERE p IS NOT NULL
         MERGE (beat:NarrativeBeat {beat_id: b.beat_id})
-        ON CREATE SET beat.id = randomUUID()
+        // audio_url is stamped ONCE on create; a re-deploy must never wipe live
+        // audio (expensive TTS output). All other fields re-sync from the repo.
+        ON CREATE SET beat.id = randomUUID(), beat.audio_url = ''
         SET beat.script_body    = b.script_body,
             beat.duration_sec   = b.duration_sec,
             beat.kid_friendly   = b.kid_friendly,
@@ -323,7 +325,6 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
             beat.fact_status    = b.fact_status,
             beat.version        = 1,
             beat.active_status  = 'active',
-            beat.audio_url      = '',
             beat.sub_location       = b.sub_location,
             beat.trigger_address    = b.trigger_address,
             beat.narrative_function = b.narrative_function,
