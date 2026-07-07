@@ -41,7 +41,7 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	setup verify clean-db upload-paris upload deploy deploy-cloud backfill-provenance backfill-poi-role \
 	backfill-name-key \
 	survey-area-candidates fix-area-radii upload-areas fetch-boundary geocode-pois \
-	wiki-fetch gen-within-edges tour-build measure-planned-audio measure-governor \
+	wiki-fetch gen-within-edges validate-beats tour-build measure-planned-audio measure-governor \
 	flutter-ipa testflight render-status \
 	setup-audio aura-resume-proof flutter-test flutter-test-diag clean
 
@@ -449,6 +449,9 @@ wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia
 
 gen-within-edges: ## Regenerate data/{CITY}/within_edges.json (POI→Area staging). Usage: make gen-within-edges CITY=new_york
 	uv run python scripts/generate_within_edges.py --slug "$(or $(CITY),paris)"
+
+validate-beats: ## Run the hard pre-upload beats gate (dedup + identity + source grounding). Usage: make validate-beats CITY=new_york
+	uv run python scripts/validate_beats.py data/$(or $(CITY),paris)/beats.json
 
 upload-areas: ## Upload a city's Area nodes + WITHIN edges to active Neo4j (API must be up). Usage: make upload-areas CITY=new_york
 	uv run python scripts/upload_areas.py --slug "$(CITY)"
