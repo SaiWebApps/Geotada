@@ -1,7 +1,9 @@
 """Diagnostic CLI: side-by-side overlap report against a golden fixture.
 
-Runs the full selection → beat_select pipeline against the live Paris
-Neo4j and prints a per-POI diff against fixtures/tour_golden/<fixture>.json.
+Runs the full shipped pipeline (select_route → build_poi_beat_plans_capped →
+generate) against the live Paris Neo4j and prints a per-POI diff against
+fixtures/tour_golden/<fixture>.json, counting SCRIPT-level beats exactly like
+the authoritative gate (tests/test_tour_golden_*.py) so the numbers match.
 
 NOT a test dependency — useful when iterating on calibration knobs to see
 exactly which beats land where.
@@ -21,10 +23,10 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.connection import create_driver
-from src.tour.beat_select import select_poi_beats
-from src.tour.contract import TourInput
+from src.tour.contract import BeatSequence, TourInput
+from src.tour.generation import generate
 from src.tour.routing_client import RoutingClient
-from src.tour.selection import load_paris_corpus, select_route
+from src.tour.selection import build_poi_beat_plans_capped, load_paris_corpus, select_route
 
 
 FIXTURE_DIR = ROOT / "fixtures" / "tour_golden"
@@ -59,6 +61,22 @@ def main(name: str) -> int:
     # identical to the haversine path when it isn't (total fallback).
     with RoutingClient() as routing_client:
         route = select_route(tour_input, snapshot, routing_client=routing_client)
+
+    # R2 measurement parity: build through the SHIPPED path (merges co-located
+    # demoted_beats + applies the C9 governor cap) and count SCRIPT-level beat
+    # sentences after generate() — exactly what the authoritative gate does
+    # (tests/test_tour_golden_*.py). Previously this CLI called select_poi_beats on
+    # the raw pool and counted plan.beats, so its numbers drifted from the gate.
+    seq = BeatSequence(
+        poi_beats=tuple(
+            pb
+            for pb, _ in build_poi_beat_plans_capped(
+                route, snapshot, lenses=tour_input.lenses, end_is_none=tour_input.end is None
+            )
+        )
+    )
+    script = generate(seq, route, tour_input)
+
     print("=" * 80)
     print(f"FIXTURE: {name}")
     print(f"Input: start={tour_input.start} duration={tour_input.duration_min}min "
@@ -68,16 +86,20 @@ def main(name: str) -> int:
     print(f"Expected POIs: {fixture.get('expected_pois')}")
     print()
 
-    generated_ids: set[str] = set()
+    generated_ids: set[str] = {s.source_id for s in script.script if s.source_type == "beat"}
+
+    poi_by_id = {p.id: p for p in route.pois}
     print("Per-POI breakdown:")
-    for poi in route.pois:
-        plan = select_poi_beats(poi, snapshot.beats_for(poi.id))
-        for b in plan.beats:
-            generated_ids.add(b.id)
-        n_in_fix = sum(1 for b in plan.beats if b.id in expected)
-        print(f"  {poi.name} (t{poi.tier}): "
+    for plan in seq.poi_beats:
+        poi = poi_by_id.get(plan.poi_id)
+        name_str = poi.name if poi else plan.poi_id
+        tier_str = f"t{poi.tier}" if poi else "t?"
+        plan_ids = {b.id for b in plan.beats}
+        n_in_fix = len(plan_ids & expected)
+        n_voiced = len(plan_ids & generated_ids)
+        print(f"  {name_str} ({tier_str}): "
               f"strategy={plan.ordering_strategy}, "
-              f"beats={len(plan.beats)} (fixture-hits={n_in_fix})")
+              f"beats={len(plan.beats)} (voiced={n_voiced}, fixture-hits={n_in_fix})")
 
     overlap = len(expected & generated_ids)
     overlap_pct = overlap / len(expected) if expected else 0.0

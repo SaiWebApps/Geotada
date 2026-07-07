@@ -230,14 +230,14 @@ test-workbench: db-up db-workbench-up ## Real-browser Playwright UI suite for th
 	@find tests src -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
 	NO_PROXY=api.resend.com,resend.com,www.googleapis.com,googleapis.com no_proxy=api.resend.com,resend.com,www.googleapis.com,googleapis.com uv run pytest tests/test_workbench_ui.py -o addopts= -v --tb=short
 
-test-golden: db-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
+test-golden: db-up valhalla-up ## Run the golden tour-quality gate against the live dev graph (port 7687). Excluded from `make test`; the fixtures are the human-ideal TARGET to reach as the engine gains walk-by/spine features — do NOT re-baseline them to current output.
 	uv run pytest -m golden -v
 
 golden-probe: db-up valhalla-up ## Print ONLY the golden perturbation-probe hit counts (Île/PdV). Run before AND after a selection/emission change: unchanged counts = the change didn't perturb which beats seat; a moved count is a REAL signal (the goldens are aspirational RED targets, never a green/red flip). Requires Valhalla — routed legs reshape the route, so a haversine fallback moves the counts (Île 16->21) and gives a FALSE signal; this target guarantees product-parity routing so the numbers are stable.
 	@uv run pytest -m golden -q 2>&1 | grep -oE "(Île|PdV) golden overlap [0-9.]+% .* Hit [0-9]+/[0-9]+" \
 		|| echo "no hit counts — is the dev graph (7687) up? try: make db-up"
 
-golden-diff: db-up ## Per-POI/beat diagnostic diff vs a golden fixture (live dev graph 7687). Usage: make golden-diff FIXTURE=pdv_round_trip_60min (or ile_oneway_90min). Exit 1 = overlap below 0.90 (expected until the golden gap closes). Routing state changes the route: run `make valhalla-up` first for product-parity legs (haversine fallback reshapes the PdV route; see GOLDEN-GAP-DIAGNOSTIC.md).
+golden-diff: db-up valhalla-up ## Per-POI/beat diagnostic diff vs a golden fixture (live dev graph 7687). Usage: make golden-diff FIXTURE=pdv_round_trip_60min (or ile_oneway_90min). Exit 1 = overlap below 0.90 (expected until the golden gap closes). Routing state changes the route: run `make valhalla-up` first for product-parity legs (haversine fallback reshapes the PdV route; see GOLDEN-GAP-DIAGNOSTIC.md).
 	@test -n "$(FIXTURE)" || { echo "Usage: make golden-diff FIXTURE=pdv_round_trip_60min | ile_oneway_90min"; exit 2; }
 	uv run python scripts/tour_golden_diff.py $(FIXTURE)
 
