@@ -1,0 +1,4028 @@
+[
+  {
+    "name": "66 Perry Street",
+    "short_description": "A West Village apartment building famous as Carrie Bradshaw's home in Sex and the City.",
+    "name_variations": [
+      "66 Perry St"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7352974,
+    "longitude": -74.0038389,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: TV-landmark address, walk-tour pit stop; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 32,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 32 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_66_perry_street_film_tv_lonely-planet-new-york-city_carrie_bradshaw_apartment",
+        "city_name": "new_york",
+        "poi_name": "66 Perry Street",
+        "lens": "film_tv",
+        "topic_slug": "carrie_bradshaw_apartment",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": "66 Perry St",
+        "beat_length_class": "micro",
+        "script_body": "66 Perry Street is famous as Carrie Bradshaw's apartment in Sex and the City.",
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "entities": [
+          "Carrie Bradshaw",
+          "Sex and the City"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "carrie bradshaw apartment",
+        "physical_cues": [
+          {
+            "cue": "Façade of 66 Perry Street, the Sex and the City apartment building",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "66 Perry Street is Carrie Bradshaw's apartment in Sex and the City"
+        ],
+        "source_passage": "Next, for another TV landmark, turn left up Bleecker St and make a right on Perry – 3 66 Perry Street is famous as Carrie Bradshaw’s apartment in Sex and the City.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "14e101e60f4539fd979beee95851b25cb9d23fbdc43d40a2356d49e44ccbeaa8",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Abingdon Square",
+    "short_description": "A quarter-acre West Village green at Hudson St and 12th St, with grassy knolls, flower beds, bluestone paths and a Saturday Greenmarket.",
+    "name_variations": [
+      "Abingdon Square Park"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7373286,
+    "longitude": -74.005026,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Tiny neighborhood square, single brief entry; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 32,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 32 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_abingdon_square_parks_gardens_lonely-planet-new-york-city_quarter_acre_greenmarket",
+        "city_name": "new_york",
+        "poi_name": "Abingdon Square",
+        "lens": "parks_gardens",
+        "topic_slug": "quarter_acre_greenmarket",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "This historical dot on the landscape — just a quarter-acre — is a lovely little patch of green with grassy knolls, beds of perennial flowers and winding bluestone paths, plus a popular Saturday Greenmarket. It's a great place for a midday picnic or a rest after wandering the winding West Village streets.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "quarter-acre green",
+        "physical_cues": [
+          {
+            "cue": "Quarter-acre green with grassy knolls, perennial flower beds and winding bluestone paths",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "quarter-acre green",
+          "grassy knolls, perennial flowers, bluestone paths",
+          "Saturday Greenmarket"
+        ],
+        "source_passage": "This historical dot on the landscape (just a quarter-acre) is a lovely little patch of green, home to grassy knolls, beds of perennial flowers and winding bluestone paths, as well as a popular Saturday Greenmarket. It’s a great place to enjoy a midday picnic or rest after an afternoon of wandering the winding West Village streets.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8cb9d2a91743ed1db812048f96ec99fbe574aa602aa18f85dc7bc512b5858f43",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Artechouse",
+    "short_description": "Immersive digital-art gallery in former Chelsea Market boiler room.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.742745,
+    "longitude": -74.006371,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "439 W. 15th St. (btw. Ninth and Tenth aves.)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Immersive digital-art gallery in former Chelsea Market boiler room.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.82,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Artechouse'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Artechouse, West 16th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10011, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 34.5,
+        "assigned_gravity": 1,
+        "reasoning": "No annual visitor count published. Chelsea Market location (439 W 15th St), 6,000 sq ft immersive digital art space. Wikipedia article exists for 'Artechouse' but is brief, primarily about the DC founding location with limited NYC-specific content.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_artechouse_visual_art_lonely-planet-new-york-city_chelsea_market_boiler_room",
+        "city_name": "new_york",
+        "poi_name": "Artechouse",
+        "lens": "visual_art",
+        "topic_slug": "chelsea_market_boiler_room",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The previously unused boiler room beneath historic Chelsea Market has finally found a tenant in Artechouse, a technology-forward creative space where digital projections deliver hallucinatory experiences through ambitiously large-scale installations. The 6,000-sq-ft experimental art house departs from Chelsea's white-cube gallery circuit with immersive, participatory elements.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Chelsea Market"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "boiler room art",
+        "physical_cues": [
+          {
+            "cue": "Boiler room beneath Chelsea Market with immersive large-scale digital projections",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "located in the former boiler room beneath Chelsea Market",
+          "digital projections, large-scale installations",
+          "6,000 sq ft",
+          "departs from Chelsea's white-cube gallery circuit"
+        ],
+        "source_passage": "The previously unused boiler room beneath historic Chelsea Market has finally found a tenant in Artechouse, a technology-forward creative space where digital projections deliver hallucinatory experiences through ambitiously large-scale installations. The innovative, 6000-sq-ft experimental art house is a departure from Chelsea’s white-cube gallery circuit, with immersive and participatory elements that’ll spark wonder in all manner of visitors.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a9cd4f2f49dd9c92643240830f2588b33e4c039e8e23fb8825d32176c73e55da",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Blue Note",
+    "short_description": "A legendary West 3rd St jazz venue where Sarah Vaughan, Lionel Hampton and other immortals have performed, with a Sunday jazz brunch.",
+    "name_variations": [
+      "Blue Note Jazz Club"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7308315,
+    "longitude": -74.0007251,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Famous jazz club, walk-tour stop; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 62,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 62 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_blue_note_music_heritage_lonely-planet-new-york-city_jazz_immortals_sunday_brunch",
+        "city_name": "new_york",
+        "poi_name": "Blue Note",
+        "lens": "music_heritage",
+        "topic_slug": "jazz_immortals_sunday_brunch",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "On West 3rd St sits the legendary jazz venue Blue Note, where Sarah Vaughan, Lionel Hampton and other immortals have performed. Try to time your visit for the Sunday jazz brunch, at 11:30am or 1:30pm.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sarah Vaughan",
+          "Lionel Hampton"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "jazz immortals",
+        "physical_cues": [
+          {
+            "cue": "The Blue Note jazz venue on West 3rd St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "on West 3rd St",
+          "Sarah Vaughan, Lionel Hampton and others have performed",
+          "Sunday jazz brunch at 11:30am or 1:30pm"
+        ],
+        "source_passage": "Head south again through Sixth Ave’s flurry of foot traffic, then turn left onto West 3rd St, looking for legendary jazz venue 6 Blue Note on your left. Sarah Vaughan, Lionel Hampton and other immortals have performed here; try to time your visit for jazz brunch on Sunday (11:30am or 1:30pm).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "82c81281038294e2008b8596fa33648dedfbd1926df8dc22ee3344f17325ccf4",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chelsea",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.746491,
+    "longitude": -74.001528,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Chelsea'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Chelsea, Manhattan Community Board 4, Manhattan, New York County, New York, 10199, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "High Line (~8M annual visitors) anchors tourism. Chelsea Market draws ~6M. Art gallery district. No neighborhood-level official count. Wikipedia article is extensive.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_chelsea_social_change_lonely-planet-new-york-city_gay_neighborhood_galleries_west_20s",
+        "city_name": "new_york",
+        "poi_name": "Chelsea",
+        "lens": "social_change",
+        "topic_slug": "gay_neighborhood_galleries_west_20s",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Chelsea sits between the West Village and Midtown and carries a bit of flavor from each. It's the de facto neighborhood for the city's gay community, its broad avenues lined with breezy cafes, themed bars and sweaty clubs — and its gallery scene can be found in the West 20s.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "West Village",
+          "Midtown"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "gay neighborhood",
+        "physical_cues": [
+          {
+            "cue": "Broad avenues lined with cafes, themed bars and clubs; galleries in the West 20s",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Chelsea sits between the West Village and Midtown",
+          "de facto neighborhood for the city's gay community",
+          "cafes, themed bars, clubs",
+          "gallery scene in the West 20s"
+        ],
+        "source_passage": "Chelsea, just to the north, sits between the West Village and Midtown, and carries a bit of flavor from each. It’s the de facto neighborhood for the city’s gay community, and its broad avenues are lined with breezy cafes, themed bars and sweaty clubs. The neighborhood’s gallery scene can be found in the West 20s.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "809e18b9096a2f89935d49901d600f60e25b6d99d1339b3b3fba13366a48d263",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chelsea Hotel",
+    "short_description": "A red-brick 1880s hotel at 222 W 23rd St with ornate iron balconies and seven literary-landmark plaques, long a haunt of writers, musicians and artists.",
+    "name_variations": [
+      "Hotel Chelsea",
+      "The Chelsea Hotel"
+    ],
+    "kid_friendly": "no",
+    "latitude": 40.7443742,
+    "longitude": -73.9968175,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Iconic literary/pop-culture landmark with rich anecdote density; tier-3.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 68,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 68 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_chelsea_hotel_literary_heritage_lonely-planet-new-york-city_writers_on_the_road_2001",
+        "city_name": "new_york",
+        "poi_name": "Chelsea Hotel",
+        "lens": "literary_heritage",
+        "topic_slug": "writers_on_the_road_2001",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This red-brick hotel, built in the 1880s with ornate iron balconies and no fewer than seven plaques declaring its literary-landmark status, has played a major role in pop-culture history. It's where Mark Twain, Thomas Wolfe, Dylan Thomas and Arthur Miller hung out; Jack Kerouac allegedly crafted On the Road during one marathon session here; and it's where Arthur C Clarke wrote 2001: A Space Odyssey.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Mark Twain",
+          "Thomas Wolfe",
+          "Dylan Thomas",
+          "Arthur Miller",
+          "Jack Kerouac",
+          "Arthur C Clarke"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "literary hotel",
+        "physical_cues": [
+          {
+            "cue": "Red-brick facade with ornate iron balconies and seven literary-landmark plaques",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "built in the 1880s, iron balconies, seven literary-landmark plaques",
+          "Twain, Wolfe, Dylan Thomas, Arthur Miller hung out",
+          "Kerouac allegedly wrote On the Road here",
+          "Arthur C Clarke wrote 2001: A Space Odyssey here"
+        ],
+        "source_passage": "This red-brick hotel, built in the 1880s and featuring ornate iron balconies and no fewer than seven plaques declaring its literary landmark status, has played a major role in pop-culture history. It’s where the likes of Mark Twain, Thomas Wolfe, Dylan Thomas and Arthur Miller hung out; Jack Kerouac allegedly crafted On the Road during one marathon session here; and it’s where Arthur C Clarke wrote 2001: A Space Odyssey.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "926b2e433b33c2b8c6b8bf8a1dd66ae95c1b82c4faf11d9716bf79a130f4065f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_chelsea_hotel_dark_history_lonely-planet-new-york-city_dylan_thomas_spungen_deaths",
+        "city_name": "new_york",
+        "poi_name": "Chelsea Hotel",
+        "lens": "dark_history",
+        "topic_slug": "dylan_thomas_spungen_deaths",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Dylan Thomas died of alcohol poisoning while staying at the Chelsea Hotel in 1953, and Nancy Spungen died here in 1978 after being stabbed by her Sex Pistols boyfriend, Sid Vicious.",
+        "duration_sec": 12,
+        "kid_friendly": "no",
+        "entities": [
+          "Dylan Thomas",
+          "Nancy Spungen",
+          "Sid Vicious",
+          "Sex Pistols"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "hotel deaths",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Dylan Thomas died of alcohol poisoning at the Chelsea Hotel in 1953",
+          "Nancy Spungen died here in 1978, stabbed by Sid Vicious of the Sex Pistols"
+        ],
+        "source_passage": "Dylan Thomas died of alcohol poisoning while staying at the Chelsea Hotel in 1953, and Nancy Spungen died here after being stabbed by her Sex Pistols boyfriend Sid Vicious in 1978.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dc6ce88037a2d0a16104e1ce4fa9b29db8eb284bdc44b8d90d13a06221a82767",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_chelsea_hotel_music_heritage_lonely-planet-new-york-city_cohen_joplin_residents",
+        "city_name": "new_york",
+        "poi_name": "Chelsea Hotel",
+        "lens": "music_heritage",
+        "topic_slug": "cohen_joplin_residents",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Among the celebs who logged time living at the Chelsea were Joni Mitchell, Patti Smith, Robert Mapplethorpe, Stanley Kubrick, Dennis Hopper, Edith Piaf, Bob Dylan and Leonard Cohen — whose song 'Chelsea Hotel' recalls a romp with Janis Joplin, who spent time here too.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Joni Mitchell",
+          "Patti Smith",
+          "Robert Mapplethorpe",
+          "Leonard Cohen",
+          "Janis Joplin",
+          "Bob Dylan"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "musician residents",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "residents included Joni Mitchell, Patti Smith, Mapplethorpe, Kubrick, Hopper, Edith Piaf, Bob Dylan, Leonard Cohen",
+          "Cohen's song 'Chelsea Hotel' recalls a romp with Janis Joplin"
+        ],
+        "source_passage": "Among the many celebs who have logged time living at the Chelsea are Joni Mitchell, Patti Smith, Robert Mapplethorpe, Stanley Kubrick, Dennis Hopper, Edith Piaf, Bob Dylan and Leonard Cohen, whose song ‘Chelsea Hotel’ recalls a romp with Janis Joplin (who spent time here, too).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c390d81af1c23de571e6edabd36a210e32b06a7979c5fb757e743dfc361b571d",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Cherry Lane Theatre",
+    "short_description": "Established 1924 on Commerce St, the city's longest continuously running off-Broadway theater, host to many famous playwrights and actors.",
+    "name_variations": [
+      "Cherry Lane",
+      "The Cherry"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7312452,
+    "longitude": -74.0052802,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Historic small theater, walk-tour stop; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 44,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 44 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_cherry_lane_theatre_film_tv_lonely-planet-new-york-city_oldest_off_broadway",
+        "city_name": "new_york",
+        "poi_name": "Cherry Lane Theatre",
+        "lens": "literary_heritage",
+        "topic_slug": "oldest_off_broadway",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Hidden on handsome Commerce St, the Cherry Lane Theatre was established in 1924 and is the city's longest continuously running off-Broadway establishment, having hosted many famous playwrights and thespians.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "oldest off-broadway",
+        "physical_cues": [
+          {
+            "cue": "The Cherry Lane Theatre tucked into Commerce St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "on Commerce St",
+          "established 1924",
+          "city's longest continuously running off-Broadway theater"
+        ],
+        "source_passage": "Start at 1 Cherry Lane Theatre, hidden in handsome Commerce St. Established in 1924, the Cherry is the city’s longest continuously running off-Broadway establishment, and has hosted many famous playwrights and thespians.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "95fd530cd8d375c7ddf8778fd1e486309129e2ee68e2a391279cdbb66edb02e1",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Christopher Park",
+    "short_description": "Small triangular West Village park beside the Stonewall Inn, centerpiece of the Stonewall National Monument designated by President Obama in 2016 — the first US national monument honoring the LGBTIQ+ civil rights movement.",
+    "name_variations": [
+      "Christopher Park",
+      "Stonewall National Monument",
+      "Stonewall National Monument (Christopher Park)"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7335823,
+    "longitude": -74.0023869,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04, chunk-14. gravity: National Monument status and direct association with Stonewall make it a significant social-change landmark; adjacent to existing Stonewall Inn POI (40.7339,-74.0022) — PROXIMITY review item.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04",
+        "chunk-14"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 58,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 58 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_stonewall_national_monument_social_change_lonely-planet-new-york-city_obama_first_lgbtq_monument",
+        "city_name": "new_york",
+        "poi_name": "Christopher Park",
+        "lens": "social_change",
+        "topic_slug": "obama_first_lgbtq_monument",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In 2016 President Barack Obama declared Christopher Park — a small fenced-in triangle with benches and greenery in the heart of the West Village — a national park, and on it the first national monument dedicated to LGBTIQ+ history. It's well worth pausing here to reflect on the Stonewall uprising of 1969, when LGBTIQ+ citizens fought back against discriminatory policing of their communities; many consider the event the birth of the modern LGBTIQ+ rights movement in the US.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Barack Obama",
+          "Christopher Park",
+          "Stonewall uprising"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "lgbtq monument",
+        "physical_cues": [
+          {
+            "cue": "Christopher Park, a small fenced-in triangle with benches and greenery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Obama declared Christopher Park a national park in 2016",
+          "first national monument dedicated to LGBTIQ+ history",
+          "Stonewall uprising of 1969",
+          "many consider it the birth of the modern LGBTIQ+ rights movement in the US"
+        ],
+        "source_passage": "In 2016 President Barack Obama declared Christopher Park, a small fenced-in triangle with benches and some greenery in the heart of the West Village, a national park and on it the first national monument dedicated to LGBTIQ+ history. It’s well worth stopping here to reflect on the Stonewall uprising of 1969, when LGBTIQ+ citizens fought back against discriminatory policing of their communities – many consider the event the birth of the modern LGBTIQ+ rights movement in the US.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "59e693e45bedd81c744685317d876f905ba2323bd713c9c4246621e734bfbf52",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_stonewall_national_monument_social_change_lonely-planet-new-york-city_gay_liberation_statues",
+        "city_name": "new_york",
+        "poi_name": "Christopher Park",
+        "lens": "social_change",
+        "topic_slug": "gay_liberation_statues",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "There's little ostentatious memorializing here — just a few plaques and two sets of slender white statues: a male couple and a female couple, holding hands and talking. Known as Gay Liberation, they are a tribute to the normalcy of gay life, and plenty of pilgrims give the monument the gravity it merits.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gay Liberation"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "gay liberation statues",
+        "physical_cues": [
+          {
+            "cue": "Two sets of slender white statues — a male couple and a female couple — holding hands and talking",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "a few plaques and two sets of white statues",
+          "a male couple and a female couple holding hands",
+          "sculpture is called Gay Liberation, a tribute to the normalcy of gay life"
+        ],
+        "source_passage": "There’s little ostentatious memorializing here, save a few plaques and two sets of slender white statues: a male couple and a female couple, holding hands and talking. Known as Gay Liberation, they are a tribute to the normalcy of gay life. Plenty of pilgrims give the monument the gravity it merits.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bfa2d2df5ebbc7d2aa8cc17c1f04981725eef6a985f8505ec29ca313882de8e3",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Comedy Cellar",
+    "short_description": "A famous MacDougal St comedy club where the likes of Jerry Seinfeld and Amy Schumer have performed.",
+    "name_variations": [
+      "The Comedy Cellar"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.730194,
+    "longitude": -74.0005647,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Famous comedy club, walk-tour stop; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 61 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_comedy_cellar_film_tv_lonely-planet-new-york-city_macdougal_seinfeld_schumer",
+        "city_name": "new_york",
+        "poi_name": "Comedy Cellar",
+        "lens": "film_tv",
+        "topic_slug": "macdougal_seinfeld_schumer",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "On MacDougal St you'll find the famous Comedy Cellar, where the likes of Jerry Seinfeld and Amy Schumer have performed.",
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jerry Seinfeld",
+          "Amy Schumer"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "playful",
+        "subject_tag": "comedy cellar",
+        "physical_cues": [
+          {
+            "cue": "The Comedy Cellar on MacDougal St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "on MacDougal St",
+          "Jerry Seinfeld and Amy Schumer have performed there"
+        ],
+        "source_passage": "Turn right onto MacDougal St to reach the famous 7 Comedy Cellar, where the likes of Jerry Seinfeld and Amy Schumer have performed, then double back, heading north on MacDougal to end your stroll in 8 Washington Square Park, the village’s unofficial town square.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f0e8fbe51e35ebaaa9ea92a5d2a23a88c724bfc1e6345c8bd07a61ce99a0d64f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Gagosian",
+    "short_description": "A Chelsea gallery at 555 W 24th St with ever-revolving exhibits of greats like Jeff Koons, Andy Warhol and Jean-Michel Basquiat; one of Gagosian's many global locations.",
+    "name_variations": [
+      "Gagosian Gallery"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7494423,
+    "longitude": -74.0059445,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Major international gallery, headline Chelsea sight; tier-3. <100m to Chelsea Gallery District anchor — proximity flagged.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 58,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 58 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_gagosian_visual_art_lonely-planet-new-york-city_koons_warhol_basquiat_empire",
+        "city_name": "new_york",
+        "poi_name": "Gagosian",
+        "lens": "visual_art",
+        "topic_slug": "koons_warhol_basquiat_empire",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "International works dot the walls at the Gagosian, with ever-revolving exhibits featuring greats such as Jeff Koons, Andy Warhol and Jean-Michel Basquiat. Gagosian has five New York locations and 12 more in San Francisco, London, Rome and other cities.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jeff Koons",
+          "Andy Warhol",
+          "Jean-Michel Basquiat"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "gagosian empire",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "shows Koons, Warhol, Basquiat",
+          "five NY locations, 12 more in San Francisco, London, Rome and elsewhere"
+        ],
+        "source_passage": "International works dot the walls at the Gagosian. The ever-revolving exhibits feature the work of greats such as Jeff Koons, Andy Warhol and Jean-Michel Basquiat. Gagosian has five New York locations, and 12 more in San Francisco, London, Rome and other cities.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e6273220c0336ed47d294b42179cd9c591ffccd310643bbd3168d8101d7e7a1f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "General Theological Seminary",
+    "short_description": "Founded 1817 at 440 W 21st St, the oldest seminary of the Episcopal Church in America, with a garden-like campus in the Chelsea historic district.",
+    "name_variations": [
+      "GTS"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.74528,
+    "longitude": -74.00472,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Historic but quiet institution, brief entry; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 42,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 42 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_general_theological_seminary_parks_gardens_lonely-planet-new-york-city_oldest_episcopal_garden_campus",
+        "city_name": "new_york",
+        "poi_name": "General Theological Seminary",
+        "lens": "parks_gardens",
+        "topic_slug": "oldest_episcopal_garden_campus",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Founded in 1817, this is the oldest seminary of the Episcopal Church in America. Sitting in the beautiful Chelsea historic district, the school has worked hard to preserve its best asset — the garden-like campus snuggled in the middle of its full block of buildings — even as Chelsea development sprouts up all around. To visit this peaceful haven, ring the buzzer at the garden gate, halfway down 21st St between Ninth and Tenth Aves.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Episcopal Church"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "oldest seminary garden",
+        "physical_cues": [
+          {
+            "cue": "Garden-like campus in the middle of a full block; garden gate buzzer halfway down 21st St between Ninth and Tenth Aves",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "founded 1817, oldest Episcopal seminary in America",
+          "in the Chelsea historic district",
+          "garden-like campus within a full block",
+          "visit via the garden gate buzzer halfway down 21st St between Ninth and Tenth Aves"
+        ],
+        "source_passage": "Founded in 1817, this is the oldest seminary of the Episcopal Church in America. The school, which sits in the midst of the beautiful Chelsea historic district, has been working hard lately to make sure it can preserve its best asset – the garden-like campus snuggled in the middle of its full block of buildings – even as Chelsea development sprouts up all around it. This peaceful haven is the perfect spot for finding respite, either before or after your neighborhood gallery crawl. To visit, ring the buzzer at the garden gate, located halfway down 21st St between Ninth and Tenth Aves.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8f74e7754c50e1a9ad0d21498210e8300bbd9530b6c2c1270373a25125788e9e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Grace Church",
+    "short_description": "A Gothic Revival Episcopal church at 802 Broadway designed in 1843 by James Renwick Jr, a National Landmark known for its marble, spire and stained glass.",
+    "name_variations": [
+      "Grace Church NYC"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7319675,
+    "longitude": -73.9908962,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Designated National Landmark church by a notable architect; tier-3 as a significant but secondary West Village sight.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 53,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 53 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_grace_church_historic_arch_lonely-planet-new-york-city_renwick_sing_sing_marble",
+        "city_name": "new_york",
+        "poi_name": "Grace Church",
+        "lens": "historic_arch",
+        "topic_slug": "renwick_sing_sing_marble",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This Gothic Revival Episcopal church, designed in 1843 by James Renwick Jr, was made of marble quarried by prisoners at 'Sing Sing,' the state penitentiary in the town of Ossining, 30 miles up the Hudson River — which, legend has it, is the origin of the expression 'being sent upriver.' Now a National Landmark, its elaborate carvings, towering spire and verdant groomed yard are sure to stop you in your tracks along this otherwise ordinary stretch of the Village.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "James Renwick Jr",
+          "Sing Sing"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "sing sing marble",
+        "physical_cues": [
+          {
+            "cue": "Elaborate carvings, towering spire and groomed yard of the Gothic Revival church",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "designed 1843 by James Renwick Jr",
+          "marble quarried by prisoners at Sing Sing, Ossining, 30 miles up the Hudson",
+          "legendary origin of 'being sent upriver'",
+          "now a National Landmark"
+        ],
+        "source_passage": "This Gothic Revival Episcopal church, designed in 1843 by James Renwick Jr, was made of marble quarried by prisoners at ‘Sing Sing,’ the state penitentiary in the town of Ossining, 30 miles up the Hudson River (which, legend has it, is the origin of the expression ‘being sent upriver’). ... It’s now a National Landmark, whose elaborate carvings, towering spire and verdant, groomed yard are sure to stop you in your tracks as you make your way down this otherwise ordinary stretch of the Village.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e11c98216d9831ec170860b22da8359f8ef0c7b49f874cc4d8cdb22121353b78",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_grace_church_music_heritage_lonely-planet-new-york-city_bach_at_noon_organ",
+        "city_name": "new_york",
+        "poi_name": "Grace Church",
+        "lens": "music_heritage",
+        "topic_slug": "bach_at_noon_organ",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Inside, stunning stained-glass windows and a soaring interior make a perfect setting for frequent musical programming — recently a series of 'Bach at Noon' organ concerts.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bach at Noon"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "bach at noon",
+        "physical_cues": [
+          {
+            "cue": "Stunning stained-glass windows and soaring interior",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "stained-glass windows and soaring interior",
+          "frequent musical programming",
+          "recent 'Bach at Noon' organ concerts"
+        ],
+        "source_passage": "The stainedglass windows inside are stunning, and the soaring interior makes a perfect setting for the frequent musical programming (recently there was a series of ‘Bach at Noon’ organ concerts).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3a739de1c1d98ced513a0dbd88b4507b1d778acb1af26023c58a13a060774b5a",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Greenwich Village",
+    "short_description": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.733584,
+    "longitude": -74.002817,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Greenwich Village'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Greenwich Village, 7th Avenue South, West Village, Manhattan, New York County, New York, 10014, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "Wikipedia article is extensive covering history, culture, notable residents, landmarks. One of NYC's most searched neighborhoods; no aggregate annual visitor count found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_greenwich_village_film_tv_lonely-planet-new-york-city_friends_90_grove_st",
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "film_tv",
+        "topic_slug": "friends_90_grove_st",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": "90 Grove St",
+        "beat_length_class": "micro",
+        "script_body": "On the corner of Grove St, number 90 may look familiar — it's the apartment building from Friends.",
+        "duration_sec": 7,
+        "kid_friendly": "yes",
+        "entities": [
+          "Friends"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "friends building",
+        "physical_cues": [
+          {
+            "cue": "Façade of number 90 Grove St, the Friends apartment building, on the corner",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "90 Grove St (corner) is the apartment building from Friends"
+        ],
+        "source_passage": "Make a left on Bedford and turn right into Grove St (number 90, on the corner, may be familiar as the apartment building in Friends) to reach your first pit stop, 2 Buvette.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6b01e48368a940505fd8220894d797295e290fb597b8c2951919625ff8c27f84",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_greenwich_village_local_legends_lonely-planet-new-york-city_4th_st_diagonal_grid",
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "local_legends",
+        "topic_slug": "4th_st_diagonal_grid",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Even some locals struggle with the West Village's charming-but-challenging side streets. The trick: 4th St makes a diagonal turn north, breaking away from the usual east-west grid — learn that and you'll quickly become a Village pro.",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "4th st diagonal",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "West Village side streets confuse even locals",
+          "4th St makes a diagonal turn north, breaking the east-west grid"
+        ],
+        "source_passage": "Just remember that 4th St makes a diagonal turn north – breaking away from usual east–west street grid – and you’ll quickly become a Village pro.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "63c584b8869ebc2a9e440dbe2beef77ab659e031ee4220768288d5bdfe2bb4a5",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Hudson River Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.746094,
+    "longitude": -74.010013,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Independent top-level POI. Flagged for /poi-generate.",
+      "verified": false,
+      "geocode_source": "latitude.to / wikipedia (far west side, N. Moore to 56th Sts.)",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Hudson River Park'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Hudson River Park, Manhattan, New York County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 17000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 88.9,
+        "assigned_gravity": 5,
+        "reasoning": "17M+ annual visits along 4-mile Manhattan waterfront; second-largest park in Manhattan; Wikipedia article covers establishment, piers, and governance extensively.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_hudson_river_park_waterways_views_lonely-planet-new-york-city_piers_to_greenway",
+        "city_name": "new_york",
+        "poi_name": "Hudson River Park",
+        "lens": "waterways_views",
+        "topic_slug": "piers_to_greenway",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "As its maritime industry dwindled, New York had to devise a future for the bristling ranks of piers left behind. The answer, stretching from Manhattan's southern tip to 59th St in Midtown, is the Hudson River Park. Running through it is the Hudson River Greenway, a long path between the river and the busy West Side Hwy that invites strolling, blading, jogging and cycling.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hudson River Greenway"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "piers to greenway",
+        "physical_cues": [
+          {
+            "cue": "Hudson River Greenway path running between the river and the West Side Hwy",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "created from leftover piers as maritime industry dwindled",
+          "stretches from Manhattan's southern tip to 59th St",
+          "Hudson River Greenway runs between the river and West Side Hwy"
+        ],
+        "source_passage": "As its maritime industry dwindled, New York had to devise a future for the bristling ranks of piers left behind. The answer, stretching from Manhattan’s southern tip to 59th St in Midtown, is the Hudson River Park. The Hudson River Greenway, a long path running between the river and the busy West Side Hwy, invites strolling, blading, jogging and cycling.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a8b285b15538c54418f71f7eb2358f209e454c818417239938ee0e516f06ed3c",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_hudson_river_park_local_legends_lonely-planet-new-york-city_frying_pan_sangria_sunset",
+        "city_name": "new_york",
+        "poi_name": "Hudson River Park",
+        "lens": "local_legends",
+        "topic_slug": "frying_pan_sangria_sunset",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "On warm summer evenings locals loll on the grass for people-watching, while those after sunset revelry join the sangria-loving crowds at the dockside Frying Pan, a historic ship serving food and drink from Pier 66 Maritime.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frying Pan",
+          "Pier 66 Maritime"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "frying pan ship",
+        "physical_cues": [
+          {
+            "cue": "The dockside Frying Pan ship at Pier 66 Maritime",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "locals loll on the grass on summer evenings",
+          "sangria crowds at the dockside Frying Pan, a historic ship at Pier 66 Maritime"
+        ],
+        "source_passage": "On warm summer evenings locals loll on the grass for people-watching and contemplation, while those seeking sunset revelry can join the sangria-loving crowds at the dockside Frying Pan, a historic ship serving food and drink from Pier 66 Maritime.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "54a388631a387e0117912e75c0d0ca765f20ab74a4fa898a9f1eceb461ec8d56",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Jefferson Market Library",
+    "short_description": "A gracious red-brick building near Christopher St and Sixth Ave, built as a courthouse in 1885 and rising from a tranquil garden of the same name.",
+    "name_variations": [
+      "Jefferson Market Branch",
+      "Jefferson Market Courthouse"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.734588,
+    "longitude": -73.999192,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Historic landmark building, walk-tour stop; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 43,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 43 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_jefferson_market_library_historic_arch_lonely-planet-new-york-city_1885_courthouse_garden",
+        "city_name": "new_york",
+        "poi_name": "Jefferson Market Library",
+        "lens": "historic_arch",
+        "topic_slug": "1885_courthouse_garden",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Just north on Sixth Ave stands the Jefferson Market Library. Built as a courthouse in 1885, this gracious red-brick building rises from a tranquil garden of the same name.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "1885 courthouse",
+        "physical_cues": [
+          {
+            "cue": "Gracious red-brick former courthouse rising from the Jefferson Market garden",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "built as a courthouse in 1885",
+          "red-brick building",
+          "rises from a tranquil garden of the same name"
+        ],
+        "source_passage": "Follow Christopher St to Sixth Ave to find the 5 Jefferson Market Library just north. Built as a courthouse in 1885, this gracious red-brick building rises from a tranquil garden of the same name.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bc331623827b1fa5e6fb0fe1095c41cfd00d089ca6225de99388c94509066baa",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Meatpacking District",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.740803,
+    "longitude": -74.008069,
+    "trigger_radius": 250,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Meatpacking District'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Meatpacking District, Manhattan, New York County, New York, 10014, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Chelsea Market within neighborhood draws ~6M visitors/year; the district itself draws tourists via High Line access (~8M/yr for High Line). No standalone district figure. Wikipedia moderate depth.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_meatpacking_district_social_change_lonely-planet-new-york-city_slaughterhouses_to_boutiques",
+        "city_name": "new_york",
+        "poi_name": "Meatpacking District",
+        "lens": "social_change",
+        "topic_slug": "slaughterhouses_to_boutiques",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "A stroll through the Meatpacking District, once filled with slaughterhouses, now takes you past sleek boutiques and roaring nightclubs.",
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "slaughterhouses to nightlife",
+        "physical_cues": [
+          {
+            "cue": "Sleek boutiques and nightclubs along the former slaughterhouse streets",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Meatpacking District once filled with slaughterhouses",
+          "now has sleek boutiques and roaring nightclubs"
+        ],
+        "source_passage": "A stroll through the Meatpacking District, once filled with slaughterhouses, takes you past sleek boutiques and roaring nightclubs.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0ab3ed9c4721929fea2fa8c4abde54e3e7b3bcff15aceb0c234070c3a829d30d",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "New York University",
+    "short_description": "Founded 1831 by Albert Gallatin as a center of higher learning open to all regardless of race or class; today a sprawling university of ~50,000 students across six Manhattan locations.",
+    "name_variations": [
+      "NYU"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7292053,
+    "longitude": -73.9950148,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Major institution shaping the Village; tier-3. Distinct from existing 'New York University School of Law' POI which is a single building; this is the broader university anchor.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 63,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 63 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_university_social_change_lonely-planet-new-york-city_gallatin_open_to_all",
+        "city_name": "new_york",
+        "poi_name": "New York University",
+        "lens": "social_change",
+        "topic_slug": "gallatin_open_to_all",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In 1831 Albert Gallatin, formerly Secretary of the Treasury under President Thomas Jefferson, founded an intimate center of higher learning open to all students, regardless of race or class background. He'd scarcely recognize the place today: it has swelled to around 50,000 students and more than 16,000 employees, with schools and colleges at six Manhattan locations.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Albert Gallatin",
+          "Thomas Jefferson"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "gallatin founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "founded 1831 by Albert Gallatin, ex-Treasury Secretary under Jefferson",
+          "open to all regardless of race or class",
+          "today ~50,000 students, 16,000+ employees, six Manhattan locations"
+        ],
+        "source_passage": "In 1831 Albert Gallatin, formerly Secretary of the Treasury under President Thomas Jefferson, founded an intimate center of higher learning open to all students, regardless of race or class background. He’d scarcely recognize the place today, as it’s swelled to a student population of around 50,000, with more than 16,000 employees, and schools and colleges at six Manhattan locations.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2c6d61e62833ab7b9132b1bf9c7b48da12bca04f4d2810d472c468dccb98aa94",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_new_york_university_historic_arch_lonely-planet-new-york-city_landmark_activists_provincetown",
+        "city_name": "new_york",
+        "poi_name": "New York University",
+        "lens": "historic_arch",
+        "topic_slug": "landmark_activists_provincetown",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "NYU just keeps growing, to the dismay of landmark activists and business owners who have watched buildings get bought out by the academic giant — or destroyed through careless planning, as with the historic Provincetown Playhouse — and replaced with ugly dormitories or administrative offices. Still, some crevices charm, like the leafy courtyard at its School of Law, or the modern 850-seat Skirball Center for the Performing Arts.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Provincetown Playhouse",
+          "Skirball Center for the Performing Arts"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "landmark activists",
+        "physical_cues": [
+          {
+            "cue": "NYU buildings, the leafy School of Law courtyard, and the modern Skirball Center",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "landmark activists dismayed by NYU buyouts",
+          "historic Provincetown Playhouse destroyed through careless planning",
+          "leafy School of Law courtyard",
+          "850-seat Skirball Center for the Performing Arts"
+        ],
+        "source_passage": "It just keeps growing, too – to the dismay of landmark activists and business owners, who have seen buildings rapidly bought out by the academic giant (or destroyed through careless planning, such as with the historic Provincetown Playhouse) and replaced with ugly dormitories or administrative offices. Still, some of its crevices are charming, such as the leafy courtyard at its School of Law, or impressively modern, like the Skirball Center for the Performing Arts, where top-notch dance, theater, music, spoken-word and other performances wow audiences at the 850-seat theater.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ccc5a8bf412fb0b26af586528ce8f02e17332a5aa845e65603b725148d14d6a9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Pace Gallery",
+    "short_description": "An eight-story Chelsea flagship gallery at 540 W 25th St, with a volcanic-ash exterior and 75,000 sq ft of space, showing artists like de Kooning, Hepworth and Schnabel.",
+    "name_variations": [
+      "Pace"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7491212,
+    "longitude": -74.0039931,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Flagship of a major international gallery and the neighborhood's headline gallery sight; tier-3. Note: <100m to existing Chelsea Gallery District anchor — proximity flagged.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 58,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 58 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_pace_gallery_visual_art_lonely-planet-new-york-city_volcanic_ash_flagship",
+        "city_name": "new_york",
+        "poi_name": "Pace Gallery",
+        "lens": "visual_art",
+        "topic_slug": "volcanic_ash_flagship",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "With seven galleries across the world — including this eight-story Chelsea flagship — and decades showing artists like Willem de Kooning, Barbara Hepworth and Julian Schnabel, gargantuan Pace is a landmark on any tour. Its glimmering 75,000-sq-ft structure, clad in volcanic ash, runs from an 18ft-ceiling gallery at street level to more intimate confines like an appointment-only research library and a 6th-floor open-air terrace.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Willem de Kooning",
+          "Barbara Hepworth",
+          "Julian Schnabel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "pace flagship",
+        "physical_cues": [
+          {
+            "cue": "Eight-story Chelsea flagship with a glimmering exterior of volcanic ash",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "seven galleries worldwide; eight-story Chelsea flagship",
+          "shows de Kooning, Hepworth, Schnabel",
+          "75,000 sq ft, volcanic-ash exterior",
+          "18ft-ceiling street gallery, research library, 6th-floor terrace"
+        ],
+        "source_passage": "With seven galleries across the world – including this eight-story Chelsea flagship – and decades of experience showing the work of such artists as Willem de Kooning, Barbara Hepworth and Julian Schnabel, gargantuan Pace is a landmark on any tour. With a glimmering exterior constructed from volcanic ash, the 75,000-sq-ft structure’s spaces span an 18ft-ceiling gallery at street level, to more intimate confines like an appointment-only research library and a 6th-floor open-air terrace.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2d8d7eaf873defa0ad4360ada06d71db7e3a277b67807138be0db02128680f97",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Pier 45",
+    "short_description": "An 850ft-long renovated finger pier on the Hudson at W 10th St, part of Hudson River Park, long known as the Christopher St Pier and a historic gay cruising hangout.",
+    "name_variations": [
+      "Christopher St Pier",
+      "Christopher Street Pier"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.732797,
+    "longitude": -74.01082,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Local waterfront amenity within Hudson River Park; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 31,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 31 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_pier_45_social_change_lonely-planet-new-york-city_christopher_st_pier_gay_hangout",
+        "city_name": "new_york",
+        "poi_name": "Pier 45",
+        "lens": "social_change",
+        "topic_slug": "christopher_st_pier_gay_hangout",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Still known to many as the Christopher St Pier, this 850ft finger of concrete has been spiffily renovated with a grass lawn, flower beds, an outdoor cafe and tented shade shelters. Now part of Hudson River Park, it draws downtowners of all stripes — local families with toddlers by day, and mobs of young gay kids who flock here at night from across the city, thanks to the pier's long-established history as a gay cruising hangout. It offers sweeping Hudson views and cool, relieving breezes in the thick of summer.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hudson River Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "christopher st pier",
+        "physical_cues": [
+          {
+            "cue": "850ft concrete pier with grass lawn, flower beds, outdoor cafe and tented shade shelters; Hudson views",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "aka Christopher St Pier",
+          "850ft long, renovated with lawn, flower beds, cafe, shade shelters",
+          "part of Hudson River Park",
+          "day families, night young gay crowd; long history as a gay cruising hangout",
+          "sweeping Hudson views and summer breezes"
+        ],
+        "source_passage": "Still known to many as the Christopher St Pier, this is an 850ft-long finger of concrete, spiffily renovated with a grass lawn, flower beds, a comfort station, an outdoor cafe, tented shade shelters and a stop for the New York Water Taxi. Now part of the Hudson River Park, it’s a magnet for downtowners of all stripes, from local families with toddlers in daylight to mobs of young gay kids who flock here at night from all over the city (and beyond) thanks to the pier’s long-established history as a gay cruising hangout. The spot offers sweeping views of the Hudson and cool, relieving breezes in the thick of summer.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b7e9b68914b17f22fd17f551b5d7e42aa87ee86518e65341ef43a77fa78940a9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Salmagundi Club",
+    "short_description": "One of the oldest art clubs in the US (founded 1871), set in a historic brownstone on Fifth Ave below Union Square, with gallery spaces focused on representational American art.",
+    "name_variations": [
+      "The Salmagundi Club"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7343016,
+    "longitude": -73.9945529,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Niche historic art club; tier-3 as a notable but minor West Village cultural sight per a single Lonely Planet entry.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 42,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 42 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_salmagundi_club_visual_art_lonely-planet-new-york-city_oldest_art_club_brownstone",
+        "city_name": "new_york",
+        "poi_name": "Salmagundi Club",
+        "lens": "visual_art",
+        "topic_slug": "oldest_art_club_brownstone",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Far removed from the flashy Chelsea gallery scene, the Salmagundi Club fills a stunning historic brownstone on Fifth Ave below Union Square with gallery spaces devoted to representational American art. Founded in 1871, it's one of the oldest art clubs in the US and still offers classes and exhibitions for its members. The trip is worth it for the parlor alone, decorated with period furniture and historic paintings.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "oldest art club",
+        "physical_cues": [
+          {
+            "cue": "Historic brownstone on Fifth Ave below Union Square; parlor with period furniture and historic paintings",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "historic brownstone on Fifth Ave below Union Square",
+          "representational American art",
+          "founded 1871, one of the oldest art clubs in the US",
+          "parlor with period furniture and historic paintings"
+        ],
+        "source_passage": "Far removed from the flashy Chelsea gallery scene, the Salmagundi Club features several gallery spaces focusing on representational American art set in a stunning historic brownstone on Fifth Ave below Union Sq. The club is one of the oldest art clubs in the US (founded in 1871) and still offers classes and exhibitions for its members. ... The trip is worth it alone to linger a few minutes in the parlor decorated with period furniture and historic paintings.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dd52781cef11d621324f9497f6007e13fe976c80ea8f8fd46bd1fcbf83f9b732",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Sheridan Square",
+    "short_description": "A small triangular park between Washington Pl and W 4th St in the heart of gay Greenwich Village, a longtime site of gay-rights rallies and demonstrations.",
+    "name_variations": [
+      "Sheridan Sq"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7331624,
+    "longitude": -74.0021958,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Minor park; significance is symbolic to gay-rights history but a brief entry; tier-2.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 33,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 33 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_sheridan_square_social_change_lonely-planet-new-york-city_triangle_gay_rights_rallies",
+        "city_name": "new_york",
+        "poi_name": "Sheridan Square",
+        "lens": "social_change",
+        "topic_slug": "triangle_gay_rights_rallies",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Shaped like a triangle, Sheridan Sq isn't much more than a few park benches and trees ringed by an old-fashioned wrought-iron gate. But its location in the heart of gay Greenwich Village means it has witnessed every rally, demonstration and uprising that has contributed to New York's gay rights movement.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "Greenwich Village"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "gay rights rallies",
+        "physical_cues": [
+          {
+            "cue": "Triangular park with benches and trees ringed by an old-fashioned wrought-iron gate",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "triangular park with benches, trees, wrought-iron gate",
+          "in the heart of gay Greenwich Village",
+          "witnessed every rally and uprising of NY's gay rights movement"
+        ],
+        "source_passage": "The shape of a triangle, Sheridan Sq isn’t much more than a few park benches and some trees surrounded by an old-fashioned wrought-iron gate. But its location (in the heart of gay Greenwich Village) has meant that it has witnessed every rally, demonstration and uprising that has contributed to New York’s gay rights movement.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0184a45b98bd3ad27e7489491eb594469935d767729f0dd7be51bc9a5c25595d",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The High Line",
+    "short_description": "Very popular elevated park, Frommer's parks pick; called 'NYC's coolest park'. High gravity but linear/diffuse.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.747704,
+    "longitude": -74.004891,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Very popular elevated park, Frommer's parks pick; called 'NYC's coolest park'. High gravity but linear/diffuse.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.82,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'The High Line'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "The High Line, Little West 12th Street, Meatpacking District, Manhattan, New York County, New York, 10014, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 7000000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 93.1,
+        "assigned_gravity": 5,
+        "reasoning": "~5–8M annual visitors (range across sources; 8M cited for 2019, 5M+ more recent). Wikipedia article is extensive covering history of the rail line conversion. Google review count not directly confirmed.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_the_high_line_historic_arch_lonely-planet-new-york-city_industrial_reuse_overview",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "historic_arch",
+        "topic_slug": "industrial_reuse_overview",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Snaking through the Meatpacking District at 30ft above street level, this 1.5-mile urban park is a fabulous example of industrial reuse. Once a freight line linking slaughterhouses to the Hudson River, it fell into disuse by the 1980s, only to be resurrected as a green, art-strewn ribbon running between the high-rises, hotels and art galleries blossoming at its feet.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Meatpacking District",
+          "Hudson River"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "industrial reuse",
+        "physical_cues": [
+          {
+            "cue": "Elevated park deck running 30ft above street level through the Meatpacking District",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "High Line runs 30ft above street level",
+          "1.5-mile urban park",
+          "former freight line linking slaughterhouses to the Hudson",
+          "fell into disuse by the 1980s"
+        ],
+        "source_passage": "Snaking through the Meatpacking District at 30ft above street level, this 1.5-mile urban park is a fabulous example of industrial reuse. Once a freight line linking slaughterhouses to the Hudson River, it fell into disuse by the 1980s, only to be resurrected as a green, art-strewn ribbon running between the high-rises, hotels and art galleries blossoming at its feet.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "19efe0175a2ee1c0014aa0c183740ac88feb73c45a67368c23728d46cc81a865",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_hidden_history_lonely-planet-new-york-city_death_ave_elevated_line",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "hidden_history",
+        "topic_slug": "death_ave_elevated_line",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In the early 1900s the western area around the Meatpacking District and Chelsea was the largest industrial section of Manhattan. Street-level freight trains caused so much disruption and death that Tenth Ave earned the nickname 'Death Ave' for rail accidents that claimed over 500 lives. The answer was to lift the tracks: the 'West Side Elevated Line' moved its first train in 1933. The project drained over $150 million — around $2 billion in today's money — and took roughly five years to complete.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "West Side Elevated Line",
+          "Death Ave",
+          "Meatpacking District",
+          "Chelsea"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "death ave",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Tenth Ave nicknamed 'Death Ave', over 500 lives lost",
+          "West Side Elevated Line first train in 1933",
+          "project cost over $150 million (~$2 billion today)",
+          "took roughly five years"
+        ],
+        "source_passage": "In the early 1900s the western area around the Meatpacking District and Chelsea was the largest industrial section of Manhattan. With street-level freight lines causing disruption and even death (Tenth Ave was nicknamed ‘Death Ave’ for rail accidents that claimed over 500 lives), an elevated freight track was planned, and the ‘West Side Elevated Line’ moved its first train in 1933. The project drained over $150 million (equivalent to around $2 billion by today’s dime) and took roughly five years to complete.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f5dfbb91512b0b222d252757fd7fa3f236196b3c88b970ac6d4d13393448f693",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_social_change_lonely-planet-new-york-city_friends_save_the_tracks",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "social_change",
+        "topic_slug": "friends_save_the_tracks",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "After two decades of service, truck transport ate into the line's business, and by the 1980s the rails were obsolete and growing thick with wild foliage. Locals signed petitions to tear down the eyesore — but in 1999 a committee called Friends of the High Line, founded by Joshua David and Robert Hammond, formed to save the rusting iron and turn it into an elevated green space.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Friends of the High Line",
+          "Joshua David",
+          "Robert Hammond"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "friends of high line",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "rails obsolete by 1980s",
+          "locals petitioned to remove the tracks",
+          "Friends of the High Line founded 1999 by Joshua David and Robert Hammond"
+        ],
+        "source_passage": "After two decades of effective service, a rise in truck transportation led to an eventual decrease in use of the line; finally, in the 1980s, the rails became obsolete, quickly growing thick with wild foliage. Locals signed petitions to remove the eyesore the tracks had become, but in 1999 a committee called Friends of the High Line – founded by Joshua David and Robert Hammond – was formed to save the rusting iron and transform the tracks into a unique elevated green space.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7b0552f86d287ef7d8eb945801c71285526eaf45fac9723d2c4bbb0776175bd9",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_parks_gardens_lonely-planet-new-york-city_three_phases_opened",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "parks_gardens",
+        "topic_slug": "three_phases_opened",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On a warm spring day in 2009, the High Line opened to the public — full of blooming flowers and broad-leaved trees — the first of three phases. Section 1 starts at Gansevoort St and runs parallel to Tenth Ave up to W 20th St, filled with sitting space from giant chaises longues to bleacher-like benches. Two years later Section 2 added another 10 blocks of greenified tracks. In 2014 the third section was completed, from 30th up to 34th St, looping around the West Side Rail Yards in a U-like fashion.",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "West Side Rail Yards"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "three phases",
+        "physical_cues": [
+          {
+            "cue": "Bleacher-like benches and giant chaises longues in Section 1 between Gansevoort St and W 20th St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "chaises longues",
+            "gloss": "long reclining lounge chairs"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "opened spring 2009",
+          "Section 1 Gansevoort St to W 20th St along Tenth Ave",
+          "Section 2 opened two years later, 10 blocks",
+          "Section 3 completed 2014, 30th to 34th St around West Side Rail Yards"
+        ],
+        "source_passage": "On a warm spring day in 2009, the High Line – full of blooming flowers and broad-leaved trees – opened to the public, the first of three phases that today link the Meatpacking District and Midtown. Section 1 starts at Gansevoort St and runs parallel to Tenth Ave up to W 20th St. Full of sitting space in various forms – from giant chaises longues to bleacher-like benches – the first part quickly became the setting for various public works and activities, many geared toward the neighborhood’s growing population of families. Two years later, Section 2 opened, adding another 10 blocks of greenified tracks. In 2014 the High Line’s third section was completed, from 30th up to 34th St, going up to and around the West Side Rail Yards in a U-like fashion.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "03ab5f4ce8a6ce1fc5233367fe362841fb977019f344f9b75422eb27ded18ef0",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_modern_design_lonely-planet-new-york-city_spur_plinth_art",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "modern_design",
+        "topic_slug": "spur_plinth_art",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": "the-spur",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In 2019 the last remaining section of the original rail structure was completed. Known as the Spur, this stretch extends east to 10th Ave, with a large-scale art space called the Plinth as its focal point.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Spur",
+          "The Plinth"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "spur plinth",
+        "physical_cues": [
+          {
+            "cue": "The Plinth large-scale art space on the Spur, extending east to 10th Ave",
+            "direction": "east",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Spur completed 2019, extends east to 10th Ave",
+          "Plinth is a large-scale art space"
+        ],
+        "source_passage": "Finally, in 2019, the last remaining section of the original rail structure was completed. Known as the Spur, this stretch extends east to 10th Ave, with a large-scale art space known as the Plinth as its focal point.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5db89e8a56d89e142569181fe6447e883aa8f11c52a3ca4aaf30988927aec573",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_parks_gardens_lonely-planet-new-york-city_wild_railroad_aesthetic",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "parks_gardens",
+        "topic_slug": "wild_railroad_aesthetic",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "As the path veers west toward Twelfth Ave it widens, opening up views of the Hudson, with rusting, weed-filled railroad tracks running alongside the walkway. The designers left them there on purpose — to evoke the overgrown wilderness that greeted the people who stumbled onto the abandoned tracks before the park was built.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "wild tracks",
+        "physical_cues": [
+          {
+            "cue": "Rusting, weed-filled railroad tracks running alongside the walkway near Twelfth Ave",
+            "direction": "west",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "path widens toward Twelfth Ave with Hudson views",
+          "weed-filled tracks left to evoke pre-park wilderness"
+        ],
+        "source_passage": "As it veers west toward Twelfth Ave the path widens, and you have open views of the Hudson, with the rusting, weed-filled railroad tracks running alongside the walkway (the designers wanted to evoke the same sense of overgrown wilderness in the heart of the metropolis that greeted visitors who stumbled upon the tracks prior to the park’s creation).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0565fa9410e98425ea003829bd687bceafbd6613f337c5f4e38f75188b8cfd18",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_local_legends_lonely-planet-new-york-city_double_h_staffers",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "local_legends",
+        "topic_slug": "double_h_staffers",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "As you walk the High Line's length, look for staffers wearing the signature double-H logo. They can point you in the right direction or share more about the converted rails, while others behind the scenes organize public art exhibitions and activity sessions, especially in summer.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "double-h staffers",
+        "physical_cues": [
+          {
+            "cue": "Staffers wearing the signature double-H logo along the walkway",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "staffers wear a double-H logo",
+          "they give directions and info",
+          "others organize art and activities, especially in summer"
+        ],
+        "source_passage": "As you walk its length you’ll find staffers wearing the signature double-H logo who can point you in the right direction or offer you additional information about the converted rails. There are also myriad staffers behind the scenes organizing public art exhibitions and activity sessions, especially in summer.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1542ce96b41ca23d83ea06528027c87a6e742860767f738d60ff83aa8df8e1c2",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_the_high_line_markets_street_food_lonely-planet-new-york-city_chelsea_market_break",
+        "city_name": "new_york",
+        "poi_name": "The High Line",
+        "lens": "markets_street_food",
+        "topic_slug": "chelsea_market_break",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At the 14th St exit of the High Line, step behind the brick walls of Chelsea Market and you'll find a wonderland of food vendors. Along the park itself, vending carts and stalls serve to-go items — expect the finest coffee and ice cream during the warmer months.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Chelsea Market"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "chelsea market food",
+        "physical_cues": [
+          {
+            "cue": "14th St exit of the High Line leading behind the brick walls of Chelsea Market",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Chelsea Market food vendors at the 14th St exit",
+          "vending carts on the park serve coffee and ice cream in warmer months"
+        ],
+        "source_passage": "You’ll find a wonderland of food vendors behind the brick walls of the Chelsea Market, at the 14th St exit of the High Line. ... The High Line invites various gastronomic establishments from around the city to set up vending carts and stalls so that strollers can enjoy to-go items on the green. Expect a showing of the finest coffee and ice cream during the warmer months.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "deeccaf1547f164dceab88ca6170d86ca037ec43f73a4d1cb120130622e92ffd",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Washington Square Park",
+    "short_description": "Iconic Greenwich Village landmark and NYU social center; one of NYC's most-visited public squares with the Stanford White marble arch. Very high tourist gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.730823,
+    "longitude": -73.997332,
+    "trigger_radius": 210,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic Greenwich Village landmark and NYU social center; one of NYC's most-visited public squares with the Stanford White marble arch. Very high tourist gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia (40.730823, -73.997332)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": 12000000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 95.0,
+        "assigned_gravity": 5,
+        "reasoning": "Busiest park per square foot in NYC; 12 million annual visits. TripAdvisor has 3,701 reviews. Wikipedia article is extensive. Google review count not extractable from search snippets but expected to be in the tens of thousands.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_washington_square_park_dark_history_lonely-planet-new-york-city_potters_field_yellow_fever_burials",
+        "city_name": "new_york",
+        "poi_name": "Washington Square Park",
+        "lens": "dark_history",
+        "topic_slug": "potters_field_yellow_fever_burials",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "What is now the unofficial town square of the Village was once a potter's field and a square for public executions. At the turn of the 19th century the city bought the land for a burial ground straddling its limit, mainly for indigent workers — but the space quickly reached capacity during an outbreak of yellow fever. Over 20,000 bodies remain buried under the park today.",
+        "duration_sec": 26,
+        "kid_friendly": "no",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "potters field",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "once a potter's field and execution square",
+          "early 1800s burial ground for indigent workers",
+          "reached capacity during a yellow fever outbreak",
+          "over 20,000 bodies remain buried under the park"
+        ],
+        "source_passage": "What was once a potter’s field and a square for public executions is now the unofficial town square of the Village. ... At the turn of the 19th century, the municipality of New York purchased the land for use as a burial ground straddling the city’s limit. At first the cemetery was mainly for indigent workers, but the space quickly reached capacity during an outbreak of yellow fever. Over 20,000 bodies remain buried under the park today.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "41e762a0fbb3887f746e7ed6d9052b3e9292e78525550bad67d70ec7f815b4e4",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_washington_square_park_hidden_history_lonely-planet-new-york-city_dutch_freed_slaves_buffer",
+        "city_name": "new_york",
+        "poi_name": "Washington Square Park",
+        "lens": "hidden_history",
+        "topic_slug": "dutch_freed_slaves_buffer",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "When the Dutch settled Manhattan to run the Dutch East India Company, they gave what is now the park to their freed Black slaves. The land sat squarely between the Dutch and Native American settlements, so in a way it acted as a buffer between enemies. Though somewhat marshy, it was arable, and farming took place there for around 60 years.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Dutch East India Company"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "dutch buffer land",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Dutch gave the land to their freed Black slaves",
+          "sat between Dutch and Native American settlements as a buffer",
+          "farmed for around 60 years"
+        ],
+        "source_passage": "When the Dutch settled Manhattan to run the Dutch East India Company, they gave what is now the park to their freed Black slaves. The land was squarely between the Dutch and Native American settlements, so, in a way, the area acted as a buffer between enemies. Though somewhat marshy, it was arable land and farming took place for around 60 years.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3c47b8bfa29e757c87b2e683df663cd6ace3476b0d752ee0afb92af4df61afe4",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_washington_square_park_social_change_lonely-planet-new-york-city_political_stage_obama_rally",
+        "city_name": "new_york",
+        "poi_name": "Washington Square Park",
+        "lens": "social_change",
+        "topic_slug": "political_stage_obama_rally",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Washington Square Park has long been a stage for political activity, from local protests over the park's shape and use to matters of national importance like the 1912 protests for better working conditions. In 2007 Democratic candidate Barack Obama led a rally here to drum up support for his presidential bid; turnout was, unsurprisingly, overwhelming.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Barack Obama"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "political stage",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1912 protests for better working conditions",
+          "Obama led a 2007 rally here for his presidential bid",
+          "turnout was overwhelming"
+        ],
+        "source_passage": "Washington Square Park has long provided a stage for political activity, from local protests against proposed changes to the shape and usage of the park, to issues of national importance such as the 1912 protests for better working conditions. In 2007 Democratic Party candidate Barack Obama led a rally here to drum up support for his successful presidential bid. Turnout was, unsurprisingly, overwhelming.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5a52e3caeecc15577e6ec4c6764a500bf20af7afe152a5a065e8d6045271e805",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_washington_square_park_historic_arch_lonely-planet-new-york-city_stanford_white_arch_duchamp",
+        "city_name": "new_york",
+        "poi_name": "Washington Square Park",
+        "lens": "historic_arch",
+        "topic_slug": "stanford_white_arch_duchamp",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": "stanford-white-arch",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The iconic Stanford White Arch, known colloquially as the Washington Square Arch, dominates the park with 72ft of beaming white Dover marble. It was originally designed in wood to celebrate the centennial of George Washington's inauguration in 1889; the design proved so popular that it was replaced in stone six years later and adorned with statues of the general in war and peace. In 1916 the artist Marcel Duchamp famously climbed to the top of the arch by its internal stairway and declared the park the 'Free and Independent Republic of Washington Square.'",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Stanford White",
+          "George Washington",
+          "Marcel Duchamp"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "subject_tag": "washington arch",
+        "physical_cues": [
+          {
+            "cue": "The 72ft white Dover marble Stanford White Arch on the north side of the green",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "72ft of white Dover marble",
+          "originally designed in wood for the 1889 centennial of Washington's inauguration",
+          "replaced in stone six years later with war-and-peace statues",
+          "Duchamp climbed it in 1916 and declared a Free and Independent Republic"
+        ],
+        "source_passage": "The iconic Stanford White Arch, colloquially known as the Washington Square Arch, dominates the park with its 72ft of beaming white Dover marble. Originally designed in wood to celebrate the centennial of George Washington’s inauguration in 1889, the arch proved so popular that it was replaced with stone six years later and adorned with statues of the general in war and peace. In 1916 artist Marcel Duchamp famously climbed to the top of the arch by its internal stairway and declared the park the ‘Free and Independent Republic of Washington Square.’",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "295a5c696444c7ae24e0d41b3063b9b8b3cc7a608b95046180e4cc2b7a4d28e5",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_washington_square_park_parks_gardens_lonely-planet-new-york-city_military_parades_to_elite_park",
+        "city_name": "new_york",
+        "poi_name": "Washington Square Park",
+        "lens": "parks_gardens",
+        "topic_slug": "military_parades_to_elite_park",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "By 1830 the grounds were used for military parades, then quickly transformed into a park for the wealthy elite who were building lavish town houses along the surrounding streets.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "parade to park",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "by 1830 used for military parades",
+          "then became a park for the wealthy building town houses around it"
+        ],
+        "source_passage": "By 1830 the grounds were used for military parades, and then quickly transformed into a park for the wealthy elite who were constructing lavish town houses along the surrounding streets.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "932511bfa3bd0202497d3a2ec2d5898e06d0c7a16c9125197bdc99d63e5804be",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_washington_square_park_local_legends_lonely-planet-new-york-city_birdman_southwest_bench",
+        "city_name": "new_york",
+        "poi_name": "Washington Square Park",
+        "lens": "local_legends",
+        "topic_slug": "birdman_southwest_bench",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Look for the birdman, often found on a bench near the southwest entrance with dozens of pigeons roosting on him.",
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "birdman",
+        "physical_cues": [
+          {
+            "cue": "The birdman on a bench near the southwest entrance, covered in pigeons",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "a birdman with dozens of pigeons sits on a bench near the southwest entrance"
+        ],
+        "source_passage": "A The birdman, often found on a bench near the southwest entrance with dozens of pigeons roosting on him",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6839b6607501225a94d8b9f849f7d2c74e62cd4a95c3cba6926862eaefcf0c89",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "White Columns",
+    "short_description": "A sedate multiroom alternative-art space at 91 Horatio St in the Meatpacking District, hosting installations and exhibits by well-known names.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7388,
+    "longitude": -74.0073,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04. gravity: Minor gallery, single guidebook entry; tier-2.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 30,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 30 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_white_columns_visual_art_lonely-planet-new-york-city_meatpacking_geography_chelsea_aesthetic",
+        "city_name": "new_york",
+        "poi_name": "White Columns",
+        "lens": "visual_art",
+        "topic_slug": "meatpacking_geography_chelsea_aesthetic",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Geographically White Columns is part of the Meatpacking District, but aesthetically it's in Chelsea. The sedate, multiroom space hosts a wide range of installations and exhibits, some by fairly well-known names such as Alice Aycock, Lorna Simpson, and the gallery's own founder, Gordon Matta-Clark.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alice Aycock",
+          "Lorna Simpson",
+          "Gordon Matta-Clark"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "alternative gallery",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "geographically Meatpacking District, aesthetically Chelsea",
+          "sedate multiroom space",
+          "shows Alice Aycock, Lorna Simpson, founder Gordon Matta-Clark"
+        ],
+        "source_passage": "Geographically, White Columns is part of the Meatpacking District, but aesthetically speaking, it’s in Chelsea. The sedate, multiroom space hosts a wide range of installations and exhibits, some of which are by fairly wellknown names, such as Andrew Serrano, Alice Aycock, Lorna Simpson and a White Columns founder, Gordon Matta-Clark.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "67e61a4456e3a4363785ef210c6d15b06785465511969f1b9c1b7b14426e67f6",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Whitney Museum of American Art",
+    "short_description": "Major American-art museum, Renzo Piano building, Wikipedia article, top Frommer's headline sight, adjacent to High Line. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.739613,
+    "longitude": -74.00898,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major American-art museum, Renzo Piano building, Wikipedia article, top Frommer's headline sight, adjacent to High Line. High gravity.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia, 99 Gansevoort St)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 888816,
+        "google_review_count": 11018,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 55.9,
+        "assigned_gravity": 2,
+        "reasoning": "888,816 visitors in 2024 (Art Newspaper data); 11,018 Google reviews at 4.5 stars; Wikipedia article is extensive (founding, Breuer/Piano buildings, biennial, collection); major NYC art institution with strong search presence",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_whitney_museum_of_american_art_modern_design_lonely-planet-new-york-city_renzo_piano_glass_landmark",
+        "city_name": "new_york",
+        "poi_name": "Whitney Museum of American Art",
+        "lens": "modern_design",
+        "topic_slug": "renzo_piano_glass_landmark",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Designed by Italian architect Renzo Piano, the Whitney's asymmetrical, glass-cloaked home quickly became a major landmark at the southern edge of the Meatpacking District, anchoring the first-opened section of the High Line. The nine-story cultural colossus holds galleries, theaters, classrooms and outdoor spaces — including an 18,000-sq-ft room that is New York's largest column-free exhibition space. Commenced in 2010, it cost $422 million to build and opened to great acclaim in 2015.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "Renzo Piano",
+          "Meatpacking District",
+          "The High Line"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "renzo piano building",
+        "physical_cues": [
+          {
+            "cue": "Asymmetrical glass-cloaked nine-story building at the southern edge of the Meatpacking District",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "designed by Renzo Piano",
+          "nine stories, glass-cloaked",
+          "18,000-sq-ft room is NY's largest column-free exhibition space",
+          "commenced 2010, cost $422 million, opened 2015"
+        ],
+        "source_passage": "Designed by Italian architect Renzo Piano, the Whitney’s asymmetrical, glass-cloaked home quickly became a major landmark in the southern reaches of the Meatpacking District, housing myriad galleries, theaters, classrooms and outdoor spaces, and anchoring the first-opened section of the High Line. One gallery in particular is noteworthy – an 18,000-sq-ft space that is New York’s largest column-free exhibition space. Once the decision was made to move from the Whitney’s original, Marcel Breuer–designed home on Madison Ave, something on the scale of this nine-story cultural colossus was always likely. Commenced in 2010, it cost $422 million to build, and opened to great acclaim in 2015.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "35a0b7b1420c525c92f73df7c388a62fb36d017328ec854628559857943516c8",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_whitney_museum_of_american_art_visual_art_lonely-planet-new-york-city_twentieth_century_american_collection",
+        "city_name": "new_york",
+        "poi_name": "Whitney Museum of American Art",
+        "lens": "visual_art",
+        "topic_slug": "twentieth_century_american_collection",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Whitney's collection of over 23,000 works by 3,000-plus American artists carries extra weight because it's all 20th- and 21st-century work, much of it by still-practising artists. Expect Sol LeWitt's Five Towers, looking like the load-bearing frame of an abandoned building; several of Andy Warhol's luridly colored Mao Tse-Tung prints; Alice Neel's portrait of Warhol, for which the pop-art legend sat while recovering from a near-fatal shooting; Jasper Johns's Three Flags; and Marsden Hartley's early-modernist Painting, Number 5.",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sol LeWitt",
+          "Andy Warhol",
+          "Mao Tse-Tung",
+          "Alice Neel",
+          "Jasper Johns",
+          "Marsden Hartley"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "american collection",
+        "physical_cues": [
+          {
+            "cue": "Permanent-collection works on display: LeWitt's Five Towers, Warhol's Mao prints, Neel's portrait of Warhol, Johns's Three Flags",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "over 23,000 works by 3,000+ artists",
+          "all 20th/21st-century",
+          "LeWitt Five Towers (1986)",
+          "Warhol Mao prints (1972)",
+          "Neel Andy Warhol (1970), sat recovering from a near-fatal shooting",
+          "Johns Three Flags (1958)",
+          "Hartley Painting, Number 5 (1914-15)"
+        ],
+        "source_passage": "The Whitney’s collection of over 23,000 works by 3000+ different American artists assumes greater significance when you consider it’s all 20th- and 21st-century work, much of it by still-practising artists. Works from the permanent collection you might expect to encounter include Sol LeWitt’s Five Towers (1986), looking like the load-bearing frame of an abandoned building; several of Andy Warhol’s 10 luridly colored Mao TseTung prints (1972); Alice Neel’s Andy Warhol (1970) for which the pop-art legend sat while recovering from a near-fatal shooting; Jasper Johns’s Three Flags (1958); Marsden Hartley’s early-modernist Painting, Number 5 (1914–15); and plenty of comparable treasures.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cc001e76d95d4eb76e2e8ffa85f98502f67b9371c3cc03aced6ef17aecb8ed16",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_whitney_museum_of_american_art_visual_art_lonely-planet-new-york-city_dont_miss_three_works",
+        "city_name": "new_york",
+        "poi_name": "Whitney Museum of American Art",
+        "lens": "visual_art",
+        "topic_slug": "dont_miss_three_works",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-04-west-village-chelsea-meatpacking",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Three works not to miss: George Bellows's Dempsey and Firpo, Joseph Stella's The Brooklyn Bridge: Variation on an Old Theme, and Alexander Calder's Calder's Circus.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "George Bellows",
+          "Joseph Stella",
+          "Alexander Calder"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "highlight works",
+        "physical_cues": [
+          {
+            "cue": "Highlighted works on display: Bellows's Dempsey and Firpo, Stella's Brooklyn Bridge, Calder's Circus",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Don't-miss: Bellows Dempsey and Firpo, Stella The Brooklyn Bridge, Calder's Circus"
+        ],
+        "source_passage": "A George Bellows, Dempsey and Firpo A Joseph Stella, The Brooklyn Bridge: Variation on an Old Theme A Alexander Calder, Calder’s Circus",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "West Village, Chelsea & the Meatpacking District"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "9d98a977aef62f13b32e26e200907699c59e5d96137fc57c06f93092838ce936",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  }
+]

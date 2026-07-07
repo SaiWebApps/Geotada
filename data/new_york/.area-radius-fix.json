@@ -1,0 +1,368 @@
+{
+  "city": "new_york",
+  "changes": [
+    {
+      "name": "Battery Park",
+      "old_radius": 60,
+      "new_radius": 270,
+      "osm_type": "park",
+      "osm_match_dist_m": 115,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/5029111"
+    },
+    {
+      "name": "Bowling Green Park",
+      "old_radius": 30,
+      "new_radius": 40,
+      "osm_type": "park",
+      "osm_match_dist_m": 6,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/112692313"
+    },
+    {
+      "name": "Brooklyn Botanic Garden",
+      "old_radius": 150,
+      "new_radius": 500,
+      "osm_type": "garden",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/157016745"
+    },
+    {
+      "name": "Brooklyn Bridge",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "bridge",
+      "osm_match_dist_m": 78,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/375157262"
+    },
+    {
+      "name": "Brooklyn Bridge Park",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/56469108"
+    },
+    {
+      "name": "Brooklyn Heights Promenade",
+      "old_radius": 15,
+      "new_radius": 280,
+      "osm_type": "pedestrian",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/230757260"
+    },
+    {
+      "name": "Central Park",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/427818536"
+    },
+    {
+      "name": "Christopher Park",
+      "old_radius": 10,
+      "new_radius": 30,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/30657456"
+    },
+    {
+      "name": "Coffey Park",
+      "old_radius": 15,
+      "new_radius": 180,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/37075223"
+    },
+    {
+      "name": "Columbus Park",
+      "old_radius": 10,
+      "new_radius": 130,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/66374787"
+    },
+    {
+      "name": "Domino Park",
+      "old_radius": 120,
+      "new_radius": 220,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/608663280"
+    },
+    {
+      "name": "East River Park",
+      "old_radius": 20,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/108235842"
+    },
+    {
+      "name": "East River State Park",
+      "old_radius": 15,
+      "new_radius": 170,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/33819583"
+    },
+    {
+      "name": "Flushing Meadows Corona Park",
+      "old_radius": 30,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/14402283"
+    },
+    {
+      "name": "Fort Greene Park",
+      "old_radius": 20,
+      "new_radius": 260,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/20512138"
+    },
+    {
+      "name": "Gantry Plaza State Park",
+      "old_radius": 10,
+      "new_radius": 380,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/25428484"
+    },
+    {
+      "name": "Green-Wood Cemetery",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "cemetery",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/10213172"
+    },
+    {
+      "name": "Hudson River Park",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/20812866"
+    },
+    {
+      "name": "Inwood Hill Park",
+      "old_radius": 30,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/20781110"
+    },
+    {
+      "name": "Madison Square Park",
+      "old_radius": 30,
+      "new_radius": 160,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/22899286"
+    },
+    {
+      "name": "Marcus Garvey Park",
+      "old_radius": 60,
+      "new_radius": 270,
+      "osm_type": "park",
+      "osm_match_dist_m": 64,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/199925533"
+    },
+    {
+      "name": "McCarren Park",
+      "old_radius": 20,
+      "new_radius": 390,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/13902286"
+    },
+    {
+      "name": "New York Botanical Garden",
+      "old_radius": 150,
+      "new_radius": 500,
+      "osm_type": "garden",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/38839186"
+    },
+    {
+      "name": "Prospect Park",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/9760157"
+    },
+    {
+      "name": "Riverside Park",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/178575123"
+    },
+    {
+      "name": "Rockaway Beach",
+      "old_radius": 30,
+      "new_radius": 500,
+      "osm_type": "beach",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/88717124"
+    },
+    {
+      "name": "Socrates Sculpture Park",
+      "old_radius": 10,
+      "new_radius": 130,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/231847469"
+    },
+    {
+      "name": "Straus Park",
+      "old_radius": 10,
+      "new_radius": 40,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/113723738"
+    },
+    {
+      "name": "The High Line",
+      "old_radius": 120,
+      "new_radius": 500,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/7141751"
+    },
+    {
+      "name": "Washington Square Park",
+      "old_radius": 40,
+      "new_radius": 210,
+      "osm_type": "park",
+      "osm_match_dist_m": 24,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/22899302"
+    },
+    {
+      "name": "Zuccotti Park",
+      "old_radius": 25,
+      "new_radius": 60,
+      "osm_type": "park",
+      "osm_match_dist_m": 1,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/25026338"
+    }
+  ],
+  "skipped": [
+    [
+      "Chelsea Market",
+      "OSM type=mall not an extent"
+    ],
+    [
+      "Collyer Park",
+      "already >= proposed (20m >= 10m)"
+    ],
+    [
+      "Grand Central Terminal",
+      "OSM type=attraction not an extent"
+    ],
+    [
+      "Hudson Yards",
+      "OSM type=neighbourhood not an extent"
+    ],
+    [
+      "Jacqueline Kennedy Onassis Reservoir",
+      "OSM type=reservoir not an extent"
+    ],
+    [
+      "Manhattan Beach",
+      "OSM type=neighbourhood not an extent"
+    ],
+    [
+      "Rockefeller Center",
+      "OSM type=attraction not an extent"
+    ],
+    [
+      "Staten Island Ferry",
+      "OSM match 8359m away \u2014 wrong feature?"
+    ],
+    [
+      "Sunset Park",
+      "OSM type=neighbourhood not an extent"
+    ],
+    [
+      "West side of Park Avenue, from 68th to 69th streets",
+      "no OSM match"
+    ],
+    [
+      "Williamsburg Bridge",
+      "OSM type=motorway not an extent"
+    ]
+  ],
+  "manual_changes": [
+    {
+      "name": "Williamsburg Bridge",
+      "old_radius": 20,
+      "new_radius": 500,
+      "source": "OSM/Nominatim (manual)",
+      "reason": "linear bridge (OSM half-diag 1034m), capped at 500 like Brooklyn Bridge"
+    },
+    {
+      "name": "Hudson Yards",
+      "old_radius": 60,
+      "new_radius": 250,
+      "source": "OSM/Nominatim (manual)",
+      "reason": "28-acre development (sourced in poi reasoning); OSM only had the broader neighborhood, sized to the development frame"
+    },
+    {
+      "name": "Sunset Park",
+      "old_radius": 20,
+      "new_radius": 330,
+      "source": "OSM/Nominatim (manual)",
+      "reason": "confirmed the park (hilltop, move-through); OSM leisure/park half-diag 332m. NOTE: pin sits ~530m off the park centroid \u2014 flag for geocode review"
+    }
+  ],
+  "pin_fixes": [
+    {
+      "name": "Sunset Park",
+      "old": [
+        40.644222,
+        -74.007591
+      ],
+      "new": [
+        40.64798,
+        -74.00375
+      ],
+      "source": "OSM way/149616466 (leisure/park) centroid",
+      "reason": "pin sat ~530m SW of the park; moved to park centroid"
+    }
+  ]
+}

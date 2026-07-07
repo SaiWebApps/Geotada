@@ -1,0 +1,39 @@
+{
+  "stage": "complete",
+  "city": "new_york",
+  "book": "national-geographic-walking-nyc",
+  "chunks_total": [
+    "chunk-01",
+    "chunk-02",
+    "chunk-03",
+    "chunk-04",
+    "chunk-05",
+    "chunk-06",
+    "chunk-07",
+    "chunk-08",
+    "chunk-09"
+  ],
+  "chunks_completed": [
+    "chunk-01",
+    "chunk-06",
+    "chunk-07",
+    "chunk-08",
+    "chunk-04",
+    "chunk-09",
+    "chunk-03",
+    "chunk-02",
+    "chunk-05"
+  ],
+  "chunks_failed": [],
+  "chunks_pending": [],
+  "new_pois_created": 17,
+  "gravity_scored": true,
+  "export_validated": true,
+  "started_at": "2026-06-17T08:25:00Z",
+  "beats_added": 232,
+  "validate_beats": "PASS",
+  "disputes_resolved": true,
+  "rubin_dropped": true,
+  "uploaded_local": true,
+  "uploaded_at": "2026-06-17"
+}

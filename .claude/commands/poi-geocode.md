@@ -80,7 +80,31 @@ def nominatim_search(query):
 
 ### Trigger radius assignment
 
-After geocoding, automatically assign `trigger_radius` based on POI type detection from the name:
+Size `trigger_radius` from the POI's **real physical extent**, not from name keywords.
+The Nominatim response already carries a `boundingbox` (`[south, north, west, east]`)
+— use it. Do not infer size from the name alone; "...Square" parks and 4km parks both
+slip through keyword rules (Washington Square Park is a 280×320m park, not a 40m square).
+
+**Primary rule — derive from the OSM bounding box** when the matched feature is an
+extent (OSM `class` of `leisure`/`natural`, or `type` in park/garden/cemetery/square/
+pedestrian/island/beach/bridge/marketplace):
+
+```
+half_diagonal = hypot((north-south)*111000, (east-west)*111000*cos(mid_lat)) / 2
+trigger_radius = clamp(round(half_diagonal, 10), 30, 500)
+```
+
+- **Cap at 500m.** A large park or district is a *setting frame* — it should fire as
+  the walker arrives, not blanket its whole footprint. Interior detail is carried by
+  the feature's own child POIs (e.g. Central Park contains Sheep Meadow, the Reservoir,
+  the Zoo as separate POIs), so the frame never needs to reach 2km.
+- **Sanity-check the match:** the bbox centroid must be within ~800m of the geocoded
+  pin, and the OSM type must be an extent. Otherwise the search hit the wrong feature
+  (a transit stop, a building, the surrounding neighborhood) — fall back below and flag.
+- Buildings you stand *at* (museums, halls, named addresses) stay at the 10m default
+  even if large — a radius would over-trigger. Extent ≠ "you walk through it".
+
+**Fallback (no usable bbox / non-extent match):** keyword default, then flag LOW for review:
 
 | Name contains | trigger_radius | Reasoning |
 |--------------|---------------|-----------|
@@ -89,6 +113,11 @@ After geocoding, automatically assign `trigger_radius` based on POI type detecti
 | rue, canal, promenade | 75m | Linear POI |
 | place, square | 40m | Open square |
 | everything else | 10m | Default for buildings |
+
+> The reusable implementation of the primary rule is `scripts/fix_area_trigger_radii.py`
+> (`make fix-area-radii CITY=<slug>`), which also writes an audit log with the OSM source
+> URL per the pipeline's "log every auto-correction" guardrail. Run it as a post-geocode
+> sweep, or to retrofit a city geocoded under the old keyword rule.
 
 ### Verification pass for major landmarks
 

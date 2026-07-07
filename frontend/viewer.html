@@ -139,7 +139,8 @@ const API = 'http://localhost:8000/api/v1';
 let map = null;
 let markers = [];
 let allPois = [];
-let beatCache = {};  // poi name -> beats array
+let beatCache = {};  // "citySlug:poiName" -> beats array
+let currentCitySlug = 'paris';  // set per selected city; used for city-scoped beat queries
 let selectedPoi = null;
 let editMode = false;
 let allAreas = [];
@@ -212,7 +213,8 @@ async function loadCities() {
   // Discover cities by fetching all POIs and extracting unique cities from coordinates
   // For now, hardcode known cities — this can be made dynamic later
   const cities = [
-    { name: 'Paris', lat: 48.8566, lng: 2.3522, zoom: 13 },
+    { name: 'Paris', slug: 'paris', lat: 48.8566, lng: 2.3522, zoom: 13 },
+    { name: 'New York', slug: 'new_york', lat: 40.7128, lng: -73.9500, zoom: 11, span: 0.40 },
   ];
   const sel = document.getElementById('citySelect');
   cities.forEach(c => {
@@ -229,6 +231,7 @@ async function loadCities() {
 async function loadCity(city) {
   // Init map if needed
   const mapEl = document.getElementById('map');
+  currentCitySlug = city.slug || city.name.toLowerCase();
   document.getElementById('emptyState')?.remove();
 
   if (!map) {
@@ -270,12 +273,14 @@ async function loadCity(city) {
     skip += 200;
   } while (skip < total);
 
-  // Filter to city bounds (rough: within ~0.15 degrees ≈ 15km)
+  // Filter to city bounds. Default ~0.15 degrees (~15km, fine for Paris); larger
+  // cities override via `city.span` (NYC's five boroughs span ~0.45 degrees).
+  const span = city.span ?? 0.15;
   const cityPois = allPois.filter(p => {
     const loc = p.properties?.location;
     const lat = loc?.lat ?? p.properties?.latitude;
     const lng = loc?.lng ?? p.properties?.longitude;
-    return lat && lng && Math.abs(lat - city.lat) < 0.15 && Math.abs(lng - city.lng) < 0.15;
+    return lat && lng && Math.abs(lat - city.lat) < span && Math.abs(lng - city.lng) < span;
   });
   allPois = cityPois;
 
@@ -370,7 +375,10 @@ async function loadCity(city) {
       areaSkip += 200;
     } while (areaSkip < areaTotal);
 
-    allAreas = rawAreas.filter(a => a.properties?.city_name === city.name);
+    // Areas may store city_name as the slug ('new_york') or the display name ('Paris');
+    // match either, case-insensitively, against both the city slug and display name.
+    const cityKeys = new Set([city.slug, city.name].filter(Boolean).map(s => s.toLowerCase()));
+    allAreas = rawAreas.filter(a => cityKeys.has((a.properties?.city_name || '').toLowerCase()));
 
     // Sort: city first (back), then districts, then smaller areas on top
     const sorted = [...allAreas].sort((a, b) => {
@@ -476,14 +484,15 @@ async function selectPoi(idx) {
     <div class="loading"><div class="spinner"></div>Loading beats…</div>
   `;
 
-  // Fetch beats (with cache)
-  let beats = beatCache[name];
+  // Fetch beats (with cache) — scoped to the selected city
+  const cacheKey = `${currentCitySlug}:${name}`;
+  let beats = beatCache[cacheKey];
   if (!beats) {
     try {
-      const resp = await fetch(`${API}/graph/poi/${encodeURIComponent(name)}/beats?city_name=paris`);
+      const resp = await fetch(`${API}/graph/poi/${encodeURIComponent(name)}/beats?city_name=${encodeURIComponent(currentCitySlug)}`);
       const data = await resp.json();
       beats = data.beats || [];
-      beatCache[name] = beats;
+      beatCache[cacheKey] = beats;
     } catch (e) {
       beats = [];
       document.getElementById('panelInner').innerHTML = `

@@ -1,0 +1,2107 @@
+[
+  {
+    "name": "Asia Society and Museum",
+    "short_description": "Cultural center founded by John D. Rockefeller III in 1956, hosting art and cultural exhibitions spanning Buddhist, Jain, Nepalese and contemporary Asian traditions.",
+    "name_variations": [
+      "Asia Society",
+      "Asia Society & Museum"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7655,
+    "longitude": -73.9657,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-07. gravity: Founded by Rockefeller III; prominent cultural institution for Asian art and ideas; broad programming.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": 512,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 68,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 68 from agent-extraction prominence, guidebook (Lonely Planet) presence, ~512 reviews. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_asia_society_and_museum_famous_residents_lonely_planet_new_york_city_rockefeller_iii_founder",
+        "city_name": "new_york",
+        "poi_name": "Asia Society and Museum",
+        "lens": "famous_residents",
+        "topic_slug": "rockefeller_iii_founder",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Founded in 1956 by John D. Rockefeller III, an avid collector of Asian art, this cultural center hosts fascinating exhibits — Buddhist art of Myanmar, retrospectives of leading Chinese artists, contemporary Southeast Asian art — as well as Jain sculptures and Nepalese Buddhist paintings. Daily tours free with admission are offered at 2pm Tuesday through Sunday year-round and at 6:30pm Friday.",
+        "duration_sec": 53,
+        "kid_friendly": "yes",
+        "entities": [
+          "John D. Rockefeller III"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Rockefeller Asian art founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Founded 1956 by John D. Rockefeller III",
+          "Hosts Buddhist, Chinese, Southeast Asian, Jain, and Nepalese Buddhist art",
+          "Daily tours at 2pm Tue–Sun and 6:30pm Fri"
+        ],
+        "source_passage": "Founded in 1956 by John D Rockefeller III (an avid collector of Asian art), this cultural center hosts fascinating exhibits (Buddhist art of Myanmar, retrospectives of leading Chinese artists, contemporary Southeast Asian art), as well as Jain sculptures and Nepalese Buddhist paintings. Daily tours (free with admission) are offered at 2pm Tuesday through Sunday year-round and at 6:30pm Friday (excluding summer months).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "785a8770fe00c0150a28ae32785b90d4feb0a6f89bfd71c54c4361af41992eb9",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Cooper Hewitt National Design Museum",
+    "short_description": "Tier-4: Smithsonian design museum in Carnegie mansion; interactive renovation.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.784284,
+    "longitude": -73.957699,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4: Smithsonian design museum in Carnegie mansion; interactive renovation.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Cooper Hewitt National Design Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Cooper–Hewitt, Smithsonian Design Museum, 2, East 91st Street, Carnegie Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10128, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 153000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 40.8,
+        "assigned_gravity": 1,
+        "reasoning": "153k visits in 2023 (Smithsonian fact sheet, March 2024); 2024 figure not published. Part of Smithsonian. Wikipedia article covers history and collection at moderate depth.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_cooper_hewitt_national_design_museum_historic_arch_lonely_planet_new_york_city_carnegie_64_room_mansion",
+        "city_name": "new_york",
+        "poi_name": "Cooper Hewitt National Design Museum",
+        "lens": "historic_arch",
+        "topic_slug": "carnegie_64_room_mansion",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Part of the Smithsonian Institution in Washington DC, this is the only US museum dedicated to both historic and contemporary design. Housed in the 64-room mansion built by billionaire Andrew Carnegie in 1901, the 210,000-piece collection offers artful displays spanning 3,000 years over three floors. The beautiful garden is open to the public.",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Andrew Carnegie",
+          "Smithsonian Institution"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Carnegie mansion design museum",
+        "physical_cues": [
+          {
+            "cue": "64-room Beaux-Arts Carnegie mansion on Fifth Avenue housing the museum",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Only US museum dedicated to historic and contemporary design",
+          "64-room mansion built by Andrew Carnegie in 1901",
+          "210,000-piece collection spanning 3,000 years",
+          "Garden open to the public"
+        ],
+        "source_passage": "Part of the Smithsonian Institution in Washington DC, this is the only US museum dedicated to both historic and contemporary design. Housed in the 64-room mansion built by billionaire Andrew Carnegie in 1901, the 210,000-piece collection offers artful displays spanning 3000 years over three floors of the building. The beautiful garden is open to the public and accessible from 90th St or from inside the museum.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ba996ec2b5de26373d7b4b80c470084ecbf5e4fbc0b07106c77e4f8893671c45",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Frick Collection",
+    "short_description": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
+    "name_variations": [
+      "Frick Madison"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7711,
+    "longitude": -73.9674,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "source_address",
+        "confidence": "LOW",
+        "placement": "Knowledge-based fallback (Nominatim miss); verify manually",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Nominatim miss — kept agent knowledge-based coordinate"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Frick Madison (Breuer building) was the temp location Mar 2021–Mar 2024. Main Frick Collection reopened 70th St on Apr 17, 2025 after $330M renovation; already selling out all time slots. Historical annual visitors ~300k. No 2024/2025 published figures. Wikipedia covers under 'Frick Collection' arti",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_frick_madison_historic_arch_lonely_planet_new_york_city_millionaires_row_beaux_arts_mansion",
+        "city_name": "new_york",
+        "poi_name": "Frick Collection",
+        "lens": "historic_arch",
+        "topic_slug": "millionaires_row_beaux_arts_mansion",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This spectacular art collection sits in a mansion built by steel magnate Henry Clay Frick, one of the many such residences lining the section of Fifth Avenue that was once called 'Millionaires' Row.' The building is a lovely, rambling beaux-arts structure built from 1913 to 1914 by Carrère and Hastings. It's also generally not crowded — except perhaps during popular shows — and feels refreshingly intimate, with a trickling indoor courtyard fountain. A demure Portico Gallery displays decorative works and sculpture. Note that children under 10 years are not admitted to the museum.",
+        "duration_sec": 67,
+        "kid_friendly": "no",
+        "entities": [
+          "Henry Clay Frick",
+          "Millionaires' Row",
+          "Carrère and Hastings"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Frick mansion Millionaires Row",
+        "physical_cues": [
+          {
+            "cue": "Beaux-arts mansion exterior on Fifth Avenue, part of the former Millionaires' Row",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Indoor courtyard fountain inside the mansion",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Built by Henry Clay Frick, steel magnate",
+          "Fifth Avenue section once called Millionaires' Row",
+          "Beaux-arts structure built 1913–1914 by Carrère and Hastings",
+          "Indoor courtyard fountain",
+          "Children under 10 not admitted"
+        ],
+        "source_passage": "This spectacular art collection sits in a mansion built by steel magnate Henry Clay Frick, one of the many such residences lining the section of Fifth Ave that was once called 'Millionaires' Row.' The museum has over a dozen splendid rooms displaying masterpieces by Titian, Vermeer, Gilbert Stuart, El Greco, Joshua Reynolds, Van Dyck and Rembrandt. The Frick is a treat for several reasons. First, it's housed in a lovely, rambling beaux-arts structure built from 1913 to 1914 by Carrère and Hastings; it's also generally not crowded (except perhaps during popular shows). It feels refreshingly intimate, with a trickling indoor courtyard fountain and gardens (though closed to the public). A demure Portico Gallery displays decorative works and sculpture. (Note that children under 10 years are not admitted to the museum.)",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e1e59137aac2c28014d308be71d95b5e0f55a4fd2a2552cba75a4a4ae3d4a622",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_frick_madison_visual_art_lonely_planet_new_york_city_old_masters_titian_vermeer_rembrandt",
+        "city_name": "new_york",
+        "poi_name": "Frick Collection",
+        "lens": "visual_art",
+        "topic_slug": "old_masters_titian_vermeer_rembrandt",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The museum has over a dozen splendid rooms displaying masterpieces by Titian, Vermeer, Gilbert Stuart, El Greco, Joshua Reynolds, Van Dyck and Rembrandt.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "Titian",
+          "Vermeer",
+          "Gilbert Stuart",
+          "El Greco",
+          "Joshua Reynolds",
+          "Van Dyck",
+          "Rembrandt"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "old masters collection",
+        "physical_cues": [
+          {
+            "cue": "Over a dozen rooms of old masters paintings inside the Frick mansion",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Over a dozen rooms with masterpieces by Titian, Vermeer, Gilbert Stuart, El Greco, Joshua Reynolds, Van Dyck, Rembrandt"
+        ],
+        "source_passage": "The museum has over a dozen splendid rooms displaying masterpieces by Titian, Vermeer, Gilbert Stuart, El Greco, Joshua Reynolds, Van Dyck and Rembrandt.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "997973954324de77f0c27c612c55e8fd9d011540c03f1235eecee213c702acfc",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_frick_madison_music_heritage_lonely_planet_new_york_city_sunday_classical_concerts",
+        "city_name": "new_york",
+        "poi_name": "Frick Collection",
+        "lens": "music_heritage",
+        "topic_slug": "sunday_classical_concerts",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Fans of classical music will enjoy the piano and violin concerts on some Sunday evenings — listening to music in a beaux-arts mansion surrounded by priceless paintings and sculptures.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Sunday classical concerts",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Piano and violin concerts on some Sunday evenings at the Frick"
+        ],
+        "source_passage": "Fans of classical music will enjoy the piano and violin concerts on some Sunday evenings.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "eb79268ade38689872587a2ce0e5b42b82e661a55e83b83c79522a3df2fa087d",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Gracie Mansion",
+    "short_description": "Federal-style country house built in 1799 for merchant Archibald Gracie; official residence of New York City mayors since 1942.",
+    "name_variations": [
+      "Gracie Mansion"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7760949,
+    "longitude": -73.9430787,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-07. gravity: Official mayoral residence; historic Federal-style mansion; connects to popular Carl Schurz Park riverfront.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 74,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 74 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_gracie_mansion_famous_residents_lonely_planet_new_york_city_mayoral_residence_since_1942",
+        "city_name": "new_york",
+        "poi_name": "Gracie Mansion",
+        "lens": "famous_residents",
+        "topic_slug": "mayoral_residence_since_1942",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This Federal-style home served as the country residence of merchant Archibald Gracie in 1799. Since 1942, it's been the residence of New York's mayors and their families — with the exception of Michael Bloomberg, who preferred his own plush Upper East Side apartment. The house has been added to and renovated over the years.",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [
+          "Archibald Gracie",
+          "Michael Bloomberg"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "mayoral residence Gracie",
+        "physical_cues": [
+          {
+            "cue": "Federal-style mansion on the East River waterfront at East End Ave and 88th St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Built 1799 as country residence of merchant Archibald Gracie",
+          "Mayoral residence since 1942",
+          "Michael Bloomberg chose not to live there"
+        ],
+        "source_passage": "This Federal-style home served as the country residence of merchant Archibald Gracie in 1799. Since 1942, it's been the residence of New York's mayors and their families (with the exception of Michael Bloomberg, who preferred his own plush Upper East Side apartment). The house has been added to and renovated over the years.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5de765b12ab193d814a732760e0b59b9b6d72a68268c5242898826ac04311cc2",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_gracie_mansion_waterways_views_lonely_planet_new_york_city_carl_schurz_park_east_river",
+        "city_name": "new_york",
+        "poi_name": "Gracie Mansion",
+        "lens": "waterways_views",
+        "topic_slug": "carl_schurz_park_east_river",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The estate's 11 acres of grounds were turned into the pleasant, riverside Carl Schurz Park. It's popular with local joggers and dog owners, and its lovely promenade — which offers panoramic views of the East River, several islands and the Triborough Bridge — is one of the Upper East Side's hidden gems.",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Carl Schurz Park",
+          "East River",
+          "Triborough Bridge"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "Carl Schurz Park river views",
+        "physical_cues": [
+          {
+            "cue": "Promenade along the East River in Carl Schurz Park with views of several islands and the Triborough Bridge",
+            "direction": "east",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Estate's 11 acres became Carl Schurz Park",
+          "Promenade offers panoramic views of East River, several islands, and Triborough Bridge"
+        ],
+        "source_passage": "The estate's 11 acres of grounds were turned into the pleasant, riverside Carl Schurz Park. It's popular with local joggers and dog owners, and its lovely promenade – which offers panoramic views of the East River, several islands and the Triborough Bridge – is one of the Upper East Side's hidden gems.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4f89ae08a69e9a91924aab1497469c11932f1bf610846cd4161b06c8d4308def",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Metropolitan Museum of Art",
+    "short_description": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.77944,
+    "longitude": -73.963382,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+      "verified": false,
+      "geocode_source": "source_address+known_landmark",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Metropolitan Museum of Art'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "The Metropolitan Museum of Art, 1000, 5th Avenue, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10075, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5700000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 91.8,
+        "assigned_gravity": 5,
+        "reasoning": "5.7M visitors FY2025 (Jul 2024–Jun 2025) across Met Fifth Ave + Met Cloisters; 5.5M FY2024. Most-visited museum in the US. Google rating 4.8 from ~79,910 reviews (Mar 2024). Wikipedia article is flagship-quality with extensive coverage.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_visual_art_lonely_planet_new_york_city_two_million_objects_scale",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "visual_art",
+        "topic_slug": "two_million_objects_scale",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This sprawling, encyclopedic museum, founded in 1870, houses one of the world's largest and most important art collections, with more than two million individual objects, from Egyptian temples to American paintings. The Met attracts over six million visitors a year to its 17 acres of galleries, making it the largest single-site attraction in NYC.",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Metropolitan Museum of Art"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Met scale founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Founded in 1870",
+          "More than two million individual objects",
+          "Over six million visitors a year",
+          "17 acres of galleries",
+          "Largest single-site attraction in NYC"
+        ],
+        "source_passage": "This sprawling, encyclopedic museum, founded in 1870, houses one of the world's largest and most important art collections, with more than two million individual objects, from Egyptian temples to American paintings. 'The Met' attracts over six million visitors a year to its 17 acres of galleries, making it the largest single-site attraction in NYC.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "579e04846f49200b6b35a0c0d2fabedd83417af60a4bd4c2400286ea18780c19",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_hidden_history_lonely_planet_new_york_city_tomb_perneb_egyptian_galleries",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "hidden_history",
+        "topic_slug": "tomb_perneb_egyptian_galleries",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "egyptian-galleries",
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "script_body": "The museum has an unrivaled collection of ancient Egyptian art, some of which dates back to the Paleolithic era. Located to the north of the Great Hall, the 39 Egyptian galleries open dramatically with one of the Met's prized pieces: the Tomb of Perneb, dating to around 2300 BCE, an Old Kingdom burial chamber crafted from limestone. From here, a web of rooms is cluttered with funerary stelae, carved reliefs and fragments of pyramids. Don't miss the intriguing models from the Tomb of Meketre, clay figurines meant to help in the afterlife, in Gallery 105. These eventually lead to the Temple of Dendur in Gallery 131, a sandstone temple to the goddess Isis given to the US by Egypt in 1965. It resides in a sunny atrium gallery with a reflecting pool — a must-see for the first-time visitor.",
+        "duration_sec": 82,
+        "kid_friendly": "yes",
+        "entities": [
+          "Tomb of Perneb",
+          "Tomb of Meketre",
+          "Temple of Dendur",
+          "Isis"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Egyptian galleries Dendur",
+        "physical_cues": [
+          {
+            "cue": "Temple of Dendur in Gallery 131 — sandstone temple in a sunny atrium with reflecting pool",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Tomb of Perneb limestone burial chamber opening the Egyptian wing north of the Great Hall",
+            "direction": "north",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "39 Egyptian galleries; collection includes Paleolithic-era pieces",
+          "Tomb of Perneb c. 2300 BCE, Old Kingdom, limestone",
+          "Tomb of Meketre clay figurines in Gallery 105",
+          "Temple of Dendur is a sandstone temple to Isis given to the US by Egypt in 1965",
+          "Temple of Dendur is in Gallery 131 with a reflecting pool"
+        ],
+        "source_passage": "The museum has an unrivaled collection of ancient Egyptian art, some of which dates back to the Paleolithic era. Located to the north of the Great Hall, the 39 Egyptian galleries open dramatically with one of the Met's prized pieces: the Tomb of Perneb (c 2300 BCE), an Old Kingdom burial chamber crafted from limestone. From here, a web of rooms is cluttered with funerary stelae, carved reliefs and fragments of pyramids. Don't miss the intriguing models from the Tomb of Meketre, clay figurines meant to help in the afterlife, in Gallery 105. These eventually lead to the Temple of Dendur (Gallery 131), a sandstone temple to the goddess Isis given to the US by Egypt in 1965. It resides in a sunny atrium gallery with a reflecting pool – a must-see for the first-time visitor.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "41d52084e9decf5d700a93bb9abb75f58109013eac77f50c01758db71e3700c8",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_visual_art_lonely_planet_new_york_city_european_paintings_1700_masters",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "visual_art",
+        "topic_slug": "european_paintings_1700_masters",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "european-paintings-2nd-floor",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On the museum's 2nd floor, the European Paintings galleries display a stunning collection of masterworks — more than 1700 canvases from the roughly 500-year period starting in the 13th century, with works by every important painter from Duccio to Rembrandt. In fact, everything here is, literally, a masterpiece.",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "Duccio",
+          "Rembrandt"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "European paintings gallery",
+        "physical_cues": [
+          {
+            "cue": "European Paintings galleries on the 2nd floor with skylights and over 1700 canvases",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "More than 1700 canvases",
+          "Covers 500-year period starting in the 13th century",
+          "Works from Duccio to Rembrandt"
+        ],
+        "source_passage": "Want Renaissance? The Met's got it. On the museum's 2nd floor, the European Paintings galleries display a stunning collection of masterworks. This includes more than 1700 canvases from the roughly 500-year period starting in the 13th century, with works by every important painter from Duccio to Rembrandt. In fact, everything here is, literally, a masterpiece.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dfde2241052cdc154b0fa26d61431f60985fb70042d5e22c0a42531bd23b83b5",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_sacred_traditions_lonely_planet_new_york_city_islamic_galleries_mihrab_damascus_room",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "sacred_traditions",
+        "topic_slug": "islamic_galleries_mihrab_damascus_room",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "islamic-art-galleries",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In the southeastern corner of the 2nd floor you'll find the Islamic galleries, with 15 incredible rooms showcasing the museum's extensive collection of art from the Middle East, and Central and South Asia. In addition to garments, secular decorative objects and manuscripts, you'll find a magnificent 14th-century mihrab — a prayer niche — from Iran, lined with elaborately patterned blue, white and yellow tile work in Gallery 455. There's also a superb array of Ottoman textiles in Gallery 459, a medieval-style Moroccan court in Gallery 456, and the 18th-century Damascus Room in Gallery 461.",
+        "duration_sec": 67,
+        "kid_friendly": "yes",
+        "entities": [
+          "Damascus Room"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Islamic galleries mihrab",
+        "physical_cues": [
+          {
+            "cue": "14th-century mihrab (prayer niche) in Gallery 455 with blue, white and yellow tilework",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "18th-century Damascus Room in Gallery 461",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "mihrab",
+            "gloss": "prayer niche"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "15 rooms covering Middle East and Central/South Asian art",
+          "14th-century mihrab from Iran in Gallery 455 with blue, white, yellow tilework",
+          "Ottoman textiles in Gallery 459",
+          "Medieval-style Moroccan court in Gallery 456",
+          "18th-century Damascus Room in Gallery 461"
+        ],
+        "source_passage": "In the southeastern corner of the 2nd floor you'll find the Islamic galleries, with 15 incredible rooms showcasing the museum's extensive collection of art from the Middle East, and Central and South Asia. In addition to garments, secular decorative objects and manuscripts, you'll find a magnificent 14th-century mihrab (prayer niche) from Iran, lined with elaborately patterned blue, white and yellow tile work (Gallery 455). There's also a superb array of Ottoman textiles (Gallery 459), a medieval-style Moroccan court (Gallery 456) and the 18th-century Damascus Room (Gallery 461).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "288c4a9fb24c64d85b68ba867bc56c0681a133dbdcdcb70d0f469bcf8d2e12c2",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_local_legends_lonely_planet_new_york_city_william_hippo_mascot",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "local_legends",
+        "topic_slug": "william_hippo_mascot",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "egyptian-galleries",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In Gallery 111 you'll find a small, blue-glazed faience hippopotamus that was sealed into an Egyptian tomb 3900 years ago to guard its owner in the afterlife. Nicknamed 'William,' he's the Met's unofficial mascot. If you'd like your own guardian hippo, head to the museum shop on the 1st floor, where you can buy bright-blue William figurines, plush toys, ties, T-shirts, magnets and children's books.",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "entities": [
+          "William"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "William hippo mascot",
+        "physical_cues": [
+          {
+            "cue": "Small blue-glazed faience hippopotamus in Gallery 111",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Blue-glazed faience hippopotamus in Gallery 111",
+          "Sealed into an Egyptian tomb 3900 years ago",
+          "Nicknamed 'William'; the Met's unofficial mascot"
+        ],
+        "source_passage": "In Gallery 111 you'll find a small, blue-glazed faience hippopotamus that was sealed into an Egyptian tomb 3900 years ago to guard its owner in the afterlife. Nicknamed 'William,' he's the Met's unofficial mascot. If you'd like your own guardian hippo, head to the museum shop on the 1st floor, where you can buy bright-blue William figurines, plush toys, ties, T-shirts, magnets and children's books.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1fffd9cfe9b591c7a3c7af2306c3e08900028881cf487113dcb4b609b6dcd9d6",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_visual_art_lonely_planet_new_york_city_american_wing_leutze_washington",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "visual_art",
+        "topic_slug": "american_wing_leutze_washington",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "american-wing",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In the northwestern corner, the two-floor American Wing showcases a wide variety of decorative and fine art from throughout US history — from colonial portraiture to Hudson River School art, including Emanuel Leutze's massive canvas of Washington Crossing the Delaware in Gallery 760. In 2018–19, a landmark exhibition showcased 116 works of sculpture, painting, textiles and regalia from more than 50 indigenous North American cultures. The works were gifts, donations and loans from the Diker Collection, considered to be the most significant private collection of Native American art in the US.",
+        "duration_sec": 68,
+        "kid_friendly": "yes",
+        "entities": [
+          "Emanuel Leutze",
+          "Washington Crossing the Delaware",
+          "Diker Collection"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "American Wing Leutze Diker",
+        "physical_cues": [
+          {
+            "cue": "Emanuel Leutze's massive canvas of Washington Crossing the Delaware in Gallery 760",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "American Wing is in the northwestern corner, two floors",
+          "Contains Emanuel Leutze's Washington Crossing the Delaware in Gallery 760",
+          "2018-19 exhibition showed 116 works from 50+ indigenous North American cultures",
+          "Works from the Diker Collection — most significant private Native American art collection in the US"
+        ],
+        "source_passage": "In the northwestern corner, the two-floor American Wing showcases a wide variety of decorative and fine art from throughout US history. These include everything from colonial portraiture to Hudson River School art – not to mention Emanuel Leutze's massive canvas of Washington Crossing the Delaware (Gallery 760). What the permanent collection lacks, though, is a serious body of Native American art. In 2018–19 a landmark exhibition showcased 116 works of sculpture, painting, textiles and regalia from more than 50 indigenous North American cultures. The works were gifts, donations and loans from the Diker Collection, considered to be the most significant private collection of Native American art in the US.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cb393964d8ee674075ae724592a31868c64296ef8881058f62c233b7c80ae612",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_historic_arch_lonely_planet_new_york_city_greek_roman_sculpture_court_hercules",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "historic_arch",
+        "topic_slug": "greek_roman_sculpture_court_hercules",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "greek-roman-court",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The 27 galleries devoted to classical antiquity are another Met highlight. From the Great Hall, a passageway takes you through a barrel-vaulted room flanked by the chiseled torsos of Greek figures. This spills right into one of the Met's loveliest spaces: the airy Greek and Roman sculpture court in Gallery 162, full of marble carvings of gods and historical figures. The statue of a bearded Hercules from 68–98 CE, with a lion's skin draped about him, is particularly awe-inspiring.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hercules"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Greek Roman sculpture court",
+        "physical_cues": [
+          {
+            "cue": "Barrel-vaulted room with chiseled Greek torsos leading from the Great Hall",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Bearded Hercules statue with lion skin in the airy Greek and Roman sculpture court, Gallery 162",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "27 galleries devoted to classical antiquity",
+          "Barrel-vaulted room from the Great Hall leads to Greek and Roman sculpture court Gallery 162",
+          "Bearded Hercules statue from CE 68-98 with lion's skin"
+        ],
+        "source_passage": "The 27 galleries devoted to classical antiquity are another Met doozy. From the Great Hall, a passageway takes you through a barrel-vaulted room flanked by the chiseled torsos of Greek figures. This spills right into one of the Met's loveliest spaces: the airy Greek and Roman sculpture court (Gallery 162), full of marble carvings of gods and historical figures. The statue of a bearded Hercules from CE 68–98, with a lion's skin draped about him, is particularly awe-inspiring.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f4540cea6a3542e90244f5f21eb257efc46c409e80ce5b8a38d7f4ad54da6ce9",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Museum of the City of New York",
+    "short_description": "Tier-3: founded 1923; 2016 overhaul; NYC history galleries, Future City Lab.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.792527,
+    "longitude": -73.951802,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3: founded 1923; 2016 overhaul; NYC history galleries, Future City Lab.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Museum of the City of New York'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Museum of the City of New York, 1220, 5th Avenue, Manhattan Community Board 11, Manhattan, New York County, New York, 10029, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No recent attendance figures found publicly. Located on Museum Mile at 1220 Fifth Ave, established 1923. Wikipedia article exists with moderate coverage of history and architecture.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_museum_of_the_city_of_new_york_hidden_history_lonely_planet_new_york_city_timescapes_trading_post_metropolis",
+        "city_name": "new_york",
+        "poi_name": "Museum of the City of New York",
+        "lens": "hidden_history",
+        "topic_slug": "timescapes_trading_post_metropolis",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Situated in a Georgian Colonial Revival–style building at the top end of Museum Mile, this local museum focuses solely on New York City's past, present and future. Don't miss the 28-minute film Timescapes on the ground floor, which charts NYC's growth from a tiny trading post for Native Americans to a burgeoning metropolis.",
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "entities": [
+          "Timescapes"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Timescapes NYC history film",
+        "physical_cues": [
+          {
+            "cue": "Georgian Colonial Revival-style building at the top of Museum Mile on Fifth Ave",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Georgian Colonial Revival-style building at top of Museum Mile",
+          "Focuses solely on NYC's past, present, and future",
+          "28-minute film Timescapes on ground floor charts NYC from Native American trading post to metropolis"
+        ],
+        "source_passage": "Situated in a Georgian Colonial Revival–style building at the top end of Museum Mile, this local museum focuses solely on New York City's past, present and future. Don't miss the 28-minute film Timescapes (on the ground floor), which charts NYC's growth from a tiny trading post for Native Americans to burgeoning metropolis.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f78cb52742c28942f5c5f03129e07ff3cf495ecf5699eb24cd637d4b911f90a7",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Neue Galerie New York",
+    "short_description": "Tier-3: German/Austrian art; Klimt's Woman in Gold; Viennese cafe.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.781224,
+    "longitude": -73.960237,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3: German/Austrian art; Klimt's Woman in Gold; Viennese cafe.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Neue Galerie New York'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Neue Galerie New York, 1048, 5th Avenue, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10028, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "No published attendance figures; small specialty museum (German/Austrian art). Not on Art Newspaper top-attendance lists. Wikipedia article exists covering the Lauder/Galerie founding.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_neue_galerie_new_york_visual_art_lonely_planet_new_york_city_klimt_adele_135_million",
+        "city_name": "new_york",
+        "poi_name": "Neue Galerie New York",
+        "lens": "visual_art",
+        "topic_slug": "klimt_adele_135_million",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This restored Carrère and Hastings mansion from 1914 is a resplendent showcase for Austrian and German art, featuring works by Paul Klee and Ernst Ludwig Kirchner, and incredible collections of Gustav Klimt and Egon Schiele. In pride of place on the 2nd floor is Klimt's golden 1907 Portrait of Adele Bloch-Bauer I — acquired for the museum by cosmetics magnate Ronald Lauder for a whopping $135 million. The fascinating story of the painting's history is told in the 2015 film Woman in Gold.",
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paul Klee",
+          "Ernst Ludwig Kirchner",
+          "Gustav Klimt",
+          "Egon Schiele",
+          "Portrait of Adele Bloch-Bauer I",
+          "Ronald Lauder",
+          "Woman in Gold"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "dramatic",
+        "subject_tag": "Klimt Adele Lauder purchase",
+        "physical_cues": [
+          {
+            "cue": "Klimt's golden Portrait of Adele Bloch-Bauer I on the 2nd floor of the Neue Galerie",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Mansion built 1914 by Carrère and Hastings",
+          "Features Klee, Kirchner, Klimt, Schiele",
+          "Klimt's Portrait of Adele Bloch-Bauer I (1907) acquired by Ronald Lauder for $135 million",
+          "Painting's history depicted in 2015 film Woman in Gold"
+        ],
+        "source_passage": "This restored Carrère and Hastings mansion from 1914 is a resplendent showcase for Austrian and German art, featuring works by Paul Klee and Ernst Ludwig Kirchner, and incredible collections of Gustav Klimt and Egon Schiele. In pride of place on the 2nd floor is Klimt's golden 1907 Portrait of Adele Bloch-Bauer I – acquired for the museum by cosmetics magnate Ronald Lauder for a whopping $135 million. The fascinating story of the painting's history is told in the 2015 film Woman in Gold.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bd464febf502d341b9c72e4e659d974196a74fa01d09d728468a7a7e3a12af2e",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Solomon R. Guggenheim Museum",
+    "short_description": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.782993,
+    "longitude": -73.958925,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+      "verified": false,
+      "geocode_source": "source_address+known_landmark",
+      "geocode_confidence": 0.93,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Solomon R. Guggenheim Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Guggenheim Museum, 1071, 5th Avenue, Carnegie Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10128, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 766000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 63.7,
+        "assigned_gravity": 3,
+        "reasoning": "766k visitors in 2024 (down 11% from 861k in 2023, per The Art Newspaper). Wikipedia article is extensive covering Wright's architecture, collection, and history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_hidden_history_lonely_planet_new_york_city_non_objective_painting_rebay",
+        "city_name": "new_york",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "hidden_history",
+        "topic_slug": "non_objective_painting_rebay",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "script_body": "The Guggenheim came out of the collection of Solomon R. Guggenheim, a New York mining magnate who began acquiring abstract art in his 60s at the behest of his art adviser, an eccentric German baroness named Hilla Rebay. In 1939, with Rebay serving as director, Guggenheim opened a temporary museum on 54th St titled the Museum of Non-Objective Painting. Incredibly, it had grey velour walls, piped-in classical music and burning incense. Four years later, the pair commissioned Wright to construct a permanent home for the collection. Like most developments in New York City, the project took forever to come to fruition. Construction was delayed for almost 13 years due to budget constraints, the outbreak of WWII and outraged neighbors who weren't all that excited to see a giant concrete spaceship land in their midst. Construction was finally completed in 1959 — after both Wright and Guggenheim had passed away.",
+        "duration_sec": 64,
+        "kid_friendly": "yes",
+        "entities": [
+          "Solomon R. Guggenheim",
+          "Hilla Rebay",
+          "Museum of Non-Objective Painting",
+          "Frank Lloyd Wright",
+          "WWII"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Guggenheim Rebay founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Solomon R. Guggenheim was a mining magnate who began collecting abstract art in his 60s",
+          "Art adviser Hilla Rebay was a German baroness",
+          "Temporary museum opened 1939 on 54th St called Museum of Non-Objective Painting",
+          "The museum had grey velour walls, piped-in classical music, and burning incense",
+          "Wright was commissioned four years after the 1939 museum opened",
+          "Construction delayed almost 13 years",
+          "Building completed 1959 after both Wright and Guggenheim had died"
+        ],
+        "source_passage": "The Guggenheim came out of the collection of Solomon R Guggenheim, a New York mining magnate who began acquiring abstract art in his 60s at the behest of his art adviser, an eccentric German baroness named Hilla Rebay. In 1939, with Rebay serving as director, Guggenheim opened a temporary museum on 54th St titled the Museum of Non-Objective Painting. (Incredibly, it had grey velour walls, piped-in classical music and burning incense.) Four years later, the pair commissioned Wright to construct a permanent home for the collection. Like most developments in New York City, the project took forever to come to fruition. Construction was delayed for almost 13 years due to budget constraints, the outbreak of WWII and outraged neighbors who weren't all that excited to see a giant concrete spaceship land in their midst. Construction was finally completed in 1959 – after both Wright and Guggenheim had passed away.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "884f54f7fb1e0aacd0d6ecd194dfbedfbe6e5ec2a73daeca86b4157ea1c0aee4",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_historic_arch_lonely_planet_new_york_city_inverted_ziggurat_critics",
+        "city_name": "new_york",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "historic_arch",
+        "topic_slug": "inverted_ziggurat_critics",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "A sculpture in its own right, this building by architect Frank Lloyd Wright almost overshadows the collection of 20th-century art inside. Even before it opened, the inverted ziggurat structure was derided by some critics but hailed by others, who welcomed it as a beloved architectural icon. When the Guggenheim opened its doors in October 1959, the ticket price was 50¢ and the works on view included pieces by Wassily Kandinsky, Alexander Calder and abstract expressionists Franz Kline and Willem de Kooning. The structure was savaged by the New York Times, but others quickly celebrated it as one of the country's most beautiful buildings. Whether Wright intended to or not, he had given the city one of its most recognizable landmarks.",
+        "duration_sec": 70,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frank Lloyd Wright",
+          "Wassily Kandinsky",
+          "Alexander Calder",
+          "Franz Kline",
+          "Willem de Kooning",
+          "New York Times"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "architectural_detail",
+        "emotional_register": "dramatic",
+        "subject_tag": "Wright ziggurat landmark",
+        "physical_cues": [
+          {
+            "cue": "The inverted ziggurat exterior of the Guggenheim on Fifth Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Building designed by Frank Lloyd Wright",
+          "Inverted ziggurat structure was controversial before opening",
+          "Opened October 1959; ticket was 50¢",
+          "Opening works included Kandinsky, Calder, Kline, de Kooning",
+          "Savaged by New York Times but celebrated by others"
+        ],
+        "source_passage": "A sculpture in its own right, this building by architect Frank Lloyd Wright almost overshadows the collection of 20th-century art inside. Even before it opened, the inverted ziggurat structure was derided by some critics but hailed by others, who welcomed it as a beloved architectural icon. Since its opening, this unusual structure has appeared in countless postcards, TV programs and films. When the Guggenheim opened its doors in October 1959, the ticket price was 50¢ and the works on view included pieces by Wassily Kandinsky, Alexander Calder and abstract expressionists Franz Kline and Willem de Kooning. The structure was savaged by the New York Times, but others quickly celebrated it as one of the country's most beautiful buildings. Whether Wright intended to or not, he had given the city one of its most recognizable landmarks.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "89354a245843be377ce79140200b4965c26d499094deb97c69cf5c1b1b2f3bdd",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_modern_design_lonely_planet_new_york_city_tower_expansion_rotunda_ramp",
+        "city_name": "new_york",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "modern_design",
+        "topic_slug": "tower_expansion_rotunda_ramp",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": "rotunda-ramp",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "A renovation in the early 1990s added an eight-story tower to the east, which seamlessly provided an extra 50,000 sq ft of exhibition space. These galleries feature rotating exhibitions from the permanent collection, while the ramps of the Rotunda are occupied by temporary exhibits. The museum's holdings include works by Kandinsky, Picasso and Jackson Pollock. Over time, other key additions have included paintings by Monet, Van Gogh and Degas, sculpture by Constantin Brancusi, photographs by Robert Mapplethorpe, and key surrealist works donated by Guggenheim's niece Peggy. Though Wright intended visitors to go to the top and wind their way down, the cramped single elevator makes this difficult — exhibitions are installed from bottom to top.",
+        "duration_sec": 73,
+        "kid_friendly": "yes",
+        "entities": [
+          "Kandinsky",
+          "Picasso",
+          "Jackson Pollock",
+          "Monet",
+          "Van Gogh",
+          "Degas",
+          "Constantin Brancusi",
+          "Robert Mapplethorpe",
+          "Peggy Guggenheim"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "rotunda ramp collection",
+        "physical_cues": [
+          {
+            "cue": "The ascending spiral ramp of the Rotunda interior",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1990s renovation added eight-story tower to the east with 50,000 sq ft of extra space",
+          "Rotunda ramps hold temporary exhibits; tower galleries hold rotating permanent collection",
+          "Holdings include Kandinsky, Picasso, Pollock, Monet, Van Gogh, Degas, Brancusi, Mapplethorpe",
+          "Surrealist works donated by Peggy Guggenheim",
+          "Wright intended top-down flow but elevator constraints mean exhibitions run bottom to top"
+        ],
+        "source_passage": "A renovation in the early 1990s added an eight-story tower to the east, which seamlessly provided an extra 50,000 sq ft of exhibition space. These galleries feature rotating exhibitions from the permanent collection, while the ramps of the Rotunda are occupied by temporary exhibits. The museum's holdings include works by Kandinsky, Picasso and Jackson Pollock. Over time, other key additions have included paintings by Monet, Van Gogh and Degas, sculpture by Constantin Brancusi, photographs by Robert Mapplethorpe, and key surrealist works donated by Guggenheim's niece Peggy. The museum's ascending ramp displays rotating exhibitions of modern and contemporary art. Though Wright intended visitors to go to the top and wind their way down, the cramped single elevator makes this difficult. Exhibitions, therefore, are installed from bottom to top.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3ea15072b861f8e747f28b92e4c65bb8e08a7f711340e0c8498e729b6148c0b7",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Temple Emanu-El",
+    "short_description": "One of the largest Jewish houses of worship in the world, founded 1845 as New York's first Reform synagogue; completed 1929 in Romanesque style.",
+    "name_variations": [
+      "Temple Emanu-El New York"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7680271,
+    "longitude": -73.9696902,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-07. gravity: Among the world's largest synagogues; historically significant as NYC's first Reform congregation; architecturally striking.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 73,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 73 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_temple_emanu_el_historic_worship_lonely_planet_new_york_city_first_reform_synagogue_romanesque",
+        "city_name": "new_york",
+        "poi_name": "Temple Emanu-El",
+        "lens": "historic_worship",
+        "topic_slug": "first_reform_synagogue_romanesque",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Founded in 1845 as the first Reform synagogue in New York, this temple, completed in 1929, is now one of the largest Jewish houses of worship in the world. An imposing Romanesque structure, it is more than 175 ft long and 100 ft tall, with a brilliant, hand-painted ceiling featuring gold details. Services at 6pm Fridays and 10:30am Saturdays are open to all.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Temple Emanu-El"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "first Reform synagogue NYC",
+        "physical_cues": [
+          {
+            "cue": "Imposing Romanesque exterior of Temple Emanu-El on East 65th St at Fifth Ave — more than 175 ft long and 100 ft tall",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Founded 1845 as first Reform synagogue in New York",
+          "Completed 1929",
+          "One of the largest Jewish houses of worship in the world",
+          "Romanesque structure, more than 175 ft long and 100 ft tall",
+          "Hand-painted ceiling with gold details",
+          "Services open to all"
+        ],
+        "source_passage": "Founded in 1845 as the first Reform synagogue in New York, this temple, completed in 1929, is now one of the largest Jewish houses of worship in the world. An imposing Romanesque structure, it is more than 175ft long and 100ft tall, with a brilliant, hand-painted ceiling featuring gold details.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "442074c3f06938b1dd6676ebb35cffbf6247d1b242453e381edcd58b4485a4ec",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "The Jewish Museum",
+    "short_description": "Tier-4: 4,000 years of Jewish culture through art; ~800 artifacts.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.78541,
+    "longitude": -73.957183,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4: 4,000 years of Jewish culture through art; ~800 artifacts.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'The Jewish Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "The Jewish Museum, 1109, 5th Avenue, Carnegie Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10128, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 110000,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 28.8,
+        "assigned_gravity": 1,
+        "reasoning": "110k visitors in 2023 per Wikipedia/most-visited US museums list; 2024 not published. Wikipedia article covers founding and collection.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_the_jewish_museum_sacred_traditions_lonely_planet_new_york_city_30000_judaica_french_gothic_mansion",
+        "city_name": "new_york",
+        "poi_name": "The Jewish Museum",
+        "lens": "sacred_traditions",
+        "topic_slug": "30000_judaica_french_gothic_mansion",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This gem occupies a French-Gothic mansion from 1908, housing 30,000 items of Judaica including torah shields and hanukah lamps, as well as sculpture, painting and decorative arts. Temporary exhibits are often excellent, featuring retrospectives on influential figures such as Art Spiegelman or Leonard Cohen, as well as world-class shows on luminaries like Marc Chagall and Modigliani.",
+        "duration_sec": 48,
+        "kid_friendly": "yes",
+        "entities": [
+          "Art Spiegelman",
+          "Leonard Cohen",
+          "Marc Chagall",
+          "Modigliani"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Judaica collection exhibitions",
+        "physical_cues": [
+          {
+            "cue": "French-Gothic mansion exterior of the Jewish Museum on Fifth Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "French-Gothic mansion from 1908",
+          "30,000 items of Judaica including torah shields and hanukah lamps",
+          "Notable temporary exhibitions on Spiegelman, Leonard Cohen, Chagall, Modigliani"
+        ],
+        "source_passage": "This gem occupies a French-Gothic mansion from 1908, housing 30,000 items of Judaica including torah shields and hanukah lamps, as well as sculpture, painting and decorative arts. It does not, however, include any historical exhibitions relating to the Jewish community in New York. Temporary exhibits are often excellent, featuring retrospectives on influential figures such as Art Spiegelman or Leonard Cohen, as well as world-class shows on luminaries like Marc Chagall and Modigliani.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8cbaea2ac83aacaadf4f04fdc56aa261e7b1d5862a4e9dcf37b7593e80e75027",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Upper East Side",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.775479,
+    "longitude": -73.955023,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Upper East Side'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10028, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Museum Mile (Met, Guggenheim, etc.) drives multi-million visitor counts to individual institutions. No aggregate neighborhood count published. Wikipedia article is comprehensive covering history, architecture, culture.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_upper_east_side_local_legends_lonely_planet_new_york_city_museum_mile_concentration",
+        "city_name": "new_york",
+        "poi_name": "Upper East Side",
+        "lens": "local_legends",
+        "topic_slug": "museum_mile_concentration",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Upper East Side is mainly a residential area, and with a few exceptions its sights are clustered along Fifth Ave from 70th to 93rd Sts — the famed Museum Mile. Central Park runs along the western side of Fifth Ave, bordered by a low stone wall. If the weather's fine, you can spend a very pleasant day alternating museum stops with a stroll through some greenery.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Museum Mile",
+          "Central Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "stop_orientation",
+        "emotional_register": "neutral",
+        "subject_tag": "Museum Mile Fifth Ave",
+        "physical_cues": [
+          {
+            "cue": "Fifth Avenue from 70th to 93rd Streets lined with museums; low stone wall of Central Park to the west",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Museum Mile runs along Fifth Ave from 70th to 93rd Sts",
+          "Central Park borders Fifth Ave to the west with a low stone wall"
+        ],
+        "source_passage": "The Upper East Side is mainly a residential area, and with a few exceptions its sights are clustered along Fifth Ave from 70th to 93rd Sts – the famed Museum Mile. Central Park runs along the western side of Fifth Ave, bordered by a low stone wall.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "eef92be37e4f8f7eb5092b95b05aea9fb40e5ad535517a45ee324528c706001e",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_upper_east_side_local_legends_lonely_planet_new_york_city_ladies_who_lunch_sant_ambroeus",
+        "city_name": "new_york",
+        "poi_name": "Upper East Side",
+        "lens": "local_legends",
+        "topic_slug": "ladies_who_lunch_sant_ambroeus",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Upper East Side is famed for well-coiffed 'ladies who lunch,' dispensing air kisses while armed with designer handbags the size of steamer trunks. Spot them at Sant Ambroeus and Café Boulud on weekdays.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sant Ambroeus",
+          "Café Boulud"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "ladies who lunch UES",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Upper East Side known for well-dressed 'ladies who lunch'",
+          "Sant Ambroeus and Café Boulud are their regular weekday haunts"
+        ],
+        "source_passage": "Lunch with the upper crust The Upper East Side is famed for wellcoiffed 'ladies who lunch,' dispensing air kisses while armed with designer handbags the size of steamer trunks. Spot them at Sant Ambroeus and Café Boulud on weekdays.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6ed970fb07296c0e9c2c044128e52ea93a30447ac5959effd556e1abaa28dc0c",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_upper_east_side_markets_street_food_lonely_planet_new_york_city_schaller_weber_carl_schurz_picnic",
+        "city_name": "new_york",
+        "poi_name": "Upper East Side",
+        "lens": "markets_street_food",
+        "topic_slug": "schaller_weber_carl_schurz_picnic",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-07-upper-east-side",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Assemble your own charcuterie at old-time deli Schaller & Weber. Continue east to Carl Schurz Park for an alfresco meal with stunning East River views.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Schaller & Weber",
+          "Carl Schurz Park",
+          "East River"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Schaller Weber picnic deli",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Schaller & Weber is an old-time deli on the Upper East Side",
+          "Carl Schurz Park offers alfresco dining with East River views"
+        ],
+        "source_passage": "Picnic in the park Assemble your own charcuterie at old-time deli Schaller & Weber. Continue east to Carl Schurz Park for an alfresco meal with stunning East River views.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Upper East Side"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "14f45b76bc58d5e420eb51c86879530ae0674ab261de35f769a923ebaa9a3e9d",
+        "related_beats": []
+      }
+    ]
+  }
+]

@@ -16,7 +16,7 @@ from __future__ import annotations
 import pytest
 
 from scripts import backfill_name_key as bnk
-from scripts.upload_paris import _upload_pois
+from scripts.upload_paris import PARIS_BBOX, _upload_pois
 from src.api.models.nodes import canonical_name_key
 from src.connection import get_database
 from src.seed.locations import seed_pois
@@ -226,7 +226,7 @@ class TestWritePathsSetNameKey:
             }
         ]
         with clean_driver.session(database=get_database()) as s:
-            stats = _upload_pois(s, pois)
+            stats = _upload_pois(s, pois, "paris", PARIS_BBOX)
             assert stats["created"] == 1
             rec = s.run(
                 "MATCH (p:POI {name: 'Île de la Cité'}) RETURN p.name_key AS nk"

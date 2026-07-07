@@ -1,0 +1,2171 @@
+[
+  {
+    "name": "Battery Park",
+    "short_description": "Tier-5 candidate: 25-acre waterfront park at Manhattan's southern tip; tour start point with harbor/Statue of Liberty views. High footfall. Importance_tier NOT assigned per task.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.703564,
+    "longitude": -74.016678,
+    "trigger_radius": 270,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5 candidate: 25-acre waterfront park at Manhattan's southern tip; tour start point with harbor/Statue of Liberty views. High footfall. Importance_tier NOT assigned per task.",
+      "verified": false,
+      "geocode_source": "Nominatim/latlong.net (cross-checked)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 7000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 83.9,
+        "assigned_gravity": 4,
+        "reasoning": "Estimated 7–15 million annual visitors depending on methodology (counts Statue of Liberty ferry transit); Google review count not pinned from search; Wikipedia article (The Battery, Manhattan) is extensive covering history, monuments, and redesigns; dominant transit hub for harbor tourism",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_battery_park_film_tv_lonely_planet_new_york_city_desperately_seeking_susan_madonna",
+        "city_name": "new_york",
+        "poi_name": "Battery Park",
+        "lens": "film_tv",
+        "topic_slug": "desperately_seeking_susan_madonna",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At Battery Park, Madonna bewitches Aidan Quinn and Rosanna Arquette in Desperately Seeking Susan (1985).",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Battery Park",
+          "Madonna",
+          "Aidan Quinn",
+          "Rosanna Arquette",
+          "Desperately Seeking Susan"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Desperately Seeking Susan Battery Park",
+        "physical_cues": [
+          {
+            "cue": "Battery Park waterfront — filming location for Desperately Seeking Susan",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Battery Park is a filming location in Desperately Seeking Susan (1985)"
+        ],
+        "source_passage": "Battery Park, where Madonna bewitches Aidan Quinn and Rosanna Arquette in Desperately Seeking Susan (1985)",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c0531e2aa3840ca8ce28e419890f78c39d0e1758b3be3663ca5e4005315b7d8c",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Bridge",
+    "short_description": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7057,
+    "longitude": -73.9964,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+      "verified": false,
+      "geocode_source": "web_search (latitude.to / Wikipedia)",
+      "geocode_confidence": 0.85,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "No official annual pedestrian/visitor count published by a managing authority. ~29,000 pedestrians per day estimated from travel sources. Wikipedia is a 'Good Article' with comprehensive technical and historical coverage. Extremely high search prominence globally.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_brooklyn_bridge_film_tv_lonely_planet_new_york_city_on_the_town_wiz_diana_ross",
+        "city_name": "new_york",
+        "poi_name": "Brooklyn Bridge",
+        "lens": "film_tv",
+        "topic_slug": "on_the_town_wiz_diana_ross",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In On the Town (1949), starstruck sailors Frank Sinatra, Gene Kelly, and Jules Munshin skip, hop, and sing their way across the city from the base of Lady Liberty to Rockefeller Plaza and the Brooklyn Bridge. Another wave of campness hits the bridge when Diana Ross and Michael Jackson cross it in The Wiz (1978), a bizarre take on The Wizard of Oz, complete with munchkins in Flushing Meadows Corona Park and an Emerald City at the base of the WTC Twin Towers.",
+        "duration_sec": 58,
+        "kid_friendly": "yes",
+        "entities": [
+          "Brooklyn Bridge",
+          "On the Town",
+          "Frank Sinatra",
+          "Gene Kelly",
+          "Jules Munshin",
+          "The Wiz",
+          "Diana Ross",
+          "Michael Jackson",
+          "Flushing Meadows Corona Park",
+          "WTC Twin Towers"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "musical films bridge scenes",
+        "physical_cues": [
+          {
+            "cue": "Brooklyn Bridge — crossed by Frank Sinatra's sailors in On the Town and Diana Ross and Michael Jackson in The Wiz",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Brooklyn Bridge featured in On the Town (1949) with Sinatra, Kelly, Munshin",
+          "Brooklyn Bridge crossed by Diana Ross and Michael Jackson in The Wiz (1978)",
+          "The Wiz features munchkins in Flushing Meadows Corona Park and Emerald City at the base of the WTC Twin Towers"
+        ],
+        "source_passage": "In On the Town (1949), starstruck sailors Frank Sinatra, Gene Kelly and Jules Munshin look straight off a Pride float as they skip, hop and sing their way across this 'wonderful town,' from the base of Lady Liberty to Rockefeller Plaza and the Brooklyn Bridge. Another wave of campness hits the bridge when Diana Ross and Michael Jackson cross it in The Wiz (1978), a bizarre take on The Wizard of Oz, complete with munchkins in Flushing Meadows Corona Park and an Emerald City at the base of the WTC Twin Towers.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "26d4482d0dcc5a185d9fc0325c6e9af7ee3073f658045ea92d8a8967569456d1",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Bryant Park",
+    "short_description": "Independent top-level POI. Flagged for /poi-generate.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753751,
+    "longitude": -73.983543,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Independent top-level POI. Flagged for /poi-generate.",
+      "verified": false,
+      "geocode_source": "wikipedia/latlong.net (behind NYPL, 40th-42nd Sts.)",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Bryant Park'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Bryant Park, Manhattan Community Board 5, Manhattan, New York County, New York, 10018, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 12000000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 95.6,
+        "assigned_gravity": 5,
+        "reasoning": "Officially cited at 12M+ annual visitors; one of busiest public spaces in the world; 25k visitors/day in warm months; hosts 1,000+ events/year; Wikipedia article covers history, design, and programs extensively.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_bryant_park_film_tv_lonely_planet_new_york_city_manhattan_murder_mystery_fountain",
+        "city_name": "new_york",
+        "poi_name": "Bryant Park",
+        "lens": "film_tv",
+        "topic_slug": "manhattan_murder_mystery_fountain",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "It's at the fountain in Bryant Park that DIY sleuth Diane Keaton debriefs husband Woody Allen about their supposedly bloodthirsty elderly neighbor in Manhattan Murder Mystery (1993). True to form, Allen uses the film to showcase a slew of New York locales, among them the National Arts Club in Gramercy Park.",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bryant Park",
+          "Diane Keaton",
+          "Woody Allen",
+          "Manhattan Murder Mystery",
+          "National Arts Club",
+          "Gramercy Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Woody Allen Bryant Park",
+        "physical_cues": [
+          {
+            "cue": "The fountain at Bryant Park, scene of the debriefing in Manhattan Murder Mystery",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Bryant Park fountain appears in Manhattan Murder Mystery (1993)",
+          "Film also features the National Arts Club in Gramercy Park"
+        ],
+        "source_passage": "It's at the fountain in adjacent Bryant Park that DIY sleuth Diane Keaton debriefs husband Woody Allen about their supposedly bloodthirsty elderly neighbor in Manhattan Murder Mystery (1993). True to form, Allen uses the film to showcase a slew of New York locales, among them the National Arts Club in Gramercy Park and one of his own former hangouts, Elaine's at 1703 Second Ave.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a940d52932063fa3f0b5f596ad2fc45c9ae5023f8b15632f68b081f8e4e6defb",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Central Park",
+    "short_description": "Flagship NYC park, repeatedly cited (most unforgettable experiences, best family, best parks). Very high gravity but diffuse — finer sub-points needed.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.782773,
+    "longitude": -73.965363,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Flagship NYC park, repeatedly cited (most unforgettable experiences, best family, best parks). Very high gravity but diffuse — finer sub-points needed.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-08"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Central Park'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Central Park, New York County, New York, 11025, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 42000000,
+        "google_review_count": 246261,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 99.6,
+        "assigned_gravity": 5,
+        "reasoning": "~42M annual visitors; most visited urban park in the US. Google Maps review count ~246K as of 2023 (Top Local Manager data). Multiple Wikipedia articles including popular culture sub-article.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_central_park_film_tv_lonely_planet_new_york_city_way_we_were_streisand_redford_lake",
+        "city_name": "new_york",
+        "poi_name": "Central Park",
+        "lens": "film_tv",
+        "topic_slug": "way_we_were_streisand_redford_lake",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Central Park's countless screen appearances include Barbra Streisand and Robert Redford rowing on its lake in clutch-a-Kleenex The Way We Were (1973).",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Central Park",
+          "Barbra Streisand",
+          "Robert Redford",
+          "The Way We Were"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Central Park film appearances",
+        "physical_cues": [
+          {
+            "cue": "The lake in Central Park, setting of the rowing scene in The Way We Were",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Barbra Streisand and Robert Redford row on the Central Park lake in The Way We Were (1973)"
+        ],
+        "source_passage": "Across Central Park – whose own countless scenes include Barbra Streisand and Robert Redford rowing on its lake in clutch-a-Kleenex The Way We Were (1973) – stands the Dakota Building, used in the classic thriller Rosemary's Baby (1968) and once the home of Judy Garland.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dc733af82d65222e644a49a71878b8a3369513f3bba93b54b01b73cba1dcfb50",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Dakota Building",
+    "short_description": "A landmark apartment building at 1 W 72nd St on Central Park West where John Lennon lived and was fatally shot in 1980; directly across from Strawberry Fields.",
+    "name_variations": [
+      "1 W 72nd St",
+      "Dakota Apartments",
+      "Dakota Building",
+      "The Dakota"
+    ],
+    "kid_friendly": "no",
+    "latitude": 40.7765,
+    "longitude": -73.976,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-08, chunk-15. gravity: Iconic residential landmark with global Lennon association and strong tourist draw; site of a violent death so beats may be flagged not-kid-friendly. Tier 4 advisory. PROXIMITY: ~150m from Strawberry Fields, container anchor; treat as distinct address.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-08",
+        "chunk-15"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 81,
+        "assigned_gravity": 4,
+        "reasoning": "LP new POI. Notability composite 81 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 4.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_the_dakota_film_tv_lonely_planet_new_york_city_rosemarys_baby_judy_garland",
+        "city_name": "new_york",
+        "poi_name": "Dakota Building",
+        "lens": "film_tv",
+        "topic_slug": "rosemarys_baby_judy_garland",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Dakota Building on the Upper West Side was used in the classic thriller Rosemary's Baby (1968) and was once the home of Judy Garland.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Dakota",
+          "Rosemary's Baby",
+          "Judy Garland"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "factoid",
+        "beat_type": "factoid",
+        "emotional_register": "dramatic",
+        "subject_tag": "Dakota Rosemarys Baby",
+        "physical_cues": [
+          {
+            "cue": "The Dakota apartment building's Gothic exterior facade on Central Park West",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Dakota used in Rosemary's Baby (1968)",
+          "Once home to Judy Garland"
+        ],
+        "source_passage": "Across Central Park – whose own countless scenes include Barbra Streisand and Robert Redford rowing on its lake in clutch-a-Kleenex The Way We Were (1973) – stands the Dakota Building, used in the classic thriller Rosemary's Baby (1968) and once the home of Judy Garland.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0cb45483ee75dc1850374368039c03e36f6c33bc858bd58aa8c4dfa26eabb868",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Empire State Building",
+    "short_description": "Iconic global landmark, top observation deck, very high tourist gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.748442,
+    "longitude": -73.985659,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "350 Fifth Ave. at 34th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic global landmark, top observation deck, very high tourist gravity.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.97,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Empire State Building'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Empire State Building, 350, 5th Avenue, Koreatown, Manhattan Community Board 5, Manhattan, New York County, New York, 10118, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 2700000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 84.9,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 2,700,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). Official ESB website cites 2.5M+ visitors annually; recent estimates 2.7–2.8M (2024–2025 recovery range); pre-pandemic peak was ~4M. Over 60,",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_empire_state_building_film_tv_lonely_planet_new_york_city_king_kong_sleepless_affair_to_remember",
+        "city_name": "new_york",
+        "poi_name": "Empire State Building",
+        "lens": "film_tv",
+        "topic_slug": "king_kong_sleepless_affair_to_remember",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Few landmarks can claim as much screen time as the Empire State Building, famed for its spire-clinging ape in King Kong (1933, 2005), as well as for the countless romantic encounters on its observation decks. One of its most famous scenes is Meg Ryan and Tom Hanks' after-hours encounter in Sleepless in Seattle (1993). The sequence — which uses the real lobby but a studio-replica deck — is a tribute of sorts to An Affair to Remember (1957), which sees Cary Grant and Deborah Kerr make a pact to meet and (hopefully) seal their love atop the skyscraper.",
+        "duration_sec": 64,
+        "kid_friendly": "yes",
+        "entities": [
+          "Empire State Building",
+          "King Kong",
+          "Meg Ryan",
+          "Tom Hanks",
+          "Sleepless in Seattle",
+          "An Affair to Remember",
+          "Cary Grant",
+          "Deborah Kerr"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "romantic film landmark",
+        "physical_cues": [
+          {
+            "cue": "The Empire State Building observation deck, setting of Sleepless in Seattle and An Affair to Remember",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Empire State Building featured in King Kong (1933, 2005)",
+          "Meg Ryan and Tom Hanks scene in Sleepless in Seattle (1993) uses real lobby but studio-replica deck",
+          "Sleepless in Seattle is a tribute to An Affair to Remember (1957) with Cary Grant and Deborah Kerr"
+        ],
+        "source_passage": "Few landmarks can claim as much screen time as the Empire State Building, famed for its spire-clinging ape in King Kong (1933, 2005), as well as for the countless romantic encounters on its observation decks. One of its most famous scenes is Meg Ryan and Tom Hanks' after-hours encounter in Sleepless in Seattle (1993). The sequence – which uses the real lobby but a studio-replica deck – is a tribute of sorts to An Affair to Remember (1957), which sees Cary Grant and Deborah Kerr make a pact to meet and (hopefully) seal their love atop the skyscraper.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b02cc121e3887e46662d910e7a8469a199102cd1ebb34d2a292f74dca75bd0f8",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Grand Central Terminal",
+    "short_description": "Major Beaux Arts transit landmark, Frommer's 'best historic building'. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.752694,
+    "longitude": -73.977253,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major Beaux Arts transit landmark, Frommer's 'best historic building'. High gravity.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Grand Central Terminal'",
+        "trigger_radius_reasoning": "Large complex/campus",
+        "notes": "Grand Central Terminal, 89, East 42nd Street, Midtown, Manhattan Community Board 5, Manhattan, New York County, New York, 10178, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 21600000,
+        "google_review_count": 6847,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 74.1,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 21,600,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). ~21.6M tourist visitors annually; ~750K daily passers-through. Google Maps: 6,847 reviews per Tripexpert/Jake Lee data. Multiple Wikipedia s",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_grand_central_terminal_film_tv_lonely_planet_new_york_city_fisher_king_waltzing_commuters",
+        "city_name": "new_york",
+        "poi_name": "Grand Central Terminal",
+        "lens": "film_tv",
+        "topic_slug": "fisher_king_waltzing_commuters",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": "main-concourse",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Topping them all is the closing scene in Terry Gilliam's The Fisher King (1991), which sees Grand Central Terminal's Main Concourse turned into a ballroom of waltzing commuters.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Terry Gilliam",
+          "The Fisher King",
+          "Grand Central Terminal"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Fisher King waltz scene",
+        "physical_cues": [
+          {
+            "cue": "Grand Central Terminal's Main Concourse — the vast hall that became a ballroom of waltzing commuters in The Fisher King",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Grand Central Terminal's Main Concourse used as a ballroom of waltzing commuters in The Fisher King (1991)"
+        ],
+        "source_passage": "Topping them all, however, is the closing scene in Terry Gilliam's The Fisher King (1991), which sees Grand Central Terminal's Main Concourse turned into a ballroom of waltzing commuters.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ee834ba938e755895a87b06880dbc731504ce05339a2b53d12727ed469b1abbc",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Kaufman Astoria Studios",
+    "short_description": "Historic Queens film studio complex founded in 1920 as Famous Players-Lasky, home to Sesame Street and landmark productions across a century of NYC filmmaking.",
+    "name_variations": [
+      "Astoria Studios",
+      "Eastern Services Studio",
+      "US Signal Corps Photographic Center"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7713,
+    "longitude": -73.9302,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-15. gravity: Century-old anchor of NYC's film industry; produced films starring the Marx Brothers, Fred Astaire; home to The Cosby Show, Orange Is the New Black, Sesame Street; spawned Museum of the Moving Image on same grounds.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-15"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 66,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 66 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_kaufman_astoria_studios_film_tv_lonely_planet_new_york_city_famous_players_lasky_founding",
+        "city_name": "new_york",
+        "poi_name": "Kaufman Astoria Studios",
+        "lens": "film_tv",
+        "topic_slug": "famous_players_lasky_founding",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The heart of New York's local film scene was Queens' still-kicking Kaufman Astoria Studios. Founded by Jesse Lasky and Adolph Zukor in 1916 as a one-stop-shop for their Famous Players–Lasky Corporation, the complex produced a string of silent-era hits, among them The Sheik (1921) and Monsieur Beaucaire (1924), both starring Italian-born heartthrob Rudolph Valentino, as well as Manhandled (1924), starring early silver-screen diva Gloria Swanson. Renamed Paramount Pictures in 1927, the studios became known for turning Broadway stars into big-screen icons — among them the Marx Brothers, Fred Astaire, and Ginger Rogers, the latter making her feature-film debut as a flapper in Young Man of Manhattan (1930).",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jesse Lasky",
+          "Adolph Zukor",
+          "Famous Players-Lasky Corporation",
+          "Rudolph Valentino",
+          "Gloria Swanson",
+          "Paramount Pictures",
+          "Marx Brothers",
+          "Fred Astaire",
+          "Ginger Rogers"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "silent era founding",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Founded by Jesse Lasky and Adolph Zukor in 1916",
+          "Produced The Sheik (1921) and Monsieur Beaucaire (1924) starring Rudolph Valentino",
+          "Renamed Paramount Pictures in 1927",
+          "Ginger Rogers made her feature-film debut in Young Man of Manhattan (1930)"
+        ],
+        "source_passage": "Founded by Jesse Lasky and Adolph Zukor in 1916 as a one-stopshop for their Famous Players–Lasky Corporation, the complex would produce a string of silent-era hits, among them The Sheik (1921) and Monsieur Beaucaire (1924), both starring Italian-born heartthrob Rudolph Valentino, as well as Manhandled (1924), starring early silver-screen diva Gloria Swanson. Renamed Paramount Pictures in 1927, the studios became known for turning Broadway stars into big-screen icons, among them the Marx Brothers, Fred Astaire and Ginger Rogers, the latter making her feature-film debut as a flapper in Young Man of Manhattan (1930).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0aa9a568fd32d964286dde2403781d11157ec25b4a7417f544de4fc23a4f0797",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_kaufman_astoria_studios_film_tv_lonely_planet_new_york_city_paramount_shorts_cosby_sesame",
+        "city_name": "new_york",
+        "poi_name": "Kaufman Astoria Studios",
+        "lens": "film_tv",
+        "topic_slug": "paramount_shorts_cosby_sesame",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Despite Paramount moving all of its feature film shoots to Hollywood in 1932, the complex — renamed Eastern Services Studio — remained the home of Paramount's newsreel division. Throughout the 1930s it was also known for its 'shorts,' which launched the careers of homegrown talents including George Burns, Bob Hope, and Danny Kaye. After a stint making propaganda and training films for the US Army between WWII and 1970, the studios were renamed Kaufman Astoria Studios by George S. Kaufman — the real-estate magnate, not the playwright — in 1983. It was here that the Huxtables lived out their middle-class Brooklyn lives in the '80s TV sitcom The Cosby Show, and it's still here that small-screen favorite Sesame Street is taped.",
+        "duration_sec": 82,
+        "kid_friendly": "yes",
+        "entities": [
+          "Paramount Pictures",
+          "Eastern Services Studio",
+          "George Burns",
+          "Bob Hope",
+          "Danny Kaye",
+          "George S. Kaufman",
+          "The Cosby Show",
+          "Nurse Jackie",
+          "Orange Is the New Black",
+          "Sesame Street"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "studio renaming legacy",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Paramount moved feature film shoots to Hollywood in 1932",
+          "Renamed Kaufman Astoria Studios by George S. Kaufman (real-estate magnate) in 1983",
+          "The Cosby Show filmed here",
+          "Sesame Street still taped here"
+        ],
+        "source_passage": "Despite Paramount moving all of its feature film shoots to Hollywood in 1932, the complex – renamed Eastern Services Studio – remained the home of Paramount's newsreel division. Throughout the 1930s, it was also known for its 'shorts,' which launched the careers of homegrown talents including George Burns, Bob Hope and Danny Kaye. After a stint making propaganda and training films for the US Army between WWII and 1970, what had become known as the US Signal Corps Photographic Center was renamed the Kaufman Astoria Studios by George S Kaufman (the real-estate magnate, not the playwright) in 1983. It was here that the Huxtables lived out their middle-class Brooklyn lives in the '80s TV sitcom The Cosby Show, where the heroine of Nurse Jackie juggled addictions and work, and the inmates of Litchfield Penitentiary battled their demons in Orange is the New Black. It's still here that small-screen favorite Sesame Street is taped.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [
+          {
+            "claim": "renamed Kaufman Astoria Studios in 1983",
+            "book_says": "1983",
+            "source_says": "1982",
+            "source_urls": [
+              "https://deadline.com/2018/02/george-kaufman-dies-chairman-kaufman-astoria-studios-obituary-1202299819/",
+              "https://classicnewyorkhistory.com/history-of-kaufman-astoria-studios-in-queens-new-york/"
+            ],
+            "resolution": "DISPUTE — multiple sources cite 1982; book says 1983. Cannot auto-correct without 2+ definitive sources agreeing on 1982 vs the book's 1983."
+          }
+        ],
+        "fact_check": {
+          "status": "disputed",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [
+            {
+              "claim": "renamed Kaufman Astoria Studios in 1983",
+              "book_says": "1983",
+              "source_says": "1982",
+              "source_urls": [
+                "https://deadline.com/2018/02/george-kaufman-dies-chairman-kaufman-astoria-studios-obituary-1202299819/",
+                "https://classicnewyorkhistory.com/history-of-kaufman-astoria-studios-in-queens-new-york/"
+              ],
+              "resolution": "DISPUTE — multiple sources cite 1982; book says 1983. Cannot auto-correct without 2+ definitive sources agreeing on 1982 vs the book's 1983."
+            }
+          ],
+          "flagged_claims": [
+            "renamed in 1983 — sources suggest 1982"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "eacb0c3ae85a1c091a3d6c23be80696ca474548a8ebf1873caa5dfca52175c2f",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_kaufman_astoria_studios_film_tv_lonely_planet_new_york_city_nyc_film_industry_8b_jobs",
+        "city_name": "new_york",
+        "poi_name": "Kaufman Astoria Studios",
+        "lens": "film_tv",
+        "topic_slug": "nyc_film_industry_8b_jobs",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Combined, New York City's TV and film industries spend more than $8.7 billion on production annually and support 130,000 jobs. More than a third of professional actors in the US are based here.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "NYC film industry scale",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "NYC TV and film industries spend more than $8.7 billion annually",
+          "Support 130,000 jobs",
+          "More than a third of US professional actors are based in NYC"
+        ],
+        "source_passage": "Combined, the city's TV and film industries spend more than $8.7 billion (and rising) on production annually and support 130,000 jobs. More than a third of professional actors in the US are based here.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "$8.7 billion figure may be outdated given the book's publication date"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d5f06e7af2ca84da79c1f66646200cfee10b72c6c9df2a4641bea72f8f60f83f",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Lincoln Center",
+    "short_description": "Not in EXISTING_POI_NAMES (no Lincoln Center entry present). Flagged as NEW POI — do not auto-create; user triages via /poi-generate. Source address: Columbus Avenue between 62nd and 65th streets.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.772941,
+    "longitude": -73.982503,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Not in EXISTING_POI_NAMES (no Lincoln Center entry present). Flagged as NEW POI — do not auto-create; user triages via /poi-generate. Source address: Columbus Avenue between 62nd and 65th streets.",
+      "verified": false,
+      "geocode_source": "address_from_source_text (offline fallback — WebFetch/curl to Nominatim denied in this run; coordinates approximated from the source's stated address 'Columbus Avenue between 62nd and 65th streets'; MUST be re-geocoded via /poi-geocode)",
+      "geocode_confidence": "low",
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-12"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Lincoln Center'",
+        "trigger_radius_reasoning": "Large complex/campus",
+        "notes": "Lincoln Center, Jaffe Drive, Lincoln Square, Manhattan Community Board 7, Manhattan, New York County, New York, 10023, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5000000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 89.9,
+        "assigned_gravity": 5,
+        "reasoning": "5 million annual visitors cited by Lincoln Center itself and confirmed by Wikipedia. Campus of 30 indoor/outdoor spaces on 16.3 acres. Wikipedia article is long and detailed covering history, architecture, constituent organizations, and controversies.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_lincoln_center_film_tv_lonely_planet_new_york_city_black_swan_moonstruck_west_side_story",
+        "city_name": "new_york",
+        "poi_name": "Lincoln Center",
+        "lens": "film_tv",
+        "topic_slug": "black_swan_moonstruck_west_side_story",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Lincoln Center is where Natalie Portman slowly loses her mind in the psychological thriller Black Swan (2010), and where love-struck Brooklynites Cher and Nicolas Cage meet for a date in Moonstruck (1987). The Center sits on what had previously been a rundown district of tenements, captured in Oscar-winning gangland musical West Side Story (1961) — the film was shot in those very streets just before they were demolished to build Lincoln Center.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lincoln Center",
+          "Black Swan",
+          "Natalie Portman",
+          "Cher",
+          "Nicolas Cage",
+          "Moonstruck",
+          "West Side Story"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "dramatic",
+        "subject_tag": "Lincoln Center film history",
+        "physical_cues": [
+          {
+            "cue": "Lincoln Center plaza, setting of Black Swan and Moonstruck",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Black Swan (2010) filmed at Lincoln Center",
+          "Cher and Nicolas Cage meet at Lincoln Center in Moonstruck (1987)",
+          "West Side Story (1961) filmed in tenements on the site where Lincoln Center now stands"
+        ],
+        "source_passage": "Another neighborhood star is the elegant Lincoln Center, where Natalie Portman slowly loses her mind in the psychological thriller Black Swan (2010), and where love-struck Brooklynites Cher and Nicolas Cage meet for a date in Moonstruck (1987). The Center sits on what had previously been a rundown district of tenements, captured in Oscar-winning gangland musical West Side Story (1961).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5ca3d02d037e37e73044fb6d3adaab98439ebfb4e702b0591c3923952c72fd36",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_lincoln_center_film_tv_lonely_planet_new_york_city_fame_1980_performing_arts_haaren_hall",
+        "city_name": "new_york",
+        "poi_name": "Lincoln Center",
+        "lens": "film_tv",
+        "topic_slug": "fame_1980_performing_arts_haaren_hall",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In the cult musical Fame (1980), New York High School of Performing Arts students do little for the city's traffic woes by dancing on Midtown's streets. The film's graphic content was too much for the city's Board of Education, who banned shooting at the real High School of Performing Arts, then located at 120 W 46th St. Consequently, filmmakers used the doorway of a disused church on the opposite side of the street for the school's entrance, and Haaren Hall (Tenth Ave and 59th St) for interior scenes.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Fame",
+          "High School of Performing Arts",
+          "Haaren Hall"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "Fame film banned school",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Fame (1980) students dance on Midtown streets",
+          "Board of Education banned filming at High School of Performing Arts at 120 W 46th St",
+          "A disused church across the street used for school entrance",
+          "Haaren Hall (Tenth Ave and 59th St) used for interiors"
+        ],
+        "source_passage": "Knives make way for leotards in the cult musical Fame (1980), in which New York High School of Performing Arts students do little for the city's traffic woes by dancing on Midtown's streets. The film's graphic content was too much for the city's Board of Education, who banned shooting at the real High School of Performing Arts, then located at 120 W 46th St. Consequently, filmmakers used the doorway of a disused church on the opposite side of the street for the school's entrance, and Haaren Hall (Tenth Ave and 59th St) for interior scenes.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "15277b078e43284d59f3b3b5e8488da9b9635eb821df75be990d48a5c44a7b80",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Museum of the Moving Image",
+    "short_description": "TV/film/video-game museum; built on Kaufman Astoria Studios. Quick gravity: medium-high.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.756195,
+    "longitude": -73.924007,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "35th Ave. at 37th St., Astoria, Queens (on the grounds of Kaufman Astoria Studios)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "TV/film/video-game museum; built on Kaufman Astoria Studios. Quick gravity: medium-high.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Museum of the Moving Image'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Museum of the Moving Image, 35th Avenue, Queens, Queens County, New York, 11106, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 311000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 51.3,
+        "assigned_gravity": 2,
+        "reasoning": "Record attendance of 311,000 in 2025 (105% growth YoY) per iloveny.com/press. Prior annual figures ~250,000. Google review count not found in searches. Wikipedia article is extensive covering history, exhibits (Behind the Screen), Astoria Studios location, and film/TV programming.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_museum_of_the_moving_image_film_tv_lonely_planet_new_york_city_paley_center_screenings",
+        "city_name": "new_york",
+        "poi_name": "Museum of the Moving Image",
+        "lens": "film_tv",
+        "topic_slug": "paley_center_screenings",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Museum of the Moving Image in Astoria, Queens, and the Paley Center for Media in Midtown Manhattan both act as major showcases for screenings and seminars about productions past and present — and you don't have to be a student to attend.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Museum of the Moving Image",
+          "Paley Center for Media"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "sidebar",
+        "beat_type": "sidebar",
+        "emotional_register": "neutral",
+        "subject_tag": "film media visitor venues",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Museum of the Moving Image is in Astoria, Queens",
+          "Paley Center for Media is in Midtown Manhattan",
+          "Both offer screenings and seminars open to the public"
+        ],
+        "source_passage": "you don't have to be a student to learn, with both the Museum of the Moving Image in Astoria, Queens, and the Paley Center for Media in Midtown Manhattan acting as major showcases for screenings and seminars about productions both past and present.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a734e8215c74f1ec00106d788ee6e5f1b891d53ae907ef2b7ee3118e3b202c10",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "New York Public Library",
+    "short_description": "Beaux Arts main branch (Stephen A. Schwarzman Building) with lion statues.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753344,
+    "longitude": -73.982152,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Fifth Ave. (at 42nd St.)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Beaux Arts main branch (Stephen A. Schwarzman Building) with lion statues.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.93,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'New York Public Library'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Stephen A. Schwarzman Building, 476, 5th Avenue, Midtown South, Manhattan Community Board 5, Manhattan, New York County, New York, 10018, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 8000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.1,
+        "assigned_gravity": 4,
+        "reasoning": "8 million visitors (all branches, 2024 Annual Report); the Schwarzman flagship building is the primary tourist draw. Google rating 4.7; Yelp has 1,078 reviews for Schwarzman Building as of June 2026.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_public_library_film_tv_lonely_planet_new_york_city_ghostbusters_sex_city_thomas_crown",
+        "city_name": "new_york",
+        "poi_name": "New York Public Library",
+        "lens": "film_tv",
+        "topic_slug": "ghostbusters_sex_city_thomas_crown",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The New York Public Library has had quite a cinematic life. Sarah Jessica Parker's Mr Big jilts her and her Vivienne Westwood wedding dress here in Sex & the City (2008). Ghostbusters (1984) opens in the library's haunted stacks, featuring its iconic marble lions and Rose Main Reading Room. And the library's foyer sneakily stands in for the Metropolitan Museum of Art in The Thomas Crown Affair (1999), in which thieving playboy Pierce Brosnan meets his match in sultry detective Rene Russo.",
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "entities": [
+          "New York Public Library",
+          "Sarah Jessica Parker",
+          "Sex and the City",
+          "Ghostbusters",
+          "The Thomas Crown Affair",
+          "Pierce Brosnan",
+          "Rene Russo",
+          "Metropolitan Museum of Art"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "NYPL film locations",
+        "physical_cues": [
+          {
+            "cue": "Marble lion statues flanking the entrance steps of the New York Public Library",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Rose Main Reading Room on the third floor, opening scene of Ghostbusters",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Sex & the City (2008) jilting scene set at New York Public Library",
+          "Ghostbusters (1984) opening features NYPL marble lions and Rose Main Reading Room",
+          "NYPL foyer stands in for the Met in The Thomas Crown Affair (1999)"
+        ],
+        "source_passage": "Sarah Jessica Parker is less lucky in Sex & the City (2008), when a nervous Mr Big jilts her and her Vivienne Westwood wedding dress at the New York Public Library. Perhaps he'd seen Ghostbusters (1984) a few too many times, its opening scenes featuring the haunted library's iconic marble lions and Rose Main Reading Room. The library's foyer sneakily stands in for the Metropolitan Museum of Art in The Thomas Crown Affair (1999), in which thieving playboy Pierce Brosnan meets his match in sultry detective Rene Russo.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f147ee2dddf69831a3b35f7bfafbca1b5f6ee4b9c7c136d80f8c1cbe54d5e41d",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Rockefeller Center",
+    "short_description": "Multi-block complex (Top of the Rock, rink, Radio City); high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.759258,
+    "longitude": -73.979957,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Btw. 48th and 50th sts., from Fifth to Sixth aves.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Multi-block complex (Top of the Rock, rink, Radio City); high gravity.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.93,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Rockefeller Center'",
+        "trigger_radius_reasoning": "Large complex/campus",
+        "notes": "Rockefeller Center, 45, Rockefeller Plaza, Midtown, Manhattan Community Board 5, Manhattan, New York County, New York, 10111, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 2500000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 84.2,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 2,500,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). Top of the Rock observation deck cited at 2.5–3M annual visitors across sources. Broader Rockefeller Center complex (skating rink, shops, tou",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_rockefeller_center_film_tv_lonely_planet_new_york_city_snl_nbc_30_rock_inspiration",
+        "city_name": "new_york",
+        "poi_name": "Rockefeller Center",
+        "lens": "film_tv",
+        "topic_slug": "snl_nbc_30_rock_inspiration",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Rockefeller Center is home to the NBC TV network, whose long-running variety show Saturday Night Live was the real inspiration behind Tina Fey's 30 Rock — though the show itself was filmed at Silvercup Studios in Queens.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Rockefeller Center",
+          "NBC",
+          "Saturday Night Live",
+          "Tina Fey",
+          "30 Rock"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "SNL NBC 30 Rock",
+        "physical_cues": [
+          {
+            "cue": "30 Rockefeller Plaza building, home to NBC studios and Saturday Night Live",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Rockefeller Center is home to NBC TV network",
+          "Saturday Night Live is the real inspiration for 30 Rock"
+        ],
+        "source_passage": "In reality, the Rockefeller Center is home to the NBC TV network, its long-running variety show Saturday Night Live the real inspiration behind Fey's 30 Rock project.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d570492f5302c0db44c354220769060c255bb6e791e09a769f79cc6b9cecb1c2",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Silvercup Studios",
+    "short_description": "Queens-based film and TV studio known for The Sopranos, 30 Rock, and major Woody Allen films.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7513513,
+    "longitude": -73.9442427,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-15. gravity: Second major Queens studio; notable film and TV credits spanning four decades.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-15"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 45,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 45 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_silvercup_studios_film_tv_lonely_planet_new_york_city_sopranos_30_rock_godfather",
+        "city_name": "new_york",
+        "poi_name": "Silvercup Studios",
+        "lens": "film_tv",
+        "topic_slug": "sopranos_30_rock_godfather",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Back in Queens you'll find the city's other big gun, Silvercup Studios. Its list of features includes NYC classics such as Francis Ford Coppola's The Godfather: Part III (1990) and Woody Allen's Broadway Danny Rose (1984) and The Purple Rose of Cairo (1985), plus TV gems such as mafia drama The Sopranos and the equally lauded comedy 30 Rock, starring Tina Fey as a TV sketch writer and Alec Baldwin as a network executive at the Rockefeller Center.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Silvercup Studios",
+          "Francis Ford Coppola",
+          "The Godfather Part III",
+          "Woody Allen",
+          "Broadway Danny Rose",
+          "The Purple Rose of Cairo",
+          "The Sopranos",
+          "30 Rock",
+          "Tina Fey",
+          "Alec Baldwin",
+          "Rockefeller Center"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Silvercup film TV credits",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Silvercup Studios is in Queens",
+          "The Godfather: Part III (1990) filmed there",
+          "The Sopranos and 30 Rock were filmed there",
+          "Rockefeller Center is the real-world setting inspiration for 30 Rock"
+        ],
+        "source_passage": "Back in Queens you'll find the city's other big gun, Silvercup Studios. Its list of features include NYC classics such as Francis Ford Coppola's The Godfather: Part III (1990) and Woody Allen's Broadway Danny Rose (1984) and The Purple Rose of Cairo (1985), plus TV gems such as mafia drama The Sopranos and the equally lauded comedy 30 Rock, starring Tina Fey as a TV sketch writer and Alec Baldwin as a network executive at the Rockefeller Center. In reality, the Rockefeller Center is home to the NBC TV network, its long-running variety show Saturday Night Live the real inspiration behind Fey's 30 Rock project.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "aa4197f8ae73635746a1222c2d11a4cf316f329e153a87a1455cca5c9d12c670",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Staten Island Ferry",
+    "short_description": "Iconic free ferry, Wikipedia article, millions of riders, famous free Statue of Liberty views. High gravity. Geocoded to Manhattan (Whitehall) terminal.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.701409,
+    "longitude": -74.013131,
+    "trigger_radius": 50,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic free ferry, Wikipedia article, millions of riders, famous free Statue of Liberty views. High gravity. Geocoded to Manhattan (Whitehall) terminal.",
+      "verified": false,
+      "geocode_source": "web_search (Whitehall Terminal, Wikipedia/Yelp)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 16700000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 88.3,
+        "assigned_gravity": 5,
+        "reasoning": "NYC DOT / open data: 16.7M passengers in 2024. Free public ferry, not a museum, so 'visitors' = riders. Wikipedia article is extensive with full ridership history. High search interest as a free tourist attraction.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_staten_island_ferry_film_tv_lonely_planet_new_york_city_working_girl_melanie_griffith",
+        "city_name": "new_york",
+        "poi_name": "Staten Island Ferry",
+        "lens": "film_tv",
+        "topic_slug": "working_girl_melanie_griffith",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Staten Island Ferry takes bullied secretary Melanie Griffith from suburbia to Wall St in Working Girl (1988).",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Staten Island Ferry",
+          "Melanie Griffith",
+          "Working Girl"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Working Girl ferry",
+        "physical_cues": [
+          {
+            "cue": "The Staten Island Ferry terminal — the starting point of Melanie Griffith's Working Girl journey to Wall Street",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Staten Island Ferry used in Working Girl (1988) with Melanie Griffith"
+        ],
+        "source_passage": "Then there's the Staten Island Ferry, which takes bullied secretary Melanie Griffith from suburbia to Wall St in Working Girl (1988)",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "eb545488b0d69c50c64e3de4704a904f97d3a4c3068c265b7e137ab80eef64fd",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Steiner Studios",
+    "short_description": "Massive film and TV studio complex in the Brooklyn Navy Yard, the largest studio east of Los Angeles.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7011434,
+    "longitude": -73.9673989,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-15. gravity: Largest US studio east of LA; major credits including The Wolf of Wall Street, Boardwalk Empire; geo-anchored within the existing Brooklyn Navy Yard POI footprint.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-15"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 45,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 45 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_steiner_studios_film_tv_lonely_planet_new_york_city_brooklyn_navy_yard_largest_east_la",
+        "city_name": "new_york",
+        "poi_name": "Steiner Studios",
+        "lens": "film_tv",
+        "topic_slug": "brooklyn_navy_yard_largest_east_la",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Slap-bang in the historic Brooklyn Navy Yard, the 760,000-sq-ft Steiner Studios is the largest studio complex east of LA. Its film credits to date include The Producers (2005), Revolutionary Road (2008), Sex & the City 1 and 2 (2008, 2010), and The Wolf of Wall Street (2013). The studios have also been used for numerous TV shows, among them Martin Scorsese's critically acclaimed gangster drama Boardwalk Empire and fellow HBO series Vinyl, a rock drama by Scorsese, Mick Jagger, and Terence Winter.",
+        "duration_sec": 62,
+        "kid_friendly": "yes",
+        "entities": [
+          "Steiner Studios",
+          "Brooklyn Navy Yard",
+          "The Producers",
+          "Revolutionary Road",
+          "Sex and the City",
+          "The Wolf of Wall Street",
+          "Boardwalk Empire",
+          "Vinyl",
+          "Martin Scorsese",
+          "Mick Jagger",
+          "Terence Winter"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Steiner Studios credits",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Steiner Studios is 760,000 sq ft",
+          "Located in Brooklyn Navy Yard",
+          "Largest studio complex east of LA",
+          "Credits include The Wolf of Wall Street (2013) and Boardwalk Empire"
+        ],
+        "source_passage": "Slap-bang in the historic Brooklyn Navy Yard, the 760,000-sq-ft Steiner Studios is the largest studio complex east of LA. Its film credits to date include The Producers (2005), Revolutionary Road (2008), Sex & the City 1 and 2 (2008, 2010), and The Wolf of Wall Street (2013). The studios have also been used for numerous TV shows, among them Martin Scorsese's critically acclaimed gangster drama Boardwalk Empire and fellow HBO series Vinyl, a rock drama by Scorsese, Mick Jagger and Terence Winter.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7dc59abd2ad071004db3fd119c8e12b94b3a8cdd0a0d988203cef3d9a0f9a5e2",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Times Square",
+    "short_description": "Most congested pedestrian icon in the Western Hemisphere; very high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.75701,
+    "longitude": -73.985972,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Broadway at Seventh Ave., ~46th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Most congested pedestrian icon in the Western Hemisphere; very high gravity.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.92,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02",
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Times Square'",
+        "trigger_radius_reasoning": "Open square",
+        "notes": "Times Square, Manhattan Community Board 5, Manhattan, New York County, New York, 10036, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 50000000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "~50M annual visitors; handles up to 400,000/day on peak days. America's most visited destination. Wikipedia article is extremely deep with extensive cultural, architectural, and historical coverage.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_times_square_film_tv_lonely_planet_new_york_city_birdman_st_james_underwear",
+        "city_name": "new_york",
+        "poi_name": "Times Square",
+        "lens": "film_tv",
+        "topic_slug": "birdman_st_james_underwear",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Oscar-winner Birdman (2014) shines the spotlight on Midtown's glittering Theater District, in which a long-suffering Michael Keaton tries to stage a Broadway adaptation at the St James Theatre on W 44th St. Locked out of the building, a mortified Keaton fronts Times Square in nothing but his underwear. A few blocks further east, he spars over his play with Lindsay Duncan at historic drinking den Rum House.",
+        "duration_sec": 52,
+        "kid_friendly": "yes",
+        "entities": [
+          "Birdman",
+          "Michael Keaton",
+          "St James Theatre",
+          "Times Square",
+          "Lindsay Duncan",
+          "Rum House"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "Birdman Theater District",
+        "physical_cues": [
+          {
+            "cue": "Times Square itself — the setting of the infamous underwear scene from Birdman",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Birdman (2014) filmed at St James Theatre on W 44th St",
+          "Michael Keaton's character appears in Times Square in underwear",
+          "Rum House bar used for confrontation scene"
+        ],
+        "source_passage": "The Oscar-winner Birdman (2014) shines the spotlight on Midtown's glittering Theater District, in which a long-suffering Michael Keaton tries to stage a Broadway adaptation at the St James Theatre on W44th St. Locked out of the building, a mortified Keaton fronts Times Square in nothing but his underwear. A few blocks further east, he spars over his play with Lindsay Duncan at historic drinking den Rum House.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "eeb358dcd9a1c36bdc49aa4a583caa95942d9ff1c8aa62e0f4069a22b9f4235b",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Tom's Restaurant",
+    "short_description": "Upper West Side diner whose facade served as the exterior of Monk's Diner in Seinfeld.",
+    "name_variations": [
+      "Monk's Diner",
+      "Tom's Diner"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.8054509,
+    "longitude": -73.9654163,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-15. gravity: Iconic TV location; one of NYC's most-visited Seinfeld pilgrimage sites at Broadway and W 112th St.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-15"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 60,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 60 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_toms_restaurant_film_tv_lonely_planet_new_york_city_seinfeld_monks_diner_facade",
+        "city_name": "new_york",
+        "poi_name": "Tom's Restaurant",
+        "lens": "film_tv",
+        "topic_slug": "seinfeld_monks_diner_facade",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-15-understand-nyc-on-screen",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "On the Upper West Side, Tom's Restaurant is the diner whose facade was used regularly in Seinfeld as the exterior of the fictional Monk's Diner.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Tom's Restaurant",
+          "Seinfeld"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "factoid",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Seinfeld Monks Diner",
+        "physical_cues": [
+          {
+            "cue": "The blue-and-red exterior sign of Tom's Restaurant, the real-world Monk's Diner from Seinfeld",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Tom's Restaurant facade used regularly in Seinfeld"
+        ],
+        "source_passage": "The Upper West Side is also where you'll find Tom's Restaurant, the facade of which was used regularly in Seinfeld.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: NYC on Screen"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "675081bf5fa6c3bf1c17a4732db0c9a905f1943a84f90ec496fdf5dbdcd3764c",
+        "related_beats": []
+      }
+    ]
+  }
+]

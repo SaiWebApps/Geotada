@@ -38,8 +38,9 @@ export ONDOWAY_ALLOW_INSECURE_AUTH_SECRETS := 1
 	valhalla-up valhalla-down valhalla-status valhalla-build-tiles \
 	api api-test run workbench dashboard \
 	flutter-web flutter-ios flutter-device flutter-pub-get flutter-clean \
-	setup verify clean-db upload-paris backfill-provenance backfill-poi-role \
+	setup verify clean-db upload-paris upload backfill-provenance backfill-poi-role \
 	backfill-name-key \
+	survey-area-candidates fix-area-radii upload-areas fetch-boundary geocode-pois \
 	wiki-fetch gen-within-edges tour-build measure-planned-audio measure-governor \
 	flutter-ipa testflight render-status \
 	setup-audio aura-resume-proof flutter-test flutter-test-diag clean
@@ -407,6 +408,12 @@ flutter-clean: ## Clean Flutter build cache and re-resolve dependencies
 # ════════════════════════════════════════════════════════════════════════════
 ##@ DATA & PIPELINE
 
+survey-area-candidates: ## Survey POIs that are physical extents modelled as undersized points. Usage: make survey-area-candidates CITY=new_york [ARGS="--json data/new_york/.area-candidates.json"]
+	uv run python scripts/survey_area_candidates.py --city $(CITY) $(ARGS)
+
+fix-area-radii: ## Correct trigger_radius for undersized physical-extent POIs from real OSM extents. Dry-run by default; ARGS="--apply" to write. Usage: make fix-area-radii CITY=new_york [ARGS="--apply"]
+	uv run python scripts/fix_area_trigger_radii.py --city $(CITY) $(ARGS)
+
 setup: ## Apply schema + seed data + verify (full pipeline)
 	uv run python -m src.main
 
@@ -428,11 +435,23 @@ backfill-poi-role: ## Apply reviewed poi_role classifications to poi-raw.json. D
 backfill-name-key: ## Backfill name_key on POIs missing it (dedup key for defect #3). Dry-run by default; ARGS="--apply" to write; ARGS="--apply --allow-cloud" for a deliberate cloud run.
 	uv run python scripts/backfill_name_key.py $(ARGS)
 
+upload: ## Upload a city dataset to active Neo4j. Usage: make upload CITY=new_york [ARGS=--allow-cloud for a deliberate Aura load]
+	uv run python -m scripts.upload_paris "$(CITY)" $(ARGS)
+
 wiki-fetch: ## Pin a Wikipedia article's raw plain text for /beat-from-wikipedia. Usage: make wiki-fetch POI="Saint-Sulpice" [TITLE="Saint-Sulpice, Paris"] [CITY=paris]
 	@python3 scripts/wiki_fetch.py --city "$(or $(CITY),paris)" --name "$(POI)"$(if $(TITLE), --title "$(TITLE)",)
 
-gen-within-edges: ## Regenerate data/paris/within_edges.json (POI→Area staging) from areas.json + poi-raw.json
-	uv run python scripts/generate_within_edges.py
+gen-within-edges: ## Regenerate data/{CITY}/within_edges.json (POI→Area staging). Usage: make gen-within-edges CITY=new_york
+	uv run python scripts/generate_within_edges.py --slug "$(or $(CITY),paris)"
+
+upload-areas: ## Upload a city's Area nodes + WITHIN edges to active Neo4j (API must be up). Usage: make upload-areas CITY=new_york
+	uv run python scripts/upload_areas.py --slug "$(CITY)"
+
+fetch-boundary: ## Fetch a city/area OSM boundary polygon. Usage: make fetch-boundary SLUG=new_york RELATION=175905 [FORCE=1]
+	uv run python -m scripts.fetch_city_boundary --slug "$(SLUG)" --relation "$(RELATION)"$(if $(FORCE), --force,)
+
+geocode-pois: ## Geocode POIs via Nominatim. Usage: make geocode-pois SLUG=new_york [ALL=1]
+	uv run python -m scripts.geocode_pois --slug "$(SLUG)"$(if $(ALL), --all,)
 
 tour-build: db-up ## Build one real audio tour from the live Paris graph and render it to markdown. ARGS="--start '48.8566,2.3522' --duration 60 [--lenses historic_arch,...] [--round-trip]".
 	uv run python scripts/tour_build.py $(ARGS)

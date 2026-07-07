@@ -1,0 +1,2765 @@
+{
+  "chunk_id": "chunk-07",
+  "pois": [
+    {
+      "poi_name": "Bronx Zoo",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.8506,
+      "longitude": -73.8769,
+      "source_address": "Fordham Rd. and Bronx River Pkwy., Bronx",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 80,
+      "gravity_note": "World-famous, largest US zoo by acreage/animals; tier-5-scale tourist anchor. Quick gravity: very high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "New York Botanical Garden",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.8623,
+      "longitude": -73.877,
+      "source_address": "200th St. and Kazimiroff Blvd., Bronx",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 80,
+      "gravity_note": "Major Bronx attraction; world's largest Victorian greenhouse. Quick gravity: high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Brooklyn Botanic Garden",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.6694,
+      "longitude": -73.9626,
+      "source_address": "900 Washington Ave. (at Eastern Pkwy.), Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 60,
+      "gravity_note": "Prospect Park-adjacent garden, famous cherry blossoms. Quick gravity: high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Brooklyn Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.6712,
+      "longitude": -73.9636,
+      "source_address": "200 Eastern Pkwy. (at Washington Ave.), Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.85,
+      "trigger_radius": 50,
+      "gravity_note": "Major encyclopedic art museum; world-class Egyptian collection. Quick gravity: high.",
+      "in_geofence": true,
+      "proximity_flag": "Within ~250m of Brooklyn Botanic Garden (source says 'right down the street'); >100m apart so no merge, but co-located."
+    },
+    {
+      "poi_name": "Brooklyn Navy Yard",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7026,
+      "longitude": -73.9712,
+      "source_address": "East River waterfront (btw. Williamsburg and Manhattan bridges); Museum at Building 77, 141 Flushing Ave., Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.75,
+      "trigger_radius": 100,
+      "gravity_note": "Historic 300-acre industrial complex with free museum. Quick gravity: medium-high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "City Reliquary",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7138,
+      "longitude": -73.9519,
+      "source_address": "370 Metropolitan Ave. (at Havemeyer St.), Williamsburg, Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.7,
+      "trigger_radius": 30,
+      "gravity_note": "Tiny niche neighborhood museum. Quick gravity: low.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Coney Island",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.5742,
+      "longitude": -73.9784,
+      "source_address": "Coney Island, Brooklyn (coneyisland.com); Stillwell Ave.",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 120,
+      "gravity_note": "Iconic beach/amusement district; Wonder Wheel, Cyclone. Quick gravity: high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Green-Wood Cemetery",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.6579,
+      "longitude": -73.994,
+      "source_address": "Main entrance Fifth Ave. at 25th St., Sunset Park, Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 80,
+      "gravity_note": "Historic 1837 arboretum-cemetery; notable interments. Quick gravity: medium-high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Industry City",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.6557,
+      "longitude": -74.0085,
+      "source_address": "Btw. 33rd St. and 41st St., from Gowanus Expressway to waterfront, Brooklyn (Sunset Park)",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.7,
+      "trigger_radius": 90,
+      "gravity_note": "Rehabbed warehouse entertainment/shopping complex. Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "New York Aquarium",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.5742,
+      "longitude": -73.9755,
+      "source_address": "502 Surf Ave. (at W. 8th St.), Coney Island, Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 50,
+      "gravity_note": "Coney Island aquarium; post-Sandy Ocean Wonders shark center. Quick gravity: medium-high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "New York Transit Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.6901,
+      "longitude": -73.9904,
+      "source_address": "Boerum Place and Schermerhorn St., downtown Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.75,
+      "trigger_radius": 40,
+      "gravity_note": "Subway-history museum in former subway station. Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Isamu Noguchi Garden Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7681,
+      "longitude": -73.9377,
+      "source_address": "9-01 33rd Rd. (at Vernon Blvd.), Long Island City, Queens",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 40,
+      "gravity_note": "Only US museum founded by an artist in his lifetime; Zen sculpture garden. Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Louis Armstrong House Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7547,
+      "longitude": -73.8615,
+      "source_address": "34-56 107th St., Corona, Queens",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 30,
+      "gravity_note": "Preserved home of Louis Armstrong; jazz heritage. Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Museum of the Moving Image",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7565,
+      "longitude": -73.9237,
+      "source_address": "35th Ave. at 37th St., Astoria, Queens (on the grounds of Kaufman Astoria Studios)",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 40,
+      "gravity_note": "TV/film/video-game museum; built on Kaufman Astoria Studios. Quick gravity: medium-high.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "MoMA PS1",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7456,
+      "longitude": -73.9476,
+      "source_address": "22-25 Jackson Ave. (at 46th Ave.), Long Island City, Queens",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 40,
+      "gravity_note": "Contemporary art center (named 'P.S. 1 Contemporary Art Center' in source); sister of MoMA. Quick gravity: medium-high.",
+      "in_geofence": true,
+      "name_note": "Source names it 'P.S. 1 Contemporary Art Center'; poi_name normalized to current name 'MoMA PS1'. Beats use poi_name='P.S. 1 Contemporary Art Center' per source-locked extraction; flagged for poi-dedup."
+    },
+    {
+      "poi_name": "P.S. 1 Contemporary Art Center",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7456,
+      "longitude": -73.9476,
+      "source_address": "22-25 Jackson Ave. (at 46th Ave.), Long Island City, Queens",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 40,
+      "gravity_note": "Source-name variant of MoMA PS1; kept as the poi_name used in beats (source-locked). Likely alias \u2014 resolve at poi-dedup.",
+      "in_geofence": true,
+      "alias_of": "MoMA PS1"
+    },
+    {
+      "poi_name": "Queens Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7461,
+      "longitude": -73.8466,
+      "source_address": "Flushing Meadows Corona Park, Queens",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.75,
+      "trigger_radius": 50,
+      "gravity_note": "Home of the Panorama of the City of New York; 1939 World's Fair building. Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Brooklyn Children's Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.6743,
+      "longitude": -73.9442,
+      "source_address": "145 Brooklyn Ave. (at St. Marks Ave.), Brooklyn",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 30,
+      "gravity_note": "First children's museum in the nation. Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Children's Museum of Manhattan",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7847,
+      "longitude": -73.9762,
+      "source_address": "212 W. 83rd St. (btw. Broadway and Amsterdam Ave.), Manhattan",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 30,
+      "gravity_note": "Upper West Side hands-on kids museum (Manhattan, included in 'Especially for Kids' section). Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "Museum of Illusions",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7395,
+      "longitude": -74.0017,
+      "source_address": "77 Eighth Ave. (at 14th St.), Manhattan",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.7,
+      "trigger_radius": 25,
+      "gravity_note": "Photo-op attraction (Manhattan). Quick gravity: low.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "National Museum of Mathematics",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.744,
+      "longitude": -73.9879,
+      "source_address": "11 E. 26th St. (near Fifth Ave.), Manhattan",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.75,
+      "trigger_radius": 25,
+      "gravity_note": "Interactive math museum (source: 'The Museum of Mathematics'/MoMath, Manhattan). Quick gravity: medium.",
+      "in_geofence": true,
+      "name_note": "Source names it 'The Museum of Mathematics'; beats use poi_name='The Museum of Mathematics' (source-locked)."
+    },
+    {
+      "poi_name": "The Museum of Mathematics",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.744,
+      "longitude": -73.9879,
+      "source_address": "11 E. 26th St. (near Fifth Ave.), Manhattan",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.75,
+      "trigger_radius": 25,
+      "gravity_note": "Source-name used in beats (source-locked). Alias of National Museum of Mathematics (MoMath).",
+      "in_geofence": true,
+      "alias_of": "National Museum of Mathematics"
+    },
+    {
+      "poi_name": "New York City Fire Museum",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7256,
+      "longitude": -74.005,
+      "source_address": "278 Spring St. (btw. Varick and Hudson sts.), Manhattan",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 25,
+      "gravity_note": "Firehouse-memorabilia museum (Manhattan/SoHo). Quick gravity: medium.",
+      "in_geofence": true
+    },
+    {
+      "poi_name": "New York Hall of Science",
+      "is_new": true,
+      "matched_existing": null,
+      "city_name": "new_york",
+      "latitude": 40.7396,
+      "longitude": -73.8517,
+      "source_address": "47-01 111th St., Corona, Queens",
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "trigger_radius": 40,
+      "gravity_note": "Hands-on science museum in 1964 World's Fair building. Quick gravity: medium.",
+      "in_geofence": true
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_bronx_zoo_parks_gardens_frommers-nyc-2024_largest_us_zoo",
+      "city_name": "new_york",
+      "poi_name": "Bronx Zoo",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "largest_us_zoo",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "If you count number of animals as well as acreage, the Bronx Zoo is the largest zoo in the United States. With over 4,000 animals and 24 exhibits, it requires strategy to see what you want without meltdowns from the younger set. Expect to spend an entire day here \u2014 you'll need it.",
+      "beat_length_class": "mid",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "Bronx Zoo"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "largest us zoo",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Bronx Zoo is the largest zoo in the United States by animals and acreage",
+        "Over 4,000 animals and 24 exhibits"
+      ],
+      "source_passage": "If you count number of animals as well as acreage, the Bronx Zoo is the largest zoo in the United States, an innovative, unbeatably entertaining place to spend the day. But with over 4,000 animals and 24 exhibits, it requires strategy to see what you want without meltdowns from the younger set.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative ('largest zoo in the United States') \u2014 never auto-resolve; left to fact-check."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_bronx_zoo_local_legends_frommers-nyc-2024_congo_gorilla_forest_reveal",
+      "city_name": "new_york",
+      "poi_name": "Bronx Zoo",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "congo_gorilla_forest_reveal",
+      "sub_location": "congo-gorilla-forest",
+      "trigger_address": null,
+      "script_body": "Make a direct path first to the Congo Gorilla Forest, a remarkable exhibit of silverback gorillas that begins with a short film. Once the film is over, curtains dramatically part to reveal floor-to-ceiling windows, with cavorting gorillas galore. Unlike other animals at the zoo, the gorillas are always awake if you visit in the daytime, and along with the adults there always seem to be half-a-dozen baby gorillas in sight as well.",
+      "beat_length_class": "mid",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Congo Gorilla Forest"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "gorilla forest reveal",
+      "physical_cues": [
+        {
+          "cue": "Floor-to-ceiling windows revealed when the curtains part after the short film in the Congo Gorilla Forest",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Congo Gorilla Forest shows silverback gorillas behind floor-to-ceiling windows after a short film",
+        "Gorillas are awake in daytime; baby gorillas often visible"
+      ],
+      "source_passage": "When I visit with kids, I most often make a direct path first to the Congo Gorilla Forest, a remarkable exhibit of silverback gorillas that begins with a short film. Once the film is over, curtains dramatically part to reveal floor-to-ceiling windows, with cavorting gorillas galore (unlike other animals at the zoo, the gorillas are always awake if you visit in the daytime; along with the adults, there always seem to be half-a-dozen baby gorillas in sight as well).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_botanical_garden_parks_gardens_frommers-nyc-2024_largest_victorian_greenhouse",
+      "city_name": "new_york",
+      "poi_name": "New York Botanical Garden",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "largest_victorian_greenhouse",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The New York Botanical Garden boasts the world's largest Victorian greenhouse, along with a 'home gardening' section offering classes and demonstrations, a children's garden and play center, and a 50-acre native forest. An equal to the Brooklyn Botanic Garden in both scope and interest, it edges ahead on the sheer wealth of hands-on programming.",
+      "beat_length_class": "mid",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Botanical Garden",
+        "Brooklyn Botanic Garden"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "victorian greenhouse",
+      "physical_cues": [
+        {
+          "cue": "The world's largest Victorian-era greenhouse at the heart of the garden",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "NYBG has the world's largest Victorian greenhouse",
+        "Includes a 50-acre native forest, children's garden, home gardening section"
+      ],
+      "source_passage": "An equal to the Brooklyn Botanic Garden (p. 239) in both scope and interest, the New York Botanical Garden boasts the world's largest Victorian greenhouse; a \u201chome gardening\u201d section with classes and demonstrations for all the green thumbs out there; a children's garden and play center; and a 50-acre native forest.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'world's largest Victorian greenhouse' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_botanic_garden_parks_gardens_frommers-nyc-2024_first_childrens_garden",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Botanic Garden",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "first_childrens_garden",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Brooklyn Botanic Garden was the first in the world to have a 'children's garden,' letting local kids develop green thumbs \u2014 and it's still here, along with a fun play area for youngsters. There's also a 'fragrance garden' for sight-impaired visitors, where everyone is encouraged to sniff and touch the plants, and an authentic Japanese garden complete with a large pond, pagodas, and plants from that part of Asia.",
+      "beat_length_class": "mid",
+      "duration_sec": 30,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Botanic Garden"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "first childrens garden",
+      "physical_cues": [
+        {
+          "cue": "The fragrance garden where visitors are encouraged to sniff and touch the plants",
+          "direction": "here",
+          "feature_type": "interior"
+        },
+        {
+          "cue": "The Japanese garden with its large pond and pagodas",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First garden in the world to have a children's garden",
+        "Has a fragrance garden for sight-impaired visitors and an authentic Japanese garden"
+      ],
+      "source_passage": "It was the first in the world to have a \u201cchildren's garden,\u201d allowing local kids to develop green thumbs (it's still here, along with a fun play area for youngsters). There's also a \u201cfragrance garden\u201d for sight-impaired visitors, where everyone is encouraged to sniff and touch the plants; and an authentic Japanese garden, complete with a large pond, pagodas, and plants from that area of Asia.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'first in the world' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_botanic_garden_parks_gardens_frommers-nyc-2024_cherry_blossom_spring",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Botanic Garden",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "cherry_blossom_spring",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The best time of year to visit is spring, when the gardens' many cherry trees are in bloom \u2014 though seasonal displays, both outdoors and in the on-site greenhouses, run year-round.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 13,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "neutral",
+      "subject_tag": "cherry blossoms",
+      "physical_cues": [
+        {
+          "cue": "The garden's many cherry trees in bloom in spring",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Cherry trees bloom in spring; best time to visit"
+      ],
+      "source_passage": "The best time of year to visit is spring, when the gardens' many cherry trees are in bloom, though there are seasonal displays, both outdoors and in the on-site greenhouses, year-round.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_museum_visual_art_frommers-nyc-2024_brooklyn_quality_egyptian",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Museum",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "brooklyn_quality_egyptian",
+      "sub_location": "egyptian-collection",
+      "trigger_address": null,
+      "script_body": "The Brooklyn Museum's Egyptian Collection, while not as extensive as the Met's, arguably has more masterpieces. When an ancient Egyptian piece comes up at auction, dealers often ask, 'Is it Brooklyn quality?' \u2014 the museum's collection being the benchmark for this sort of artifact. Among its wonders are a tiny 5,000-year-old, pre-dynastic terra cotta sculpture of a woman, nicknamed 'Birdwoman' for her beaklike face, and the Cartonnage of Nespanetjerenpere, a mummy case whose colors are electrically bright and unfaded.",
+      "beat_length_class": "mid",
+      "duration_sec": 36,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Museum",
+        "Egyptian Collection",
+        "Birdwoman",
+        "Cartonnage of Nespanetjerenpere",
+        "Metropolitan Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "brooklyn quality egyptian",
+      "physical_cues": [
+        {
+          "cue": "The 'Birdwoman' terra cotta sculpture and the brightly-colored Cartonnage of Nespanetjerenpere in the Egyptian galleries",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Dealers ask 'Is it Brooklyn quality?' as a benchmark for Egyptian artifacts",
+        "Holds the 5,000-year-old 'Birdwoman' and the Cartonnage of Nespanetjerenpere"
+      ],
+      "source_passage": "Its Egyptian Collection, while not as extensive as the Met's, arguably has more masterpieces. (When an ancient Egyptian piece comes up at auction, dealers often ask, \u201cIs it Brooklyn quality?\u201d\u2014the Brooklyn Museum's collection being the benchmark for this sort of artifact.) Among the collection's many wonders are a tiny 5,000-year-old, pre-dynastic terra cotta sculpture of a woman, which curators have nicknamed \u201cBirdwoman\u201d for her beaklike face, one of very few intact sculptures from this long-ago era. The Cartonnage of Nespanetjerenpere is another highlight, a mummy case that looks like it was swiped from the set of Revenge of the Mummy, its colors electrically bright and unfaded.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_museum_visual_art_frommers-nyc-2024_rockefeller_moorish_smoking_room",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Museum",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "rockefeller_moorish_smoking_room",
+      "sub_location": "decorative-arts-galleries",
+      "trigger_address": null,
+      "script_body": "The Decorative Arts Galleries on the fourth floor re-create important rooms from different eras of American history, including John D. Rockefeller's 'Moorish Smoking Room' \u2014 an over-the-top Victorian version of the Middle East, every bit of space lavishly carved, gilded, inlaid, or embroidered.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Decorative Arts Galleries",
+        "John D. Rockefeller",
+        "Moorish Smoking Room"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "moorish smoking room",
+      "physical_cues": [
+        {
+          "cue": "Rockefeller's carved and gilded 'Moorish Smoking Room' in the fourth-floor Decorative Arts Galleries",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Fourth-floor Decorative Arts Galleries re-create historic American rooms including Rockefeller's Moorish Smoking Room"
+      ],
+      "source_passage": "Second most popular among the museum's offerings are the Decorative Arts Galleries (fourth floor), which re-create important rooms from different eras of American history, including John D. Rockefeller's \u201cMoorish Smoking Room,\u201d an over-the-top Victorian version of the Middle East, every bit of space lavishly carved, gilded, inlaid, or embroidered.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_museum_social_change_frommers-nyc-2024_sackler_feminist_art_dinner_party",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Museum",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "sackler_feminist_art_dinner_party",
+      "sub_location": "sackler-center-feminist-art",
+      "trigger_address": null,
+      "script_body": "The Elizabeth A. Sackler Center for Feminist Art holds permanent and rotating exhibitions of art made by women, including Judy Chicago's The Dinner Party. The museum's American Collection meanwhile gathers works by masters such as Albert Bierstadt, Thomas Eakins, Winslow Homer, and Georgia O'Keeffe.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "Elizabeth A. Sackler Center for Feminist Art",
+        "Judy Chicago",
+        "The Dinner Party",
+        "Albert Bierstadt",
+        "Thomas Eakins",
+        "Winslow Homer",
+        "Georgia O'Keeffe"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "feminist art center",
+      "physical_cues": [
+        {
+          "cue": "Judy Chicago's The Dinner Party in the Elizabeth A. Sackler Center for Feminist Art",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Sackler Center for Feminist Art houses Judy Chicago's The Dinner Party",
+        "American Collection includes Bierstadt, Eakins, Homer, O'Keeffe"
+      ],
+      "source_passage": "Also worth a look: the museum's American Collection (works by such masters as Albert Bierstadt, Thomas Eakins, Winslow Homer, and Georgia O'Keeffe); the Elizabeth A. Sackler Center for Feminist Art (permanent and rotating exhibitions of art made by women, including Judy Chicago's The Dinner Party); and whatever special exhibitions are taking place (they're often stellar).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_museum_music_heritage_frommers-nyc-2024_first_saturday_party",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Museum",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "first_saturday_party",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "One thing the Brooklyn does better than the Met: party. On the first Saturday of each month, the museum hires DJs and performers of all sorts and throws a 'First Saturday' fiesta, free to the public from 5 to 11pm.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Museum",
+        "Metropolitan Museum"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "first saturday party",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First Saturday of each month, free party with DJs and performers, 5 to 11pm"
+      ],
+      "source_passage": "One final thing the Brooklyn does better than the Met: party. The first Saturday of each month, the museum hires DJs and performers of all sorts and throws a \u201cFirst Saturday\u201d fiesta free to the public from 5 to 11pm.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_navy_yard_war_conflict_frommers-nyc-2024_wwii_biggest_industrial_complex",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Navy Yard",
+      "parent_poi": null,
+      "lens": "war_conflict",
+      "topic_slug": "wwii_biggest_industrial_complex",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At its peak during World War II, when it employed some 70,000 men and women, the Brooklyn Navy Yard was the biggest industrial complex in U.S. history \u2014 no other site has yet topped that employment figure. The oral histories of the women who worked here during the war, preserved at the on-site museum, are especially moving.",
+      "beat_length_class": "mid",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Navy Yard",
+        "World War II"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "reverent",
+      "subject_tag": "wwii industrial peak",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "At WWII peak employed ~70,000 and was biggest industrial complex in US history",
+        "On-site museum preserves oral histories of women workers"
+      ],
+      "source_passage": "At its peak usage during World War II, when it employed some 70,000 men and women, the Brooklyn Navy Yard was the biggest industrial complex in U.S. history\u2014no other site has yet to top that employment figure.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'biggest industrial complex in U.S. history' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_navy_yard_dark_history_frommers-nyc-2024_revolutionary_prison_ships",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Navy Yard",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "revolutionary_prison_ships",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Yard's importance to America began far earlier, during the American Revolution, when the British docked their infamous prison ships here. Conditions aboard them were so atrocious that more than 11,500 Americans perished \u2014 more than the combined U.S. casualties in all the battles of the Revolution. Most of their bodies were simply dumped overboard into the water, making these waters the largest Revolutionary graveyard in the States.",
+      "beat_length_class": "mid",
+      "duration_sec": 30,
+      "kid_friendly": "no",
+      "entities": [
+        "American Revolution",
+        "Brooklyn Navy Yard",
+        "British prison ships"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "climax",
+      "beat_type": "event",
+      "emotional_register": "somber",
+      "subject_tag": "prison ships deaths",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "British docked prison ships here during the Revolution",
+        "More than 11,500 Americans died, more than all combined Revolutionary battle casualties",
+        "Bodies dumped overboard, making the waters the largest Revolutionary graveyard"
+      ],
+      "source_passage": "But its importance to America began far before then, during the American Revolution, when the British docked their infamous prison ships here; conditions aboard them were so atrocious that more than 11,500 Americans perished here, more than the combined number of U.S. casualties in all the battles of the American Revolution. (Most of their bodies were simply dumped overboard into the water, making these waters the largest Revolutionary graveyard in the States.)",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Casualty figure and superlative ('largest Revolutionary graveyard') \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_navy_yard_film_tv_frommers-nyc-2024_snl_maisel_soundstages",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Navy Yard",
+      "parent_poi": null,
+      "lens": "film_tv",
+      "topic_slug": "snl_maisel_soundstages",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Today this 300-acre property is owned by the city of New York, which rents out space to dozens of manufacturers and artisans \u2014 including the company that builds the sets for Saturday Night Live, the soundstage where The Marvelous Mrs. Maisel is filmed, Nanette Lepore fashions, and Crye Precision, which makes protective vests and helmets for the U.S. military.",
+      "beat_length_class": "mid",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Saturday Night Live",
+        "The Marvelous Mrs. Maisel",
+        "Nanette Lepore",
+        "Crye Precision"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "modern soundstages",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "300-acre property owned by NYC",
+        "Tenants include SNL set-builders, Mrs. Maisel soundstage, Nanette Lepore, Crye Precision"
+      ],
+      "source_passage": "Today this 300-acre property is owned by the city of New York, which maintains its historic working dry docks. It also rents out space to dozens of manufacturers and artisans, including the company that builds the sets for Saturday Night Live; the soundstage where The Marvelous Mrs. Maisel is filmed; Nanette Lepore fashions; and Crye Precision, which designs and manufactures protective vests and helmets for the U.S. military.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_city_reliquary_local_legends_frommers-nyc-2024_flea_market_oddball_collections",
+      "city_name": "new_york",
+      "poi_name": "City Reliquary",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "flea_market_oddball_collections",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "A tiny museum that seems to take its aesthetic from flea markets, the City Reliquary tells strands of New York's tale through oddball collections of seltzer bottles, Statue of Liberty figurines, and paintings of Jackie Robinson, among other artifacts. Touring here is a fun 30 minutes.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "City Reliquary",
+        "Statue of Liberty",
+        "Jackie Robinson"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "oddball collections",
+      "physical_cues": [
+        {
+          "cue": "Flea-market-style displays of seltzer bottles, Statue of Liberty figurines, and Jackie Robinson paintings",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Tiny flea-market-aesthetic museum of seltzer bottles, Statue of Liberty figurines, Jackie Robinson paintings"
+      ],
+      "source_passage": "A tiny museum that seems to take its aesthetic from flea markets, City Reliquary illustrates strands of NYC's tale through oddball collections of seltzer bottles, Statue of Liberty figurines, and paintings of Jackie Robinson, among other artifacts. Touring here is a fun 30 minutes, but if you're not nearby you can skip it without regret.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_local_legends_frommers-nyc-2024_honky_tonk_rescued",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "honky_tonk_rescued",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Honky-tonk paradise, Coney Island has been rescued from extinction a few times \u2014 first from developers and most recently from severe Hurricane Sandy damage. Parts of it are given over to brand-new amusement parks and rides, but it's still possible to try classic attractions from times past.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Coney Island",
+        "Hurricane Sandy"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "honky tonk survival",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Coney Island rescued from extinction first from developers, then from Hurricane Sandy damage"
+      ],
+      "source_passage": "Honky-tonk paradise, Coney Island has been rescued from extinction a few times (first from developers and most recently from severe Hurricane Sandy damage). Parts of it are given over to brand-new amusement parks and rides, but it's still possible to try some of the classic attractions from times past, including the Wonder Wheel (a Ferris wheel with gliding compartments) and the Cyclone (a huge wooden roller coaster, one of the scariest you'll ever ride, because you'll do so knowing that nearly a dozen people have been killed on it over the years).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_dark_history_frommers-nyc-2024_cyclone_wooden_coaster_deaths",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "cyclone_wooden_coaster_deaths",
+      "sub_location": "cyclone",
+      "trigger_address": null,
+      "script_body": "Among the classic attractions are the Wonder Wheel, a Ferris wheel with gliding compartments, and the Cyclone, a huge wooden roller coaster \u2014 one of the scariest you'll ever ride, because you'll do so knowing that nearly a dozen people have been killed on it over the years.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 18,
+      "kid_friendly": "no",
+      "entities": [
+        "Wonder Wheel",
+        "Cyclone"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "dramatic",
+      "subject_tag": "cyclone deaths",
+      "physical_cues": [
+        {
+          "cue": "The Cyclone wooden roller coaster and the Wonder Wheel Ferris wheel",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Wonder Wheel has gliding compartments",
+        "Cyclone is a wooden coaster on which nearly a dozen people have been killed over the years"
+      ],
+      "source_passage": "Parts of it are given over to brand-new amusement parks and rides, but it's still possible to try some of the classic attractions from times past, including the Wonder Wheel (a Ferris wheel with gliding compartments) and the Cyclone (a huge wooden roller coaster, one of the scariest you'll ever ride, because you'll do so knowing that nearly a dozen people have been killed on it over the years).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "'nearly a dozen people killed on it' is a death/crime claim \u2014 flag; never auto-resolve story deletions."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_local_legends_frommers-nyc-2024_circus_side_show",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "circus_side_show",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "If you visit in summer, don't skip the Coney Island Circus Side Show, formerly known as 'The Freak Show.' It features a 'human pincushion,' a snake charmer, a man who hammers nails up his nose, and other odd performers. It's one of the last shows of its kind in the U.S., and though it sounds unsavory, it's G-rated.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Coney Island Circus Side Show"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "circus side show",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Coney Island Circus Side Show, formerly 'The Freak Show', features a human pincushion and other performers",
+        "One of the last shows of its kind in the U.S., G-rated"
+      ],
+      "source_passage": "If you visit in summer, don't skip the Coney Island Circus Side Show (formerly known as \u201cThe Freak Show\u201d; $12 adults, $8 kids), which features a \u201chuman pincushion,\u201d a snake charmer, a man who hammers nails up his nose, and other odd performers. It's one of the last shows of its kind in the U.S., and though it sounds unsavory, it's G-rated.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_waterways_views_frommers-nyc-2024_beach_social_scene",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "parent_poi": null,
+      "lens": "waterways_views",
+      "topic_slug": "beach_social_scene",
+      "sub_location": "beach",
+      "trigger_address": null,
+      "script_body": "Then there's the beach itself, a motley swatch of sand where gaggles of Brooklynites gather in summer to pitch umbrellas, practice kung fu, blast music, picnic, and swim. It's a fascinating social scene, with many different ethnic groups represented.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "playful",
+      "subject_tag": "beach social scene",
+      "physical_cues": [
+        {
+          "cue": "The beach where Brooklynites pitch umbrellas, practice kung fu, and picnic in summer",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Coney Island beach is a summer social scene with many ethnic groups, kung fu, music, picnics"
+      ],
+      "source_passage": "Then there's the beach itself, a motley swatch of sand where gaggles of Brooklynites gather in summer to pitch umbrellas, practice kung fu, blast music, picnic, and swim. It's a fascinating social scene, with many different ethnic groups represented.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_green_wood_cemetery_famous_residents_frommers-nyc-2024_first_families_notables",
+      "city_name": "new_york",
+      "poi_name": "Green-Wood Cemetery",
+      "parent_poi": null,
+      "lens": "famous_residents",
+      "topic_slug": "first_families_notables",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "As you wander New York, you'll notice streets named for important Gothamites you'll also encounter at Green-Wood. The city's 'first families' were all interred here, along with such notables as DeWitt Clinton \u2014 a presidential candidate and mastermind behind the Erie Canal \u2014 composer Leonard Bernstein of Broadway's West Side Story, and artists Louis Comfort Tiffany and Jean Michel Basquiat.",
+      "beat_length_class": "mid",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "DeWitt Clinton",
+        "Erie Canal",
+        "Leonard Bernstein",
+        "West Side Story",
+        "Louis Comfort Tiffany",
+        "Jean Michel Basquiat"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "notable interments",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First families and notables interred: DeWitt Clinton, Leonard Bernstein, Louis Comfort Tiffany, Jean Michel Basquiat"
+      ],
+      "source_passage": "The \u201cfirst families\u201d of the city were all interred here, as were such notables as DeWitt Clinton (a presidential candidate who was the mastermind behind the Erie Canal), Leonard Bernstein (composer of Broadway's West Side Story), and artists Louis Comfort Tiffany and Jean Michel Basquiat.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_green_wood_cemetery_local_legends_frommers-nyc-2024_horse_funeral_ended_pet_burials",
+      "city_name": "new_york",
+      "poi_name": "Green-Wood Cemetery",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "horse_funeral_ended_pet_burials",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Even pets were buried here \u2014 until the funeral of a devoted horse convinced the cemetery's staff to stop the practice in 1870. The cemetery itself was founded in 1837.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 12,
+      "kid_friendly": "yes",
+      "entities": [
+        "Green-Wood Cemetery"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "wry",
+      "subject_tag": "horse funeral",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Pets were buried here until a devoted horse's funeral ended the practice in 1870",
+        "Cemetery founded 1837"
+      ],
+      "source_passage": "Heck, even pets were buried here . . . until the funeral of a devoted horse convinced the cemetery's staff to stop the practice in 1870 (the cemetery itself was founded in 1837).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_green_wood_cemetery_parks_gardens_frommers-nyc-2024_arboretum_highest_point",
+      "city_name": "new_york",
+      "poi_name": "Green-Wood Cemetery",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "arboretum_highest_point",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "It's not hard to understand why New Yorkers would pick Green-Wood for their eternal rest. Set on the highest point of Brooklyn, it's a stunning place, considered an arboretum as well as a cemetery for the 7,000 or so trees that grow here. The monuments are equally beautiful, hand-carved in dozens of styles, from Tiffany-glass-adorned mausoleums to bronze and marble statuary.",
+      "beat_length_class": "mid",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Green-Wood Cemetery"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "arboretum monuments",
+      "physical_cues": [
+        {
+          "cue": "Hand-carved monuments, from Tiffany-glass mausoleums to bronze and marble statuary, set among 7,000 trees on Brooklyn's highest point",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Set on highest point of Brooklyn; an arboretum with ~7,000 trees",
+        "Monuments hand-carved in many styles including Tiffany-glass mausoleums"
+      ],
+      "source_passage": "Set on the highest point of Brooklyn, it's a stunning place, considered an arboretum as well as a cemetery for the 7,000 or so trees that grow here. The monuments are equally beautiful, hand-carved in dozens of different styles, from Tiffany-glass-adorned mausoleums to bronze and marble statuary.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_green_wood_cemetery_local_legends_frommers-nyc-2024_catacomb_concerts_death_cafes",
+      "city_name": "new_york",
+      "poi_name": "Green-Wood Cemetery",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "catacomb_concerts_death_cafes",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The staff here, determined to prove that cemeteries can be fun, host a myriad of events \u2014 from trolley and walking tours to nighttime concerts in the catacombs, lectures, 'death cafes' (free-form guided discussions about what happens after we pass), and even history happy hours at sunset, where people learn the stories behind the tombs with cocktails in hand.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Green-Wood Cemetery"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "cemetery events",
+      "physical_cues": [],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "death cafes",
+          "gloss": "free-form guided discussion groups about what happens after we pass"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Hosts catacomb concerts, 'death cafes', and sunset history happy hours"
+      ],
+      "source_passage": "A final lure: The staff here, determined to prove that cemeteries can be fun, host a myriad of events, from excellent trolley and walking tours to nighttime concerts in the catacombs, as well as lectures, \u201cdeath cafes\u201d (free-form guided discussion groups about what happens after we pass), and even history happy hours at sunset, where people learn the stories behind the tombs with cocktails in hand.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_industry_city_social_change_frommers-nyc-2024_bush_warehouse_artists_priced_out",
+      "city_name": "new_york",
+      "poi_name": "Industry City",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "bush_warehouse_artists_priced_out",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The 16-building complex was first developed by Irving T. Bush in the 1890s as a multi-use manufacturing and warehouse site. By the 1970s much of it had become derelict, but then, as happened in the SoHo and Dumbo areas, it was rehabbed by artists. Alas, just as in those two neighborhoods, private developers priced out the artists, and most have had to move to cheaper spaces.",
+      "beat_length_class": "mid",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "Industry City",
+        "Irving T. Bush",
+        "SoHo",
+        "Dumbo"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "wry",
+      "subject_tag": "artists priced out",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "16-building complex developed by Irving T. Bush in 1890s",
+        "Derelict by 1970s, rehabbed by artists, then artists priced out by developers like SoHo and Dumbo"
+      ],
+      "source_passage": "The 16-building complex was first developed by Irving T. Bush in the 1890s as a multi-use manufacturing and warehouse site. By the 1970s, much of it had become derelict, but then, as happened in the SoHo and Dumbo areas, it was rehabbed by artists. Alas, just as in those two neighborhoods, private developers priced out the artists, and most have had to move to cheaper spaces.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_industry_city_markets_street_food_frommers-nyc-2024_food_halls_breweries",
+      "city_name": "new_york",
+      "poi_name": "Industry City",
+      "parent_poi": null,
+      "lens": "markets_street_food",
+      "topic_slug": "food_halls_breweries",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Among the offerings are two food halls \u2014 one entirely devoted to Japanese fare, the other holding Brooklyn's much-snarked-about 'all avocado' restaurant \u2014 plus a beer brewery, the city's first sake brewery, and a distillery for ginger liqueurs that doubles as a liquor store and bar serving only brands created in New York State.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Industry City"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "wry",
+      "subject_tag": "food halls breweries",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Two food halls (one Japanese, one with an 'all avocado' restaurant)",
+        "Beer brewery, city's first sake brewery, ginger-liqueur distillery serving only NY State brands"
+      ],
+      "source_passage": "Rounding out the offerings are two food halls (one entirely devoted to Japanese fare, the other holding Brooklyn's much-snarked-about \u201call avocado\u201d restaurant), as well as a beer brewery, the city's first sake brewery, and a distillery for ginger liqueurs (it's also a liquor store and bar serving only brands created in New York State).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'city's first sake brewery' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_aquarium_dark_history_frommers-nyc-2024_hurricane_sandy_swamped",
+      "city_name": "new_york",
+      "poi_name": "New York Aquarium",
+      "parent_poi": null,
+      "lens": "dark_history",
+      "topic_slug": "hurricane_sandy_swamped",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "In 2012, the surge from Hurricane Sandy effectively swamped the New York Aquarium. Its sea lions and most of the other aquatic critters surfed the storm unhurt, but the buildings were heavily damaged, new construction was put on hold, and visitors could only see 40% of the facilities. That changed in the summer of 2018, when the whiz-bang Ocean Wonders center opened.",
+      "beat_length_class": "mid",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Aquarium",
+        "Hurricane Sandy",
+        "Ocean Wonders"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "event",
+      "emotional_register": "dramatic",
+      "subject_tag": "sandy flood recovery",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "2012 Hurricane Sandy surge swamped the aquarium; sea life survived, buildings damaged",
+        "Visitors could see only 40% until Ocean Wonders opened summer 2018"
+      ],
+      "source_passage": "In 2012, the surge from Hurricane Sandy effectively swamped the New York Aquarium. Its sea lions and most of the other aquatic critters were able to surf the storm unhurt, but the buildings were heavily damaged, new construction was put on hold, and visitors were only able to see 40% of the facilities. That changed in the summer of 2018, when the whiz-bang Ocean Wonders center opened.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_aquarium_science_tech_frommers-nyc-2024_ocean_wonders_hudson_canyon",
+      "city_name": "new_york",
+      "poi_name": "New York Aquarium",
+      "parent_poi": null,
+      "lens": "science_tech",
+      "topic_slug": "ocean_wonders_hudson_canyon",
+      "sub_location": "ocean-wonders",
+      "trigger_address": null,
+      "script_body": "The Ocean Wonders center is dedicated to sharks and the Grand-Canyon-deep underwater 'Hudson Canyon,' which lies just 40 miles off the city's coastline. It doubled what there is to see at the aquarium, with great whites, leopard sharks, giant rays, and endangered Atlantic sturgeons in massive walk-through tanks, plus interactive exhibits on sustainable seafood, ocean trash, and the importance of sharks to the ecosystem.",
+      "beat_length_class": "mid",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Ocean Wonders",
+        "Hudson Canyon"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "hudson canyon sharks",
+      "physical_cues": [
+        {
+          "cue": "Massive walk-through tanks with great whites, leopard sharks, giant rays, and Atlantic sturgeons in the Ocean Wonders center",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Ocean Wonders dedicated to sharks and the 'Hudson Canyon' 40 miles off the coast",
+        "Holds great whites, leopard sharks, giant rays, endangered Atlantic sturgeons in walk-through tanks"
+      ],
+      "source_passage": "Dedicated to sharks and the Grand-Canyon-deep underwater \u201cHudson Canyon\u201d (just 40 miles off the city's coastline), this new center doubled the amount to see and do at the aquarium. Along with great whites, leopard sharks, giant rays, endangered Atlantic sturgeons, and other sea life in massive walk-through tanks, it holds dozens of educational-but-not-preachy interactive exhibits on sustainable seafood, ocean trash, and the importance of sharks to the ecosystem.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_transit_museum_science_tech_frommers-nyc-2024_former_subway_station_vintage_cars",
+      "city_name": "new_york",
+      "poi_name": "New York Transit Museum",
+      "parent_poi": null,
+      "lens": "science_tech",
+      "topic_slug": "former_subway_station_vintage_cars",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Best for kids and train nuts, this underground museum \u2014 yes, it's in a former subway station \u2014 covers the storied history of the NYC subway system. It houses a number of handsome vintage subway cars, turnstiles, and mosaics that used to adorn the stations.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Transit Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "former subway station",
+      "physical_cues": [
+        {
+          "cue": "Vintage subway cars, turnstiles, and station mosaics in the former subway station",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Underground museum in a former subway station covering NYC subway history",
+        "Houses vintage subway cars, turnstiles, mosaics"
+      ],
+      "source_passage": "Best for kids and train nuts, this underground museum (yes, it's in a former subway station) covers the storied history of the NYC subway system. The museum houses a number of handsome vintage subway cars, turnstiles, and mosaics that used to adorn the stations.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_isamu_noguchi_garden_museum_visual_art_frommers-nyc-2024_only_artist_founded_museum",
+      "city_name": "new_york",
+      "poi_name": "Isamu Noguchi Garden Museum",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "only_artist_founded_museum",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Utterly unique, this is the only museum in the nation founded by an artist in his lifetime, dedicated to his work and curated by him. Because Noguchi, who lived from 1904 to 1988, was a genius across sculpture, architecture, ceramics, and furniture design, he was more than up to the task, creating a space at once balanced and often rapturously beautiful.",
+      "beat_length_class": "mid",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Isamu Noguchi"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "artist founded museum",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Only US museum founded by an artist in his lifetime, curated by him",
+        "Noguchi (1904-88) worked in sculpture, architecture, ceramics, furniture design"
+      ],
+      "source_passage": "Utterly unique, it's the only museum in the nation to be founded by an artist in his lifetime, dedicated to his work and curated by him. Because Noguchi (1904\u201388) was a genius in a number of fields\u2014sculpture, architecture, ceramics, furniture design\u2014he was more than up to the task and created a space that is at once balanced and (often) rapturously beautiful.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'only museum in the nation founded by an artist in his lifetime' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_isamu_noguchi_garden_museum_parks_gardens_frommers-nyc-2024_zen_sculpture_garden",
+      "city_name": "new_york",
+      "poi_name": "Isamu Noguchi Garden Museum",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "zen_sculpture_garden",
+      "sub_location": "zen-sculpture-garden",
+      "trigger_address": null,
+      "script_body": "On-site are a small cafe and bookstore and an updated Zen sculpture garden \u2014 one of the most serene spots in the city. Gallery talks, held at 2pm each day, illuminate the complex engineering issues and intentions behind Noguchi's large, sometimes slablike, non-representational works.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 18,
+      "kid_friendly": "yes",
+      "entities": [
+        "Isamu Noguchi"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "scene_setter",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "zen garden",
+      "physical_cues": [
+        {
+          "cue": "The updated Zen sculpture garden on-site",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "On-site Zen sculpture garden, one of the most serene spots in the city",
+        "Daily 2pm gallery talks on Noguchi's non-representational works"
+      ],
+      "source_passage": "On-site are also a small cafe/bookstore and an updated Zen sculpture garden (one of the most serene spots in the city). Gallery talks, held at 2pm each day, are helpful for those not familiar with Noguchi's work, as they illuminate the complex engineering issues and intentions behind his large, sometimes slablike, non-representational works.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_louis_armstrong_house_museum_music_heritage_frommers-nyc-2024_only_home_satchmo_owned",
+      "city_name": "new_york",
+      "poi_name": "Louis Armstrong House Museum",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "only_home_satchmo_owned",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The only house this traveling musician ever owned, it was perfectly preserved after his wife Lucille died in 1983 \u2014 Armstrong himself had passed away in 1971 \u2014 and opened to the public in 2003. There's an eerie sense that someone still lives here; you may find yourself expecting Satchmo to emerge from the kitchen, turn on the stereo, and tell a joke.",
+      "beat_length_class": "mid",
+      "duration_sec": 25,
+      "kid_friendly": "yes",
+      "entities": [
+        "Louis Armstrong",
+        "Lucille Armstrong",
+        "Satchmo"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "character_story",
+      "emotional_register": "reverent",
+      "subject_tag": "only home owned",
+      "physical_cues": [
+        {
+          "cue": "The preserved two-story home as Armstrong left it",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Only house Armstrong ever owned",
+        "Preserved after Lucille died 1983 (Armstrong died 1971); opened to public 2003"
+      ],
+      "source_passage": "The only house that this traveling musician ever owned, it was perfectly preserved after his wife Lucille died in 1983 (Armstrong himself passed away in 1971) and opened to the public in 2003. There's an eerie sense that someone still lives here\u2014you may find yourself expecting Satchmo to emerge from the kitchen, turn on the stereo, and tell a joke.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_louis_armstrong_house_museum_music_heritage_frommers-nyc-2024_rags_to_riches_trumpet",
+      "city_name": "new_york",
+      "poi_name": "Louis Armstrong House Museum",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "rags_to_riches_trumpet",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "On the tour you'll learn Louis's rags-to-riches history \u2014 son of a prostitute, he learned to play trumpet in a juvenile detention center and made his name in mobster-owned clubs. It's a fairly modest two-story home, but he and Lucille lavished it with every luxury, from custom-made 24-karat bathroom fixtures to Baccarat chandeliers and a state-of-the-art audio system.",
+      "beat_length_class": "mid",
+      "duration_sec": 25,
+      "kid_friendly": "no",
+      "entities": [
+        "Louis Armstrong",
+        "Lucille Armstrong"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "character_story",
+      "emotional_register": "dramatic",
+      "subject_tag": "rags to riches",
+      "physical_cues": [
+        {
+          "cue": "Custom 24-karat bathroom fixtures, Baccarat chandeliers, and the state-of-the-art audio system inside the home",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Armstrong was son of a prostitute, learned trumpet in juvenile detention, made his name in mobster-owned clubs",
+        "Modest home outfitted with 24-karat fixtures, Baccarat chandeliers, top audio system"
+      ],
+      "source_passage": "In the course of your tour, you'll learn Louis's rags-to-riches history (son of a prostitute, learned to play trumpet in a juvenile detention center, made his name in mobster-owned clubs). It's a fairly modest two-story home, but he and Lucille lavished it with every luxury, from custom-made 24-karat bathroom fixtures to Baccarat chandeliers and a state-of-the-art audio system.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_louis_armstrong_house_museum_music_heritage_frommers-nyc-2024_home_tape_recordings",
+      "city_name": "new_york",
+      "poi_name": "Louis Armstrong House Museum",
+      "parent_poi": null,
+      "lens": "music_heritage",
+      "topic_slug": "home_tape_recordings",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The highlight is the tape recordings of everyday life that Armstrong captured himself. Your guide plays them as you wander through, letting you hear the family and visiting musicians talking, laughing, and jamming together.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 14,
+      "kid_friendly": "yes",
+      "entities": [
+        "Louis Armstrong"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "climax",
+      "beat_type": "sensory_observation",
+      "emotional_register": "reverent",
+      "subject_tag": "home tape recordings",
+      "physical_cues": [
+        {
+          "cue": "Tape recordings of family and musicians played by the guide as you walk through the rooms",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Armstrong taped everyday life; guides play the recordings of family and musicians during the tour"
+      ],
+      "source_passage": "The highlight: tape recordings of everyday life that Armstrong captured\u2014your guide will play them as you wander through, allowing you to hear the family and visiting musicians talking, laughing, and jamming together.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_museum_of_the_moving_image_film_tv_frommers-nyc-2024_first_to_combine_tv_film_games",
+      "city_name": "new_york",
+      "poi_name": "Museum of the Moving Image",
+      "parent_poi": null,
+      "lens": "film_tv",
+      "topic_slug": "first_to_combine_tv_film_games",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "This was the first museum anywhere to look at TV, film, and video games together \u2014 a heretical concept when it opened in 1988. Rather than simply archiving past shows, it explores the craft and technology behind these arts with imaginative interactive exhibits, commissioned artworks, video sequences, and artifacts.",
+      "beat_length_class": "mid",
+      "duration_sec": 23,
+      "kid_friendly": "yes",
+      "entities": [
+        "Museum of the Moving Image"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "first moving image museum",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First museum anywhere to look at TV, film, and video games together; opened 1988",
+        "Explores craft and technology with interactive exhibits"
+      ],
+      "source_passage": "The first museum anywhere to look at TV, film, and video games together (a heretical concept when the museum opened in 1988), it's not simply an archive of past shows. Instead, it explores the craft and technology behind these arts with startlingly imaginative interactive exhibits, commissioned art works, video sequences, and, of course, artifacts.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'first museum anywhere' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_museum_of_the_moving_image_film_tv_frommers-nyc-2024_behind_the_screen_exhibit",
+      "city_name": "new_york",
+      "poi_name": "Museum of the Moving Image",
+      "parent_poi": null,
+      "lens": "film_tv",
+      "topic_slug": "behind_the_screen_exhibit",
+      "sub_location": "behind-the-screen",
+      "trigger_address": null,
+      "script_body": "Start with the core exhibit, Behind the Screen, which explores the technical issues behind moving images \u2014 from how the eye is tricked into seeing movement in rapidly repeating images to the intricacies of sound and film editing. You can dub your own voice into classics like My Fair Lady, create original computer animation, and transmute the musical score of a famous film scene.",
+      "beat_length_class": "mid",
+      "duration_sec": 28,
+      "kid_friendly": "yes",
+      "entities": [
+        "Behind the Screen",
+        "My Fair Lady"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "behind the screen",
+      "physical_cues": [
+        {
+          "cue": "The Behind the Screen core exhibit where you can dub your voice into My Fair Lady and make animation",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Core exhibit 'Behind the Screen' covers technical issues of moving images",
+        "Visitors can dub voice into My Fair Lady, make computer animation, transmute film scores"
+      ],
+      "source_passage": "Start your visit with the museum's core exhibit, Behind the Screen, which explores the many technical issues behind moving images, from explanations of how the eye is tricked into seeing movement in rapidly repeating images, to the intricacies of sound and film editing. You'll have a chance to dub your own voice into such classics as My Fair Lady, create original computer animation, transmute the musical score of a famous film scene, and more.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_museum_of_the_moving_image_film_tv_frommers-nyc-2024_kaufman_astoria_studios_grounds",
+      "city_name": "new_york",
+      "poi_name": "Museum of the Moving Image",
+      "parent_poi": null,
+      "lens": "film_tv",
+      "topic_slug": "kaufman_astoria_studios_grounds",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "This part of Queens was where many early American films were made \u2014 the 98,000-square-foot museum was built on the grounds of Kaufman Astoria Studios. Take the elevator while you're here: it screens custom-made GIFs by some of the top GIF-makers working today.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 17,
+      "kid_friendly": "yes",
+      "entities": [
+        "Kaufman Astoria Studios"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "kaufman astoria grounds",
+      "physical_cues": [
+        {
+          "cue": "The elevator that screens custom-made GIFs by top GIF-makers",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "98,000-sq-ft museum built on grounds of Kaufman Astoria Studios",
+        "Elevator screens custom GIFs"
+      ],
+      "source_passage": "This part of Queens was where many early American films were made\u2014the 98,000-square-foot museum was built on the grounds of Kaufman Astoria Studios.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_museum_of_the_moving_image_social_change_sidebar_frommers-nyc-2024_international_express_no_7_train",
+      "city_name": "new_york",
+      "poi_name": "Museum of the Moving Image",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "international_express_no_7_train",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The no. 7 train \u2014 which originates at Times Square and snakes mostly above ground through the heart of ethnic Queens \u2014 is popularly known as the International Express. Built by immigrants in the early 1900s, the no. 7 IRT brought those same immigrants to homes on the outer fringes of the city, and that tradition has continued as newcomers settle close by its elevated tracks. Get off in Sunnyside for Romanian groceries, in Jackson Heights for Indian saris and Sikh turbans, or ride to Flushing, where Queens's Chinatown is bigger than Manhattan's. In 1999 it was nominated as a National Millennium Trail and chosen to represent the American immigrant experience.",
+      "beat_length_class": "anchor",
+      "duration_sec": 41,
+      "kid_friendly": "yes",
+      "entities": [
+        "International Express",
+        "no. 7 train",
+        "IRT",
+        "Sunnyside",
+        "Jackson Heights",
+        "Flushing",
+        "Queens Council on the Arts",
+        "White House Millennium Council"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "deepen",
+      "beat_type": "sidebar",
+      "emotional_register": "neutral",
+      "subject_tag": "international express",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "The no. 7 train is known as the International Express",
+        "Built by immigrants early 1900s; passes ethnic Queens neighborhoods (Sunnyside, Jackson Heights, Flushing)",
+        "Nominated 1999 as a National Millennium Trail, chosen to represent American immigrant experience"
+      ],
+      "source_passage": "The no. 7 train\u2014which originates in Manhattan at Times Square, makes three stops in that borough, and then snakes, mostly above ground, through the heart of ethnic Queens\u2014is also popularly known as the International Express. Built by immigrants in the early 1900s, the no. 7 IRT (Interborough Rapid Transit) brought those same immigrants to homes on the outer fringes of New York City. That tradition has continued as immigrants from around the world have settled close by the no. 7's elevated tracks. Get off in Sunnyside and see Romanian grocery stores and restaurants; a few stops farther in Jackson Heights, you'll see Indians in saris and Sikhs in turbans; go all the way to Flushing and you'll think you are in Chinatown. (You are\u2014Queen's Chinatown is bigger than Manhattan's.) In 1999, the Queens Council on the Arts nominated the International Express for designation as a National Millennium Trail, and that resulted in its selection as representative of the American immigrant experience by the White House Millennium Council, the United States Department of Transportation, and the Rails-to-Trails Conservancy.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Sidebar ('The International Express' boxed digression) anchored to MoMI as the nearest narrative POI; subject is the no. 7 line, a non-fixed-point transit route. Superlative 'Queens's Chinatown is bigger than Manhattan's' left to fact-check."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_p_s_1_contemporary_art_center_visual_art_frommers-nyc-2024_crazy_building_decrepit_charm",
+      "city_name": "new_york",
+      "poi_name": "P.S. 1 Contemporary Art Center",
+      "parent_poi": null,
+      "lens": "visual_art",
+      "topic_slug": "crazy_building_decrepit_charm",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At this proving ground for young artists, the work is challenging, right of the moment, and sometimes downright wacky. That 'crazy building' in Long Island City was once a public school \u2014 hence the name \u2014 and its somewhat decrepit charm is part of the experience. Because it's not a fancy white box like its sister institution the Museum of Modern Art, P.S. 1 lets artists create full-blown, sometimes invasive installations; one summer an artist blasted holes in the brick wall of a gallery.",
+      "beat_length_class": "mid",
+      "duration_sec": 31,
+      "kid_friendly": "yes",
+      "entities": [
+        "P.S. 1 Contemporary Art Center",
+        "Museum of Modern Art",
+        "Brett Littman"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "former school gallery",
+      "physical_cues": [
+        {
+          "cue": "The decrepit former public-school building housing the galleries in Long Island City",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "P.S. 1 is a former public school in Long Island City; sister institution of MoMA",
+        "Allows full-blown installations; an artist once blasted holes in a gallery brick wall"
+      ],
+      "source_passage": "That \u201ccrazy building\u201d was once a public school (hence the name), and its somewhat decrepit charm is part of the experience. Because it's not a fancy white box of a space (like its sister institution the Museum of Modern Art), P.S. 1 allows artists to create full-blown, sometimes invasive, installations in the space. (One summer several years ago, an artist blasted holes in the brick wall of a gallery.)",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "poi_name uses source name 'P.S. 1 Contemporary Art Center'; current name is MoMA PS1 \u2014 flagged for poi-dedup alias resolution."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_p_s_1_contemporary_art_center_local_legends_frommers-nyc-2024_artist_hand_through_wall",
+      "city_name": "new_york",
+      "poi_name": "P.S. 1 Contemporary Art Center",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "artist_hand_through_wall",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The bulk of the work here is in changing exhibits \u2014 visitors are often greeted with as many as 14 different shows in all parts of the building \u2014 and some can be quite bizarre. In a retrospective of New York City art, one framed sculpture turned out to be the actual hand of the artist, who was sitting on the other side of the wall, personifying her art.",
+      "beat_length_class": "mid",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "P.S. 1 Contemporary Art Center"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "living artist hand",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Up to 14 shows at once; museum does not collect art",
+        "In a NYC art retrospective, a 'framed sculpture' was the artist's actual hand through the wall"
+      ],
+      "source_passage": "The bulk of the work you'll see here will be in changing exhibits, as the museum does not collect art; visitors are usually greeted with as many as 14 different shows in all parts of the building. As I've said, some can be quite, well, bizarre. In its retrospective of New York City art several years back, one framed sculpture turned out to be the actual hand of the artist who was sitting on the other side of the wall, personifying her art.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_museum_science_tech_frommers-nyc-2024_panorama_city_of_new_york",
+      "city_name": "new_york",
+      "poi_name": "Queens Museum",
+      "parent_poi": null,
+      "lens": "science_tech",
+      "topic_slug": "panorama_city_of_new_york",
+      "sub_location": "panorama",
+      "trigger_address": null,
+      "script_body": "Long before Google Earth, there was the Panorama of the City of New York \u2014 a diorama of 9,335 square feet created for the 1964\u201365 World's Fair, with the help of photographers who swooped in helicopters over the city, taking over 7,000 photos to capture every building in the five boroughs. Fully updated in 1992, it lets building owners pay to have newer edifices added, which makes for some odd anomalies. It remains the heart of the Queens Museum.",
+      "beat_length_class": "mid",
+      "duration_sec": 32,
+      "kid_friendly": "yes",
+      "entities": [
+        "Panorama of the City of New York",
+        "Queens Museum",
+        "Google Earth"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "panorama diorama",
+      "physical_cues": [
+        {
+          "cue": "The 9,335-square-foot Panorama of the City of New York diorama of all five boroughs",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Panorama is a 9,335-sq-ft diorama made for the 1964-65 World's Fair from 7,000+ helicopter photos",
+        "Updated 1992; owners can pay to add new buildings"
+      ],
+      "source_passage": "Long before there was Google Earth, there was the Panorama of the City of New York. A diorama of 9,335 square feet, it was created for the 1964\u201365 World's Fair with the help of photographers who swooped in helicopters over the city, taking over 7,000 photos to capture every building in the five boroughs. The Panorama is still a wonder today, and the heart of the Queens Museum. It was fully updated in 1992, and subsequently, building owners can pay to have their newer edifices added, which makes for some odd anomalies.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_queens_museum_hidden_history_frommers-nyc-2024_worlds_fair_un_first_home",
+      "city_name": "new_york",
+      "poi_name": "Queens Museum",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "worlds_fair_un_first_home",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The museum building has a storied history of its own: erected for the 1939 World's Fair, it served as the home of the United Nations during its first five years. There's also a lovely exhibit of Tiffany lamps \u2014 a nod to the fact that the Tiffany factory was in Corona, Queens.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 19,
+      "kid_friendly": "yes",
+      "entities": [
+        "United Nations",
+        "Tiffany",
+        "Corona"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "un first home",
+      "physical_cues": [
+        {
+          "cue": "The exhibit of Tiffany lamps inside the museum",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Building erected for 1939 World's Fair, served as the UN's home for its first 5 years",
+        "Tiffany lamp exhibit; Tiffany factory was in Corona, Queens"
+      ],
+      "source_passage": "Other exhibits cover the museum building's storied history: It was erected for the 1939 World's Fair and served as the site of the United Nations during its first 5 years. There's also a lovely exhibit of Tiffany lamps (a nod to the fact that the Tiffany factory was in Corona, Queens) and changing art exhibits.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_childrens_museum_social_change_frommers-nyc-2024_first_childrens_museum_nation",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Children's Museum",
+      "parent_poi": null,
+      "lens": "social_change",
+      "topic_slug": "first_childrens_museum_nation",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The very first museum of its type in the nation, the Brooklyn Children's Museum is inspired by the idea that children love to play at working. It gives them places to toil: a garden where they can plant things and learn botany, a pretend restaurant and grocery store where they can 'feed' their parents, and a 'building brainstorm' area teaching the basics of architecture and engineering with blocks and other building toys.",
+      "beat_length_class": "mid",
+      "duration_sec": 27,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Children's Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "first childrens museum",
+      "physical_cues": [
+        {
+          "cue": "The pretend restaurant, grocery store, and 'building brainstorm' play areas",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "First children's museum of its type in the nation",
+        "Has a botany garden, pretend restaurant/grocery, 'building brainstorm' area"
+      ],
+      "source_passage": "The very first museum of its type in the nation, the Brooklyn Children's Museum isn't easy to get to from Manhattan, but it rewards those who make the trek (there's a shuttle from the nearest subway stop many days of the week; check the museum's website). Inspired by the idea that children love to play at working, the museum gives them a number of places in which to toil: a garden where they can plant things and learn about botany, a pretend restaurant and grocery store where they can \u201cfeed\u201d their parents, a \u201cbuilding brainstorm\u201d area that teaches the basics of architecture and engineering with blocks and other building toys, and more.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'very first museum of its type in the nation' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_childrens_museum_of_manhattan_local_legends_frommers-nyc-2024_changing_exhibits_child_development",
+      "city_name": "new_york",
+      "poi_name": "Children's Museum of Manhattan",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "changing_exhibits_child_development",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "At this slick hands-on attraction, changing exhibits highlight the kiddie zeitgeist of the moment \u2014 Red Grooms, Maurice Sendak, and William Wegman's dog art were a few recent themes. Those with toddlers should head straight to the Child Development Center on the fourth floor, where kids can finger-paint, play with little stoves, and send rubber balls rocketing down a twisted tube from a loft to the floor.",
+      "beat_length_class": "mid",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "Children's Museum of Manhattan",
+        "Red Grooms",
+        "Maurice Sendak",
+        "William Wegman"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "child development center",
+      "physical_cues": [
+        {
+          "cue": "The fourth-floor Child Development Center with finger-painting, little stoves, and the twisted ball tube",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Changing exhibits (Red Grooms, Maurice Sendak, William Wegman dog art)",
+        "Fourth-floor Child Development Center for toddlers"
+      ],
+      "source_passage": "At this slick hands-on attraction, changing exhibits highlight the kiddie zeitgeist of the moment: Red Grooms, Maurice Sendak, and William Wegman's dog art were just a few recent exhibit themes. Those with toddlers should go directly to the Child Development Center on the fourth floor, where kids can finger-paint to their hearts' delight, play with little stoves, and send rubber balls rocketing down a twisted tube from a loft to the floor (there were days when I never got past this room).",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_museum_of_mathematics_science_tech_frommers-nyc-2024_square_wheel_bikes",
+      "city_name": "new_york",
+      "poi_name": "The Museum of Mathematics",
+      "parent_poi": null,
+      "lens": "science_tech",
+      "topic_slug": "square_wheel_bikes",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "When this museum first debuted in 2012, the author warned her children that if they didn't behave, she'd take them there \u2014 but it proved no punishment at all. Creatively designed to bring math concepts to life, the little museum has two floors of interactive displays that will have your kids riding bikes with square wheels, re-creating Galileo's experiments, and doing all sorts of fun numbers games.",
+      "beat_length_class": "mid",
+      "duration_sec": 26,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Museum of Mathematics",
+        "Galileo"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "square wheel bikes",
+      "physical_cues": [
+        {
+          "cue": "Interactive displays including bikes with square wheels across two floors",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Museum debuted 2012",
+        "Two floors of interactive math displays including square-wheel bikes and Galileo experiments"
+      ],
+      "source_passage": "When this museum first debuted in 2012, I warned my children that if they didn't behave, I'd take them there. It was no punishment, however, when we finally went. Creatively designed to bring math concepts to life, this little museum (it takes about an hour to see it) has two floors of interactive displays that will have your kids riding bikes with square wheels, re-creating Galileo's experiments, and doing all sorts of fun numbers games.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "poi_name uses source name 'The Museum of Mathematics' (MoMath / National Museum of Mathematics) \u2014 flagged for poi-dedup alias resolution."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_city_fire_museum_local_legends_frommers-nyc-2024_firehouse_memorabilia_collection",
+      "city_name": "new_york",
+      "poi_name": "New York City Fire Museum",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "firehouse_memorabilia_collection",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "What kid can resist a big red fire engine or a room full of swooping red fire hats? You'll see both in abundance at the New York City Fire Museum, which holds one of the largest collections of firehouse memorabilia in the nation. It also hands out a free scavenger-hunt map on arrival to keep even the most restless youngsters amused.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 22,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York City Fire Museum"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "playful",
+      "subject_tag": "firehouse memorabilia",
+      "physical_cues": [
+        {
+          "cue": "Big red fire engines and a room full of red fire hats",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Holds one of the largest collections of firehouse memorabilia in the nation",
+        "Hands out a free scavenger-hunt map on arrival"
+      ],
+      "source_passage": "You'll see both in abundance at the New York City Fire Museum, which has one of the largest collections of firehouse memorabilia in the nation. It also has the good sense to hand out a free scavenger-hunt map on arrival, which should keep even the most restless of youngsters amused.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Superlative 'one of the largest collections in the nation' \u2014 left to fact-check; never auto-resolve."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_new_york_hall_of_science_science_tech_frommers-nyc-2024_worlds_fair_building_hands_on",
+      "city_name": "new_york",
+      "poi_name": "New York Hall of Science",
+      "parent_poi": null,
+      "lens": "science_tech",
+      "topic_slug": "worlds_fair_building_hands_on",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Set in one of the few remaining buildings from the 1964 World's Fair, the New York Hall of Science is a big hit with science-attuned youngsters, since most of its exhibits are hands-on and interactive. For those who just want to blow off steam, there's a minigolf park in good weather and an excellent science-themed playground.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 21,
+      "kid_friendly": "yes",
+      "entities": [
+        "New York Hall of Science"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "establishing",
+      "emotional_register": "neutral",
+      "subject_tag": "worlds fair building",
+      "physical_cues": [
+        {
+          "cue": "The 1964 World's Fair building housing the hands-on exhibits, plus the science-themed playground",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Set in one of the few remaining 1964 World's Fair buildings",
+        "Hands-on exhibits, minigolf, science-themed playground"
+      ],
+      "source_passage": "Set in one of the few remaining buildings from the 1964 World's Fair, this museum is a big hit with science-attuned youngsters, as most of its exhibits are hands-on and interactive. For those who just want to blow off steam, there's a minigolf park in good weather and an excellent science-themed playground.",
+      "source_chunk_slug": "chunk-07-ch05-outer-boroughs",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 5: Exploring \u2014 The Outer Boroughs",
+        "page": "outer-boroughs"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": ""
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1854 @@
+[
+  {
+    "name": "Harlem",
+    "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.807858,
+    "longitude": -73.945467,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_harlem_social_change_frommers-nyc-2024_renaissance_lost_to_wrecking_ball",
+        "poi_name": "Harlem",
+        "lens": "social_change",
+        "script_body": "Touring Harlem takes imagination, because much of what made it unique during the fabled Jazz Era — the Harlem Renaissance — crumbled beneath the wrecking ball decades ago. The wide avenues, rows of brownstones, and elegant apartment buildings you see now are an accident of history: the physical face of an area that housed a people but wasn't necessarily 'of' that people. Despite all this, Harlem remains the African-American capital of the United States, sometimes called the 'capital for Africans throughout the world.' As architect Zevilla Jackson Preston writes in HarlemWorld, 'Ultimately it is the energy on the street, the beat on the street — all of the beautiful Black people on the streets — that make the experience unique.'",
+        "physical_cues": [],
+        "key_claims": [
+          "Much of Jazz-Era Harlem was demolished decades ago",
+          "Harlem remains the African-American capital of the US",
+          "Zevilla Jackson Preston quote from HarlemWorld"
+        ],
+        "source_passage": "The tragic fact is that much of what made this area unique, lively, and . . . well, Harlem, during the fabled Jazz Era (aka the Harlem Renaissance), crumbled beneath the wrecking ball decades ago. What you now see—wide avenues, rows of brownstones, elegant apartment buildings—are somewhat an accident of history, the physical face of an area that housed a people but wasn't necessarily “of” that people (I'll explain below). Despite all this, Harlem remains the African-American capital of the United States (sometimes called the “capital for Africans throughout the world”), a one-of-a-kind area with much to recommend it. Architect Zevilla Jackson Preston best sums up its appeal in the book HarlemWorld, in which she writes, “Ultimately it is the energy on the street, the beat on the street—all of the beautiful Black people on the streets—that make the experience unique.”",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Harlem Renaissance",
+          "Jazz Era",
+          "Zevilla Jackson Preston",
+          "HarlemWorld"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "establishing",
+        "emotional_register": "wry",
+        "subject_tag": "Harlem capital",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 49,
+        "kid_friendly": "yes",
+        "topic_slug": "renaissance_lost_to_wrecking_ball",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "b4a2f8aa3d280b4224216ecf8abb4253d7252e2deb03c44f62f96b696f9a3872"
+      },
+      {
+        "beat_id": "newyork_harlem_social_change_frommers-nyc-2024_subway_boom_and_busts",
+        "poi_name": "Harlem",
+        "lens": "social_change",
+        "script_body": "Harlem was settled in waves — Dutch farmers first, then their British counterparts, then poor Irish and Italian immigrants. But development only took off just before 1904, when the city's first subway line opened: a nine-and-a-half-mile snaking tunnel connecting Lower Manhattan with points as far north as 145th Street. In anticipation, an unprecedented housing boom hit the neighborhood, developers slapping up Victorian row house after row house for the crowds of upwardly mobile immigrants — middle-class Jews and Germans, primarily — they were certain would flood this newly commutable neighborhood. What they didn't anticipate were the recessions and panics of 1893, 1907, and 1910, which deflated the housing market and left them overbuilt.",
+        "physical_cues": [],
+        "key_claims": [
+          "First subway line opened ~1904",
+          "9.5-mile tunnel to 145th St",
+          "Housing boom for middle-class Jews and Germans",
+          "Panics of 1893, 1907, 1910 deflated the market"
+        ],
+        "source_passage": "Harlem was settled by a number of different groups over the years— Dutch farmers first, followed by their British counterparts, then poor Irish and Italian immigrants. But development only took off in the years just prior to 1904, when the city's first subway line opened, a 91⁄2-mile snaking tunnel connecting Lower Manhattan with points as far north as 145th Street. In anticipation of this event, an unprecedented housing boom hit the neighborhood, with developers slapping up Victorian row house after row house for the crowds of upwardly mobile immigrants—middle-class Jews and Germans, primarily—they were certain would soon flood this newly commutable neighborhood. What they didn't anticipate were recessions and panics in 1893, 1907, and 1910, which deflated the housing market and badly affected the development of large numbers of homes on the Upper West Side.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "IRT subway",
+          "Dutch settlers"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "subway housing boom",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "topic_slug": "subway_boom_and_busts",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "5c8f3b0e5f50317fae680cd24c20f68fdcc25518f8ea6e0eb4273c400efb960d"
+      },
+      {
+        "beat_id": "newyork_harlem_hidden_history_frommers-nyc-2024_philip_payton_133rd_street",
+        "poi_name": "Harlem",
+        "lens": "hidden_history",
+        "script_body": "Left with hundreds of unrentable homes, property owners began doing what nobody else had done in the history of the United States: renting or selling brand-new, beautifully appointed buildings to the race that had until then always made do with tumble-down ghetto housing no other group would accept. In 1905, pioneering real estate agent Philip Payton persuaded a white landlord to rent him 31 W. 133rd St. so he could re-lease it to African Americans — promising to pay a substantial $5 more per tenant per month, a lot of money in those days. Several other white landlords panicked and bought the building to evict the Black tenants, but by then it was too late: Payton had the funding to buy several other buildings, and Black migration into the area began in earnest.",
+        "physical_cues": [],
+        "key_claims": [
+          "Philip Payton in 1905 rented 31 W 133rd St to re-lease to African Americans",
+          "Paid $5 more per tenant per month",
+          "Triggered Black migration into Harlem"
+        ],
+        "source_passage": "Left with hundreds of unrentable homes, property owners soon began doing what nobody else had done in the history of the United States: renting or selling brand-new, often beautifully appointed buildings to the race that had, until that point, always made do with the tumble-down ghetto housing no other group would accept. In 1905, pioneering real estate agent Philip Payton persuaded a white landlord to rent him 31 W. 133rd St. so he could re-lease it to African Americans. The landlord accepted the offer because Payton promised to pay far more than the going rate, a substantial $5 more per tenant per month (a lot of money in those days). Several other white landlords panicked and bought the building in order to evict the Black tenants, but by then it was too late. Payton had the funding to buy several other buildings, and Black migration into the area began in earnest.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Philip Payton"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic",
+        "subject_tag": "Black Harlem origins",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "topic_slug": "philip_payton_133rd_street",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Year 1905 and 31 W 133rd St corroborated by web sources; Payton's vehicle was the Afro-American Realty Co. (not in source, not added).",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "cdbfdf21f0fec38a1aebdd75b68a5580f491273c8079358ba3f5fb29ba1ad9cf"
+      }
+    ],
+    "importance_tier": 4
+  },
+  {
+    "name": "Mt. Olivet Baptist Church",
+    "short_description": "Landmarked former Temple Israel synagogue (Arnold W. Brunner, 1906-07), now a prominent Harlem church addressed by political figures; moderate tourist gravity, strong local/historic significance.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.8025,
+    "longitude": -73.9477,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "201 Lenox Avenue (Malcolm X Blvd) at 120th St",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Landmarked former Temple Israel synagogue (Arnold W. Brunner, 1906-07), now a prominent Harlem church addressed by political figures; moderate tourist gravity, strong local/historic significance.",
+      "verified": false,
+      "geocode_source": "web_search (Harlem One Stop / Historic Districts Council; address 201 Lenox Ave at 120th St) + Manhattan grid reference",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_mt_olivet_baptist_church_historic_worship_frommers-nyc-2024_synagogue_stars_of_david",
+        "poi_name": "Mt. Olivet Baptist Church",
+        "lens": "historic_worship",
+        "script_body": "Look closely at the facade of this prominent Harlem church and you'll notice something you don't usually see on a church: several Stars of David. The building epitomizes the neighborhood's transformation. It was built in 1907 to be the neighborhood's first synagogue, and its architect — the first Jewish architect licensed in New York State — based the design on the Second Temple in Jerusalem, which had just been excavated and was making worldwide headlines. One prominent member of the congregation was Louis Blumstein, a name that returns later in this walk.",
+        "physical_cues": [
+          {
+            "cue": "Several Stars of David worked into the facade of the church",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Built 1907 as the neighborhood's first synagogue",
+          "Architect was the first Jewish architect licensed in NY State",
+          "Design based on the Second Temple in Jerusalem",
+          "Stars of David on facade",
+          "Louis Blumstein was a congregant"
+        ],
+        "source_passage": "If you look closely, you'll notice something that one doesn't usually see on the facade of a church: several Stars of David. This church epitomizes the neighborhood's transformation over the years; it was built (in 1907) to be the neighborhood's first synagogue. The architect, the first Jewish architect licensed in New York State, based its design on that of the Second Temple in Jerusalem, which had just been excavated, making worldwide headlines. Remember the name Louis Blumstein, a prominent member of this congregation, as he'll reappear later in this walking tour.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Stars of David",
+          "Second Temple",
+          "Louis Blumstein"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "former synagogue",
+        "sub_location": null,
+        "trigger_address": "201 Lenox Avenue at 120th St",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 36,
+        "kid_friendly": "yes",
+        "topic_slug": "synagogue_stars_of_david",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "'the neighborhood's first synagogue' — unverified superlative; sources confirm it was built 1906-07 as Temple Israel but do not confirm it was Harlem's FIRST synagogue",
+            "'first Jewish architect licensed in New York State' — sources name architect Arnold W. Brunner but do not corroborate the 'first Jewish architect licensed' claim"
+          ],
+          "notes": "Body restates the source verbatim without imported facts. Superlative ('first synagogue') and the 'first Jewish architect' claim are source claims that web sources neither confirm nor are auto-correctable (superlative + living-record claim) — flagged for /fact-check, NOT auto-corrected. Build year 1907 corroborated (1906-07).",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "be6cceaaf09b8e8326fa029ee69c784bfd09d33d92d0829b5e86ac8bf04d99ad"
+      },
+      {
+        "beat_id": "newyork_mt_olivet_baptist_church_famous_residents_frommers-nyc-2024_dean_chavez_addresses",
+        "poi_name": "Mt. Olivet Baptist Church",
+        "lens": "famous_residents",
+        "script_body": "Over the years this prominent Harlem church has hosted some notable speakers from its pulpit — among them presidential candidate Howard Dean and the late Venezuelan president Hugo Chavez, both of whom addressed the congregation here.",
+        "physical_cues": [
+          {
+            "cue": "Facade of Mt. Olivet Baptist Church across the street at 120th St and Malcolm X Blvd",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Howard Dean and Hugo Chavez each addressed the congregation"
+        ],
+        "source_passage": "Stand across the street (120th St. and Malcolm X Blvd., aka Lenox Ave.) so that you can get a better look at this prominent Harlem Church (over the years, presidential candidate Howard Dean and the late Venezuelan President Hugo Chavez have addressed the congregation).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Howard Dean",
+          "Hugo Chavez"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "notable speakers",
+        "sub_location": null,
+        "trigger_address": "201 Lenox Avenue at 120th St",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "topic_slug": "dean_chavez_addresses",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Howard Dean is living; not auto-corrected per never-auto-resolve living-people rule. Claim left for /fact-check.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "f6845757cc744ddce4b401619a88346aa1f40be3cb0bb0b0576d080785f9c45f"
+      },
+      {
+        "beat_id": "newyork_mt_olivet_baptist_church_local_legends_frommers-nyc-2024_staging_across_the_street",
+        "poi_name": "Mt. Olivet Baptist Church",
+        "lens": "local_legends",
+        "script_body": "Stand across the street, at the corner of 120th Street and Malcolm X Boulevard — also known as Lenox Avenue — so you can get a better look at this prominent Harlem church on the far side.",
+        "physical_cues": [
+          {
+            "cue": "Church facade viewed from across the street at 120th St and Malcolm X Blvd",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Stand across the street at 120th St and Malcolm X Blvd to view the church"
+        ],
+        "source_passage": "Stand across the street (120th St. and Malcolm X Blvd., aka Lenox Ave.) so that you can get a better look at this prominent Harlem Church",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "stop_orientation",
+        "emotional_register": "neutral",
+        "subject_tag": "staging church view",
+        "sub_location": null,
+        "trigger_address": "120th St and Malcolm X Blvd (Lenox Ave)",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "topic_slug": "staging_across_the_street",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8edf983cfea7cd99002cbe342a9e54fe00057dc5d06186d1ec3313616b8c2fad"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "Hale House",
+    "short_description": "Nationally-recognized institution founded 1969 by Clara 'Mother' Hale for drug-addicted/HIV-positive infants; strong social-history gravity, low foot-traffic landmark.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.8062,
+    "longitude": -73.9485,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "152 W. 122nd St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Nationally-recognized institution founded 1969 by Clara 'Mother' Hale for drug-addicted/HIV-positive infants; strong social-history gravity, low foot-traffic landmark.",
+      "verified": false,
+      "geocode_source": "web_search (Livabl / Harlem Bespoke confirm 152 W 122nd St, 1910 brownstone) + Manhattan grid reference",
+      "geocode_confidence": 0.88,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_hale_house_social_change_frommers-nyc-2024_mother_hale_addicted_babies",
+        "poi_name": "Hale House",
+        "lens": "social_change",
+        "script_body": "In 1969, an act of kindness changed the lives of thousands of children. A young woman named Lorraine Hale was driving on 146th Street when she saw a drugged-out mother nodding off on the street, her two-month-old baby almost slipping from her arms. Ms. Hale got out, told the mother she needed treatment, and said she could leave the baby with her own mother — Clara McBride Hale — while she got sober. The next day the addicted mother did just that, and soon hundreds of babies were being left with 'Mother Hale,' who pioneered methods of treating babies born with addictions and also took in many HIV-positive babies.",
+        "physical_cues": [],
+        "key_claims": [
+          "Lorraine Hale founded the effort in 1969 after a roadside encounter",
+          "Clara McBride Hale ('Mother Hale') raised addicted and HIV-positive babies"
+        ],
+        "source_passage": "We jump forward now a century to 1969 when an act of kindness changed the lives of thousands of children. A young woman named Lorraine Hale was driving on 146th Street when she saw a drugged-out mother nodding off on the street, her 2-month-old baby almost slipping from her arms. Ms. Hale got out of the car and told the mother she needed to get treatment and that she could leave the baby with her own mother—Clara McBride Hale—while she got sober. The next day the drug-addicted mother did just that, and soon hundreds of babies were being left with “Mother Hale,” who pioneered methods of treating babies born with addictions (and also took in a lot of HIV-positive babies).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Lorraine Hale",
+          "Clara McBride Hale",
+          "Mother Hale"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Mother Hale",
+        "sub_location": null,
+        "trigger_address": "152 W. 122nd St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "topic_slug": "mother_hale_addicted_babies",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Founding year 1969 and founders Clara/Lorraine Hale corroborated by web sources.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "9160e45754c22bf6cbe926b8ae3af1716f03d6530e2c99eeaae35e171eafe566"
+      },
+      {
+        "beat_id": "newyork_hale_house_dark_history_frommers-nyc-2024_harlem_decline_decay",
+        "poi_name": "Hale House",
+        "lens": "dark_history",
+        "script_body": "Mother Hale's work unfolded during the 1960s, '70s, and '80s — a period of steep decline for Harlem, when many landlords stopped maintaining and even abandoned their buildings. A 1960 census found only 50% of Harlem's housing sound, against 85% elsewhere in the city. As Harlem became synonymous with urban decay, Hale House — though a controversial institution later — was one of its few rays of hope. You can read more on the plaque at the door.",
+        "physical_cues": [
+          {
+            "cue": "Plaque at the door of Hale House describing the house and its mission",
+            "direction": "here",
+            "feature_type": "plaque"
+          }
+        ],
+        "key_claims": [
+          "1960 census: only 50% of Harlem housing sound vs 85% citywide",
+          "Hale House later became controversial"
+        ],
+        "source_passage": "This all happened during the 1960s, '70s, and '80s, a period of steep decline for Harlem, a time when many landlords stopped maintaining and even abandoned the buildings in the neighborhood (in 1960, a census showed only 50% of the housing in Harlem to be deemed sound, as opposed to 85% elsewhere in the city). Harlem became synonymous with urban decay, and Hale House, though a controversial institution later, was one of its few rays of hope. You can read more about the house and its mission on the plaque at the door.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Hale House"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "Harlem urban decay",
+        "sub_location": null,
+        "trigger_address": "152 W. 122nd St.",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "topic_slug": "harlem_decline_decay",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "caa2f52f374f66bc93f564824ec8b3939229ef68dca5990f3fe7f25dfb6104c3"
+      },
+      {
+        "beat_id": "newyork_mt_olivet_baptist_church_local_legends_frommers-nyc-2024_transit_to_hale_house",
+        "poi_name": "Hale House",
+        "lens": "local_legends",
+        "script_body": "From the church, walk uptown on Malcolm X Boulevard, turn left on 122nd Street, and continue to 152 West 122nd Street.",
+        "physical_cues": [],
+        "key_claims": [
+          "Route from church to 152 W 122nd St via Malcolm X Blvd uptown then left on 122nd St"
+        ],
+        "source_passage": "Walk uptown on Malcolm X Blvd., turn left on 122nd St., and walk to 152 W. 122nd St., which is:",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to Hale House",
+        "sub_location": null,
+        "trigger_address": "Malcolm X Blvd at 120th St (from Mt. Olivet Baptist Church)",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_hale_house",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0d8509ee9cd7870e7d0ee58fbb4c63cb3cac9b93bb2c42a540ea4356dd8b852d"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "4-16 W. 122nd St.",
+    "short_description": "Anonymous but architecturally notable brownstone row by William Tuthill (later Carnegie Hall architect); low gravity, walking-tour interest only.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.805,
+    "longitude": -73.946,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "4-16 W. 122nd St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Anonymous but architecturally notable brownstone row by William Tuthill (later Carnegie Hall architect); low gravity, walking-tour interest only.",
+      "verified": false,
+      "geocode_source": "Manhattan grid reference (W 122nd St just east of Lenox toward Mount Morris Park)",
+      "geocode_confidence": 0.7,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_4_16_w_122nd_st_historic_arch_frommers-nyc-2024_tuthill_carnegie_hall_architect",
+        "poi_name": "4-16 W. 122nd St.",
+        "lens": "historic_arch",
+        "script_body": "This is not a famous building, but a very beautiful one — a good example of the talent enlisted to build Harlem's brownstones when the neighborhood was first developed. It's the work of architect William Tuthill, who later went on to design Carnegie Hall. As in many Gotham brownstones, the main entrance is on the second floor, not the ground floor. Why? It's a tradition left over from when the Dutch settled Manhattan: a people from a sea-level land prone to flooding, they placed their more important rooms above ground level and put the kitchen and servants' quarters below.",
+        "physical_cues": [
+          {
+            "cue": "Main entrance raised to the second floor rather than the ground floor",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Designed by William Tuthill, later architect of Carnegie Hall",
+          "Main entrance on second floor, a Dutch tradition for flood-prone land"
+        ],
+        "source_passage": "This is not a famous building, but a very beautiful one and a good example of the kind of talent that was enlisted to build Harlem's brownstones when the neighborhood was first being developed. This one is by architect William Tuthill, who went on to design Carnegie Hall later in his career. As in many Gotham brownstones, the main entrance is on the second, not the ground, floor. Why? It's a tradition left over from when the Dutch settled Manhattan. A people from a sea-level land, prone to flooding, it was their tradition to place the more important rooms above ground level, locating the kitchen and servants quarters below.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "William Tuthill",
+          "Carnegie Hall",
+          "Dutch settlers"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "brownstone design",
+        "sub_location": null,
+        "trigger_address": "4-16 W. 122nd St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 41,
+        "kid_friendly": "yes",
+        "topic_slug": "tuthill_carnegie_hall_architect",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "William Tuthill is indeed the architect of Carnegie Hall (corroborated).",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "5863a1a815e15c6f25e12ee654d10c877ad998a1dd417b506547f2709b5e8ede"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Marcus Garvey Park",
+    "short_description": "20-acre landmarked park, site of 1969 Harlem Cultural Festival ('Black Woodstock', Summer of Soul) and 1857 cast-iron fire watchtower; high local/cultural gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.8049,
+    "longitude": -73.9442,
+    "trigger_radius": 270,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Mount Morris Park area, Fifth Ave between 120th-124th St",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "20-acre landmarked park, site of 1969 Harlem Cultural Festival ('Black Woodstock', Summer of Soul) and 1857 cast-iron fire watchtower; high local/cultural gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / NYC Parks; Marcus Garvey Park, formerly Mount Morris Park) + grid reference",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_marcus_garvey_park_war_conflict_frommers-nyc-2024_first_revolutionary_victory",
+        "poi_name": "Marcus Garvey Park",
+        "lens": "war_conflict",
+        "script_body": "This park — long known as Mount Morris Park, named for General Roger Morris — was created in honor of the very first American victory in the Revolutionary War. It was near where you stand, on September 16, 1776, that George Washington engaged in what he called a 'brisk little skirmish' with the Redcoats. Just a month earlier the largest British expeditionary fleet in history had sailed into New York Harbor with 21,000 troops, a full 40% of all the men in the Royal Navy at the time. Those soldiers had slaughtered about 2,800 American militiamen at the Battle of Brooklyn, forcing Washington to flee Brooklyn by night to the northern reaches of Manhattan. Here, at the small battle called the Battle of Washington Heights, enemy buglers taunted the colonists by playing the call that traditionally ended a foxhunt. Enraged, Washington called for reinforcements and drove the Redcoats back to what is now the Upper West Side — the first time his soldiers had won an engagement, doing much to boost morale.",
+        "physical_cues": [],
+        "key_claims": [
+          "Park named for General Roger Morris",
+          "Sept 16, 1776 skirmish here was first American Revolutionary victory",
+          "British fleet brought 21,000 troops (40% of Royal Navy)",
+          "~2,800 militiamen killed at Battle of Brooklyn",
+          "Battle called Battle of Washington Heights",
+          "Buglers played the foxhunt call"
+        ],
+        "source_passage": "Named for General Roger Morris, this park was created in honor of the very first American victory in the Revolutionary War. It was in the vicinity of where you're standing now, on September 16, 1776, that George Washington engaged in what he called a “brisk little skirmish” with the Redcoats. Just 1 month earlier, the largest British expeditionary fleet in history had sailed into New York Harbor, bringing with it 21,000 troops, a full 40% of all the men serving in the Royal Navy at that time. In quick order, these trained soldiers slaughtered approximately 2,800 American militiamen at the Battle of Brooklyn, forcing Washington to escape Brooklyn under cover of night and hightail it to the northern reaches of Manhattan. At the small battle on this site, called the Battle of Washington Heights, enemy buglers taunted the colonists by playing the call that traditionally ended a foxhunt. Enraged, Washington called for reinforcements and drove the Redcoats back to what is now the Upper West Side. It was the first time his soldiers had won an engagement and did much to boost morale.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Roger Morris",
+          "George Washington",
+          "Battle of Brooklyn",
+          "Battle of Washington Heights",
+          "Royal Navy",
+          "Redcoats"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "first Revolutionary victory",
+        "sub_location": null,
+        "trigger_address": "east end of W. 122nd St at Mount Morris Park",
+        "beat_length_class": "anchor",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 70,
+        "kid_friendly": "no",
+        "topic_slug": "first_revolutionary_victory",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "disputed",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Source calls the engagement the 'Battle of Washington Heights' — historians name the Sept 16, 1776 engagement the 'Battle of Harlem Heights' (DISPUTE)",
+            "Source attributes the park name to 'General Roger Morris'; sources describe Roger Morris as a British Army Colonel/Loyalist and one source attributes the original park name to Robert Morris, NYC mayor (DISPUTE)"
+          ],
+          "notes": "DISPUTE not auto-corrected: (1) battle name conflicts with source (story-attribution claim, web sources say 'Battle of Harlem Heights'); (2) Roger vs Robert Morris naming and his rank conflict across sources. Date Sept 16, 1776 and American victory are corroborated. Left for /fact-check / user review. Body preserves source wording verbatim.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "df39a88332049aa49e518fccd187cf22f4b000cbed5e3659f3615866a16b48fb"
+      },
+      {
+        "beat_id": "newyork_marcus_garvey_park_music_heritage_frommers-nyc-2024_black_woodstock_1969",
+        "poi_name": "Marcus Garvey Park",
+        "lens": "music_heritage",
+        "script_body": "In 1969 this park hosted the outdoor Harlem Cultural Festival — sometimes called 'the Black Woodstock' — which was celebrated decades later in the 2021 Oscar-winning documentary Summer of Soul.",
+        "physical_cues": [],
+        "key_claims": [
+          "1969 Harlem Cultural Festival ('Black Woodstock') held here",
+          "Featured in 2021 Oscar-winning documentary Summer of Soul"
+        ],
+        "source_passage": "Many years later, in 1969, the park hosted the outdoor Harlem Cultural Festival—sometimes called “the Black Woodstock”—celebrated in the 2021 Oscar-winning documentary Summer of Soul.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Harlem Cultural Festival",
+          "Summer of Soul"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "Black Woodstock",
+        "sub_location": null,
+        "trigger_address": "Mount Morris Park area",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "topic_slug": "black_woodstock_1969",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "15b25c6ea5aabade978872d4155350a54fb8d4dfd8f890b6b4f3951383c65580"
+      },
+      {
+        "beat_id": "newyork_marcus_garvey_park_social_change_frommers-nyc-2024_renamed_marcus_garvey_1973",
+        "poi_name": "Marcus Garvey Park",
+        "lens": "social_change",
+        "script_body": "In 1973 the park was renamed Marcus Garvey Park, in honor of the founder of the Universal Negro Improvement Association.",
+        "physical_cues": [],
+        "key_claims": [
+          "Park renamed Marcus Garvey Park in 1973",
+          "Garvey founded the Universal Negro Improvement Association"
+        ],
+        "source_passage": "In 1973 the park was renamed Marcus Garvey Park, in honor of the founder of the Universal Negro Improvement Association.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Marcus Garvey",
+          "Universal Negro Improvement Association"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "park renaming",
+        "sub_location": null,
+        "trigger_address": "Mount Morris Park area",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 8,
+        "kid_friendly": "yes",
+        "topic_slug": "renamed_marcus_garvey_1973",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "1973 renaming corroborated by web sources.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "411d773078ee8cd9df26b4098a4676d7932022f93171ffcb872f2926746b07c5"
+      },
+      {
+        "beat_id": "newyork_marcus_garvey_park_historic_arch_frommers-nyc-2024_cast_iron_fire_watchtower",
+        "poi_name": "Marcus Garvey Park",
+        "lens": "historic_arch",
+        "script_body": "In the park stands a cast-iron tower, built in 1857 as a fire lookout.",
+        "physical_cues": [
+          {
+            "cue": "Cast-iron fire-lookout tower standing in the park",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Cast-iron tower built 1857 as a fire lookout"
+        ],
+        "source_passage": "In Marcus Garvey Park (formerly Mount Morris Park), this cast-iron tower was built in 1857 as a fire lookout.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Harlem Fire Watchtower"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "fire watchtower",
+        "sub_location": null,
+        "trigger_address": "Mount Morris Park area",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "topic_slug": "cast_iron_fire_watchtower",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Derived from a photo caption in the source chunk; 1857 date is the caption's claim. Harlem Fire Watchtower corroborated as the only surviving such tower.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "dcd7024cd97bcc3f811ab08b45bd565520621bb72702f8a9dc0c1c5178ab51ac"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "55 W. 125th St.",
+    "short_description": "High-rise that housed Bill Clinton's first post-presidency office (2001); modest gravity, anecdotal stop.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.8085,
+    "longitude": -73.9476,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "55 W. 125th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "High-rise that housed Bill Clinton's first post-presidency office (2001); modest gravity, anecdotal stop.",
+      "verified": false,
+      "geocode_source": "Manhattan grid reference (W 125th St just west of Lenox/Malcolm X Blvd)",
+      "geocode_confidence": 0.75,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_55_w_125th_st_famous_residents_frommers-nyc-2024_clinton_post_presidency_office",
+        "poi_name": "55 W. 125th St.",
+        "lens": "famous_residents",
+        "script_body": "Former President Bill Clinton set up his first post-presidency office on the top floor of this high-rise. He chose Harlem after a public outcry over the taxpayer-supported rent on his proposed Carnegie Hill office space — a whopping $850,000 a year. He's no longer headquartered here, but it was a fitting choice: Harlem is one of the Business Empowerment Zones his administration created, and the signs of the prosperity that policy engendered are all around you.",
+        "physical_cues": [
+          {
+            "cue": "Top floor of the high-rise building at 55 W. 125th St.",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Bill Clinton's first post-presidency office was on the top floor here",
+          "He moved after outcry over $850,000/yr Carnegie Hill rent",
+          "Harlem is one of the Business Empowerment Zones his administration created"
+        ],
+        "source_passage": "Former President Bill Clinton had his first office after his presidency on the top floor of this high-rise building. He decided to move to Harlem after a public outcry over the taxpayer-supported rent on his proposed Carnegie Hill office space (a whopping $850,000 per year). Alas, he's no longer headquartered here, but it was an appropriate choice: Harlem is one of the Business Empowerment Zones his administration created, and you'll see all around you signs of the prosperity that policy engendered.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Bill Clinton",
+          "Business Empowerment Zones"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Clinton office",
+        "sub_location": null,
+        "trigger_address": "55 W. 125th St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "topic_slug": "clinton_post_presidency_office",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Bill Clinton is a living person; claims not auto-corrected per never-auto-resolve rule. Left for /fact-check.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8307b6d45871bee3a2d407b4dbf0785af9bd02d1b70a86870ef65d354fcfec1b"
+      },
+      {
+        "beat_id": "newyork_marcus_garvey_park_parks_gardens_frommers-nyc-2024_transit_to_55_w_125th",
+        "poi_name": "55 W. 125th St.",
+        "lens": "parks_gardens",
+        "script_body": "Walk back to Malcolm X Boulevard and head uptown to 55 West 125th Street.",
+        "physical_cues": [],
+        "key_claims": [
+          "Route to 55 W 125th St via Malcolm X Blvd uptown"
+        ],
+        "source_passage": "Walk back to Malcolm X Blvd. and walk uptown to:\n5 55 W. 125th St.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to 125th",
+        "sub_location": null,
+        "trigger_address": "Mount Morris Park / Malcolm X Blvd (from 4-16 W. 122nd St.)",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_to_55_w_125th",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "fd88f5b6f15d77bd940fd990337cf0e03ecfae59fedd487aadec17546116cbdd"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Langston Hughes House",
+    "short_description": "NYC-landmarked Italianate brownstone (1869) where Hughes lived 1947-1967; literary-pilgrimage gravity, now a house museum.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.80722,
+    "longitude": -73.94083,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "20 E. 127th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "NYC-landmarked Italianate brownstone (1869) where Hughes lived 1947-1967; literary-pilgrimage gravity, now a house museum.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia Langston Hughes House, NRHP/NYC landmark; exact coords)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_langston_hughes_house_literary_heritage_frommers-nyc-2024_open_house_dream_deferred",
+        "poi_name": "Langston Hughes House",
+        "lens": "literary_heritage",
+        "script_body": "Poet Langston Hughes bought this brownstone in 1947, likely with the royalties from writing the libretto to the Broadway musical Street Scene. His was an open house, with writers, musicians, and neighborhood friends dropping by at all hours. He was especially known for his kindness to local children: he called the garden in front 'The Children's Garden' and let the little ones plant whatever they wanted there. It was in this house that he wrote his famous book-length poem, Montage for a Dream Deferred.",
+        "physical_cues": [
+          {
+            "cue": "Garden in front of the house that Hughes called 'The Children's Garden'",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Hughes bought the brownstone in 1947, likely with Street Scene libretto royalties",
+          "Called the front garden 'The Children's Garden'",
+          "Wrote 'Montage for a Dream Deferred' here"
+        ],
+        "source_passage": "Hughes bought this brownstone in 1947, likely with the royalties he received for writing the libretto to the Broadway musical Street Scene. His was an open house, with other writers, musicians, and friends from the neighborhood dropping by at all hours. He was particularly known for his kindness to the children of the neighborhood; he called the garden in front of his house “The Children's Garden” and let the little ones plant whatever they wanted to there. It was in this house that he wrote his famous book-length poem, Montage for a Dream Deferred.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Langston Hughes",
+          "Street Scene",
+          "Montage for a Dream Deferred"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Hughes brownstone",
+        "sub_location": null,
+        "trigger_address": "20 E. 127th St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "topic_slug": "open_house_dream_deferred",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "1947 purchase corroborated. NOTE for /fact-check: the work's canonical title is 'Montage of a Dream Deferred'; source writes 'Montage for a Dream Deferred' — body preserves source verbatim (B7), not auto-corrected since title is a single-source discrepancy worth /fact-check confirmation; 2+ sources show 'of'.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "4fc389468c6e3caf63cfd292eeb3c1ecd713df88b6f97d7c52f8ab593a175452"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "Collyer Park",
+    "short_description": "Pocket park on the razed Collyer Brothers hoarder mansion site (deaths 1947); niche dark-history/true-crime gravity. Official name is 'Collyer Brothers Park'; source uses 'Collyer Park'.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.8087,
+    "longitude": -73.94,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "2078 Fifth Ave at 128th St (Collyer Brothers Park)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Pocket park on the razed Collyer Brothers hoarder mansion site (deaths 1947); niche dark-history/true-crime gravity. Official name is 'Collyer Brothers Park'; source uses 'Collyer Park'.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia/AllThatsInteresting: Collyer Brothers Park, 2078 Fifth Ave at 128th St) + grid reference",
+      "geocode_confidence": 0.85,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_collyer_park_dark_history_frommers-nyc-2024_collyer_brothers_hoarders",
+        "poi_name": "Collyer Park",
+        "lens": "dark_history",
+        "script_body": "This pretty pocket park marks the site where the most famous hoarders of the pre-television age once lived: a pair of reclusive brothers who occupied their home here from the 1880s until their deaths in 1947. Rumors swirled about their compulsive behavior, but nobody knew the extent of it until both were found dead, surrounded by 140 tons of stuff — books, musical instruments, towering stacks of newspapers, baby carriages, guns, furniture, and all manner of junk, all rigged with booby traps to ward off outsiders. It took over a year to clear the house, which was eventually razed; it was rotting on its foundations.",
+        "physical_cues": [],
+        "key_claims": [
+          "Reclusive brothers lived here 1880s until their 1947 deaths",
+          "Found dead amid 140 tons of belongings rigged with booby traps",
+          "House took over a year to clear and was razed"
+        ],
+        "source_passage": "This pretty pocket park marks the site where the most famous hoarders of the pre-television age once lived, a pair of reclusive brothers who occupied their home here from the 1880s until their deaths in 1947. Though rumors swirled about their compulsive behavior, nobody knew the extent of their hoarding until both were found dead in their home, surrounded by 140 tons of stuff—books, musical instruments, towering stacks of newspapers, baby carriages, guns, furniture, and all manner of junk, all set with booby traps to ward off outsiders. It took over a year to clear out the house, which was eventually razed—it was rotting on its foundations.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Collyer brothers"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "Collyer hoarders",
+        "sub_location": null,
+        "trigger_address": "Fifth Ave at 128th St",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 42,
+        "kid_friendly": "no",
+        "topic_slug": "collyer_brothers_hoarders",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Collyer brothers' 1947 deaths and ~140 tons corroborated. NOTE: official park name is 'Collyer Brothers Park'; source uses 'Collyer Park' — preserved as source wrote it for poi_name.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "e5c449736168ce47cdf1aa9b0f997337277dca0a11397b12f1d89a67cc2b9126"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+    "short_description": "Major Harlem intersection: Adam Clayton Powell Jr. statue ('Higher Ground', 2005), Malcolm X NOI lecturing site, and the former Hotel Theresa (Castro/Khrushchev 1960). Very high historic gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.8086,
+    "longitude": -73.9494,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Adam Clayton Powell Jr. Blvd (7th Ave) & W. 125th St",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major Harlem intersection: Adam Clayton Powell Jr. statue ('Higher Ground', 2005), Malcolm X NOI lecturing site, and the former Hotel Theresa (Castro/Khrushchev 1960). Very high historic gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Hotel Theresa coords 40.80861/-73.94944; ACP statue at 163 W 125th St plaza) + grid reference",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_corner_of_adam_clayton_powell_jr_boulevard_and_125th_street_social_change_frommers-nyc-2024_powell_statue_malcolm_x_lectures",
+        "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+        "lens": "social_change",
+        "script_body": "This intersection is one of the most important in Harlem. Look first to the windswept northeast corner, where a statue of Adam Clayton Powell, Jr. — Harlem's first African-American congressman — stands. This is also the spot where Malcolm X spent many hours lecturing Harlem residents on behalf of the Nation of Islam. His message — 'We are Blacks first and everything else second' — was so powerful, and he such an effective orator, that before he left the NOI the organization had nearly half a million members; it dwindled rapidly after he resigned. His controversial message rejected non-violence and condemned integration as cultural suicide, going directly against the goals of the NAACP, the largest civil rights organization of the time.",
+        "physical_cues": [
+          {
+            "cue": "Statue of Adam Clayton Powell, Jr. on the windswept northeast corner",
+            "direction": "north",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "Statue of Adam Clayton Powell Jr., Harlem's first African-American congressman, on NE corner",
+          "Malcolm X lectured here for the Nation of Islam",
+          "NOI reached nearly half a million members before he left",
+          "His message opposed the NAACP's integrationist goals"
+        ],
+        "source_passage": "Abuzz with history, this intersection is one of the most important in Harlem. Look over first at the windswept northeast corner, where the statue of Adam Clayton Powell, Jr., Harlem's first African-American congressman, stands. This is also the spot where Malcolm X spent many hours lecturing to Harlem residents on behalf of the Nation of Islam. His message—“We are Blacks first and everything else second”—was so powerful, and he was such an effective orator, that before he left the NOI that organization had nearly half a million members (it dwindled rapidly after he resigned). His controversial message, which rejected non-violence and condemned integration as cultural suicide, went directly against the goals of the NAACP, the largest civil rights organization of the time.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Adam Clayton Powell Jr.",
+          "Malcolm X",
+          "Nation of Islam",
+          "NAACP"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "dramatic",
+        "subject_tag": "Malcolm X NOI",
+        "sub_location": "northeast-corner-powell-statue",
+        "trigger_address": "Adam Clayton Powell Jr. Blvd & 125th St",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "topic_slug": "powell_statue_malcolm_x_lectures",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Powell statue ('Higher Ground', dedicated 2005) at the 125th St / ACP Blvd plaza corroborated; Powell as first African-American congressman from NY corroborated.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "5d52404bf79bcb0e0e5b143cfd5e918b1d445fb3d3964f0e1347a6b2d43fefdf"
+      },
+      {
+        "beat_id": "newyork_corner_of_adam_clayton_powell_jr_boulevard_and_125th_street_hidden_history_frommers-nyc-2024_castro_khrushchev_hotel_theresa",
+        "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+        "lens": "hidden_history",
+        "script_body": "Across the street rises the tall white building with geometric patterns climbing its facade — the former Hotel Theresa. In 1960 a young Fidel Castro was scheduled to address the United Nations, but no hotel in town would take him and his contingent. After he threatened to camp on the U.N. lawn, the government ordered city hotels to accommodate him, but Castro quarreled with the midtown Shelburne Hotel he'd chosen. After a conversation with Malcolm X, he moved up here to the Theresa — a gesture of solidarity with Black Americans. Clashes between pro- and anti-Castro forces kept the 258 police officers guarding him busy, and on his second day Nikita Khrushchev came to visit; the combined police contingents created the greatest show of force Harlem had ever witnessed, unmatched to this day.",
+        "physical_cues": [
+          {
+            "cue": "Tall white former Hotel Theresa across the street, geometric patterns climbing its facade",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "Castro stayed at the Hotel Theresa in 1960 after a dispute with the Shelburne Hotel",
+          "Moved there after talking with Malcolm X",
+          "258 police officers guarded him",
+          "Khrushchev visited on his second day"
+        ],
+        "source_passage": "Now, look across the street at the tall white building with geometric patterns climbing up its facade, the former Hotel Theresa. If your olfactory glands have any imagination, you may detect a hint of Cuban cigar smoke in the air. In 1960, a young Fidel Castro was scheduled to speak at the United Nations, but no hotel in town would take him and his contingent. After he threatened to set up camp on the lawn of the United Nations, the government ordered city hotels to accommodate him, but Castro got into an argument with the midtown hotel he'd picked, the Shelburne Hotel. After a conversation with Malcolm X, he moved up here to the Hotel Theresa—a dramatic gesture Castro hoped would show his solidarity with Black Americans (and perhaps encourage a few to join the Communist Party). Repeated clashes between pro- and anti-Castro forces outside the hotel kept busy the 258 police officers assigned to guard him. On his second day at the Theresa, Nikita Khrushchev came to visit; his police contingent plus Castro's created the greatest show of force Harlem had ever witnessed (to this day, it hasn't been matched).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Hotel Theresa",
+          "Fidel Castro",
+          "United Nations",
+          "Shelburne Hotel",
+          "Malcolm X",
+          "Nikita Khrushchev"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Castro Theresa",
+        "sub_location": "hotel-theresa-across-street",
+        "trigger_address": "former Hotel Theresa, 2082 Adam Clayton Powell Jr. Blvd",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 53,
+        "kid_friendly": "yes",
+        "topic_slug": "castro_khrushchev_hotel_theresa",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Castro's 1960 stay at Hotel Theresa during the UN visit, the Shelburne dispute, and the Khrushchev visit are corroborated by web sources.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "458ee0282f3f7d3a12d52f52df3a92af754be77390cc02b37cae787f76750c7a"
+      },
+      {
+        "beat_id": "newyork_corner_of_adam_clayton_powell_jr_boulevard_and_125th_street_dark_history_frommers-nyc-2024_malcolm_x_oaau_assassination",
+        "poi_name": "Corner of Adam Clayton Powell Jr. Boulevard and 125th Street",
+        "lens": "dark_history",
+        "script_body": "Four years after Castro's stay, when Malcolm X broke with the Nation of Islam to found his own Organization of Afro-American Unity — open to people of all religions — he held his press conference at the Theresa and soon moved his offices here. When he was assassinated in 1965, just a year later, this is where crowds gathered to mourn, until they were dispersed by the police.",
+        "physical_cues": [
+          {
+            "cue": "Former Hotel Theresa across the street, where Malcolm X kept his OAAU offices",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "Malcolm X founded the Organization of Afro-American Unity and held its press conference and offices at the Theresa",
+          "Assassinated in 1965; crowds mourned here"
+        ],
+        "source_passage": "Four years later, when Malcolm X broke with the Nation of Islam to found his own Organization of Afro-American Unity (open to people of all religions), he held his press conference at the Theresa and soon afterward moved his offices here. When he was assassinated in 1965, just 1 year later, this is where crowds gathered to mourn, until they were dispersed by the police.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Malcolm X",
+          "Organization of Afro-American Unity",
+          "Hotel Theresa"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "Malcolm X OAAU",
+        "sub_location": "hotel-theresa-across-street",
+        "trigger_address": "former Hotel Theresa, 2082 Adam Clayton Powell Jr. Blvd",
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 25,
+        "kid_friendly": "no",
+        "topic_slug": "malcolm_x_oaau_assassination",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Malcolm X's OAAU and 1965 assassination are well-established; OAAU offices in the Hotel Theresa corroborated.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "c5ba3c72937012b70239c2ff3e017d4fbd9a5df6b9f9af5101f5d40c8274b65d"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Blumstein's Department Store",
+    "short_description": "Former flagship Harlem department store; site of 1934 'Don't Buy Where You Can't Work' boycott and 1958 stabbing of Dr. King by Izola Ware Curry. High civil-rights-history gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.809,
+    "longitude": -73.951,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "230 W. 125th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Former flagship Harlem department store; site of 1934 'Don't Buy Where You Can't Work' boycott and 1958 stabbing of Dr. King by Izola Ware Curry. High civil-rights-history gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Daytonian in Manhattan / King Institute: 230 W 125th St) + grid reference",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_blumsteins_department_store_social_change_frommers-nyc-2024_dont_buy_where_you_cant_work_boycott",
+        "poi_name": "Blumstein's Department Store",
+        "lens": "social_change",
+        "script_body": "When it opened in 1900, Blumstein's was the neighborhood's largest and most exclusive store, built at a cost of $1 million — note the beautifully worked copper ornamentation on the facade, a mix of Art Deco and Spanish Renaissance. It was owned by Louis Blumstein, the synagogue congregant from the tour's start. Although the vast majority of its clientele was African American, Blumstein's refused to hire any Black clerks — a maddening policy during the Great Depression. In 1934 the Urban League, spearheaded by Reverends John H. Johnson and Adam Clayton Powell, Jr., launched a boycott and picket of the store. For two months picketers carried signs reading 'Don't buy where you can't work.' Blumstein's finally relented, hiring 34 African-American women as clerks. Dr. Martin Luther King, Jr. often cited this strike as an example of the power of non-violent protest.",
+        "physical_cues": [
+          {
+            "cue": "Copper ornamentation on the facade, mixing Art Deco and Spanish Renaissance patterning",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Opened 1900, built for $1 million, owned by Louis Blumstein",
+          "Refused to hire Black clerks despite mostly Black clientele",
+          "1934 Urban League boycott led by Revs John H. Johnson and Adam Clayton Powell Jr.",
+          "Signs read 'Don't buy where you can't work'",
+          "Store hired 34 African-American women as clerks"
+        ],
+        "source_passage": "When it opened its doors in 1900, this was the neighborhood's largest and most exclusive store, built at a cost of $1 million (notice the beautifully worked copper ornamentation on the facade, a mix of Art Deco and Spanish Renaissance in its patterning). And yes, it was owned by Louis Blumstein, whom we discussed at the beginning of this tour. Although the vast majority of its clientele was African American, Blumstein's refused to hire any Black store clerks (a particularly maddening policy in the Great Depression, when jobs were scarce). In 1934, the Urban League began a campaign, spearheaded by Reverends John H. Johnson and Adam Clayton Powell, Jr., to boycott and picket the store until it changed its hiring practices. The action lasted 2 months, with picketers carrying signs with the simple but effective request don't buy where you can't work. Blumstein's finally relented, hiring 34 African-American women as clerks. Dr. Martin Luther King, Jr. often spoke of this strike in his speeches as an example of the power of non-violent protest.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Louis Blumstein",
+          "Urban League",
+          "John H. Johnson",
+          "Adam Clayton Powell Jr.",
+          "Martin Luther King Jr.",
+          "Great Depression"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "Blumstein boycott",
+        "sub_location": null,
+        "trigger_address": "230 W. 125th St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 57,
+        "kid_friendly": "yes",
+        "topic_slug": "dont_buy_where_you_cant_work_boycott",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "1934 'Don't Buy Where You Can't Work' Blumstein's boycott corroborated. NOTE for /fact-check: source dates the store opening to 1900; one web source (Daytonian in Manhattan) suggests the building/expansion history differs — single discrepancy, not auto-corrected (need 2+ agreeing sources).",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "21cd62847b6c277e33d4f03b7d58fa2e5ca059f38b52e1a18f16bd7c9ad066c2"
+      },
+      {
+        "beat_id": "newyork_blumsteins_department_store_dark_history_frommers-nyc-2024_mlk_stabbing_izola_curry",
+        "poi_name": "Blumstein's Department Store",
+        "lens": "dark_history",
+        "script_body": "In 1958, Dr. King himself was at the center of history at Blumstein's. He was seated at a table signing copies of his book Strides Towards Freedom when a Black woman named Izola Ware Curry reached the front of the line. After asking, 'Are you Martin Luther King?' she pulled a letter opener from the book she was carrying and, shouting 'You Communist, you Communist!', stabbed him in the chest. King was rushed to Harlem Hospital with the blade still in — had it been removed, he would have bled to death — and underwent surgery. The next morning the New York Times reported that had King sneezed, he would have died, as the blade was touching his aorta. From his hospital bed, King issued a letter of forgiveness to Curry, who was committed to an asylum; she had a long history of mental instability.",
+        "physical_cues": [],
+        "key_claims": [
+          "1958: King stabbed at Blumstein's by Izola Ware Curry while signing his book",
+          "Blade touched his aorta; he survived surgery at Harlem Hospital",
+          "King issued a letter of forgiveness; Curry was committed to an asylum"
+        ],
+        "source_passage": "In 1958, Dr. King himself was at the center of history at Blumstein's. He was seated at a table signing copies of his book Strides Towards Freedom when a Black woman named Izola Ware Curry got to the front of the line. After asking, “Are you Martin Luther King?” she pulled a letter opener out of the book she was carrying. Shouting “You Communist, you Communist!” she stabbed him in the chest. Dr. King was rushed to Harlem Hospital with the blade still in (had it been removed, he would have bled to death) and underwent surgery. The next morning, the New York Times reported that had King sneezed, he would have died, as the blade was touching his aorta. From his hospital bed, King issued a letter of forgiveness to Wade, who was committed to an insane asylum for the act (she had had a long history of mental instability).",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Martin Luther King Jr.",
+          "Izola Ware Curry",
+          "Harlem Hospital",
+          "New York Times"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "King stabbing",
+        "sub_location": null,
+        "trigger_address": "230 W. 125th St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 58,
+        "kid_friendly": "no",
+        "topic_slug": "mlk_stabbing_izola_curry",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Source book title 'Strides Towards Freedom' — corroborating sources give the actual title as 'Stride Toward Freedom' (auto-corrected in body? NO — preserved verbatim per B7; flagged for /fact-check)",
+            "Source last sentence names the assailant 'Wade'; earlier in the same passage she is 'Izola Ware Curry' — internal source typo, body uses the correct 'Curry'"
+          ],
+          "notes": "1958 King stabbing at Blumstein's by Izola Ware Curry, blade-near-aorta, Harlem Hospital surgery, and 'sneezed/died' NYT line all corroborated by 2+ sources. Source's book title 'Strides Towards Freedom' is wrong (canonical: 'Stride Toward Freedom', confirmed by King Institute + multiple sources) but NOT auto-corrected because it is part of a named work title in a source passage — flagged for /fact-check. The 'Wade' at the end of the source is an internal typo for Curry; body resolves it to 'Curry' (same entity named correctly earlier in the same passage).",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0bc5b4d58f38cec69e0154ff81fc1ee43c4cd227300e9fac6e52ee4e99e6074a"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Apollo Theater",
+    "short_description": "Iconic landmark music hall, legendary Amateur Night; tour finish point. Very high tourist gravity. NOTE: source says whites-only burlesque 'until 1934'; corroborating sources put the burlesque-house origin at 1914 (Hurtig & Seamon's) — source's 1934 conversion date checks out.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.81,
+    "longitude": -73.95,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "253 W. 125th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic landmark music hall, legendary Amateur Night; tour finish point. Very high tourist gravity. NOTE: source says whites-only burlesque 'until 1934'; corroborating sources put the burlesque-house origin at 1914 (Hurtig & Seamon's) — source's 1934 conversion date checks out.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia Apollo Theater; coords 40.81000/-73.95000)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-10"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_apollo_theater_music_heritage_frommers-nyc-2024_great_black_way_amateur_night",
+        "poi_name": "Apollo Theater",
+        "lens": "music_heritage",
+        "script_body": "For years, 125th Street was known as the 'Great Black Way,' a play on Broadway's 'Great White Way' — this was the theater district of Harlem. Only a few of those great show palaces still exist, but right in front of you is the most famous and influential: the Apollo Theater. A whites-only burlesque house until 1934, it changed its policy and its lineup that year, becoming a music hall in January and introducing the legendary 'Amateur Night' a few months later.",
+        "physical_cues": [
+          {
+            "cue": "Marquee of the Apollo Theater directly in front of you across the street",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "key_claims": [
+          "125th St was the 'Great Black Way', Harlem's theater district",
+          "Apollo was whites-only burlesque until 1934",
+          "Became a music hall in January 1934 and launched 'Amateur Night' months later"
+        ],
+        "source_passage": "For years, 125th Street was known as the “Great Black Way,” in comparison to Broadway's “Great White Way.” This was the theater district of Harlem. Only a few of these great show palaces still exist, but right in front of us is the most famous and influential: the Apollo Theater (253 W. 125th St.). A whites-only burlesque house until 1934, it changed its policy and its lineup, becoming a music hall in January of that year and introducing the legendary “Amateur Night” a few months later.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Apollo Theater",
+          "Great White Way"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "playful",
+        "subject_tag": "Apollo Amateur Night",
+        "sub_location": null,
+        "trigger_address": "253 W. 125th St.",
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "topic_slug": "great_black_way_amateur_night",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "1934 conversion to a Black-audience music hall and Amateur Night corroborated by Wikipedia/Britannica; the burlesque house originally opened 1914 (Hurtig & Seamon's) — consistent with source's 'until 1934'.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "bd0e1b9c21ea450198f8282d5a971e57d1144db5e2a49ee163876e8f663c9a34"
+      },
+      {
+        "beat_id": "newyork_apollo_theater_film_tv_frommers-nyc-2024_transit_apollo_finish",
+        "poi_name": "Apollo Theater",
+        "lens": "film_tv",
+        "script_body": "Cross the street, and you'll see the marquee of the Apollo Theater.",
+        "physical_cues": [],
+        "key_claims": [
+          "Cross the street from Blumstein's to reach the Apollo marquee"
+        ],
+        "source_passage": "Cross the street, and you'll see the marquee of:\n10 The Apollo Theater",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 7: Walking Tour 2 — Harlem",
+          "page": "n/a"
+        },
+        "entities": [
+          "Apollo Theater"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "transition",
+        "beat_type": "transit",
+        "emotional_register": "neutral",
+        "subject_tag": "walk to Apollo",
+        "sub_location": null,
+        "trigger_address": "230 W. 125th St. (from Blumstein's)",
+        "beat_length_class": "micro",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 4,
+        "kid_friendly": "yes",
+        "topic_slug": "transit_apollo_finish",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-10-ch07-walking-tour-2-harlem",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "1da0c9d38fab4dff805b8d91ade81e140733504d37888dc7d08b021ba5d5dac6"
+      }
+    ],
+    "importance_tier": 4
+  }
+]

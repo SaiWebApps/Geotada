@@ -10,6 +10,7 @@ import json
 import pytest
 
 from scripts.upload_paris import (
+    PARIS_BBOX,
     _assert_beats_valid,
     _backfill_provenance,
     _beat_blocked,
@@ -282,10 +283,10 @@ class TestPoiMergeKeyDedup:
         name_key = canonical_name_key("Notre-Dame")
 
         with clean_driver.session(database=get_database()) as s:
-            _upload_pois(s, [_poi("Notre-Dame")])
+            _upload_pois(s, [_poi("Notre-Dame")], "paris", PARIS_BBOX)
         with clean_driver.session(database=get_database()) as s:
             # Casing + trailing whitespace variant — same canonical key.
-            _upload_pois(s, [_poi("notre-dame  ")])
+            _upload_pois(s, [_poi("notre-dame  ")], "paris", PARIS_BBOX)
 
         nodes = self._poi_nodes_for(clean_driver, name_key)
         assert len(nodes) == 1, (

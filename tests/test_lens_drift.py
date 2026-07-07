@@ -122,7 +122,7 @@ def test_canonical_slug_count() -> None:
 
 # Cities with a beats.json file we want to enforce taggable-lens-only on.
 # Add new cities here when their corpus reaches upload-readiness.
-PARAMETRIZED_CITIES = ["paris"]
+PARAMETRIZED_CITIES = ["paris", "new_york"]
 
 
 @pytest.mark.parametrize("city", PARAMETRIZED_CITIES)

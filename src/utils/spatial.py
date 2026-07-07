@@ -10,15 +10,21 @@ import requests
 from shapely import wkt
 from shapely.geometry import MultiPolygon, Point, Polygon
 
-BOUNDARY_CACHE_DIR = Path("data/paris/boundaries")
+
+def _boundary_cache_dir(city_slug: str) -> Path:
+    return Path("data") / city_slug / "boundaries"
 
 
-def fetch_osm_boundary(osm_relation_id: int) -> list[tuple[float, float]]:
+def fetch_osm_boundary(
+    osm_relation_id: int, city_slug: str = "paris"
+) -> list[tuple[float, float]]:
     """Fetch polygon coordinates from OSM Overpass API for a relation.
 
-    Returns list of (lat, lng) tuples. Caches response to avoid repeated API calls.
+    Caches under ``data/{city_slug}/boundaries/`` to avoid repeated API calls.
+    Returns list of (lat, lng) tuples.
     """
-    cache_file = BOUNDARY_CACHE_DIR / f"{osm_relation_id}.json"
+    cache_dir = _boundary_cache_dir(city_slug)
+    cache_file = cache_dir / f"{osm_relation_id}.json"
 
     if cache_file.exists():
         with open(cache_file) as f:
@@ -54,7 +60,7 @@ def fetch_osm_boundary(osm_relation_id: int) -> list[tuple[float, float]]:
         raise ValueError(f"No outer boundary found for OSM relation {osm_relation_id}")
 
     # Cache the result
-    BOUNDARY_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cache_dir.mkdir(parents=True, exist_ok=True)
     with open(cache_file, "w") as f:
         json.dump(coords, f)
 

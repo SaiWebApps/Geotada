@@ -1,0 +1,2654 @@
+[
+  {
+    "name": "Artists Space",
+    "short_description": "Alternative arts space at 80 White St, Chinatown; one of the first such venues in New York, founded 1972 to support contemporary artists across video, performance, architecture, and design.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7178,
+    "longitude": -74.002,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Pioneer alternative space with 50+ year history; tier-2 due to limited source detail.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 29,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 29 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "new_york_artists_space_visual_art_lonely-planet-new-york-city_1972_alternative_space_pioneer",
+        "city_name": "new_york",
+        "poi_name": "Artists Space",
+        "lens": "visual_art",
+        "topic_slug": "1972_alternative_space_pioneer",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "One of the first alternative spaces in New York, Artists Space made its debut in 1972 with a mission to support contemporary artists working in the visual arts — from video, electronic media and performance to architecture and design. More than 40 years on, it remains a solid choice for those seeking crisp, provocative and experimental creativity. In late 2019 the venue moved to a new location with two floors of exhibition space.",
+        "duration_sec": 68,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Artists Space 1972 pioneer",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Artists Space debuted in 1972 as one of New York's first alternative spaces",
+          "Mission to support contemporary artists in video, electronic media, performance, architecture, and design",
+          "Moved to new two-floor location in late 2019"
+        ],
+        "source_passage": "One of the first alternative spaces in New York, Artists Space made its debut in 1972 with a mission to support contemporary artists working in the visual arts – from video, electronic media and performance to architecture and design. More than 40 years on, it remains a solid choice for those seeking crisp, provocative and experimental creativity. In late 2019 the venue moved to a new location with two floors of exhibition space.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d7474a1b5b6e292a1bf11a8f433669ff4e248e3812cb85fd6ad56b8f596090e8",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Broken Kilometer",
+    "short_description": "1979 land-art installation by Walter De Maria at 393 W Broadway: 500 solid brass rods in five parallel rows with progressively widening spacing that subverts spatial perception.",
+    "name_variations": [
+      "The Broken Kilometer"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7240871,
+    "longitude": -74.0021462,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Distinctive permanent installation by major artist Walter De Maria in SoHo; unique conceptual artwork with no photography allowed.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 46,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 46 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_broken_kilometer_visual_art_lonely-planet-new-york-city_walter_de_maria_brass_rods",
+        "city_name": "new_york",
+        "poi_name": "Broken Kilometer",
+        "lens": "visual_art",
+        "topic_slug": "walter_de_maria_brass_rods",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Occupying a cavernous ground-floor space in SoHo is this 1979 installation by the late American artist Walter De Maria. The work consists of 500 solid brass rods, positioned in five parallel rows, with the space between the rods increasing by 5mm with each consecutive space, from front to back. The result: a playful subversion of spatial perception. The rods appear to be identically spaced, even though at the back they're almost 2ft apart. No photos allowed.",
+        "duration_sec": 73,
+        "kid_friendly": "yes",
+        "entities": [
+          "Walter De Maria"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "subject_tag": "De Maria brass rod installation",
+        "physical_cues": [
+          {
+            "cue": "500 solid brass rods in five parallel rows filling the ground-floor gallery at 393 W Broadway",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1979 installation by Walter De Maria",
+          "500 solid brass rods in five parallel rows",
+          "Spacing increases by 5mm per consecutive gap",
+          "No photos allowed"
+        ],
+        "source_passage": "Occupying a cavernous ground-floor space in SoHo is this 1979 installation by the late American artist Walter De Maria. The work consists of 500 solid brass rods, positioned in five parallel rows, with the space between the rods increasing by 5mm with each consecutive space, from front to back. The result: a playful subversion of spacial perception. The rods appear to be identically spaced, even though at the back they're almost 2ft apart. No photos allowed.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ab60a6c1abd9dbe4336171d331c2aa6ad5fa51ec90f810ca82649b42569f609c",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Chinatown",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.716491,
+    "longitude": -73.99625,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Chinatown'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Chinatown, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 76.5,
+        "assigned_gravity": 4,
+        "reasoning": "No published annual visitor figure for neighborhood. Described as one of the most-visited NYC neighborhoods by tourists; major cultural draw. Wikipedia has solid article.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "new_york_chinatown_markets_street_food_lonely-planet-new-york-city_sensory_feast_overview",
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "markets_street_food",
+        "topic_slug": "sensory_feast_overview",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "America's biggest Chinatown is a feast for the senses: the scent of fresh fish melds with ripe persimmons, mah-jongg tiles clatter on makeshift tables, and duck roasts dangle in restaurant windows. Plus it's a delight for shopping treasures — score everything from 'faux-lex' watches and jade Buddha statues to tire irons and a pound of ground turmeric.",
+        "duration_sec": 55,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "Chinatown sensory character",
+        "physical_cues": [
+          {
+            "cue": "Duck roasts dangling in restaurant windows along Canal and surrounding streets",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "America's biggest Chinatown",
+          "mah-jongg tiles clatter on makeshift tables",
+          "shopping ranges from faux watches to turmeric"
+        ],
+        "source_passage": "America's biggest Chinatown is a feast for the senses: the scent of fresh fish melds with ripe persimmons, mah-jongg tiles clatter on makeshift tables, and duck roasts dangle in restaurant windows. Plus it's a delight for shopping treasures – score everything from 'faux-lex' watches and jade Buddha statues to tire irons and a pound of ground turmeric.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c7babfadc04b9c25f8ceb51128b82a0d01428d0bbd9f0dbe650ae762260c42ff",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_chinatown_historic_cuisine_lonely-planet-new-york-city_family_recipes_food_culture",
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "historic_cuisine",
+        "topic_slug": "family_recipes_food_culture",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The most rewarding experience for Chinatown visitors is to access this wild and wonderful world through their taste buds. More than any other area of Manhattan, Chinatown's menus sport wonderfully low prices, uninflated by ambience, hype or reputation. But more than cheap eats, the neighborhood is rife with family recipes passed across generations and continents. Food displays and preparation remain unchanged and untempered by American norms; it's not unusual to walk by storefronts sporting a tangled array of lacquered animals — chickens, rabbit and duck, in particular — ready to be chopped up and served at a family banquet. Steaming street stalls clang down the sidewalk serving pork buns and other finger-friendly food.",
+        "duration_sec": 107,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "Chinatown food tradition",
+        "physical_cues": [
+          {
+            "cue": "Storefronts with lacquered chickens, rabbit, and duck hanging in windows",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Steaming street stalls on the sidewalk serving pork buns",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Chinatown's menus have the lowest prices in Manhattan, uninflated by ambience",
+          "Family recipes passed across generations and continents",
+          "Storefronts display lacquered animals ready to be served at family banquets"
+        ],
+        "source_passage": "The most rewarding experience for Chinatown visitors is to access this wild and wonderful world through their taste buds. More than any other area of Manhattan, Chinatown's menus sport wonderfully low prices, uninflated by ambience, hype or reputation. But more than cheap eats, the neighborhood is rife with family recipes passed across generations and continents. Food displays and preparation remain unchanged and untempered by American norms; it's not unusual to walk by storefronts sporting a tangled array of lacquered animals – chickens, rabbit and duck, in particular – ready to be chopped up and served at a family banquet. Steaming street stalls clang down the sidewalk serving pork buns and other finger-friendly food.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3caad467c340a699e823304f84b890a3d01922ddef6af84b938d948fb13071c5",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_chinatown_social_change_lonely-planet-new-york-city_immigration_waves_canton_fujian",
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "social_change",
+        "topic_slug": "immigration_waves_canton_fujian",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "When New York City's Chinatown was founded in the mid-18th century, it was immigrants from Guangdong — Canton Province — that built it. Many of the traditional shops hawking pork buns, and restaurants serving dim sum, are grounded in Cantonese culture. After the Vietnam War came Chinese groups from Vietnam, then the late 20th century brought a wave of Fujianese that caused tensions with the original community. Since then, Chinatown has become a hot pot of different Asian cultures, from Burmese to Filipino. Even Latin American flavor is creeping in down Canal St.",
+        "duration_sec": 88,
+        "kid_friendly": "yes",
+        "entities": [
+          "Guangdong",
+          "Canton Province",
+          "Vietnam War"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "Chinatown immigration history",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "dim sum",
+            "gloss": "traditional Cantonese small-dish cuisine"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Chinatown founded mid-18th century by Guangdong/Canton immigrants",
+          "Post-Vietnam War brought Chinese from Vietnam",
+          "Late 20th century Fujianese wave caused tensions with original community",
+          "Now includes Burmese, Filipino, and Latin American cultures"
+        ],
+        "source_passage": "When New York City's Chinatown was founded in the mid-18th century, it was immigrants from Guandong (Canton Province) that built it. Many of the traditional shops hawking pork buns, and restaurants serving dim sum, are grounded in Cantonese culture. After the Vietnam War came Chinese groups from Vietnam, then the late 20th century brought a wave of Fujianese that caused tensions with the original community. Since then, Chinatown has become a hot pot of different Asian cultures, from Burmese to Filipino. Even Latin American flavor is creeping in down Canal St.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Source spells 'Guandong' — likely should be 'Guangdong'; flagged for fact-check to confirm correct romanization"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e44c87351e24ad3ee027ad7eebcbf92636333cb1a0d4544a4ec8de47704a4c1f",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_chinatown_hidden_history_lonely-planet-new-york-city_canal_mott_mulberry_gentrification",
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "hidden_history",
+        "topic_slug": "canal_mott_mulberry_gentrification",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Traditionally Canal St has been Chinatown's spine, but the relentless force of gentrification is coming and the first sure signs can be seen here. You'll still see roasted ducks and pigs hanging by their skinny necks in windows, but it's also where you'll find persistent street vendors pushing knock-off Prada bags, and hipster design markets catering to an altogether different crowd. To find the true heart of Chinatown, find your way into the side streets: Mott and Mulberry are particularly evocative hunting grounds for treasures from the Far East. You'll pass stinky seafood stalls hawking slippery fish; mysterious herb shops peddling a witch's cauldron of roots and potions; storefront bakeries with steamy windows and 80¢ pork buns; and produce markets piled high with fresh lychees, bok choy and Asian pears.",
+        "duration_sec": 124,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "Canal St gentrification side streets",
+        "physical_cues": [
+          {
+            "cue": "Roasted ducks and pigs hanging in windows on Canal St",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Seafood stalls, herb shops, and bakeries on Mott and Mulberry Streets",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Canal St is traditionally Chinatown's spine",
+          "Gentrification now visible on Canal St",
+          "Mott and Mulberry Streets offer the true heart of Chinatown"
+        ],
+        "source_passage": "Traditionally Canal St has been Chinatown's spine, but the relentless force of gentrification is coming and the first sure signs can be seen here. It's still busy as hell, where oncoming human and car traffic wait for nobody. You'll still see roasted ducks and pigs hanging by their skinny necks in windows, but it's also where you'll find persistent street vendors pushing knock-off Prada bags, and hipster design markets catering to an altogether different crowd. To find the true heart of Chinatown, find your way into the side streets: Mott and Mulberry are particularly evocative hunting grounds for treasures from the Far East. You'll pass stinky seafood stalls hawking slippery fish; mysterious herb shops peddling a witch's cauldron of roots and potions; storefront bakeries with steamy windows and 80¢ pork buns; and produce markets piled high with fresh lychees, bok choy and Asian pears.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e2550420e7244320a7c8e4372184829732e395f5cee714b357efab14a7e2c257",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_chinatown_social_change_lonely-planet-new-york-city_railroad_laundry_migration_east",
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "social_change",
+        "topic_slug": "railroad_laundry_migration_east",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The history of Chinese immigrants in New York City is a long and tumultuous one. The first Chinese people to arrive in America came to work under difficult conditions on the Central Pacific Railroad; others were lured to the West Coast in search of gold. When prospects dried up, many moved east to NYC to work in factory assembly lines and in the laundry houses of New Jersey.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Central Pacific Railroad"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "Chinese immigrant railroad history",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "First Chinese in America worked on the Central Pacific Railroad",
+          "Others sought gold on the West Coast",
+          "When prospects dried up, many moved east to NYC factories and NJ laundry houses"
+        ],
+        "source_passage": "The history of Chinese immigrants in New York City is a long and tumultuous one. The first Chinese people to arrive in America came to work under difficult conditions on the Central Pacific Railroad; others were lured to the West Coast in search of gold. When prospects dried up, many moved east to NYC to work in factory assembly lines and in the laundry houses of New Jersey.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5b17b6190118ba1eb7a1961df53996a72afbe382079e22e7a73d1516a47fad05",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Columbus Park",
+    "short_description": "Leafy park at Mulberry and Bayard Sts in Chinatown where mah-jongg players, tai-chi practitioners, and locals gather; formerly the site of Five Points, NYC's first tenement slums.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7148572,
+    "longitude": -74.0000602,
+    "trigger_radius": 130,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Unique historical layering (Five Points → Gangs of New York); active community gathering space with vivid sensory character.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 66,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 66 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_columbus_park_dark_history_lonely-planet-new-york-city_five_points_gangs_of_new_york",
+        "city_name": "new_york",
+        "poi_name": "Columbus Park",
+        "lens": "dark_history",
+        "topic_slug": "five_points_gangs_of_new_york",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Mah-jongg meisters, slow-motion tai-chi practitioners and old aunties gossiping over homemade dumplings: it might feel like Shanghai, but this leafy oasis is core to NYC history. In the 19th century, this was part of the infamous Five Points neighborhood — the city's first tenement slums and the inspiration for Martin Scorsese's Gangs of New York.",
+        "duration_sec": 57,
+        "kid_friendly": "yes",
+        "entities": [
+          "Five Points",
+          "Martin Scorsese",
+          "Gangs of New York"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "Five Points tenement slums",
+        "physical_cues": [
+          {
+            "cue": "Leafy park at Mulberry and Bayard Sts where mah-jongg players and tai-chi practitioners gather",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "In the 19th century, this area was part of Five Points, NYC's first tenement slums",
+          "Five Points was the inspiration for Martin Scorsese's Gangs of New York"
+        ],
+        "source_passage": "Mah-jongg meisters, slow-motion tai-chi practitioners and old aunties gossiping over homemade dumplings: it might feel like Shanghai, but this leafy oasis is core to NYC history. In the 19th century, this was part of the infamous Five Points neighborhood, the city's first tenement slums and the inspiration for Martin Scorsese's Gangs of New York.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4de122f489146672830cc0e6e8757ae4430ec8587637c8a9a09604cb207aeb88",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_columbus_park_local_legends_lonely-planet-new-york-city_mahjong_taichi_community",
+        "city_name": "new_york",
+        "poi_name": "Columbus Park",
+        "lens": "local_legends",
+        "topic_slug": "mahjong_taichi_community",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Mah-jongg meisters, slow-motion tai-chi practitioners and old aunties gossiping over homemade dumplings congregate in this leafy oasis — it might feel like Shanghai.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "Columbus Park community life",
+        "physical_cues": [
+          {
+            "cue": "Mah-jongg players and tai-chi practitioners visible in the park at Mulberry and Bayard Sts",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Park hosts mah-jongg players, tai-chi practitioners, and local aunties with dumplings"
+        ],
+        "source_passage": "Mah-jongg meisters, slow-motion tai-chi practitioners and old aunties gossiping over homemade dumplings: it might feel like Shanghai, but this leafy oasis is core to NYC history.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d8aab7aa275729ef2b8c308ffc68271c3c3346cea95320d97870d71324b09f87",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Donald Judd Home Studio",
+    "short_description": "Former home and studio of minimalist artist Donald Judd at 101 Spring St, SoHo; 90-minute guided tours by prebook, plus drawing classes and art talks.",
+    "name_variations": [
+      "101 Spring St",
+      "Judd Foundation"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7248,
+    "longitude": -73.9982,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Home of a defining figure of minimalist art; guided-tour-only format signals high cultural significance.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 47,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 47 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_donald_judd_home_studio_visual_art_lonely-planet-new-york-city_minimalist_guided_tour",
+        "city_name": "new_york",
+        "poi_name": "Donald Judd Home Studio",
+        "lens": "visual_art",
+        "topic_slug": "minimalist_guided_tour",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The former home and studio of the late American artist Donald Judd offers a fascinating glimpse into the life and artistic practices of the minimalist maverick. Guided tours of the space run for approximately 90 minutes and must be booked online — tours often sell out a month in advance. The home studio also hosts drawing classes and art talks.",
+        "duration_sec": 57,
+        "kid_friendly": "yes",
+        "entities": [
+          "Donald Judd"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Judd studio minimalism",
+        "physical_cues": [
+          {
+            "cue": "Building facade at 101 Spring St at Mercer St, former home of Donald Judd",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Former home and studio of Donald Judd at 101 Spring St",
+          "Guided tours approximately 90 minutes, must be booked online",
+          "Tours often sell out a month in advance"
+        ],
+        "source_passage": "The former home and studio of the late American artist Donald Judd offers a fascinating glimpse into the life and artistic practices of the minimalist maverick. Guided tours of the space run for approximately 90 minutes and must be booked online (tours often sell out a month in advance). The home studio also hosts drawing classes and art talks; see the website for details.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "65fcfcd5e07ac952cad478352fa1a53741264648f094aaac3964ac5f4c0422cb",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Drawing Center",
+    "short_description": "America's only nonprofit institute solely focused on drawings at 35 Wooster St, SoHo; exhibitions range from Michelangelo and Duchamp to Richard Serra and Ellsworth Kelly.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7224437,
+    "longitude": -74.0028908,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Unique institutional mandate (sole nonprofit dedicated to drawings in America); exhibits blue-chip artists.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 47,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 47 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_drawing_center_visual_art_lonely-planet-new-york-city_only_nonprofit_drawings",
+        "city_name": "new_york",
+        "poi_name": "Drawing Center",
+        "lens": "visual_art",
+        "topic_slug": "only_nonprofit_drawings",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "America's only nonprofit institute focused solely on drawings, the Drawing Center uses work by masters as well as unknowns to juxtapose the medium's various styles. Historical exhibitions have included work by Michelangelo, James Ensor and Marcel Duchamp, while contemporary shows have showcased heavyweights such as Richard Serra, Ellsworth Kelly and Richard Tuttle. As to the themes themselves, expect anything from the whimsical to the politically controversial.",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "entities": [
+          "Michelangelo",
+          "James Ensor",
+          "Marcel Duchamp",
+          "Richard Serra",
+          "Ellsworth Kelly",
+          "Richard Tuttle"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "drawings only nonprofit",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "America's only nonprofit institute focused solely on drawings",
+          "Historical shows included Michelangelo, Ensor, Duchamp",
+          "Contemporary shows included Serra, Kelly, Tuttle"
+        ],
+        "source_passage": "America's only nonprofit institute focused solely on drawings, the Drawing Center uses work by masters as well as unknowns to juxtapose the medium's various styles. Historical exhibitions have included work by Michelangelo, James Ensor and Marcel Duchamp, while contemporary shows have showcased heavyweights such as Richard Serra, Ellsworth Kelly and Richard Tuttle. As to the themes themselves, expect anything from the whimsical to the politically controversial.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "881d7622f52bf6b9178375d8396d6c122419059bb99b6d25b31b39a01a5a07cd",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Eastern States Buddhist Temple",
+    "short_description": "Buddhist temple at 64 Mott St, Chinatown, filled with hundreds of Buddhas and open daily.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.716059,
+    "longitude": -73.9980944,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Landmark referenced as one of at least two temple landmarks in Chinatown; tier-2 given brief source treatment.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 40,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 40 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "new_york_eastern_states_buddhist_temple_sacred_traditions_lonely-planet-new-york-city_hundreds_of_buddhas",
+        "city_name": "new_york",
+        "poi_name": "Eastern States Buddhist Temple",
+        "lens": "sacred_traditions",
+        "topic_slug": "hundreds_of_buddhas",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Eastern States Buddhist Temple at 64 Mott St is filled with hundreds of Buddhas — one of at least two landmark temples easily stumbled upon during a stroll of the Chinatown neighborhood.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Chinatown Buddhist temples",
+        "physical_cues": [
+          {
+            "cue": "Hundreds of Buddha figures inside Eastern States Buddhist Temple at 64 Mott St",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Eastern States Buddhist Temple at 64 Mott St is filled with hundreds of Buddhas",
+          "At least two landmark Buddhist temples in Chinatown"
+        ],
+        "source_passage": "The Eastern States Buddhist Temple ( MAP GOOGLE MAP ; % 212-966-6229; 64 Mott St, btwn Bayard & Canal Sts; h 8:30am-6pm) is filled with hundreds of Buddhas, while the Mahayana Temple … holds one golden, 16ft-high Buddha.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cabefdaece07a62df0c09f9ac98d541efb30cb00345f3083633169ce215007c3",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Leslie-Lohman Museum of Art",
+    "short_description": "World's first LGBTQ art museum, Wikipedia article. Moderate gravity; niche-significant.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72164,
+    "longitude": -74.00312,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "World's first LGBTQ art museum, Wikipedia article. Moderate gravity; niche-significant.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / Apple Maps)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": 231,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 24.4,
+        "assigned_gravity": 1,
+        "reasoning": "4.5/5 rating from ~231 Google reviews; only 25 TripAdvisor reviews; no published attendance figures; Wikipedia article covers founding, collection (22,000+ objects), and mission; niche LGBTQ+ art museum with limited mainstream search volume",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "new_york_leslie_lohman_museum_of_art_social_change_lonely-planet-new-york-city_first_lgbtq_museum_world",
+        "city_name": "new_york",
+        "poi_name": "Leslie-Lohman Museum of Art",
+        "lens": "social_change",
+        "topic_slug": "first_lgbtq_museum_world",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The world's first museum dedicated to LGBTIQ+ themes stages six to eight annual exhibitions of both homegrown and international art. Offerings have included solo-artist retrospectives as well as themed shows exploring the likes of 'art and sex along the New York waterfront.' Much of the work on display is from the museum's own collection, which consists of over 24,000 works. The space also hosts queer-centric lectures, readings, film screenings and performances.",
+        "duration_sec": 70,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "first LGBTIQ museum",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "World's first museum dedicated to LGBTIQ+ themes",
+          "Stages six to eight annual exhibitions",
+          "Collection consists of over 24,000 works"
+        ],
+        "source_passage": "The world's first museum dedicated to LGBTIQ+ themes stages six to eight annual exhibitions of both homegrown and international art. Offerings have included solo-artist retrospectives as well as themed shows exploring the likes of 'art and sex along the New York waterfront.' Much of the work on display is from the museum's own collection, which consists of over 24,000 works. The space also hosts queer-centric lectures, readings, film screenings and performances; check the website for updates.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2fcffddcf39f3182f1813994c3d5a4d48acdd518ba508603ab16ac1363870ca4",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Little Italy",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.719273,
+    "longitude": -73.998215,
+    "trigger_radius": 250,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Little Italy'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Little Italy, Lower Manhattan, Manhattan, New York County, New York, 10013, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Frequently included in tourist itineraries. Neighborhood has shrunk significantly; much absorbed by Chinatown. No official visitor count. Wikipedia article covers history well but district is small.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_little_italy_social_change_lonely-planet-new-york-city_shrunk_to_mulberry_strip",
+        "city_name": "new_york",
+        "poi_name": "Little Italy",
+        "lens": "social_change",
+        "topic_slug": "shrunk_to_mulberry_strip",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In the last 50 years, New York's Little Italy has shrunk from a big, brash boot to an ultra-slim sandal. A mid-century exodus to Brooklyn and beyond has seen this neighborhood turn into a micro-pastiche of its former self. It's now little more than Mulberry Street, a kitsch strip of gingham tablecloths, mandolin muzak and nostalgia for the old country.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "Little Italy neighborhood decline",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Little Italy has shrunk dramatically over 50 years",
+          "Mid-century exodus to Brooklyn reduced neighborhood to near-nothing",
+          "Now little more than Mulberry Street"
+        ],
+        "source_passage": "In the last 50 years, New York's Little Italy has shrunk from a big, brash boot to an ultra-slim sandal. A mid-century exodus to Brooklyn and beyond has seen this neighborhood turn into a micro-pastiche of its former self. It's now little more than Mulberry Street, a kitsch strip of gingham tablecloths, mandolin muzak and nostalgia for the old country.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "17ab1a435cda6dfc0033212809371bcefe7222b7b21044433c7eadf63daa5d8e",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_little_italy_local_legends_lonely-planet-new-york-city_san_gennaro_festival_block_party",
+        "city_name": "new_york",
+        "poi_name": "Little Italy",
+        "lens": "local_legends",
+        "topic_slug": "san_gennaro_festival_block_party",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Come late September, Mulberry St turns into a raucous, 11-day block party for the San Gennaro Festival — a celebration honoring the patron saint of Naples. It's a loud, convivial affair, with food and carnival stalls, free entertainment and more big hair than Jersey Shore.",
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "entities": [
+          "San Gennaro Festival"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "San Gennaro Festival Naples",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "San Gennaro Festival is an 11-day block party in late September on Mulberry St",
+          "Honors the patron saint of Naples",
+          "Features food and carnival stalls and free entertainment"
+        ],
+        "source_passage": "Come late September, Mulberry St turns into a raucous, 11-day block party for the San Gennaro Festival (www.facebook.com/sangennaronyc), a celebration honoring the patron saint of Naples. It's a loud, convivial affair, with food and carnival stalls, free entertainment and more big hair than Jersey Shore.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5fe2b3b7587c9ba7c36ea9e10d29778a0ad5350e9086d85de2698f84f6865a91",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Mahayana Temple",
+    "short_description": "Largest Buddhist temple in Chinatown at 133 Canal St, guarded by two golden lions and housing a 16-foot golden Buddha on a lotus, surrounded by offerings of oranges, apples and flowers.",
+    "name_variations": [
+      "Mahayana Buddhist Temple"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.71614,
+    "longitude": -73.9953678,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Landmark Buddhist temple singled out as 'Don't Miss' in the Chinatown Top Experience; largest temple in neighborhood.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 62,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 62 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_mahayana_temple_sacred_traditions_lonely-planet-new-york-city_golden_buddha_lotus",
+        "city_name": "new_york",
+        "poi_name": "Mahayana Temple",
+        "lens": "sacred_traditions",
+        "topic_slug": "golden_buddha_lotus",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Mahayana Temple holds one golden, 16ft-high Buddha, sitting on a lotus and edged with offerings of fresh oranges, apples and flowers. Mahayana is the largest Buddhist temple in Chinatown, and its entrance, which overlooks the frenzied vehicle entrance to the Manhattan Bridge, is guarded by two proud and handsome golden lions. Step inside and you'll find a simple interior of wooden floor and red paper lanterns, dramatically upstaged by the temple's magnificent Buddha, thought to be the largest in the city.",
+        "duration_sec": 80,
+        "kid_friendly": "yes",
+        "entities": [
+          "Manhattan Bridge"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Mahayana largest Buddha",
+        "physical_cues": [
+          {
+            "cue": "Two golden lions guarding the temple entrance at 133 Canal St, overlooking the Manhattan Bridge vehicle entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "16ft golden Buddha on a lotus inside, surrounded by offerings of oranges, apples, and flowers",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Simple interior of wooden floor and red paper lanterns",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Mahayana Temple holds a 16ft golden Buddha on a lotus",
+          "Largest Buddhist temple in Chinatown",
+          "Entrance guarded by two golden lions overlooking Manhattan Bridge vehicle entrance",
+          "Buddha thought to be the largest in the city"
+        ],
+        "source_passage": "The Mahayana Temple ( MAP GOOGLE MAP ; % 212-925-8787; http://en.mahayana.us; 133 Canal St, at Manhattan Bridge Plaza; h 8:30am-6pm; b B/D to Grand St; J/Z to Bowery; 6 to Canal St) holds one golden, 16ft-high Buddha, sitting on a lotus and edged with offerings of fresh oranges, apples and flowers. Mahayana is the largest Buddhist temple in Chinatown, and its entrance, which overlooks the frenzied vehicle entrance to the Manhattan Bridge, is guarded by two proud and handsome golden lions. Step inside and you'll find a simple interior of wooden floor and red paper lanterns, dramatically upstaged by the temple's magnificent Buddha, thought to be the largest in the city.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8bbe98cb6842e8ce8f3364fdddd2f0fb8a73d671a43f74a26887dacd630ae08e",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Merchant's House Museum",
+    "short_description": "Only fully intact 19th-century Manhattan residence, Wikipedia article, NHL. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.727667,
+    "longitude": -73.992361,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Only fully intact 19th-century Manhattan residence, Wikipedia article, NHL. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / latitude.to)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No official visitor count published; 103 Yelp reviews; Wikipedia article covers the 1832 Greek Revival house, Tredwell family history, and landmark status; small specialty museum with niche ghost-tour following",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_merchants_house_museum_historic_arch_lonely-planet-new-york-city_federal_style_tredwell_1832",
+        "city_name": "new_york",
+        "poi_name": "Merchant's House Museum",
+        "lens": "historic_arch",
+        "topic_slug": "federal_style_tredwell_1832",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Built in 1832 and purchased by merchant magnate Seabury Tredwell three years later, this redbrick mansion is the most authentic Federal-style house in town — one of about 300 such houses that survive. An antiquarian's dream, the Merchant's House is as much about the city's mercantile past as it is a showcase of high-end domestic furnishings from the 19th century. Everything in the house is testament to what money could buy, from the mahogany pocket doors, bronze gasoliers and marble mantelpieces, to the elegant parlor chairs, attributed to noted furniture designer Duncan Phyfe. Even the elaborate system of multilevel call bells for the servants works to this day.",
+        "duration_sec": 103,
+        "kid_friendly": "yes",
+        "entities": [
+          "Seabury Tredwell",
+          "Duncan Phyfe"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Tredwell Federal mansion furnishings",
+        "physical_cues": [
+          {
+            "cue": "Redbrick Federal-style facade at 29 E 4th St, NoHo",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Mahogany pocket doors, bronze gasoliers, and marble mantelpieces inside",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Parlor chairs attributed to Duncan Phyfe",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Multilevel servant call bell system, still functional",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Built in 1832, purchased by Seabury Tredwell in 1835",
+          "Most authentic Federal-style house in NYC (of about 300)",
+          "Parlor chairs attributed to Duncan Phyfe",
+          "Servant call bell system still works"
+        ],
+        "source_passage": "Built in 1832 and purchased by merchant magnate Seabury Tredwell three years later, this redbrick mansion is the most authentic Federal-style house in town (of about 300). An antiquarian's dream, the Merchant's House is as much about the city's mercantile past as it is a showcase of high-end domestic furnishings from the 19th century. Everything in the house is testament to what money could buy, from the mahogany pocket doors, bronze gasoliers and marble mantelpieces, to the elegant parlor chairs, attributed to noted furniture designer Duncan Phyfe. Even the elaborate system of multilevel call bells for the servants works to this day.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5c46abdafb6e8f5c181df854c6e0dbcd21c4d1e9b5d8ecfcc0814646a1f18cc6",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_merchants_house_museum_local_legends_lonely-planet-new-york-city_ghost_gertrude_tredwell",
+        "city_name": "new_york",
+        "poi_name": "Merchant's House Museum",
+        "lens": "local_legends",
+        "topic_slug": "ghost_gertrude_tredwell",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Many believe that the ghost of Gertrude Tredwell — Seabury's youngest child and the building's last resident — haunts the place, making cameos late in the evening and at public events. Several attendees once witnessed the shadow of a woman walk up to the performers and take a seat in the parlor chairs at a Valentine's Day concert. Apropos, the museum offers ghost tours after dark, typically in late October, plus lectures, special events and historical walking tours of NoHo.",
+        "duration_sec": 73,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gertrude Tredwell",
+          "Seabury Tredwell"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "Gertrude Tredwell ghost",
+        "physical_cues": [
+          {
+            "cue": "Parlor chairs where the ghost's shadow was said to take a seat during a Valentine's Day concert",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Ghost of Gertrude Tredwell — Seabury's youngest child and last resident — reportedly haunts the building",
+          "Shadow of a woman seen walking to parlor chairs at a Valentine's Day concert",
+          "Museum offers ghost tours in late October"
+        ],
+        "source_passage": "Many believe that the ghost of Gertrude Tredwell – Seabury's youngest child and the building's last resident – haunts the place, making cameos late in the evening and at public events. Several attendees once witnessed the shadow of a woman walk up to the performers and take a seat in the parlor chairs at a Valentine's Day concert. Apropos, the museum offers ghost tours after dark (typically in late October), plus lectures, special events and historical walking tours of NoHo.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "04835da9a8929a8ed7b75d25ca8de610ee5b555667faf2eda3e3affa3a8e967d",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Mulberry Street",
+    "short_description": "Little Italy's main drag, named for former mulberry farms, lined with restaurants, the fourth-generation Alleva cheese shop, Ferrara Cafe, and storied venues linked to Frank Sinatra and John Gotti.",
+    "name_variations": [
+      "Mulberry St"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7165196,
+    "longitude": -73.9989561,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Street with multiple layers of cultural history — Italian-American heritage, Prohibition-era crime, mob history, celebrity connections, TV/film cameos; substantive source coverage.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 69,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 69 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "new_york_mulberry_street_historic_cuisine_lonely-planet-new-york-city_alleva_ferrara_fourth_gen",
+        "city_name": "new_york",
+        "poi_name": "Mulberry Street",
+        "lens": "historic_cuisine",
+        "topic_slug": "alleva_ferrara_fourth_gen",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": "188 Grand St",
+        "beat_length_class": "seasoning",
+        "script_body": "One block north stands fourth-generation Alleva — one of the city's original cheese shops, famed for its mozzarella. Across the street on Grand lies another veteran, Ferrara Cafe & Bakery, celebrated for its classic Italian pastries and gelati.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alleva",
+          "Ferrara Cafe & Bakery"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Alleva Ferrara Italian food",
+        "physical_cues": [
+          {
+            "cue": "Facade of Alleva cheese shop at 188 Grand St, one of the city's original cheese shops",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "gelati",
+            "gloss": "Italian ice cream"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Alleva at 188 Grand St is fourth-generation and one of NYC's original cheese shops",
+          "Ferrara Cafe & Bakery on Grand St celebrated for Italian pastries and gelati"
+        ],
+        "source_passage": "One block north stands fourth-generation Alleva ( MAP GOOGLE MAP ; % 212-226-7990; 188 Grand St; h 9am-7pm; b J/Z, N/Q/R, 6 to Canal St; B/D to Grand St), one of the city's original cheese shops and famed for its mozzarella. Across the street on Grand lies another veteran, Ferrara Cafe & Bakery, celebrated for its classic Italian pastries and gelati.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "986494dc51d9d9cf27e9a0620572dc67095cbb6736c8a689f0a0ae3ba7b82b85",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_mulberry_street_famous_residents_lonely-planet-new-york-city_sinatra_bar_sopranos",
+        "city_name": "new_york",
+        "poi_name": "Mulberry Street",
+        "lens": "famous_residents",
+        "topic_slug": "sinatra_bar_sopranos",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": "176 Mulberry St",
+        "beat_length_class": "seasoning",
+        "script_body": "Old-time Mulberry Street Bar at 176 Mulberry St was a favorite haunt of the late Frank Sinatra; its own TV cameos include Law & Order and The Sopranos.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frank Sinatra",
+          "Law & Order",
+          "The Sopranos"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Sinatra bar TV cameos",
+        "physical_cues": [
+          {
+            "cue": "Facade of old-time Mulberry Street Bar at 176 Mulberry St at Broome St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Mulberry Street Bar at 176 Mulberry St was a favorite haunt of Frank Sinatra",
+          "TV cameos in Law & Order and The Sopranos"
+        ],
+        "source_passage": "Back on Mulberry, old-time Mulberry Street Bar ( MAP GOOGLE MAP ; % 212-226-9345; www.facebook.com/MulberryStBar; 176 Mulberry St, at Broome St; h 11am-midnight Sun-Thu, to 2am Fri & Sat; b B/D to Grand St; J/Z to Bowery) was a favorite haunt of the late Frank Sinatra; its own TV cameos include Law & Order and The Sopranos.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1505bacb90bb3e01e6954e716e1d08d2f8e01b3ef2561208de1c0a1eee3ddb15",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_mulberry_street_dark_history_lonely-planet-new-york-city_prohibition_curb_exchange_bribes",
+        "city_name": "new_york",
+        "poi_name": "Mulberry Street",
+        "lens": "dark_history",
+        "topic_slug": "prohibition_curb_exchange_bribes",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Alcohol was openly traded on the corner of Mulberry and Kenmare Sts during Prohibition, leading to its nickname, the 'Curb Exchange.' That police headquarters at the time were only a block away at 240 Centre St is testament to the power of good old-fashioned bribes.",
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "Prohibition Curb Exchange bribes",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Alcohol openly traded at Mulberry and Kenmare Sts during Prohibition",
+          "Nicknamed the 'Curb Exchange'",
+          "Police HQ at 240 Centre St only a block away, suggesting bribery"
+        ],
+        "source_passage": "Alcohol was openly traded on the corner of Mulberry and Kenmare Sts during Prohibition, leading to its nickname, the 'Curb Exchange.' That police headquarters at the time were only a block away at 240 Centre St is testament to the power of good old-fashioned bribes.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c74ee66918627c1802eaa6687c1f9d8bfcced55a5bc5f7170459dbd651265067",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_mulberry_street_dark_history_lonely-planet-new-york-city_ravenite_gotti_fbi",
+        "city_name": "new_york",
+        "poi_name": "Mulberry Street",
+        "lens": "dark_history",
+        "topic_slug": "ravenite_gotti_fbi",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": "247 Mulberry St",
+        "beat_length_class": "mid",
+        "script_body": "Take a gander at what was once the Ravenite Social Club at 247 Mulberry St to see how things have really changed around here. Now a designer shoe store, it was once a mobster hangout — originally known as the Alto Knights Social Club. Big hitters such as John Gotti logged time here, as did the FBI, which kept a watchful eye from the building across the street. Only the shop's tile floor remains from the day, the shop windows once an intimidating brick wall.",
+        "duration_sec": 75,
+        "kid_friendly": "yes",
+        "entities": [
+          "Ravenite Social Club",
+          "Alto Knights Social Club",
+          "John Gotti",
+          "FBI"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "Gotti Ravenite mob club",
+        "physical_cues": [
+          {
+            "cue": "Building at 247 Mulberry St, Nolita — now a designer shoe store, formerly the Ravenite Social Club; tile floor is original",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "247 Mulberry St was once the Ravenite Social Club, originally the Alto Knights Social Club",
+          "John Gotti frequented the club",
+          "FBI surveilled from the building across the street",
+          "Only the tile floor remains; windows were once a brick wall"
+        ],
+        "source_passage": "Take a gander at what was once the Ravenite Social Club ( MAP GOOGLE MAP ; 247 Mulberry St, Nolita; b 6 to Spring St; N/R to Prince St) to see how things have really changed around here. Now a designer shoe store, it was once a mobster hangout (originally known as the Alto Knights Social Club). Indeed, it was right here that big hitters such as John Gotti (as well as the FBI, which kept a watchful eye from the building across the street) logged time. Only the shop's tile floor remains from the day, the shop windows once an intimidating brick wall.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8b0b713d427490ec373a810936628532605e08c9a6c792279253dbb4f3d69b7d",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_mulberry_street_hidden_history_lonely-planet-new-york-city_named_mulberry_farms",
+        "city_name": "new_york",
+        "poi_name": "Mulberry Street",
+        "lens": "hidden_history",
+        "topic_slug": "named_mulberry_farms",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Named for the mulberry farms that once stood here, Mulberry St is now better known as the meat in Little Italy's sauce — an animated strip packed with smooth-talking restaurant hawkers, wisecracking baristas and a healthy dose of kitschy souvenirs.",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Mulberry Street name origin",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Mulberry Street named for mulberry farms that once stood there"
+        ],
+        "source_passage": "Named for the mulberry farms that once stood here, Mulberry St is now better known as the meat in Little Italy's sauce. It's an animated strip, packed with smooth-talking restaurant hawkers (especially between Hester and Grand Sts), wisecracking baristas and a healthy dose of kitschy souvenirs.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "766204b7c90177a0685f3d32a93d1263ec88dfa8c594a68ef27be0c718d2c936",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Museum of Chinese in America",
+    "short_description": "Chinatown museum designed by Maya Lin, Wikipedia article. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.719388,
+    "longitude": -73.999088,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Chinatown museum designed by Maya Lin, Wikipedia article. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Google Maps / Wikipedia)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No official annual visitor count found; 897 TripAdvisor reviews (4.4 stars); Wikipedia article covers founding (1980), Maya Lin-designed building, Chinatown location; moderate community and tourist awareness",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_museum_of_chinese_in_america_social_change_lonely-planet-new-york-city_maya_lin_design_exhibitions",
+        "city_name": "new_york",
+        "poi_name": "Museum of Chinese in America",
+        "lens": "social_change",
+        "topic_slug": "maya_lin_design_exhibitions",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Museum of Chinese in America, designed by Maya Lin — architect of Washington, DC's Vietnam Memorial — is a multifaceted space with exhibitions that illuminate Chinese American life, both past and present. Wind your way through multimedia exhibits and imbibe maps, timelines, photos, letters, films and artifacts. The museum's anchor exhibit, With a Single Step: Stories in the Making of America, offers a look into topics ranging from immigration to cultural identity and racial stereotyping.",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Maya Lin",
+          "Vietnam Memorial",
+          "With a Single Step: Stories in the Making of America"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Maya Lin museum design",
+        "physical_cues": [
+          {
+            "cue": "Museum entrance at 215 Centre St, between Grand and Howard Sts",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Designed by Maya Lin, architect of the Vietnam Memorial",
+          "Anchor exhibit is 'With a Single Step: Stories in the Making of America'",
+          "Covers immigration, cultural identity, and racial stereotyping"
+        ],
+        "source_passage": "The Museum of Chinese in America ( MAP GOOGLE MAP ; % 212-619-4785; www.mocanyc.org; 215 Centre St, btwn Grand & Howard Sts; adult/child $12/8, 1st Thu of month free; h 11am-6pm Tue, Wed & Fri-Sun, to 9pm Thu), designed by Maya Lin (architect of Washington, DC's Vietnam Memorial) is a multifaceted space with exhibitions that illuminate Chinese American life, both past and present. Wind your way through multimedia exhibits and imbibe maps, timelines, photos, letters, films and artifacts. The museum's anchor exhibit, With a Single Step: Stories in the Making of America, offers a look into topics ranging from immigration to cultural identity and racial stereotyping.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3adfd8fa1022b5d3a1d9c667f8cd35ca63d59cb881151a6e9c9c83bb15e3b434",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "New York City Fire Museum",
+    "short_description": "Firehouse-memorabilia museum (Manhattan/SoHo). Quick gravity: medium.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.725601,
+    "longitude": -74.00693,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "278 Spring St. (btw. Varick and Hudson sts.), Manhattan",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Firehouse-memorabilia museum (Manhattan/SoHo). Quick gravity: medium.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'New York City Fire Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "New York City Fire Museum, 278, Spring Street, Hudson Square, Manhattan, New York County, New York, 10013, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 40000,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 25.7,
+        "assigned_gravity": 1,
+        "reasoning": "Official sources cite 40,000 visitors/year; 10,000+ children for fire-prevention programs. Located in SoHo (278 Spring St, Manhattan), not outer-borough. Wikipedia article is moderate covering the 1904 firehouse building, collection of 10,000+ artifacts, and 9/11 memorial.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "new_york_new_york_city_fire_museum_historic_arch_lonely-planet-new-york-city_1904_firehouse_collection",
+        "city_name": "new_york",
+        "poi_name": "New York City Fire Museum",
+        "lens": "historic_arch",
+        "topic_slug": "1904_firehouse_collection",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "In a grand old firehouse dating from 1904, this ode to firefighters includes a fantastic collection of historic equipment and artifacts. Eye up everything from horse-drawn firefighting carriages and early stovepipe firefighter hats to Chief, a four-legged firefighting hero from Brooklyn. Exhibits trace the development of the NYC firefighting system, and the museum's heavy equipment and friendly staff make this a great spot for kids.",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "entities": [
+          "Chief"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "FDNY museum firehouse",
+        "physical_cues": [
+          {
+            "cue": "Grand firehouse exterior at 278 Spring St, dating from 1904",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Horse-drawn firefighting carriages and stovepipe hats on display inside",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Firehouse dates from 1904",
+          "Collection includes horse-drawn carriages and early stovepipe hats",
+          "Chief is a four-legged firefighting hero from Brooklyn"
+        ],
+        "source_passage": "In a grand old firehouse dating from 1904, this ode to firefighters includes a fantastic collection of historic equipment and artifacts. Eye up everything from horse-drawn firefighting carriages and early stovepipe firefighter hats to Chief, a four-legged firefighting hero from Brooklyn. Exhibits trace the development of the NYC firefighting system, and the museum's heavy equipment and friendly staff make this a great spot for kids.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "06716ba0db6f1457946240c7b8ca47f2e254c108c2711e9cc8d12739eeb64b4b",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_new_york_city_fire_museum_dark_history_lonely-planet-new-york-city_fdny_911_survivor_tree",
+        "city_name": "new_york",
+        "poi_name": "New York City Fire Museum",
+        "lens": "dark_history",
+        "topic_slug": "fdny_911_survivor_tree",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The New York Fire Department lost half of its members in the collapse of the World Trade Center on September 11, 2001, and memorials and exhibits have become a permanent part of the collection — as well as the 2019 planting of a seedling from the World Trade Center survivor tree out front.",
+        "duration_sec": 47,
+        "kid_friendly": "no",
+        "entities": [
+          "World Trade Center",
+          "New York Fire Department",
+          "FDNY"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "FDNY 9/11 memorial",
+        "physical_cues": [
+          {
+            "cue": "Seedling from the World Trade Center survivor tree planted in front of the museum in 2019",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "FDNY lost half its members in the World Trade Center collapse on September 11, 2001",
+          "2019 planting of a seedling from the Word Trade Center survivor tree out front"
+        ],
+        "source_passage": "The New York Fire Department (FDNY) lost half of its members in the collapse of the World Trade Center on September 11, 2001, and memorials and exhibits have become a permanent part of the collection – as well as the 2019 planting of a seedling from the Word Trade Center survivor tree out front.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c61ce0a48320d6f30fb7e4f7a05fdcdc062053276bedbfdbc064fd7e5d9f0bfa",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "New York Earth Room",
+    "short_description": "Since 1980, Walter De Maria's permanent installation at 141 Wooster St: 250 cubic yards (280,000 lb) of earth filling a ground-floor gallery space.",
+    "name_variations": [
+      "Earth Room"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7259792,
+    "longitude": -73.9997541,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Singular permanent artwork; city-wide curiosity drawing visitors for decades; mentioned in Lonely Planet's 'Local Life' section as one of only three cultural highlights listed.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 48,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 48 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "new_york_new_york_earth_room_visual_art_lonely-planet-new-york-city_280000lb_dirt_soho",
+        "city_name": "new_york",
+        "poi_name": "New York Earth Room",
+        "lens": "visual_art",
+        "topic_slug": "280000lb_dirt_soho",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Since 1980 the oddity of the New York Earth Room, the work of artist Walter De Maria, has been wooing the curious with something not easily found in the city: dirt — 250 cubic yards, or 280,000 lb, of it, to be exact. Walking into the small space is a heady experience, as the scent will make you feel like you've entered a wet forest; the sight of such beautiful, pure earth in the midst of this crazy city is surprisingly moving.",
+        "duration_sec": 72,
+        "kid_friendly": "yes",
+        "entities": [
+          "Walter De Maria"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "wry",
+        "subject_tag": "Earth Room dirt installation",
+        "physical_cues": [
+          {
+            "cue": "Ground-floor gallery at 141 Wooster St filled with 280,000 lb of earth",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "New York Earth Room has been in place since 1980",
+          "Work of Walter De Maria",
+          "Contains 250 cubic yards (280,000 lb) of dirt"
+        ],
+        "source_passage": "Since 1980 the oddity of the New York Earth Room, the work of artist Walter De Maria, has been wooing the curious with something not easily found in the city: dirt (250 cu yd, or 280,000lb, of it, to be exact). Walking into the small space is a heady experience, as the scent will make you feel like you've entered a wet forest; the sight of such beautiful, pure earth in the midst of this crazy city is surprisingly moving.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5de0c9d8824953a6c6c88ac61e73c5ce20b8cbf93b37c3abdca7886012aa8333",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Nom Wah Tea Parlor",
+    "short_description": "1920s dim sum institution in Chinatown with American diner decor and Cantonese flavors; one of the oldest tea parlors in New York.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7144593,
+    "longitude": -73.9981968,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-02. gravity: Mentioned in 'Take a Break' sidebar only; tier-2 given limited narrative treatment.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "ABSENT",
+        "raw_composite": 33,
+        "assigned_gravity": 1,
+        "reasoning": "LP new POI. Notability composite 33 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 1.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "new_york_nom_wah_tea_parlor_historic_cuisine_lonely-planet-new-york-city_1920s_dim_sum_cantonese",
+        "city_name": "new_york",
+        "poi_name": "Nom Wah Tea Parlor",
+        "lens": "historic_cuisine",
+        "topic_slug": "1920s_dim_sum_cantonese",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Dive into a dim sum feast at 1920s Nom Wah Tea Parlor, where the decor is American diner but the flavors are finger-licking Cantonese.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Nom Wah dim sum history",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "dim sum",
+            "gloss": "Cantonese small-dish cuisine"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Nom Wah Tea Parlor dates to the 1920s",
+          "American diner decor with Cantonese flavors"
+        ],
+        "source_passage": "Dive into a dim sum feast at 1920s Nom Wah Tea Parlor, where the decor is American diner but the flavors are finger-licking Cantonese.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "613d8c5477857a016309930b5162c68b880680478c77cad9233a462124bb5e38",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "SoHo",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.72288,
+    "longitude": -73.99875,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'SoHo'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "SoHo, Manhattan, New York County, New York, 10012, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Major shopping/architecture tourism draw; frequently called one of NYC's most-photographed neighborhoods. No official annual visitor count published. Wikipedia article is extensive covering cast-iron district history, culture, demographics.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "new_york_soho_local_legends_lonely-planet-new-york-city_subneighborhoods_nolita_noho",
+        "city_name": "new_york",
+        "poi_name": "SoHo",
+        "lens": "local_legends",
+        "topic_slug": "subneighborhoods_nolita_noho",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Like a colorful quilt of subneighborhoods sewn together in mismatched patches, the areas around SoHo — SOuth of HOuston — feel like a string of mini republics. Style mavens boutique-hop in Nolita, NOrth of LIttle ITAly, Italian Americans channel Napoli in ever-shrinking Little Italy, and Chinese families chat over xiao long bao — soup dumplings — in hyperactive Chinatown.",
+        "duration_sec": 63,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "playful",
+        "subject_tag": "SoHo subneighborhood patchwork",
+        "physical_cues": [],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "xiao long bao",
+            "gloss": "soup dumplings"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "SoHo stands for SOuth of HOuston",
+          "Nolita stands for NOrth of LIttle ITAly"
+        ],
+        "source_passage": "Like a colorful quilt of subneighborhoods sewn together in mismatched patches, the areas around SoHo (SOuth of HOuston) feel like a string of mini republics. Style mavens boutique-hop in Nolita (NOrth of LIttle ITAly), Italian Americans channel Napoli in ever-shrinking Little Italy, and Chinese families chat over xiao long bao (soup dumplings) in hyperactive Chinatown.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d3fce2740034d23b484dca44190e2ad7d485be9d3e5a83ffe88ad557ca2c9e26",
+        "related_beats": []
+      },
+      {
+        "beat_id": "new_york_soho_historic_arch_lonely-planet-new-york-city_cast_iron_lofts_celebrities",
+        "city_name": "new_york",
+        "poi_name": "SoHo",
+        "lens": "historic_arch",
+        "topic_slug": "cast_iron_lofts_celebrities",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-02-soho-chinatown",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Celebrities, cast-iron lofts and A-list boutiques stud SoHo's cobbled side streets, while humbler 19th-century tenements and quirkier one-off boutiques flavor neighboring Nolita.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "SoHo cast-iron streetscape",
+        "physical_cues": [
+          {
+            "cue": "Cast-iron loft buildings on SoHo's cobbled side streets",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "SoHo features cast-iron lofts and A-list boutiques on cobbled side streets",
+          "Nolita has 19th-century tenements and one-off boutiques"
+        ],
+        "source_passage": "Celebrities, cast-iron lofts and A-list boutiques stud SoHo's cobbled side streets, while humbler 19th-century tenements and quirkier one-off boutiques flavor neighboring Nolita.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "SoHo & Chinatown"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b174b9a47286c076210d1a4bbe5d292077a6497b4a987cf8c5e30b88ad62e748",
+        "related_beats": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,223 @@
+{
+  "city": "paris",
+  "changes": [
+    {
+      "name": "Esplanade des Feuillants",
+      "old_radius": 75,
+      "new_radius": 270,
+      "osm_type": "pedestrian",
+      "osm_match_dist_m": 65,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/62841996"
+    },
+    {
+      "name": "Montmartre Cemetery",
+      "old_radius": 10,
+      "new_radius": 340,
+      "osm_type": "cemetery",
+      "osm_match_dist_m": 313,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/13862455"
+    },
+    {
+      "name": "Montparnasse Cemetery",
+      "old_radius": 10,
+      "new_radius": 410,
+      "osm_type": "cemetery",
+      "osm_match_dist_m": 226,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/relation/6911225"
+    },
+    {
+      "name": "Pere Lachaise Cemetery",
+      "old_radius": 100,
+      "new_radius": 500,
+      "osm_type": "cemetery",
+      "osm_match_dist_m": 49,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/13859706"
+    },
+    {
+      "name": "Square Carpeaux",
+      "old_radius": 10,
+      "new_radius": 80,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/232871805"
+    },
+    {
+      "name": "Square Jean XXIII",
+      "old_radius": 15,
+      "new_radius": 130,
+      "osm_type": "park",
+      "osm_match_dist_m": 33,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/20444455"
+    },
+    {
+      "name": "Square Louise-Michel",
+      "old_radius": 10,
+      "new_radius": 140,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/45189726"
+    },
+    {
+      "name": "Square L\u00e9on-Serpollet",
+      "old_radius": 10,
+      "new_radius": 110,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/36855294"
+    },
+    {
+      "name": "Square Maurice-Gardette",
+      "old_radius": 10,
+      "new_radius": 90,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/5095262"
+    },
+    {
+      "name": "Square Raoul Nordling",
+      "old_radius": 10,
+      "new_radius": 40,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/115804160"
+    },
+    {
+      "name": "Square Rene Viviani",
+      "old_radius": 15,
+      "new_radius": 60,
+      "osm_type": "park",
+      "osm_match_dist_m": 430,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/236820131"
+    },
+    {
+      "name": "Square Suzanne-Buisson",
+      "old_radius": 10,
+      "new_radius": 50,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/154690027"
+    },
+    {
+      "name": "Square de la Roquette",
+      "old_radius": 10,
+      "new_radius": 110,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/114992325"
+    },
+    {
+      "name": "Square des Batignolles",
+      "old_radius": 10,
+      "new_radius": 130,
+      "osm_type": "park",
+      "osm_match_dist_m": 0,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/176234171"
+    },
+    {
+      "name": "Square du Vert-Galant",
+      "old_radius": 40,
+      "new_radius": 50,
+      "osm_type": "park",
+      "osm_match_dist_m": 91,
+      "source": "OSM/Nominatim boundingbox",
+      "osm_url": "https://www.openstreetmap.org/way/53570787"
+    }
+  ],
+  "skipped": [
+    [
+      "Cemetery of Eglise Saint-Germain de Charonne",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Luxembourg Gardens",
+      "already >= proposed (100m >= 90m)"
+    ],
+    [
+      "Picpus Cemetery",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Promenade Plantee",
+      "OSM match 861m away \u2014 wrong feature?"
+    ],
+    [
+      "Rue de Buci Market",
+      "no OSM match"
+    ],
+    [
+      "Square Boucicaut",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square Georges-Cain",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square Louvois",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square L\u00e9opold-Achille",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square Paul-Langevin",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square Paul-Painleve",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square R\u00e9camier",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square Santiago du Chili",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square d'Orl\u00e9ans",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square des Abbesses",
+      "no OSM match"
+    ],
+    [
+      "Square des Peupliers",
+      "walk_by_only \u2014 left small by design"
+    ],
+    [
+      "Square du Temple",
+      "OSM type=bus_stop not an extent"
+    ],
+    [
+      "Voltaire Statue (Square Honor\u00e9-Champion)",
+      "walk_by_only \u2014 left small by design"
+    ]
+  ],
+  "manual_changes": [
+    {
+      "name": "Luxembourg Gardens",
+      "old_radius": 100,
+      "new_radius": 390,
+      "source": "OSM leisure/park 'Jardin du Luxembourg' half-diag 387m",
+      "reason": "English-name query under-matched a sub-element; sized from French-name match"
+    }
+  ]
+}

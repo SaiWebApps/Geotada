@@ -1,0 +1,1840 @@
+[
+  {
+    "name": "Cooper Hewitt National Design Museum",
+    "short_description": "Tier-4: Smithsonian design museum in Carnegie mansion; interactive renovation.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.784284,
+    "longitude": -73.957699,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4: Smithsonian design museum in Carnegie mansion; interactive renovation.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_cooper_hewitt_national_design_museum_science_tech_frommers-nyc-2024_electronic_stylus_pen",
+        "poi_name": "Cooper Hewitt National Design Museum",
+        "lens": "science_tech",
+        "script_body": "After a full renovation, the Cooper Hewitt turned the museumgoer from simple viewer into on-the-spot designer. When you enter this handsome museum, you're loaned a whiz-bang electronic stylus and pen. Press the \"X\"-marked end of the tool to the wall text and you save what you're seeing to a customized website, to learn more later at home — your ticket comes with a personal URL, so you don't have to give up your email or any personal info. The other side of the gadget works as a pen, used at large electronic drafting tables throughout the museum, where what you design can be projected onto the walls around you.",
+        "physical_cues": [
+          {
+            "cue": "Electronic stylus/pen loaned at entry; press the X-marked end to the wall text",
+            "direction": "here",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Large electronic drafting tables throughout the museum",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Visitors are loaned an electronic stylus/pen",
+          "The X-marked end saves wall text to a personal URL",
+          "The pen end is used at electronic drafting tables that project designs on walls"
+        ],
+        "source_passage": "When visitors enter this handsome museum (set in a 1902 mansion built for tycoon Andrew Carnegie), they are loaned a whiz-bang electronic stylus/pen to use throughout the visit. Visitors can press the “X”-marked end of the tool to the wall text to save what they’re seeing to a customized website, to learn more about these objects and design later at home (your ticket comes with a personal URL, meaning you don’t have to give up your email address or any other personal info—no privacy worries). The other side of the gadget works as a pen, which visitors use at large electronic drafting tables throughout the museum. In a wallpaper room, for example, what you design at the table (sometimes with the help of historic samples stored in the table’s computer) can be projected onto the walls all around you.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Cooper Hewitt"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "interactive stylus",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 47,
+        "kid_friendly": "yes",
+        "topic_slug": "electronic_stylus_pen",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "94c5a90f7a405df1db2ea07eec3ad226c81326c7a82a87261b6aa070a020ece2"
+      },
+      {
+        "beat_id": "newyork_cooper_hewitt_national_design_museum_historic_arch_frommers-nyc-2024_carnegie_mansion_1902",
+        "poi_name": "Cooper Hewitt National Design Museum",
+        "lens": "historic_arch",
+        "script_body": "The Cooper Hewitt is set in a 1902 mansion built for tycoon Andrew Carnegie. As the design division of the Smithsonian, it has been a forward-thinking institution since its founding in 1897, dedicated to exploring the impact of design on everyday life.",
+        "physical_cues": [
+          {
+            "cue": "The 1902 Carnegie mansion housing the museum",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Housed in a 1902 mansion built for Andrew Carnegie",
+          "Design division of the Smithsonian, founded 1897"
+        ],
+        "source_passage": "As the design division of the Smithsonian, it has always been a forward-thinking institution since its founding in 1897. When visitors enter this handsome museum (set in a 1902 mansion built for tycoon Andrew Carnegie), they are loaned a whiz-bang electronic stylus/pen to use throughout the visit.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Andrew Carnegie",
+          "Smithsonian"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Carnegie mansion",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "topic_slug": "carnegie_mansion_1902",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "4dacdf6e312b064276c93532d2877c4d115d8b9c86e797ba70b74ee8d325577d"
+      },
+      {
+        "beat_id": "newyork_cooper_hewitt_national_design_museum_modern_design_frommers-nyc-2024_dylan_poster_shoulder_implant",
+        "poi_name": "Cooper Hewitt National Design Museum",
+        "lens": "modern_design",
+        "script_body": "The renovation added 60% more exhibition space, filled with wondrous objects from the collection — everything from a psychedelic Bob Dylan poster to a contemporary shoulder implant that looks like a crocheted snowflake, which moves inside the body with the flexibility of a sweater, to a 1.2-million-year-old scraping tool.",
+        "physical_cues": [
+          {
+            "cue": "Objects on display ranging from a Bob Dylan poster to a snowflake-like shoulder implant",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Renovation added 60% more exhibition space",
+          "Collection spans a Bob Dylan poster, a snowflake-like shoulder implant, and a 1.2-million-year-old scraping tool"
+        ],
+        "source_passage": "The renovation added\n60% more exhibition space, which it fills with wondrous objects from its\ncollection, everything from a psychedelic Bob Dylan poster to a\ncontemporary shoulder implant that looks like a crocheted snowflake (it\nmoves inside the body with the flexibility of a sweater) to a",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Bob Dylan"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "collection range",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "topic_slug": "dylan_poster_shoulder_implant",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "77c073375370e4fb2270f64f5871f33955e9189b7f27538b6be4492df51a4208"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Frick Collection",
+    "short_description": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
+    "name_variations": [
+      "Frick Madison"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7711,
+    "longitude": -73.9674,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "source_address",
+        "confidence": "LOW",
+        "placement": "Knowledge-based fallback (Nominatim miss); verify manually",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Nominatim miss — kept agent knowledge-based coordinate"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Frick Madison (Breuer building) was the temp location Mar 2021–Mar 2024. Main Frick Collection reopened 70th St on Apr 17, 2025 after $330M renovation; already selling out all time slots. Historical annual visitors ~300k. No 2024/2025 published figures. Wikipedia covers under 'Frick Collection' arti",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_frick_madison_famous_residents_frommers-nyc-2024_frick_robber_baron_sins",
+        "poi_name": "Frick Collection",
+        "lens": "famous_residents",
+        "script_body": "For decades the beloved Frick Collection has been housed in the ornate neoclassical mansion of Henry Clay Frick, the union-busting industrialist whose sins include partial responsibility for the deadly Johnstown Flood of 1889. Frommer's casts him among history's wealthy sleazeballs — the robber baron who created his own temple of culture. Part of touring the museum was always imagining the lifestyle of the tycoon before his death in 1919.",
+        "physical_cues": [],
+        "key_claims": [
+          "Henry Clay Frick was a union-busting industrialist",
+          "He bore partial responsibility for the 1889 Johnstown Flood",
+          "He died in 1919"
+        ],
+        "source_passage": "The exceptions are those who created their own temples of culture and learning, like Henry Clay Frick, the union-busting industrialist whose sins include partial responsibility for the deadly Johnstown Flood of 1889. For decades, New York City’s beloved Frick Collection has been housed in the robber baron’s ornate neoclassical mansion at 70th Street and Fifth Avenue on Manhattan’s Upper East Side. In addition to seeing the excellent art and furnishings, one of the fascinating aspects of touring the museum was imagining the lifestyle of the tycoon before his death in 1919.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Henry Clay Frick",
+          "Frick Collection",
+          "Johnstown Flood"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "character_story",
+        "emotional_register": "wry",
+        "subject_tag": "Frick robber baron",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 32,
+        "kid_friendly": "no",
+        "topic_slug": "frick_robber_baron_sins",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "58c45cd64e00ccb079a997c9efcd0b9826febd3c67717390d198dddf2fb5d127"
+      },
+      {
+        "beat_id": "newyork_frick_madison_social_change_frommers-nyc-2024_renovation_move_to_breuer",
+        "poi_name": "Frick Collection",
+        "lens": "social_change",
+        "script_body": "A long-overdue renovation begun in late 2020 shuttered the Frick mansion for at least three years, moving the collection temporarily a few blocks north to the original building of the Whitney Museum of American Art. With the relocation, the Frick experience becomes less about the man and his mansion and more about the art and artists in the collection — which, Frommer's suggests, may be more appropriate.",
+        "physical_cues": [],
+        "key_claims": [
+          "Renovation began late 2020, shuttering the mansion for at least 3 years",
+          "Collection moved temporarily to the original Whitney Museum building"
+        ],
+        "source_passage": "A long-overdue renovation, however, begun in late 2020, will shutter the mansion for at least 3 years, with the collection moved temporarily a few blocks north, to the original building of the Whitney Museum of American Art. With its relocation, the Frick experience becomes less about the man and his mansion and more about the art and artists in the collection . . . which may be more appropriate.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Frick Collection",
+          "Whitney Museum of American Art"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "renovation relocation",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "topic_slug": "renovation_move_to_breuer",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8cd7583692d7aa12cf3c069eebc618b754804cc61eed95c3747c05e09714e5b4"
+      },
+      {
+        "beat_id": "newyork_frick_madison_visual_art_frommers-nyc-2024_vermeer_one_work_per_room",
+        "poi_name": "Frick Collection",
+        "lens": "visual_art",
+        "script_body": "Because there is more interior room at the Madison building than at the original mansion, the curators have done something rare in museum land — surfaced the entire collection and devoted entire rooms to just one or two works of art, underscoring which pieces are the Frick's stars. Among them are three of only 34 works Jan Vermeer is known to have painted, plus seminal pieces by Bellini, El Greco, Hans Holbein, John Constable, and J. M. W. Turner.",
+        "physical_cues": [
+          {
+            "cue": "Rooms devoted to one or two works each, including three Vermeers",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Entire rooms are devoted to one or two works",
+          "Holds 3 of only 34 known Vermeers",
+          "Also Bellini, El Greco, Holbein, Constable, Turner"
+        ],
+        "source_passage": "Also, because there is more interior room here than at the original mansion, the curators have been able to do something rare in museum land—surface the entire collection, and devote entire rooms to just one or two works of art. The layout underscores which pieces are considered the Frick’s stars, allowing visitors to give them the time and attention they deserve. Among those star pieces are 3 of only 34 works Jan Vermeer is known to have painted, plus seminal pieces by Bellini, El Greco, Hans Holbein, John Constable, and J. M. W. Turner, among others.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Jan Vermeer",
+          "Bellini",
+          "El Greco",
+          "Hans Holbein",
+          "John Constable",
+          "J. M. W. Turner"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Vermeer stars",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "topic_slug": "vermeer_one_work_per_room",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "dcfbb81289cadb2cd80bb74712e1b263e7075929f56dbd2cefe769f94d7e077f"
+      }
+    ]
+  },
+  {
+    "name": "The Jewish Museum",
+    "short_description": "Tier-4: 4,000 years of Jewish culture through art; ~800 artifacts.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.78541,
+    "longitude": -73.957183,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-4: 4,000 years of Jewish culture through art; ~800 artifacts.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_the_jewish_museum_sacred_traditions_frommers-nyc-2024_four_thousand_years_diaspora",
+        "poi_name": "The Jewish Museum",
+        "lens": "sacred_traditions",
+        "script_body": "The museum's modest goal is to explore 4,000 years of Jewish culture through art. Its two-story permanent exhibition, starting on the fourth floor, gently guides viewers from the biblical era — with its clashes over animal sacrifice and the role of the Temple — through the Diaspora, when the Israelites, forced from their home by successive conquerors, became \"wandering Jews,\" spreading to every part of the known world. What emerges is a portrait of a people who survived against the steepest odds and became magnificently diverse in the process.",
+        "physical_cues": [
+          {
+            "cue": "Two-story permanent exhibition beginning on the fourth floor",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Goal is to explore 4,000 years of Jewish culture through art",
+          "Permanent exhibition runs biblical era through the Diaspora",
+          "Starts on the fourth floor"
+        ],
+        "source_passage": "The “modest” goal of this intriguing museum is to explore 4,000 years of Jewish culture through art. Its two-story permanent exhibition (which starts on the fourth floor) gently guides viewers from the biblical era, with its clashes over such issues as animal sacrifice and the role of the Temple (Jesus wasn’t the only one up in arms over that), through the Diaspora, when the Israelites, forced out of their home by successive conquerors, became “wandering Jews,” spreading to every part of the known world. What finally emerges is a portrait of a people who have not only managed to survive against the steepest odds but have become magnificently diverse in the process.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Diaspora",
+          "the Temple"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "4000 years culture",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "topic_slug": "four_thousand_years_diaspora",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "48801d5adf626f55d2134f9add27a233064ed3563d80d61ae14d4a0d2ff7d47b"
+      },
+      {
+        "beat_id": "newyork_the_jewish_museum_visual_art_frommers-nyc-2024_cohen_chagall_mizrahi_shows",
+        "poi_name": "The Jewish Museum",
+        "lens": "visual_art",
+        "script_body": "The story is told through nearly 800 exquisite artifacts and works of art, with the second half of the exhibit playing almost like a survey of world art styles seen through Jewish eyes. The first- and second-floor galleries host changing blockbuster shows — past ones spotlighting musician Leonard Cohen, artist Marc Chagall, and fashion designer Isaac Mizrahi.",
+        "physical_cues": [
+          {
+            "cue": "First- and second-floor galleries with changing exhibits",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Nearly 800 artifacts and artworks",
+          "Changing shows have featured Leonard Cohen, Marc Chagall, Isaac Mizrahi"
+        ],
+        "source_passage": "The story is told through a mixed marriage, so to speak, of nearly 800 exquisite artifacts and works of art, and by a variety of storytelling devices, including a free audio tour, interactive computer programs, videos, television clips, and wall texts. The first and second floors’ galleries present changing exhibits, such as past blockbuster shows on musician Leonard Cohen, artist Marc Chagall, and fashion designer Isaac Mizrahi.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Leonard Cohen",
+          "Marc Chagall",
+          "Isaac Mizrahi"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "blockbuster shows",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "topic_slug": "cohen_chagall_mizrahi_shows",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8a76427035a0cd244b08f4287b153b42a92b4ede5433e4f07e3be6c99c623beb"
+      }
+    ],
+    "importance_tier": 1
+  },
+  {
+    "name": "Metropolitan Museum of Art",
+    "short_description": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.77944,
+    "longitude": -73.963382,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+      "verified": false,
+      "geocode_source": "source_address+known_landmark",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_historic_arch_frommers-nyc-2024_vaux_hunt_facade_evolution",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "historic_arch",
+        "script_body": "The Met was founded fairly late, conceived in 1870 by a group of wealthy businessmen and artists. A decade later Calvert Vaux, one of the architects of Central Park, was brought in to create the first red-brick building on this site — you can still see that facade, now the side wall of the European Sculpture Court. A little over a decade later an expansion was needed, so famed architect Richard Morris Hunt was tapped to create the majestic neoclassical Indiana-limestone edifice you see today, awing visitors who climb its mountain of steps and walk past its redwood-height pillars.",
+        "physical_cues": [
+          {
+            "cue": "Calvert Vaux's original red-brick facade, now the side wall of the European Sculpture Court",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Richard Morris Hunt's limestone edifice, its mountain of steps and redwood-height pillars",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "key_claims": [
+          "Met conceived in 1870",
+          "Calvert Vaux built the first red-brick building (now European Sculpture Court side wall)",
+          "Richard Morris Hunt designed the limestone edifice"
+        ],
+        "source_passage": "The Met was founded fairly late, as great museums go, conceived in 1870 by a group of wealthy businessmen and artists. A decade later, Calvert Vaux, one of the architects of Central Park, was brought in to create the first red-brick building on this site (you can see that facade still—it’s the side wall of the European Sculpture Court). A little over a decade later, an expansion was necessary, so famed architect Richard Morris Hunt was tapped to create the majestic, neoclassical Indiana-limestone edifice you see today, awing the visitors who climb its mountain of steps and walk past its redwood-height pillars.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Calvert Vaux",
+          "Central Park",
+          "Richard Morris Hunt",
+          "European Sculpture Court"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "facade evolution",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "topic_slug": "vaux_hunt_facade_evolution",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "91ff603a4cdf8ec17febe573df23aedcea87a72aa3246fe35401ed02c559f3c5"
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_visual_art_frommers-nyc-2024_largest_in_hemisphere_3m_works",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "visual_art",
+        "script_body": "The Met is the giant among New York museums, figuratively and literally: at 1.6 million square feet it is not just the biggest museum in the city but the largest in the hemisphere — Frommer's argues it competes in stature with the Louvre, the Prado, the Uffizi, and the British Museum. Never a static institution, it now owns more than 3 million works of art spanning 5,000 years, across 18 curatorial departments — from Egyptian mummies to Greek statuary to Islamic carvings to Renaissance paintings to Native American masks.",
+        "physical_cues": [],
+        "key_claims": [
+          "1.6 million square feet; largest museum in the hemisphere",
+          "Owns 3+ million works spanning 5,000 years",
+          "18 curatorial departments"
+        ],
+        "source_passage": "The giant among New York museums both figuratively and literally: At 1.6 million square feet, it’s not just the biggest museum in the city, it’s the largest one in this hemisphere. And I’d argue it competes in stature with the Louvre in Paris, the Prado in Madrid, the Uffizi in Florence, and the British Museum in London. Never a static institution, the museum and its collection have continued to grow, with the Met currently owning more than 3 million works of art spanning 5,000 years. You must choose carefully among the 18 curatorial departments and decide what interests you most. On view are masterworks from nearly all the world’s cultures—from Egyptian mummies to ancient Greek statuary to Islamic carvings to Renaissance paintings to Native American masks to 20th-century decorative arts.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Louvre",
+          "Prado",
+          "Uffizi",
+          "British Museum"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "dramatic",
+        "subject_tag": "largest museum",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "topic_slug": "largest_in_hemisphere_3m_works",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "Superlative claim ('largest in this hemisphere') — per never-auto-resolve rule, superlatives are not auto-corrected; left to /fact-check.",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "cc61156378b1594585bd0395878b25a024b6ecc30a190549e64af8e96fca6e78"
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_visual_art_frommers-nyc-2024_velazquez_juan_de_pareja",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "visual_art",
+        "script_body": "On the second floor, the European paintings collection encompasses some 700 works. Its jewels include Velazquez's truer-than-life portrait of Juan de Pareja — the enslaved man whom the painter respected enough, as you can see in the painting, to set free; El Greco's brooding landscape of Toledo; 20 Rembrandts, among them Aristotle Contemplating the Bust of Homer, where Alexander the Great's pendant hangs from Aristotle's shirt; five light-kissed Vermeers; and a roomful of van Goghs.",
+        "physical_cues": [
+          {
+            "cue": "European paintings collection on the second floor",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Second-floor European collection has ~700 works",
+          "Includes Velazquez's Juan de Pareja, El Greco's Toledo, 20 Rembrandts, 5 Vermeers, van Goghs"
+        ],
+        "source_passage": "The European paintings collection on the second floor (encompassing some 700 works) with such jewels as Velazquez’s truer-than-life portrait of Juan de Pareja (the slave whom the painter respected enough—you can see it in the painting—to set free); El Greco’s brooding landscape of Toledo; 20 Rembrandts including Aristotle Contemplating the Bust of Homer (three great Greeks in one painting—notice the pendant of Alexander the Great hanging from his shirt); five light-kissed Vermeers; a roomful of van Goghs; and works by Manet, Monet, de Goya, Breughel, Van Eyck, and every other master you read about in your college art-history course.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Velazquez",
+          "Juan de Pareja",
+          "El Greco",
+          "Rembrandt",
+          "Aristotle Contemplating the Bust of Homer",
+          "Alexander the Great",
+          "Vermeer",
+          "van Gogh"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "European paintings",
+        "sub_location": "european-paintings-second-floor",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "topic_slug": "velazquez_juan_de_pareja",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "e8575cda4900446ffa52339d32eb221876676521aad92d40a48e59f59d65525e"
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_hidden_history_frommers-nyc-2024_temple_of_dendur_aswan",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "hidden_history",
+        "script_body": "The Egyptian Collection includes pieces discovered by the Met's own teams of archaeologists, such as miniature figures from a tomb in Thebes that show in intricate detail what daily life was like for a wealthy Egyptian. Its centerpiece is the Temple of Dendur, an actual temple to the goddess Isis dating to about 15 b.c. that was saved from the rising waters of the Nile after the construction of the Aswan Dam.",
+        "physical_cues": [
+          {
+            "cue": "The Temple of Dendur, an actual ancient temple installed in the museum",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Egyptian Collection has finds from a Thebes tomb",
+          "Temple of Dendur (ca. 15 b.c.) honored Isis",
+          "It was saved from Nile floodwaters after the Aswan Dam was built"
+        ],
+        "source_passage": "The Egyptian Collection includes some pieces discovered by the Met’s own teams of archaeologists, such as the miniature figures found in a tomb in Thebes that show in intricate detail what daily life for a wealthy Egyptian was like. There’s also elaborate statuary; mummy cases; jewelry; wall paintings; and the Temple of Dendur, an actual temple to the goddess Isis (ca. 15 b.c.) that was saved from the rising waters of the Nile after the construction of the Aswan Dam.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Temple of Dendur",
+          "Isis",
+          "Aswan Dam",
+          "Thebes"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Temple of Dendur",
+        "sub_location": "egyptian-collection",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "topic_slug": "temple_of_dendur_aswan",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "d0d713e7d8afd5b80d13b6b588683508ccb3cb83263773167831fd50b1786896"
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_historic_arch_frommers-nyc-2024_period_rooms_boscoreale",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "historic_arch",
+        "script_body": "The Met's period rooms re-create dozens of important chambers, including Louis XIV's state bedroom from Versailles and an Arts and Crafts living room from Frank Lloyd Wright. Most stunning is the Cubiculum from Boscoreale, a perfectly preserved, brilliantly colorful room from a villa near Pompeii that was buried when Mount Vesuvius erupted in a.d. 79.",
+        "physical_cues": [
+          {
+            "cue": "The Cubiculum from Boscoreale, a preserved room from a villa near Pompeii",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Period rooms include Louis XIV's Versailles bedroom and a Frank Lloyd Wright living room",
+          "The Cubiculum from Boscoreale survived the a.d. 79 Vesuvius eruption"
+        ],
+        "source_passage": "The period rooms, which re-create dozens of important chambers, including Louis XIV’s state bedroom in Versailles; an Arts and Crafts living room from Frank Lloyd Wright; and the stunning Cubiculum from Boscoreale, a perfectly preserved, brilliantly colorful room from a villa near Pompeii that was buried when Mount Vesuvius erupted in a.d. 79.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Louis XIV",
+          "Versailles",
+          "Frank Lloyd Wright",
+          "Cubiculum from Boscoreale",
+          "Pompeii",
+          "Mount Vesuvius"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "period rooms",
+        "sub_location": "period-rooms",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Cubiculum",
+            "gloss": "a Roman bedroom/chamber, here the room preserved from a villa near Pompeii"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "topic_slug": "period_rooms_boscoreale",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8fde77a781e1f2ca5759ed37c0d537abbd6cf8bf596d1835e142b7c44cefd35b"
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_visual_art_frommers-nyc-2024_japan_hall_iris_screens",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "visual_art",
+        "script_body": "The hidden Hall of Art from Japan holds the famed Iris Screens, reproduced on many Metropolitan Museum products, alongside architectural-looking suits of armor, delicate woodcuts, and dazzling kimonos. To Frommer's mind it is one of the most ravishingly beautiful sections of the museum.",
+        "physical_cues": [
+          {
+            "cue": "The Iris Screens in the Hall of Art from Japan",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Hall of Art from Japan holds the Iris Screens, suits of armor, woodcuts, kimonos"
+        ],
+        "source_passage": "The hidden Hall of Art from Japan, with its famed Iris Screens (reproduced on many Metropolitan Museum products), as well as architectural-looking suits of armor, delicate woodcuts, and dazzling kimonos. To my mind, this is one of the most ravishingly beautiful sections of the museum.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Hall of Art from Japan",
+          "Iris Screens"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "reverent",
+        "subject_tag": "Japan hall",
+        "sub_location": "hall-of-art-from-japan",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "topic_slug": "japan_hall_iris_screens",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "d467ba4a46c55011d76fb4a0f9f9d02369dced11a5656f5b9e1fa8f4a4667153"
+      },
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_local_legends_frommers-nyc-2024_friday_saturday_rooftop_cocktails",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "local_legends",
+        "script_body": "On Friday and Saturday evenings the Met stays open late — not just for art but for cocktails on the roof and in the Great Hall Balcony Bar from 4 to 8:30pm, where classical music from a string ensemble accompanies the tippling. The Petrie Court Café and Wine Bar serves dinner with piano music until 10:30pm. Best of all, the crowds dwindle after dark in the galleries, if not near the bars.",
+        "physical_cues": [
+          {
+            "cue": "Cocktails on the roof and in the Great Hall Balcony Bar on Friday and Saturday evenings",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "key_claims": [
+          "Fri/Sat evenings: cocktails on the roof and Great Hall Balcony Bar with a string ensemble",
+          "Petrie Court Café serves dinner with piano until 10:30pm"
+        ],
+        "source_passage": "On Friday and Saturday evenings, the Met remains open late not only for art viewing but also for cocktails on the roof and in the Great Hall Balcony Bar (4–8:30pm). Indoors, classical music from a string ensemble accompanies the tippling. The restaurant at Petrie Court Café and Wine Bar stays open until 10:30pm (last reservation at 8:30pm), and dinner is usually accompanied by piano music. Best of all, the crowds dwindle after dark—in the galleries, if not near the bars.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Great Hall Balcony Bar",
+          "Petrie Court Café and Wine Bar"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "evening cocktails",
+        "sub_location": "roof-and-great-hall-balcony",
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "topic_slug": "friday_saturday_rooftop_cocktails",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "b071f630dc29ecd3dd2b68b4099b1088cadedd68aa921e249bd342277b826709"
+      }
+    ],
+    "importance_tier": 5
+  },
+  {
+    "name": "Museum of the City of New York",
+    "short_description": "Tier-3: founded 1923; 2016 overhaul; NYC history galleries, Future City Lab.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.792527,
+    "longitude": -73.951802,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3: founded 1923; 2016 overhaul; NYC history galleries, Future City Lab.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_museum_of_the_city_of_new_york_hidden_history_frommers-nyc-2024_dutch_colony_to_capital",
+        "poi_name": "Museum of the City of New York",
+        "lens": "hidden_history",
+        "script_body": "Thanks to a 2016 overhaul, this century-old museum, founded in 1923, finally makes good on the promise of its name. It offers a textured, dramatic look at the improbable tale of a tiny, obscure Dutch colony that blossomed — and burned, and conned, and fought — into a world capital. Start in the basement, where a 30-minute film narrated by Stanley Tucci outlines the story, then move to the ground floor, where a gallery traces Gotham's history from Native American days through the 1900s, with electronic panels profiling New Yorkers from Alexander Hamilton to a murdered prostitute.",
+        "physical_cues": [
+          {
+            "cue": "Basement film narrated by Stanley Tucci; ground-floor history gallery with electronic panels",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Founded 1923, overhauled 2016",
+          "30-minute basement film narrated by Stanley Tucci",
+          "Ground-floor gallery traces NYC history from Native American days through the 1900s"
+        ],
+        "source_passage": "Thanks to a 2016 overhaul, this century-old museum (founded in 1923) is finally making good on the promise of its name. Today, it offers visitors a textured, dramatic, suavely interactive look at the improbable tale of a tiny, obscure Dutch colony that blossomed—and burned, and conned, and fought—into a world capital. Start your visit in the basement, where an absorbing 30-minute film (narrated by Stanley Tucci) outlines the story. Next stop should be ground floor, where one gallery traces Gotham’s history from Native American days through the 1900s, displaying artifacts of all sorts, accompanied by electronic panels offering biographies of New Yorkers both well-known and obscure—everyone from Alexander Hamilton to a murdered prostitute—that illuminate different strands of the story.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Stanley Tucci",
+          "Alexander Hamilton"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Dutch colony story",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 44,
+        "kid_friendly": "yes",
+        "topic_slug": "dutch_colony_to_capital",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "2720e079f711d508631881269de21533a26139e9c2c327e2a33c6af284ecf742"
+      },
+      {
+        "beat_id": "newyork_museum_of_the_city_of_new_york_social_change_frommers-nyc-2024_future_city_lab_activism",
+        "poi_name": "Museum of the City of New York",
+        "lens": "social_change",
+        "script_body": "On the ground floor, the Future City Lab lets visitors try to solve the city's problems — sustainability, population density and the rest — on individual tablets that are later screened for all to see. Upstairs are changing exhibits, a famed dollhouse, galleries of Gilded Age frippery, and an excellent permanent exhibition on activism in NYC.",
+        "physical_cues": [
+          {
+            "cue": "Future City Lab tablets on the ground floor; activism exhibition and dollhouse upstairs",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Future City Lab lets visitors solve city problems on tablets",
+          "Upstairs: changing exhibits, famed dollhouse, Gilded Age galleries, activism exhibition"
+        ],
+        "source_passage": "Also on this floor: the Future City Lab, an exhibit that allows visitors to try to solve the city’s problems with sustainability, population density, et cetera, on individual tablets that are later screened for all to see (kids will love this room). Upstairs are changing exhibits, a famed dollhouse, galleries with Gilded Age frippery, and an excellent permanent exhibition on activism in NYC.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Future City Lab"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Future City Lab",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "future_city_lab_activism",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "8c5a063edafe20762ff0c15d485151583728319dd7e14178ad09e93030abc30f"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "Neue Galerie New York",
+    "short_description": "Tier-3: German/Austrian art; Klimt's Woman in Gold; Viennese cafe.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.781224,
+    "longitude": -73.960237,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3: German/Austrian art; Klimt's Woman in Gold; Viennese cafe.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_neue_galerie_new_york_visual_art_frommers-nyc-2024_klimt_woman_in_gold",
+        "poi_name": "Neue Galerie New York",
+        "lens": "visual_art",
+        "script_body": "The Neue Galerie offers a swift but effective overview of German and Austrian arts and design. It is most notable for its jewel-toned paintings by Gustav Klimt — including the famed Woman in Gold — its \"Didn't I sit on that in the '70s?\" Bauhaus furniture, and its collection of drawings by Teutonic masters such as Dix, Schiele, and Breuer. Because some of those drawings are a bit racy, children 11 and under are not admitted.",
+        "physical_cues": [
+          {
+            "cue": "Gustav Klimt's jewel-toned paintings, including Woman in Gold",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Focuses on German and Austrian art",
+          "Holds Klimt's Woman in Gold and Bauhaus furniture",
+          "Drawings by Dix, Schiele, Breuer; children 11 and under not admitted"
+        ],
+        "source_passage": "Most notable for its jewel-toned paintings by Gustav Klimt (including the famed Woman in Gold), its “Didn’t I sit on that in the ’70s?” Bauhaus furniture, and its collection of drawings by such Teutonic masters as Dix, Schiele, and Breuer, the Neue Galerie offers a swift but effective overview of German and Austrian arts and design. Because some of these drawings are a bit racy, children 11 and under are not admitted, and ages 16 and younger must be accompanied by an adult.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Gustav Klimt",
+          "Woman in Gold",
+          "Otto Dix",
+          "Egon Schiele",
+          "Breuer"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Klimt collection",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Neue Galerie",
+            "gloss": "New Gallery (German); the museum's name"
+          }
+        ],
+        "pronunciation": null,
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "topic_slug": "klimt_woman_in_gold",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "b9d10bc99021f28dd8f45bf39bc8313bc3449ad6951aac6a749ae93f096805c6"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "Solomon R. Guggenheim Museum",
+    "short_description": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.782993,
+    "longitude": -73.958925,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+      "verified": false,
+      "geocode_source": "source_address+known_landmark",
+      "geocode_confidence": 0.93,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_modern_design_frommers-nyc-2024_wright_spiral_dream_building",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "modern_design",
+        "script_body": "New York is the city of the rectangle and the sharp right angle — our streets a grid, our buildings boxy and regular — until you get to the Guggenheim. Frank Lloyd Wright's delirious spiral of a museum sits among the towers of Fifth Avenue like a steroidal peacock among guinea hens. Critic Herbert Muschamp described it best: \"What else but a building brought back from a dream would be windowless, have walls and floors that tilt and twist, begin on the top floor, and spiral in towards the center like an enigma?\" Visiting this 1959 masterpiece and trudging up the ramps of its curving halls turns the standard museum experience into a profound journey — and sometimes a battle against vertigo.",
+        "physical_cues": [
+          {
+            "cue": "Frank Lloyd Wright's windowless spiral facade among the Fifth Avenue towers",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The ramps of curving halls that spiral toward the center",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Designed by Frank Lloyd Wright, opened 1959",
+          "A windowless spiral with tilting walls and floors",
+          "Herbert Muschamp called it 'a building brought back from a dream'"
+        ],
+        "source_passage": "New York is the city of the rectangle, of the sharp right angle. Our streets form a grid, our buildings are boxy and regular. Until you get to the Guggenheim, that is. Frank Lloyd Wright’s delirious spiral of a museum sits among the towers of Fifth Avenue like a steroidal peacock among guinea hens. Architectural critic Herbert Muschamp described the look best when he wrote, “What else but a building brought back from a dream would be windowless, have walls and floors that tilt and twist, begin on the top floor, and spiral in towards the center like an enigma?” Visiting this 1959 masterpiece and trudging up the ramps of curving halls transforms the standard museum experience into a profound journey (and sometimes a battle against vertigo), no matter what art is displayed.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Frank Lloyd Wright",
+          "Herbert Muschamp",
+          "Fifth Avenue"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "architectural_detail",
+        "emotional_register": "dramatic",
+        "subject_tag": "Wright spiral",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 50,
+        "kid_friendly": "yes",
+        "topic_slug": "wright_spiral_dream_building",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "b42c9cf6a8decba1096b54d3ee8a5ca912e4f178d16679a4d1e9cceeb3416503"
+      },
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_local_legends_frommers-nyc-2024_museum_or_cupcake_review",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "local_legends",
+        "script_body": "Early critics dismissed the Guggenheim — Newsweek's insipid review was headlined \"Museum or Cupcake?\" — yet Frommer's argues even the most jaded visitor today feels the power of the place, the symbolic weight of infinite circle upon circle. And to answer the question nobody ever voices aloud: no, there have been no suicide jumps from over the low-slung rails, nor has anyone ever accidentally fallen to their death.",
+        "physical_cues": [
+          {
+            "cue": "The low-slung rails along the spiral ramp",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "A Newsweek review was headlined 'Museum or Cupcake?'",
+          "No one has jumped or accidentally fallen over the low-slung rails"
+        ],
+        "source_passage": "Early critics dismissed the museum (Newsweek’s insipid review was headlined “Museum or Cupcake?”), but I think today even the most jaded visitor will feel the power of the place, the symbolic weight of infinite circle upon circle. (And to answer the question nobody ever voices aloud: No, there haven’t been any suicide jumps from over the low-slung rails, nor has anyone ever accidentally fallen to their death.)",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Newsweek"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "cupcake review",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "topic_slug": "museum_or_cupcake_review",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "bb9c9d48ee7e382c6c6e90f2c823f34f88fe18dc50f89aba247ee97318b6af32"
+      },
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_visual_art_frommers-nyc-2024_modernist_collection_stars",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "visual_art",
+        "script_body": "Beyond its architecture, the Guggenheim is popular for its curators' skill at mounting blockbuster retrospectives on top contemporary artists like Robert Mapplethorpe, Cecilia Vicuña, and Gillian Wearing, and shows that combine art with history and sociology. Permanent gallery space is given to the stars of its collection — towering modernists such as Chagall, Brancusi, Mondrian, Miró, and Kandinsky.",
+        "physical_cues": [
+          {
+            "cue": "Permanent gallery space showing modernist works by Kandinsky and others",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Retrospectives on Mapplethorpe, Vicuña, Wearing",
+          "Permanent collection includes Chagall, Brancusi, Mondrian, Miró, Kandinsky"
+        ],
+        "source_passage": "Beyond the architecture, the museum is popular, thanks to its curators’ skill at mounting blockbuster retrospectives on top contemporary artists (like Robert Mapplethorpe, Cecilia Vicuña, and Gillian Wearing) and topics that combine art with history and in some cases sociology—shows on contemporary Middle Eastern and North African art, Aztec culture, the photography of motorcycles, to mention just a few that created headlines in past years. Permanent gallery space is also given to the stars of the Guggenheim’s collection, towering figures such as Chagall, Brancusi, Mondrian, Miró, Kandinsky, and other modernists.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Robert Mapplethorpe",
+          "Cecilia Vicuña",
+          "Gillian Wearing",
+          "Chagall",
+          "Brancusi",
+          "Mondrian",
+          "Miró",
+          "Kandinsky"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "modernist stars",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "topic_slug": "modernist_collection_stars",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "0065bb7eb06ab618e9a6bc20a629789f3f259ead9c598c86483fb696700f2377"
+      }
+    ],
+    "importance_tier": 3
+  },
+  {
+    "name": "American Folk Art Museum",
+    "short_description": "Tier-3: small museum of self-taught artists; quilts, sculpture.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.77323,
+    "longitude": -73.981596,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-3: small museum of self-taught artists; quilts, sculpture.",
+      "verified": false,
+      "geocode_source": "source_address",
+      "geocode_confidence": 0.88,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_american_folk_art_museum_visual_art_frommers-nyc-2024_self_taught_artists_quilts",
+        "poi_name": "American Folk Art Museum",
+        "lens": "visual_art",
+        "script_body": "Self-taught artists are the focus of this small museum, and their stories, told in wonderful detail by the wall text, illuminate the art in invigorating ways. You'll see works from the 18th century to the present, with a breadth and variety that can be quite stunning. The most popular objects are likely the quilts, though Frommer's prefers the sculptures.",
+        "physical_cues": [
+          {
+            "cue": "Quilts and sculptures by self-taught artists, with detailed wall text",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Focuses on self-taught artists",
+          "Works span the 18th century to present",
+          "Quilts are the most popular objects"
+        ],
+        "source_passage": "Self-taught artists are the focus of this small museum, and their stories (told in wonderful detail by the wall text) illuminate the art in invigorating ways. You’ll see works from the 18th century to the present, and the breadth and variety of the art can be quite stunning. Most popular objects are likely the quilts, though I prefer the sculptures.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "folk art focus",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "topic_slug": "self_taught_artists_quilts",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "bc5450d211e33af1649ac2ff6336de8b5c4f22cccd1ca201769f734e76de4e97"
+      }
+    ],
+    "importance_tier": 2
+  },
+  {
+    "name": "American Museum of Natural History",
+    "short_description": "Tier-5: preeminent natural-history museum since 1869; $431M Gilder Center (2023).",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.781101,
+    "longitude": -73.974236,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: preeminent natural-history museum since 1869; $431M Gilder Center (2023).",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05",
+        "chunk-06"
+      ]
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "beats": [
+      {
+        "beat_id": "newyork_american_museum_of_natural_history_science_tech_frommers-nyc-2024_dinosaur_tails_erect",
+        "poi_name": "American Museum of Natural History",
+        "lens": "science_tech",
+        "script_body": "Since 1869 this institution has been both the country's preeminent private scientific research facility and its top museum for paleontology, zoology, anthropology, and now astronomy — and the flow between its research and curatorial sides keeps it fiercely vital. A few years ago scientists concluded that dinosaurs had not dragged their tails as long thought but waved them in the air as they walked. The curators responded by painstakingly dismantling the famed dino skeletons and reassembling them with tails erect, then placed one skeleton atop a section of a Texas riverbed where they had found fossilized dino footprints with no tail-dragging marks — a peephole into how scientific theories emerge.",
+        "physical_cues": [
+          {
+            "cue": "Dino skeletons reassembled with tails erect, one set atop a Texas riverbed section with fossil footprints",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "Founded 1869",
+          "Scientists found dinosaurs waved rather than dragged their tails",
+          "Curators reassembled skeletons with tails erect over a fossil-footprint riverbed"
+        ],
+        "source_passage": "Since 1869, this institution has served as both the country’s preeminent private scientific research facility and its top museum for paleontology, zoology, anthropology, and, in recent years, astronomy. Just a few years ago, for example, scientists concluded that dinosaurs had not dragged their tails as had long been thought but waved them in the air as they walked. The curators responded, painstakingly dismantling the museum’s famed dino skeletons and reassembling them with tails erect. Then, in a brilliant stroke, they placed one skeleton atop a section of a Texas riverbed where they had found fossilized dino footprints (sans tail-dragging marks), giving museumgoers a peephole into how scientific theories emerge.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "dinosaur tails",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 48,
+        "kid_friendly": "yes",
+        "topic_slug": "dinosaur_tails_erect",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "6b6c210f33866f1b966f6df8fa1aa3190f571971211978dd94802f32f7e94d0c"
+      },
+      {
+        "beat_id": "newyork_american_museum_of_natural_history_modern_design_frommers-nyc-2024_gilder_center_canyon_lobby",
+        "poi_name": "American Museum of Natural History",
+        "lens": "modern_design",
+        "script_body": "In 2023 the $431-million Richard Gilder Center for Science, Education and Innovation opened, transforming the museum-going experience. Its new 230,000-square-foot structure houses 12% of the museum's collections, including an insectarium, a permanent butterfly vivarium, open storage exhibits, and a 360-degree Invisible Worlds Theater about the networks that underlie all life. Be sure to enter through this new center: the dazzling lobby mimics curving Southwestern American canyons, a sinuous look created by spraying structural concrete directly onto rebar.",
+        "physical_cues": [
+          {
+            "cue": "The Gilder Center lobby, its canyon-like walls of sprayed structural concrete",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Insectarium, butterfly vivarium, and Invisible Worlds Theater inside the Gilder Center",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "key_claims": [
+          "$431-million Gilder Center opened 2023",
+          "230,000 sq ft holding 12% of collections; insectarium, butterfly vivarium, Invisible Worlds Theater",
+          "Lobby mimics canyons via concrete sprayed onto rebar"
+        ],
+        "source_passage": "That effort became even more cutting-edge in 2023, when the $431-million Richard Gilder Center for Science, Education and Innovation opened, transforming the museum-going experience. It houses 12% of the museum’s collections in a new 230,000-square-foot structure including an insectarium, a permanent butterfly vivarium, open storage exhibits showing the span of the museum’s collections, and a 360-degree-view Invisible Worlds Theater, a mesmerizing high-tech show about the networks that underlie all life (it’s hard to describe, but a real wowzer of an experience). Be sure to enter the museum through this new center: The dazzling, contemporary architecture of its lobby mimics curving Southwestern American canyons, a sinuous look created by spraying structural concrete directly onto rebar.",
+        "source_attribution": {
+          "book_title": "Frommer's New York City 2024",
+          "author": "Frommer's",
+          "chapter": "Chapter 5: Exploring — Uptown",
+          "page": "chunk-05-ch05-uptown"
+        },
+        "entities": [
+          "Richard Gilder Center for Science, Education and Innovation",
+          "Invisible Worlds Theater"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "dramatic",
+        "subject_tag": "Gilder Center",
+        "sub_location": "gilder-center",
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "topic_slug": "gilder_center_canyon_lobby",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-14T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "city_name": "new_york",
+        "book_slug": "frommers-nyc-2024",
+        "source_chunk_slug": "chunk-05-ch05-uptown",
+        "confidence": "MEDIUM",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "",
+          "checked_at": "2026-06-14T00:00:00Z"
+        },
+        "script_body_hash": "108cff1e16be515766f1b3f5171de998fc93a5a7406a102b96c04e44460c434d"
+      }
+    ],
+    "importance_tier": 5
+  }
+]

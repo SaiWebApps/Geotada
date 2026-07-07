@@ -1,0 +1,1268 @@
+[
+  {
+    "name": "Financial District",
+    "short_description": "Manhattan neighborhood, south of Chambers St. Not in existing POI list (which holds specific landmarks). Flagged new_poi for user triage.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.707668,
+    "longitude": -74.009271,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 4,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A neighborhood (radius 400) of canyons and streets you move through, a contextual diffuse area.",
+    "_poi_role_source": "Suited traders pouring onto the streets at 5pm in the financial canyons",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Financial District",
+        "lens": "hidden_history",
+        "topic_slug": "city_stopped_at_fulton_street",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Up until the 19th century, life in New York City was primarily concentrated in what is now Lower Manhattan. Around 1700, the city barely extended beyond Fulton Street, and a hundred years later only a handful of additional apartment blocks had been built. When City Hall opened in 1812 it seemed unimaginable that the city might continue growing to the north.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "City Hall",
+          "Fulton Street"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "early city limits",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Up until the 19th century, life in New York City was primarily concentrated in what is now Lower Manhattan. Around 1700, the city barely extended beyond Fulton Street, and 100 years later only a handful of additional apartment blocks had been built. When City Hall opened in 1812 it seemed unimaginable that the city might continue growing to the north.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1: Dumbo, Wall Street, Chinatown & Lower East Side — The Neighborhoods"
+        },
+        "script_body_hash": "909e8de3baca7495c31e6bbd905ffe1ddefc513f86b8884f38a6ec07614930df",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Chinatown",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.716491,
+    "longitude": -73.99625,
+    "trigger_radius": 350,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 4,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A large neighborhood (radius 350) experienced as you move through its sensory streets, a contextual area.",
+    "_poi_role_source": "the dense crowds on the streets, the awnings with Chinese characters",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Chinatown",
+        "lens": "dark_history",
+        "topic_slug": "dead_rabbits_bowery_boys_gangs",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "At the end of the 19th century, Chinatown was often the scene for fighting street gangs, such as the Dead Rabbits and the Bowery Boys. Apartments in what is today Columbus Park garnered notorious nicknames such as Bone Alley, Kerosene Row, and Bandits' Roost. Chinatown has long since shaken off this reputation; today the dynamic neighborhood is a popular destination thanks to its plethora of stores and restaurants.",
+        "duration_sec": 25,
+        "kid_friendly": "no",
+        "entities": [
+          "Dead Rabbits",
+          "Bowery Boys",
+          "Columbus Park"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "anecdote",
+        "emotional_register": "dramatic",
+        "subject_tag": "street gangs",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "At the end of the 19th century, Chinatown was often the scene for fighting street gangs, such as the Dead Rabbits and the Bowery Boys. Apartments in what is today Columbus Park garnered notorious nicknames such as Bone Alley, Kerosene Row, and Bandits' Roost. However, Chinatown has long since shaken off this negative reputation. Today the dynamic neighborhood is a popular destination, thanks to its plethora of stores and restaurants.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1: Dumbo, Wall Street, Chinatown & Lower East Side — The Neighborhoods"
+        },
+        "script_body_hash": "644bccbcea7dac8b6439f27c207eed518c10ba16730e2e625d41a905e8c6463a",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Lower East Side",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.715936,
+    "longitude": -73.986806,
+    "trigger_radius": 400,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A large neighborhood (radius 400) walked along its immigrant-era streets, a contextual area.",
+    "_poi_role_source": "Old-world fabric and luggage stores along Orchard Street",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Lower East Side",
+        "lens": "social_change",
+        "topic_slug": "immigrant_flood_fire_escapes",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Some 200 years ago the Lower East Side was flooded with immigrants, and the Lower East Side Tenement Museum on Orchard Street is an excellent place to gain insight into the history of the neighborhood. When walking around, don't forget to look up from time to time to see the beautiful brick buildings with those great fire escapes that are so characteristic of New York City.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Lower East Side Tenement Museum"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "immigrant neighborhood",
+        "physical_cues": [
+          {
+            "cue": "Brick buildings with the iron fire escapes characteristic of New York; look up",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Some 200 years ago the Lower East Side was flooded with immigrants, and the Lower East Side Tenement Museum on Orchard Street is an excellent place to gain insight into the history of the neighborhood. Today many young people are attracted to the happening (night) scene and trendy bars, cafés, and boutiques. With its numerous galleries, the neighborhood also appeals to art aficionados. When walking around, don't forget to look up from time to time to see the beautiful brick buildings with those great fire escapes that are so characteristic of New York City.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1: Dumbo, Wall Street, Chinatown & Lower East Side — The Neighborhoods"
+        },
+        "script_body_hash": "d6a601ed80e0d01e5a508ce86ca6fce6ae87c213d78ccec4dfbe575c1381cce7",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Jane's Carousel",
+    "short_description": "A lovingly restored 1922 carousel by the Philadelphia Toboggan Company, housed in a Jean Nouvel acrylic pavilion at the north end of Brooklyn Bridge Park in Dumbo.",
+    "name_variations": [
+      "Janes Carousel"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7044341,
+    "longitude": -73.9923845,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": "Brooklyn Bridge Park",
+    "_poi_role_reasoning": "A discrete carousel in a pavilion, explicitly a named sub-feature at the north end of Brooklyn Bridge Park.",
+    "_poi_role_source": "The star attraction of the north end of Brooklyn Bridge Park is a vintage carousel",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Jane's Carousel",
+        "lens": "local_legends",
+        "topic_slug": "youngstown_ohio_to_brooklyn",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Jane's Carousel dates back to 1922. For years it operated in Youngstown, Ohio. The developer of the park where it currently stands bought it in 1983, together with his wife, Jane. After years of renovation it was restored to its original glory, and Jane's Carousel reopened in 2011. Now young and old can enjoy a ride for a fair price.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jane Walentas"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "carousel rescue",
+        "physical_cues": [
+          {
+            "cue": "The restored 1922 carousel in its glass pavilion at Old Dock Street",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Jane's Carousel dates back to 1922. For years it operated in Youngstown, Ohio. The developer of the park where it currently stands bought it in 1983, together with his wife, Jane. After years of renovation it was restored to its original glory, and Jane's Carousel reopened in 2011. Now young and old can enjoy a ride for a fair price.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — More to Explore"
+        },
+        "script_body_hash": "c754f0161bbd4bdc5c2b78ceb69fc3cc9e1086710dc9b7c237678d429fd9054b",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Staten Island Ferry",
+    "short_description": "Iconic free ferry, Wikipedia article, millions of riders, famous free Statue of Liberty views. High gravity. Geocoded to Manhattan (Whitehall) terminal.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.701409,
+    "longitude": -74.013131,
+    "trigger_radius": 50,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "Geocoded to the Whitehall terminal you board at; a discrete embarkation point rather than an area you walk through.",
+    "_poi_role_source": "The right side at the back of the ferry for the Manhattan skyline view",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Staten Island Ferry",
+        "lens": "waterways_views",
+        "topic_slug": "free_liberty_commuter_boat",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "A ride on the Staten Island Ferry is a fun and free way to see the Statue of Liberty and the New York City skyline. Aside from the occasional savvy tourist, the ferry is primarily used by commuters from Staten Island. All told, a trip to Staten Island and back takes about an hour, and you never have to wait too long for the next boat.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Statue of Liberty"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "free harbor ride",
+        "physical_cues": [
+          {
+            "cue": "View of the Statue of Liberty and the skyline from the ferry deck",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "A ride on the Staten Island Ferry is a fun and free way to see the Statue of Liberty and the New York City skyline. Aside from the occasional savvy tourist, the ferry is primarily used by commuters from Staten Island. All told, a trip to Staten Island and back takes about an hour, and you never have to wait too long for the next boat.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — More to Explore"
+        },
+        "script_body_hash": "5072d5a18c0803c23ac292832f8f350212e51d91d1716e0c081e3e18e65223e4",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Castle Clinton",
+    "short_description": "Tier-4/5 candidate: National Monument, former fort/Castle Garden/aquarium/immigration depot. Major historic landmark inside Battery Park.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.703636,
+    "longitude": -74.017288,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": "Battery Park",
+    "_poi_role_reasoning": "A discrete circular fort building inside Battery Park; small radius and 'go inside' building cue make it a sub-feature stop.",
+    "_poi_role_source": "The circular stone building you can go inside if it is open",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Castle Clinton",
+        "lens": "social_change",
+        "topic_slug": "eight_million_immigrant_depot",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Castle Clinton was built on a man-made island and completed in 1811. Its initial purpose was to protect the harbor from the British. Later it functioned as a theater and then as a landing depot for immigrants — between 1855 and 1890, some 8 million immigrants passed through here. For a time after that, the castle was even home to the New York Aquarium. Today you can purchase tickets here for the ferry over to the Statue of Liberty and Ellis Island.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "New York Aquarium",
+          "Statue of Liberty",
+          "Ellis Island"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "immigrant depot",
+        "physical_cues": [
+          {
+            "cue": "The circular fort of Castle Clinton on its former man-made island at the edge of Battery Park",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Castle Clinton was built on a man-made island and completed in 1811. Its initial purpose was to protect the harbor from the British. Later it functioned as a theater and then as a landing depot for immigrants—between 1855 and 1890, some 8 million immigrants passed through here. For a time after that, the castle was even home to the New York Aquarium. Today you can purchase tickets here for the ferry over to the Statue of Liberty and Ellis Island.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "4165fb984e4357e6788a19eb8f008f05f428b2bbc887d27f163f5381421d8e2b",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "National Museum of the American Indian",
+    "short_description": "Tier-4/5 candidate: George Gustav Heye Center inside the landmark Beaux Arts Alexander Hamilton U.S. Custom House (Cass Gilbert, Daniel Chester French sculptures). Free museum, major architecture stop.",
+    "name_variations": [
+      "National Museum of the American Indian, George Gustav Heye Center"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.70417,
+    "longitude": -74.01389,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single landmark building you stand before ('in front of you'); small radius.",
+    "_poi_role_source": "The building in front of you, designed by Cass Gilbert",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "National Museum of the American Indian",
+        "lens": "hidden_history",
+        "topic_slug": "custom_house_sixty_percent_duties",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On the site where Fort Amsterdam stood during the 17th century now stands the US Custom House, whose first three stories house the National Museum of the American Indian. The custom house was completed in 1907, at a time when the Port of New York was the most important port in the United States — sixty percent of all customs duties in the country were collected here.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Fort Amsterdam",
+          "US Custom House",
+          "Port of New York"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "custom house duties",
+        "physical_cues": [
+          {
+            "cue": "The grand US Custom House facade on Bowling Green, housing the museum in its lower stories",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "On the site where Fort Amsterdam stood during the 17th century now stands the US Custom House. Today the first three stories of the building house the National Museum of the American Indian. The custom house was completed in 1907, at a time when the Port of New York was the most important port in the United States. Sixty percent of all customs duties in the country were collected here.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "708d406305961e28aaae2ad09a1f58ccac7396eac4bcef86519c397f22b5d462",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Federal Hall",
+    "short_description": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.707224,
+    "longitude": -74.010259,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "Discrete Greek Revival landmark building you stand before.",
+    "_poi_role_source": "Note the statue of George Washington: it was here... Greek Revival edifice",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Federal Hall",
+        "lens": "war_conflict",
+        "topic_slug": "washington_oath_first_capitol",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Federal Hall National Memorial stands on the site where George Washington took the oath of office as the first U.S. president and where the first Congress convened. The current building was previously a U.S. customs house and once contained more than three hundred million dollars in silver and gold. Today it is a museum about Washington's inauguration, freedom of the press, and Federal Hall — the first capitol, which stood on this spot.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "George Washington",
+          "First Congress",
+          "Federal Hall"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "Washington inauguration",
+        "physical_cues": [
+          {
+            "cue": "The Greek-temple facade and steps of Federal Hall at 26 Wall Street, where Washington was inaugurated",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Federal Hall National Memorial stands on the site where George Washington took the oath of office as the first U.S. president and where the first Congress convened. The current building was previously a U.S. customs house and once contained more than $300 million in silver and gold. Today it is a museum about Washington's inauguration, freedom of the press, and Federal Hall (the first capitol), which stood on this spot.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "067755e3c1147a23539f61db2c2e3880ae660bea54a57c226a3c63cbfaa15516",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Trinity Church",
+    "short_description": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) — minimal content here.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.708061,
+    "longitude": -74.012184,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single church and its adjacent graveyard you stand at; small radius, object-focused cues.",
+    "_poi_role_source": "The 280-foot Gothic spire",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Trinity Church",
+        "lens": "historic_arch",
+        "topic_slug": "neo_gothic_unscathed_911",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Trinity Church is a charming, beautiful, old example of Neo-Gothic architecture, which miraculously was unscathed after 9/11. Alexander Hamilton is buried in the cemetery, as well as a few of the earliest Dutch colonists.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alexander Hamilton"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Neo-Gothic survivor",
+        "physical_cues": [
+          {
+            "cue": "Trinity Church's Neo-Gothic spire and the churchyard graves at the head of Wall Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Trinity Church is a charming, beautiful, old example of Neo-Gothic architecture, which miraculously was unscathed after 9/11. Alexander Hamilton is buried in the cemetery, as well as a few of the earliest Dutch colonists.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "3152c26f016ea2e6086d1c09f584ef7f286110c501ee02b22749bb6875ae0cbb",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "St. Paul's Chapel",
+    "short_description": "Oldest church building in Manhattan (1766), Wikipedia article, George Washington connection, 9/11 relief site. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71132,
+    "longitude": -74.0092,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete church building you stand before and enter; small radius.",
+    "_poi_role_source": "The Ionic columns and huge pediment of the facade",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "St. Paul's Chapel",
+        "lens": "historic_worship",
+        "topic_slug": "survived_war_and_two_attacks",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "St. Paul's Chapel has miraculously survived the Revolutionary War and two terrorist attacks on the World Trade Center relatively unaltered. In the hours, weeks, and months that followed 9/11, the chapel became a place where rescue and recovery workers from Ground Zero received care and support. Visitors can see photos and read stories from this time inside the chapel.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Revolutionary War",
+          "World Trade Center",
+          "Ground Zero"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "9/11 sanctuary",
+        "physical_cues": [
+          {
+            "cue": "Photos and stories from the 9/11 recovery effort displayed inside the chapel",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "St. Paul's Chapel has miraculously been able to survive the Revolutionary War and two terrorist attacks on the World Trade Center relatively unaltered. In the hours, weeks, and months that followed 9/11, the chapel became a place where rescue and recovery workers from Ground Zero received care and support. Visitors can see photos and read stories from this time inside the chapel.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "6fba8818b9cb86156e82c3c6fa90faaa0c8b9b2d4891e37faa19ac5b165966c6",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "9/11 Memorial and Museum",
+    "short_description": "Top-tier global landmark. Full Wikipedia article, primary Frommer's headline sight, ~3M+ annual visitors. Among NYC's most-visited attractions.",
+    "name_variations": [
+      "The 9/11 Memorial and Museum"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.711449,
+    "longitude": -74.013855,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum and memorial you enter and stand within, with interior exhibit cues.",
+    "_poi_role_source": "visitors descend down, down, down into this underground museum",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "9/11 Memorial and Museum",
+        "lens": "dark_history",
+        "topic_slug": "three_part_attack_exhibition",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At the 9/11 Memorial Museum you can see an exhibition that presents the attack on the World Trade Center in three parts: the events of the day itself, the background leading up to that day, and the impact in the period that followed. The museum also regularly organizes films and lectures.",
+        "duration_sec": 19,
+        "kid_friendly": "no",
+        "entities": [
+          "World Trade Center"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "somber",
+        "subject_tag": "attack exhibition",
+        "physical_cues": [
+          {
+            "cue": "The museum's exhibition halls below the memorial plaza",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Take the time to visit the 9/11 Memorial Museum, where—among other things—you can check out an exhibition that presents the attack on the World Trade Center in three parts: the events of the day itself, the background leading up to that day, and the impact in the period that followed. The museum also regularly organizes films and lectures.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "56dc0c8d9672181a60a9ba1f70719f87543db74dc8e4cfc2b253ae2c906012ca",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "City Hall",
+    "short_description": "Federal-style seat of NYC government since 1812, with a coffered rotunda, the Governor's Room, and Washington's writing table on view via twice-weekly tours.",
+    "name_variations": [
+      "New York City Hall"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.713282,
+    "longitude": -74.006978,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single government building with interior cues and tiny radius (10), a discrete destination.",
+    "_poi_role_source": "the building's elegant coffered rotunda, the City Council chamber, and the Governor's Room",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "City Hall",
+        "lens": "hidden_history",
+        "topic_slug": "mayor_office_memorabilia",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "City Hall houses the office of the mayor, the city council, and various other offices. There is a small collection of memorabilia on display in the building, and free tours are given during the week — though you must make a reservation for tours online.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "City Council"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "mayor's seat",
+        "physical_cues": [
+          {
+            "cue": "City Hall's facade across City Hall Park, off Broadway",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "City Hall houses the office of the mayor, the city council, and various other offices. There is a small collection of memorabilia on display in the building and free tours are given during the week. However, you must make a reservation for tours online (public tours city hall).",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "71bec302e92eb933fdee46994c1ae3b8c76c498b2686f1ae6259eb805e1470eb",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Municipal Building",
+    "short_description": "The monumental 1909 Manhattan Municipal Building at 1 Centre Street, built to add office space for city agencies and crowned by Adolph Weinman's gilded-copper statue 'Civic Fame,' whose five-pointed crown symbolizes the city's five boroughs.",
+    "name_variations": [
+      "Manhattan Municipal Building",
+      "David N. Dinkins Municipal Building",
+      "1 Centre Street"
+    ],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "latitude": 40.71306,
+    "longitude": -74.00389,
+    "trigger_radius": 75,
+    "importance_tier": 3,
+    "typical_duration_min": 45,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Municipal Building",
+        "lens": "historic_arch",
+        "topic_slug": "civic_fame_five_boroughs",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The awe-inspiring Municipal Building was built starting in 1909 to create additional office space for municipal agencies. The building is surmounted by the copper statue 'Civic Fame,' a female figure holding a five-pointed crown that symbolizes the five boroughs of the city.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Civic Fame"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Civic Fame statue",
+        "physical_cues": [
+          {
+            "cue": "The gilded-copper 'Civic Fame' statue with its five-pointed crown atop the Municipal Building",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Civic Fame",
+            "gloss": "the crowning female statue, 'Civic Fame,' holding a five-pointed crown for the five boroughs"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "The awe-inspiring Municipal Building was built starting in 1909 to create additional office space for municipal agencies. The building is surmounted by the copper statue \"Civic Fame,\" a female figure holding a five-pointed crown that symbolizes the five boroughs of the city.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "34781a4f01d560cc4ce1416e8a0329893c21a87bbd9a91ec24dfcfb0928fce83",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Bridge",
+    "short_description": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7057,
+    "longitude": -73.9964,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 5,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "Large 120m radius and cues describe walking across/along the span rather than standing at one point.",
+    "_poi_role_source": "Walking the span of the Brooklyn Bridge lets you see this marvel up close",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Brooklyn Bridge",
+        "lens": "science_tech",
+        "topic_slug": "5989_feet_thirteen_years",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Construction of the 5,989-foot-long Brooklyn Bridge began in 1870 and was completed thirteen years later. The Gothic granite towers and steel cables are now an iconic New York City landmark. Walk out across the bridge for an amazing view of both Manhattan and Brooklyn, which is particularly beautiful at sunset.",
+        "duration_sec": 19,
+        "kid_friendly": "yes",
+        "entities": [
+          "Brooklyn Bridge"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "bridge dimensions",
+        "physical_cues": [
+          {
+            "cue": "The Gothic granite towers and steel cables of the bridge; the walkway view of Manhattan and Brooklyn",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Construction of the 5,989-foot-long (1,825 m) Brooklyn Bridge began in 1870 and was completed 13 years later. The Gothic granite towers and steel cables are now an iconic New York City landmark. Walk out across the bridge for an amazing view of both Manhattan and Brooklyn, which is particularly beautiful at sunset.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — More to Explore"
+        },
+        "script_body_hash": "847a32fe20a6c6df5604399a50b9cc98c46d653ae13981b75c33f8fe6f17c39c",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Columbus Park",
+    "short_description": "Leafy park at Mulberry and Bayard Sts in Chinatown where mah-jongg players, tai-chi practitioners, and locals gather; formerly the site of Five Points, NYC's first tenement slums.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7148572,
+    "longitude": -74.0000602,
+    "trigger_radius": 130,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "setting",
+    "parent_poi": "Chinatown",
+    "_poi_role_reasoning": "A park where people gather across the space (mah-jongg, tai-chi), narrated as an area; a named green space within Chinatown.",
+    "_poi_role_source": "this leafy oasis is core to NYC history",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Columbus Park",
+        "lens": "social_change",
+        "topic_slug": "worst_block_to_peaceful_park",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Columbus Park is located in what was once one of the worst neighborhoods in the city. Today, however, the park is the peaceful backdrop to scenes of women chatting over games of cards, men hunkering over Chinese checkerboards, and children playing. There is always lots of activity here.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "scene_setter",
+        "beat_type": "sensory_observation",
+        "emotional_register": "playful",
+        "subject_tag": "park life",
+        "physical_cues": [
+          {
+            "cue": "Card games, Chinese-checkerboard players, and children at play across Columbus Park",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Columbus Park is located in what was once one of the worst neighborhoods in the city. Today, however, the park is the peaceful backdrop to scenes of women chatting over games of cards, men hunkering over Chinese checkerboards, and children playing and having fun. There is always lots of activity here.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "0b2330670ddc09a0d668e375c7367168483c20c0b02b3a3b045fa1a0391d601e",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Fraunces Tavern",
+    "short_description": "Tier-4/5 candidate: 18th-century tavern/museum, Washington's Farewell to Officers, Sons of Liberty, 1975 FALN bombing site. High historic gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.703408,
+    "longitude": -74.011329,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "Discrete tavern/museum building you stand before; classic stop signals.",
+    "_poi_role_source": "in front of you will be Fraunces Tavern",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Fraunces Tavern",
+        "lens": "war_conflict",
+        "topic_slug": "washington_victory_dinner",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Fraunces Tavern is more than just a bar and restaurant; it is also a museum where you can learn about the Revolutionary War. Founding Father George Washington and his officers celebrated their victory here with a festive dinner.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "George Washington",
+          "Revolutionary War"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "Washington dinner",
+        "physical_cues": [
+          {
+            "cue": "The brick tavern-museum at 54 Pearl Street on the corner of Broad Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Fraunces Tavern is more than just a bar and restaurant; it is also a museum where you can learn about the Revolutionary War. Founding Father George Washington and his officers celebrated their victory here with a festive dinner.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Food & Drink"
+        },
+        "script_body_hash": "60491cbd8c121e2a45831fbf79e3e1c03cd644a4c1304232ff75d81ef76f1926",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Stone Street",
+    "short_description": "Tier-3/4 candidate: cobbled Greek Revival historic street, first paved street in New Amsterdam, 1835 fire rebuild. Distinctive streetscape.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.70417,
+    "longitude": -74.01056,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 2,
+    "poi_role": "setting",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A historic cobbled streetscape experienced as you move along it rather than a single point.",
+    "_poi_role_source": "This narrow, winding street was the first to be paved in New Amsterdam",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Stone Street",
+        "lens": "historic_arch",
+        "topic_slug": "first_paved_road_outdoor_tables",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Stone Street gets its name from being the first paved road in the city. Today many restaurants fill its 19th-century buildings, and the street has become a popular spot among those who work on Wall Street. When the weather is nice, the restaurants set up wooden tables right in the middle of the street.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "first paved street",
+        "physical_cues": [
+          {
+            "cue": "The 19th-century buildings of Stone Street and the wooden restaurant tables set out in the roadway",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Stone Street gets its name from being the first paved road in the city. Today many restaurants fill the 19th-century buildings here, and the street has become a popular spot among those who work on Wall Street. When the weather is nice, the restaurants set up wooden tables right in the middle of the street.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Food & Drink"
+        },
+        "script_body_hash": "4851fb3c939e1c7a92fc4f3c636f828641d7d30caa09c749c4e02126f2ab62a9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "The Tenement Museum",
+    "short_description": "Highly regarded immigration museum, National Trust site, Wikipedia article, major Frommer's headline sight. Moderate-high gravity. Note: original tenement is 97 Orchard; visitor center/coords at 103 Orchard.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.718768,
+    "longitude": -73.990074,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-01"
+    },
+    "importance_tier": 2,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum at a specific address you tour; small radius, facade/interior cues.",
+    "_poi_role_source": "The brownstone tenement facade at 97 Orchard Street",
+    "typical_duration_min": 30,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "The Tenement Museum",
+        "lens": "social_change",
+        "topic_slug": "tenement_museum_immigrant_lives",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-01-walk1-dumbo-wallst-chinatown-les",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At the Lower East Side Tenement Museum you can discover what life was like for millions of New York immigrants in the late 19th and early 20th centuries. To visit, you must sign up for a tour, and reservations beforehand are recommended.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "immigrant lives",
+        "physical_cues": [
+          {
+            "cue": "The restored tenement building at 103 Orchard Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Discover what life was like for millions of New York immigrants in the late 19th and early 20th centuries at the Lower East Side Tenement Museum. To visit the museum, you must sign up for a tour, and making reservations beforehand is recommended.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 1 — Sights & Attractions"
+        },
+        "script_body_hash": "d631505687bc68f8309ff3deb0a98501de72b4a5e8a510c99d7aba0144c8e2d4",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  }
+]

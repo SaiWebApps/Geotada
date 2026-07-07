@@ -1,0 +1,84 @@
+{
+  "book_title": "National Geographic Walking New York (2nd Edition): The Best of the City",
+  "author": "Katherine Cancila",
+  "source_file": "National Geographic Walking New York, 2nd Edition- The Best -- Cancila, Katherine, author -- Second edition, Washington, D_C, 2016 -- Washington, -- isbn13 9781426216572 -- 2b4e99d97ad37d73a92e4f5f7e6bb79c -- Anna’s Archive.pdf",
+  "city": "new_york",
+  "total_pages": 196,
+  "chunked_at": "2026-06-17",
+  "extraction_note": "Curated walking-tour guide. Chunked at the natural per-chapter level: the 9 neighborhood chapters, each = NEIGHBORHOOD WALK (numbered POI route with descriptions + addresses/transit) + IN DEPTH (deep dive on one landmark) + DISTINCTLY NEW YORK (cultural essay) + BEST OF (themed picks). Extracted in column-flow (non -layout) mode for clean two-column reading. Excluded as non-tour-landmark: front matter (Introduction, Visiting New York, Using This Guide), the WHIRLWIND TOURS itineraries (New York in a Day/Weekend/For Fun/With Kids — OCR-mangled and redundant with the neighborhood chapters), and back matter (Travel Essentials, Hotels, Index, Credits).",
+  "total_chunks": 9,
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-lower-manhattan.txt",
+      "section_title": "Lower Manhattan (Neighborhood Walk)",
+      "page_range": "40-55",
+      "line_count": 1269,
+      "summary": "Lower Manhattan walk: Statue of Liberty & Ellis Island, Battery Park, National Museum of the American Indian, Fraunces Tavern, Federal Hall, Wall Street, World Trade Center/9-11 Memorial; IN DEPTH Statue of Liberty; A City of Immigrants; Downtown Shopping."
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-the-villages.txt",
+      "section_title": "The Villages (Neighborhood Walk)",
+      "page_range": "56-69",
+      "line_count": 1204,
+      "summary": "The Villages walk: Union Square, Greenwich Village, Washington Square Park, NYU, the West Village and East Village; IN DEPTH Washington Square Park; Modern Greats essay; Village shopping & nightlife picks."
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-midtown-south.txt",
+      "section_title": "Midtown South (Neighborhood Walk)",
+      "page_range": "70-85",
+      "line_count": 1369,
+      "summary": "Midtown South walk: Flatiron/Madison Square, Chelsea & the High Line, Hotel Chelsea, Gramercy/Pete's Tavern, the Morgan Library; IN DEPTH The Library Lions / Morgan; fashion district essay; Midtown South dining picks."
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-midtown-north.txt",
+      "section_title": "Midtown North (Neighborhood Walk)",
+      "page_range": "86-101",
+      "line_count": 1331,
+      "summary": "Midtown North walk: Rockefeller Center, Times Square & theater district, Fifth Avenue, MoMA, St. Patrick's; IN DEPTH the Post-Impressionist era at MoMA; skyscraper-canyon essay; Midtown North picks."
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-upper-east-side.txt",
+      "section_title": "Upper East Side (Neighborhood Walk)",
+      "page_range": "102-119",
+      "line_count": 1436,
+      "summary": "Upper East Side walk: Museum Mile — Metropolitan Museum of Art, Guggenheim, Frick, Jewish Museum — plus the Armory and Madison Avenue; IN DEPTH Ancient Egypt at the Met & the Armory; uptown shopping picks."
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-central-park.txt",
+      "section_title": "Central Park (Neighborhood Walk)",
+      "page_range": "120-131",
+      "line_count": 980,
+      "summary": "Central Park walk: Loeb Boathouse, the Mall, Bethesda Terrace, Shakespeare Garden, the Ramble, Lasker Pool; Olmsted & Vaux design history; The City's Star essay; outdoor-activities picks."
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-upper-west-side.txt",
+      "section_title": "Upper West Side (Neighborhood Walk)",
+      "page_range": "132-145",
+      "line_count": 1200,
+      "summary": "Upper West Side walk: Lincoln Center, the Dakota, Central Park West, American Museum of Natural History; IN DEPTH Milstein Hall of Ocean Life; neighborhood-history essay; Upper West Side picks."
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-the-heights-harlem.txt",
+      "section_title": "The Heights & Harlem (Neighborhood Walk)",
+      "page_range": "146-157",
+      "line_count": 963,
+      "summary": "The Heights & Harlem walk: Cathedral of St. John the Divine, Columbia, Riverside Park, Harlem, Abyssinian Baptist Church, the Met Cloisters; IN DEPTH Early Medieval Masterpieces at the Cloisters; Harlem Renaissance essay."
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-brooklyn.txt",
+      "section_title": "Brooklyn (Neighborhood Walk)",
+      "page_range": "158-173",
+      "line_count": 1013,
+      "summary": "Brooklyn walk: Brooklyn Bridge & DUMBO, Brooklyn Heights promenade, Trinity Church, Brooklyn Museum, Botanic Garden, Prospect Park & Park Slope, the Brooklyn Public Library; IN DEPTH African Galleries; Brooklyn dining & culture picks."
+    }
+  ]
+}

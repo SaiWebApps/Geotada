@@ -1,0 +1,132 @@
+{
+  "book_title": "Lonely Planet New York City (12th edition)",
+  "author": "Ali Lemer et al.",
+  "source_file": "Lonely Planet New York City (Travel Guide) -- Lemer, Ali -- 2022 -- Lonely Planet -- 83f66ee087bfe4bdf8d64a4154429c2a -- Anna’s Archive.pdf",
+  "city": "new_york",
+  "total_pages": 1039,
+  "total_chunks": 15,
+  "chunked_at": "2026-06-15",
+  "extraction_note": "Tour-relevant content only. Per EXPLORE neighborhood, kept the TOP EXPERIENCE boxes + SIGHTS section (stopped at the EATING marker). Excluded: front-matter planning (Need to Know, Month By Month, Perfect Days, etc.), all Eating/Drinking & Nightlife/Entertainment/Shopping/Sports & Activities listings, Day Trips (Hamptons/Fire Island/Hudson Valley/Woodstock — outside NYC geofence), Sleeping (hotels), and Survival Guide. Kept the UNDERSTAND narrative chapters (History, NYC Table, Arts Scene, City Skyline, Queer City, NYC on Screen). Photo-credit caption lines stripped; address/transit '( MAP GOOGLE MAP ...)' lines preserved for geocoding/trigger_address.",
+  "chunks": [
+    {
+      "chunk_number": 1,
+      "filename": "chunk-01-lower-manhattan-financial-district.txt",
+      "section_title": "Lower Manhattan & the Financial District (Top Experiences + Sights)",
+      "page_range": "166-205",
+      "line_count": 954,
+      "summary": "Lower Manhattan & the Financial District (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 2,
+      "filename": "chunk-02-soho-chinatown.txt",
+      "section_title": "SoHo & Chinatown (Top Experiences + Sights)",
+      "page_range": "225-244",
+      "line_count": 457,
+      "summary": "SoHo & Chinatown (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 3,
+      "filename": "chunk-03-east-village-lower-east-side.txt",
+      "section_title": "East Village & Lower East Side (Top Experiences + Sights)",
+      "page_range": "274-297",
+      "line_count": 496,
+      "summary": "East Village & Lower East Side (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 4,
+      "filename": "chunk-04-west-village-chelsea-meatpacking.txt",
+      "section_title": "West Village, Chelsea & the Meatpacking District (Top Experiences + Sights)",
+      "page_range": "333-361",
+      "line_count": 671,
+      "summary": "West Village, Chelsea & the Meatpacking District (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 5,
+      "filename": "chunk-05-union-square-flatiron-gramercy.txt",
+      "section_title": "Union Square, Flatiron District & Gramercy (Top Experiences + Sights)",
+      "page_range": "412-427",
+      "line_count": 325,
+      "summary": "Union Square, Flatiron District & Gramercy (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 6,
+      "filename": "chunk-06-midtown.txt",
+      "section_title": "Midtown (Top Experiences + Sights)",
+      "page_range": "442-495",
+      "line_count": 1239,
+      "summary": "Midtown (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 7,
+      "filename": "chunk-07-upper-east-side.txt",
+      "section_title": "Upper East Side (Top Experiences + Sights)",
+      "page_range": "528-548",
+      "line_count": 460,
+      "summary": "Upper East Side (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 8,
+      "filename": "chunk-08-upper-west-side-central-park.txt",
+      "section_title": "Upper West Side & Central Park (Top Experiences + Sights)",
+      "page_range": "563-584",
+      "line_count": 441,
+      "summary": "Upper West Side & Central Park (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 9,
+      "filename": "chunk-09-harlem-upper-manhattan.txt",
+      "section_title": "Harlem & Upper Manhattan (Top Experiences + Sights)",
+      "page_range": "604-626",
+      "line_count": 538,
+      "summary": "Harlem & Upper Manhattan (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 10,
+      "filename": "chunk-10-brooklyn.txt",
+      "section_title": "Brooklyn (Top Experiences + Sights)",
+      "page_range": "644-687",
+      "line_count": 1094,
+      "summary": "Brooklyn (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 11,
+      "filename": "chunk-11-queens.txt",
+      "section_title": "Queens (Top Experiences + Sights)",
+      "page_range": "744-763",
+      "line_count": 481,
+      "summary": "Queens (Top Experiences + Sights)"
+    },
+    {
+      "chunk_number": 12,
+      "filename": "chunk-12-understand-history.txt",
+      "section_title": "Understand: History",
+      "page_range": "859-892",
+      "line_count": 537,
+      "summary": "Understand: History"
+    },
+    {
+      "chunk_number": 13,
+      "filename": "chunk-13-understand-nyc-table-arts-scene.txt",
+      "section_title": "Understand: The NYC Table & The Arts Scene",
+      "page_range": "892-912",
+      "line_count": 446,
+      "summary": "Understand: The NYC Table & The Arts Scene"
+    },
+    {
+      "chunk_number": 14,
+      "filename": "chunk-14-understand-city-skyline-queer-city.txt",
+      "section_title": "Understand: The City Skyline & Queer City",
+      "page_range": "912-931",
+      "line_count": 386,
+      "summary": "Understand: The City Skyline & Queer City"
+    },
+    {
+      "chunk_number": 15,
+      "filename": "chunk-15-understand-nyc-on-screen.txt",
+      "section_title": "Understand: NYC on Screen",
+      "page_range": "931-952",
+      "line_count": 222,
+      "summary": "Understand: NYC on Screen (film & TV locations; back-matter trimmed)"
+    }
+  ]
+}

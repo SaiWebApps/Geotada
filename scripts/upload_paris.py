@@ -1,8 +1,9 @@
-"""Bulk upload Paris data to Neo4j (local or Aura).
+"""Bulk upload a city's data to Neo4j (local or Aura).
 
-Reads from:
-  - data/paris/poi-raw.json   (239 POIs with gravity/geocoding metadata)
-  - data/paris/beats.json     (430 beats with fact-checking metadata)
+City-parameterized: pass a city slug (default ``paris``). Reads from
+``data/{city_slug}/poi-raw.json`` and ``data/{city_slug}/beats.json`` and
+rejects POIs outside the city's bbox in ``CITY_BBOX`` (the out-of-city geofence
+guard). Add a new city by adding its bbox to ``CITY_BBOX``.
 
 Creates:
   - Schema constraints and indexes
@@ -13,9 +14,10 @@ Creates:
   - TAGGED_WITH relationships (Beat → Lens)
 
 Usage:
-    make upload-paris
+    make upload-paris                 # Paris (default)
+    make upload CITY=new_york         # any city in CITY_BBOX
     # or directly:
-    python scripts/upload_paris.py
+    python -m scripts.upload_paris new_york
 """
 
 from __future__ import annotations
@@ -56,15 +58,23 @@ def _assert_upload_target_allowed(allow_cloud: bool) -> None:
             f"first, or pass --allow-cloud to deliberately target Aura."
         )
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data" / "paris"
-POI_FILE = DATA_DIR / "poi-raw.json"
-BEATS_FILE = DATA_DIR / "beats.json"
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
 VALIDATOR = Path(__file__).resolve().parent / "validate_beats.py"
 
-# Generous Paris bounding box (city + inner suburbs): rejects gross coordinate
+# Generous per-city bounding boxes (city + inner edges): reject gross coordinate
 # errors (a Boston POI, (0,0), or out-of-city leaks) without clipping legitimate
 # edge POIs. (min_lat, max_lat, min_lon, max_lon)
-PARIS_BBOX = (48.70, 49.00, 2.10, 2.60)
+CITY_BBOX: dict[str, tuple[float, float, float, float]] = {
+    "paris": (48.70, 49.00, 2.10, 2.60),
+    "new_york": (40.45, 40.93, -74.28, -73.68),
+}
+PARIS_BBOX = CITY_BBOX["paris"]  # back-compat default
+
+
+def _city_paths(city_slug: str) -> tuple[Path, Path]:
+    data_dir = REPO_ROOT / "data" / city_slug
+    return data_dir / "poi-raw.json", data_dir / "beats.json"
 
 # fact_check.status values that must never reach the live database.
 _BLOCKED_STATUSES = {"disputed"}
@@ -124,7 +134,7 @@ def _ensure_lenses(session, lens_slugs: set[str]) -> int:
     return result.single()["total"]
 
 
-def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
+def _upload_pois(session, pois: list[dict], city_name: str, bbox: tuple) -> dict[str, int]:
     """Upload POI nodes with spatial points via batched UNWIND. Returns stats."""
     params = []
     skipped = 0
@@ -135,7 +145,7 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
         if lat is None or lon is None:
             skipped += 1
             continue
-        if not _in_city_bounds(float(lat), float(lon)):
+        if not _in_city_bounds(float(lat), float(lon), bbox):
             # Coordinate hygiene: never upload a POI outside the city geofence
             # (catches the Boston-POI class, (0,0), and stray coords).
             print(f"         ! skipping out-of-bounds POI {poi.get('name')!r} @ ({lat}, {lon})")
@@ -151,7 +161,7 @@ def _upload_pois(session, pois: list[dict]) -> dict[str, int]:
             # Canonical dedup key (defect 3), computed identically to create_node
             # so a later API create/edit MERGEs onto this node instead of forking.
             "name_key": canonical_name_key(poi["name"]),
-            "city_name": "paris",
+            "city_name": city_name,
             "short_description": poi.get("short_description", ""),
             "lat": float(lat),
             "lon": float(lon),
@@ -269,11 +279,12 @@ def _upload_beats(session, beats: list[dict]) -> dict[str, int]:
         # _decode_physical_cues and the API's _encode_complex_props). entities is list[str]
         # and stores natively. Both are read back by src/tour/selection.py.
         raw_cues = beat.get("physical_cues")
-        physical_cues = (
-            json.dumps(raw_cues)
-            if isinstance(raw_cues, list) and raw_cues and all(isinstance(c, dict) for c in raw_cues)
-            else None
+        _cues_ok = (
+            isinstance(raw_cues, list)
+            and raw_cues
+            and all(isinstance(c, dict) for c in raw_cues)
         )
+        physical_cues = json.dumps(raw_cues) if _cues_ok else None
 
         params.append({
             "poi_name": poi_name,
@@ -367,10 +378,22 @@ def main() -> None:
     # must not reach create_driver() (protects even when Aura is paused).
     _assert_upload_target_allowed(allow_cloud)
 
+    # First non-flag arg is the city slug (flags like --allow-cloud/--provenance-only
+    # must never be misread as a city).
+    positional = [a for a in sys.argv[1:] if not a.startswith("--")]
+    city_slug = positional[0] if positional else "paris"
+    if city_slug not in CITY_BBOX:
+        sys.exit(
+            f"Unknown city '{city_slug}'. Known: {', '.join(sorted(CITY_BBOX))}. "
+            f"Add its bbox to CITY_BBOX in {Path(__file__).name}."
+        )
+    poi_file, beats_file = _city_paths(city_slug)
+    bbox = CITY_BBOX[city_slug]
+
     db = get_database()
     db_label = f"cloud ({db})" if db else "local"
     provenance_only = "--provenance-only" in sys.argv
-    mode = "PROVENANCE BACKFILL" if provenance_only else "PARIS DATA UPLOAD"
+    mode = "PROVENANCE BACKFILL" if provenance_only else f"{city_slug.upper()} DATA UPLOAD"
     print(f"\n{'='*60}")
     print(f"  {mode} → Neo4j [{db_label}]")
     print(f"{'='*60}\n")
@@ -378,13 +401,13 @@ def main() -> None:
     # AC-9: every integrity gate (grounding, verification-freshness, uniqueness,
     # status vocab) must pass before we touch the database. Fail fast, pre-connect.
     print("  [0/5] Validating beats (validate_beats gate)...")
-    _assert_beats_valid(BEATS_FILE)
+    _assert_beats_valid(beats_file)
     print("         OK")
 
     if provenance_only:
         # Step 4.0 backfill: ONLY the three provenance fields, matched by
         # beat_id. Never the full upload path (it plain-SETs audio_url='').
-        beats = _load_json(BEATS_FILE)
+        beats = _load_json(beats_file)
         driver = create_driver()
         try:
             with driver.session(database=db) as session:
@@ -405,8 +428,8 @@ def main() -> None:
             driver.close()
         return
 
-    pois = _load_json(POI_FILE)
-    beats = _load_json(BEATS_FILE)
+    pois = _load_json(poi_file)
+    beats = _load_json(beats_file)
     print(f"  Source: {len(pois)} POIs, {len(beats)} beats\n")
 
     beat_lenses = {b["lens"] for b in beats if b.get("lens")}
@@ -432,7 +455,7 @@ def main() -> None:
             # 3. POIs
             print(f"  [3/5] Uploading {len(pois)} POIs...")
             t0 = time.time()
-            poi_stats = _upload_pois(session, pois)
+            poi_stats = _upload_pois(session, pois, city_slug, bbox)
             print(
                 f"         {poi_stats['created']} created, {poi_stats['skipped']} skipped "
                 f"(null coords), {poi_stats['out_of_bounds']} skipped (out of bounds) "
@@ -459,7 +482,7 @@ def main() -> None:
             lens_count = session.run("MATCH (n:Lens) RETURN count(n) AS c").single()["c"]
 
         print(f"\n{'='*60}")
-        print(f"  UPLOAD COMPLETE")
+        print("  UPLOAD COMPLETE")
         print(f"  Nodes: {nodes} ({poi_count} POIs, {beat_count} beats, {lens_count} lenses)")
         print(f"  Relationships: {rels}")
         print(f"{'='*60}\n")

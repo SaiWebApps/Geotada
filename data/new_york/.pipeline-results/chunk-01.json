@@ -1,0 +1,983 @@
+{
+  "chunk_id": "chunk-01",
+  "pois": [
+    {
+      "name": "Brooklyn Bridge",
+      "is_new": false,
+      "matched_existing": "Brooklyn Bridge",
+      "note": "Existing POI. Chunk adds a superlative+date factoid (longest suspension bridge, 1883). Superlative \u2014 not auto-corrected per guardrail."
+    },
+    {
+      "name": "Staten Island Ferry",
+      "is_new": false,
+      "matched_existing": "Staten Island Ferry",
+      "note": "Existing POI. Chunk content (free ride, Statue of Liberty / Ellis Island / harbor views) is already covered by existing beat newyork_staten_island_ferry_..._free_harbor_views. No new non-duplicate story. No new beat emitted."
+    },
+    {
+      "name": "Ellis Island National Museum of Immigration",
+      "is_new": false,
+      "matched_existing": "Ellis Island National Museum of Immigration",
+      "note": "Existing POI. Chunk content (ancestors passed through, moving experience) duplicates existing twelve_million_passage beat. No new beat."
+    },
+    {
+      "name": "Statue of Liberty",
+      "is_new": false,
+      "matched_existing": "Statue of Liberty",
+      "note": "Existing POI. Only passing mentions (seen first on Ellis Island trip, from the ferry). No new story. No new beat."
+    },
+    {
+      "name": "National Museum of the American Indian, George Gustav Heye Center",
+      "is_new": false,
+      "matched_existing": "National Museum of the American Indian, George Gustav Heye Center",
+      "note": "Existing POI. Daniel Chester French sculptures / decipherable building already covered by existing four_continents_sculptures and rotunda beats. No new non-duplicate story. No new beat."
+    },
+    {
+      "name": "Whitney Museum of American Art",
+      "is_new": false,
+      "matched_existing": "Whitney Museum of American Art",
+      "note": "Existing POI. Passing recommendation (next to High Line, late hours). No new story. No new beat."
+    },
+    {
+      "name": "The Tenement Museum",
+      "is_new": false,
+      "matched_existing": "The Tenement Museum",
+      "note": "Existing POI. Recommendation duplicates existing immigrant-stories beats. No new beat."
+    },
+    {
+      "name": "Greenwich Village",
+      "is_new": false,
+      "matched_existing": null,
+      "note": "Referenced (best neighborhood to stroll). 'Greenwich Village' appears in existing beat_ids (newyork_greenwich_village_...) though not in EXISTING_POI_NAMES list. Chunk content is thin editorial praise \u2014 no new self-contained story. No new beat. Not re-flagged as new."
+    },
+    {
+      "name": "Chrysler Building",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7516,
+      "longitude": -73.9755,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.95,
+      "geocode_note": "Live Nominatim/WebFetch and curl were DENIED in this sandbox. Coordinates are the well-established fixed location of the Chrysler Building (405 Lexington Ave, Manhattan). Recommend confirming via /poi-geocode before upload.",
+      "trigger_radius": 60,
+      "gravity_assessment": "Iconic Art Deco skyscraper, named by Frommer's as best NYC skyscraper and New Yorkers' favorite. High-gravity landmark.",
+      "in_bbox": true
+    },
+    {
+      "name": "Grand Central Terminal",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7527,
+      "longitude": -73.9772,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.95,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the well-established fixed location of Grand Central Terminal (89 E 42nd St, Manhattan). Book calls it 'Grand Central Station'; canonical name is Grand Central Terminal. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 70,
+      "gravity_assessment": "Major Beaux Arts transit landmark, Frommer's 'best historic building'. High gravity.",
+      "in_bbox": true
+    },
+    {
+      "name": "Cathedral of St. John the Divine",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.8038,
+      "longitude": -73.962,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.93,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the well-established location of the Cathedral of St. John the Divine (1047 Amsterdam Ave, Morningside Heights). Recommend /poi-geocode confirmation.",
+      "trigger_radius": 60,
+      "gravity_assessment": "Major place of worship, Frommer's 'most impressive place of worship'. Tourist-relevant. Solid gravity.",
+      "in_bbox": true
+    },
+    {
+      "name": "Coney Island",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.5755,
+      "longitude": -73.9707,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.85,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the well-established center of the Coney Island amusement area, Brooklyn. Area POI (a district), not a single point \u2014 geofence is approximate. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 200,
+      "gravity_assessment": "Famous seaside amusement district, family-experience pick. Moderate-high gravity but geographically diffuse.",
+      "in_bbox": true
+    },
+    {
+      "name": "Central Park",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7829,
+      "longitude": -73.9654,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the approximate centroid of Central Park, Manhattan. Very large area POI \u2014 geofence is a centroid only; the Carousel beat below would benefit from a finer sub-POI geocode (Carousel ~40.7696, -73.9758). Recommend /poi-geocode confirmation.",
+      "trigger_radius": 250,
+      "gravity_assessment": "Flagship NYC park, repeatedly cited (most unforgettable experiences, best family, best parks). Very high gravity but diffuse \u2014 finer sub-points needed.",
+      "in_bbox": true
+    },
+    {
+      "name": "Domino Park",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7144,
+      "longitude": -73.9678,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.85,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the established location of Domino Park, Williamsburg, Brooklyn (former Domino Sugar refinery waterfront). Recommend /poi-geocode confirmation.",
+      "trigger_radius": 80,
+      "gravity_assessment": "Newer waterfront park on the former sugar refinery site; Frommer's parks pick. Moderate gravity.",
+      "in_bbox": true
+    },
+    {
+      "name": "The High Line",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.748,
+      "longitude": -74.0048,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.82,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are a representative point on the High Line near the Meatpacking District / Gansevoort St entrance. Linear elevated park \u2014 geofence is a point on a 1.45-mile line. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 120,
+      "gravity_assessment": "Very popular elevated park, Frommer's parks pick; called 'NYC's coolest park'. High gravity but linear/diffuse.",
+      "in_bbox": true
+    },
+    {
+      "name": "Prospect Park",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.6602,
+      "longitude": -73.969,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the approximate centroid of Prospect Park, Brooklyn. Large area POI. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 250,
+      "gravity_assessment": "Major Brooklyn park by Olmsted & Vaux; Frommer's parks pick. High gravity but diffuse.",
+      "in_bbox": true
+    },
+    {
+      "name": "Brooklyn Heights",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.6959,
+      "longitude": -73.9936,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the approximate center of the Brooklyn Heights historic district. Neighborhood-scale POI; the promenade view-point is ~40.6967, -73.9986. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 200,
+      "gravity_assessment": "First NYC historic district; strolling neighborhood with famous promenade. Moderate gravity.",
+      "in_bbox": true
+    },
+    {
+      "name": "The Public Theater",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.729,
+      "longitude": -73.992,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.88,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the established location of The Public Theater (425 Lafayette St, Astor Place, Manhattan). Recommend /poi-geocode confirmation.",
+      "trigger_radius": 50,
+      "gravity_assessment": "Landmark off-Broadway theater where Hamilton premiered; culturally significant fixed building. Moderate gravity.",
+      "in_bbox": true
+    },
+    {
+      "name": "PDT",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7273,
+      "longitude": -73.9847,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.8,
+      "geocode_note": "Live geocoding DENIED in sandbox. PDT ('Please Don't Tell') is the speakeasy behind Crif Dogs at 113 St. Marks Place, East Village. Coordinates are that address. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 40,
+      "gravity_assessment": "Famous hidden speakeasy with a strong local-legend hook (phone-booth entrance). Niche but high story value. Low-moderate gravity.",
+      "in_bbox": true
+    },
+    {
+      "name": "Roosevelt Island Tram",
+      "is_new": true,
+      "matched_existing": null,
+      "latitude": 40.7614,
+      "longitude": -73.9637,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.82,
+      "geocode_note": "Live geocoding DENIED in sandbox. Coordinates are the Manhattan tram station (2nd Ave & E 60th St). The tram spans to Roosevelt Island; Manhattan boarding point used as the geofence. Recommend /poi-geocode confirmation.",
+      "trigger_radius": 50,
+      "gravity_assessment": "Aerial tram with skyline views; 'see NYC like a local' pick. Moderate gravity.",
+      "in_bbox": true
+    }
+  ],
+  "beats": [
+    {
+      "beat_id": "newyork_brooklyn_bridge_science_tech_frommers-nyc-2024_longest_suspension_1883",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Bridge",
+      "parent_poi": null,
+      "lens": "science_tech",
+      "topic_slug": "longest_suspension_1883",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Walking the span of the Brooklyn Bridge lets you see this marvel of engineering up close. When it was built in 1883, it was the longest suspension bridge in the world. Look up and down the East River, and you also get a close-up of the bridge's massive Gothic brownstone towers.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Bridge",
+        "East River"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "longest suspension bridge",
+      "physical_cues": [
+        {
+          "cue": "Massive Gothic brownstone towers of the bridge",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Views up and down the East River from the walkway",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Brooklyn Bridge built in 1883",
+        "longest suspension bridge in the world when built",
+        "Gothic brownstone towers"
+      ],
+      "source_passage": "Walking the Brooklyn Bridge: The bridge, too, offers glorious views of the\ncity. But that\u2019s not the only reason you stroll here: Walking the span\nallows you to see this marvel of engineering up close. (It was the\nlongest suspension bridge in the world when it was built in 1883.). See\npage 171.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "171"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'longest suspension bridge in the world when it was built in 1883' is a superlative \u2014 NOT auto-corrected per guardrail #4 (never auto-resolve superlatives). Note: the source's own claim is preserved verbatim; world record is widely corroborated but left for /fact-check."
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage. Superlative left for /fact-check; not auto-corrected."
+      },
+      "new_poi": false,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_chrysler_building_modern_design_frommers-nyc-2024_hood_ornament_spire",
+      "city_name": "new_york",
+      "poi_name": "Chrysler Building",
+      "parent_poi": null,
+      "lens": "modern_design",
+      "topic_slug": "hood_ornament_spire",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "When asked, most New Yorkers would name the Art Deco spire of the Chrysler Building as their favorite Manhattan skyscraper. Its sleek hood-ornament spire is as jaunty as ever, a heartening sight to behold. The Chrysler has no observation deck, but this Art Deco masterpiece can be viewed from outside, or from nearby observation decks such as the Empire State Building's.",
+      "beat_length_class": "mid",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Chrysler Building",
+        "Empire State Building"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "wry",
+      "subject_tag": "Art Deco spire",
+      "physical_cues": [
+        {
+          "cue": "Sleek Art Deco hood-ornament spire of the Chrysler Building",
+          "direction": "up",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "New Yorkers' favorite skyscraper per author",
+        "Art Deco hood-ornament spire",
+        "has no observation deck",
+        "viewable from Empire State Building deck"
+      ],
+      "source_passage": "When asked, most New Yorkers would name the Art Deco spire of the Chrysler Building (p. 208) as their\nfavorite Manhattan skyscraper.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "208"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'most New Yorkers would name ... their favorite Manhattan skyscraper' and 'best skyscraper' are subjective/superlative author opinions \u2014 preserved as the source's claim, not auto-corrected (guardrail #4)."
+        ],
+        "status": "unverified",
+        "extractor_state": "imported_context",
+        "notes": "script_body combines the caption ('most New Yorkers would name the Art Deco spire ... as their favorite') with the BEST SKYSCRAPER body block ('sleek hood-ornament spire ... no observation deck ... viewed from outside or from nearby observation decks, such as the Empire State Building's'). Both spans are in the chunk (caption near p.347-348; body at 'BEST SKYSCRAPER: THE CHRYSLER BUILDING ...' lines). No world knowledge added; flagged as imported_context only because two non-adjacent source spans were merged. /fact-check to verify."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_grand_central_terminal_historic_arch_frommers-nyc-2024_beaux_arts_1913_restored",
+      "city_name": "new_york",
+      "poi_name": "Grand Central Terminal",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "beaux_arts_1913_restored",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Grand Central Station is a Beaux Arts gem. This iconic railroad station, built in 1913, was restored in the 1990s to its original brilliance. More than just a thriving transit hub, it rewards a closer look \u2014 you can take a walking tour with the help of a smartphone once you're inside the building.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Grand Central Station"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "Beaux Arts station",
+      "physical_cues": [
+        {
+          "cue": "Beaux Arts interior of Grand Central, restored to its original brilliance",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [
+        {
+          "phrase": "Beaux Arts",
+          "gloss": "an ornate early-20th-century architectural style"
+        }
+      ],
+      "pronunciation": null,
+      "key_claims": [
+        "Beaux Arts style",
+        "built in 1913",
+        "restored in the 1990s"
+      ],
+      "source_passage": "Best Historic Building: Grand Central Station. A Beaux Arts gem, this\niconic railroad station, built in 1913, was restored in the 1990s to its\noriginal brilliance. You can take a tour with the help of a smartphone\nonce you\u2019re in the building. See p. 212.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "212"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims (Beaux Arts, built 1913, restored 1990s, smartphone tour) trace to source_passage. Book uses 'Grand Central Station'; canonical name is 'Grand Central Terminal' (poi_name) \u2014 preserved book wording in script_body."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_cathedral_of_st_john_the_divine_historic_worship_frommers-nyc-2024_largest_gothic_unfinished",
+      "city_name": "new_york",
+      "poi_name": "Cathedral of St. John the Divine",
+      "parent_poi": null,
+      "lens": "historic_worship",
+      "topic_slug": "largest_gothic_unfinished",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Construction began on the world's largest Gothic cathedral, the Cathedral of St. John the Divine, in 1892 \u2014 and it's still going on. This is one structure that benefits from being a work in progress.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 15,
+      "kid_friendly": "yes",
+      "entities": [
+        "Cathedral of St. John the Divine"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "architectural_detail",
+      "emotional_register": "neutral",
+      "subject_tag": "unfinished Gothic cathedral",
+      "physical_cues": [
+        {
+          "cue": "Gothic cathedral facade, still unfinished and under construction",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "world's largest Gothic cathedral",
+        "construction began 1892",
+        "still ongoing / work in progress"
+      ],
+      "source_passage": "Most Impressive Place of Worship: Cathedral     of St. John the Divine.\nConstruction began on the world\u2019s largest Gothic cathedral in 1892\u2014\nand it\u2019s still going on. This is one structure that benefits from being a\nwork in progress.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "232"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'world's largest Gothic cathedral' is a superlative \u2014 NOT auto-corrected (guardrail #4). Preserved as the source's claim for /fact-check."
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage. Superlative preserved verbatim, left for /fact-check."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_coney_island_local_legends_frommers-nyc-2024_wonder_wheel_cyclone",
+      "city_name": "new_york",
+      "poi_name": "Coney Island",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "wonder_wheel_cyclone",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Coney Island is far grittier than Disney World, but for many that's a plus. Come here to taste the vintage pleasures of what was once New York City's favorite summer playground, including the landmarked Wonder Wheel and the Cyclone roller coaster.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "Coney Island",
+        "Wonder Wheel",
+        "Cyclone"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "summer playground",
+      "physical_cues": [
+        {
+          "cue": "The landmarked Wonder Wheel and Cyclone roller coaster",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "once NYC's favorite summer playground",
+        "landmarked Wonder Wheel",
+        "Cyclone roller coaster"
+      ],
+      "source_passage": "Coney Island: It\u2019s far grittier than Disney World, but for many that\u2019s a\nplus. Come here to taste the vintage pleasures of what was once New\nYork City\u2019s favorite summer playground, including the landmarked\nWonder Wheel and Cyclone roller coaster.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "243"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_central_park_parks_gardens_frommers-nyc-2024_carousel_1908",
+      "city_name": "new_york",
+      "poi_name": "Central Park",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "carousel_1908",
+      "sub_location": "carousel",
+      "trigger_address": null,
+      "script_body": "Central Park's vintage Carousel, built in 1908, is just one of the huge Manhattan park's many kid-magnet attractions \u2014 alongside two zoos, two ice-skating rinks and pools, playgrounds, and ball fields that make the park a children's wonderland.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "Central Park",
+        "Carousel"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "deepen",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "vintage carousel",
+      "physical_cues": [
+        {
+          "cue": "The vintage Carousel in Central Park",
+          "direction": "here",
+          "feature_type": "adjacent_landmark"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Carousel built in 1908",
+        "park has two zoos, two ice-skating rinks and pools, playgrounds, ball fields"
+      ],
+      "source_passage": "Central Park\u2019s vintage Carousel (p. 256), built in 1908, is just one of the huge Manhattan park\u2019s many kid-\nmagnet attractions.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "256"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "imported_context",
+        "notes": "Carousel-built-1908 and 'kid-magnet attractions' trace to the caption (p.256). The 'two zoos, two ice-skating rinks and pools, playgrounds, and ball fields' detail comes from the separate BEST FAMILY EXPERIENCES block ('CENTRAL PARK: WITH ITS CAROUSEL, TWO ZOOS, TWO ICE-SKATING RINKS AND POOLS ... PLAYGROUNDS, AND BALL FIELDS ... A CHILDREN'S WONDERLAND'), also in this chunk. Both spans are in-chunk; flagged imported_context only for merging two non-adjacent source spans. NOTE: Central Park geofence is a centroid; the Carousel is at a finer point \u2014 recommend sub-POI geocode."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_domino_park_hidden_history_frommers-nyc-2024_largest_sugar_refinery",
+      "city_name": "new_york",
+      "poi_name": "Domino Park",
+      "parent_poi": null,
+      "lens": "hidden_history",
+      "topic_slug": "largest_sugar_refinery",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Domino Park is set on the grounds of what was once the largest sugar refinery on the planet. The park artfully incorporates many of the industrial artifacts that were left behind, and offers sweeping views of Manhattan along with a great collection of eateries and drinkeries for those who want to linger.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "Domino Park"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "sugar refinery park",
+      "physical_cues": [
+        {
+          "cue": "Industrial artifacts from the old sugar refinery incorporated into the park",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "Sweeping views of Manhattan across the river",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "site of what was once the largest sugar refinery on the planet",
+        "incorporates leftover industrial artifacts",
+        "views of Manhattan"
+      ],
+      "source_passage": "Domino Park: Set on the grounds of what was once the largest sugar\nrefinery on the planet, the park artfully incorporates many of the\nindustrial artifacts that were left behind. It also offers sweeping views of\nManhattan, lots of activities for young and old, and a really great\ncollection of eateries and drinkeries for those who want to linger. See p.\n260.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "260"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'largest sugar refinery on the planet' is a superlative \u2014 NOT auto-corrected (guardrail #4). Preserved as source's claim for /fact-check."
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage. Superlative preserved verbatim."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_high_line_historic_arch_frommers-nyc-2024_freight_rail_to_park",
+      "city_name": "new_york",
+      "poi_name": "The High Line",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "freight_rail_to_park",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Located in the Meatpacking District of Manhattan, the High Line was once an elevated structure for freight trains. This quirky, handsome park is immensely popular and a good object lesson in how New York City is constantly reinventing itself.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 16,
+      "kid_friendly": "yes",
+      "entities": [
+        "The High Line",
+        "Meatpacking District"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "elevated freight line",
+      "physical_cues": [
+        {
+          "cue": "The elevated former freight-rail structure now planted as a park",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "in the Meatpacking District",
+        "once an elevated structure for freight trains"
+      ],
+      "source_passage": "The High Line: Located in the Meatpacking District of Manhattan, this\nquirky, handsome park was once an elevated structure for freight trains.\nIt\u2019s immensely popular and a good object lesson in how New York City\nis constantly reinventing itself. See p. 262.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "262"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_prospect_park_parks_gardens_frommers-nyc-2024_olmsted_vaux_other_masterwork",
+      "city_name": "new_york",
+      "poi_name": "Prospect Park",
+      "parent_poi": null,
+      "lens": "parks_gardens",
+      "topic_slug": "olmsted_vaux_other_masterwork",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Prospect Park is the other masterwork by Frederick Law Olmsted and Calvert Vaux, the designers of Central Park. Brooklyn's great green space offers a delightful exercise in compare and contrast with its more famous Manhattan sibling.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 14,
+      "kid_friendly": "yes",
+      "entities": [
+        "Prospect Park",
+        "Frederick Law Olmsted",
+        "Calvert Vaux",
+        "Central Park"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "Olmsted Vaux park",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "designed by Frederick Law Olmsted and Calvert Vaux",
+        "same designers as Central Park"
+      ],
+      "source_passage": "Prospect Park: The other masterwork by Frederick Law Olmsted and\nCalvert Vaux (designers of Central Park), Brooklyn\u2019s great green space\noffers a delightful exercise in compare and contrast. See p. 264.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "264"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage. sensory_anchor false (no specific visible feature named in source); physical_cues empty accordingly."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_brooklyn_heights_historic_arch_frommers-nyc-2024_first_historic_district",
+      "city_name": "new_york",
+      "poi_name": "Brooklyn Heights",
+      "parent_poi": null,
+      "lens": "historic_arch",
+      "topic_slug": "first_historic_district",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "Brooklyn Heights was the very first designated historic district in New York City, and you'll understand why when you stroll through its blocks of pristine 19th-century row houses, brownstones, and mansions. There is no better view of Manhattan and New York Harbor than from the Heights' famous promenade.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "yes",
+      "entities": [
+        "Brooklyn Heights",
+        "New York Harbor"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "first historic district",
+      "physical_cues": [
+        {
+          "cue": "Blocks of pristine 19th-century row houses, brownstones, and mansions",
+          "direction": "here",
+          "feature_type": "architectural_detail"
+        },
+        {
+          "cue": "View of Manhattan and New York Harbor from the promenade",
+          "direction": "west",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "first designated historic district in NYC",
+        "19th-century row houses, brownstones, mansions",
+        "promenade with harbor view"
+      ],
+      "source_passage": "Brooklyn Heights: This was the very first designated historic district in\nNew York City, and you\u2019ll understand why when you stroll through its\nblocks of pristine 19th-century row houses, brownstones, and mansions.\nPlus, there is no better view of Manhattan and New York Harbor than\nfrom the Heights\u2019 famous promenade. See p. 42.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "42"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'no better view of Manhattan and New York Harbor' is a superlative author opinion \u2014 preserved as source's claim, not auto-corrected (guardrail #4)."
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "All claims trace to source_passage. 'first designated historic district in NYC' is a verifiable factual claim (left for /fact-check, not auto-corrected \u2014 single source)."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_the_public_theater_film_tv_frommers-nyc-2024_hamilton_started_here",
+      "city_name": "new_york",
+      "poi_name": "The Public Theater",
+      "parent_poi": null,
+      "lens": "film_tv",
+      "topic_slug": "hamilton_started_here",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Public Theater is the best off-Broadway theater in town, and it has the pedigree to prove it: the blockbuster musical Hamilton started life at this storied playhouse before it conquered Broadway.",
+      "beat_length_class": "micro",
+      "duration_sec": 12,
+      "kid_friendly": "yes",
+      "entities": [
+        "The Public Theater",
+        "Hamilton"
+      ],
+      "sensory_anchor": false,
+      "narrative_function": "hook",
+      "beat_type": "factoid",
+      "emotional_register": "playful",
+      "subject_tag": "Hamilton premiere",
+      "physical_cues": [],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "Hamilton started life at The Public Theater"
+      ],
+      "source_passage": "Best Off-Broadway Theater: The Public Theater. Hamilton started life at\nthis storied playhouse. Need I say more? See p. 336.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "336"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'best off-Broadway theater' is the author's superlative opinion \u2014 preserved, not auto-corrected (guardrail #4)."
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "'Hamilton started life at this storied playhouse' traces to source_passage. Micro class (1 sentence of factual content)."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_pdt_local_legends_frommers-nyc-2024_phone_booth_speakeasy",
+      "city_name": "new_york",
+      "poi_name": "PDT",
+      "parent_poi": null,
+      "lens": "local_legends",
+      "topic_slug": "phone_booth_speakeasy",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "PDT is hidden behind a secret panel in the phone booth of an East Village hot dog stand. The name stands for Please Don't Tell, and inside this concealed space \u2014 which feels oh-so-exclusive \u2014 it serves some of the most expertly and creatively mixed cocktails in the city.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 20,
+      "kid_friendly": "no",
+      "entities": [
+        "PDT"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "hook",
+      "beat_type": "anecdote",
+      "emotional_register": "playful",
+      "subject_tag": "hidden speakeasy",
+      "physical_cues": [
+        {
+          "cue": "The phone booth inside the East Village hot dog stand that hides the secret entrance",
+          "direction": "here",
+          "feature_type": "interior"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "entered through a secret panel in a phone booth in an East Village hot dog stand",
+        "PDT stands for Please Don't Tell"
+      ],
+      "source_passage": "Best Speakeasy: PDT. Hidden behind a secret panel in the phone booth of\nan East Village hot dog stand, PDT (it stands for Please Don\u2019t Tell)\nserves some of the most expertly and creatively mixed cocktails in the\ncity, in a hidden space that feels oh-so-exclusive. See p. 359.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "359"
+      },
+      "fact_check": {
+        "flagged_claims": [
+          "'some of the most expertly and creatively mixed cocktails in the city' and 'best speakeasy' are subjective superlatives \u2014 preserved, not auto-corrected (guardrail #4)."
+        ],
+        "status": "unverified",
+        "extractor_state": "clean",
+        "notes": "Phone-booth entrance and 'Please Don't Tell' acronym trace to source_passage. kid_friendly 'no' (bar/speakeasy)."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    },
+    {
+      "beat_id": "newyork_roosevelt_island_tram_waterways_views_frommers-nyc-2024_four_minute_aerial_ride",
+      "city_name": "new_york",
+      "poi_name": "Roosevelt Island Tram",
+      "parent_poi": null,
+      "lens": "waterways_views",
+      "topic_slug": "four_minute_aerial_ride",
+      "sub_location": null,
+      "trigger_address": null,
+      "script_body": "The Roosevelt Island Tram may be just a 4-minute ride, but the views are spectacular, and it carries you to an island very few outsiders ever visit. It runs beside the 59th Street Bridge \u2014 also known as the Ed Koch Queensboro Bridge \u2014 and it has become even more worth the effort since the FDR Four Freedoms Park opened at Roosevelt Island's tip.",
+      "beat_length_class": "seasoning",
+      "duration_sec": 24,
+      "kid_friendly": "yes",
+      "entities": [
+        "Roosevelt Island Tram",
+        "Ed Koch Queensboro Bridge",
+        "FDR Four Freedoms Park",
+        "Roosevelt Island"
+      ],
+      "sensory_anchor": true,
+      "narrative_function": "establishing",
+      "beat_type": "factoid",
+      "emotional_register": "neutral",
+      "subject_tag": "aerial tram views",
+      "physical_cues": [
+        {
+          "cue": "The aerial tram running beside the 59th Street Bridge (Ed Koch Queensboro Bridge)",
+          "direction": "here",
+          "feature_type": "view"
+        }
+      ],
+      "inline_foreign_phrases": [],
+      "pronunciation": null,
+      "key_claims": [
+        "4-minute ride",
+        "runs beside the 59th Street Bridge / Ed Koch Queensboro Bridge",
+        "FDR Four Freedoms Park opened at Roosevelt Island's tip"
+      ],
+      "source_passage": "Ride the Roosevelt Island Tram: It may just be a 4-minute ride, but the views\nare spectacular, and you\u2019ll head to an island very few outsiders ever\nvisit. It\u2019s even more worth making the effort since the FDR Four\nFreedoms Park opened at Roosevelt Island\u2019s tip. See p. 214.",
+      "source_chunk_slug": "chunk-01-ch01-best-of-nyc",
+      "book_slug": "frommers-nyc-2024",
+      "source_attribution": {
+        "book_title": "Frommer's New York City 2024",
+        "author": "Pauline Frommer",
+        "chapter": "Chapter 1: The Best of the Big Apple",
+        "page": "214"
+      },
+      "fact_check": {
+        "flagged_claims": [],
+        "status": "unverified",
+        "extractor_state": "imported_context",
+        "notes": "The '4-minute ride', 'spectacular views', and 'FDR Four Freedoms Park ... at Roosevelt Island's tip' all trace to the 'Ride the Roosevelt Island Tram' passage. The '59th Street Bridge (aka the Ed Koch Queensboro Bridge)' detail comes from the separate caption 'Running beside the 59th Street Bridge (aka the Ed Koch Queensboro Bridge), the aerial tram to Roosevelt Island ...' \u2014 also in this chunk. Both spans in-chunk; flagged imported_context only for merging two non-adjacent source spans."
+      },
+      "new_poi": true,
+      "_meta": {
+        "prompt_version": "unified_v2",
+        "generated_at": "2026-06-14T00:00:00Z",
+        "city_name": "new_york"
+      }
+    }
+  ]
+}

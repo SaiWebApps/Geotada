@@ -1,0 +1,2322 @@
+[
+  {
+    "name": "Flushing Meadows Corona Park",
+    "short_description": "1225-acre park in central Queens, built for the 1939 World's Fair and home to the Unisphere, Queens Museum, and USTA Billie Jean King National Tennis Center.",
+    "name_variations": [
+      "FMCP",
+      "Flushing Meadows Park",
+      "Flushing Meadows-Corona Park"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7405689,
+    "longitude": -73.8428304,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-11. gravity: Major borough-wide park, multiple major attractions, historically significant World's Fair site.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85,
+        "assigned_gravity": 4,
+        "reasoning": "LP new POI. Notability composite 85 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 4.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_flushing_meadows_corona_park_historic_arch_lonely_planet_new_york_city_1939_worlds_fair_unisphere",
+        "city_name": "new_york",
+        "poi_name": "Flushing Meadows Corona Park",
+        "lens": "historic_arch",
+        "topic_slug": "1939_worlds_fair_unisphere",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Central Queens' biggest attraction is this 1225-acre park, built for the 1939 World's Fair and dominated by Queens' most famous landmark, the stainless-steel Unisphere — the world's biggest globe: 120 feet high and weighing 380 tons.",
+        "duration_sec": 32,
+        "kid_friendly": "yes",
+        "entities": [
+          "Unisphere",
+          "1939 World's Fair"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Unisphere worlds fair",
+        "physical_cues": [
+          {
+            "cue": "Stainless-steel Unisphere, 120 feet high, the world's biggest globe",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1225-acre park built for the 1939 World's Fair",
+          "Unisphere is stainless-steel, 120ft high, weighing 380 tons",
+          "Unisphere is described as the world's biggest globe"
+        ],
+        "source_passage": "Central Queens' biggest attraction is this 1225-acre park, built for the 1939 World's Fair and dominated by Queens' most famous landmark, the stainless-steel Unisphere ( MAP GOOGLE MAP ; h 24hr; b 7 to 111th St or Mets Willets Point) – it's the world's biggest globe: 120ft high and weighing 380 tons.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "world's biggest globe — superlative; flagged per pipeline rule, never auto-resolve"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "25201befbb973de0b78d8477a59ac7ca59f0784015cb3230c3f18223f4ce67af",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_flushing_meadows_corona_park_film_tv_lonely_planet_new_york_city_men_in_black_pavilion_towers",
+        "city_name": "new_york",
+        "poi_name": "Flushing Meadows Corona Park",
+        "lens": "film_tv",
+        "topic_slug": "men_in_black_pavilion_towers",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Just south of the Unisphere are three weather-worn, Cold War-era New York State Pavilion Towers, part of the New York State Pavilion for the 1964 World's Fair. You may recognize them as alien spaceships from the film Men in Black.",
+        "duration_sec": 31,
+        "kid_friendly": "yes",
+        "entities": [
+          "New York State Pavilion Towers",
+          "1964 World's Fair",
+          "Men in Black"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "pavilion towers Men in Black",
+        "physical_cues": [
+          {
+            "cue": "Three weather-worn New York State Pavilion Towers visible south of the Unisphere",
+            "direction": "south",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Three New York State Pavilion Towers date from the 1964 World's Fair",
+          "They appeared as alien spaceships in the film Men in Black"
+        ],
+        "source_passage": "Just south are three weather-worn, Cold War–era New York State Pavilion Towers, part of the New York State Pavilion for the 1964 World's Fair. (You may recognize them as alien spaceships from the film Men in Black.)",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bbf7692cd6c5b0291bf650aa8d6da0503abfcc56c1dc7cde22f9afd6e6a23a56",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_flushing_meadows_corona_park_visual_art_lonely_planet_new_york_city_dali_warhol_mosaics",
+        "city_name": "new_york",
+        "poi_name": "Flushing Meadows Corona Park",
+        "lens": "visual_art",
+        "topic_slug": "dali_warhol_mosaics",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "If entering the park from the north via the 7 train, look for the 1964 World's Fair mosaics by Salvador Dalí and Andy Warhol.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Salvador Dalí",
+          "Andy Warhol",
+          "1964 World's Fair"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Dali Warhol mosaics",
+        "physical_cues": [
+          {
+            "cue": "1964 World's Fair mosaics by Salvador Dalí and Andy Warhol near the north entrance",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1964 World's Fair mosaics by Salvador Dalí and Andy Warhol are near the north entrance"
+        ],
+        "source_passage": "If entering the park from the north, via the 7 train, look for the 1964 World's Fair mosaics by Salvador Dalí and Andy Warhol.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Mosaics attributed to both Salvador Dalí and Andy Warhol at 1964 World's Fair — worth verifying both artists contributed"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "efc03f86434ab1ac4c6b494c937e49e391e462dbde18c81aa2c7d01bb64e0822",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_flushing_meadows_corona_park_social_change_lonely_planet_new_york_city_flushing_times_square_asia",
+        "city_name": "new_york",
+        "poi_name": "Flushing Meadows Corona Park",
+        "lens": "social_change",
+        "topic_slug": "flushing_times_square_asia",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The intersection of Main St and Roosevelt Ave in downtown Flushing can feel like the Times Square of a city a world away from NYC. Immigrants from all over Asia, primarily China and Korea, populate this exuberant neighborhood, and its markets and restaurants burst with the delicious and exotic.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "Flushing Asian immigrant hub",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Flushing is predominantly settled by immigrants from China and Korea"
+        ],
+        "source_passage": "The intersection of Main St and Roosevelt Ave, downtown Flushing, can feel like the Times Square of a city a world away from NYC. Immigrants from all over Asia, primarily China and Korea, populate this exuberant neighborhood, and its markets and restaurants burst with the delicious and exotic.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "85d8446c7e5c2abe32c4daf594aabf35eb32a75dcb9e6e4d8b9af5ec4274ad4f",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Gantry Plaza State Park",
+    "short_description": "12-acre riverside park in Long Island City with uninterrupted Manhattan skyline views, restored industrial gantries, and the iconic 1936 Pepsi-Cola sign.",
+    "name_variations": [
+      "Gantry Plaza",
+      "Gantry State Park"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7463469,
+    "longitude": -73.9580029,
+    "trigger_radius": 380,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-11. gravity: Popular waterfront park with famous skyline views and distinctive industrial heritage landmark (Pepsi sign).",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 64,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 64 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_gantry_plaza_state_park_waterways_views_lonely_planet_new_york_city_manhattan_skyline_gantries",
+        "city_name": "new_york",
+        "poi_name": "Gantry Plaza State Park",
+        "lens": "waterways_views",
+        "topic_slug": "manhattan_skyline_gantries",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This 12-acre riverside park sits directly across the water from the United Nations, offering gorgeous uninterrupted views of the Manhattan skyline. The restored gantries — in service until 1967 — are testament to the area's past as a loading dock for rail-car floats and barges.",
+        "duration_sec": 38,
+        "kid_friendly": "yes",
+        "entities": [
+          "United Nations"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "skyline views gantries",
+        "physical_cues": [
+          {
+            "cue": "Restored industrial gantries along the riverside, last in service until 1967",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Uninterrupted Manhattan skyline view across the East River",
+            "direction": "west",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "12-acre riverside park directly across from the United Nations",
+          "Restored gantries were in service until 1967",
+          "Area was a loading dock for rail-car floats and barges"
+        ],
+        "source_passage": "This 12-acre riverside park directly across the water from the United Nations has gorgeous uninterrupted views of the Manhattan skyline. It's nicely designed, with public lounges for panoramic chilling, and attracts a good mix of Queens families. The restored gantries – in service until 1967 – are testament to the area's past as a loading dock for rail-car floats and barges.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5528c92fe532503d476fa99d1947b9ebd1cb66f7c8f617f3ba6fbbadf7f0af80",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_gantry_plaza_state_park_hidden_history_lonely_planet_new_york_city_pepsi_cola_sign_1936",
+        "city_name": "new_york",
+        "poi_name": "Gantry Plaza State Park",
+        "lens": "hidden_history",
+        "topic_slug": "pepsi_cola_sign_1936",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Dating back to 1936, the giant Pepsi-Cola sign at the park's northern end is an icon of Long Island City. It once topped a nearby Pepsi bottling plant, which has since been demolished.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Pepsi-Cola sign"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "Pepsi-Cola sign origin",
+        "physical_cues": [
+          {
+            "cue": "Giant Pepsi-Cola sign at the park's northern end, dating to 1936",
+            "direction": "north",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Pepsi-Cola sign dates to 1936",
+          "It once topped a nearby Pepsi bottling plant that has since been demolished"
+        ],
+        "source_passage": "Dating back to 1936, the giant Pepsi-Cola sign at the park's northern end is an icon of Long Island City. It once topped a nearby Pepsi bottling plant, which has been since demolished.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "08b37503a62daedefb2dc5bc4b2f45c8dd39fd9937d663951be4927beaa9a36e",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Isamu Noguchi Garden Museum",
+    "short_description": "Only US museum founded by an artist in his lifetime; Zen sculpture garden. Quick gravity: medium.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.76699,
+    "longitude": -73.937607,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "9-01 33rd Rd. (at Vernon Blvd.), Long Island City, Queens",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Only US museum founded by an artist in his lifetime; Zen sculpture garden. Quick gravity: medium.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Isamu Noguchi Garden Museum'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "The Noguchi Museum, 9-01, 33rd Road, Queens, Queens County, New York, 11106, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "Intimate 24,000 sq ft sculpture museum/garden in Long Island City; no published attendance figure found. Wikipedia article is moderate: covers founding (1985), Noguchi's design, renovation, and collection. Search volume low relative to major NYC cultural institutions.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_isamu_noguchi_garden_museum_visual_art_lonely_planet_new_york_city_complete_aesthetic_vision",
+        "city_name": "new_york",
+        "poi_name": "Isamu Noguchi Garden Museum",
+        "lens": "visual_art",
+        "topic_slug": "complete_aesthetic_vision",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Both the art and the context in which it's displayed here are the work of LA-born sculptor, designer and landscape architect Isamu Noguchi, famous for iconic lamps and coffee tables, as well as elegant, abstract stone sculptures. Artifacts are displayed in serene indoor galleries and a minimalist sculpture garden, forming a complete aesthetic vision and an oasis of calm. The 1st floor holds the permanent collection, while the upstairs gallery shows temporary exhibitions.",
+        "duration_sec": 63,
+        "kid_friendly": "yes",
+        "entities": [
+          "Isamu Noguchi"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "reverent",
+        "subject_tag": "Noguchi complete vision",
+        "physical_cues": [
+          {
+            "cue": "Minimalist sculpture garden and serene indoor galleries designed by Noguchi",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Both art and display context are the work of Isamu Noguchi",
+          "Noguchi was LA-born sculptor, designer and landscape architect",
+          "1st floor holds permanent collection; upstairs shows temporary exhibitions"
+        ],
+        "source_passage": "Both the art and the context in which it's displayed here are the work of LA-born sculptor, designer and landscape architect Isamu Noguchi, famous for iconic lamps and coffee tables, as well as elegant, abstract stone sculptures. Artifacts are displayed in serene indoor galleries and a minimalist sculpture garden, forming a complete aesthetic vision and an oasis of calm. The 1st floor holds the permanent collection, while the upstairs gallery shows temporary exhibitions.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c9a01deae7cf15f03c0d78f7eb1aa108fcfa48ef95dde56c99c9b91c09d25990",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Louis Armstrong House Museum",
+    "short_description": "Preserved home of Louis Armstrong; jazz heritage. Quick gravity: medium.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.754568,
+    "longitude": -73.861543,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "34-56 107th St., Corona, Queens",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Preserved home of Louis Armstrong; jazz heritage. Quick gravity: medium.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Louis Armstrong House Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Louis Armstrong House Museum, 34-56, 107th Street, Queens, Queens County, New York, 11368, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "National Historic Landmark in Corona, Queens; open Thurs-Sat only (limited hours). No annual attendance figure published. Won 2024 National Medal for Museums. Wikipedia search returned mainly off-site sources; Wikipedia article exists at moderate depth covering Armstrong's life at the house and muse",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_louis_armstrong_house_museum_famous_residents_lonely_planet_new_york_city_modest_home_until_death",
+        "city_name": "new_york",
+        "poi_name": "Louis Armstrong House Museum",
+        "lens": "famous_residents",
+        "topic_slug": "modest_home_until_death",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "At the peak of his career and with worldwide fame at hand, legendary trumpeter Armstrong settled in this modest Queens home, and lived there until his death in 1971. The place has been immaculately preserved in groovy style, down to the dazzling retro-turquoise kitchen. Guided tours of 40 minutes tell Armstrong's story through audio clips and insightful commentary on some of the objects connected to the great jazz man.",
+        "duration_sec": 56,
+        "kid_friendly": "yes",
+        "entities": [
+          "Louis Armstrong"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Armstrong Queens home",
+        "physical_cues": [
+          {
+            "cue": "Dazzling retro-turquoise kitchen preserved exactly as Armstrong knew it",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Armstrong settled in this modest Queens home at the peak of his career",
+          "He lived there until his death in 1971",
+          "Retro-turquoise kitchen is preserved",
+          "Guided tours are 40 minutes with audio clips"
+        ],
+        "source_passage": "At the peak of his career and with worldwide fame at hand, legendary trumpeter Armstrong settled in this modest Queens home, and lived there until his death in 1971. The place has been immaculately preserved in groovy style, down to the dazzling retro-turquoise kitchen. Guided tours (40 minutes) tell Armstrong's story through audio clips and insightful commentary on some of the objects connected to the great jazz man.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "3de2363f4879a5fbaa17477e7dfa31cc94548539b064e876fbc44661ea94329e",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Museum of the Moving Image",
+    "short_description": "TV/film/video-game museum; built on Kaufman Astoria Studios. Quick gravity: medium-high.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.756195,
+    "longitude": -73.924007,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "35th Ave. at 37th St., Astoria, Queens (on the grounds of Kaufman Astoria Studios)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "TV/film/video-game museum; built on Kaufman Astoria Studios. Quick gravity: medium-high.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Museum of the Moving Image'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Museum of the Moving Image, 35th Avenue, Queens, Queens County, New York, 11106, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 311000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 51.3,
+        "assigned_gravity": 2,
+        "reasoning": "Record attendance of 311,000 in 2025 (105% growth YoY) per iloveny.com/press. Prior annual figures ~250,000. Google review count not found in searches. Wikipedia article is extensive covering history, exhibits (Behind the Screen), Astoria Studios location, and film/TV programming.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_museum_of_the_moving_image_film_tv_lonely_planet_new_york_city_130000_artifacts_elizabeth_taylor",
+        "city_name": "new_york",
+        "poi_name": "Museum of the Moving Image",
+        "lens": "film_tv",
+        "topic_slug": "130000_artifacts_elizabeth_taylor",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "This supercool complex is one of the world's top film, TV and video museums. Galleries show the best of a collection of 130,000-plus artifacts, including Elizabeth Taylor's wig from Cleopatra, an epic bounty of vintage TVs and cameras, 19th-century optical toys and a room of vintage arcade games. Interactive displays — such as a DIY flip-book station — show the science behind the art.",
+        "duration_sec": 54,
+        "kid_friendly": "yes",
+        "entities": [
+          "Elizabeth Taylor",
+          "Cleopatra"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "film TV artifact collection",
+        "physical_cues": [
+          {
+            "cue": "Gallery displays including Elizabeth Taylor's wig from Cleopatra and vintage arcade game room",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Collection of 130,000-plus artifacts",
+          "Includes Elizabeth Taylor's wig from Cleopatra",
+          "Includes 19th-century optical toys and vintage arcade games"
+        ],
+        "source_passage": "This supercool complex is one of the world's top film, TV and video museums. Galleries show the best of a collection of 130,000-plus artifacts, including Elizabeth Taylor's wig from Cleopatra, an epic bounty of vintage TVs and cameras, 19th-century optical toys and a room of vintage arcade games. Interactive displays – such as a DIY flip-book station – show the science behind the art.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "afe66e1365348089096c89d6d96086fc3bffca682333987f22e8f40710382e44",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_museum_of_the_moving_image_historic_arch_lonely_planet_new_york_city_astoria_moviemaking_1920s",
+        "city_name": "new_york",
+        "poi_name": "Museum of the Moving Image",
+        "lens": "historic_arch",
+        "topic_slug": "astoria_moviemaking_1920s",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "A reminder that movie-making started in Astoria in the 1920s; the Museum of the Moving Image exposes some of the mysteries of the craft with amazing exhibits and screenings in its ornate and renovated theater.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Kaufman Astoria Studios"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Astoria film origins 1920s",
+        "physical_cues": [
+          {
+            "cue": "Ornate and renovated theater within the Museum of the Moving Image",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Movie-making started in Astoria in the 1920s"
+        ],
+        "source_passage": "A reminder that movie-making started in Astoria in the 1920s; the Museum of the Moving Image exposes some of the mysteries of the craft with amazing exhibits and screenings in its ornate and renovated theater.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Movie-making started in Astoria in the 1920s — the book asserts this without elaboration; worth verifying the decade is accurate"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2e3925dfde82854fcff166316fa0694467ef103c5c7db293fc708e099ba85d0a",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_museum_of_the_moving_image_social_change_lonely_planet_new_york_city_astoria_greek_community",
+        "city_name": "new_york",
+        "poi_name": "Museum of the Moving Image",
+        "lens": "social_change",
+        "topic_slug": "astoria_greek_community",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Home to the largest Greek community in the world outside Greece, Astoria is obviously the place to find amazing Greek bakeries, restaurants and gourmet shops, mainly along Broadway. An influx of Eastern European, Middle Eastern and Latino immigrants, not to mention young artsy types (especially aspiring actors), have created a rich and diverse mix.",
+        "duration_sec": 47,
+        "kid_friendly": "yes",
+        "entities": [
+          "Broadway"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Astoria Greek diaspora diversity",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Astoria has the largest Greek community in the world outside Greece",
+          "Greek bakeries and shops concentrated mainly along Broadway"
+        ],
+        "source_passage": "Home to the largest Greek community in the world outside Greece, this is obviously the place to find amazing Greek bakeries, restaurants and gourmet shops, mainly along Broadway. An influx of Eastern European, Middle Eastern and Latino immigrants, not to mention young artsy types (especially aspiring actors), have created a rich and diverse mix.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Largest Greek community in the world outside Greece — superlative claim worth verifying"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "892baddc53aefdbacaad44c325c03b7643175ebc30d58d9c8834ecc9184cf035",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "New York Hall of Science",
+    "short_description": "Hands-on science museum in 1964 World's Fair building. Quick gravity: medium.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.750231,
+    "longitude": -73.85514,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "47-01 111th St., Corona, Queens",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Hands-on science museum in 1964 World's Fair building. Quick gravity: medium.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'New York Hall of Science'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "111th Street, Corona, Queens, Queens County, New York, 11368, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 500000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 53.2,
+        "assigned_gravity": 2,
+        "reasoning": "Reports ~500k annual visitors consistently; ~325 TripAdvisor reviews; located in Flushing Meadows-Corona Park, Queens — off the main tourist spine; Wikipedia article covers history, architecture, exhibits in depth.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_hall_of_science_science_tech_lonely_planet_new_york_city_stained_glass_1965_building",
+        "city_name": "new_york",
+        "poi_name": "New York Hall of Science",
+        "lens": "science_tech",
+        "topic_slug": "stained_glass_1965_building",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Occupying a weird 1965 building rippling with stained glass, this science museum is unapologetically nerdy. An outdoor mini-golf course and North America's largest science playground don't require as much brain power, but inside highlights include operating a Mars Rover, a Charles and Ray Eames-designed Mathematica exhibit and Connected Worlds, an animated interactive showcase allowing kids to manage water and plant growth in six environments.",
+        "duration_sec": 60,
+        "kid_friendly": "yes",
+        "entities": [
+          "Charles Eames",
+          "Ray Eames",
+          "Mars Rover",
+          "Mathematica",
+          "Connected Worlds"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Hall of Science exhibits",
+        "physical_cues": [
+          {
+            "cue": "1965 building with rippling stained-glass exterior",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Building dates to 1965 with stained glass",
+          "North America's largest science playground is outdoors",
+          "Exhibits include Mars Rover operation, Charles and Ray Eames-designed Mathematica, and Connected Worlds"
+        ],
+        "source_passage": "Occupying a weird 1965 building, rippling with stained glass, this science museum is unapologetically nerdy. An outdoor mini-golf course and North America's largest science playground don't require as much brain power, but inside highlights include operating a Mars Rover, a Charles and Ray Eames (of Eames chairs fame)–designed Mathematica exhibit and Connected Worlds, an animated, interactive showcase allowing kids to manage water and plant growth in six environments (jungle, desert, wetlands, mountain valley, reservoir and plains).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "North America's largest science playground — superlative; flagged per pipeline rule"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6bda1f4b0501c7615c2c74642f72c1171cbbbf98ab8a769d0d1b4fc8e6f5101a",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "P.S. 1 Contemporary Art Center",
+    "short_description": "Source-name variant of MoMA PS1; kept as the poi_name used in beats (source-locked). Likely alias — resolve at poi-dedup.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7456,
+    "longitude": -73.9476,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "22-25 Jackson Ave. (at 46th Ave.), Long Island City, Queens",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Source-name variant of MoMA PS1; kept as the poi_name used in beats (source-locked). Likely alias — resolve at poi-dedup.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.8,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "address_derived_pending_nominatim",
+        "confidence": "LOW",
+        "placement": "Knowledge-based fallback (Nominatim miss); verify manually",
+        "trigger_radius_reasoning": "Large complex/campus",
+        "notes": "Nominatim miss — kept agent knowledge-based coordinate"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "MoMA PS1 in Long Island City. Separate visitor count from MoMA main not published. MoMA overall saw 2.7M in FY23-24 but PS1 share not broken out. Yelp: 381 reviews (4.4/5). Wikipedia article is extensive on PS1's history, Warm Up series, and contemporary art programming.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_p_s_1_contemporary_art_center_visual_art_lonely_planet_new_york_city_alanna_heiss_rooms_inauguration",
+        "city_name": "new_york",
+        "poi_name": "P.S. 1 Contemporary Art Center",
+        "lens": "visual_art",
+        "topic_slug": "alanna_heiss_rooms_inauguration",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "PS1 first hit the scene in the 1970s — the age of Dia, Artists' Space and the New Museum, projects showcasing the city's thriving experimental, multimedia art scene. In 1976, Alanna Heiss — a supporter of art in alternative spaces — took possession of an abandoned school building in Queens and invited artists like Richard Serra, James Turrell and Keith Sonnier to create site-specific works. The end result was PS1's inaugural exhibition, Rooms.",
+        "duration_sec": 65,
+        "kid_friendly": "yes",
+        "entities": [
+          "Alanna Heiss",
+          "Richard Serra",
+          "James Turrell",
+          "Keith Sonnier",
+          "Rooms",
+          "Dia",
+          "Artists' Space",
+          "New Museum"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "PS1 founding 1976",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Alanna Heiss took possession of an abandoned school building in Queens in 1976",
+          "Artists like Richard Serra, James Turrell and Keith Sonnier created site-specific works",
+          "PS1's inaugural exhibition was called Rooms"
+        ],
+        "source_passage": "PS1 first hit the scene in the 1970s. This was the age of Dia, Artists' Space and the New Museum – new-gen projects showcasing the city's thriving experimental, multimedia art scene. In 1976, Alanna Heiss – a supporter of art in alternative spaces – took possession of an abandoned school building in Queens and invited artists like Richard Serra, James Turrell and Keith Sonnier to create site-specific works. The end result was PS1's inaugural exhibition, Rooms.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8bf3335b5882d7630c582f94b9b003aa6675253370e9542b38d417f37602a27a",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_p_s_1_contemporary_art_center_visual_art_lonely_planet_new_york_city_surviving_long_term_installations",
+        "city_name": "new_york",
+        "poi_name": "P.S. 1 Contemporary Art Center",
+        "lens": "visual_art",
+        "topic_slug": "surviving_long_term_installations",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Surviving remnants of PS1's 1976 inaugural show Rooms include Richard Artschwager's oval-shaped wall 'blps' and Alan Saret's light-channeling The Hole at P.S.1, Fifth Solar Chthonic Wall Temple, on the north wing's 3rd floor. These works are part of the museum's long-term installations, which also include Pipilotti Rist's video Selbstlos im Lavabad (Selfless in the Bath of Lava) — viewable through the lobby floorboards — and Turrell's awe-inspiring Meeting, where the sky is the masterpiece.",
+        "duration_sec": 68,
+        "kid_friendly": "yes",
+        "entities": [
+          "Richard Artschwager",
+          "Alan Saret",
+          "The Hole at P.S.1 Fifth Solar Chthonic Wall Temple",
+          "Pipilotti Rist",
+          "Selbstlos im Lavabad",
+          "James Turrell",
+          "Meeting"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "long-term installations",
+        "physical_cues": [
+          {
+            "cue": "Alan Saret's The Hole at P.S.1, Fifth Solar Chthonic Wall Temple on the north wing's 3rd floor",
+            "direction": "up",
+            "feature_type": "interior"
+          },
+          {
+            "cue": "Pipilotti Rist's Selbstlos im Lavabad visible through the lobby floorboards",
+            "direction": "down",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Selbstlos im Lavabad",
+            "gloss": "Selfless in the Bath of Lava"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Richard Artschwager's oval-shaped wall 'blps' survive from the 1976 inauguration",
+          "Alan Saret's work is on the north wing's 3rd floor",
+          "Pipilotti Rist's video is viewable through lobby floorboards",
+          "Turrell's Meeting installation has the sky as its masterpiece"
+        ],
+        "source_passage": "Surviving remnants include Richard Artschwager's oval-shaped wall 'blps' and Alan Saret's light-channeling The Hole at P.S.1, Fifth Solar Chthonic Wall Temple, on the north wing's 3rd floor. These works are part of the museum's long-term installations, which also include Pipilotti Rist's video Selbstlos im Lavabad (Selfless in the Bath of Lava) – viewable through the lobby floorboards – and Turrell's awe-inspiring Meeting, where the sky is the masterpiece.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "680987fa6608de70fcceb1ef763c1a5a1bf92c708cfdbc0f998b2f632465211a",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_p_s_1_contemporary_art_center_music_heritage_lonely_planet_new_york_city_warm_up_parties_yap",
+        "city_name": "new_york",
+        "poi_name": "P.S. 1 Contemporary Art Center",
+        "lens": "music_heritage",
+        "topic_slug": "warm_up_parties_yap",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "On Saturday afternoons from July 4 through Labor Day, PS1 hosts Warm Up — one of New York's coolest weekly music and culture events. It's a hit with everyone from verified hipsters to plugged-in music geeks, who spill into the MoMA PS1 courtyard to eat, drink and catch a stellar lineup of top bands, experimental music and DJs. Featured artists have included acid-house deity DJ Pierre and techno pioneer Juan Atkins. Linked to it is the annual YAP (Young Architects Program) competition, in which one design team is selected to transform the museum courtyard with a large-scale structure that provides shade and creative party space.",
+        "duration_sec": 85,
+        "kid_friendly": "yes",
+        "entities": [
+          "Warm Up",
+          "DJ Pierre",
+          "Juan Atkins",
+          "YAP",
+          "Young Architects Program"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "Warm Up summer parties",
+        "physical_cues": [
+          {
+            "cue": "MoMA PS1 courtyard where Warm Up parties are held",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Warm Up runs Saturday afternoons July 4 through Labor Day",
+          "Featured artists include DJ Pierre and Juan Atkins",
+          "YAP competition transforms the courtyard with a large-scale structure"
+        ],
+        "source_passage": "On Saturday afternoons from July 4 through Labor Day, rock on at one of New York's coolest weekly music/culture events, Warm Up. It's a hit with everyone from verified hipsters to plugged-in music geeks, who spill into the MoMA PS1 courtyard to eat, drink and catch a stellar lineup of top bands, experimental music and DJs. Featured artists have included acidhouse deity DJ Pierre and techno pioneer Juan Atkins. It's like one big block party, albeit with better music and art than your usual neighborhood slap-up. Linked to it is the annual YAP (Young Architects Program) competition, in which one design team is selected to transform the museum courtyard with a large-scale structure that provides shade and creative party space.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "827a73f351106cd30ca8465150cca0eeb10a0f3167f7ffc1af795f2ad943564f",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_p_s_1_contemporary_art_center_historic_arch_lonely_planet_new_york_city_renaissance_revival_first_school",
+        "city_name": "new_york",
+        "poi_name": "P.S. 1 Contemporary Art Center",
+        "lens": "historic_arch",
+        "topic_slug": "renaissance_revival_first_school",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Built in the Renaissance Revival style and dating back to the early 1890s, the MoMA PS1 building housed the first school in Long Island City. Low attendance forced its closure in 1963. A three-year, award-winning restoration by LA-based architect Frederick Fisher in the mid-1990s saw the addition of the building's outdoor galleries and main entrance.",
+        "duration_sec": 46,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frederick Fisher",
+          "Long Island City"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "school building history",
+        "physical_cues": [
+          {
+            "cue": "Renaissance Revival facade of the former school building, dating to the early 1890s",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Building is Renaissance Revival style from early 1890s",
+          "Housed the first school in Long Island City",
+          "Closed in 1963 due to low attendance",
+          "Restored by architect Frederick Fisher in mid-1990s"
+        ],
+        "source_passage": "Built in the Renaissance Revival style and dating back to the early 1890s, the MoMA PS1 building housed the first school in Long Island City. Low attendance forced its closure in 1963. A three-year, award-winning restoration by LA-based architect Frederick Fisher in the mid-1990s saw the addition of the building's outdoor galleries and main entrance.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "dc0cc9e7218380f05654321a1750faac0e3e65469a94a3f365193790b0510299",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_p_s_1_contemporary_art_center_local_legends_lonely_planet_new_york_city_sunday_sessions_programming",
+        "city_name": "new_york",
+        "poi_name": "P.S. 1 Contemporary Art Center",
+        "lens": "local_legends",
+        "topic_slug": "sunday_sessions_programming",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Another cultural treat is the Sunday Sessions, on Sundays November to April. Spanning lectures, film screenings, live music and performance art, the lineup has included experimental comedy, postindustrial noise jams and Latin art-house dance. One week you might catch a symphony debut, the next an architectural performance from Madrid.",
+        "duration_sec": 42,
+        "kid_friendly": "yes",
+        "entities": [
+          "Sunday Sessions"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Sunday Sessions program",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Sunday Sessions runs Sundays November to April",
+          "Programming includes lectures, film screenings, live music, performance art"
+        ],
+        "source_passage": "Another cultural treat is the Sunday Sessions, on Sundays November to April (for the 2019–20 season but timeframes vary yearly). Spanning lectures, film screenings, live music and performance art and beyond, the lineup has included experimental comedy, postindustrial noise jams and Latin art-house dance. One week you might catch a symphony debut, the next an architectural performance from Madrid.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e97b4936893f6f38c8980f358c3cbde0a0a5ccf243ed251915ea92e2596a896e",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Queens",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.713508,
+    "longitude": -73.828313,
+    "trigger_radius": 1000,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Queens'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Queens, Queens County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Borough-level POI; no single published annual visitor count for the borough. Queens accounts for the highest tourism-driven share of gross product (7.2%) among NYC boroughs and is home to JFK and LaGuardia airports. Wikipedia coverage is extensive.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_queens_social_change_lonely_planet_new_york_city_hyphenated_addresses_borough_history",
+        "city_name": "new_york",
+        "poi_name": "Queens",
+        "lens": "social_change",
+        "topic_slug": "hyphenated_addresses_borough_history",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Before Queens was incorporated into New York City in 1898, it was a series of unrelated towns and villages each with their own street nomenclature — there were 40 Washington Streets alone. Something had to be done, but it didn't happen until 1911, a hundred years after Manhattan's grid system began. Today Queens has 167 avenues running east–west and 271 streets going north–south — Manhattan's total opposite. Those hyphenated addresses are the result: the two pre-dash numbers indicate the closest cross street, and the two post-dash numbers designate the building number.",
+        "duration_sec": 76,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "sidebar",
+        "emotional_register": "wry",
+        "subject_tag": "Queens hyphenated address system",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Queens was incorporated into New York City in 1898",
+          "Before incorporation there were 40 Washington Streets alone",
+          "The renaming happened in 1911, 100 years after Manhattan's grid",
+          "Queens has 167 avenues east-west and 271 streets north-south",
+          "Pre-dash numbers = nearest cross street; post-dash numbers = building number"
+        ],
+        "source_passage": "Before Queens was incorporated into New York City in 1898, it was a series of unrelated towns and villages each with their own street nomenclature (there were 40 Washington Streets alone!). Something had to be done but it didn't happen until 1911 – 100 years after Manhattan's grid system began. Today, the Queens grid system has 167 avenues that go east–west (Long Island City to Queens Village) and 271 streets that go north–south (Whitestone to Rockaway) – Manhattan's total opposite. But here's the most confusing bit: Addresses have two sets of double-digit numbers separated by a dash. The two pre-dash numbers indicate the closest cross street/avenue while the two post-dash numbers designate the building or house number (the lowest number starts nearest to that cross street).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4777736f7f68736da1eb5fdfe4caa63123e6185b083a7fff5094ccafa219d672",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_queens_local_legends_lonely_planet_new_york_city_biggest_most_populated_borough",
+        "city_name": "new_york",
+        "poi_name": "Queens",
+        "lens": "local_legends",
+        "topic_slug": "biggest_most_populated_borough",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Queens is NYC's biggest and most-populated borough — anywhere else, it would be a major city in its own right.",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Queens borough scale",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Queens is NYC's biggest and most-populated borough"
+        ],
+        "source_passage": "Queens is NYC's biggest and most-populated borough – anywhere else, it would be a major city in its own right.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Queens is NYC's biggest and most-populated borough — Brooklyn is often cited as more populous; worth verifying"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "63f855af3e4ea500b109b5ab5a296aa71a66179f12ab2430ac88cf73bbef10c9",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Queens County Farm Museum",
+    "short_description": "The last working farmland within New York City limits in Floral Park, hosting livestock, seasonal events, and an annual powwow.",
+    "name_variations": [
+      "Queens Farm",
+      "Queens Farm Museum"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7477484,
+    "longitude": -73.7222486,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-11. gravity: Unique as last working farm in NYC; family-friendly, local cultural significance.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 45,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 45 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_queens_county_farm_museum_parks_gardens_lonely_planet_new_york_city_last_farmland_powwow",
+        "city_name": "new_york",
+        "poi_name": "Queens County Farm Museum",
+        "lens": "parks_gardens",
+        "topic_slug": "last_farmland_powwow",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Queens County Farm Museum is the last patch of farmland within the city limits — where you can frolic with cows, sheep and goats. It hosts an annual powwow for tribes from all over America, plus many seasonal events including a haunted house in late October.",
+        "duration_sec": 35,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "last NYC farmland powwow",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Queens County Farm Museum is the last patch of farmland within New York City limits",
+          "Hosts an annual powwow for tribes from all over America"
+        ],
+        "source_passage": "Frolic with cows, sheep and goats at Queens County Farm Museum (% 718-347-3276; www.queensfarm.org; 73-50 Little Neck Pkwy, Floral Park; h 10am-5pm; c ; g Q46 to Little Neck Pkwy) F , the last patch of farmland within the city limits. It's a long way from Manhattan, but for anyone with an interest in urban agriculture – or kids who need a break from city energy – this is a tranquil destination. It hosts an annual powwow for tribes from all over America, plus many seasonal events (including a haunted house in late October).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "Last patch of farmland within city limits — verify currency"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e5070cf914976da776f2e21f2067cfd13221c885f047d0f56bf85f5ce6408240",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Queens Museum",
+    "short_description": "Home of the Panorama of the City of New York; 1939 World's Fair building. Quick gravity: medium.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.740569,
+    "longitude": -73.84283,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Flushing Meadows Corona Park, Queens",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Home of the Panorama of the City of New York; 1939 World's Fair building. Quick gravity: medium.",
+      "verified": false,
+      "geocode_source": "address_derived_pending_nominatim",
+      "geocode_confidence": 0.75,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-07"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Queens Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Flushing Meadows-Corona Park, Queens County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 1,
+        "reasoning": "Located in Flushing Meadows-Corona Park; houses the Panorama of the City of New York. No annual attendance figure found in searches. Wikipedia article is moderate covering World's Fair history, the Panorama, and the building's UNESCO/UN connection. Low Google Trends signal relative to other outer-bo",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_queens_museum_science_tech_lonely_planet_new_york_city_panorama_9335sqft_miniature",
+        "city_name": "new_york",
+        "poi_name": "Queens Museum",
+        "lens": "science_tech",
+        "topic_slug": "panorama_9335sqft_miniature",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "The Queens Museum's most famous installation is the Panorama of New York City — a gob-smacking 9335-sq-ft miniature NYC, with all buildings accounted for and a 15-minute dusk-to-dawn light simulation.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Panorama of New York City"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Panorama miniature NYC",
+        "physical_cues": [
+          {
+            "cue": "9335-sq-ft Panorama of New York City miniature with dusk-to-dawn light simulation",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Panorama of New York City is 9335 sq ft",
+          "All buildings are accounted for",
+          "Features a 15-minute dusk-to-dawn light simulation"
+        ],
+        "source_passage": "Its most famous installation is the Panorama of New York City, a gob-smacking 9335-sq-ft miniature NYC, with all buildings accounted for and a 15minute dusk-to-dawn light simulation.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "45b52c3f9e50f9018d37a576d8789c29c392bc4d28e21f2029c55eab34eb5501",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_queens_museum_hidden_history_lonely_planet_new_york_city_1939_worlds_fair_un_home",
+        "city_name": "new_york",
+        "poi_name": "Queens Museum",
+        "lens": "hidden_history",
+        "topic_slug": "1939_worlds_fair_un_home",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Queens Museum is housed in a historic building constructed for the 1939 World's Fair — and once home to the UN. You'll find a retro-fabulous collection of memorabilia from both the '39 and '64 fairs on display.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "1939 World's Fair",
+          "1964 World's Fair",
+          "United Nations"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "World's Fair UN building",
+        "physical_cues": [
+          {
+            "cue": "Retro-fabulous World's Fair memorabilia collection from '39 and '64 fairs on display",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Building constructed for the 1939 World's Fair",
+          "Building was once home to the UN",
+          "Museum displays memorabilia from both 1939 and 1964 fairs"
+        ],
+        "source_passage": "The museum is housed in a historic building constructed for the 1939 World's Fair (and once home to the UN), and you'll find a retro-fabulous collection of memorabilia from both the '39 and '64 fairs on display (with reproductions in the gift shop).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "cc2221a6fb97eb1e0e0a11ef3f3ae96bb293d5abf9132f663983f7cc3bcb9aec",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Rockaway Beach",
+    "short_description": "America's largest urban beach in Queens, immortalized by the Ramones, with a wild coastal feel, surfing beaches, Jacob Riis Park, and the Jamaica Bay Wildlife Refuge.",
+    "name_variations": [
+      "Rockaways",
+      "The Rockaways"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.5809824,
+    "longitude": -73.8229247,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-11. gravity: NYC's premier urban beach with strong cultural cachet, surfing scene, and nature refuge.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 82,
+        "assigned_gravity": 4,
+        "reasoning": "LP new POI. Notability composite 82 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 4.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_rockaway_beach_music_heritage_lonely_planet_new_york_city_ramones_1977_song",
+        "city_name": "new_york",
+        "poi_name": "Rockaway Beach",
+        "lens": "music_heritage",
+        "topic_slug": "ramones_1977_song",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Immortalized by the Ramones' 1977 song 'Rockaway Beach,' this is America's largest urban beach — and one of the city's best. Less crowded than Coney Island and with a wilder feel, it's just a $2.75 trip on the A train from Manhattan.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Ramones",
+          "Coney Island"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "hook",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "Ramones beach immortalized",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Rockaway Beach was immortalized by the Ramones' 1977 song 'Rockaway Beach'",
+          "Described as America's largest urban beach",
+          "A $2.75 A-train ride from Manhattan"
+        ],
+        "source_passage": "Immortalized by the Ramones' 1977 song 'Rockaway Beach,' America's largest urban beach (h beach 6am-9pm, boardwalk to 10pm; g Q52-SBS to Rockaway Beach Blvd-Beach 92 St, f NYC Ferry from Wall St-Pier 11, b A to Beach-90 St) – and one of the city's best – is just a $2.75 trip on the A train from Manhattan (or the same price on the ferry). Less crowded than Coney Island and with a wilder feel, Rockaway Beach is a long stretch with two social hubs.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [
+            "America's largest urban beach — superlative claim; flagged per pipeline rule"
+          ],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e50582612eccf668cacbe5b46b9e204d78fdb207bef6710e780333b851e434f2",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_rockaway_beach_war_conflict_lonely_planet_new_york_city_fort_tilden_wwi_artillery",
+        "city_name": "new_york",
+        "poi_name": "Rockaway Beach",
+        "lens": "war_conflict",
+        "topic_slug": "fort_tilden_wwi_artillery",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The west end of the Rockaways is home to the cool green ruins of Fort Tilden, a decommissioned coastal artillery installation from WWI, within the 26,000-acre Gateway National Recreation Area.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Fort Tilden",
+          "Gateway National Recreation Area",
+          "Jacob Riis Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Fort Tilden WWI ruins",
+        "physical_cues": [
+          {
+            "cue": "Cool green ruins of Fort Tilden, decommissioned coastal artillery installation from WWI",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Fort Tilden was a coastal artillery installation from WWI",
+          "Now decommissioned; ruins are part of the 26,000-acre Gateway National Recreation Area"
+        ],
+        "source_passage": "This area is also home to the cool green ruins of Fort Tilden, a decommissioned coastal artillery installation from WWI.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bc7d10d2769c907648a19b39d48de37bac7b57516c06e73f0585204e95391c34",
+        "related_beats": []
+      },
+      {
+        "beat_id": "newyork_rockaway_beach_parks_gardens_lonely_planet_new_york_city_jamaica_bay_325_bird_species",
+        "city_name": "new_york",
+        "poi_name": "Rockaway Beach",
+        "lens": "parks_gardens",
+        "topic_slug": "jamaica_bay_325_bird_species",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Extending from near JFK International Airport, the salty, marshy Jamaica Bay Wildlife Refuge covers the water north of the Rockaways' barrier island. As one of the most important migratory bird and wetland habitats along the eastern seaboard, it attracts more than 325 bird species in spring and fall. Spring features warblers and songbirds; in mid-August shorebirds start to move south from Canada, fueling up for the trip to Mexico. Fall brings migrating hawks and raptors, along with ducks, geese, monarch butterflies and thousands and thousands of dragonflies.",
+        "duration_sec": 75,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jamaica Bay Wildlife Refuge",
+          "JFK International Airport"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "Jamaica Bay migratory birds",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Jamaica Bay Wildlife Refuge is north of the Rockaways' barrier island near JFK",
+          "Attracts more than 325 bird species in spring and fall",
+          "Spring: warblers and songbirds; mid-August shorebirds moving south from Canada; fall: hawks, raptors, monarchs, dragonflies"
+        ],
+        "source_passage": "Extending from near JFK International Airport, the salty, marshy Jamaica Bay Wildlife Refuge covers the water north of the Rockaways' barrier island. As one of the most important migratory bird and wetland habitats along the eastern seaboard, it attracts more than 325 bird species in spring and fall, as they snap up all sorts of briny sea creatures like clams, turtles, shrimp and oysters. Each season brings different visitors. Spring features warblers and songbirds, and American woodcocks in late March. In mid-August shorebirds start to move south, landing here from Canada and fueling up for the trip to Mexico. Fall is when migrating hawks and raptors get mobile, along with ducks, geese, monarch butterflies and thousands and thousands of dragonflies.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "89449ae668a838d95d5505b214b7efabe1bc00db310e0e1262ea52fe2cc6aafc",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "SculptureCenter",
+    "short_description": "Gallery in a former trolley repair shop in Long Island City, showing emerging and established artists in industrial gallery and underground space.",
+    "name_variations": [
+      "Sculpture Center"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7477,
+    "longitude": -73.9491,
+    "trigger_radius": 10,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-11. gravity: Notable alternative art space but smaller, locally oriented draw.",
+      "verified": false,
+      "geocode_source": "agent",
+      "geocode_confidence": "LOW",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "stub",
+        "guidebook_presence": "RARE",
+        "raw_composite": 45,
+        "assigned_gravity": 2,
+        "reasoning": "LP new POI. Notability composite 45 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 2.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_sculpture_center_visual_art_lonely_planet_new_york_city_trolley_repair_shop_gallery",
+        "city_name": "new_york",
+        "poi_name": "SculptureCenter",
+        "lens": "visual_art",
+        "topic_slug": "trolley_repair_shop_gallery",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Down a dead-end street, in a former trolley repair shop, SculptureCenter pages Berlin with its edgy art and industrial backdrop. Its hangar-like main gallery and cavernous underground space show both emerging and established artists.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "trolley shop gallery",
+        "physical_cues": [
+          {
+            "cue": "Hangar-like main gallery and cavernous underground space in a former trolley repair shop",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "SculptureCenter is in a former trolley repair shop on a dead-end street"
+        ],
+        "source_passage": "Down a dead-end street, in a former trolley repair shop, SculptureCenter pages Berlin with its edgy art and industrial backdrop. Its hangar-like main gallery and cavernous underground space show both emerging and established artists.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "ab126d0a7f77cbe9769c44ec37f410dd228edb5bcceff5c5729c15a89b05b8e2",
+        "related_beats": []
+      }
+    ]
+  },
+  {
+    "name": "Socrates Sculpture Park",
+    "short_description": "Open-air sculpture park in Astoria carved from an abandoned dump by sculptor Mark di Suvero, with rotating installations and river views.",
+    "name_variations": [
+      "Socrates Park"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7682536,
+    "longitude": -73.9367115,
+    "trigger_radius": 130,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-11. gravity: Distinctive arts park with strong local and tourist appeal; free entry and waterfront location.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 64,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 64 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_socrates_sculpture_park_visual_art_lonely_planet_new_york_city_di_suvero_abandoned_dump",
+        "city_name": "new_york",
+        "poi_name": "Socrates Sculpture Park",
+        "lens": "visual_art",
+        "topic_slug": "di_suvero_abandoned_dump",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-11-queens",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "First carved out of an abandoned dump by sculptor Mark di Suvero, Socrates is now a city park on the river's edge with beautiful views and a rotating series of installations.",
+        "duration_sec": 24,
+        "kid_friendly": "yes",
+        "entities": [
+          "Mark di Suvero"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "park origin dump",
+        "physical_cues": [
+          {
+            "cue": "Rotating outdoor sculpture installations along the river's edge",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Socrates Sculpture Park was carved out of an abandoned dump by sculptor Mark di Suvero"
+        ],
+        "source_passage": "First carved out of an abandoned dump by sculptor Mark di Suvero, Socrates is now a city park on the river's edge with beautiful views and a rotating series of installations.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Queens"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        },
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "d469eabe8bdd6b9336bb75ff0fc44acf1fdeb4210bacc95fedd636841a5219e1",
+        "related_beats": []
+      }
+    ]
+  }
+]

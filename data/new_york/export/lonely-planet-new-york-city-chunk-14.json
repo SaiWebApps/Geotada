@@ -1,0 +1,3389 @@
+[
+  {
+    "name": "130 MacDougal Street",
+    "short_description": "Federal town house associated with Louisa May Alcott; niche literary stop. Low-moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7299,
+    "longitude": -74.0002,
+    "trigger_radius": 12,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Federal town house associated with Louisa May Alcott; niche literary stop. Low-moderate gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim (130 MacDougal St, federal town house; ~40.7299, -74.0002)",
+      "geocode_confidence": 0.8,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "none",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 26.2,
+        "assigned_gravity": 1,
+        "reasoning": "Individual address within South Village Historic District; Louisa May Alcott connection noted by Village Preservation. No standalone Wikipedia article or visitor stats found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_130_macdougal_street_hidden_history_lonely-planet-new-york-city_eves_hangout_kotchever",
+        "city_name": "new_york",
+        "poi_name": "130 MacDougal Street",
+        "lens": "hidden_history",
+        "topic_slug": "eves_hangout_kotchever",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": "129 MacDougal St",
+        "beat_length_class": "mid",
+        "script_body": "A number of gay-owned businesses once lined MacDougal St, among them the legendary Eve's Hangout at number 129, a tearoom run by Polish Jewish immigrant Eva Kotchever, known as Eve Addams. Police raided the place in June 1926, charging Eve with 'obscenity' for penning her Lesbian Love anthology and deporting her to Europe. There she ran a bookstore and club in Paris, fought in the Spanish Civil War, and was eventually imprisoned and murdered in Auschwitz. Playwright Barbara Kahn wrote Unreachable Eden about Kotchever's life.",
+        "duration_sec": 40,
+        "kid_friendly": "no",
+        "entities": [
+          "Eva Kotchever",
+          "Eve Addams",
+          "Eve's Hangout",
+          "Spanish Civil War",
+          "Auschwitz",
+          "Barbara Kahn"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "character_story",
+        "emotional_register": "somber",
+        "subject_tag": "eves hangout",
+        "physical_cues": [
+          {
+            "cue": "The storefronts along MacDougal St near no. 129, former site of Eve's Hangout",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Eve's Hangout was a tearoom at 129 MacDougal St run by Eva Kotchever (Eve Addams)",
+          "Police raided it in June 1926, charged her with obscenity for her Lesbian Love anthology, deported her",
+          "She fought in the Spanish Civil War and was murdered in Auschwitz",
+          "Barbara Kahn wrote Unreachable Eden about her"
+        ],
+        "source_passage": "A number of gay-owned businesses lined MacDougal St, among them the legendary Eve's Hangout at number 129, a tearoom run by Polish Jewish immigrant Eva Kotchever (Eve Addams). Police raided the place in June 1926, charging Eve with 'obscenity' for penning her Lesbian Love anthology, and deporting her back to Europe, where she ran a bookstore and club in Paris, fought in the Spanish Civil War and was eventually imprisoned and murdered in Auschwitz. Playwright Barbara Kahn wrote Unreachable Eden about Kotchever's life.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4b8bb88d51a4c07ba49fa10916e8f4dc7f9da104327a6da7a3b7807e55c4eca6",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Bleecker Street",
+    "short_description": "Historic Italian food-shop stretch (Murray's Cheese, Faicco's). Moderate gravity as a sensory/food corridor.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.731,
+    "longitude": -74.003,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Historic Italian food-shop stretch (Murray's Cheese, Faicco's). Moderate gravity as a sensory/food corridor.",
+      "verified": false,
+      "geocode_source": "Nominatim 'Bleecker Street' (food-shop stretch west of Sixth Ave; ~40.7310, -74.0030)",
+      "geocode_confidence": 0.7,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Wikipedia article exists covering history as Greenwich Village nightclub and shopping district. Iconic street attracting heavy foot traffic; no official annual visitor count found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_bleecker_street_social_change_lonely-planet-new-york-city_slide_paresis_hall_resorts",
+        "city_name": "new_york",
+        "poi_name": "Bleecker Street",
+        "lens": "social_change",
+        "topic_slug": "slide_paresis_hall_resorts",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": "157 Bleecker St",
+        "beat_length_class": "mid",
+        "script_body": "By the 1890s, the rough-and-ready Lower East Side had a reputation for scandalous 'resorts' — dancing halls, saloons and brothels frequented by the city's 'inverts' and 'fairies.' From Paresis Hall at 5th St and Bowery to Slide at 157 Bleecker St, these venues offered cross-dressing spectaculars, dancing, and back rooms for same-sex encounters. For closeted middle-class men they were a secret thrill; for curious straights they were salacious destinations on voyeuristic 'slumming tours.'",
+        "duration_sec": 33,
+        "kid_friendly": "no",
+        "entities": [
+          "Slide",
+          "Paresis Hall",
+          "Lower East Side",
+          "Bowery"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "anecdote",
+        "emotional_register": "wry",
+        "subject_tag": "queer resorts",
+        "physical_cues": [
+          {
+            "cue": "The street-level building at 157 Bleecker St, former site of the Slide resort",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "By the 1890s the Lower East Side had scandalous 'resorts' for 'inverts' and 'fairies'",
+          "Slide was at 157 Bleecker St, Paresis Hall at 5th St and Bowery",
+          "They drew closeted men and 'slumming' straights"
+        ],
+        "source_passage": "By the 1890s, New York City's rough-and-ready Lower East Side had established quite a reputation for scandalous 'resorts' – dancing halls, saloons and brothels – frequented by the city's 'inverts' and 'fairies.' From Paresis Hall at 5th St and Bowery to Slide at 157 Bleecker St, these venues offered everything from cross-dressing spectaculars and dancing to back rooms for same-sex encounters. For closeted middle-class men, these dens were a secret thrill – places reached undercover on trains for a fix of camaraderie, understanding and uninhibited fun. For curious middle-class straights, they were just as enticing – salacious destinations on voyeuristic 'slumming tours.'",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "1aec2afac0d956fa82ee424d6da2f6381aa0deed800f6915b7f8bdc85897fc1f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Brooklyn Bridge",
+    "short_description": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.7057,
+    "longitude": -73.9964,
+    "trigger_radius": 500,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic global landmark, extensive Wikipedia coverage, National Historic Landmark, millions of annual pedestrians. Top-tier gravity. Note: coordinate is mid-span; Manhattan-tower-specific trigger may warrant a sub-POI later.",
+      "verified": false,
+      "geocode_source": "web_search (latitude.to / Wikipedia)",
+      "geocode_confidence": 0.85,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "No official annual pedestrian/visitor count published by a managing authority. ~29,000 pedestrians per day estimated from travel sources. Wikipedia is a 'Good Article' with comprehensive technical and historical coverage. Extremely high search prominence globally.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_brooklyn_bridge_historic_arch_lonely-planet-new-york-city_gothic_revival_roeblings",
+        "city_name": "new_york",
+        "poi_name": "Brooklyn Bridge",
+        "lens": "historic_arch",
+        "topic_slug": "gothic_revival_roeblings",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Gothic Revival was so popular that one of the city's most important icons was built in the style: the Brooklyn Bridge, constructed between 1870 and 1883 by John Roebling and his son Washington, and later by Washington's wife, Emily Roebling. The bridge's great masonry towers carry the pointed arches of the Gothic mode out over the East River.",
+        "duration_sec": 29,
+        "kid_friendly": "yes",
+        "entities": [
+          "John Roebling",
+          "Washington Roebling",
+          "Emily Roebling",
+          "Gothic Revival"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "gothic bridge towers",
+        "physical_cues": [
+          {
+            "cue": "The bridge's masonry towers and pointed Gothic arches over the East River",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "à la Gothic Revival",
+            "gloss": "in the manner of Gothic Revival"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "Brooklyn Bridge built 1870-83 in Gothic Revival style",
+          "Built by John Roebling, son Washington, and Washington's wife Emily Roebling"
+        ],
+        "source_passage": "Indeed, the style was so popular that one of the city's most important icons – the Brooklyn Bridge (1870–83) – was constructed à la Gothic Revival by John Roebling and his son Washington, and later by the latter's wife, Emily Roebling.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "65647a18c43d7fdebfca7926c1c33ddb2eab22c7dce0ad4568703c3e4c11e7ec",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Christopher Park",
+    "short_description": "Small triangular West Village park beside the Stonewall Inn, centerpiece of the Stonewall National Monument designated by President Obama in 2016 — the first US national monument honoring the LGBTIQ+ civil rights movement.",
+    "name_variations": [
+      "Christopher Park",
+      "Stonewall National Monument",
+      "Stonewall National Monument (Christopher Park)"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7335823,
+    "longitude": -74.0023869,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Lonely Planet New York City (12th ed, 2022)"
+      ],
+      "discovery_notes": "Extracted from LP chunks: chunk-04, chunk-14. gravity: National Monument status and direct association with Stonewall make it a significant social-change landmark; adjacent to existing Stonewall Inn POI (40.7339,-74.0022) — PROXIMITY review item.",
+      "verified": false,
+      "geocode_source": "Nominatim OSM",
+      "geocode_confidence": "HIGH",
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04",
+        "chunk-14"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": null,
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "RARE",
+        "raw_composite": 58,
+        "assigned_gravity": 3,
+        "reasoning": "LP new POI. Notability composite 58 from agent-extraction prominence, guidebook (Lonely Planet) presence. Ranked relative to all 286 NYC POIs; assigned gravity 3.",
+        "scored_at": "2026-06-15T00:00:00Z",
+        "formula_version": "v1-lp-batch"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch:lonely-planet-new-york-city",
+      "city_name": "new_york",
+      "book_slug": "lonely-planet-new-york-city",
+      "created_at": "2026-06-15T00:00:00Z"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_christopher_park_social_change_lonely-planet-new-york-city_obama_national_monument",
+        "city_name": "new_york",
+        "poi_name": "Christopher Park",
+        "lens": "social_change",
+        "topic_slug": "obama_national_monument",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "President Barack Obama declared a swath of the West Village, including the iconic Christopher Park, a US National Monument — the first such designation honoring the LGBTIQ+ civil rights movement.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Barack Obama",
+          "West Village"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "reverent",
+        "subject_tag": "national monument",
+        "physical_cues": [
+          {
+            "cue": "The small triangular Christopher Park, centerpiece of the Stonewall National Monument",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Obama declared part of the West Village, including Christopher Park, a US National Monument",
+          "It was the first such designation honoring the LGBTIQ+ civil rights movement"
+        ],
+        "source_passage": "President Barack Obama declares a swath of the West Village, including the iconic Christopher Park, a US National Monument, the first such designation honoring the LGBTIQ+ civil rights movement.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "MEDIUM",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "395d079a7f57b00dc1b8ad250fdf5575eb68b968cdc0e8bddba397a06f446b2f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Chrysler Building",
+    "short_description": "Iconic Art Deco skyscraper, named by Frommer's as best NYC skyscraper and New Yorkers' favorite. High-gravity landmark.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.751603,
+    "longitude": -73.975344,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic Art Deco skyscraper, named by Frommer's as best NYC skyscraper and New Yorkers' favorite. High-gravity landmark.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Chrysler Building'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Chrysler Building, Lexington Avenue, Midtown, Manhattan Community Board 6, Manhattan, New York County, New York, 10170, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 4000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 78.8,
+        "assigned_gravity": 4,
+        "reasoning": "~4M annual visitors estimated (lobby-only access, no observatory). Wikipedia article is extensive covering Art Deco architecture, construction history. Google review count not directly confirmed.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_chrysler_building_modern_design_lonely-planet-new-york-city_art_deco_defining_era",
+        "city_name": "new_york",
+        "poi_name": "Chrysler Building",
+        "lens": "modern_design",
+        "topic_slug": "art_deco_defining_era",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "If one style is associated with New York beyond all others, it is art deco, fused onto the cityscape in the 1930s. Icons like the Chrysler and the Empire State are decadent reminders of that defining era.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "Art Deco",
+          "Empire State Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "art deco era",
+        "physical_cues": [
+          {
+            "cue": "The Chrysler Building's decadent 1930s art-deco form rising above Midtown",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Art deco was fused onto NYC in the 1930s",
+          "Chrysler and Empire State are reminders of the art-deco era"
+        ],
+        "source_passage": "But if there is one style associated with New York beyond all others it is art deco, which was fused onto the cityscape in the 1930s. Today, icons like the Chrysler and Empire State are decadent reminders of that defining era.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "6fd916bb82b2116c6bec7175ae5006cfd6a815fe8a69ad9e8a02bf7046a3d702",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_chrysler_building_modern_design_lonely-planet-new-york-city_van_alen_trumped_woolworth",
+        "city_name": "new_york",
+        "poi_name": "Chrysler Building",
+        "lens": "modern_design",
+        "topic_slug": "van_alen_trumped_woolworth",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "In 1930 the Chrysler Building — the 77-story art-deco masterpiece designed by William Van Alen — trumped the Woolworth as the world's tallest structure. Its reign lasted barely a year.",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "William Van Alen",
+          "The Woolworth Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "tallest 1930",
+        "physical_cues": [
+          {
+            "cue": "The 77-story art-deco tower designed by William Van Alen",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "In 1930 the Chrysler Building, 77 stories, by William Van Alen, became world's tallest",
+          "It trumped the Woolworth Building"
+        ],
+        "source_passage": "In 1930, the Chrysler Building, the 77-story art-deco masterpiece designed by William Van Alen, trumped the Woolworth as the world's tallest structure.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "bba55e0d40a79089eced0a2f9c4d5ec2a21e4b924031b899ebadad12d87f0354",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Empire State Building",
+    "short_description": "Iconic global landmark, top observation deck, very high tourist gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.748442,
+    "longitude": -73.985659,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "350 Fifth Ave. at 34th St.",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Iconic global landmark, top observation deck, very high tourist gravity.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.97,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Empire State Building'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Empire State Building, 350, 5th Avenue, Koreatown, Manhattan Community Board 5, Manhattan, New York County, New York, 10118, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 2700000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 84.9,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 2,700,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). Official ESB website cites 2.5M+ visitors annually; recent estimates 2.7–2.8M (2024–2025 recovery range); pre-pandemic peak was ~4M. Over 60,",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_empire_state_building_modern_design_lonely-planet-new-york-city_moderne_indiana_limestone",
+        "city_name": "new_york",
+        "poi_name": "Empire State Building",
+        "lens": "modern_design",
+        "topic_slug": "moderne_indiana_limestone",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The following year, 1931, the record was broken by the Empire State Building, a clean-lined moderne monolith crafted from Indiana limestone with a beautiful art-deco interior.",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "entities": [
+          "Chrysler Building"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "moderne monolith",
+        "physical_cues": [
+          {
+            "cue": "The clean-lined Indiana-limestone shaft and art-deco interior",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "In 1931 the Empire State Building broke the height record",
+          "Moderne monolith of Indiana limestone with art-deco interior"
+        ],
+        "source_passage": "The following year, the record was broken by the Empire State Building, a clean-lined moderne monolith crafted from Indiana limestone with a beautiful art-deco interior.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "750705a89f628bafa83b8014326ad49b3f7737056198cccecf745737c24812c0",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_empire_state_building_science_tech_lonely-planet-new-york-city_dirigible_mooring_mast",
+        "city_name": "new_york",
+        "poi_name": "Empire State Building",
+        "lens": "science_tech",
+        "topic_slug": "dirigible_mooring_mast",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The Empire State Building's spire was meant to be used as a mooring mast for dirigibles — airships. The idea made for good publicity, but it proved impractical and unfeasible.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "wry",
+        "subject_tag": "airship mast",
+        "physical_cues": [
+          {
+            "cue": "The needle spire at the top, intended as an airship mooring mast",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "dirigibles",
+            "gloss": "airships"
+          }
+        ],
+        "pronunciation": null,
+        "key_claims": [
+          "The spire was meant as a mooring mast for dirigibles (airships)",
+          "The idea proved impractical and unfeasible"
+        ],
+        "source_passage": "Its spire was meant to be used as a mooring mast for dirigibles (airships) – an idea that made for good publicity, but which proved to be impractical and unfeasible.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "767112d61daff2c8e2bbec34539de714e45769b474e6cbf04cbeccc4e030e718",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Federal Hall",
+    "short_description": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.707224,
+    "longitude": -74.010259,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5 candidate: Washington's first inauguration site, Zenger trial, Stamp Act Congress, first US Congress / Bill of Rights. Greek Revival landmark, George Washington statue.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Federal Hall National Memorial, 26 Wall St)",
+      "geocode_confidence": 0.96,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": 200000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 46.3,
+        "assigned_gravity": 2,
+        "reasoning": "~200,000 annual interior visitors; 15 million pass by annually; 473 TripAdvisor reviews; 66 Yelp reviews; Wikipedia article (Federal Hall) is extensive covering Washington's inauguration, original 1703 structure, and current Greek Revival building; free NPS site",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_federal_hall_historic_arch_lonely-planet-new-york-city_greek_revival_white_marble",
+        "city_name": "new_york",
+        "poi_name": "Federal Hall",
+        "lens": "historic_arch",
+        "topic_slug": "greek_revival_white_marble",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Following an important treatise on Greek architecture in the late 1700s, architects revived pure classical forms, and by the 1830s columned Greek Revival structures were going up all over New York. The white-marble Federal Hall, finished in 1842, is one of them.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Greek Revival"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "greek revival",
+        "physical_cues": [
+          {
+            "cue": "The white-marble Greek Revival columns of Federal Hall, completed 1842",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Greek Revival structures rose across NY by the 1830s",
+          "Federal Hall is white-marble, dated 1842"
+        ],
+        "source_passage": "By the 1830s, becolumned Greek Revival structures were going up all over New York. Manhattan contains a bevy of these buildings, including the gray granite St Peter's Church (1838) and the white-marble Federal Hall (1842).",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "74a73dd056bec815f884dde136276deab900eb25db7fc90cdfdb5cbf95870695",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Grand Central Terminal",
+    "short_description": "Major Beaux Arts transit landmark, Frommer's 'best historic building'. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.752694,
+    "longitude": -73.977253,
+    "trigger_radius": 60,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major Beaux Arts transit landmark, Frommer's 'best historic building'. High gravity.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Grand Central Terminal'",
+        "trigger_radius_reasoning": "Large complex/campus",
+        "notes": "Grand Central Terminal, 89, East 42nd Street, Midtown, Manhattan Community Board 5, Manhattan, New York County, New York, 10178, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 21600000,
+        "google_review_count": 6847,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 74.1,
+        "assigned_gravity": 5,
+        "reasoning": "SANITY-PROMOTED to 5: dominant search interest + 21,600,000 annual visitors (unmissable landmark; composite was depressed by visitor-percentile vs mega-parks). ~21.6M tourist visitors annually; ~750K daily passers-through. Google Maps: 6,847 reviews per Tripexpert/Jake Lee data. Multiple Wikipedia s",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_grand_central_terminal_historic_arch_lonely-planet-new-york-city_warren_wetmore_mercury",
+        "city_name": "new_york",
+        "poi_name": "Grand Central Terminal",
+        "lens": "historic_arch",
+        "topic_slug": "warren_wetmore_mercury",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Warren and Wetmore's stunning Grand Central Terminal, completed in 1913, is one of the great Beaux-Arts blockbusters — capped by a statue of Mercury, the god of commerce.",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "entities": [
+          "Warren and Wetmore",
+          "Mercury",
+          "Beaux-Arts"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "mercury statue",
+        "physical_cues": [
+          {
+            "cue": "The statue of Mercury, god of commerce, crowning the terminal's facade",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Grand Central Terminal completed 1913 by Warren and Wetmore",
+          "It is capped by a statue of Mercury, god of commerce"
+        ],
+        "source_passage": "and Warren and Wetmore's stunning Grand Central Terminal (1913), which is capped by a statue of Mercury, the god of commerce.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "b099c8990ec2e178b6ded7adc5195437c426b3e215bafecc72beb1d855de73ee",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Greenwich Village",
+    "short_description": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.733584,
+    "longitude": -74.002817,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs reference 'greenwich_village' slug but the area POI itself is not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide with existing beat IDs.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01",
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Greenwich Village'",
+        "trigger_radius_reasoning": "Large green space, multiple approaches",
+        "notes": "Greenwich Village, 7th Avenue South, West Village, Manhattan, New York County, New York, 10014, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 100.0,
+        "assigned_gravity": 5,
+        "reasoning": "Wikipedia article is extensive covering history, culture, notable residents, landmarks. One of NYC's most searched neighborhoods; no aggregate annual visitor count found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_greenwich_village_social_change_lonely-planet-new-york-city_emerald_city_gays_lesbians",
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "social_change",
+        "topic_slug": "emerald_city_gays_lesbians",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "As New York entered the 20th century, writers and bohemians stepped into Greenwich Village, drawn by cheap rents and romantically crooked streets. Its unconventionality and free thinking turned the Village into an Emerald City for gays and lesbians — full of bachelor pads, tolerant attitudes, and, with Prohibition, an anything-goes speakeasy scene.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Prohibition"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "anecdote",
+        "emotional_register": "playful",
+        "subject_tag": "village emerald city",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Bohemians moved to Greenwich Village for cheap rents and crooked streets",
+          "It became an 'Emerald City' for gays and lesbians with a speakeasy scene under Prohibition"
+        ],
+        "source_passage": "As New York strode into the 20th century, writers and bohemians began stepping into Greenwich Village, lured by the area's cheap rents and romantically crooked streets. The unconventionality and free thinking the area became known for turned the Village into an Emerald City for gays and lesbians, a place with no shortage of bachelor pads, more tolerant attitudes and – with the arrival of Prohibition – an anything-goes speakeasy scene.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "435c5eefcc32042f1ca63e8bf5ee7500646600435b893f4b7604bf9c58070d7c",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_greenwich_village_dark_history_lonely-planet-new-york-city_mark_carson_shooting",
+        "city_name": "new_york",
+        "poi_name": "Greenwich Village",
+        "lens": "dark_history",
+        "topic_slug": "mark_carson_shooting",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": "8th St",
+        "beat_length_class": "mid",
+        "script_body": "In 2013, New Yorkers reeled when Mark Carson, a Brooklyn man, was fatally shot in Greenwich Village — one of Manhattan's most historically tolerant neighborhoods. Carson and a friend had been walking along 8th St in the early hours of May 18 when, after a short altercation with a group of men hurling homophobic abuse, the 32-year-old was shot at point-blank range. The attack was a sobering reminder that even in liberal New York City, not everyone is happy to live and let live.",
+        "duration_sec": 33,
+        "kid_friendly": "no",
+        "entities": [
+          "Mark Carson"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "event",
+        "emotional_register": "somber",
+        "subject_tag": "mark carson",
+        "physical_cues": [
+          {
+            "cue": "The stretch of 8th St in the West Village where Carson was walking",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "In 2013 Mark Carson, a Brooklyn man, was fatally shot in Greenwich Village",
+          "He was shot at point-blank range on 8th St on May 18 after homophobic abuse, aged 32"
+        ],
+        "source_passage": "In 2013, New Yorkers reeled when a Brooklyn man, Mark Carson, was fatally shot in Greenwich Village, one of Manhattan's most historically tolerant neighborhoods. Carson and a friend had been walking along 8th St in the early hours of May 18 when, after a short altercation with a group of men hurling homophobic abuse, the 32-year-old was shot at point-blank range. The attack was a sobering reminder that even in liberal New York City, not everyone is happy to live and let live.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a9d7119127a4b134debf27a37d1e4c58b3ad2b70c166ac36d1ac50adbeafd70e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Harlem",
+    "short_description": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.807858,
+    "longitude": -73.945467,
+    "trigger_radius": 600,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Existing beat IDs use 'harlem' slug for specific Harlem stories; area POI itself not in EXISTING_POI_NAMES. Flagged new_poi; topic_slugs chosen to not collide.",
+      "verified": false,
+      "geocode_source": "known_centroid",
+      "geocode_confidence": 0.9,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-02"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Harlem'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Harlem, Manhattan Community Board 10, Manhattan, New York County, New York, 10027, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 80.1,
+        "assigned_gravity": 4,
+        "reasoning": "NYC government commercial district assessment cites >5M domestic and international tourists annually. Apollo Theater, food, jazz, civil rights history are draws. Wikipedia article is extensive with deep historical and cultural content.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_harlem_social_change_lonely-planet-new-york-city_gladys_bentley_tuxedos",
+        "city_name": "new_york",
+        "poi_name": "Harlem",
+        "lens": "social_change",
+        "topic_slug": "gladys_bentley_tuxedos",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "While Times Square drew gay men working in its theaters and speakeasy bars, the hottest gay scene of the 1920s was further north, in Harlem. The neighborhood's flourishing music scene included gay and lesbian performers like Gladys Bentley, as famous for her tuxedos and girlfriends as for her singing.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Gladys Bentley",
+          "Times Square"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "deepen",
+        "beat_type": "character_story",
+        "emotional_register": "playful",
+        "subject_tag": "gladys bentley",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Harlem had the hottest gay scene of the 1920s",
+          "Gladys Bentley was a performer famous for tuxedos, girlfriends and singing"
+        ],
+        "source_passage": "While Times Square had developed a reputation for attracting gay men (many of them working in the district's theaters, restaurants and speakeasy bars), the hottest gay scene in the 1920s was found further north, in Harlem. The neighborhood's flourishing music scene included numerous gay and lesbian performers, among them Gladys Bentley, who was as famous for her tuxedos and girlfriends as she was for her singing.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7734864796990381bfe393ed2a3fcd6b46852096a43e1757095b76af6c076a6a",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      },
+      {
+        "beat_id": "newyork_harlem_local_legends_lonely-planet-new-york-city_hamilton_lodge_drag_ball",
+        "city_name": "new_york",
+        "poi_name": "Harlem",
+        "lens": "local_legends",
+        "topic_slug": "hamilton_lodge_drag_ball",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "Harlem's drag balls became a hit with gay and straight New Yorkers in the roaring '20s. The biggest was the Hamilton Lodge Ball, run by Lodge #710 of the Grand United Order of Odd Fellows and held annually at the swank Rockland Palace on 155th St. Commonly dubbed the Faggots Ball, it let men and women legally cross-dress and steal a same-sex dance, with a beauty pageant crowning the 'Queen of the Ball.' Langston Hughes called it the 'spectacles of color,' and the gay writer was one of many literati to attend; the papers covered the outrageous frocks as the talk of the town.",
+        "duration_sec": 45,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hamilton Lodge Ball",
+          "Grand United Order of Odd Fellows",
+          "Rockland Palace",
+          "Langston Hughes"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "playful",
+        "subject_tag": "hamilton lodge ball",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Harlem drag balls were popular in the 1920s",
+          "The Hamilton Lodge Ball, run by Odd Fellows Lodge #710, was held at Rockland Palace on 155th St",
+          "It crowned a 'Queen of the Ball'; Langston Hughes called it 'spectacles of color' and attended"
+        ],
+        "source_passage": "Even more famous were Harlem's drag balls, which became a hit with both gay and straight New Yorkers in the roaring '20s. The biggest of the lot was the Hamilton Lodge Ball, organized by Lodge #710 of the Grand United Order of Odd Fellows and held annually at the swank Rockland Palace on 155th St. Commonly dubbed the Faggots Ball, it was a chance for both gay men and women to (legally) cross-dress and steal a same-sex dance, and for fashionable 'normals' to indulge in a little voyeuristic titillation. The evening's star attraction was the beauty pageant, which saw the drag-clad competitors vie for the title of 'Queen of the Ball.' Langston Hughes proclaimed it the 'spectacles of color' and the gay writer was one of many members of New York's literati to attend the ball.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "a5a0ff85abe9cb291a64c3834045b06c9ea8944630a6f26d33c4fa0f104c8924",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Merchant's House Museum",
+    "short_description": "Only fully intact 19th-century Manhattan residence, Wikipedia article, NHL. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.727667,
+    "longitude": -73.992361,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Only fully intact 19th-century Manhattan residence, Wikipedia article, NHL. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / latitude.to)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No official visitor count published; 103 Yelp reviews; Wikipedia article covers the 1832 Greek Revival house, Tredwell family history, and landmark status; small specialty museum with niche ghost-tour following",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_merchants_house_museum_historic_arch_lonely-planet-new-york-city_federal_intact_interiors",
+        "city_name": "new_york",
+        "poi_name": "Merchant's House Museum",
+        "lens": "historic_arch",
+        "topic_slug": "federal_intact_interiors",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The 1832 Merchant's House Museum, in NoHo, is a Federal-style specimen — a style marked by slim columned entrances, triangular pediments and rounded fanlights over doors and windows. The house still contains its intact interiors.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Federal style",
+          "NoHo"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "federal interiors",
+        "physical_cues": [
+          {
+            "cue": "The intact Federal-style interiors of the 1832 house in NoHo",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Merchant's House Museum dates from 1832, in NoHo",
+          "It is a Federal-style building that still contains intact interiors",
+          "Federal style used columned entrances, triangular pediments, rounded fanlights"
+        ],
+        "source_passage": "The so-called Federal style employed classical touches – slim, columned entrances, triangular pediments at the roofline and rounded fanlights over doors and windows. Other Federal-style specimens include the 1793 James Watson House at 7 State St across from Battery Park, and the 1832 Merchant's House Museum, in NoHo. The latter still contains its intact interiors.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "16c9edadc34f31808e06bac9a698c5490b5c3479f8c91112f2af2e917f5ad21e",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Metropolitan Museum of Art",
+    "short_description": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.77944,
+    "longitude": -73.963382,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+      "verified": false,
+      "geocode_source": "source_address+known_landmark",
+      "geocode_confidence": 0.95,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Metropolitan Museum of Art'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "The Metropolitan Museum of Art, 1000, 5th Avenue, Upper East Side, Manhattan Community Board 8, Manhattan, New York County, New York, 10075, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5700000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 91.8,
+        "assigned_gravity": 5,
+        "reasoning": "5.7M visitors FY2025 (Jul 2024–Jun 2025) across Met Fifth Ave + Met Cloisters; 5.5M FY2024. Most-visited museum in the US. Google rating 4.8 from ~79,910 reviews (Mar 2024). Wikipedia article is flagship-quality with extensive coverage.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_metropolitan_museum_of_art_historic_arch_lonely-planet-new-york-city_hunt_1902_extension",
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "historic_arch",
+        "topic_slug": "hunt_1902_extension",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "The Met's 1902 extension, a Beaux-Arts classic, was designed by Richard Morris Hunt.",
+        "duration_sec": 6,
+        "kid_friendly": "yes",
+        "entities": [
+          "Richard Morris Hunt",
+          "Beaux-Arts"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "hunt extension",
+        "physical_cues": [
+          {
+            "cue": "Richard Morris Hunt's 1902 Beaux-Arts extension facade",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Met's 1902 extension was designed by Richard Morris Hunt"
+        ],
+        "source_passage": "Other classics include the central branch of the New York Public Library (1911), designed by Carrère and Hastings; the 1902 extension of the Metropolitan Museum of Art, by Richard Morris Hunt; and Warren and Wetmore's stunning Grand Central Terminal (1913), which is capped by a statue of Mercury, the god of commerce.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c72f4a8fe894026095400d10712294bf40c6c5306910162d8c287bbedd422083",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Morris-Jumel Mansion",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.834975,
+    "longitude": -73.938772,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "65 Jumel Terrace (Washington Heights)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "",
+      "verified": false,
+      "geocode_source": "known_landmark (oldest house in Manhattan, Washington Heights; Nominatim live lookup blocked in sandbox)",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-06"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Morris-Jumel Mansion'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "65, Jumel Terrace, Washington Heights, Manhattan Community Board 12, Manhattan, New York County, New York, 10032, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "minimal",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 27.8,
+        "assigned_gravity": 1,
+        "reasoning": "Oldest surviving house in Manhattan (1765), National Historic Landmark, Washington Heights. No published annual attendance figure found. Wikipedia article covers history, architecture, and notable occupants including George Washington. Very niche draw; Yelp/TripAdvisor review volumes tiny.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 1,
+    "beats": [
+      {
+        "beat_id": "newyork_morris_jumel_mansion_historic_arch_lonely-planet-new-york-city_georgian_neoclassical_facade",
+        "city_name": "new_york",
+        "poi_name": "Morris-Jumel Mansion",
+        "lens": "historic_arch",
+        "topic_slug": "georgian_neoclassical_facade",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "After New Amsterdam became the British colony of New York in 1664, architecture moved to the Georgian style — boxy brick and stone structures with hipped roofs. The Morris-Jumel Mansion, dating from 1765, is an altered example: built in the Georgian style by Roger Morris, it was later purchased by Stephen Jumel, who added a neoclassical facade in the 19th century.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Georgian style",
+          "Roger Morris",
+          "Stephen Jumel",
+          "New Amsterdam"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "georgian mansion",
+        "physical_cues": [
+          {
+            "cue": "The 19th-century neoclassical facade Stephen Jumel added to the 1765 Georgian house",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "NY became British colony in 1664",
+          "Morris-Jumel Mansion built 1765 in Georgian style by Roger Morris",
+          "Stephen Jumel added a neoclassical facade in the 19th century"
+        ],
+        "source_passage": "After the Dutch colony of New Amsterdam became the British colony of New York in 1664, architectural styles moved to Georgian. Boxy, brick and stone structures with hipped roofs began to materialize. In the northern Manhattan district of Inwood, the Morris-Jumel Mansion from 1765 is an altered example of this: the home was built in the Georgian style by Roger Morris, then purchased by Stephen Jumel, who added a neoclassical facade in the 19th century.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "16a2df522b13fec96b55a597d4f8e87d4b76fb928f458c54faf01ceb129a5d71",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "New York Public Library",
+    "short_description": "Beaux Arts main branch (Stephen A. Schwarzman Building) with lion statues.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753344,
+    "longitude": -73.982152,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Fifth Ave. (at 42nd St.)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Beaux Arts main branch (Stephen A. Schwarzman Building) with lion statues.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.93,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'New York Public Library'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Stephen A. Schwarzman Building, 476, 5th Avenue, Midtown South, Manhattan Community Board 5, Manhattan, New York County, New York, 10018, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 8000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.1,
+        "assigned_gravity": 4,
+        "reasoning": "8 million visitors (all branches, 2024 Annual Report); the Schwarzman flagship building is the primary tourist draw. Google rating 4.7; Yelp has 1,078 reviews for Schwarzman Building as of June 2026.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_public_library_historic_arch_lonely-planet-new-york-city_carrere_hastings_beaux_arts",
+        "city_name": "new_york",
+        "poi_name": "New York Public Library",
+        "lens": "historic_arch",
+        "topic_slug": "carrere_hastings_beaux_arts",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "At the turn of the 20th century New York entered a gilded age. Architects trained in France returned with European ideals: gleaming white limestone replaced brownstone, first stories were elevated for dramatic staircase entrances, and buildings were adorned with sculptured keystones and Corinthian columns. Among the Beaux-Arts classics is the central branch of the New York Public Library, completed in 1911 and designed by Carrère and Hastings.",
+        "duration_sec": 34,
+        "kid_friendly": "yes",
+        "entities": [
+          "Carrère and Hastings",
+          "Beaux-Arts"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "beaux-arts library",
+        "physical_cues": [
+          {
+            "cue": "The white limestone facade, elevated staircase entrance and Corinthian columns of the 1911 central branch",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Beaux-Arts era used white limestone, elevated stories, Corinthian columns",
+          "NYPL central branch completed 1911, designed by Carrère and Hastings"
+        ],
+        "source_passage": "Gleaming white limestone began to replace all the brownstone, first stories were elevated to allow for dramatic staircase entrances, and buildings were adorned with sculptured keystones and Corinthian columns. Other classics include the central branch of the New York Public Library (1911), designed by Carrère and Hastings; the 1902 extension of the Metropolitan Museum of Art, by Richard Morris Hunt; and Warren and Wetmore's stunning Grand Central Terminal (1913), which is capped by a statue of Mercury, the god of commerce.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "5e85572cc1af44e42a7029db0e51305a572d174aed5c4c37a5243723b3d99f2b",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "New York Stock Exchange",
+    "short_description": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.706877,
+    "longitude": -74.011265,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "World's most famous financial institution, extensive Wikipedia coverage, top global landmark. High gravity. Note: facade fronts Broad St; address 11 Wall St.",
+      "verified": false,
+      "geocode_source": "web_search (distancesto / findlatitudeandlongitude)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Interior public tours closed permanently after 9/11. Exterior viewable from street. No visitor/tour count applicable. Very high search interest as a financial landmark. Wikipedia article is extensive with full market history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_new_york_stock_exchange_social_change_lonely-planet-new-york-city_act_up_balcony_azt",
+        "city_name": "new_york",
+        "poi_name": "New York Stock Exchange",
+        "lens": "social_change",
+        "topic_slug": "act_up_balcony_azt",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "LGBTIQ+ activism intensified as AIDS hit headlines in the early 1980s. Writer Larry Kramer helped found ACT UP — the AIDS Coalition to Unleash Power — in 1987 to fight perceived homophobia and the price-gouging of AIDS drugs. One of its boldest protests came on September 14, 1989, when seven ACT UP protesters chained themselves to the VIP balcony of the New York Stock Exchange, demanding that Burroughs Wellcome lower the price of the AIDS drug AZT from a prohibitive $10,000 per patient per year. Within days, the price was slashed to $6400.",
+        "duration_sec": 40,
+        "kid_friendly": "yes",
+        "entities": [
+          "ACT UP",
+          "Larry Kramer",
+          "Burroughs Wellcome",
+          "AZT"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "act up protest",
+        "physical_cues": [
+          {
+            "cue": "The VIP balcony inside the Exchange where ACT UP protesters chained themselves",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "ACT UP founded 1987 by efforts of Larry Kramer",
+          "On Sept 14, 1989 seven protesters chained themselves to the NYSE VIP balcony",
+          "They demanded AZT price cut from $10,000 to a lower figure; within days it dropped to $6400"
+        ],
+        "source_passage": "Out of his efforts was born ACT UP (AIDS Coalition to Unleash Power) in 1987, an advocacy group set up to fight the perceived homophobia and indifference of then-president Ronald Reagan, as well as to end the price gouging of AIDS drugs by pharmaceutical companies. One of its boldest protests took place on September 14, 1989, when seven ACT UP protesters chained themselves to the VIP balcony of the New York Stock Exchange, demanding pharmaceutical company Burroughs Wellcome lower the price of AIDS drug AZT from a prohibitive $10,000 per patient per annum. Within days, the price was slashed to $6400 per patient.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "f4e49f096eedf025a05e1efa23f28f761040e753bf0bfef2e7ad3411e274ea91",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "One World Observatory",
+    "short_description": "Observation deck atop One World Trade Center (Western Hemisphere's tallest building). High gravity, major ticketed Frommer's sight.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71302,
+    "longitude": -74.01319,
+    "trigger_radius": 40,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Observation deck atop One World Trade Center (Western Hemisphere's tallest building). High gravity, major ticketed Frommer's sight.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia One WTC)",
+      "geocode_confidence": 0.9,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 76.5,
+        "assigned_gravity": 4,
+        "reasoning": "Estimates range from 2.5M to 3.8M annually; cumulative total reported as 10M+ since 2015 opening. No single authoritative annual figure confirmed. Wikipedia coverage is moderate.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_one_world_observatory_modern_design_lonely-planet-new-york-city_libeskind_design_replaced",
+        "city_name": "new_york",
+        "poi_name": "One World Observatory",
+        "lens": "modern_design",
+        "topic_slug": "libeskind_design_replaced",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Daniel Libeskind's twisting, angular design for the One World Trade Center tower, finished in 2013, never became an icon — it was replaced by a boxier architecture-by-committee glass obelisk.",
+        "duration_sec": 13,
+        "kid_friendly": "yes",
+        "entities": [
+          "Daniel Libeskind",
+          "One World Trade Center"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "glass obelisk tower",
+        "physical_cues": [
+          {
+            "cue": "The boxy glass-obelisk form of the completed 2013 tower",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Libeskind's twisting design for One WTC (2013) was replaced by a boxier glass obelisk"
+        ],
+        "source_passage": "What never became an icon was Daniel Libeskind's twisting, angular design for the One World Trade Center tower (2013), replaced by a boxier architecture-by-committee glass obelisk.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "031785113d4605d780c76f02c84ce09b8c834f2cd9ebc9f133a5bb5d18fc240c",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Solomon R. Guggenheim Museum",
+    "short_description": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.782993,
+    "longitude": -73.958925,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+      "verified": false,
+      "geocode_source": "source_address+known_landmark",
+      "geocode_confidence": 0.93,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-05"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Solomon R. Guggenheim Museum'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Guggenheim Museum, 1071, 5th Avenue, Carnegie Hill, Manhattan Community Board 8, Manhattan, New York County, New York, 10128, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 766000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 63.7,
+        "assigned_gravity": 3,
+        "reasoning": "766k visitors in 2024 (down 11% from 861k in 2023, per The Art Newspaper). Wikipedia article is extensive covering Wright's architecture, collection, and history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_solomon_r_guggenheim_museum_modern_design_lonely-planet-new-york-city_inverted_ziggurat",
+        "city_name": "new_york",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "modern_design",
+        "topic_slug": "inverted_ziggurat",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The city's greatest emblem of the International-style era is the controversial inverted ziggurat of the Guggenheim Museum, completed in 1959 but conceived more than a decade earlier.",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "entities": [
+          "International style"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "inverted ziggurat",
+        "physical_cues": [
+          {
+            "cue": "The controversial inverted-ziggurat spiral form of the museum",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Guggenheim is an inverted ziggurat completed in 1959",
+          "It was conceived more than a decade earlier"
+        ],
+        "source_passage": "The city's greatest emblem of this architectural era is the controversial inverted ziggurat of the Guggenheim Museum, which was completed in 1959 but conceived more than a decade earlier.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "93bb3a7a6164a0f81d24a6a9a674f67c5b53102a6de055a75507f670d6ac0881",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "St. Patrick's Cathedral",
+    "short_description": "Largest Roman Catholic cathedral in the US; distinct from existing 'Old St. Patrick's Cathedral' in SoHo.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.758558,
+    "longitude": -73.976364,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Fifth Ave. (btw. 50th and 51st sts.)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Largest Roman Catholic cathedral in the US; distinct from existing 'Old St. Patrick's Cathedral' in SoHo.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.94,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'St. Patrick's Cathedral'",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Saint Patrick’s Cathedral, 625, 5th Avenue, Midtown East, Manhattan Community Board 5, Manhattan, New York County, New York, 10022, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 5500000,
+        "google_review_count": null,
+        "google_trends": "dominant",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 91.2,
+        "assigned_gravity": 5,
+        "reasoning": "Cited at 5–5.5M+ annual visitors across sources. Free entry boosts count. Among NYC's single most-visited sites. Wikipedia article is extensive covering architecture, history, restoration.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 5,
+    "beats": [
+      {
+        "beat_id": "newyork_st_patricks_cathedral_historic_worship_lonely-planet-new-york-city_city_block_fifth_ave",
+        "city_name": "new_york",
+        "poi_name": "St. Patrick's Cathedral",
+        "lens": "historic_worship",
+        "topic_slug": "city_block_fifth_ave",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "By the 1860s, places of worship were growing in size and scale. Among the most resplendent is St Patrick's Cathedral, built between 1858 and 1879, which took over an entire city block at Fifth Ave and 51st St.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Fifth Avenue"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "cathedral scale",
+        "physical_cues": [
+          {
+            "cue": "The cathedral filling an entire city block at Fifth Ave and 51st St",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "St Patrick's Cathedral built 1858-1879",
+          "It occupies an entire block at Fifth Ave and 51st St"
+        ],
+        "source_passage": "Among the most resplendent are St Patrick's Cathedral (1858–1879), which took over an entire city block at Fifth Ave and 51st St, and the perpetually under-construction Cathedral Church of St John the Divine (since 1911), in Morningside Heights.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "2afcbf13b734d2d6f3ae1542522567182a78e79e14d9c52b7d848966cc8dad3f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "St. Paul's Chapel",
+    "short_description": "Oldest church building in Manhattan (1766), Wikipedia article, George Washington connection, 9/11 relief site. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.71132,
+    "longitude": -74.0092,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Oldest church building in Manhattan (1766), Wikipedia article, George Washington connection, 9/11 relief site. Moderate-high gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Wikipedia / Google Maps)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 1000000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 58.3,
+        "assigned_gravity": 2,
+        "reasoning": "Travel source states 1M+ visitors annually; Trinity Church cluster (Trinity + St. Paul's) cited at 3M combined by the church itself. St. Paul's is Manhattan's oldest surviving church building (1766). Wikipedia article is extensive.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_st_pauls_chapel_historic_worship_lonely-planet-new-york-city_oldest_church_st_martin",
+        "city_name": "new_york",
+        "poi_name": "St. Paul's Chapel",
+        "lens": "historic_worship",
+        "topic_slug": "oldest_church_st_martin",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "St Paul's Chapel, south of City Hall Park, was built in the 1760s and is the oldest surviving church in the city. Its design was inspired by the much bigger St Martin-in-the-Fields church in London.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "St Martin-in-the-Fields",
+          "City Hall Park"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "oldest church",
+        "physical_cues": [
+          {
+            "cue": "The 1760s chapel south of City Hall Park, modeled on London's St Martin-in-the-Fields",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "St Paul's Chapel built in the 1760s",
+          "Oldest surviving church in the city",
+          "Design inspired by St Martin-in-the-Fields in London"
+        ],
+        "source_passage": "On the ceremonial end is St Paul's Chapel, south of City Hall Park. Built in the 1760s, it is the oldest surviving church in the city. Its design was inspired by the much bigger St Martin-in-the-Fields church in London.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8ebea984b558fef4b3c40ae54bd31f69b073f1f72a442dfc53bbcc74c064e2e4",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Stonewall Inn",
+    "short_description": "Birthplace of the modern LGBTQ rights movement (1969 riots); a US National Monument. Very high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.73389,
+    "longitude": -74.00222,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Birthplace of the modern LGBTQ rights movement (1969 riots); a US National Monument. Very high gravity.",
+      "verified": false,
+      "geocode_source": "Nominatim / Wikipedia 'Stonewall Inn', 53 Christopher St (40.73389, -74.00222)",
+      "geocode_confidence": 0.97,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-11"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 85.0,
+        "assigned_gravity": 4,
+        "reasoning": "Wikipedia article is extensive covering the 1969 riots and LGBTQ history in detail. Part of Stonewall National Monument. No official annual visitor count found; very high cultural prominence globally.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 4,
+    "beats": [
+      {
+        "beat_id": "newyork_stonewall_inn_social_change_lonely-planet-new-york-city_raid_revolt_1969",
+        "city_name": "new_york",
+        "poi_name": "Stonewall Inn",
+        "lens": "social_change",
+        "topic_slug": "raid_revolt_1969",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "anchor",
+        "script_body": "By the 1940s and '50s, the relative transgression of the early 20th century had given way to a new conservatism — the Great Depression, WWII and the Cold War took their toll, and Senator Joseph McCarthy declared that homosexuals in the State Department threatened America's security and children. Tougher policing forced the queer scene underground, and crackdowns on gay venues grew increasingly common. Yet on June 28, 1969, when police raided the Stonewall Inn — a gay-friendly watering hole in Greenwich Village — patrons did the unthinkable: they revolted. Fed up with harassment and with corrupt officers taking payoffs from the bars' mostly organized-crime owners, they bombarded the police with coins, bottles, bricks and chants of 'gay power' and 'we shall overcome.' They were met by a line of high-kicking drag queens and their now-legendary chant. The collective anger and solidarity was a turning point, igniting passionate debate about discrimination and forming the catalyst for the modern gay-rights movement — not just in New York but across the US and in countries from the Netherlands to Australia. On the one-year anniversary, the day was marked by the US's first LGBTIQ+ Pride march.",
+        "duration_sec": 88,
+        "kid_friendly": "no",
+        "entities": [
+          "Stonewall Riots",
+          "Joseph McCarthy",
+          "Great Depression",
+          "WWII",
+          "Cold War",
+          "Greenwich Village",
+          "LGBTIQ+ Pride march"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "climax",
+        "beat_type": "event",
+        "emotional_register": "dramatic",
+        "subject_tag": "stonewall riots",
+        "physical_cues": [
+          {
+            "cue": "The Stonewall Inn storefront on Christopher Street, site of the June 1969 raid",
+            "direction": "here",
+            "feature_type": "adjacent_landmark"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "1940s-50s conservatism, McCarthy targeted homosexuals, policing forced the scene underground",
+          "On June 28, 1969 police raided the Stonewall Inn and patrons revolted, throwing coins, bottles, bricks",
+          "Riot was the catalyst for the modern gay-rights movement; first Pride march held on the one-year anniversary"
+        ],
+        "source_passage": "The relative transgression of the early 20th century was replaced with a new conservatism in the following decades, as the Great Depression, WWII and the Cold War took their toll. Conservatism was helped along by Senator Joseph 'Joe' McCarthy, who declared that homosexuals in the State Department threatened America's security and children. Tougher policing aimed to eradicate queer visibility in the public sphere, forcing the scene further underground in the 1940s and '50s. Yet on June 28, 1969, when police officers raided the Stonewall Inn – a gay-friendly watering hole in Greenwich Village – patrons did the unthinkable: they revolted. Fed up with both the harassment and corrupt officers receiving payoffs from the bars' owners (who were mostly organized-crime figures), they began bombarding the officers with coins, bottles, bricks and chants of 'gay power' and 'we shall overcome.' Their collective anger and solidarity was a turning point, igniting intense and passionate debate about discrimination and forming the catalyst for the modern gay-rights movement, not just in New York, but across the US and in countries from the Netherlands to Australia. On the one-year anniversary of the riots, the day was marked by the US's first LGBTIQ+ Pride march.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "62ee1f70cce00b1ac644a3d3533d10b66ec370cc4dd9bb48146ef2b1dddd7070",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Edge",
+    "short_description": "Sky deck jutting 65 ft; sub-POI of Hudson Yards. Pending /poi-geocode.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753983,
+    "longitude": -74.000603,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "30 Hudson Yards",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Sky deck jutting 65 ft; sub-POI of Hudson Yards. Pending /poi-geocode.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": "Hudson Yards",
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'The Edge'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "30 Hudson Yards, 30, 10th Avenue, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10001, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 61.5,
+        "assigned_gravity": 3,
+        "reasoning": "Opened March 2020 at 30 Hudson Yards; highest outdoor observation deck in Western Hemisphere at 1,131 ft. No standalone annual visitor count published by operator. Covered within the extensive Wikipedia article on 30 Hudson Yards; no dedicated standalone Wikipedia page found.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_the_edge_modern_design_lonely-planet-new-york-city_highest_observation_western_hemisphere",
+        "city_name": "new_york",
+        "poi_name": "The Edge",
+        "lens": "modern_design",
+        "topic_slug": "highest_observation_western_hemisphere",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "An outdoor observation deck on the 100th floor of 30 Hudson Yards opened to vertigo-immune visitors in 2019; at 1100 feet above ground, it is the highest of its kind in the Western Hemisphere.",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Hudson Yards"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "highest deck",
+        "physical_cues": [
+          {
+            "cue": "The open-air deck on the 100th floor, 1100 feet above the street",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The 100th-floor deck of 30 Hudson Yards opened 2019",
+          "At 1100ft it is the highest outdoor observation deck in the Western Hemisphere"
+        ],
+        "source_passage": "An outdoor observation deck on the 100th floor of 30 Hudson Yards opened to vertigo-immune visitors in 2019; at 1100ft above ground, it's the highest of its kind in the Western Hemisphere.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "e7bb215159975da9bed952ce6a1865cb3acdacd9cc1f9e3c06e6ec961ef6691b",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Public Theater",
+    "short_description": "Landmark off-Broadway theater where Hamilton premiered; culturally significant fixed building. Moderate gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.729,
+    "longitude": -73.992,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Landmark off-Broadway theater where Hamilton premiered; culturally significant fixed building. Moderate gravity.",
+      "verified": false,
+      "geocode_source": "assistant_knowledge",
+      "geocode_confidence": 0.88,
+      "geocode_needs_verification": true,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-01"
+      ],
+      "geocode_audit": {
+        "source": "assistant_knowledge",
+        "confidence": "LOW",
+        "placement": "Knowledge-based fallback (Nominatim miss); verify manually",
+        "trigger_radius_reasoning": "Large public building entrance",
+        "notes": "Nominatim miss — kept agent knowledge-based coordinate"
+      },
+      "gravity_audit": {
+        "official_visitors": 250000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 48.2,
+        "assigned_gravity": 2,
+        "reasoning": "250K+ annual attendees across all venues including Shakespeare in the Park. Wikipedia article covers history of the New York Shakespeare Festival/Public Theater in depth. Google review count not confirmed.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_the_public_theater_historic_arch_lonely-planet-new-york-city_astor_library_romanesque",
+        "city_name": "new_york",
+        "poi_name": "The Public Theater",
+        "lens": "historic_arch",
+        "topic_slug": "astor_library_romanesque",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "Romanesque curved arches can be spotted on structures all over the city. One of the most famous is the Joseph Papp Public Theater — formerly the Astor Library — built between 1853 and 1881.",
+        "duration_sec": 14,
+        "kid_friendly": "yes",
+        "entities": [
+          "Astor Library",
+          "Joseph Papp"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "romanesque arches",
+        "physical_cues": [
+          {
+            "cue": "The Romanesque curved arches of the former Astor Library facade",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Public Theater was formerly the Astor Library, built 1853-1881",
+          "It displays Romanesque curved arches"
+        ],
+        "source_passage": "Romanesque elements (such as curved arches) can be spotted on structures all over the city. Some of the most famous include the Joseph Papp Public Theater (formerly the Astor Library) in Greenwich Village, built between 1853 and 1881, and the breathtaking Temple Emanu-El (1929) on Fifth Ave on the Upper East Side.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "0d5cd23a60f155233f126ffc0a4e0e85139ccfdb66fe86eb7b49b3273766863f",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Shed",
+    "short_description": "Movable-shell arts complex; sub-POI of Hudson Yards. Pending /poi-geocode.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753281,
+    "longitude": -74.002671,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "545 W. 30th St., Hudson Yards",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Movable-shell arts complex; sub-POI of Hudson Yards. Pending /poi-geocode.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": "Hudson Yards",
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'The Shed'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "The Shed, 545, West 30th Street, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10001, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "low",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 42.8,
+        "assigned_gravity": 2,
+        "reasoning": "No annual visitor count published by The Shed. Wikipedia page 'The Shed (arts center)' confirmed; moderate depth covering founding, architecture by Diller Scofidio + Renfro, programming. Niche cultural venue with lower general tourism search volume.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_the_shed_modern_design_lonely-planet-new-york-city_retractable_shell_diller",
+        "city_name": "new_york",
+        "poi_name": "The Shed",
+        "lens": "modern_design",
+        "topic_slug": "retractable_shell_diller",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "micro",
+        "script_body": "Newly minted in 2019, The Shed is an arts center with a 500-seat theater and a retractable shell, designed by Diller Scofidio + Renfro with the Rockwell Group.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "Diller Scofidio + Renfro",
+          "Rockwell Group"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "retractable shell",
+        "physical_cues": [
+          {
+            "cue": "The movable retractable outer shell of the arts center",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "The Shed opened 2019, 500-seat theater, retractable shell",
+          "Designed by Diller Scofidio + Renfro with the Rockwell Group"
+        ],
+        "source_passage": "Also newly minted in 2019 is The Shed, an arts center with a 500-seat theater and retractable shell, designed by Diller Scofidio + Renfro in collaboration with the Rockwell Group.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "12967a4c23009aab6dabf8d5cc899edaad98aa0abdbe5aa371cbaa3c77fed377",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "The Woolworth Building",
+    "short_description": "Landmark skyscraper ('Cathedral of Commerce'), full Wikipedia article, former world's tallest building. Moderate-high gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.712265,
+    "longitude": -74.007892,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Landmark skyscraper ('Cathedral of Commerce'), full Wikipedia article, former world's tallest building. Moderate-high gravity.",
+      "verified": false,
+      "geocode_source": "web_search (Apple Maps / Wikipedia)",
+      "geocode_confidence": 0.92,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Guided tours offered by Woolworth Tours NYC (lobby and vault); no annual visitor count published. Historical observation deck drew ~300K/yr before closure in 1941. Wikipedia article is extensive covering full architectural and ownership history.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_the_woolworth_building_modern_design_lonely-planet-new-york-city_cass_gilbert_tallest",
+        "city_name": "new_york",
+        "poi_name": "The Woolworth Building",
+        "lens": "modern_design",
+        "topic_slug": "cass_gilbert_tallest",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "By the 20th century, elevators and steel-frame engineering let the city grow up — literally. The skyscraper boom began with Cass Gilbert's neo-Gothic, 60-story Woolworth Building, completed in 1913, which was the world's tallest building for almost two decades.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Cass Gilbert"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "first skyscraper",
+        "physical_cues": [
+          {
+            "cue": "Cass Gilbert's neo-Gothic 60-story tower rising above Broadway",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Woolworth Building completed 1913, neo-Gothic, 60 stories, by Cass Gilbert",
+          "Was the world's tallest building for almost two decades"
+        ],
+        "source_passage": "This period saw a building boom of skyscrapers, starting with Cass Gilbert's neo-Gothic 60-story Woolworth Building (1913), which was the world's tallest building for almost two decades.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7ad311c3ff0b1b22c9274d884d32836166142c578e6afedad9de9ca0f15b9384",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Trinity Church",
+    "short_description": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) — minimal content here.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.708061,
+    "longitude": -74.012184,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Tier-5 candidate: Gothic Revival church and graveyard, Alexander Hamilton's grave. Very high gravity. NOTE: chunk cross-references full description to p.183 (another chunk) — minimal content here.",
+      "verified": false,
+      "geocode_source": "Nominatim/Wikipedia (Trinity Church, 89 Broadway at Wall St)",
+      "geocode_confidence": 0.96,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03",
+        "chunk-09"
+      ],
+      "gravity_audit": {
+        "official_visitors": null,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 70.0,
+        "assigned_gravity": 3,
+        "reasoning": "Trinity Church cluster (Trinity + St. Paul's) self-reports 3M annual visitors combined; individual split not published. Wikipedia article is extensive with full rector list, architectural detail, and property holdings (~$6B endowment).",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_trinity_church_historic_arch_lonely-planet-new-york-city_upjohn_gothic_revival",
+        "city_name": "new_york",
+        "poi_name": "Trinity Church",
+        "lens": "historic_arch",
+        "topic_slug": "upjohn_gothic_revival",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "From the late 1830s, the simple Georgian and Federalist styles gave way to more ornate Gothic and Romanesque forms. Richard Upjohn, who designed Greenwich Village's pointed-arched Church of the Ascension in 1841, gave downtown Manhattan its Trinity Church in 1846, in the same Gothic style.",
+        "duration_sec": 21,
+        "kid_friendly": "yes",
+        "entities": [
+          "Richard Upjohn",
+          "Church of the Ascension",
+          "Gothic Revival"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "gothic revival",
+        "physical_cues": [
+          {
+            "cue": "Trinity Church's 1846 Gothic form, designed by Richard Upjohn",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Gothic/Romanesque styles arose from the late 1830s",
+          "Richard Upjohn designed Church of the Ascension (1841) and Trinity Church (1846)"
+        ],
+        "source_passage": "An early example was the Church of the Ascension (1841) in Greenwich Village – an imposing brownstone structure studded with pointed arches and a crenelated tower. The same architect – Richard Upjohn – also designed downtown Manhattan's Trinity Church (1846) in the same style.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "c291993efeb1a73da922b68694459274cd29576d3a680cf5769a642a8a5ca0d5",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "United Nations",
+    "short_description": "UN Headquarters; tourable General Assembly, Security Council, Chagall window.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.750214,
+    "longitude": -73.967272,
+    "trigger_radius": 50,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "First Ave. btw. 42nd and 48th sts. (UN Headquarters)",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "UN Headquarters; tourable General Assembly, Security Council, Chagall window.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.91,
+      "geocode_needs_verification": false,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'United Nations'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "United Nations, Manhattan Community Board 6, Manhattan, New York County, New York, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 1000000,
+        "google_review_count": null,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 68.1,
+        "assigned_gravity": 3,
+        "reasoning": "~1 million annual tour visitors per UN Visitors Services. Weekday-only access. Wikipedia 'Headquarters of the United Nations' article is extensive.",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 3,
+    "beats": [
+      {
+        "beat_id": "newyork_united_nations_modern_design_lonely-planet-new-york-city_first_glass_curtain_wall",
+        "city_name": "new_york",
+        "poi_name": "United Nations",
+        "lens": "modern_design",
+        "topic_slug": "first_glass_curtain_wall",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "mid",
+        "script_body": "After WWII, displaced European architects fostered a lively dialogue with their American counterparts, and designers grew obsessed with the clean, unadorned lines of the International style. One of the earliest projects in this vein was the UN buildings, built between 1948 and 1952 by a committee that included Swiss-born Le Corbusier, Brazil's Oscar Niemeyer and the USA's Wallace K Harrison. The Secretariat employed New York's first glass curtain wall, which looms over the ski-slope curve of the General Assembly.",
+        "duration_sec": 37,
+        "kid_friendly": "yes",
+        "entities": [
+          "Le Corbusier",
+          "Oscar Niemeyer",
+          "Wallace K Harrison",
+          "International style",
+          "WWII"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "glass curtain wall",
+        "physical_cues": [
+          {
+            "cue": "The Secretariat's glass curtain wall looming over the ski-slope curve of the General Assembly",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "UN buildings built 1948-52 by a committee including Le Corbusier, Niemeyer, Harrison",
+          "Secretariat had NY's first glass curtain wall over the General Assembly's curve"
+        ],
+        "source_passage": "One of the earliest projects in this vein were the UN buildings (1948–52), the combined effort of a committee of architects, including the Swiss-born Le Corbusier, Brazil's Oscar Niemeyer and USA's Wallace K Harrison. The Secretariat employed New York's first glass curtain wall – which looms over the ski-slope curve of the General Assembly.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "7de8c5634fe8bfb5d731f53a1001ec660559ba8ff97733785f972cb7933bca36",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Vessel",
+    "short_description": "Heatherwick interactive stair-sculpture; sub-POI of Hudson Yards. Pending /poi-geocode.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.753799,
+    "longitude": -74.002003,
+    "trigger_radius": 15,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "Hudson Yards public square",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Heatherwick interactive stair-sculpture; sub-POI of Hudson Yards. Pending /poi-geocode.",
+      "verified": false,
+      "geocode_source": "known_landmark",
+      "geocode_confidence": 0.85,
+      "geocode_needs_verification": false,
+      "parent_poi": "Hudson Yards",
+      "source_chunks": [
+        "chunk-04"
+      ],
+      "geocode_audit": {
+        "source": "OpenStreetMap Nominatim",
+        "confidence": "MEDIUM",
+        "placement": "Nominatim best match for 'Vessel'",
+        "trigger_radius_reasoning": "Building/entrance default",
+        "notes": "Vessel, Hudson Boulevard East, Chelsea District, Manhattan Community Board 4, Manhattan, New York County, New York, 10199, United States"
+      },
+      "gravity_audit": {
+        "official_visitors": 2000000,
+        "google_review_count": null,
+        "google_trends": "moderate",
+        "wikipedia_depth": "moderate",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 58.5,
+        "assigned_gravity": 2,
+        "reasoning": "One source (Travel Weekly) cited 2M+ annual visitors to Hudson Yards with Vessel as centerpiece. Closed Aug 2021–late 2024 following four suicides; reopened with safety barriers. Wikipedia article 'Vessel (structure)' confirmed; covers design, construction, controversy. Visitor count pre-closure est",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_vessel_modern_design_lonely-planet-new-york-city_shawarma_climbing_staircase",
+        "city_name": "new_york",
+        "poi_name": "Vessel",
+        "lens": "modern_design",
+        "topic_slug": "shawarma_climbing_staircase",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "At the heart of Hudson Yards stands the Vessel, a 2019 Escher-like steel structure by Heatherwick Studio rising skywards. Its 2500 steps form a series of interlocking walkways designed for climbing; locals have nicknamed it 'the shawarma.'",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Heatherwick Studio",
+          "Hudson Yards"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "playful",
+        "subject_tag": "shawarma nickname",
+        "physical_cues": [
+          {
+            "cue": "The Escher-like interlocking staircases of the steel Vessel structure",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Vessel built 2019 by Heatherwick Studio",
+          "2500 steps in interlocking walkways for climbing",
+          "Locals nicknamed it 'the shawarma'"
+        ],
+        "source_passage": "At the heart of the development, a huge public space is anchored by the Vessel (2019) – an Escher-like steel structure by Heatherwick Studio rising skywards. Its 2500 steps are fashioned into a series of interlocking walkways and staircases designed for climbing; locals have nicknamed it 'the shawarma.'",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "8a855acb1333265ce5ae39ab41ff72cdf4831ebbaebe588b809415750edaad44",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  },
+  {
+    "name": "Whitney Museum of American Art",
+    "short_description": "Major American-art museum, Renzo Piano building, Wikipedia article, top Frommer's headline sight, adjacent to High Line. High gravity.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.739613,
+    "longitude": -74.00898,
+    "trigger_radius": 30,
+    "city_name": "new_york",
+    "_pipeline": {
+      "address": "",
+      "discovery_sources": [
+        "Frommer's New York City 2024"
+      ],
+      "discovery_notes": "Major American-art museum, Renzo Piano building, Wikipedia article, top Frommer's headline sight, adjacent to High Line. High gravity.",
+      "verified": false,
+      "geocode_source": "web_search (latlong.net / Wikipedia, 99 Gansevoort St)",
+      "geocode_confidence": 0.95,
+      "parent_poi": null,
+      "source_chunks": [
+        "chunk-03"
+      ],
+      "gravity_audit": {
+        "official_visitors": 888816,
+        "google_review_count": 11018,
+        "google_trends": "high",
+        "wikipedia_depth": "extensive",
+        "guidebook_presence": "COMMON",
+        "raw_composite": 55.9,
+        "assigned_gravity": 2,
+        "reasoning": "888,816 visitors in 2024 (Art Newspaper data); 11,018 Google reviews at 4.5 stars; Wikipedia article is extensive (founding, Breuer/Piano buildings, biennial, collection); major NYC art institution with strong search presence",
+        "scored_at": "2026-06-15",
+        "formula_version": "nyc_gravity_v1_2026_06_15"
+      }
+    },
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14"
+    },
+    "importance_tier": 2,
+    "beats": [
+      {
+        "beat_id": "newyork_whitney_museum_of_american_art_modern_design_lonely-planet-new-york-city_piano_high_line_meld",
+        "city_name": "new_york",
+        "poi_name": "Whitney Museum of American Art",
+        "lens": "modern_design",
+        "topic_slug": "piano_high_line_meld",
+        "book_slug": "lonely-planet-new-york-city",
+        "source_chunk_slug": "chunk-14-understand-city-skyline-queer-city",
+        "sub_location": null,
+        "trigger_address": null,
+        "beat_length_class": "seasoning",
+        "script_body": "The most prolific of the starchitect creations along the High Line is Renzo Piano's Whitney Museum of 2015. Dramatically asymmetrical and clad in blue-gray steel, the building has been praised for melding seamlessly with the elevated park.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Renzo Piano",
+          "The High Line"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "deepen",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "piano whitney",
+        "physical_cues": [
+          {
+            "cue": "The asymmetrical blue-gray steel cladding of the building beside the High Line",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "key_claims": [
+          "Renzo Piano's Whitney Museum opened 2015",
+          "Asymmetrical, blue-gray steel, melds with the High Line"
+        ],
+        "source_passage": "The most prolific of these is Renzo Piano's Whitney Museum (2015). Dramatically asymmetrical and clad in blue-gray steel, the building has received significant praise for melding seamlessly with the elevated park.",
+        "source_attribution": {
+          "book_title": "Lonely Planet New York City",
+          "author": "Ali Lemer et al.",
+          "chapter": "Understand: The City Skyline & Queer City"
+        },
+        "confidence": "HIGH",
+        "corrections": [],
+        "disputes": [],
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-15T00:00:00Z",
+          "city_name": "new_york"
+        },
+        "script_body_hash": "4edde61238ea7ea1725d15aad9e49c525e13c4d4cc65fa718088a805c0c654c8",
+        "related_beats": [],
+        "fact_check": {
+          "status": "unverified",
+          "source_passage_verified": true,
+          "corrections": [],
+          "disputes": [],
+          "flagged_claims": [],
+          "notes": "LP batch: extraction-time grounding only; live /fact-check not run (agents offline). Queue /fact-check.",
+          "checked_at": null
+        }
+      }
+    ]
+  }
+]

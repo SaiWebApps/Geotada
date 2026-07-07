@@ -1,0 +1,1615 @@
+[
+  {
+    "name": "Metropolitan Club",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7641,
+    "longitude": -73.9719,
+    "trigger_radius": 25,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Club",
+        "lens": "hidden_history",
+        "topic_slug": "jp_morgan_1891_palazzo",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1 E 60th St, at 5th Ave",
+        "beat_length_class": "mid",
+        "script_body": "In 1891 the Metropolitan Club was established under the chairmanship of banker J. P. Morgan. It is a private club, and the building was inspired by the architecture of Italian palazzos. The inside, unfortunately accessible only to members, is extravagantly decorated with Corinthian columns, rich red carpets, marble, and velvet.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "J. P. Morgan",
+          "Metropolitan Club"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Morgan private club",
+        "physical_cues": [
+          {
+            "cue": "Italian-palazzo-inspired facade of the Metropolitan Club at 1 East 60th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "palazzos",
+            "gloss": "Italian palaces"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "In 1891 the Metropolitan Club was established under the chairmanship of banker J. P. Morgan. It is a private club, and the building was inspired by the architecture of Italian palazzos. The inside, which is unfortunately accessible only to members, is extravagantly decorated with Corinthian columns, rich red carpets, marble, and velvet.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "1248f3ccf75b0c5d8357c0ca8624c5e446825cf6ac8edea8b54edfa587b223a4",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Knickerbocker Club",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7656,
+    "longitude": -73.9713,
+    "trigger_radius": 25,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Knickerbocker Club",
+        "lens": "historic_arch",
+        "topic_slug": "delano_aldrich_1913",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "805 5th Ave",
+        "beat_length_class": "seasoning",
+        "script_body": "The Knickerbocker Club is another of the many private clubs on 5th Avenue. The building dates from 1913 and was designed by the American architects Delano & Aldrich. Stylistically the building's architecture includes a mixture of Georgian and Federal elements.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Knickerbocker Club",
+          "Delano & Aldrich"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "Georgian Federal clubhouse",
+        "physical_cues": [
+          {
+            "cue": "Red-brick Georgian-and-Federal-style Knickerbocker Club building on 5th Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Knickerbocker Club is another of the many private clubs on 5th Avenue. The building dates from 1913 and was designed by the American architects Delano & Aldrich. Stylistically the building's architecture includes a mixture of Georgian and Federal elements.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "e4801566af0c1c0a7b30a598ce79fcfe3325b41eccbe9885d98d1b6667ad351b",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Edith and Ernesto Fabbri House",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7654,
+    "longitude": -73.9707,
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Edith and Ernesto Fabbri House",
+        "lens": "famous_residents",
+        "topic_slug": "vanderbilt_wedding_gift",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "11 E 62nd St, between 5th and Madison avenues",
+        "beat_length_class": "seasoning",
+        "script_body": "At 11 East 62nd Street you'll find the Edith and Ernesto Fabbri House. Edith Shepard Fabbri received this house as a gift from her parents when she married banker Ernesto Fabbri. Edith's mother was a member of the wealthy Vanderbilt family.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "Edith Shepard Fabbri",
+          "Ernesto Fabbri",
+          "Vanderbilt family"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "Fabbri wedding gift",
+        "physical_cues": [
+          {
+            "cue": "Facade of the Edith and Ernesto Fabbri House at 11 East 62nd Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "At 11 East 62nd Street, you'll find the Edith and Ernesto Fabbri House. Edith Shepard Fabbri received this amazing house as a gift from her parents when she married banker Ernesto Fabbri. Edith's mother was a member of the wealthy Vanderbilt family.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "22b97a0ebd40a08b3362f27d9593ba353d539d1eb6f22df99cba11c17069a219",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "726 Madison Avenue",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7672,
+    "longitude": -73.9692,
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "726 Madison Avenue",
+        "lens": "historic_arch",
+        "topic_slug": "out_of_fashion_georgian_1932",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "726 Madison Ave, at 64th St",
+        "beat_length_class": "seasoning",
+        "script_body": "726 Madison Avenue was built in 1932 for the Bank of Manhattan Company. The building's Georgian-style architecture had not been in fashion for nearly a century, and as a result it seems completely out of place on this posh street.",
+        "duration_sec": 17,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bank of Manhattan Company"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "wry",
+        "subject_tag": "anachronistic Georgian bank",
+        "physical_cues": [
+          {
+            "cue": "Georgian-style facade of 726 Madison Avenue at 64th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "726 Madison Avenue was built in 1932 for the Bank of Manhattan Company. The building's Georgian-style architecture had not been in fashion for nearly a century, and as a result, it seems completely out of place on this posh street.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "79b556fb96ad25a95a94d3874257cb7738be05f18a26f44d4dba56d52e4437b9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Roosevelt House",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7669,
+    "longitude": -73.9665,
+    "trigger_radius": 20,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Roosevelt House",
+        "lens": "famous_residents",
+        "topic_slug": "fdr_polio_recovery",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "47-49 E 65th St, between Madison and Park avenues",
+        "beat_length_class": "mid",
+        "script_body": "The Roosevelt House is actually two houses with one shared entrance. Sarah Delano Roosevelt gave the house to her son Franklin and his new bride, Eleanor, and the dominating mother lived at number 47. In 1921 and 1922, FDR and his wife lived at number 49 while he was recovering from polio. The house always remained their home base whenever they were in New York. Following Sarah's death in 1941, the house was sold.",
+        "duration_sec": 33,
+        "kid_friendly": "yes",
+        "entities": [
+          "Roosevelt House",
+          "Sarah Delano Roosevelt",
+          "Franklin Delano Roosevelt",
+          "Eleanor Roosevelt"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "neutral",
+        "subject_tag": "FDR polio home",
+        "physical_cues": [
+          {
+            "cue": "Twin townhouses with one shared entrance at 47-49 East 65th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Roosevelt House is actually two houses with one shared entrance. Sarah Delano Roosevelt gave the house to her son Franklin and his new bride, Eleanor, and the dominating mother lived at number 47. In 1921 and 1922, FDR and his wife lived at number 49 while he was recovering from polio. The house always remained their home base whenever they were in New York. Following Sarah's death in 1941, the house was sold.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "a0a09321d21fd2f73cd2d60b27337a5e93b94f5d3f1d8e274e89200467a31763",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Park Avenue Armory",
+    "short_description": "NEW POI flagged. Source address: 643 Park Ave. (at 66th St.).",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.767233,
+    "longitude": -73.965504,
+    "trigger_radius": 75,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single named former military building with interior cue; large radius reflects building size but it's narrated as one address you visit, not an area to traverse.",
+    "_poi_role_source": "a 55,000-square-foot drill hall at its core",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Park Avenue Armory",
+        "lens": "historic_arch",
+        "topic_slug": "fort_for_seventh_regiment",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "643 Park Ave, between 66th and 67th streets",
+        "beat_length_class": "mid",
+        "script_body": "The 7th Regiment Armory, also known as Park Avenue Armory, seems a bit like a fort. The large brick building, dating back to 1880, was once the headquarters of the seventh regiment of the New York National Guard. The interior is beautifully decorated, but after 120 years the building had grown dilapidated. In 2006 the Park Armory Conservancy began significant renovations to transform it into a unique place for unconventional art.",
+        "duration_sec": 30,
+        "kid_friendly": "yes",
+        "entities": [
+          "7th Regiment Armory",
+          "New York National Guard",
+          "Park Armory Conservancy"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "armory fort renovation",
+        "physical_cues": [
+          {
+            "cue": "Fort-like brick exterior of the Park Avenue Armory at 643 Park Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The 7th Regiment Armory, also known as Park Avenue Armory, seems a bit like a fort. The large brick building was once the headquarters of the seventh regiment of the New York National Guard. The interior is beautifully decorated, but after 120 years, the building, which dates back to 1880, had grown dilapidated. In 2006 the Park Armory Conservancy began significant renovations to transform the building into a unique place for unconventional art.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "6abb5babf3ab80afd42bcc0e4e5a8bc6691c93140df0df2e702113aec362cea5",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "West side of Park Avenue, from 68th to 69th streets",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7686,
+    "longitude": -73.9658,
+    "trigger_radius": 30,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "West side of Park Avenue, from 68th to 69th streets",
+        "lens": "social_change",
+        "topic_slug": "marquesa_saved_from_demolition",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Park Ave, between 68th and 69th streets",
+        "beat_length_class": "mid",
+        "script_body": "The houses on the west side of Park Avenue, from 68th to 69th streets, were saved from demolition in 1965 by Marquesa de Cuevas, a member of the wealthy Rockefeller family. She donated the buildings to her favorite charities, including the Americas Society, the Spanish Institute, and the Istituto Italiano di Cultura. Today you can come here for exhibits, readings, and classes.",
+        "duration_sec": 26,
+        "kid_friendly": "yes",
+        "entities": [
+          "Marquesa de Cuevas",
+          "Rockefeller family",
+          "Americas Society",
+          "Spanish Institute",
+          "Istituto Italiano di Cultura"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "event",
+        "emotional_register": "neutral",
+        "subject_tag": "houses saved 1965",
+        "physical_cues": [
+          {
+            "cue": "Row of houses on the west side of Park Avenue between 68th and 69th streets",
+            "direction": "west",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Istituto Italiano di Cultura",
+            "gloss": "Italian Cultural Institute"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "The houses on the west side of Park Avenue, from 68th to 69th streets, were saved from demolition in 1965 by Marquesa de Cuevas, a member of the wealthy Rockefeller family. She donated the buildings to her favorite charities, including the Americas Society, the Spanish Institute, and the Istituto Italiano di Cultura. Today you can come here for exhibits, readings, and classes.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "3afa6dac3e57d3a6ca512fec806cf56253b3b2d0c60296fe4d215296b66f2257",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Frick Collection",
+    "short_description": "Tier-4: Frick Collection temporary home; 3 Vermeers, Bellini, El Greco, Holbein.",
+    "name_variations": [
+      "Frick Madison"
+    ],
+    "kid_friendly": "yes",
+    "latitude": 40.7711,
+    "longitude": -73.9674,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum/mansion you stand before, a single stop.",
+    "_poi_role_source": "Beaux-arts mansion exterior on Fifth Avenue, part of the former Millionaires' Row",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Frick Collection",
+        "lens": "visual_art",
+        "topic_slug": "steel_magnate_home_masterpieces",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1 E 70th St, at 5th Ave",
+        "beat_length_class": "mid",
+        "script_body": "The Frick Collection is located in the former home of the Pittsburgh steel magnate Henry Clay Frick. The collection includes masterpieces from many famous European artists, such as Van Eyck, Bellini, Titian, and Goya. Today the museum maintains the same homey feel as when Frick himself lived here.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Henry Clay Frick",
+          "Van Eyck",
+          "Bellini",
+          "Titian",
+          "Goya"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Frick mansion collection",
+        "physical_cues": [
+          {
+            "cue": "Henry Clay Frick's former mansion, now the Frick Collection, at 1 East 70th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Frick Collection is located in the former home of the Pittsburgh steel magnate Henry Clay Frick. The collection includes masterpieces from many famous European artists, such as Van Eyck, Bellini, Titian, and Goya. Today the museum maintains the same homey feel as when Frick himself lived here.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "ac4c10c39a48aab7a09350b7ec2b1d6e25b3a1b61d09b4cea9d2f89909f4372f",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "The Jewish Museum",
+    "short_description": "Tier-4: 4,000 years of Jewish culture through art; ~800 artifacts.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.78541,
+    "longitude": -73.957183,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum in a French-Gothic mansion, a single stop.",
+    "_poi_role_source": "French-Gothic mansion exterior of the Jewish Museum on Fifth Avenue",
+    "typical_duration_min": 15,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "The Jewish Museum",
+        "lens": "visual_art",
+        "topic_slug": "26_objects_to_26000",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1109 5th Ave, at 92nd St",
+        "beat_length_class": "mid",
+        "script_body": "The Jewish Museum began in 1904 with 26 objects on display for visitors to view. Today the collection has grown to include 26,000 objects that reflect 4,000 years of Jewish art and culture. You'll find everything from archeological artifacts and paintings to videos and interactive websites.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Jewish Museum"
+        ],
+        "sensory_anchor": false,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "collection growth",
+        "physical_cues": [],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Jewish Museum began in 1904 with 26 objects on display for visitors to view. Today the collection has grown to include 26,000 objects that reflect 4,000 years of Jewish art and culture. You'll find everything from archeological artifacts and paintings to videos and interactive websites.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "e33cf908553c53b51fb8300ff3c872d832cba009fae6b7e162e568ffbc846ffd",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Cooper Hewitt National Design Museum",
+    "short_description": "Tier-4: Smithsonian design museum in Carnegie mansion; interactive renovation.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.784284,
+    "longitude": -73.957699,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 1,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum in the Carnegie mansion, a single destination.",
+    "_poi_role_source": "The 1902 Carnegie mansion housing the museum",
+    "typical_duration_min": 15,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Cooper Hewitt National Design Museum",
+        "lens": "visual_art",
+        "topic_slug": "carnegie_mansion_design",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "2 E 91st St, at 5th Ave",
+        "beat_length_class": "seasoning",
+        "script_body": "The former home of the famous philanthropist and steel magnate Andrew Carnegie was transformed into the Cooper Hewitt Smithsonian Design Museum in 1977. Visit the museum to see everything from historic to contemporary design, and from one-of-a-kind to mass-produced design objects.",
+        "duration_sec": 18,
+        "kid_friendly": "yes",
+        "entities": [
+          "Andrew Carnegie",
+          "Cooper Hewitt Smithsonian Design Museum"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Carnegie mansion museum",
+        "physical_cues": [
+          {
+            "cue": "Andrew Carnegie's former mansion, now the Cooper Hewitt, at 2 East 91st Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The former home of the famous philanthropist and steel magnate Andrew Carnegie was transformed into the Cooper Hewitt Smithsonian Design Museum in 1977. Visit the museum to see everything from historic to contemporary design, and from one-of-a-kind to mass-produced design objects.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "d0dd1e55e028a3e5ed73b616bee5b5b18c574dd5882eb369a64f7af560ae7e48",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Solomon R. Guggenheim Museum",
+    "short_description": "Tier-5: Frank Lloyd Wright 1959 spiral landmark; major modern-art collection.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.782993,
+    "longitude": -73.958925,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single iconic spiral building you stand before, a discrete stop.",
+    "_poi_role_source": "Frank Lloyd Wright's windowless spiral facade among the Fifth Avenue towers",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Solomon R. Guggenheim Museum",
+        "lens": "modern_design",
+        "topic_slug": "frank_lloyd_wright_spiral",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1071 5th Ave, at 89th St",
+        "beat_length_class": "mid",
+        "script_body": "The Guggenheim Museum is one of the most famous buildings by architect Frank Lloyd Wright, and the building's unique architecture is certainly at least as important as the Picassos and Kandinskys hanging inside. For the ultimate experience, take the elevator to the top and then work your way downward. Plan to spend at least half a day in the museum.",
+        "duration_sec": 25,
+        "kid_friendly": "yes",
+        "entities": [
+          "Frank Lloyd Wright",
+          "Pablo Picasso",
+          "Wassily Kandinsky"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "Wright building",
+        "physical_cues": [
+          {
+            "cue": "Frank Lloyd Wright's spiral Guggenheim building; ride the elevator to the top and walk down",
+            "direction": "up",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Guggenheim Museum is one of the most famous buildings by architect Frank Lloyd Wright, and the building's unique architecture is certainly at least as important at the Picassos and Kandinskys hanging inside. For the ultimate experience, take the elevator to the top and then work your way downward. Plan to spend at least half a day in the museum.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "17a337bd0691fd929d387ef3391d1d93e53b1394d5c108929e6892af7d92f6b0",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Neue Galerie New York",
+    "short_description": "Tier-3: German/Austrian art; Klimt's Woman in Gold; Viennese cafe.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.781224,
+    "longitude": -73.960237,
+    "trigger_radius": 35,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A discrete museum in a single mansion housing Klimt works, a single stop.",
+    "_poi_role_source": "This restored Carrère and Hastings mansion from 1914",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Neue Galerie New York",
+        "lens": "visual_art",
+        "topic_slug": "vanderbilt_widow_german_austrian",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1048 5th Ave, at 86th St",
+        "beat_length_class": "seasoning",
+        "script_body": "The Neue Galerie is devoted to German and Austrian art. The building in which the museum is housed was previously the home of Mrs. Cornelius Vanderbilt, a society doyenne and the widow of one of the richest men in New York. Today, in addition to the museum, the building also houses two excellent cafés.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Neue Galerie",
+          "Mrs. Cornelius Vanderbilt"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "Vanderbilt home gallery",
+        "physical_cues": [
+          {
+            "cue": "Former Vanderbilt mansion housing the Neue Galerie at 1048 5th Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "Neue Galerie",
+            "gloss": "New Gallery (German)"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "The Neue Galerie is devoted to German and Austrian art. This building in which the museum is housed was previously the home of Mrs. Cornelius Vanderbilt, a society doyenne and the widow of one of the richest men in New York. Today, in addition to the museum, the building also houses two excellent cafés.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "fc3385dfafcce8343813482e3f70f910a85557fc77cda35e36ea2fe04cf34d28",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "1040 5th Avenue",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7813,
+    "longitude": -73.9626,
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "1040 5th Avenue",
+        "lens": "famous_residents",
+        "topic_slug": "jackie_onassis_anonymity",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1040 5th Ave",
+        "beat_length_class": "mid",
+        "script_body": "A year after her husband was assassinated in Dallas, former First Lady Jacqueline Kennedy Onassis moved to the 15th floor at 1040 5th Avenue. She thoroughly valued and appreciated the anonymity afforded her by the people of NYC and often went for walks in Central Park. Jackie lived here until her death in 1994.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "Jacqueline Kennedy Onassis",
+          "John F. Kennedy"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "character_story",
+        "emotional_register": "reverent",
+        "subject_tag": "Jackie Onassis residence",
+        "physical_cues": [
+          {
+            "cue": "Apartment building at 1040 5th Avenue; Jackie Onassis lived on the 15th floor",
+            "direction": "up",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "A year after her husband was assassinated in Dallas, former First Lady Jacqueline Kennedy Onassis moved to the 15th floor at 1040 5th Avenue. She thoroughly valued and appreciated the anonymity afforded her by the people of NYC and often went for walks in Central Park. Jackie lived here until her death in 1994.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "82383edf7cb541c37eab16f53a143d8282bd7f699319a89fe302eef5f9824432",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Metropolitan Museum of Art",
+    "short_description": "Tier-5: largest museum in the hemisphere, 1.6M sq ft, 3M+ works; flagship NYC attraction.",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.77944,
+    "longitude": -73.963382,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 5,
+    "poi_role": "stop",
+    "parent_poi": null,
+    "_poi_role_reasoning": "A single flagship museum building you stand before, with interior galleries described as cues.",
+    "_poi_role_source": "Richard Morris Hunt's limestone edifice, its mountain of steps and redwood-height pillars",
+    "typical_duration_min": 90,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Metropolitan Museum of Art",
+        "lens": "historic_arch",
+        "topic_slug": "versailles_resemblance_facade",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "1000 5th Ave, at 82nd St",
+        "beat_length_class": "mid",
+        "script_body": "The grand building that houses the Metropolitan Museum of Art, the Met, bears a strong resemblance to the Palace of Versailles. In this museum you'll find artwork from ancient times as well as modern art. Various additions have been made to the building over the years, but the 5th Avenue side dates back to 1895-1902. For a nice view, head up to the rooftop garden.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Metropolitan Museum of Art",
+          "Palace of Versailles"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "neutral",
+        "subject_tag": "Versailles-like facade",
+        "physical_cues": [
+          {
+            "cue": "The Met's grand 5th Avenue facade (1895-1902), resembling the Palace of Versailles",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Rooftop garden of the Met for a city view",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The grand building that houses the Metropolitan Museum of Art (the Met) bears a strong resemblance to the Palace of Versailles. In this museum you'll find artwork from ancient times as well as modern art. Various additions have been made to the building over the years, but the 5th Avenue side dates back to 1895-1902. For a nice view, head up to the rooftop garden.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "ae141cd44709f7c81cf64b26af4aa48f1aa9ac301fd9501be95be31e92eb5f8e",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Bethesda Terrace",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.774219,
+    "longitude": -73.971052,
+    "trigger_radius": 25,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "_poi_role_reasoning": "A discrete architectural terrace and fountain you stand before, a named feature inside Central Park.",
+    "_poi_role_source": "Bethesda Terrace is, without a doubt, the architectural heart of the park",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Bethesda Terrace",
+        "lens": "historic_arch",
+        "topic_slug": "wedding_backdrop_tiled_ceiling",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Terrace Dr, in Central Park",
+        "beat_length_class": "mid",
+        "script_body": "The Bethesda Fountain is the backdrop of many wedding photos; brides and grooms come here nearly every day to pose for pictures, with the lake, rowboats, and the grand buildings of western Manhattan in the background. Bethesda Terrace was one of the first structures in Central Park. The terrace has two levels connected by stately steps. Be sure to walk underneath and admire the gorgeous tiled ceiling.",
+        "duration_sec": 27,
+        "kid_friendly": "yes",
+        "entities": [
+          "Bethesda Fountain",
+          "Bethesda Terrace"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "architectural_detail",
+        "emotional_register": "reverent",
+        "subject_tag": "terrace wedding spot",
+        "physical_cues": [
+          {
+            "cue": "Bethesda Fountain with the lake, rowboats, and western Manhattan skyline behind it",
+            "direction": "here",
+            "feature_type": "view"
+          },
+          {
+            "cue": "Two-level terrace with stately steps; tiled ceiling on the lower level",
+            "direction": "down",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Bethesda Fountain is the backdrop of many wedding photos. Brides and grooms come here nearly every day to pose for pictures. Rightly so—this is an especially beautiful spot with the lake, rowboats, and grand buildings of western Manhattan in the background. Bethesda Terrace was one of the first structures in Central Park. The terrace has two levels, which are connected by stately steps. Be sure to walk underneath and admire the gorgeous tiled ceiling.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "4f8d53fc4324219c9895649944d79ee96a54a86998c984425865637dbfb696b5",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Naumburg Bandshell",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7716,
+    "longitude": -73.9719,
+    "trigger_radius": 30,
+    "importance_tier": 2,
+    "typical_duration_min": 30,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Naumburg Bandshell",
+        "lens": "music_heritage",
+        "topic_slug": "mlk_lennon_stage_1923",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Central Park, between E 70th and E 71st streets",
+        "beat_length_class": "mid",
+        "script_body": "The neoclassical Naumburg Bandshell was built in Central Park in 1923. Since then, artists of all ilk have performed here. Famous people such as Martin Luther King Jr. and John Lennon have also stood on this stage. The Mall runs through the middle of the park, from the Bethesda Terrace down to 66th Street, lined with benches where you may have to compete with street artists, roller skaters, and skateboarders for a seat.",
+        "duration_sec": 28,
+        "kid_friendly": "yes",
+        "entities": [
+          "Naumburg Bandshell",
+          "Martin Luther King Jr.",
+          "John Lennon",
+          "The Mall"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "bandshell performers",
+        "physical_cues": [
+          {
+            "cue": "The neoclassical Naumburg Bandshell stage on the Mall",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "The Mall running from Bethesda Terrace down to 66th Street, lined with benches",
+            "direction": "south",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The neoclassical Naumburg Bandshell was built in Central Park in 1923. Since then, artists of all ilk have performed here. Famous people such as Martin Luther King Jr. and John Lennon have also stood on this stage. Find out about performances here on the Central Park website. The Mall runs through the middle of the park, from the Bethesda Terrace down to 66th Street. There are plenty of benches along the Mall, but you may have to compete with the street artists, roller skaters, and skateboarders to get one.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "0b16712c102f0675941a796e3eafaf6a2e397b6c4a506a8d073e38e02c91725b",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Central Park Zoo",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.767601,
+    "longitude": -73.971846,
+    "trigger_radius": 120,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 3,
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "_poi_role_reasoning": "A discrete zoo with indoor exhibits inside Central Park; large radius reflects grounds but it is a single named venue.",
+    "_poi_role_source": "The indoor, multilevel Tropic Zone is a real highlight",
+    "typical_duration_min": 45,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Central Park Zoo",
+        "lens": "local_legends",
+        "topic_slug": "polar_bears_madagascar",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Central Park, near 64th St at 5th Ave",
+        "beat_length_class": "seasoning",
+        "script_body": "The Central Park Zoo is home to a number of NYC's most beloved inhabitants. The polar bears and sea lions are among the most popular here. Come see if any of the main characters from DreamWorks's Madagascar have made it back home yet.",
+        "duration_sec": 16,
+        "kid_friendly": "yes",
+        "entities": [
+          "Central Park Zoo",
+          "DreamWorks",
+          "Madagascar"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "playful",
+        "subject_tag": "zoo Madagascar",
+        "physical_cues": [
+          {
+            "cue": "Polar bear and sea lion enclosures at the Central Park Zoo near 64th St and 5th Ave",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "The Central Park Zoo is home to a number of NYC's most beloved inhabitants. The polar bears and sea lions are among the most popular here. Come see if any of the main characters from DreamWorks's Madagascar have made it back home yet.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "82cb925034c8ac5b56099b7d7884c3e8fc30595e866c967c6106e30742df9346",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Wollman Rink",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "latitude": 40.767716,
+    "longitude": -73.974467,
+    "trigger_radius": 20,
+    "city_name": "new_york",
+    "_meta": {
+      "created_by": "pipeline-batch",
+      "city_name": "new_york",
+      "book_slug": "frommers-nyc-2024",
+      "created_at": "2026-06-14",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "importance_tier": 4,
+    "poi_role": "stop",
+    "parent_poi": "Central Park",
+    "_poi_role_reasoning": "A discrete ice-skating rink, 20m radius, a named feature inside Central Park.",
+    "_poi_role_source": "This is a wonderfully scenic place to skate",
+    "typical_duration_min": 75,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Wollman Rink",
+        "lens": "local_legends",
+        "topic_slug": "ice_skating_victoria_gardens",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Central Park, near 59th St and 6th Ave",
+        "beat_length_class": "seasoning",
+        "script_body": "Ice skating at Wollman Rink has long been a favorite pastime for many New York City residents. You can glide across the ice here from fall until spring. Then from July until September the Victoria Gardens amusement park moves in.",
+        "duration_sec": 15,
+        "kid_friendly": "yes",
+        "entities": [
+          "Wollman Rink",
+          "Victoria Gardens"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "factoid",
+        "emotional_register": "neutral",
+        "subject_tag": "rink seasons",
+        "physical_cues": [
+          {
+            "cue": "Wollman Rink ice surface near 59th St and 6th Ave in Central Park",
+            "direction": "here",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Ice skating at Wollman Rink has long been a favorite pastime for many New York City residents. Glide across the ice here from fall until spring. Then from July until September the Victoria Gardens amusement park moves in.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "2711afaefc921f9fc65e0b75b3d692e3fd95d411cc9567fbd60ea45a5fb87e23",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Heckscher Ballfields",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.77055,
+    "longitude": -73.97865,
+    "trigger_radius": 40,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Heckscher Ballfields",
+        "lens": "parks_gardens",
+        "topic_slug": "six_diamonds_contrast",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Near 63rd St Central",
+        "beat_length_class": "seasoning",
+        "script_body": "Heckscher Ballfields has six softball and baseball diamonds, and there's nearly always a team out there practicing or a game going on. Take a seat and watch, but be sure to look up from time to time to appreciate the contrast between Central Park and the rest of Manhattan that surrounds it.",
+        "duration_sec": 20,
+        "kid_friendly": "yes",
+        "entities": [
+          "Heckscher Ballfields"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "sensory_observation",
+        "emotional_register": "neutral",
+        "subject_tag": "ballfields contrast",
+        "physical_cues": [
+          {
+            "cue": "Six softball and baseball diamonds at Heckscher Ballfields, with the Manhattan skyline beyond",
+            "direction": "up",
+            "feature_type": "view"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Heckscher Ballfields has six softball and baseball diamonds, and there's nearly always a team out there practicing or a game going on. Take a seat and watch but be sure to look up from time to time to appreciate the contrast between Central Park and the rest of Manhattan that surrounds it.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "c2f17f245e088cd77bdbdb3f79a37a1c7b84abac0caabaf5b7285e13572f3a57",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "The Bar Room",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7621,
+    "longitude": -73.9656,
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "The Bar Room",
+        "lens": "local_legends",
+        "topic_slug": "brown_doors_mural_burger",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "117 E 60th St",
+        "beat_length_class": "seasoning",
+        "script_body": "Behind the brown doors at the Bar Room hide an old-style bar and restaurant. A beautiful mural decorates the back room, while a long bar in the front room invites guests to sit and enjoy a cocktail. It's a popular spot to stop for drinks on the way home from work, and the Bar Room Burger is a favorite.",
+        "duration_sec": 22,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Bar Room"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "old-style bar",
+        "physical_cues": [
+          {
+            "cue": "The brown doors of the Bar Room at 117 East 60th Street",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          },
+          {
+            "cue": "Mural in the back room and long bar in the front room",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Behind the brown doors at the Bar Room hide an old-style bar and restaurant. A beautiful mural decorates the back room, while a long bar in the front room invites guest to sit and enjoy a cocktail with friends. Or colleagues, for that matter, since this is a popular spot to stop for drinks on the way home from work. The food here is simple but good, and the Bar Room Burger is a favorite.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "1a6a9a689744f946d5c17ff6ea008e55015af7c94d6c771a5d1bf12e3130c5a9",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "The Pierre",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7647,
+    "longitude": -73.9722,
+    "trigger_radius": 20,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "The Pierre",
+        "lens": "historic_arch",
+        "topic_slug": "elegant_hotel_afternoon_tea",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "2 E 61st St",
+        "beat_length_class": "micro",
+        "script_body": "Since 1930, The Pierre has been one of the most elegant hotels in New York City. Treat yourself to afternoon tea at the Two E Bar/Lounge here.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "The Pierre",
+          "Two E Bar/Lounge"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "neutral",
+        "subject_tag": "elegant hotel",
+        "physical_cues": [
+          {
+            "cue": "The Pierre hotel at 2 East 61st Street, off 5th Avenue",
+            "direction": "here",
+            "feature_type": "architectural_detail"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Since 1930, The Pierre has been one of the most elegant hotels in New York City. Treat yourself to afternoon tea at the Two E Bar/Lounge here.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "9938b4746245bdae6a69a66dbb422fc01b47b88ddbe548e96d9b8b45b27f8494",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Café Carlyle",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7741,
+    "longitude": -73.9633,
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Café Carlyle",
+        "lens": "music_heritage",
+        "topic_slug": "cabaret_dinner_show",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "Carlyle Hotel, 35 E 76th St, at Madison Ave",
+        "beat_length_class": "micro",
+        "script_body": "Anyone who thinks cabaret is a thing of the past definitely ought to come to Café Carlyle for a dinner show. Café Carlyle is located in the Carlyle Hotel.",
+        "duration_sec": 11,
+        "kid_friendly": "yes",
+        "entities": [
+          "Café Carlyle",
+          "Carlyle Hotel"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "playful",
+        "subject_tag": "cabaret dinner show",
+        "physical_cues": [
+          {
+            "cue": "Café Carlyle inside the Carlyle Hotel at 35 East 76th Street",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [],
+        "pronunciation": null,
+        "source_passage": "Anyone who thinks cabaret is a thing of the past definitely ought to come to Café Carlyle for a dinner show. Café Carlyle is located in the Carlyle Hotel.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "671e6533f9941816bf2827070037e0a53b061c50303252659aedbfc073af72fc",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  },
+  {
+    "name": "Creel and Gow",
+    "short_description": "",
+    "name_variations": [],
+    "kid_friendly": "yes",
+    "city_name": "new_york",
+    "_meta": {
+      "prompt_version": "unified_v2",
+      "city_name": "new_york",
+      "exported_at": "2026-06-16T00:00:00+00:00",
+      "source_chunk": "chunk-04"
+    },
+    "latitude": 40.7692628,
+    "longitude": -73.9632655,
+    "trigger_radius": 15,
+    "importance_tier": 1,
+    "typical_duration_min": 15,
+    "poi_role": null,
+    "beats": [
+      {
+        "city_name": "new_york",
+        "poi_name": "Creel and Gow",
+        "lens": "local_legends",
+        "topic_slug": "bric_a_brac_like_museum",
+        "book_slug": "moon-nyc-walks",
+        "source_chunk_slug": "chunk-04-walk4-upper-east-side-central-park",
+        "sub_location": null,
+        "trigger_address": "131 E 70th St",
+        "beat_length_class": "micro",
+        "script_body": "Creel and Gow offers an impressive selection of bric-a-brac and feels more like a museum than a shop. You can spend hours wandering around and talking to the friendly owner.",
+        "duration_sec": 12,
+        "kid_friendly": "yes",
+        "entities": [
+          "Creel and Gow"
+        ],
+        "sensory_anchor": true,
+        "narrative_function": "establishing",
+        "beat_type": "establishing",
+        "emotional_register": "playful",
+        "subject_tag": "museum-like shop",
+        "physical_cues": [
+          {
+            "cue": "Creel and Gow's museum-like shop interior at 131 East 70th Street",
+            "direction": "here",
+            "feature_type": "interior"
+          }
+        ],
+        "inline_foreign_phrases": [
+          {
+            "phrase": "bric-a-brac",
+            "gloss": "miscellaneous decorative curiosities and ornaments"
+          }
+        ],
+        "pronunciation": null,
+        "source_passage": "Creel and Gow offers an impressive selection of bric-a-brac and feels more like a museum than a shop. You can spend hours wandering around and talking to the friendly owner.",
+        "source_attribution": {
+          "book_title": "Moon New York City Walks",
+          "author": "Moon Travel Guides",
+          "chapter": "Walk 4: Upper East Side & Central Park"
+        },
+        "script_body_hash": "8b03ac7ba1b0cc241b5c5d3f4f22fc31a968458d1e32e634ad38a60eb37d490f",
+        "_meta": {
+          "prompt_version": "unified_v2",
+          "generated_at": "2026-06-16T00:00:00+00:00",
+          "city_name": "new_york"
+        },
+        "fact_check_status": "unverified"
+      }
+    ]
+  }
+]
